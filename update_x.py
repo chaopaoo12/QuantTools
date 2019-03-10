@@ -50,12 +50,6 @@ from QAStockETL.QAUtil.QAMySQL import (QA_etl_stock_list, QA_etl_stock_info,
                                       QA_etl_stock_block, QA_etl_stock_divyield,
                                       QA_etl_process_financial_day)
 
-from QAStockETL.QASU import crawl_jrj_financial_reportdate as save_financial_calendar
-from QAStockETL.QASU import crawl_jrj_stock_divyield as save_stock_divyield
-from QAStockETL.QASU import save_financial_TTM as save_financial_TTM
-from QAStockETL.QASU import save_stock_financial as save_stock_financial
-
-
 QA_SU_save_stock_day('tdx')
 QA_SU_save_stock_xdxr('tdx')
 QA_SU_save_stock_min('tdx')
@@ -69,6 +63,7 @@ QA_SU_save_stock_info('tdx')
 QA_SU_save_stock_divyield_day()
 QA_SU_save_report_calendar_day()
 QA_SU_save_stock_info_tushare()
+QA_SU_save_financialfiles()
 
 print("write data into sqldatabase")
 QA_etl_stock_list()
