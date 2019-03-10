@@ -37,7 +37,7 @@ from QUANTAXIS.QASU.main import (QA_SU_save_etf_day, QA_SU_save_etf_min,
 from QAStockETL.QASU.main import (QA_SU_save_report_calendar_day,
                                   QA_SU_save_report_calendar_his,QA_SU_save_stock_divyield_day,
                                   QA_SU_save_stock_divyield_his,QA_SU_save_fianacialTTM_momgo,
-                                  QA_SU_save_stock_fianacial_momgo)
+                                  QA_SU_save_stock_fianacial_momgo,QA_SU_save_stock_fianacial_momgo_his)
 from QUANTAXIS.QASU.save_binance import (QA_SU_save_binance,
                                          QA_SU_save_binance_1day,
                                          QA_SU_save_binance_1hour,
@@ -80,4 +80,4 @@ QA_etl_process_financial_day('all')
 
 print("write data into mongodb")
 QA_SU_save_fianacialTTM_momgo()
-QA_SU_save_stock_fianacial_momgo()
+QA_SU_save_stock_fianacial_momgo_his()
