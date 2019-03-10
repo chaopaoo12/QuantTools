@@ -11,12 +11,19 @@ from QUANTAXIS.QAUtil import (DATABASE,QA_util_getBetweenQuarter, QA_util_get_ne
 def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
 
     if start_date == None:
-        start_date = QA_util_today_str()
+        if end_date == None:
+            start_date = QA_util_today_str()
+            end_date = start_date
+        elif end_date is not None:
+            start_date = '2003-01-01'
+    elif start_date is not None:
+        if end_date == None:
+            start_date = QA_util_today_str()
+            end_date = start_date
+        elif end_date is not None:
+            if end_date < start_date:
+                print('end_date should large than start_date')
 
-    if end_date == None:
-        end_date = start_date
-    elif end_date < start_date:
-        print('end_date should large than start_date')
     deal_date_list = QA_util_get_trade_range(start_date, end_date)
     if deal_date_list is None:
         print('not a trading day')

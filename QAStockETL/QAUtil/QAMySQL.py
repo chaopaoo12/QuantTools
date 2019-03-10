@@ -92,7 +92,8 @@ def QA_etl_stock_divyield(type = "day", mark_day = str(datetime.date.today())):
 def QA_etl_process_financial_day(type = "day", deal_date = str(datetime.date.today())):
     if type == "day":
         QA_util_process_financial(deal_date=deal_date)
+        QA_util_process_financial2(start_date=deal_date,end_date=deal_date)
 
     elif type == "all":
         QA_util_process_financial(type == "all")
-        QA_util_process_financial2(start_date=deal_date,end_date=deal_date)
+        #QA_util_process_financial2(start_date=deal_date,end_date=deal_date)

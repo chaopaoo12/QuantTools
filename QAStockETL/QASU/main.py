@@ -25,7 +25,7 @@ from QAStockETL.QASU import crawl_jrj_financial_reportdate as save_financial_cal
 from QAStockETL.QASU import crawl_jrj_stock_divyield as save_stock_divyield
 from QAStockETL.QASU import save_financial_TTM as save_financial_TTM
 from QAStockETL.QASU import save_stock_financial as save_stock_financial
-
+from QUANTAXIS.QAUtil import QA_util_today_str
 
 def QA_SU_save_report_calendar_day():
     return save_financial_calendar.QA_SU_save_report_calendar_day()
@@ -46,4 +46,7 @@ def QA_SU_save_fianacialTTM_momgo():
     return save_financial_TTM.QA_SU_save_fianacialTTM_momgo()
 
 def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
+    return save_stock_financial.QA_SU_save_stock_fianacial_momgo(start_date,end_date)
+
+def QA_SU_save_stock_fianacial_momgo_his(start_date=None,end_date=QA_util_today_str()):
     return save_stock_financial.QA_SU_save_stock_fianacial_momgo(start_date,end_date)
