@@ -2,14 +2,10 @@
 import numpy
 import pandas as pd
 
-from QUANTAXIS.QAUtil import (DATABASE, QA_Setting, QA_util_date_stamp,
-                              QA_util_date_valid, QA_util_dict_remove_key,
-                              QA_util_log_info, QA_util_code_tolist, QA_util_date_str2int, QA_util_date_int2str,
-                              QA_util_sql_mongo_sort_DESCENDING,
-                              QA_util_time_stamp, QA_util_to_json_from_pandas,
-                              trade_date_sse)
-from QUANTAXIS.QAUtil.QADate import QA_util_pands_timestamp_to_date
-from QAStockETL.FuncTools.financial_mean import financial_dict
+from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
+                              QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_str2int, QA_util_date_int2str,
+                              QA_util_to_json_from_pandas)
+from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict
 
 def QA_fetch_financial_report(code, report_date, type ='report', ltype='EN', db=DATABASE):
     """获取专业财务报表

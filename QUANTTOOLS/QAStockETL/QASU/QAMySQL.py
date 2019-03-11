@@ -1,15 +1,13 @@
 
 
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch_stock_block_adv,
-                                               QA_fetch_stock_day_adv)
-
-from QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_financial_report_adv
+                                               QA_fetch_stock_day_adv, QA_fetch_financial_report_adv
 ,QA_fetch_stock_financial_calendar_adv,QA_fetch_stock_divyield_adv)
 
 from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr)
 
-from QAStockETL.QAUtil.QASql import QA_util_sql_store_mysql
-from QAStockETL.QAUtil.QAEtl import QA_util_process_financial,QA_util_process_financial2
+from QUANTTOOLS.QAStockETL.QAUtil import QA_util_sql_store_mysql
+from QUANTTOOLS.QAStockETL.QAUtil import QA_util_process_financial,QA_util_process_financial2
 
 import pandas as pd
 import datetime
@@ -92,8 +90,7 @@ def QA_etl_stock_divyield(type = "day", mark_day = str(datetime.date.today())):
 def QA_etl_process_financial_day(type = "day", deal_date = str(datetime.date.today())):
     if type == "day":
         QA_util_process_financial(deal_date=deal_date)
-        QA_util_process_financial2(start_date=deal_date,end_date=deal_date)
 
     elif type == "all":
         QA_util_process_financial(type == "all")
-        #QA_util_process_financial2(start_date=deal_date,end_date=deal_date)
+        QA_util_process_financial2(start_date=deal_date,end_date=deal_date)

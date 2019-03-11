@@ -24,13 +24,10 @@
 
 import pymongo
 from motor.motor_asyncio import AsyncIOMotorClient
-from motor import MotorClient
-from QUANTAXIS.QAUtil.QALogs import QA_util_log_info
 from sqlalchemy import types, create_engine
 import asyncio
-import os
 import cx_Oracle
-from QAStockETL.FuncTools.database_settings import (Oracle_Database, Oracle_User,Oracle_Password,Oralce_Server,MongoDB_Server,MongoDB_Database)
+from QUANTTOOLS.QAStockETL.FuncTools.database_settings import (Oracle_Database, Oracle_User, Oracle_Password, Oralce_Server, MongoDB_Server, MongoDB_Database)
 
 ORACLE_PATH1 = 'oracle+cx_oracle://{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
 ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
