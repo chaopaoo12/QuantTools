@@ -1,7 +1,7 @@
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_info, QA_util_add_months,
                               QA_util_to_json_from_pandas, QA_util_today_str,
                               QA_util_datetime_to_strdate)
-from QUANTTOOLS.QAStockETL import QA_fetch_get_financial_calendar
+from QUANTTOOLS.QAStockETL.QAFetch.QAcalendar import QA_fetch_get_financial_calendar
 import pandas as pd
 import pymongo
 
