@@ -1,4 +1,7 @@
 
+__version__ = '0.0.1.dev1'
+__author__ = 'chaopaoo12'
+
 
 from QUANTTOOLS.QAStockETL import (QA_SU_save_report_calendar_day, QA_SU_save_report_calendar_his,
                                    QA_SU_save_stock_divyield_day, QA_SU_save_stock_divyield_his,
