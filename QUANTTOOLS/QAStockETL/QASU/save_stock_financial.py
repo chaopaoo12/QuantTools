@@ -1,6 +1,6 @@
 
 import pymongo
-from QUANTTOOLS.QAStockETL import QA_util_etl_stock_financial
+from QUANTTOOLS.QAStockETL.QAUtil import QA_util_etl_stock_financial
 from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_today_str,
                               QA_util_get_trade_range)
