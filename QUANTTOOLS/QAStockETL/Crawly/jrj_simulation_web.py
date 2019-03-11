@@ -5,7 +5,6 @@ import pandas as pd
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import demjson
-from QUANTAXIS_CRAWLY.run_selenium_alone import *
 from QUANTAXIS.QAUtil import (QA_util_getBetweenQuarter,QA_util_add_months,
                               QA_util_today_str,QA_util_datetime_to_strdate)
 
