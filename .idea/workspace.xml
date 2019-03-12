@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d7afb2b0-0a9c-40a8-bb48-185a26027412" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QASql.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QASql.py" afterDir="false" />
-    </list>
+    <list default="true" id="d7afb2b0-0a9c-40a8-bb48-185a26027412" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,8 +38,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QASql.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1495">
-              <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
+            <state relative-caret-position="92">
+              <caret line="85" column="32" lean-forward="true" selection-start-line="85" selection-start-column="32" selection-end-line="85" selection-end-column="32" />
               <folding>
                 <element signature="e#1147#1161#0" expanded="true" />
               </folding>
@@ -157,49 +154,6 @@
               <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
               <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-              <item name="QAFetch" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-              <item name="QASU" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-              <item name="QAUtil" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockTradingDay" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -259,7 +213,7 @@
       <workItem from="1552265880174" duration="7224000" />
       <workItem from="1552326159799" duration="1025000" />
       <workItem from="1552327254811" duration="62000" />
-      <workItem from="1552328061816" duration="3366000" />
+      <workItem from="1552328061816" duration="3590000" />
     </task>
     <task id="LOCAL-00001" summary="add">
       <created>1552240098656</created>
@@ -366,15 +320,28 @@
       <option name="project" value="LOCAL" />
       <updated>1552392066937</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="add">
+      <created>1552393155637</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1552393155637</updated>
+    </task>
+    <task id="LOCAL-00017" summary="add">
+      <created>1552393332876</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1552393332876</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20462000" />
+    <option name="totallyTimeSpent" value="20686000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-3849" y="-9" width="1938" height="1098" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -660,8 +627,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QASql.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1495">
-          <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
+        <state relative-caret-position="92">
+          <caret line="85" column="32" lean-forward="true" selection-start-line="85" selection-start-column="32" selection-end-line="85" selection-end-column="32" />
           <folding>
             <element signature="e#1147#1161#0" expanded="true" />
           </folding>
