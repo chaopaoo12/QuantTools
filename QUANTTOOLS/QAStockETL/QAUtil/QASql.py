@@ -29,7 +29,7 @@ import asyncio
 import cx_Oracle
 from QUANTTOOLS.QAStockETL.FuncTools.database_settings import (Oracle_Database, Oracle_User, Oracle_Password, Oralce_Server, MongoDB_Server, MongoDB_Database)
 
-ORACLE_PATH1 = 'oracle+cx_oracle://{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
+ORACLE_PATH1 = 'oracle+cx_oracle://{user}:{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
 ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
 mongo_path = 'mongodb://{server}:27017/{database}'.format(database = MongoDB_Database, server = MongoDB_Server)
 
@@ -82,7 +82,7 @@ def chunks(l, n):
 
 
 def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", passwd="123456", db="quantaxis", if_exists="fail"):
-    engine = create_engine("oracle+cx_oracle://quantaxis:123@192.168.3.56:1521/QUANTAXIS")
+    engine = create_engine(ORACLE_PATH1)
     columns = list(data.columns)
     for i in range(len(columns)):
         if columns[i].isdigit():
