@@ -61,7 +61,7 @@ def QA_etl_stock_financial(type = "day", mark_day = str(datetime.date.today())):
 
 def QA_etl_stock_calendar(type = "day", mark_day = str(datetime.date.today())):
     if type == "all":
-        data = QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),type = "all").data.reset_index(drop=True)
+        data = QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),start = "all").data.reset_index(drop=True)
         QA_util_sql_store_mysql(data, "stock_calendar",if_exists='replace')
     elif type == "day":
         data = QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']), mark_day).data
@@ -77,7 +77,7 @@ def QA_etl_stock_block():
 
 def QA_etl_stock_divyield(type = "day", mark_day = str(datetime.date.today())):
     if type == "all":
-        data = QA_fetch_stock_divyield_adv(list(QA_fetch_stock_list_adv()['code'])).data.reset_index()
+        data = QA_fetch_stock_divyield_adv(list(QA_fetch_stock_list_adv()['code']),start = "all").data.reset_index()
         QA_util_sql_store_mysql(data, "stock_divyield",if_exists='replace')
     elif type == "day":
         data = QA_fetch_stock_divyield_adv(list(QA_fetch_stock_list_adv()['code']), mark_day).data
