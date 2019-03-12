@@ -1,10 +1,9 @@
 
 
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch_stock_block_adv,
-                                               QA_fetch_stock_day_adv
-,QA_fetch_stock_financial_calendar_adv,QA_fetch_stock_divyield_adv)
+                                               QA_fetch_stock_day_adv)
 
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_financial_report_adv
+from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,QA_fetch_stock_divyield_adv)
 from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr)
 
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_sql_store_mysql
