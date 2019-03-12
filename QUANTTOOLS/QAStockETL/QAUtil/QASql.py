@@ -99,7 +99,6 @@ def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", pas
     columns = ",".join(data.columns)
     dtyp = {c:types.VARCHAR(data[c].str.len().max())
             for c in data.columns[data.dtypes == 'object'].tolist()}
-    print(ORACLE_PATH1)
     try:
         data[:0].to_sql(table_name, engine,
                         if_exists=if_exists, dtype=dtyp)
