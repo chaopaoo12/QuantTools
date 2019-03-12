@@ -82,7 +82,7 @@ def chunks(l, n):
 
 
 def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", passwd="123456", db="quantaxis", if_exists="fail"):
-    engine = create_engine("oracle+cx_oracle://quantaxis/123@192.168.3.56:1521/quantaxis")
+    engine = create_engine("oracle+cx_oracle://quantaxis/123@192.168.3.56:1521/QUANTAXIS")
     columns = list(data.columns)
     for i in range(len(columns)):
         if columns[i].isdigit():
