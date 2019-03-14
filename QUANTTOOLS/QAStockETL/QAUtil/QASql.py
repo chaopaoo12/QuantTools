@@ -119,6 +119,8 @@ def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", pas
     try:
         for i in chunks([tuple(x) for x in data.values], break_num):
             cursor.executemany(sql, i)
+        print("{} has been stored into Table {} Mysql DataBase ".format(
+            table_name, table_name))
     except Exception as e:
         conn.rollback()
         print("执行MySQL: %s 时出错：%s" % (sql, e))
@@ -126,8 +128,7 @@ def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", pas
         cursor.close()
         conn.commit()
         conn.close()
-    print("{} has been stored into Table {} Mysql DataBase ".format(
-        table_name, table_name))
+
 
 ASCENDING = pymongo.ASCENDING
 DESCENDING = pymongo.DESCENDING
