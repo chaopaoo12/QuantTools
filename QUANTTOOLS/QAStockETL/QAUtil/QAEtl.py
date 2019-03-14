@@ -948,6 +948,7 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
                          a.amount,
                          b.shares_after * 10000 as shares,
                          round(a.close * b.shares_after * 10000, 2) AS total_market,
+                         round((a.amount / a.volume) * b.shares_after * 10000, 2) AS avg_total_market,
                          case
                            when (netProfit_TTM <= 0 or
                                 netProAftExtrGainLoss_TTM <= 0) then
@@ -1513,6 +1514,15 @@ def QA_util_process_financial2(start_date, end_date):
                  LAG(TOTAL_MARKET, 20) OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE ASC) AS LAG20_MARKET,
                  LAG(TOTAL_MARKET, 30) OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE ASC) AS LAG30_MARKET,
                  LAG(TOTAL_MARKET, 60) OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE ASC) AS LAG60_MARKET,
+                 LAG(AVG_TOTAL_MARKET) OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE_MARKET,
+                   LAG(AVG_TOTAL_MARKET, 2) OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE2_MARKET,
+                   LAG(AVG_TOTAL_MARKET, 3) OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE3_MARKET,
+                   LAG(AVG_TOTAL_MARKET, 5) OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE5_MARKET,
+                   LAG(AVG_TOTAL_MARKET) OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG_MARKET,
+                   LAG(AVG_TOTAL_MARKET, 5) OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG5_MARKET,
+                   LAG(AVG_TOTAL_MARKET, 20) OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG20_MARKET,
+                   LAG(AVG_TOTAL_MARKET, 30) OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG30_MARKET,
+                   LAG(AVG_TOTAL_MARKET, 60) OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG60_MARKET,
                  CASE
                    WHEN ORDER_DATE -
                         TO_DATE(TO_CHAR(TIMETOMARKET), 'YYYYMMDD') <= 5 THEN
@@ -2568,6 +2578,15 @@ def QA_util_etl_stock_financial(start_date):
        LAG20_MARKET,
        LAG30_MARKET,
        LAG60_MARKET,
+        AVG_PRE_MARKET, 
+        AVG_PRE2_MARKET, 
+        AVG_PRE3_MARKET, 
+        AVG_PRE5_MARKET, 
+        AVG_LAG_MARKET, 
+        AVG_LAG5_MARKET, 
+        AVG_LAG20_MARKET, 
+        AVG_LAG30_MARKET, 
+        AVG_LAG60_MARKET, 
        LAG5_TOR,
        LAG20_TOR,
        LAG30_TOR,
