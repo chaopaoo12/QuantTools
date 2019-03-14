@@ -1548,10 +1548,7 @@ def QA_util_process_financial2(start_date, end_date):
                     AVG(TURNOVERRATIO)
                     OVER(PARTITION BY A.CODE ORDER BY ORDER_DATE
                          RANGE BETWEEN 59 PRECEDING AND CURRENT ROW)
-                 END AS LAG60_TOR,
-                 NULL AS PE_RANKS,
-                 NULL AS RANK_TABLE,
-                 NULL AS PB_RANKS
+                 END AS LAG60_TOR
             from (select a.*,
                          DECODE(shares, 0, 0, vol / shares * 100) as turnoverRatio
                     from stock_analysis_data a where order_date >= (to_date('{start_date}', 'yyyy-mm-dd') - 120)
