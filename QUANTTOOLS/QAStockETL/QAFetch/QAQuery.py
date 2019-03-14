@@ -178,7 +178,7 @@ def QA_fetch_stock_divyield(code, start, end=None, format='pd', collections=DATA
         try:
             res = res.drop_duplicates(
                 (['dir_dcl_date', 'a_stockcode']))
-            res = res.ix[:, ['a_stockcode', 'a_stocksname', 'div_info', 'div_type_code', 'bonus_shr',
+            res = res.ix[:, ['a_stockcode', 'a_stocksname', 'div_type_code', 'bonus_shr',
                              'cash_bt', 'cap_shr', 'epsp', 'ps_cr', 'ps_up', 'reg_date', 'dir_dcl_date',
                              'a_stockcode1', 'ex_divi_date', 'prg', 'report_date', 'crawl_date']]
         except:
