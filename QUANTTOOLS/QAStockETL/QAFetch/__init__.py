@@ -8,3 +8,5 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report, QA
 from QUANTTOOLS.QAStockETL.QAFetch.QAcalendar import QA_fetch_get_financial_calendar
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAdivyield import QA_fetch_get_stock_divyield
+
+from QUANTTOOLS.QAStockETL.QAFetch.QAFinancial import QA_fetch_get_stock_report_ths
