@@ -32,10 +32,9 @@ def get_stock_report_ths(code):
         except:
             print("NO {code} {type} report file to Delete".format(code=code, type=type))
 
-    res = data.iloc[1:,]
-    new_index = data[0:1].values.tolist()[0]
+    res = data.T.iloc[1:,]
+    new_index = data.T[0:1].values.tolist()[0]
     new_index[0] = "report_date"
     res.columns = new_index
     res["code"] = code
-
-    return(res.T)
+    return(res)
