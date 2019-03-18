@@ -76,7 +76,7 @@ def MultiPeriodFactorTest(factor,DateStart,DateEnd,if_reciprocal,if_neutral_indu
 
     return(final,result)
 
-# 固定顺序的施密特正交化 返回Q为正交因子矩阵
+# 固定顺序的施密特正交化 从左向右依次正交  返回Q为正交因子矩阵
 def Schimidt(factors):
     class_mkt = factors[['mkt_cap','classname']]
     factors1 = factors.drop(['mkt_cap','classname'],axis = 1)

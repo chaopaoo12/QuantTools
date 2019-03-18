@@ -127,7 +127,7 @@ def QA_fetch_stock_fianacial_adv(code,
 
     res = QA_fetch_stock_fianacial(code, start, end, format='pd')
     if res is None:
-        # 🛠 todo 报告是代码不合法，还是日期不合法
+        #  todo 报告是代码不合法，还是日期不合法
         print("QA Error QA_fetch_stock_fianacial_adv parameter code=%s , start=%s, end=%s call QA_fetch_stock_fianacial_adv return None" % (
             code, start, end))
         return None

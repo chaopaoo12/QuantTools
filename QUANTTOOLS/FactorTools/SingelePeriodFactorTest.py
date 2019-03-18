@@ -10,6 +10,8 @@ def SingelePeriodFactorTest(factor,DateStart,DateEnd,if_neutral_industry, if_neu
     factor_name = factor['value'][0][0]
 
     print(factor_name + '单因子测试：' + str(DateStart) + ' -- ' + str(DateEnd))
+
+    #  todo 数据重新获取 整合
     data = getData(factor,DateStart)
     # 是否取倒数
     if if_reciprocal:
