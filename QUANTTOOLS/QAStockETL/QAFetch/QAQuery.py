@@ -236,11 +236,10 @@ def QA_fetch_financial_TTM(code, start, end = None, format='pd', collections=DAT
             'QA Error QA_fetch_financial_TTM data parameter start=%s end=%s is not right' % (start, end))
 
 def QA_fetch_stock_fianacial(code, start, end = None, format='pd', collections=DATABASE.stock_financial_analysis):
-    '获取财报TTM数据'
+    '获取quant基础数据'
     #code= [code] if isinstance(code,str) else code
     # code checking
     code = QA_util_code_tolist(code)
-
     if QA_util_date_valid(end):
         cursor = collections.find({
             'CODE': {'$in': code}, "date_stamp": {

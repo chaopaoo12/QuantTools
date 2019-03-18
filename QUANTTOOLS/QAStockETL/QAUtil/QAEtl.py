@@ -2592,7 +2592,7 @@ def QA_util_etl_stock_financial(start_date):
        LAG30_TOR,
        LAG60_TOR
   from QUANT_ANALYSIS_DATA A
- where order_date = to_date('{start_date}', 'yyyy-mm-dd')'''.format(start_date=start_date)
+ where order_date = (to_date('{start_date}', 'yyyy-mm-dd')-10)'''.format(start_date=start_date)
     conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
     data = pd.read_sql(sql=sql, con=conn)
     data = data.assign(date_stamp=data['DATE'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
