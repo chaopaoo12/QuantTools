@@ -1,0 +1,2 @@
+from QUANTTOOLS.FactorTools.SingelePeriodFactorTest import SingelePeriodFactorTest
+from QUANTTOOLS.FactorTools.MultiPeriodFactorTest import MultiPeriodFactorTest
