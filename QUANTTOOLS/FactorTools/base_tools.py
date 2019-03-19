@@ -2,6 +2,8 @@ import pandas as pd
 from scipy import stats as st
 from matplotlib.pylab import *
 import statsmodels.api as sml
+import numpy as np
+import math
 
 def standardize_series(series): #原始值法
     std = series.std()
