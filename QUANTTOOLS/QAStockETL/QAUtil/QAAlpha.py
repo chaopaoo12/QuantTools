@@ -25,7 +25,7 @@ class Alpha_191:
         price = QA_fetch_stock_day_adv(code, self.end_date, self.date ).data.reset_index()
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
-        price = price[price['date'] != self.end_date].set_index(['date','code']).to_xarray()
+        price = price[price['date'] != self.end_date].set_index(['date','code']).to_panel()
         ###benchmark_price = get_price(index, None, end_date, '1d',['open','close','low','high','avg_price','prev_close','volume'], False, None, 250,is_panel=1)
         ###分别取开盘价，收盘价，最高价，最低价，最低价，均价，成交量#######
         self.open_price = price.loc['open',:,:].dropna(axis=1,how='any')
@@ -63,7 +63,7 @@ class Alpha_191:
     #############################################################################
     #####成交量与日内价格波动秩关系
     def alpha_001(self):
-        data1 = self.volume.diff(periods=1).rank(axis=1,pct=True)
+        data1 = self.volume.diff(1).rank(axis=1,pct=True)
         data2 = ((self.close - self.open_price)/self.open_price).rank(axis=1,pct=True)
         alpha = -data1.iloc[-6:,:].corrwith(data2.iloc[-6:,:]).dropna()
         alpha=alpha.dropna()
@@ -97,7 +97,6 @@ class Alpha_191:
         condition1=(self.close.rolling(8).std()<self.close.rolling(2).sum()/2)
         condition2=(self.close.rolling(2).sum()/2<(self.close.rolling(8).sum()/8-self.close.rolling(8).std()))
         condition3=(1<=self.volume/self.volume.rolling(20).mean())
-        condition3
 
         indicator1=pd.DataFrame(np.ones(self.close.shape),index=self.close.index,columns=self.close.columns)#[condition2]
         indicator2=-pd.DataFrame(np.ones(self.close.shape),index=self.close.index,columns=self.close.columns)#[condition3]
