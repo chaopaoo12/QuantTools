@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d7afb2b0-0a9c-40a8-bb48-185a26027412" name="Default Changelist" comment="add">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/mongoSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mongoSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/ths_financial_report_simulation_web.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/ths_financial_report_simulation_web.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtl.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtl.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,11 +31,44 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/ths_financial_report_simulation_web.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="39" column="22" lean-forward="true" selection-start-line="34" selection-start-column="4" selection-end-line="39" selection-end-column="22" />
+            <state relative-caret-position="161">
+              <caret line="22" column="38" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="38" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtl.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="664">
+              <caret line="2588" column="26" lean-forward="true" selection-start-line="2588" selection-start-column="26" selection-end-line="2588" selection-end-column="26" />
+              <folding>
+                <element signature="e#1#17#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_tools.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1380">
+              <caret line="65" column="34" selection-start-line="65" selection-start-column="25" selection-end-line="65" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/SingelePeriodFactorTest.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="253">
+              <caret line="11" column="21" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="21" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -42,10 +77,25 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/__init__.py">
+        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/MultiPeriodFactorTest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+            <state relative-caret-position="245">
+              <caret line="75" selection-start-line="75" selection-end-line="75" />
+              <folding>
+                <element signature="e#0#58#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery_Advance.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2645">
+              <caret line="129" column="32" selection-start-line="129" selection-start-column="8" selection-end-line="129" selection-end-column="32" />
+              <folding>
+                <element signature="e#1#16#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -64,10 +114,11 @@
       <find>QA_util_pands_timestamp_to_date</find>
       <find>QA_util_process_financial</find>
       <find>QA_fetch_get_financial_calendar</find>
-      <find>QA_util_etl_stock_financial</find>
       <find>QA_SU_save_stock_fianacial_momgo</find>
       <find>QA_fetch_stock_list_adv</find>
       <find>QA_fetch_stock_financial_calendar</find>
+      <find>QA_util_etl_stock_financial</find>
+      <find>DateStart</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -82,11 +133,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/QAStockETL/update_x.py" />
-        <option value="$PROJECT_DIR$/QAStockETL/FuncTools/financial_mean.py" />
-        <option value="$PROJECT_DIR$/QAStockETL/FuncTools/database_settings.py" />
-        <option value="$PROJECT_DIR$/QAStockETL/ETL/QASql.py" />
-        <option value="$PROJECT_DIR$/QAStockETL/QASU/QAMySQL.py" />
         <option value="$PROJECT_DIR$/QAStockETL/QAFetch/QAdivyield.py" />
         <option value="$PROJECT_DIR$/QAStockETL/QAFetch/QAcalendar.py" />
         <option value="$PROJECT_DIR$/QAStockETL/QASU/save_financial_TTM.py" />
@@ -107,8 +153,6 @@
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAdivyield.py" />
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_financial_TTM.py" />
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/__init__.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/main.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/__init__.py" />
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/__init__.py" />
         <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/QUANTTOOLS/__init__.py" />
@@ -121,23 +165,39 @@
         <option value="$PROJECT_DIR$/config/update_all.py" />
         <option value="$PROJECT_DIR$/config/update_x.py" />
         <option value="$PROJECT_DIR$/config/update_c.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtl.py" />
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QASql.py" />
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/financial_mean.py" />
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/__init__.py" />
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAFinancial.py" />
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/__init__.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_ths_financial_report.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/main.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/__init__.py" />
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/ff601ac7-7c39-44d2-a8d4-1e3e133b052d/console_1.sql" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_ths_financial_report.py" />
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/ths_financial_report_simulation_web.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/FactorTools/__init__.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_tools.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery_Advance.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/FactorTools/SingelePeriodFactorTest.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/FactorTools/MultiPeriodFactorTest.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/ff601ac7-7c39-44d2-a8d4-1e3e133b052d/console_2.sql" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtl.py" />
       </list>
     </option>
   </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand />
+      <select />
+    </treeState>
+  </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-4071" />
-    <option name="y" value="4" />
+    <option name="x" value="-3849" />
+    <option name="y" value="-9" />
     <option name="width" value="1938" />
-    <option name="height" value="1092" />
+    <option name="height" value="1098" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -147,7 +207,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -169,21 +228,13 @@
               <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
               <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
               <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
+              <item name="FactorTools" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
               <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
               <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
               <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-              <item name="Crawly" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-              <item name="FuncTools" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
@@ -197,46 +248,43 @@
               <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
               <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
               <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-              <item name="QASU" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
               <item name="QAUtil" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="oracle" />
+    <property name="ToolWindowAnt Build.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../QUANTAXIS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="preferences.mongoOptions" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\workspace\QuantTools\config" />
-      <recent name="F:\workspace\QuantTools" />
-      <recent name="F:\workspace\QuantTools\QAStockETL\QASU" />
-      <recent name="F:\workspace\QuantTools\QAStockETL\QAUtil" />
-      <recent name="F:\workspace\QuantTools\QAStockETL\QAFetch" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\workspace\QuantTools" />
       <recent name="F:\workspace\QuantTools\QUANTTOOLS" />
       <recent name="F:\workspace\QuantTools\config" />
       <recent name="F:\workspace\QuantTools\QAStockETL" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockETL\QAUtil" />
+      <recent name="F:\workspace\QuantTools\config" />
+      <recent name="F:\workspace\QuantTools" />
+      <recent name="F:\workspace\QuantTools\QAStockETL\QASU" />
+      <recent name="F:\workspace\QuantTools\QAStockETL\QAUtil" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -282,7 +330,11 @@
       <workItem from="1552653436807" duration="654000" />
       <workItem from="1552659100979" duration="7075000" />
       <workItem from="1552807357517" duration="3667000" />
-      <workItem from="1552825604120" duration="1151000" />
+      <workItem from="1552825604120" duration="2733000" />
+      <workItem from="1552836237942" duration="952000" />
+      <workItem from="1552837220153" duration="160000" />
+      <workItem from="1552837399845" duration="11242000" />
+      <workItem from="1552996396206" duration="3672000" />
     </task>
     <task id="LOCAL-00001" summary="add">
       <created>1552240098656</created>
@@ -543,17 +595,60 @@
       <option name="project" value="LOCAL" />
       <updated>1552825528119</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="add">
+      <created>1552831130399</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1552831130399</updated>
+    </task>
+    <task id="LOCAL-00039" summary="add">
+      <created>1552832136967</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1552832136967</updated>
+    </task>
+    <task id="LOCAL-00040" summary="add">
+      <created>1552919123360</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1552919123360</updated>
+    </task>
+    <task id="LOCAL-00041" summary="add">
+      <created>1552930972169</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1552930972169</updated>
+    </task>
+    <task id="LOCAL-00042" summary="add">
+      <created>1552931676213</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1552931676213</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44024000" />
+    <option name="totallyTimeSpent" value="61632000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="-3849" y="-9" width="1938" height="1098" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23551503" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Learn" order="3" />
@@ -564,20 +659,21 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3290461" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3301179" />
+      <window_info anchor="bottom" id="Database Changes" order="8" weight="0.3290461" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3290461" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32976446" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.3290461" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.3290461" />
+      <window_info anchor="bottom" id="Database Console" order="13" weight="0.3290461" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Database" order="3" weight="0.3299356" />
-      <window_info anchor="right" id="Maven" order="4" />
-      <window_info anchor="right" id="SciView" order="5" />
-      <window_info anchor="right" id="Mongo Explorer" order="6" visible="true" weight="0.23229614" />
+      <window_info anchor="right" id="Database" order="3" visible="true" weight="0.3299356" />
+      <window_info anchor="right" id="Maven" order="4" weight="0.3299356" />
+      <window_info anchor="right" id="SciView" order="5" weight="0.3299356" />
+      <window_info anchor="right" id="Mongo Explorer" order="6" weight="0.23551503" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
   </component>
@@ -587,6 +683,10 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add" />
     <option name="LAST_COMMIT_MESSAGE" value="add" />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/QAStockETL/Crawly/eastmoney_simulation_web_trader.py" />
@@ -618,13 +718,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" column="55" selection-start-line="9" selection-start-column="55" selection-end-line="9" selection-end-column="55" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README_ENG.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
@@ -676,23 +769,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_financial.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="778">
-          <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
-          <folding>
-            <element signature="e#1132#1377#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_jrj_stock_divyield.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="230">
@@ -708,13 +784,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
           <caret line="38" selection-start-line="38" selection-end-line="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="18" column="64" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="64" />
         </state>
       </provider>
     </entry>
@@ -735,13 +804,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery_Advance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="9" column="38" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/update_x.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="92">
@@ -752,29 +814,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/update_c.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="618">
-          <caret line="42" column="14" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/jrj_simulation_web.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-601">
           <caret line="20" column="17" lean-forward="true" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="17" />
           <folding>
             <element signature="e#9#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-37539">
-          <caret line="950" column="81" selection-start-line="950" selection-start-column="81" selection-end-line="950" selection-end-column="81" />
-          <folding>
-            <element signature="e#1#17#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -823,30 +868,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1702">
-          <caret line="113" column="56" lean-forward="true" selection-start-line="113" selection-start-column="56" selection-end-line="113" selection-end-column="56" />
-          <folding>
-            <element signature="e#1#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/financial_mean.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
           <caret line="326" column="4" selection-start-line="326" selection-start-column="4" selection-end-line="495" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_ths_financial_report.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="6" column="35" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#85#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -857,6 +882,9 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/ff601ac7-7c39-44d2-a8d4-1e3e133b052d/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="253">
@@ -864,12 +892,154 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="521">
+          <caret line="55" column="38" selection-start-line="55" selection-start-column="4" selection-end-line="55" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="12" column="45" selection-start-line="12" selection-start-column="45" selection-end-line="12" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/ff601ac7-7c39-44d2-a8d4-1e3e133b052d/console_1.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="522" column="23" lean-forward="true" selection-start-line="522" selection-start-column="23" selection-end-line="522" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_financial.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="28" column="46" selection-start-line="28" selection-start-column="19" selection-end-line="28" selection-end-column="46" />
+          <folding>
+            <element signature="e#1#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/ths_financial_report_simulation_web.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="39" column="22" lean-forward="true" selection-start-line="34" selection-start-column="4" selection-end-line="39" selection-end-column="22" />
+        <state relative-caret-position="253">
+          <caret line="11" column="19" lean-forward="true" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_ths_financial_report.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+          <folding>
+            <element signature="e#0#103#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="387">
+          <caret line="18" column="64" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="1" column="78" lean-forward="true" selection-start-line="1" selection-start-column="78" selection-end-line="1" selection-end-column="78" />
+          <folding>
+            <element signature="e#0#82#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery_Advance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2645">
+          <caret line="129" column="32" selection-start-line="129" selection-start-column="8" selection-end-line="129" selection-end-column="32" />
+          <folding>
+            <element signature="e#1#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/MultiPeriodFactorTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="75" selection-start-line="75" selection-end-line="75" />
+          <folding>
+            <element signature="e#0#58#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/update_c.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="640">
+          <caret line="62" column="34" lean-forward="true" selection-start-line="62" selection-start-column="34" selection-end-line="62" selection-end-column="34" />
+          <folding>
+            <element signature="e#1190#1732#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1380">
+          <caret line="65" column="34" selection-start-line="65" selection-start-column="25" selection-end-line="65" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/SingelePeriodFactorTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="11" column="21" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="265" column="42" lean-forward="true" selection-start-line="265" selection-start-column="42" selection-end-line="265" selection-end-column="42" />
+          <folding>
+            <element signature="e#1#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="22" column="38" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/ff601ac7-7c39-44d2-a8d4-1e3e133b052d/console_2.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2197">
+          <caret line="15" column="14" lean-forward="true" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="664">
+          <caret line="2588" column="26" lean-forward="true" selection-start-line="2588" selection-start-column="26" selection-end-line="2588" selection-end-column="26" />
+          <folding>
+            <element signature="e#1#17#0" expanded="true" />
           </folding>
         </state>
       </provider>

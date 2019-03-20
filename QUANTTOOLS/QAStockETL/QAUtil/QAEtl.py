@@ -2083,6 +2083,7 @@ def QA_util_etl_stock_financial(start_date):
        A.AMOUNT,
        A.SHARES,
        A.TOTAL_MARKET,
+       A.AVG_TOTAL_MARKET,
        A.PE,
        A.PB,
        A.TOTALASSETS,

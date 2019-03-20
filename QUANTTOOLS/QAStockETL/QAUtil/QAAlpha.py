@@ -17,7 +17,6 @@ def alpha(date=None):
 
 class Alpha_191:
 
-
     def __init__(self, index, date):
         ###security = get_index_stocks(index)
         end_date = (datetime.datetime.strptime(date,"%Y-%m-%d") + datetime.timedelta(days=-270)).strftime("%Y-%m-%d")
