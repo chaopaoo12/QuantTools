@@ -10,6 +10,7 @@ from QUANTAXIS.QAUtil import (DATABASE,QA_util_getBetweenQuarter, QA_util_get_ne
 import datetime
 
 def alpha(date=None):
+    np.seterr(invalid='ignore')
     if date == None:
         date = QA_util_today_str()
     return(Alpha_191(date).alpha())
