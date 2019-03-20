@@ -1147,8 +1147,8 @@ class Alpha_191:
     def alpha_092(self):
         # (MAX(RANK(DECAYLINEAR(DELTA(((CLOSE*0.35)+(VWAP*0.65)),2),3)),TSRANK(DECAYLINEAR(ABS(CORR((MEAN(VOLUME,180)),CLOSE,13)),5),15))*-1) #
         delta = (self.close*0.35+self.avg_price*0.65)-(self.close*0.35+self.avg_price*0.65).shift(2)
-        rank1 = (delta.rolling(3).apply(self.func_decaylinear)).rank(axis=1, pct=True)
-        rank2 = self.volume.rolling(180).mean().rolling(13).corr(self.close).abs().rolling(5).apply(self.func_decaylinear).rolling(15).apply(self.func_rank)
+        rank1 = (delta.rolling(3).apply(self.func_decaylinear,raw=True)).rank(axis=1, pct=True)
+        rank2 = self.volume.rolling(180).mean().rolling(13).corr(self.close).abs().rolling(5).apply(self.func_decaylinear,raw=True).rolling(15).apply(self.func_rank,raw=True)
         cond_max = rank1>rank2
         rank2[cond_max] = rank1[cond_max]
         alpha = (-rank2).iloc[-1,:]
@@ -1407,8 +1407,8 @@ class Alpha_191:
         data1 = (self.high*0.9+self.close*0.1)
         data2 = self.volume.rolling(window=30).mean()
         rank1 = (data1.iloc[-10:,:].corrwith(data2.iloc[-10:,:])).rank(pct=True)
-        tsrank1 = ((self.high+self.low)/2).rolling(4).apply(self.func_rank)
-        tsrank2 = self.volume.rolling(10).apply(self.func_rank)
+        tsrank1 = ((self.high+self.low)/2).rolling(4).apply(self.func_rank,raw=True)
+        tsrank2 = self.volume.rolling(10).apply(self.func_rank,raw=True)
         rank2 = tsrank1.iloc[-7:,:].corrwith(tsrank2.iloc[-7:,:]).rank(pct=True)
         alpha = rank1**rank2
         alpha=alpha.dropna()
@@ -1455,11 +1455,11 @@ class Alpha_191:
         # (RANK(DECAYLINEAR(CORR(VWAP,SUM(MEAN(VOLUME,5),26),5),7))-RANK(DECAYLINEAR(TSRANK(MIN(CORR(RANK(OPEN),RANK(MEAN(VOLUME,15)),21),9),7),8)))
         sum1 = (self.volume.rolling(window=5).mean()).rolling(window=26).sum()
         corr1 = self.avg_price.rolling(window=5).corr(sum1)
-        rank1 = corr1.rolling(7).apply(self.func_decaylinear).rank(axis=1, pct=True)
+        rank1 = corr1.rolling(7).apply(self.func_decaylinear,raw=True).rank(axis=1, pct=True)
         rank2 = self.open_price.rank(axis=1, pct=True)
         rank3 = (self.volume.rolling(window=15).mean()).rank(axis=1, pct=True)
-        rank4 = rank2.rolling(window=21).corr(rank3).rolling(window=9).min().rolling(7).apply(self.func_rank)
-        rank5 = rank4.rolling(8).apply(self.func_decaylinear).rank(axis=1, pct=True)
+        rank4 = rank2.rolling(window=21).corr(rank3).rolling(window=9).min().rolling(7).apply(self.func_rank,raw=True)
+        rank5 = rank4.rolling(8).apply(self.func_decaylinear,raw=True).rank(axis=1, pct=True)
         alpha = (rank1 - rank5).iloc[-1,:]
         alpha=alpha.dropna()
         return alpha
@@ -1627,7 +1627,7 @@ class Alpha_191:
         def rolling_div(na):
             return na[-1]/na[-21]
 
-        data1 = self.close.rolling(21).apply(rolling_div).shift(periods=1)
+        data1 = self.close.rolling(21).apply(rolling_div,raw=True).shift(periods=1)
         alpha = pd.DataFrame.ewm(data1, com=19, adjust=False).mean().iloc[-1,:]
         alpha=alpha.dropna()
         return alpha
@@ -1656,10 +1656,10 @@ class Alpha_191:
         decay_weights = decay_weights / decay_weights.sum()
         rank1 = data1.iloc[-20:,:].mul(decay_weights, axis=0).sum().rank(axis=0, pct=True)
 
-        data1 = self.low.rolling(8).apply(self.func_rank)
-        data2 = self.volume.rolling(60).mean().rolling(17).apply(self.func_rank)
-        data3 = data1.rolling(window=5).corr(data2).rolling(19).apply(self.func_rank)
-        rank2 = data3.rolling(16).apply(self.func_decaylinear).iloc[-7:,:].rank(axis=0, pct=True).iloc[-1,:]
+        data1 = self.low.rolling(8).apply(self.func_rank,raw=True)
+        data2 = self.volume.rolling(60).mean().rolling(17).apply(self.func_rank,raw=True)
+        data3 = data1.rolling(window=5).corr(data2).rolling(19).apply(self.func_rank,raw=True)
+        rank2 = data3.rolling(16).apply(self.func_decaylinear,raw=True).iloc[-7:,:].rank(axis=0, pct=True).iloc[-1,:]
 
         alpha = (rank2 - rank1).dropna()
         return alpha
@@ -1833,8 +1833,8 @@ class Alpha_191:
     ######################## alpha_156 #######################
     def alpha_156(self):
         # (MAX(RANK(DECAYLINEAR(DELTA(VWAP,5),3)),RANK(DECAYLINEAR(((DELTA(((OPEN*0.15)+(LOW*0.85)),2)/((OPEN*0.15)+(LOW*0.85)))*-1),3)))*-1 #
-        rank1 = ((self.avg_price-self.avg_price.shift(5)).rolling(3).apply(self.func_decaylinear)).rank(axis=1, pct=True)
-        rank2 = (-((self.open_price*0.15+self.low*0.85)-(self.open_price*0.15+self.low*0.85).shift(2))/(self.open_price*0.15+self.low*0.85)).rolling(3).apply(self.func_decaylinear).rank(axis=1, pct=True)
+        rank1 = ((self.avg_price-self.avg_price.shift(5)).rolling(3).apply(self.func_decaylinear,raw=True)).rank(axis=1, pct=True)
+        rank2 = (-((self.open_price*0.15+self.low*0.85)-(self.open_price*0.15+self.low*0.85).shift(2))/(self.open_price*0.15+self.low*0.85)).rolling(3).apply(self.func_decaylinear,raw=True).rank(axis=1, pct=True)
         max_cond = rank1 > rank2
         result = rank2
         result[max_cond] = rank1[max_cond]
