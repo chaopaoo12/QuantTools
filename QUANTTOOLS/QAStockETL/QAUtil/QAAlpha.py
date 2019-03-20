@@ -18,11 +18,11 @@ def alpha(date=None):
 
 class Alpha_191:
 
-    def __init__(self, date):
+    def __init__(self, code, date):
         ###security = get_index_stocks(index)
         self.date = date
         self.end_date = (datetime.datetime.strptime(self.date,"%Y-%m-%d") + datetime.timedelta(days=-270)).strftime("%Y-%m-%d")
-        price = QA_fetch_stock_day_adv(list(QA_fetch_stock_list()['code']), self.end_date, self.date ).data.reset_index()
+        price = QA_fetch_stock_day_adv(code, self.end_date, self.date ).data.reset_index()
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
         price = price[price['date'] != self.end_date].set_index(['date','code']).to_panel()
