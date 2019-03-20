@@ -9,11 +9,11 @@ from QUANTAXIS.QAUtil import (DATABASE,QA_util_getBetweenQuarter, QA_util_get_ne
                               QA_util_datetime_to_strdate,QA_util_get_trade_range)
 import datetime
 
-def alpha(date=None):
+def alpha(code, date=None):
     np.seterr(invalid='ignore')
     if date == None:
         date = QA_util_today_str()
-    return(Alpha_191(date).alpha())
+    return(Alpha_191(code, date).alpha())
 
 
 class Alpha_191:

@@ -57,8 +57,8 @@ def QA_SU_save_stock_financial_ths_day():
 def QA_SU_save_stock_financial_ths_his():
     return save_stock_financial_ths.QA_SU_save_financial_report_his()
 
-def QA_SU_save_stock_alpha_day():
-    return save_stock_alpha.QA_SU_save_stock_alpha_day()
+def QA_SU_save_stock_alpha_day(code = None, date = None):
+    return save_stock_alpha.QA_SU_save_stock_alpha_day(code = code, date = date)
 
-def QA_SU_save_stock_alpha_his():
-    return save_stock_alpha.QA_SU_save_stock_alpha_his()
+def QA_SU_save_stock_alpha_his(code = None, start_date = None, end_date = None):
+    return save_stock_alpha.QA_SU_save_stock_alpha_his(code = code, start_date = start_date, end_date = end_date)
