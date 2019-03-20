@@ -2,7 +2,7 @@ from scipy.stats import rankdata
 import scipy as sp
 import numpy as np
 import pandas as pd
-from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
+from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_stock_list
 from QUANTAXIS.QAUtil import (DATABASE,QA_util_getBetweenQuarter, QA_util_get_next_day,
                               QA_util_get_real_date, QA_util_log_info,QA_util_add_months,
                               QA_util_to_json_from_pandas, trade_date_sse,QA_util_today_str,
@@ -17,12 +17,14 @@ def alpha(date=None):
 
 class Alpha_191:
 
-    def __init__(self, index, date):
+    def __init__(self, date):
         ###security = get_index_stocks(index)
-        end_date = (datetime.datetime.strptime(date,"%Y-%m-%d") + datetime.timedelta(days=-270)).strftime("%Y-%m-%d")
-        price = QA_fetch_stock_day_adv(index, end_date, date ).data
+        self.date = date
+        self.end_date = (datetime.datetime.strptime(self.date,"%Y-%m-%d") + datetime.timedelta(days=-270)).strftime("%Y-%m-%d")
+        price = QA_fetch_stock_day_adv(list(QA_fetch_stock_list()['code']), self.end_date, self.date ).data.reset_index()
+        price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
-        price=price.to_panel()
+        price = price[price['date'] != self.end_date].set_index(['date','code']).to_panel()
         ###benchmark_price = get_price(index, None, end_date, '1d',['open','close','low','high','avg_price','prev_close','volume'], False, None, 250,is_panel=1)
         ###分别取开盘价，收盘价，最高价，最低价，最低价，均价，成交量#######
         self.open_price = price.loc['open',:,:].dropna(axis=1,how='any')
@@ -2704,8 +2706,8 @@ class Alpha_191:
             "alpha_188":alpha_188,
             "alpha_189":alpha_189,
             "alpha_190":alpha_190,
-            "alpha_191":alpha_191
-
+            "alpha_191":alpha_191,
+            "date":self.date
         })
         return(res)
 
