@@ -25,7 +25,7 @@ class Alpha_191:
         price = QA_fetch_stock_day_adv(code, self.end_date, self.date ).data.reset_index()
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
-        price = price[price['date'] != self.end_date].set_index(['date','code']).to_panel()
+        price = price[price['date'] != self.end_date].set_index(['date','code']).to_xarray()
         ###benchmark_price = get_price(index, None, end_date, '1d',['open','close','low','high','avg_price','prev_close','volume'], False, None, 250,is_panel=1)
         ###分别取开盘价，收盘价，最高价，最低价，最低价，均价，成交量#######
         self.open_price = price.loc['open',:,:].dropna(axis=1,how='any')
