@@ -8,7 +8,8 @@ from QUANTAXIS.QAData import (QA_DataStruct_Financial,
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report, QA_fetch_stock_financial_calendar,
                                                    QA_fetch_stock_divyield,
                                                    QA_fetch_financial_TTM,
-                                                   QA_fetch_stock_fianacial)
+                                                   QA_fetch_stock_fianacial,
+                                                   QA_fetch_stock_alpha)
 
 from QUANTAXIS.QAUtil.QADate import month_data
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,
@@ -137,3 +138,19 @@ def QA_fetch_stock_fianacial_adv(code,
         #     print("QA Error QA_fetch_stock_fianacial_adv set index 'datetime, code' return None")
         #     return None
         return QA_DataStruct_Stock_day(res_reset_index)
+
+
+def QA_fetch_stock_alpha_adv(code, start="all", end=None, format='pd', collections=DATABASE.stock_alpha):
+    '获取股票财报日历'
+    #code= [code] if isinstance(code,str) else code
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2005-01-01'
+        end = QA_util_today_str()
+        return QA_DataStruct_Financial(QA_fetch_stock_alpha(code, start, end))
+    else:
+        return QA_DataStruct_Financial(QA_fetch_stock_alpha(code, start, end))
