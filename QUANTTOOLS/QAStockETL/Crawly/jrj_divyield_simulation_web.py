@@ -61,7 +61,7 @@ def read_stock_divyield(report_date, headers = None, page=1):
         data['crawl_date']=QA_util_today_str()
         return(data, page_num)
     else:
-        print("No divyield data for today")
+        print("No divyield data for report date {report_date}. url: {url}".format(report_date = report_date,url=strUrl1))
         return(None,None)
 
 

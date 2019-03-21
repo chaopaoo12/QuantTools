@@ -48,8 +48,6 @@ def read_financial_report_date(report_date, headers = None, psize= 2000,vname="p
     pages = args['page']
     data = pd.DataFrame(res['data'])
     page_num = res['summary']['pages']
-
-
     while pages < page_num:
         pages = pages + 1
         res, page_num = read_financial_report_date(report_date,headers,page = pages)

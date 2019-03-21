@@ -56,7 +56,7 @@ def QA_SU_save_report_calendar_his(client=DATABASE, ui_log = None, ui_progress =
     反向查询四个季度财报
     :return:
     '''
-    START_DATE = '1996-01-01'
+    START_DATE = '2007-01-01'
     END_DATE = QA_util_datetime_to_strdate(QA_util_add_months(QA_util_today_str(),-3))
     date_list = list(pd.DataFrame.from_dict(QA_util_getBetweenQuarter(START_DATE,END_DATE)).T.iloc[:,1])
     report_calendar = client.report_calendar
@@ -70,7 +70,7 @@ def QA_SU_save_report_calendar_his(client=DATABASE, ui_log = None, ui_progress =
             report_calendar.insert_many(QA_util_to_json_from_pandas(
                 QA_fetch_get_financial_calendar(report_date)), ordered=False)
         except Exception as error0:
-            print(error0)
+            print("{error} On {report_date}".format(error=error0,report_date = report_date))
             err.append(str(report_date))
 
     for item in date_list:
