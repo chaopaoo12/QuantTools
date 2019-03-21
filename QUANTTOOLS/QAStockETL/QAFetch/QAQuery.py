@@ -4,10 +4,12 @@ import pandas as pd
 
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
                               QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_str2int, QA_util_date_int2str,
-                              QA_util_to_json_from_pandas)
+                              QA_util_to_json_from_pandas, QA_util_today_str)
+from QUANTAXIS.QAUtil.QADate import QA_util_pands_timestamp_to_date
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
 from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict
 
-def QA_fetch_financial_report(code, report_date, type ='report', ltype='EN', db=DATABASE):
+def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype='EN', db=DATABASE):
     """获取专业财务报表
 
     Arguments:
@@ -25,55 +27,38 @@ def QA_fetch_financial_report(code, report_date, type ='report', ltype='EN', db=
         pd.DataFrame -- [description]
     """
 
+    if code is None:
+        code = QA_fetch_future_list_adv()['code']
+
     if isinstance(code, str):
         code = [code]
-    if isinstance(report_date, str):
-        report_date = [QA_util_date_str2int(report_date)]
-    elif isinstance(report_date, int):
-        report_date = [report_date]
-    elif isinstance(report_date, list):
-        report_date = [QA_util_date_str2int(item) for item in report_date]
+
+    if start_date is None:
+        start = '1995-01-01'
+
+    if end_date is None:
+        end = QA_util_today_str()
 
     collection = db.financial
     num_columns = [item[:3] for item in list(financial_dict.keys())]
     CH_columns = [item[3:] for item in list(financial_dict.keys())]
     EN_columns = list(financial_dict.values())
-    #num_columns.extend(['283', '_id', 'code', 'report_date'])
-    # CH_columns.extend(['283', '_id', 'code', 'report_date'])
-    #CH_columns = pd.Index(CH_columns)
-    #EN_columns = list(financial_dict.values())
-    #EN_columns.extend(['283', '_id', 'code', 'report_date'])
-    #EN_columns = pd.Index(EN_columns)
-
 
     try:
         if type == 'report':
-            if code is not None and report_date is not None:
-                data = [item for item in collection.find(
-                    {'code': {'$in': code}, 'report_date': {'$in': report_date}}, batch_size=10000)]
-            elif code is None and report_date is not None:
-                data = [item for item in collection.find(
-                    {'report_date': {'$in': report_date}}, batch_size=10000)]
-            elif code is not None and report_date is None:
-                data = [item for item in collection.find(
-                    {'code': {'$in': code}}, batch_size=10000)]
-            else:
-                data = [item for item in collection.find()]
-
-        elif type == 'date':
-            if code is not None and report_date is not None:
-                data = [item for item in collection.find(
-                    {'code': {'$in': code}, 'crawl_date': {'$in': report_date}}, batch_size=10000)]
-            elif code is None and report_date is not None:
-                data = [item for item in collection.find(
-                    {'crawl_date': {'$in': report_date}}, batch_size=10000)]
-            elif code is not None and report_date is None:
-                data = [item for item in collection.find(
-                    {'code': {'$in': code}}, batch_size=10000)]
-            else:
-                data = [item for item in collection.find()]
+            cursor = collection.find({
+                'code': {'$in': code}, "report_date": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+            data = pd.DataFrame([item for item in cursor])
+        elif type == 'crawl':
+            cursor = collection.find({
+                'code': {'$in': code}, "crawl_date": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+            data = pd.DataFrame([item for item in cursor])
         else:
-            print("type must be date or report")
+            print("type must be one of [report, crawl]")
 
         if len(data) > 0:
             res_pd = pd.DataFrame(data)
@@ -112,14 +97,15 @@ def QA_fetch_financial_report(code, report_date, type ='report', ltype='EN', db=
                     res_pd.report_date.apply(QA_util_date_int2str))
             else:
                 res_pd.report_date = pd.to_datetime(res_pd.report_date)
-
+            res_pd = res_pd.assign(crawl_date=res_pd['crawl_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
+            res_pd = res_pd.assign(report_date=res_pd['report_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
             return res_pd.replace(-4.039810335e+34, numpy.nan).set_index(['report_date', 'code'], drop=False)
         else:
             return None
     except Exception as e:
         raise e
 
-def QA_fetch_stock_financial_calendar(code, start, end=None, format='pd', collections=DATABASE.report_calendar):
+def QA_fetch_stock_financial_calendar(code, start, end=None, format='pd',type = 'day', collections=DATABASE.report_calendar):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
@@ -128,18 +114,36 @@ def QA_fetch_stock_financial_calendar(code, start, end=None, format='pd', collec
     if QA_util_date_valid(end):
 
         __data = []
-        cursor = collections.find({
-            'code': {'$in': code}, "date_stamp": {
-                "$lte": QA_util_date_stamp(end),
-                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
-        #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
+        if type == 'report':
+            cursor = collections.find({
+                'code': {'$in': code}, "report_date": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+            res = pd.DataFrame([item for item in cursor])
+        elif type == 'day':
+            cursor = collections.find({
+                'code': {'$in': code}, "real_date": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+            res = pd.DataFrame([item for item in cursor])
+        elif type == 'crawl':
+            cursor = collections.find({
+                'code': {'$in': code}, "crawl_date": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+            res = pd.DataFrame([item for item in cursor])
+        else:
+            print("type must be one of [report, day, crawl]")
 
-        res = pd.DataFrame([item for item in cursor])
+
         try:
             res = res.drop_duplicates(
                 (['report_date', 'code']))
             res = res.ix[:, ['code', 'name', 'pre_date', 'first_date', 'second_date',
                              'third_date', 'real_date', 'codes', 'report_date', 'crawl_date']]
+            res = res.assign(real_date=res['real_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
+            res = res.assign(crawl_date=res['crawl_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
+            res = res.assign(report_date=res['report_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
@@ -159,7 +163,7 @@ def QA_fetch_stock_financial_calendar(code, start, end=None, format='pd', collec
             'QA Error QA_fetch_stock_financial_calendar data parameter start=%s end=%s is not right' % (start, end))
 
 
-def QA_fetch_stock_divyield(code, start, end=None, format='pd', collections=DATABASE.stock_divyield):
+def QA_fetch_stock_divyield(code, start, end=None, format='pd',type = 'day', collections=DATABASE.stock_divyield):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
@@ -168,19 +172,37 @@ def QA_fetch_stock_divyield(code, start, end=None, format='pd', collections=DATA
     if QA_util_date_valid(end):
 
         __data = []
-        cursor = collections.find({
-            'a_stockcode': {'$in': code}, "date_stamp": {
-                "$lte": QA_util_date_stamp(end),
-                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+        if type == 'report':
+            cursor = collections.find({
+                'a_stockcode': {'$in': code}, "report_date": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+            res = pd.DataFrame([item for item in cursor])
+        elif type == 'day':
+            cursor = collections.find({
+                'a_stockcode': {'$in': code}, "reg_date": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+            res = pd.DataFrame([item for item in cursor])
+        elif type == 'crawl':
+            cursor = collections.find({
+                'a_stockcode': {'$in': code}, "crawl_date": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+            res = pd.DataFrame([item for item in cursor])
+        else:
+            print("type must be one of [report, day, crawl]")
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
-        res = pd.DataFrame([item for item in cursor])
         try:
             res = res.drop_duplicates(
                 (['dir_dcl_date', 'a_stockcode']))
             res = res.ix[:, ['a_stockcode', 'a_stocksname', 'div_info', 'div_type_code', 'bonus_shr',
                              'cash_bt', 'cap_shr', 'epsp', 'ps_cr', 'ps_up', 'reg_date', 'dir_dcl_date',
                              'a_stockcode1', 'ex_divi_date', 'prg', 'report_date', 'crawl_date']]
+            res = res.assign(reg_date=res['reg_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
+            res = res.assign(crawl_date=res['crawl_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
+            res = res.assign(report_date=res['report_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
@@ -209,7 +231,7 @@ def QA_fetch_financial_TTM(code, start, end = None, format='pd', collections=DAT
         __data = []
 
         cursor = collections.find({
-            'CODE': {'$in': code}, "date_stamp": {
+            'CODE': {'$in': code}, "date": {
                 "$lte": QA_util_date_stamp(end),
                 "$gte": QA_util_date_stamp(start)}}, batch_size=10000)
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
@@ -282,7 +304,7 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
 
         __data = []
         cursor = collections.find({
-            'code': {'$in': code}, "date_stamp": {
+            'code': {'$in': code}, "date": {
                 "$lte": QA_util_date_stamp(end),
                 "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
@@ -471,6 +493,7 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
                              'alpha_189',
                              'alpha_190',
                              'alpha_191']]
+            res = res.assign(date=res['date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:

@@ -16,38 +16,15 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,
                               QA_util_datetime_to_strdate, QA_util_add_months,
                               QA_util_today_str)
 
-def QA_fetch_financial_report_adv(code, start='all', end=None, type='report'):
+def QA_fetch_financial_report_adv(code, start, end=None, type='report', ltype='EN'):
     """高级财务查询接口
-
     Arguments:
         code {[type]} -- [description]
         start {[type]} -- [description]
-
     Keyword Arguments:
         end {[type]} -- [description] (default: {None})
     """
-    end = start if end is None else end
-    start = str(start)[0:10]
-    end = str(end)[0:10]
-
-    if start == 'all':
-        start = '1990-01-01'
-        end = QA_util_today_str()
-    if end is None:
-        end = str(datetime.date.today())
-        date_list = list(pd.DataFrame.from_dict(QA_util_getBetweenQuarter(
-            start, QA_util_datetime_to_strdate(QA_util_add_months(end, -3)))).T.iloc[:, 1])
-        if type == 'report':
-            return QA_DataStruct_Financial(QA_fetch_financial_report(code, date_list))
-        elif type == 'date':
-            return QA_DataStruct_Financial(QA_fetch_financial_report(code, date_list, type='date'))
-    else:
-        daterange = pd.date_range(start, end)
-        timerange = [item.strftime('%Y-%m-%d') for item in list(daterange)]
-        if type == 'report':
-            return QA_DataStruct_Financial(QA_fetch_financial_report(code, timerange))
-        elif type == 'date':
-            return QA_DataStruct_Financial(QA_fetch_financial_report(code, timerange, type='date'))
+    return QA_DataStruct_Financial(QA_fetch_financial_report(code, start, end, type=type, ltype=ltype))
 
 
 def QA_fetch_stock_financial_calendar_adv(code, start="all", end=None, format='pd', collections=DATABASE.report_calendar):

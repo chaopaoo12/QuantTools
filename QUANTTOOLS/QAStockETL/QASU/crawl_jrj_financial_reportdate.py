@@ -17,7 +17,7 @@ def QA_SU_save_report_calendar_day(client=DATABASE, ui_log = None, ui_progress =
 
     date_list = list(pd.DataFrame.from_dict(QA_util_getBetweenQuarter(START_DATE,END_DATE)).T.iloc[:,1])
     report_calendar = client.report_calendar
-    report_calendar.create_index([("code", pymongo.ASCENDING),("report_date", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
+    report_calendar.create_index([("code", pymongo.ASCENDING),("report_date", pymongo.ASCENDING), ("real_date", pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(report_date, report_calendar):
@@ -60,7 +60,7 @@ def QA_SU_save_report_calendar_his(client=DATABASE, ui_log = None, ui_progress =
     END_DATE = QA_util_datetime_to_strdate(QA_util_add_months(QA_util_today_str(),-3))
     date_list = list(pd.DataFrame.from_dict(QA_util_getBetweenQuarter(START_DATE,END_DATE)).T.iloc[:,1])
     report_calendar = client.report_calendar
-    report_calendar.create_index([("code", pymongo.ASCENDING),("report_date", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
+    report_calendar.create_index([("code", pymongo.ASCENDING),("report_date", pymongo.ASCENDING), ("real_date", pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(report_date, report_calendar):
