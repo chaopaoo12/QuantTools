@@ -28,7 +28,7 @@ def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype=
     """
 
     if code is None:
-        code = QA_fetch_future_list_adv()['code']
+        code = list(QA_fetch_future_list_adv()['code'])
 
     if isinstance(code, str):
         code = [code]

@@ -60,6 +60,7 @@ def read_stock_divyield(report_date, headers = None, page=1):
         data['report_date']=report_date
         data['crawl_date']=QA_util_today_str()
         data['reg_date']=data['reg_date'].apply(lambda x:str(x).strip())
+        data = data[data['reg_date'] != '']
         return(data, page_num)
     else:
         print("No divyield data for report date {report_date}. url: {url}".format(report_date = report_date,url=strUrl1))

@@ -45,12 +45,12 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today())):
             data = data.data.reset_index()
             QA_util_sql_store_mysql(data, "stock_market_day",if_exists='append')
 
-def QA_etl_stock_financial(type = "day", mark_day = str(datetime.date.today())):
+def QA_etl_stock_financial(type = "crawl", start_date = str(datetime.date.today())):
     if type == 'all':
-        data = QA_fetch_financial_report_adv(list(QA_fetch_stock_list_adv()['code'])).data.reset_index(drop=True).drop("_id",1).fillna(0)
+        data = QA_fetch_financial_report_adv().data.reset_index(drop=True).drop("_id",1).fillna(0)
         QA_util_sql_store_mysql(data, "stock_financial",if_exists='replace')
-    elif type == "day":
-        data = QA_fetch_financial_report_adv(list(QA_fetch_stock_list_adv()['code']),mark_day,type = 'date').data
+    elif type == "crawl":
+        data = QA_fetch_financial_report_adv(start_date,type = 'crawl').data
         print(data)
         if data is None:
             print("We have no financial data for the day {}".format(str(datetime.date.today())))
@@ -59,12 +59,12 @@ def QA_etl_stock_financial(type = "day", mark_day = str(datetime.date.today())):
             QA_util_sql_store_mysql(data, "stock_financial",if_exists='append')
 
 
-def QA_etl_stock_calendar(type = "day", mark_day = str(datetime.date.today())):
+def QA_etl_stock_calendar(type = "crawl", start = str(datetime.date.today())):
     if type == "all":
-        data = QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),start = "all").data.reset_index(drop=True)
+        data = QA_fetch_stock_financial_calendar_adv(start = "all", type = 'report').data.reset_index(drop=True)
         QA_util_sql_store_mysql(data, "stock_calendar",if_exists='replace')
-    elif type == "day":
-        data = QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']), mark_day).data
+    elif type == "crawl":
+        data = QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']), start, type = 'crawl').data
         if data is None:
             print("We have no calendar data for the day {}".format(str(datetime.date.today())))
         else:
