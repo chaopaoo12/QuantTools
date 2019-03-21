@@ -60,6 +60,7 @@ def read_financial_report_date(report_date, headers = None, psize= 2000,vname="p
 def get_financial_report_date(report_date, headers = None, psize= 2000,vname="plsj",page=1):
     data, page_num = read_financial_report_date(report_date, headers, psize,vname,page)
     data.columns= ['code','name','pre_date','first_date','second_date','third_date','real_date','codes']
+    data = data.dropna(subset=["real_date"])
     data['report_date']=report_date
     data['crawl_date']=QA_util_today_str()
     return(data[data["real_date"].apply(lambda x: len(x)!=0)])
