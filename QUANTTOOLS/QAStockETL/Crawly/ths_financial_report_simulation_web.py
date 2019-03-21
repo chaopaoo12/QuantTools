@@ -2,6 +2,7 @@ import pandas as pd
 from selenium import webdriver
 from time import sleep
 import os
+from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_date_stamp
 
 def get_stock_report_ths(code):
 
@@ -37,4 +38,5 @@ def get_stock_report_ths(code):
     new_index[0] = "report_date"
     res.columns = new_index
     res["code"] = code
+    res['crawl_date']=QA_util_today_str()
     return(res)
