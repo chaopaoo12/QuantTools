@@ -56,6 +56,7 @@ def read_stock_divyield(report_date, headers = None, page=1):
         data.columns= ['a_stockcode','a_stocksname','div_info','div_type_code','bonus_shr',
                        'cash_bt','cap_shr','epsp','ps_cr','ps_up','reg_date','dir_dcl_date',
                        'a_stockcode1','ex_divi_date','prg']
+        data
         data['report_date']=report_date
         data['crawl_date']=QA_util_today_str()
         return(data, page_num)

@@ -32,7 +32,7 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
                 print("got '{deal_date}' stock financial data.".format(deal_date=deal_date))
                 col = DATABASE.stock_financial_analysis
                 col.create_index(
-                    [("CODE", ASCENDING), ("DATE", ASCENDING)], unique=True)
+                    [("CODE", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
                 try:
                     col.insert_many(data, ordered=False)
                     print("'{deal_date}' stock financial data has been stored imto mongodb.".format(deal_date=deal_date))

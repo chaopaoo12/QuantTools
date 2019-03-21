@@ -14,7 +14,7 @@ def QA_SU_save_financial_report_day(client=DATABASE, ui_log = None, ui_progress 
     '''
     code = list(QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),QA_util_today_str()).data['code'])
     stock_financial = client.stock_financial
-    stock_financial.create_index([("code", pymongo.ASCENDING), ("report_date", pymongo.ASCENDING)], unique=True)
+    stock_financial.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(code, stock_financial):
@@ -56,7 +56,7 @@ def QA_SU_save_financial_report_his(client=DATABASE, ui_log = None, ui_progress 
     '''
     code = list(QA_fetch_stock_list_adv()['code'])
     stock_financial = client.stock_financial
-    stock_financial.create_index([("code", pymongo.ASCENDING), ("report_date", pymongo.ASCENDING)], unique=True)
+    stock_financial.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(code, stock_financial):

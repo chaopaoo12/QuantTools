@@ -17,7 +17,7 @@ def QA_SU_save_stock_divyield_day(client=DATABASE, ui_log = None, ui_progress = 
 
     date_list = list(pd.DataFrame.from_dict(QA_util_getBetweenQuarter(START_DATE,END_DATE)).T.iloc[:,1])
     stock_divyield = client.stock_divyield
-    stock_divyield.create_index([("a_stockcode", pymongo.ASCENDING), ("dir_dcl_date", pymongo.ASCENDING)], unique=True)
+    stock_divyield.create_index([("a_stockcode", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(report_date, stock_divyield):
@@ -60,7 +60,7 @@ def QA_SU_save_stock_divyield_his(client=DATABASE, ui_log = None, ui_progress = 
     END_DATE = QA_util_datetime_to_strdate(QA_util_add_months(QA_util_today_str(),-3))
     date_list = list(pd.DataFrame.from_dict(QA_util_getBetweenQuarter(START_DATE,END_DATE)).T.iloc[:,1])
     stock_divyield = client.stock_divyield
-    stock_divyield.create_index([("a_stockcode", pymongo.ASCENDING), ("report_date", pymongo.ASCENDING)], unique=True)
+    stock_divyield.create_index([("a_stockcode", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(report_date, stock_divyield):

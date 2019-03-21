@@ -12,7 +12,7 @@ def QA_SU_save_fianacialTTM_momgo():
     print("got financial TTM data.")
     col = DATABASE.financial_TTM
     col.create_index(
-        [("CODE", ASCENDING), ("REPORT_DATE", ASCENDING)], unique=True)
+        [("CODE", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
     try:
         col.insert_many(data, ordered=False)
         print("financial TTM data has been stored imto mongodb.")
