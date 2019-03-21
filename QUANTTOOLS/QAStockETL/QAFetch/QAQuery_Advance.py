@@ -16,7 +16,7 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,
                               QA_util_datetime_to_strdate, QA_util_add_months,
                               QA_util_today_str)
 
-def QA_fetch_financial_report_adv(code, start, end=None, type='report', ltype='EN'):
+def QA_fetch_financial_report_adv(code=None, start=None, end=None, type='report', ltype='EN'):
     """高级财务查询接口
     Arguments:
         code {[type]} -- [description]

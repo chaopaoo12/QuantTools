@@ -47,7 +47,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
 QA_SU_save_stock_divyield_day()
 QA_SU_save_report_calendar_day()
 QA_SU_save_stock_info_tushare()
-QA_SU_save_financialfiles()
+QA_SU_save_financialfiles('all')
 
 print("write data into sqldatabase")
 
