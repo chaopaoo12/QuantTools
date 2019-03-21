@@ -20,4 +20,4 @@ from QUANTTOOLS.QAStockETL import (QA_fetch_financial_report_adv, QA_fetch_stock
                                            QA_fetch_financial_TTM_adv, QA_fetch_stock_fianacial_adv, QA_fetch_financial_report,
                                            QA_fetch_stock_financial_calendar, QA_fetch_stock_divyield, QA_fetch_financial_TTM,
                                            QA_fetch_stock_fianacial, QA_fetch_get_financial_calendar, QA_fetch_get_stock_divyield,
-                                   QA_fetch_get_stock_alpha,QA_fetch_stock_alpha_adv)
+                                   QA_fetch_stock_alpha,QA_fetch_get_stock_alpha,QA_fetch_stock_alpha_adv)
