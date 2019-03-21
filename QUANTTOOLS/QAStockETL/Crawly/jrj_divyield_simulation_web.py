@@ -56,9 +56,10 @@ def read_stock_divyield(report_date, headers = None, page=1):
         data.columns= ['a_stockcode','a_stocksname','div_info','div_type_code','bonus_shr',
                        'cash_bt','cap_shr','epsp','ps_cr','ps_up','reg_date','dir_dcl_date',
                        'a_stockcode1','ex_divi_date','prg']
-        data = data.dropna(subset=['a_stockcode','reg_date'])
+        data = data.dropna(subset=['reg_date'])
         data['report_date']=report_date
         data['crawl_date']=QA_util_today_str()
+        data['reg_date']=data['reg_date'].apply(lambda x:str(x).strip())
         return(data, page_num)
     else:
         print("No divyield data for report date {report_date}. url: {url}".format(report_date = report_date,url=strUrl1))

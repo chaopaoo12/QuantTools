@@ -70,7 +70,7 @@ def QA_SU_save_stock_divyield_his(client=DATABASE, ui_log = None, ui_progress = 
             stock_divyield.insert_many(QA_util_to_json_from_pandas(
                 QA_fetch_get_stock_divyield(report_date)), ordered=False)
         except Exception as error0:
-            print(error0)
+            print("error : " + error0)
             err.append(str(report_date))
 
     for item in date_list:
