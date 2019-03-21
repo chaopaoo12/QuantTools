@@ -36,9 +36,13 @@ def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype=
 
     if start_date is None:
         start = '1995-01-01'
+    else:
+        start = start_date
 
     if end_date is None:
         end = QA_util_today_str()
+    else:
+        end = end_date
 
     collection = db.financial
     num_columns = [item[:3] for item in list(financial_dict.keys())]
