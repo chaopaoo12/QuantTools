@@ -1,7 +1,8 @@
 
 import numpy
 import pandas as pd
-
+import datetime
+import math
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
                               QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_str2int, QA_util_date_int2str,
                               QA_util_to_json_from_pandas, QA_util_today_str)
@@ -92,13 +93,8 @@ def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype=
                 endict['crawl_date']='crawl_date'
                 res_pd.columns = res_pd.columns.map(lambda x: endict[x])
 
-            if res_pd.report_date.dtype == numpy.int64:
-                res_pd.report_date = pd.to_datetime(
-                    res_pd.report_date.apply(QA_util_date_int2str))
-            else:
-                res_pd.report_date = pd.to_datetime(res_pd.report_date)
-            res_pd = res_pd.assign(crawl_date=res_pd['crawl_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
-            res_pd = res_pd.assign(report_date=res_pd['report_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
+            res_pd['crawl_date'] = res_pd['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            res_pd['report_date'] = res_pd['report_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
             return res_pd.replace(-4.039810335e+34, numpy.nan).set_index(['report_date', 'code'], drop=False)
         else:
             return None
@@ -141,9 +137,9 @@ def QA_fetch_stock_financial_calendar(code, start, end=None, format='pd',type = 
                 (['report_date', 'code']))
             res = res.ix[:, ['code', 'name', 'pre_date', 'first_date', 'second_date',
                              'third_date', 'real_date', 'codes', 'report_date', 'crawl_date']]
-            res = res.assign(real_date=res['real_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
-            res = res.assign(crawl_date=res['crawl_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
-            res = res.assign(report_date=res['report_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
+            res['real_date'] = res['real_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            res['crawl_date'] = res['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            res['report_date'] = res['report_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
@@ -200,9 +196,9 @@ def QA_fetch_stock_divyield(code, start, end=None, format='pd',type = 'day', col
             res = res.ix[:, ['a_stockcode', 'a_stocksname', 'div_info', 'div_type_code', 'bonus_shr',
                              'cash_bt', 'cap_shr', 'epsp', 'ps_cr', 'ps_up', 'reg_date', 'dir_dcl_date',
                              'a_stockcode1', 'ex_divi_date', 'prg', 'report_date', 'crawl_date']]
-            res = res.assign(reg_date=res['reg_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
-            res = res.assign(crawl_date=res['crawl_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
-            res = res.assign(report_date=res['report_date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
+            res['reg_date'] = res['reg_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            res['crawl_date'] = res['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            res['report_date'] = res['report_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
@@ -493,7 +489,7 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
                              'alpha_189',
                              'alpha_190',
                              'alpha_191']]
-            res = res.assign(date=res['date'].apply(lambda x: QA_util_pands_timestamp_to_date(x)))
+            res['date'] = res['date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
