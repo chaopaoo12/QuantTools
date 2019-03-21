@@ -272,7 +272,6 @@ def QA_fetch_stock_fianacial(code, start, end = None, format='pd', collections=D
         QA_util_log_info(
             'QA Error QA_fetch_financial_TTM data parameter start=%s end=%s is not right' % (start, end))
 
-
 def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABASE.stock_alpha):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
