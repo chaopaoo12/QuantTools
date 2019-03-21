@@ -129,9 +129,9 @@ def QA_fetch_stock_financial_calendar(code, start, end=None, format='pd', collec
 
         __data = []
         cursor = collections.find({
-            'code': {'$in': code}, "real_date": {
-                "$lte": end,
-                "$gte": start}}, {"_id": 0}, batch_size=10000)
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
         res = pd.DataFrame([item for item in cursor])
@@ -169,9 +169,9 @@ def QA_fetch_stock_divyield(code, start, end=None, format='pd', collections=DATA
 
         __data = []
         cursor = collections.find({
-            'a_stockcode': {'$in': code}, "dir_dcl_date": {
-                "$lte": end,
-                "$gte": start}}, {"_id": 0}, batch_size=10000)
+            'a_stockcode': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
         res = pd.DataFrame([item for item in cursor])
@@ -283,9 +283,9 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
 
         __data = []
         cursor = collections.find({
-            'code': {'$in': code}, "date": {
-                "$lte": end,
-                "$gte": start}}, {"_id": 0}, batch_size=10000)
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
         res = pd.DataFrame([item for item in cursor])
