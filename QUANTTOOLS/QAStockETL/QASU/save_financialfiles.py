@@ -54,11 +54,12 @@ def QA_SU_save_financial_files():
         if coll.find({'report_date': date}).count() < 3600:
 
             print(coll.find({'report_date': date}).count())
-            data = QA_util_to_json_from_pandas(parse_filelist([item]).reset_index(
-            ).drop_duplicates(subset=['code', 'report_date']).sort_index())
+            data = parse_filelist([item]).reset_index(
+            ).drop_duplicates(subset=['code', 'report_date']).sort_index()
             data["crawl_date"] = QA_util_today_str()
-            data = data.assign(report_date=data['report_date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
-            data = data.assign(crawl_date=data['crawl_date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
+            data = data.assign(report_date=data['report_date'].apply(lambda x: QA_util_date_stamp(QA_util_date_int2str(x))))
+            data = data.assign(crawl_date=data['crawl_date'].apply(lambda x: QA_util_date_stamp(QA_util_date_int2str(x))))
+            data = QA_util_to_json_from_pandas(data)
 
             try:
                 coll.insert_many(data, ordered=False)
