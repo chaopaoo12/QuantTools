@@ -16,14 +16,13 @@ def QA_SU_save_stock_alpha_day(client=DATABASE, ui_log = None, ui_progress = Non
     if code is None:
         code = list(QA_fetch_stock_list_adv()['code'])
     stock_alpha = client.stock_alpha
-    stock_alpha.create_index([("code", pymongo.ASCENDING), ("date", pymongo.ASCENDING)], unique=True)
+    stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(date, code, stock_alpha):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving Stock Alpha==== {}'.format(str(date)), ui_log)
-
             stock_alpha.insert_many(QA_util_to_json_from_pandas(
                 QA_fetch_get_stock_alpha(code, date)), ordered=False)
             gc.collect()
@@ -65,7 +64,7 @@ def QA_SU_save_stock_alpha_his(client=DATABASE, ui_log = None, ui_progress = Non
 
     deal_date_list = QA_util_get_trade_range(start_date, end_date)
     stock_alpha = client.stock_alpha
-    stock_alpha.create_index([("code", pymongo.ASCENDING), ("date", pymongo.ASCENDING)], unique=True)
+    stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(date, code, stock_alpha):

@@ -6,7 +6,6 @@ import math
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
                               QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_str2int, QA_util_date_int2str,
                               QA_util_to_json_from_pandas, QA_util_today_str)
-from QUANTAXIS.QAUtil.QADate import QA_util_pands_timestamp_to_date
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
 from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict
 
@@ -304,7 +303,7 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
 
         __data = []
         cursor = collections.find({
-            'code': {'$in': code}, "date": {
+            'code': {'$in': code}, "date_stamp": {
                 "$lte": QA_util_date_stamp(end),
                 "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
@@ -493,7 +492,6 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
                              'alpha_189',
                              'alpha_190',
                              'alpha_191']]
-            res['date'] = res['date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
