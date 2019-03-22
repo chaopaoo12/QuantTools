@@ -75,11 +75,11 @@ def QA_etl_stock_block():
     data = QA_fetch_stock_block_adv(list(QA_fetch_stock_list_adv()['code'])).data.reset_index()
     QA_util_sql_store_mysql(data, "stock_block",if_exists='replace')
 
-def QA_etl_stock_divyield(type = "day", mark_day = str(datetime.date.today())):
+def QA_etl_stock_divyield(type = "crawl", mark_day = str(datetime.date.today())):
     if type == "all":
         data = QA_fetch_stock_divyield_adv(list(QA_fetch_stock_list_adv()['code']),start = "all").data.reset_index()
         QA_util_sql_store_mysql(data, "stock_divyield",if_exists='replace')
-    elif type == "day":
+    elif type == "crawl":
         data = QA_fetch_stock_divyield_adv(list(QA_fetch_stock_list_adv()['code']), mark_day).data
         if data is None:
             print("We have no Divyield data for the day {}".format(str(datetime.date.today())))

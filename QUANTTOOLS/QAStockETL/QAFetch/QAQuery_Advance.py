@@ -44,7 +44,7 @@ def QA_fetch_stock_financial_calendar_adv(code, start="all", end=None, type='day
     return QA_DataStruct_Financial(QA_fetch_stock_financial_calendar(code, start, end, type=type))
 
 
-def QA_fetch_stock_divyield_adv(code, start="all", end=None, format='pd', collections=DATABASE.report_calendar):
+def QA_fetch_stock_divyield_adv(code, start="all", end=None, format='pd',type='crawl', collections=DATABASE.report_calendar):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -53,17 +53,11 @@ def QA_fetch_stock_divyield_adv(code, start="all", end=None, format='pd', collec
 
     # code checking
     if start == 'all':
-        start = '1990-01-01'
-        end = str(datetime.date.today())
-
+        start = '2007-01-01'
+        end = QA_util_today_str()
     if end is None:
-
-        return QA_DataStruct_Financial(QA_fetch_stock_divyield(code, start, str(datetime.date.today())))
-    else:
-        series = pd.Series(
-            data=month_data, index=pd.to_datetime(month_data), name='date')
-        timerange = series.loc[start:end].tolist()
-        return QA_DataStruct_Financial(QA_fetch_stock_divyield(code, start, end))
+        end = QA_util_today_str()
+    return QA_DataStruct_Financial(QA_fetch_stock_divyield(code, start, end, type =type))
 
 def QA_fetch_financial_TTM_adv(code, start="all", end=None, format='pd', collections=DATABASE.financial_TTM):
     '获取财报TTM'
