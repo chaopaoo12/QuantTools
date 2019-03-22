@@ -118,7 +118,6 @@ def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", pas
         break_num = 1000000
     try:
         for i in chunks([tuple(x) for x in data.values], break_num):
-            print(i)
             cursor.executemany(sql, i)
         print("{} has been stored into Table {} Mysql DataBase ".format(
             table_name, table_name))
