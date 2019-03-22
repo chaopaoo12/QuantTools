@@ -107,7 +107,7 @@ def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", pas
 
     #sql_start = "insert into {} ({}) values(%s,%s,%s)".format(table_name, columns)
     sql_end = ",".join([":" + str(i) for i in list(range(1,data.shape[1]+1))])
-    sql = "insert into {} ({}) values({})".format(table_name, columns, sql_end)
+    sql = "insert into {table_name} ({columns}) values({sql_end})".format(table_name=table_name, columns=columns, sql_end=sql_end)
 
     conn = cx_Oracle.connect(ORACLE_PATH2)
     cursor = conn.cursor()
@@ -118,6 +118,7 @@ def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", pas
         break_num = 1000000
     try:
         for i in chunks([tuple(x) for x in data.values], break_num):
+            print(i)
             cursor.executemany(sql, i)
         print("{} has been stored into Table {} Mysql DataBase ".format(
             table_name, table_name))
