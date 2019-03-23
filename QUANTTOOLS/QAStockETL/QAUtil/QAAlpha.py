@@ -6,7 +6,7 @@ from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_stock_list
 from QUANTAXIS.QAUtil import (DATABASE,QA_util_getBetweenQuarter, QA_util_get_next_day,
                               QA_util_get_real_date, QA_util_log_info,QA_util_add_months,
                               QA_util_to_json_from_pandas, trade_date_sse,QA_util_today_str,
-                              QA_util_datetime_to_strdate,QA_util_get_trade_range)
+                              QA_util_datetime_to_strdate,QA_util_get_trade_range,QA_util_get_last_day)
 import datetime
 
 def alpha(code, date=None):
@@ -21,7 +21,7 @@ class Alpha_191:
     def __init__(self, code, date):
         ###security = get_index_stocks(index)
         self.date = date
-        self.end_date = (datetime.datetime.strptime(self.date,"%Y-%m-%d") + datetime.timedelta(days=-270)).strftime("%Y-%m-%d")
+        self.end_date = QA_util_get_last_day(self.date, 250)
         price = QA_fetch_stock_day_adv(code, self.end_date, self.date ).data.reset_index()
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
