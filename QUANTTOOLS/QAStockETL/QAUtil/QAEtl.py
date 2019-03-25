@@ -2150,7 +2150,7 @@ def QA_util_etl_stock_financial(start_date):
  where order_date = (to_date('{start_date}', 'yyyy-mm-dd')-10)'''.format(start_date=start_date)
     conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
     data = pd.read_sql(sql=sql, con=conn)
-    data = data.assign(date_stamp=data['DATE'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
+    data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     conn.close()
     if data.shape[0] == 0:
         print("No data For {start_date}".format(start_date=start_date))
