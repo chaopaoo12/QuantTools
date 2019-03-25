@@ -2072,6 +2072,7 @@ def QA_util_etl_stock_financial(start_date):
        vol,
        amount,
        shares,
+       total_market,
        pe,
        pb,
        case
