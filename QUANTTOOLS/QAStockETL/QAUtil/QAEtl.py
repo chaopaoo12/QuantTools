@@ -2076,71 +2076,71 @@ def QA_util_etl_stock_financial(start_date):
        pe,
        pb,
        case
-         when TOTALLIABILITIES <= 0 then
+         when TOTALLIABILITIES = 0 then
           0
          else
           total_market / TOTALLIABILITIES
        end as PT,
        case
-         when MONEYFUNDS <= 0 then
+         when MONEYFUNDS = 0 then
           0
          else
           total_market / MONEYFUNDS
        end as PM,
        case
-         when OPERATINGREVENUE_TTM <= 0 then
+         when OPERATINGREVENUE_TTM = 0 then
           0
          else
           total_market / OPERATINGREVENUE_TTM
        end as PS,
        case
-         when OPERATINGCASHRATIO_TTM <= 0 then
+         when OPERATINGCASHRATIO_TTM = 0 then
           0
          else
           total_market / OPERATINGCASHRATIO_TTM
        end as PSC,
        case
-         when NETCASHOPERATACTIV_TTM <= 0 then
+         when NETCASHOPERATACTIV_TTM = 0 then
           0
          else
           total_market / NETCASHOPERATACTIV_TTM
        end as PC,
        case
-         when NETPROFIT_TTM_LY <= 0 then
+         when NETPROFIT_TTM_LY = 0 then
           0
          else
           pe / (NETPROFIT_TTM / NETPROFIT_TTM_LY - 1) / 100
        end as Peg,
        case
-         when OPERATINGREVENUE_TTM_LY <= 0 then
+         when OPERATINGREVENUE_TTM_LY = 0 then
           0
          else
           PE / (OPERATINGREVENUE_TTM / OPERATINGREVENUE_TTM_LY - 1) / 100
        end as PSG,
        
        case
-         when totalassets_LY <= 0 then
+         when totalassets_LY = 0 then
           0
          else
           PE / (totalassets / totalassets_LY - 1) / 100
        end as PBG,
        
        round((case
-               when PRE_MARKET <= 0 then
+               when PRE_MARKET = 0 then
                 0
                else
                 PRE2_MARKET / PRE_MARKET - 1
              end) * 100,
              2) as target,
        round((case
-               when PRE_MARKET <= 0 then
+               when PRE_MARKET = 0 then
                 0
                else
                 PRE3_MARKET / PRE_MARKET - 1
              end) * 100,
              2) as target3,
        round((case
-               when PRE_MARKET <= 0 then
+               when PRE_MARKET = 0 then
                 0
                else
                 PRE5_MARKET / PRE_MARKET - 1
