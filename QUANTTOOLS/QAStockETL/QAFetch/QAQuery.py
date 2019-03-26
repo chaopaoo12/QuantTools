@@ -271,7 +271,7 @@ def QA_fetch_stock_fianacial(code, start, end = None, format='pd', collections=D
 
         try:
             res =  res.drop('_id', axis=1).assign(DATE=pd.to_datetime(
-                res.DATE, unit='ms')).drop_duplicates((['CODE', 'DATE']))
+                res.DATE, unit='ms')).drop_duplicates((['code', 'date']))
             #res.columns = [i.lower() for i in list(res.columns)]
 
         except:
