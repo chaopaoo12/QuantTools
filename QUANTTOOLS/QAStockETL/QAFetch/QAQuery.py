@@ -263,7 +263,7 @@ def QA_fetch_stock_fianacial(code, start, end = None, format='pd', collections=D
     code = QA_util_code_tolist(code)
     if QA_util_date_valid(end):
         cursor = collections.find({
-            'CODE': {'$in': code}, "date_stamp": {
+            'code': {'$in': code}, "date_stamp": {
                 "$lte": QA_util_date_stamp(end),
                 "$gte": QA_util_date_stamp(start)}}, batch_size=10000)
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
