@@ -2106,20 +2106,20 @@ def QA_util_etl_stock_financial(start_date):
           total_market / NETCASHOPERATACTIV_TTM
        end as PC,
        case
-         when NETPROFIT_TTM_LY = 0 then
+         when NETPROFIT_TTM_LY = 0 or NETPROFIT_TTM = NETPROFIT_TTM_LY then
           0
          else
           pe / (NETPROFIT_TTM / NETPROFIT_TTM_LY - 1) / 100
        end as Peg,
        case
-         when OPERATINGREVENUE_TTM_LY = 0 then
+         when OPERATINGREVENUE_TTM_LY = 0 or OPERATINGREVENUE_TTM = OPERATINGREVENUE_TTM_LY then
           0
          else
           PE / (OPERATINGREVENUE_TTM / OPERATINGREVENUE_TTM_LY - 1) / 100
        end as PSG,
        
        case
-         when totalassets_LY = 0 then
+         when totalassets_LY = 0 or totalassets = totalassets_LY then
           0
          else
           PE / (totalassets / totalassets_LY - 1) / 100
