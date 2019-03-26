@@ -263,15 +263,13 @@ def QA_fetch_stock_fianacial(code, start, end = None, format='pd', collections=D
     code = QA_util_code_tolist(code)
     if QA_util_date_valid(end):
         cursor = collections.find({
-            'code': {'$in': code}, "date_stamp": {
+            'CODE': {'$in': code}, "date_stamp": {
                 "$lte": QA_util_date_stamp(end),
                 "$gte": QA_util_date_stamp(start)}}, batch_size=10000)
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
         res = pd.DataFrame([item for item in cursor])
-
         try:
-            res =  res.drop('_id', axis=1).assign(DATE=pd.to_datetime(
-                res.DATE, unit='ms')).drop_duplicates((['code', 'date']))
+            res =  res.drop('_id', axis=1).drop_duplicates((['CODE', 'date']))
             #res.columns = [i.lower() for i in list(res.columns)]
 
         except:
