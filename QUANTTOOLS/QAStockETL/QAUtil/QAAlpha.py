@@ -28,14 +28,14 @@ class Alpha_191:
         price = price[price['date'] != self.end_date].set_index(['date','code']).to_panel()
         ###benchmark_price = get_price(index, None, end_date, '1d',['open','close','low','high','avg_price','prev_close','volume'], False, None, 250,is_panel=1)
         ###分别取开盘价，收盘价，最高价，最低价，最低价，均价，成交量#######
-        self.open_price = price.loc['open',:,:].dropna(axis=1,how='any')
-        self.close      = price.loc['close',:,:].dropna(axis=1,how='any')
-        self.low        = price.loc['low',:,:].dropna(axis=1,how='any')
-        self.high       = price.loc['high',:,:].dropna(axis=1,how='any')
-        self.avg_price  = price.loc['avg_price',:,:].dropna(axis=1,how='any')
+        self.open_price = price.loc['open',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
+        self.close      = price.loc['close',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
+        self.low        = price.loc['low',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
+        self.high       = price.loc['high',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
+        self.avg_price  = price.loc['avg_price',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
         #self.prev_close = price.loc['prev_close',:,:].dropna(axis=1,how='any')
-        self.volume     = price.loc['volume',:,:].dropna(axis=1,how='any')
-        self.amount     = price.loc['amount',:,:].dropna(axis=1,how='any')
+        self.volume     = price.loc['volume',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
+        self.amount     = price.loc['amount',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
         ###self.benchmark_open_price = benchmark_price.loc[:, 'open']
         ###self.benchmark_close_price = benchmark_price.loc[:, 'close']
         #########################################################################
