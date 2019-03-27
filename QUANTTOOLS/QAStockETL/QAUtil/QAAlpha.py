@@ -28,14 +28,14 @@ class Alpha_191:
         price = price[price['date'] != self.end_date].set_index(['date','code']).to_panel()
         ###benchmark_price = get_price(index, None, end_date, '1d',['open','close','low','high','avg_price','prev_close','volume'], False, None, 250,is_panel=1)
         ###分别取开盘价，收盘价，最高价，最低价，最低价，均价，成交量#######
-        self.open_price = price.loc['open',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
-        self.close      = price.loc['close',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
-        self.low        = price.loc['low',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
-        self.high       = price.loc['high',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
-        self.avg_price  = price.loc['avg_price',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
-        #self.prev_close = price.loc['prev_close',:,:].dropna(axis=1,how='any')
-        self.volume     = price.loc['volume',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
-        self.amount     = price.loc['amount',:,:].fillna(method = 'ffill').fillna(method = 'bfill').dropna(axis=1,how='any')
+        self.open_price = price.loc['open',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
+        self.close      = price.loc['close',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
+        self.low        = price.loc['low',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
+        self.high       = price.loc['high',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
+        self.avg_price  = price.loc['avg_price',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
+        self.prev_close = price.loc['prev_close',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
+        self.volume     = price.loc['volume',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
+        self.amount     = price.loc['amount',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
         ###self.benchmark_open_price = benchmark_price.loc[:, 'open']
         ###self.benchmark_close_price = benchmark_price.loc[:, 'close']
         #########################################################################
@@ -2398,10 +2398,10 @@ class Alpha_191:
         #alpha_073=self.alpha_073()
         alpha_074=self.alpha_074()
         #alpha_075=self.alpha_075()
-        #alpha_076=self.alpha_076()
+        alpha_076=self.alpha_076()
         alpha_077=self.alpha_077()
         alpha_078=self.alpha_078()
-        #alpha_079=self.alpha_079()
+        alpha_079=self.alpha_079()
         alpha_080=self.alpha_080()
         alpha_081=self.alpha_081()
         alpha_082=self.alpha_082()
@@ -2416,7 +2416,7 @@ class Alpha_191:
         alpha_091=self.alpha_091()
         alpha_092=self.alpha_092()
         alpha_093=self.alpha_093()
-        #alpha_094=self.alpha_094()
+        alpha_094=self.alpha_094()
         alpha_095=self.alpha_095()
         alpha_096=self.alpha_096()
         alpha_097=self.alpha_097()
@@ -2432,9 +2432,9 @@ class Alpha_191:
         alpha_107=self.alpha_107()
         alpha_108=self.alpha_108()
         alpha_109=self.alpha_109()
-        #alpha_110=self.alpha_110()
+        alpha_110=self.alpha_110()
         alpha_111=self.alpha_111()
-        #alpha_112=self.alpha_112()
+        alpha_112=self.alpha_112()
         alpha_113=self.alpha_113()
         alpha_114=self.alpha_114()
         alpha_115=self.alpha_115()
@@ -2458,7 +2458,7 @@ class Alpha_191:
         alpha_133=self.alpha_133()
         alpha_134=self.alpha_134()
         alpha_135=self.alpha_135()
-        #alpha_136=self.alpha_136()
+        alpha_136=self.alpha_136()
         alpha_137=self.alpha_137()
         alpha_138=self.alpha_138()
         alpha_139=self.alpha_139()
@@ -2466,7 +2466,7 @@ class Alpha_191:
         alpha_141=self.alpha_141()
         alpha_142=self.alpha_142()
         alpha_143=self.alpha_143()
-        #alpha_144=self.alpha_144()
+        alpha_144=self.alpha_144()
         alpha_145=self.alpha_145()
         alpha_146=self.alpha_146()
         alpha_147=self.alpha_147()
@@ -2479,7 +2479,7 @@ class Alpha_191:
         alpha_154=self.alpha_154()
         alpha_155=self.alpha_155()
         alpha_156=self.alpha_156()
-        #alpha_157=self.alpha_157()
+        alpha_157=self.alpha_157()
         alpha_158=self.alpha_158()
         alpha_159=self.alpha_159()
         alpha_160=self.alpha_160()
@@ -2496,7 +2496,7 @@ class Alpha_191:
         alpha_171=self.alpha_171()
         alpha_172=self.alpha_172()
         alpha_173=self.alpha_173()
-        #alpha_174=self.alpha_174()
+        alpha_174=self.alpha_174()
         alpha_175=self.alpha_175()
         alpha_176=self.alpha_176()
         alpha_177=self.alpha_177()
@@ -2591,10 +2591,10 @@ class Alpha_191:
             #"alpha_073":alpha_073,
             "alpha_074":alpha_074,
             #"alpha_075":alpha_075,
-            #"alpha_076":alpha_076,
+            "alpha_076":alpha_076,
             "alpha_077":alpha_077,
             "alpha_078":alpha_078,
-            #"alpha_079":alpha_079,
+            "alpha_079":alpha_079,
             "alpha_080":alpha_080,
             "alpha_081":alpha_081,
             "alpha_082":alpha_082,
@@ -2609,7 +2609,7 @@ class Alpha_191:
             "alpha_091":alpha_091,
             "alpha_092":alpha_092,
             "alpha_093":alpha_093,
-            #"alpha_094":alpha_094,
+            "alpha_094":alpha_094,
             "alpha_095":alpha_095,
             "alpha_096":alpha_096,
             "alpha_097":alpha_097,
@@ -2625,9 +2625,9 @@ class Alpha_191:
             "alpha_107":alpha_107,
             "alpha_108":alpha_108,
             "alpha_109":alpha_109,
-            #"alpha_110":alpha_110,
+            "alpha_110":alpha_110,
             "alpha_111":alpha_111,
-            #"alpha_112":alpha_112,
+            "alpha_112":alpha_112,
             "alpha_113":alpha_113,
             "alpha_114":alpha_114,
             "alpha_115":alpha_115,
@@ -2651,7 +2651,7 @@ class Alpha_191:
             "alpha_133":alpha_133,
             "alpha_134":alpha_134,
             "alpha_135":alpha_135,
-            #"alpha_136":alpha_136,
+            "alpha_136":alpha_136,
             "alpha_137":alpha_137,
             "alpha_138":alpha_138,
             "alpha_139":alpha_139,
@@ -2659,7 +2659,7 @@ class Alpha_191:
             "alpha_141":alpha_141,
             "alpha_142":alpha_142,
             #"alpha_143":alpha_143,
-            #"alpha_144":alpha_144,
+            "alpha_144":alpha_144,
             "alpha_145":alpha_145,
             "alpha_146":alpha_146,
             "alpha_147":alpha_147,
@@ -2672,7 +2672,7 @@ class Alpha_191:
             "alpha_154":alpha_154,
             "alpha_155":alpha_155,
             "alpha_156":alpha_156,
-            #"alpha_157":alpha_157,
+            "alpha_157":alpha_157,
             "alpha_158":alpha_158,
             "alpha_159":alpha_159,
             "alpha_160":alpha_160,
@@ -2689,7 +2689,7 @@ class Alpha_191:
             "alpha_171":alpha_171,
             "alpha_172":alpha_172,
             "alpha_173":alpha_173,
-            #"alpha_174":alpha_174,
+            "alpha_174":alpha_174,
             "alpha_175":alpha_175,
             "alpha_176":alpha_176,
             "alpha_177":alpha_177,
