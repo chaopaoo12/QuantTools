@@ -21,7 +21,7 @@ class Alpha_191:
     def __init__(self, code, date):
         ###security = get_index_stocks(index)
         self.date = date
-        self.end_date = QA_util_get_last_day(self.date, 251)
+        self.end_date = QA_util_get_last_day(self.date, 250)
         price = QA_fetch_stock_day_adv(code, self.end_date, self.date ).data.reset_index()
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
@@ -1341,7 +1341,7 @@ class Alpha_191:
         sum1 = data1.rolling(window=20).sum()
         sum2 = data2.rolling(window=20).sum()
         alpha = sum1/sum2*100
-        alpha=alpha.dropna()
+        #alpha=alpha.dropna()
         return alpha.iloc[-1,:]
 
 
