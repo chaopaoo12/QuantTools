@@ -2349,10 +2349,10 @@ class Alpha_191:
         alpha_024=self.alpha_024()
         alpha_025=self.alpha_025()
         alpha_026=self.alpha_026()
-        alpha_027=self.alpha_027()
+        #alpha_027=self.alpha_027()
         alpha_028=self.alpha_028()
         alpha_029=self.alpha_029()
-        alpha_030=self.alpha_030()
+        #alpha_030=self.alpha_030()
         alpha_031=self.alpha_031()
         alpha_032=self.alpha_032()
         alpha_033=self.alpha_033()
@@ -2372,8 +2372,8 @@ class Alpha_191:
         alpha_047=self.alpha_047()
         alpha_048=self.alpha_048()
         alpha_049=self.alpha_049()
-        alpha_050=self.alpha_050()
-        alpha_051=self.alpha_051()
+        #alpha_050=self.alpha_050()
+        #alpha_051=self.alpha_051()
         alpha_052=self.alpha_052()
         alpha_053=self.alpha_053()
         alpha_054=self.alpha_054()
@@ -2391,11 +2391,11 @@ class Alpha_191:
         alpha_066=self.alpha_066()
         alpha_067=self.alpha_067()
         alpha_068=self.alpha_068()
-        alpha_069=self.alpha_069()
+        #alpha_069=self.alpha_069()
         alpha_070=self.alpha_070()
         alpha_071=self.alpha_071()
         alpha_072=self.alpha_072()
-        alpha_073=self.alpha_073()
+        #alpha_073=self.alpha_073()
         alpha_074=self.alpha_074()
         #alpha_075=self.alpha_075()
         #alpha_076=self.alpha_076()
@@ -2443,7 +2443,7 @@ class Alpha_191:
         alpha_118=self.alpha_118()
         alpha_119=self.alpha_119()
         alpha_120=self.alpha_120()
-        alpha_121=self.alpha_121()
+        #alpha_121=self.alpha_121()
         alpha_122=self.alpha_122()
         alpha_123=self.alpha_123()
         alpha_124=self.alpha_124()
@@ -2487,8 +2487,8 @@ class Alpha_191:
         alpha_162=self.alpha_162()
         alpha_163=self.alpha_163()
         alpha_164=self.alpha_164()
-        alpha_165=self.alpha_165()
-        alpha_166=self.alpha_166()
+        #alpha_165=self.alpha_165()
+        #alpha_166=self.alpha_166()
         alpha_167=self.alpha_167()
         alpha_168=self.alpha_168()
         alpha_169=self.alpha_169()
@@ -2503,16 +2503,16 @@ class Alpha_191:
         alpha_178=self.alpha_178()
         alpha_179=self.alpha_179()
         alpha_180=self.alpha_180()
-        alpha_181=self.alpha_181()
-        alpha_182=self.alpha_182()
-        alpha_183=self.alpha_183()
+        #alpha_181=self.alpha_181()
+        #alpha_182=self.alpha_182()
+        #alpha_183=self.alpha_183()
         alpha_184=self.alpha_184()
         alpha_185=self.alpha_185()
         alpha_186=self.alpha_186()
         alpha_187=self.alpha_187()
         alpha_188=self.alpha_188()
         alpha_189=self.alpha_189()
-        alpha_190=self.alpha_190()
+        #alpha_190=self.alpha_190()
         alpha_191=self.alpha_191()
 
         res = pd.DataFrame({
@@ -2542,10 +2542,10 @@ class Alpha_191:
             "alpha_024":alpha_024,
             "alpha_025":alpha_025,
             "alpha_026":alpha_026,
-            "alpha_027":alpha_027,
+            #"alpha_027":alpha_027,
             "alpha_028":alpha_028,
             "alpha_029":alpha_029,
-            "alpha_030":alpha_030,
+            #"alpha_030":alpha_030,
             "alpha_031":alpha_031,
             "alpha_032":alpha_032,
             "alpha_033":alpha_033,
@@ -2565,8 +2565,8 @@ class Alpha_191:
             "alpha_047":alpha_047,
             "alpha_048":alpha_048,
             "alpha_049":alpha_049,
-            "alpha_050":alpha_050,
-            "alpha_051":alpha_051,
+            #"alpha_050":alpha_050,
+            #"alpha_051":alpha_051,
             "alpha_052":alpha_052,
             "alpha_053":alpha_053,
             "alpha_054":alpha_054,
@@ -2584,11 +2584,11 @@ class Alpha_191:
             "alpha_066":alpha_066,
             "alpha_067":alpha_067,
             "alpha_068":alpha_068,
-            "alpha_069":alpha_069,
+            #"alpha_069":alpha_069,
             "alpha_070":alpha_070,
             "alpha_071":alpha_071,
             "alpha_072":alpha_072,
-            "alpha_073":alpha_073,
+            #"alpha_073":alpha_073,
             "alpha_074":alpha_074,
             #"alpha_075":alpha_075,
             #"alpha_076":alpha_076,
@@ -2636,7 +2636,7 @@ class Alpha_191:
             "alpha_118":alpha_118,
             "alpha_119":alpha_119,
             "alpha_120":alpha_120,
-            "alpha_121":alpha_121,
+            #"alpha_121":alpha_121,
             "alpha_122":alpha_122,
             "alpha_123":alpha_123,
             "alpha_124":alpha_124,
@@ -2646,7 +2646,7 @@ class Alpha_191:
             "alpha_128":alpha_128,
             "alpha_129":alpha_129,
             "alpha_130":alpha_130,
-            "alpha_131":alpha_131,
+            #"alpha_131":alpha_131,
             "alpha_132":alpha_132,
             "alpha_133":alpha_133,
             "alpha_134":alpha_134,
@@ -2658,7 +2658,7 @@ class Alpha_191:
             #"alpha_140":alpha_140,
             "alpha_141":alpha_141,
             "alpha_142":alpha_142,
-            "alpha_143":alpha_143,
+            #"alpha_143":alpha_143,
             #"alpha_144":alpha_144,
             "alpha_145":alpha_145,
             "alpha_146":alpha_146,
@@ -2666,7 +2666,7 @@ class Alpha_191:
             "alpha_148":alpha_148,
             "alpha_149":alpha_149,
             "alpha_150":alpha_150,
-            "alpha_151":alpha_151,
+            #"alpha_151":alpha_151,
             "alpha_152":alpha_152,
             "alpha_153":alpha_153,
             "alpha_154":alpha_154,
@@ -2680,8 +2680,8 @@ class Alpha_191:
             "alpha_162":alpha_162,
             "alpha_163":alpha_163,
             "alpha_164":alpha_164,
-            "alpha_165":alpha_165,
-            "alpha_166":alpha_166,
+            #"alpha_165":alpha_165,
+            #"alpha_166":alpha_166,
             "alpha_167":alpha_167,
             "alpha_168":alpha_168,
             "alpha_169":alpha_169,
@@ -2696,16 +2696,16 @@ class Alpha_191:
             "alpha_178":alpha_178,
             "alpha_179":alpha_179,
             "alpha_180":alpha_180,
-            "alpha_181":alpha_181,
-            "alpha_182":alpha_182,
-            "alpha_183":alpha_183,
+            #"alpha_181":alpha_181,
+            #"alpha_182":alpha_182,
+            #"alpha_183":alpha_183,
             "alpha_184":alpha_184,
             "alpha_185":alpha_185,
             "alpha_186":alpha_186,
             "alpha_187":alpha_187,
             "alpha_188":alpha_188,
             "alpha_189":alpha_189,
-            "alpha_190":alpha_190,
+            #"alpha_190":alpha_190,
             "alpha_191":alpha_191,
             "date":self.date
         })
