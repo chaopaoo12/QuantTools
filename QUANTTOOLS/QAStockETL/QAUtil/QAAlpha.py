@@ -21,21 +21,21 @@ class Alpha_191:
     def __init__(self, code, date):
         ###security = get_index_stocks(index)
         self.date = date
-        self.end_date = QA_util_get_last_day(self.date, 250)
+        self.end_date = QA_util_get_last_day(self.date, 251)
         price = QA_fetch_stock_day_adv(code, self.end_date, self.date ).data.reset_index()
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
         price = price[price['date'] != self.end_date].set_index(['date','code']).to_panel()
         ###benchmark_price = get_price(index, None, end_date, '1d',['open','close','low','high','avg_price','prev_close','volume'], False, None, 250,is_panel=1)
         ###分别取开盘价，收盘价，最高价，最低价，最低价，均价，成交量#######
-        self.open_price = price.loc['open',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
-        self.close      = price.loc['close',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
-        self.low        = price.loc['low',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
-        self.high       = price.loc['high',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
-        self.avg_price  = price.loc['avg_price',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
-        self.prev_close = price.loc['prev_close',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
-        self.volume     = price.loc['volume',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
-        self.amount     = price.loc['amount',:,:].fillna(method = 'ffill').dropna(axis=1,how='any')
+        self.open_price = price.loc['open',:,:].fillna(method = 'ffill')
+        self.close      = price.loc['close',:,:].fillna(method = 'ffill')
+        self.low        = price.loc['low',:,:].fillna(method = 'ffill')
+        self.high       = price.loc['high',:,:].fillna(method = 'ffill')
+        self.avg_price  = price.loc['avg_price',:,:].fillna(method = 'ffill')
+        self.prev_close = price.loc['prev_close',:,:].fillna(method = 'ffill')
+        self.volume     = price.loc['volume',:,:].fillna(method = 'ffill')
+        self.amount     = price.loc['amount',:,:].fillna(method = 'ffill')
         ###self.benchmark_open_price = benchmark_price.loc[:, 'open']
         ###self.benchmark_close_price = benchmark_price.loc[:, 'close']
         #########################################################################
@@ -1171,7 +1171,7 @@ class Alpha_191:
 
     # @author: fuzhongjie
     def alpha_094(self):
-        # SUM((CLOSE>DELAY(CLOSE,1)?VOLUME:(CLOSE<DELAY(CLOSE,1)?-VOLUME:0)),30) #
+        # SUM((CLOSE>DELAY(CLOSE,1)?VOLUME:(CLOSE<DELAY(CLOSE,1)?-VOLUME:0)),30)
         cond1 = self.close>self.prev_close
         cond2 = self.close<self.prev_close
         value = -self.volume
