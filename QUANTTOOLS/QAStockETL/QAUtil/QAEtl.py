@@ -2064,7 +2064,7 @@ def QA_util_etl_stock_financial(start_date):
     sql = '''select code,
        name,
        industry,
-       order_Date as "date",
+       to_char(order_date,'yyyy-mm-dd') as "date",
        open,
        high,
        low,
