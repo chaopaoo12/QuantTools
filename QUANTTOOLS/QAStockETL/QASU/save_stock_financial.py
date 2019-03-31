@@ -12,7 +12,7 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
             start_date = QA_util_today_str()
             end_date = start_date
         elif end_date is not None:
-            start_date = '2003-01-01'
+            start_date = '2005-01-01'
     elif start_date is not None:
         if end_date == None:
             start_date = QA_util_today_str()
