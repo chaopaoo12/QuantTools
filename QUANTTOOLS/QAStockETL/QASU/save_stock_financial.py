@@ -4,6 +4,7 @@ from QUANTTOOLS.QAStockETL.QAUtil import QA_util_etl_stock_financial
 from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_today_str,
                               QA_util_get_trade_range)
+import pandas as pd
 
 def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
 
@@ -21,7 +22,7 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
             if end_date < start_date:
                 print('end_date should large than start_date')
 
-    deal_date_list = QA_util_get_trade_range(start_date, end_date)
+    deal_date_list = list(pd.date_range(start_date, end_date).map(lambda t:str(t.date())))
     if deal_date_list is None:
         print('not a trading day')
     else:
