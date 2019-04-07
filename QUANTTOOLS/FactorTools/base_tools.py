@@ -33,7 +33,7 @@ def filter_extreme_percentile(series,min = 0.025,max = 0.975): #百分位法
     return np.clip(series,q.iloc[0],q.iloc[1])
 
 # 去极值，标准化，中性化
-def neutralization(factor,mkt_cap = False, industry = True):
+def neutralization(factor,mkt_cap = True, industry = True):
     y = factor
     if type(mkt_cap) == pd.Series:
         LnMktCap = mkt_cap.apply(lambda x:math.log(x))
@@ -99,7 +99,7 @@ def get_data(start_date, end_date):
                                                                                                         'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                                                         'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_180', 'alpha_184', 'alpha_185', 'alpha_186',
                                                                                                         'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191','date','code']]
-    financial = QA_fetch_stock_fianacial_adv(list(QA_fetch_stock_list_adv()['code']),'2018-01-01','2018-12-31').data
+    financial = QA_fetch_stock_fianacial_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data
     stock_list = pd.DataFrame(QA_fetch_stock_basic_info_tushare())[['code','industry']]
     res = pd.merge(pd.merge(alpha,financial,how='right',left_on=['code','date'],right_on=['CODE','date']),
                    stock_list,how='left',left_on=['code'],right_on = ['code'])
@@ -123,6 +123,6 @@ def get_data(start_date, end_date):
                 'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                 'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_180', 'alpha_184', 'alpha_185', 'alpha_186',
                 'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191','date','code','industry','PB', 'PBG', 'PC', 'PE', 'PEG', 'PM', 'PS', 'PSC', 'PSG',
-                'PT','moon','sun','TARGET','TARGET3','TARGET5']]
+                'PT','moon','sun','TARGET','TARGET3','TARGET5','TOTAL_MARKET']]
     res1['date'] = pd.to_datetime(res1['date'])
     return(res1)
