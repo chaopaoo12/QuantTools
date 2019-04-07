@@ -23,7 +23,7 @@ def get_stock_report_ths(code):
             driver.quit()
             seconds = seconds + 1
 
-        with pd.DataFrame(pd.read_excel(excelFile, sheet_name='Worksheet')).T.reset_index() as df1:
+            df1 = pd.DataFrame(pd.read_excel(excelFile, sheet_name='Worksheet')).T.reset_index()
             data = data.append(df1.T)
 
         try:
