@@ -9,7 +9,9 @@ from QUANTTOOLS.QAStockETL.QASU import (QA_SU_save_report_calendar_day, QA_SU_sa
                                         QA_etl_stock_financial, QA_etl_stock_calendar,
                                         QA_etl_stock_block, QA_etl_stock_divyield,
                                         QA_etl_process_financial_day,
-                                        QA_SU_save_financialfiles)
+                                        QA_SU_save_financialfiles,
+                                        QA_SU_save_stock_alpha_day,
+                                        QA_SU_save_stock_alpha_his)
 
 from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_process_financial,QA_util_process_financial2,QA_util_etl_financial_TTM,
                                           QA_util_etl_stock_financial,QA_util_sql_store_mysql)
