@@ -13,7 +13,6 @@ def get_stock_report_ths(code):
         seconds = 1
 
         while (os.path.exists(excelFile) != True):
-            print(seconds)
             options = webdriver.ChromeOptions()
             prefs = {'profile.default_content_settings.popups': 0, 'download.default_directory': 'd:\\'}
             options.add_experimental_option('prefs', prefs)
