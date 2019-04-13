@@ -18,7 +18,8 @@ def read_data_from_sina(code,report_year,report_type,table_name,options):
     values = list()
     for i in soup.find_all(id=table_name)[0].find('tbody').find_all('td'):
         values.append(i.text.strip())
-    tar = ['三、筹资活动产生的现金流量','二、投资活动产生的现金流量','一、经营活动产生的现金流量','附注','六、每股收益','资产','负债','所有者权益']
+    tar = ['三、筹资活动产生的现金流量','二、投资活动产生的现金流量','一、经营活动产生的现金流量','附注','六、每股收益',
+           '资产','负债','所有者权益','流动资产','非流动资产','流动负债','非流动负债']
     values = [x for x in values if x not in tar]
     values = [0 if x == '--' else x.replace(',','') for x in values]
     cols = [x for x in cols if x not in tar]
