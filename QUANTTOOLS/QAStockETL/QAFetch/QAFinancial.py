@@ -7,7 +7,7 @@ def QA_fetch_get_stock_report_ths(code):
     return(data)
 
 def QA_fetch_get_stock_report_sina(code, report_year):
-    data = get_stock_report_sina(code, report_year)
+    data = get_stock_report_sina(code, report_year).reset_index()
     data = data.assign(report_date=data['report_date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     data = data.assign(crawl_date=data['crawl_date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(data)
