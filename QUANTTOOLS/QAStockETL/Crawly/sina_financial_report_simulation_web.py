@@ -25,8 +25,10 @@ def read_data_from_sina(code,report_year,report_type,table_name,options):
     values = ['report_date' if x == '报表日期' else x for x in values]
     if report_type == 'BalanceSheet':
         values = ['少数股东权益B' if x == '少数股东权益' else x for x in values]
+        values = ['财务费用B' if x == '财务费用' else x for x in values]
     elif report_type == 'ProfitStatement':
         values = ['少数股东权益P' if x == '少数股东权益' else x for x in values]
+        values = ['财务费用B' if x == '财务费用' else x for x in values]
     cols = [x for x in cols if x not in tar]
     k = len(values)/len(cols)
     res1 = pd.DataFrame([values[i:i+int(k)] for i in range(0,len(values),int(k))]).T
