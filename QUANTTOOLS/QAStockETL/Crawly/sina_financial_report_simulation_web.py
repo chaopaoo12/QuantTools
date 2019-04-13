@@ -23,7 +23,7 @@ def read_data_from_sina(code,report_year,report_type,table_name,options):
     values = [0 if x == '--' else x.replace(',','') for x in values]
     cols = [x for x in cols if x not in tar]
     k = len(values)/len(cols)
-    res1 = pd.DataFrame([values[i:i+k] for i in range(0,len(values),k)]).T
+    res1 = pd.DataFrame([values[i:i+int(k)] for i in range(0,len(values),int(k))]).T
     res = pd.concat([res1.iloc[1:,0],res1.iloc[1:,1:].astype(float)*10000],axis=1)
     res.columns = res1.iloc[0,]
     return(res.set_index('报表日期'))
