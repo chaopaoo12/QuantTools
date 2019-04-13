@@ -49,7 +49,7 @@ def get_stock_report_sina(code,report_year):
                 table_name = 'ProfitStatementNewTable0'
             res = read_data_from_sina(code,years,report_type,table_name,options)
             res1 = pd.concat([res1,res],axis=1)
-        res2 = res2.append(res1, ignore_index=True)
+        res2 = res2.append(res1)
     if res2 is None:
         return None
     else:
