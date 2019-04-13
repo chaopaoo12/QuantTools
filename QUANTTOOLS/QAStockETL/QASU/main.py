@@ -24,7 +24,7 @@
 from QUANTTOOLS.QAStockETL.QASU import crawl_jrj_financial_reportdate as save_financial_calendar, \
     crawl_jrj_stock_divyield as save_stock_divyield, save_stock_financial as save_stock_financial, \
     save_financial_TTM as save_financial_TTM, crawl_ths_financial_report as save_stock_financial_ths,\
-    save_stock_alpha as save_stock_alpha, save_financialfiles as save_financialfiles
+    save_stock_alpha as save_stock_alpha, save_financialfiles as save_financialfiles, crawl_sina_financial_report as save_stock_financial_sina
 from QUANTAXIS.QAUtil import QA_util_today_str
 
 def QA_SU_save_report_calendar_day():
@@ -56,6 +56,12 @@ def QA_SU_save_stock_financial_ths_day():
 
 def QA_SU_save_stock_financial_ths_his():
     return save_stock_financial_ths.QA_SU_save_financial_report_his()
+
+def QA_SU_save_stock_financial_sina_day():
+    return save_stock_financial_sina.QA_SU_save_financial_report_day()
+
+def QA_SU_save_stock_financial_sina_his():
+    return save_stock_financial_sina.QA_SU_save_financial_report_his()
 
 def QA_SU_save_stock_alpha_day(code = None, date = None):
     return save_stock_alpha.QA_SU_save_stock_alpha_day(code = code, date = date)
