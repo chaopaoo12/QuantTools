@@ -40,16 +40,18 @@ def get_stock_report_sina(code,report_year):
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
-    res1 = pd.DataFrame()
+    res2 = pd.DataFrame()
     for years in report_year:
+        res1 = pd.DataFrame()
         for report_type in ['BalanceSheet','ProfitStatement','CashFlow']:
             table_name = '{report_type}NewTable0'.format(report_type=report_type)
             if report_type == 'CashFlow':
                 table_name = 'ProfitStatementNewTable0'
             res = read_data_from_sina(code,years,report_type,table_name,options)
             res1 = pd.concat([res1,res],axis=1)
-    if res1 is None:
+        res2 = res2.append(res1, ignore_index=True)
+    if res2 is None:
         return None
     else:
-        res1['code'] = code
-        return(res1)
+        res2['code'] = code
+        return(res2)
