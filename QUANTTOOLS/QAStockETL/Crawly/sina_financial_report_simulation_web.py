@@ -22,12 +22,13 @@ def read_data_from_sina(code,report_year,report_type,table_name,options):
            '资产','负债','所有者权益','流动资产','非流动资产','流动负债','非流动负债']
     values = [x for x in values if x not in tar]
     values = [0 if x == '--' else x.replace(',','') for x in values]
+    values = ['report_date' if x == '报表日期' else x for x in values]
     cols = [x for x in cols if x not in tar]
     k = len(values)/len(cols)
     res1 = pd.DataFrame([values[i:i+int(k)] for i in range(0,len(values),int(k))]).T
     res = pd.concat([res1.iloc[1:,0],res1.iloc[1:,1:].astype(float)*10000],axis=1)
     res.columns = res1.iloc[0,]
-    return(res.set_index('报表日期'))
+    return(res.set_index('report_date'))
 
 def get_stock_report_sina(code,report_year):
 
