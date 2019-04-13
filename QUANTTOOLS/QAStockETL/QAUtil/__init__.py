@@ -7,4 +7,4 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASql import (QA_util_sql_store_mysql,ASCENDIN
 
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha import alpha
 
-from QUANTTOOLS.QAStockETL.QAUtil.QADate import QA_util_add_days, QA_util_add_years
+from QUANTTOOLS.QAStockETL.QAUtil.QADate import QA_util_add_days, QA_util_add_years, QA_util_getBetweenYear
