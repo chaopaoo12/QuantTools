@@ -54,4 +54,4 @@ def get_stock_report_sina(code,report_year):
         return None
     else:
         res2['code'] = code
-        return(res2)
+        return(res2.reset_index())
