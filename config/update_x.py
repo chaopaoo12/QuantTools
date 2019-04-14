@@ -62,4 +62,3 @@ QA_etl_stock_info()
 QA_etl_stock_xdxr()
 QA_etl_stock_day()
 QA_etl_stock_block()
-
