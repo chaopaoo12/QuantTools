@@ -62,4 +62,9 @@ def get_stock_report_sina(code,report_year):
     else:
         res2['code'] = code
         res2['crawl_date']=QA_util_today_str()
-        return(res2.reset_index())
+        res = res2.reset_index()
+        try:
+            res.columns = ['report_date' if x == 'index' else x for x in list(res2.reset_index().columns)]
+        except:
+            pass
+        return(res)
