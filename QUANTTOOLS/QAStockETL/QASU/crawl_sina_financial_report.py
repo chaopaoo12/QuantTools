@@ -29,7 +29,7 @@ def QA_SU_save_financial_report_day(client=DATABASE, ui_log = None, ui_progress 
     def __saving_work(code, stock_financial_sina):
         try:
             QA_util_log_info(
-                '##JOB01 Now Saving THS financial_report==== {}'.format(str(code)), ui_log)
+                '##JOB01 Now Saving SINA financial_report==== {}'.format(str(code)), ui_log)
 
             stock_financial_sina.insert_many(QA_util_to_json_from_pandas(
                 QA_fetch_get_stock_report_sina(code, YEARS)), ordered=False)
@@ -73,7 +73,7 @@ def QA_SU_save_financial_report_his(client=DATABASE, ui_log = None, ui_progress 
     def __saving_work(code, stock_financial_sina):
         try:
             QA_util_log_info(
-                '##JOB01 Now Saving THS financial_report==== {}'.format(str(code)), ui_log)
+                '##JOB01 Now Saving SINA financial_report==== {}'.format(str(code)), ui_log)
             stock_financial_sina.insert_many(QA_util_to_json_from_pandas(
                 QA_fetch_get_stock_report_sina(code, YEARS)), ordered=False)
         except Exception as error0:
