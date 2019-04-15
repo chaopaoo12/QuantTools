@@ -41,6 +41,7 @@ def read_stock_divyield(report_date, headers = None, page=1):
         options.add_argument('%s="%s"' % (key, value))
 
     driver = webdriver.Chrome(chrome_options=options)
+    driver.maximize_window()
     driver.get(strUrl1)
     soup = BeautifulSoup(driver.page_source, "html.parser").body.text
     driver.quit()

@@ -40,6 +40,7 @@ def read_financial_report_date(report_date, headers = None, psize= 2000,vname="p
         options.add_argument('%s="%s"' % (key, value))
 
     driver = webdriver.Chrome(chrome_options=options)
+    driver.maximize_window()
     driver.get(strUrl1)
     soup = BeautifulSoup(driver.page_source, "html.parser").body.text
     driver.quit()
