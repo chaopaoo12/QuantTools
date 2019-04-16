@@ -150,693 +150,693 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
      '''
 
     sql2='''create table stock_financial_analysis as with t as
-         (select code,
-                 report_date,
-                 totalAssets,
-                 avgTotalAssets,
-                 fixedAssets,
-                 avgFixedAssets,
-                 goodwill,
-                 avgGoodwill,
-                 inventory,
-                 moneyFunds,
-                 accountsPayable,
-                 avgAccountsPayable,
-                 avgInventory,
-                 totalLiquidAssets,
-                 avgTotalLiquidAssets,
-                 totalLiabilities,
-                 avgTotalLiabilities,
-                 accountsReceivables,
-                 avgAccountsReceivables,
-                 interCompanyReceivables,
-                 avgInterCompanyReceivables,
-                 prepayments,
-                 avgPrepayments,
-                 totalCurrentLiabilities,
-                 avgTotalCurrentLiabilities,
-                 netCashOperatActiv,
-                 cashOutInvestActiv,
-                 netProfit,
-                 operatingRevenue_TTM,
-                 operatingCosts_TTM,
-                 taxAndSurcharges_TTM,
-                 salesCosts_TTM,
-                 managementCosts_TTM,
-                 explorationCosts_TTM,
-                 financialCosts_TTM,
-                 assestsDevaluation_TTM,
-                 operatingProfit_TTM,
-                 totalProfit_TTM,
-                 incomeTax_TTM,
-                 netProfit_TTM,
-                 netProAftExtrGainLoss_TTM,
-                 interest_TTM,
-                 deprecForFixedAssets_TTM,
-                 netCashOperatActiv_TTM,
-                 cashOutInvestActiv_TTM
-                 ---盈利能力
-                ,
-                 case
-                   when avgTotalAssets - avgGoodwill - avgtotalLiabilities <= 0 then
-                    0
-                   else
-                    netProAftExtrGainLoss_TTM /
-                    (avgTotalAssets - avgGoodwill - avgtotalLiabilities)
-                 end as ROE,
-                 case
-                   when operatingCosts_TTM <= 0 then
-                    0
-                   else
-                    operatingRevenue_TTM / operatingCosts_TTM - 1
-                 end as grossMargin,
-                 case
-                   when avgTotalAssets - avgGoodwill <= 0 then
-                    0
-                   else
-                    netProAftExtrGainLoss_TTM / (avgTotalAssets - avgGoodwill)
-                 end as ROA,
-                 case
-                   when operatingRevenue_TTM <= 0 then
-                    0
-                   else
-                    (netProAftExtrGainLoss_TTM) / (operatingRevenue_TTM)
-                 end as NetProfitMarginonSales_TTM,
-                 case
-                   when netProAftExtrGainLoss_TTM <= 0 then
-                    0
-                   else
-                    incomeTax_TTM / netProAftExtrGainLoss_TTM
-                 end as incomeTaxRatio,
-                 case
-                   when operatingRevenue_TTM <= 0 then
-                    0
-                   else
-                    cashOutInvestActiv_TTM / operatingRevenue_TTM
-                 end as reinvestedIncomeRatio,
-                 case
-                   when operatingRevenue_TTM <= 0 then
-                    0
-                   else
-                    deprecForFixedAssets_TTM / operatingRevenue_TTM
-                 end as depreciationRatio,
-                 case
-                   when operatingRevenue_TTM <= 0 then
-                    0
-                   else
-                    (accountsReceivables + inventory - accountsPayable) /
-                    operatingRevenue_TTM
-                 end AS operatingCashRatio_TTM
-                 
-                 ---运营模式
-                ,
-                 case
-                   when avgTotalAssets - avgGoodwill <= 0 then
-                    0
-                   else
-                    avgFixedAssets / (avgTotalAssets - avgGoodwill)
-                 end AS avgFiexdOfAssets,
-                 case
-                   when avgTotalAssets <= 0 then
-                    0
-                   else
-                    avgFixedAssets / avgTotalAssets
-                 end AS fiexdOfAssets,
-                 case
-                   when avgTotalCurrentLiabilities <= 0 then
-                    0
-                   else
-                    (avgTotalLiquidAssets - avgInventory - avgPrepayments) /
-                    avgTotalCurrentLiabilities
-                 end AS acidTestRatio
-                 
-                 ---运营效率
-                ,
-                 case
-                   when avgAccountsReceivables <= 0 then
-                    0
-                   else
-                    operatingRevenue_TTM / avgAccountsReceivables
-                 end as turnoverRatioOfReceivable,
-                 case
-                   when avgInventory <= 0 then
-                    0
-                   else
-                    operatingRevenue_TTM / avgInventory
-                 end as turnoverRatioOfInventory,
-                 case
-                   when avgTotalAssets <= 0 then
-                    0
-                   else
-                    operatingRevenue_TTM / avgTotalAssets
-                 end as turnoverRatioOfTotalAssets,
-                 case
-                   when operatingRevenue_TTM - totalProfit_TTM <= 0 then
-                    0
-                   else
-                    deprecForFixedAssets_TTM /
-                    (operatingRevenue_TTM - totalProfit_TTM)
-                 end as depreciationOftotalCosts
-                 
-                 ---利润质量
-                ,
-                 case
-                   when netProfit <= 0 then
-                    0
-                   else
-                    netCashOperatActiv / netProfit
-                 end AS cashOfnetProfit,
-                 case
-                   when netProfit_TTM <= 0 then
-                    0
-                   else
-                    netCashOperatActiv_TTM / netProfit_TTM
-                 end AS cashOfnetProfit_TTM,
-                 case
-                   when interest_TTM <= 0 then
-                    0
-                   else
-                    netCashOperatActiv_TTM / interest_TTM
-                 end as cashOfinterest
-                 
-                 ---偿债能力
-                ,
-                 case
-                   when totalAssets <= 0 then
-                    0
-                   else
-                    totalLiabilities / totalAssets
-                 end as assetsLiabilitiesRatio,
-                 case
-                   when totalCurrentLiabilities <= 0 then
-                    0
-                   else
-                    totalLiabilities / totalCurrentLiabilities
-                 end as tangibleAssetDebtRatio,
-                 case
-                   when totalCurrentLiabilities <= 0 then
-                    0
-                   else
-                    (totalLiquidAssets - inventory - accountsReceivables -
-                    prepayments) / totalCurrentLiabilities
-                 end AS cashRatio
-            from stock_financial_TTM),
-        rp as
-         (select code,
-                 to_date(report_date, 'yyyy-mm-dd') as report_date,
-                 to_date(send_date, 'yyyy-mm-dd') as send_date,
-                 to_date(nvl(lead(send_date, 1)
-                             over(partition by code order by report_date),
-                             to_char(sysdate, 'yyyy-mm-dd')),
-                         'yyyy-mm-dd') as end_date
-            from (select code, report_date, min(real_date) as send_date
-                    from stock_calendar
-                   group by code, report_date) h)
-        SELECT a.code,
-               industry,
-               name,
-               area,
-               a.report_date,
-               add_months(a.report_date, -12) as lastyear,
-               add_months(a.report_date, -3) as lag1,
-               add_months(a.report_date, -24) as last2year,
-               add_months(a.report_date, -36) as last3year,
-               add_months(a.report_date, -48) as last4year,
-               add_months(a.report_date, -60) as last5year,
-               send_date,
-               end_date,
-               a.totalAssets,
-               a.avgTotalAssets,
-               a.fixedAssets,
-               a.avgFixedAssets,
-               a.goodwill,
-               a.avgGoodwill,
-               a.inventory,
-               a.moneyFunds,
-               a.accountsPayable,
-               a.avgAccountsPayable,
-               a.avgInventory,
-               a.totalLiquidAssets,
-               a.avgTotalLiquidAssets,
-               a.totalLiabilities,
-               a.avgTotalLiabilities,
-               a.accountsReceivables,
-               a.avgAccountsReceivables,
-               a.interCompanyReceivables,
-               a.avgInterCompanyReceivables,
-               a.prepayments,
-               a.avgPrepayments,
-               a.totalCurrentLiabilities,
-               a.avgTotalCurrentLiabilities,
-               a.netCashOperatActiv,
-               a.cashOutInvestActiv,
-               a.netProfit,
-               a.operatingRevenue_TTM,
-               a.operatingCosts_TTM,
-               a.taxAndSurcharges_TTM,
-               a.salesCosts_TTM,
-               a.managementCosts_TTM,
-               a.explorationCosts_TTM,
-               a.financialCosts_TTM,
-               a.assestsDevaluation_TTM,
-               a.operatingProfit_TTM,
-               a.totalProfit_TTM,
-               a.incomeTax_TTM,
-               a.netProfit_TTM,
-               a.netProAftExtrGainLoss_TTM,
-               a.interest_TTM,
-               a.deprecForFixedAssets_TTM,
-               a.netCashOperatActiv_TTM,
-               a.cashOutInvestActiv_TTM,
-               a.ROE,
-               a.grossMargin,
-               a.ROA,
-               a.NetProfitMarginonSales_TTM,
-               a.incomeTaxRatio,
-               a.reinvestedIncomeRatio,
-               a.depreciationRatio,
-               a.operatingCashRatio_TTM,
-               a.avgFiexdOfAssets,
-               a.fiexdOfAssets,
-               a.acidTestRatio,
-               a.turnoverRatioOfReceivable,
-               a.turnoverRatioOfInventory,
-               a.turnoverRatioOfTotalAssets,
-               a.depreciationOftotalCosts,
-               a.cashOfnetProfit,
-               a.cashOfnetProfit_TTM,
-               a.cashOfinterest,
-               a.assetsLiabilitiesRatio,
-               a.tangibleAssetDebtRatio,
-               a.cashRatio,
-               b.totalAssets                 as totalAssets_ly,
-               b.avgTotalAssets              as avgTotalAssets_ly,
-               b.fixedAssets                 as fixedAssets_ly,
-               b.avgFixedAssets              as avgFixedAssets_ly,
-               b.goodwill                    as goodwill_ly,
-               b.avgGoodwill                 as avgGoodwill_ly,
-               b.inventory                   as inventory_ly,
-               b.moneyFunds                  as moneyFunds_ly,
-               b.accountsPayable             as accountsPayable_ly,
-               b.avgAccountsPayable          as avgAccountsPayable_ly,
-               b.avgInventory                as avgInventory_ly,
-               b.totalLiquidAssets           as totalLiquidAssets_ly,
-               b.avgTotalLiquidAssets        as avgTotalLiquidAssets_ly,
-               b.totalLiabilities            as totalLiabilities_ly,
-               b.avgTotalLiabilities         as avgTotalLiabilities_ly,
-               b.accountsReceivables         as accountsReceivables_ly,
-               b.avgAccountsReceivables      as avgAccountsReceivables_ly,
-               b.interCompanyReceivables     as interCompanyReceivables_ly,
-               b.avgInterCompanyReceivables  as avgInterCompanyReceivables_ly,
-               b.prepayments                 as prepayments_ly,
-               b.avgPrepayments              as avgPrepayments_ly,
-               b.totalCurrentLiabilities     as totalCurrentLiabilities_ly,
-               b.avgTotalCurrentLiabilities  as avgTotalCurrentLiabilities_ly,
-               b.netCashOperatActiv          as netCashOperatActiv_ly,
-               b.cashOutInvestActiv          as cashOutInvestActiv_ly,
-               b.netProfit                   as netProfit_ly,
-               b.operatingRevenue_TTM        as operatingRevenue_TTM_ly,
-               b.operatingCosts_TTM          as operatingCosts_TTM_ly,
-               b.taxAndSurcharges_TTM        as taxAndSurcharges_TTM_ly,
-               b.salesCosts_TTM              as salesCosts_TTM_ly,
-               b.managementCosts_TTM         as managementCosts_TTM_ly,
-               b.explorationCosts_TTM        as explorationCosts_TTM_ly,
-               b.financialCosts_TTM          as financialCosts_TTM_ly,
-               b.assestsDevaluation_TTM      as assestsDevaluation_TTM_ly,
-               b.operatingProfit_TTM         as operatingProfit_TTM_ly,
-               b.totalProfit_TTM             as totalProfit_TTM_ly,
-               b.incomeTax_TTM               as incomeTax_TTM_ly,
-               b.netProfit_TTM               as netProfit_TTM_ly,
-               b.netProAftExtrGainLoss_TTM   as netProAftExtrGainLoss_TTM_ly,
-               b.interest_TTM                as interest_TTM_ly,
-               b.deprecForFixedAssets_TTM    as deprecForFixedAssets_TTM_ly,
-               b.netCashOperatActiv_TTM      as netCashOperatActiv_TTM_ly,
-               b.cashOutInvestActiv_TTM      as cashOutInvestActiv_TTM_ly,
-               b.ROE                         as ROE_ly,
-               b.grossMargin                 as grossMargin_ly,
-               b.ROA                         as ROA_ly,
-               b.NetProfitMarginonSales_TTM  as NetProfitMarginonSales_TTM_ly,
-               b.incomeTaxRatio              as incomeTaxRatio_ly,
-               b.reinvestedIncomeRatio       as reinvestedIncomeRatio_ly,
-               b.depreciationRatio           as depreciationRatio_ly,
-               b.operatingCashRatio_TTM      as operatingCashRatio_TTM_ly,
-               b.avgFiexdOfAssets            as avgFiexdOfAssets_ly,
-               b.fiexdOfAssets               as fiexdOfAssets_ly,
-               b.acidTestRatio               as acidTestRatio_ly,
-               b.turnoverRatioOfReceivable   as turnoverRatioOfReceivable_ly,
-               b.turnoverRatioOfInventory    as turnoverRatioOfInventory_ly,
-               b.turnoverRatioOfTotalAssets  as turnoverRatioOfTotalAssets_ly,
-               b.depreciationOftotalCosts    as depreciationOftotalCosts_ly,
-               b.cashOfnetProfit             as cashOfnetProfit_ly,
-               b.cashOfnetProfit_TTM         as cashOfnetProfit_TTM_ly,
-               b.cashOfinterest              as cashOfinterest_ly,
-               b.assetsLiabilitiesRatio      as assetsLiabilitiesRatio_ly,
-               b.tangibleAssetDebtRatio      as tangibleAssetDebtRatio_ly,
-               b.cashRatio                   as cashRatio_ly,
-               b1.totalAssets                as totalAssets_l2y,
-               b1.avgTotalAssets             as avgTotalAssets_l2y,
-               b1.fixedAssets                as fixedAssets_l2y,
-               b1.avgFixedAssets             as avgFixedAssets_l2y,
-               b1.goodwill                   as goodwill_l2y,
-               b1.avgGoodwill                as avgGoodwill_l2y,
-               b1.inventory                  as inventory_l2y,
-               b1.moneyFunds                 as moneyFunds_l2y,
-               b1.accountsPayable            as accountsPayable_l2y,
-               b1.avgAccountsPayable         as avgAccountsPayable_l2y,
-               b1.avgInventory               as avgInventory_l2y,
-               b1.totalLiquidAssets          as totalLiquidAssets_l2y,
-               b1.avgTotalLiquidAssets       as avgTotalLiquidAssets_l2y,
-               b1.totalLiabilities           as totalLiabilities_l2y,
-               b1.avgTotalLiabilities        as avgTotalLiabilities_l2y,
-               b1.accountsReceivables        as accountsReceivables_l2y,
-               b1.avgAccountsReceivables     as avgAccountsReceivables_l2y,
-               b1.interCompanyReceivables    as interCompanyReceivables_l2y,
-               b1.avgInterCompanyReceivables as avgInterCompanyReceivables_l2y,
-               b1.prepayments                as prepayments_l2y,
-               b1.avgPrepayments             as avgPrepayments_l2y,
-               b1.totalCurrentLiabilities    as totalCurrentLiabilities_l2y,
-               b1.avgTotalCurrentLiabilities as avgTotalCurrentLiabilities_l2y,
-               b1.netCashOperatActiv         as netCashOperatActiv_l2y,
-               b1.cashOutInvestActiv         as cashOutInvestActiv_l2y,
-               b1.netProfit                  as netProfit_l2y,
-               b1.operatingRevenue_TTM       as operatingRevenue_TTM_l2y,
-               b1.operatingCosts_TTM         as operatingCosts_TTM_l2y,
-               b1.taxAndSurcharges_TTM       as taxAndSurcharges_TTM_l2y,
-               b1.salesCosts_TTM             as salesCosts_TTM_l2y,
-               b1.managementCosts_TTM        as managementCosts_TTM_l2y,
-               b1.explorationCosts_TTM       as explorationCosts_TTM_l2y,
-               b1.financialCosts_TTM         as financialCosts_TTM_l2y,
-               b1.assestsDevaluation_TTM     as assestsDevaluation_TTM_l2y,
-               b1.operatingProfit_TTM        as operatingProfit_TTM_l2y,
-               b1.totalProfit_TTM            as totalProfit_TTM_l2y,
-               b1.incomeTax_TTM              as incomeTax_TTM_l2y,
-               b1.netProfit_TTM              as netProfit_TTM_l2y,
-               b1.netProAftExtrGainLoss_TTM  as netProAftExtrGainLoss_TTM_l2y,
-               b1.interest_TTM               as interest_TTM_l2y,
-               b1.deprecForFixedAssets_TTM   as deprecForFixedAssets_TTM_l2y,
-               b1.netCashOperatActiv_TTM     as netCashOperatActiv_TTM_l2y,
-               b1.cashOutInvestActiv_TTM     as cashOutInvestActiv_TTM_l2y,
-               b1.ROE                        as ROE_l2y,
-               b1.grossMargin                as grossMargin_l2y,
-               b1.ROA                        as ROA_l2y,
-               b1.NetProfitMarginonSales_TTM as NetProfitMarginonSales_TTM_l2y,
-               b1.incomeTaxRatio             as incomeTaxRatio_l2y,
-               b1.reinvestedIncomeRatio      as reinvestedIncomeRatio_l2y,
-               b1.depreciationRatio          as depreciationRatio_l2y,
-               b1.operatingCashRatio_TTM     as operatingCashRatio_TTM_l2y,
-               b1.avgFiexdOfAssets           as avgFiexdOfAssets_l2y,
-               b1.fiexdOfAssets              as fiexdOfAssets_l2y,
-               b1.acidTestRatio              as acidTestRatio_l2y,
-               b1.turnoverRatioOfReceivable  as turnoverRatioOfReceivable_l2y,
-               b1.turnoverRatioOfInventory   as turnoverRatioOfInventory_l2y,
-               b1.turnoverRatioOfTotalAssets as turnoverRatioOfTotalAssets_l2y,
-               b1.depreciationOftotalCosts   as depreciationOftotalCosts_l2y,
-               b1.cashOfnetProfit            as cashOfnetProfit_l2y,
-               b1.cashOfnetProfit_TTM        as cashOfnetProfit_TTM_l2y,
-               b1.cashOfinterest             as cashOfinterest_l2y,
-               b1.assetsLiabilitiesRatio     as assetsLiabilitiesRatio_l2y,
-               b1.tangibleAssetDebtRatio     as tangibleAssetDebtRatio_l2y,
-               b1.cashRatio                  as cashRatio_l2y,
-               b2.totalAssets                as totalAssets_l3y,
-               b2.avgTotalAssets             as avgTotalAssets_l3y,
-               b2.fixedAssets                as fixedAssets_l3y,
-               b2.avgFixedAssets             as avgFixedAssets_l3y,
-               b2.goodwill                   as goodwill_l3y,
-               b2.avgGoodwill                as avgGoodwill_l3y,
-               b2.inventory                  as inventory_l3y,
-               b2.moneyFunds                 as moneyFunds_l3y,
-               b2.accountsPayable            as accountsPayable_l3y,
-               b2.avgAccountsPayable         as avgAccountsPayable_l3y,
-               b2.avgInventory               as avgInventory_l3y,
-               b2.totalLiquidAssets          as totalLiquidAssets_l3y,
-               b2.avgTotalLiquidAssets       as avgTotalLiquidAssets_l3y,
-               b2.totalLiabilities           as totalLiabilities_l3y,
-               b2.avgTotalLiabilities        as avgTotalLiabilities_l3y,
-               b2.accountsReceivables        as accountsReceivables_l3y,
-               b2.avgAccountsReceivables     as avgAccountsReceivables_l3y,
-               b2.interCompanyReceivables    as interCompanyReceivables_l3y,
-               b2.avgInterCompanyReceivables as avgInterCompanyReceivables_l3y,
-               b2.prepayments                as prepayments_l3y,
-               b2.avgPrepayments             as avgPrepayments_l3y,
-               b2.totalCurrentLiabilities    as totalCurrentLiabilities_l3y,
-               b2.avgTotalCurrentLiabilities as avgTotalCurrentLiabilities_l3y,
-               b2.netCashOperatActiv         as netCashOperatActiv_l3y,
-               b2.cashOutInvestActiv         as cashOutInvestActiv_l3y,
-               b2.netProfit                  as netProfit_l3y,
-               b2.operatingRevenue_TTM       as operatingRevenue_TTM_l3y,
-               b2.operatingCosts_TTM         as operatingCosts_TTM_l3y,
-               b2.taxAndSurcharges_TTM       as taxAndSurcharges_TTM_l3y,
-               b2.salesCosts_TTM             as salesCosts_TTM_l3y,
-               b2.managementCosts_TTM        as managementCosts_TTM_l3y,
-               b2.explorationCosts_TTM       as explorationCosts_TTM_l3y,
-               b2.financialCosts_TTM         as financialCosts_TTM_l3y,
-               b2.assestsDevaluation_TTM     as assestsDevaluation_TTM_l3y,
-               b2.operatingProfit_TTM        as operatingProfit_TTM_l3y,
-               b2.totalProfit_TTM            as totalProfit_TTM_l3y,
-               b2.incomeTax_TTM              as incomeTax_TTM_l3y,
-               b2.netProfit_TTM              as netProfit_TTM_l3y,
-               b2.netProAftExtrGainLoss_TTM  as netProAftExtrGainLoss_TTM_l3y,
-               b2.interest_TTM               as interest_TTM_l3y,
-               b2.deprecForFixedAssets_TTM   as deprecForFixedAssets_TTM_l3y,
-               b2.netCashOperatActiv_TTM     as netCashOperatActiv_TTM_l3y,
-               b2.cashOutInvestActiv_TTM     as cashOutInvestActiv_TTM_l3y,
-               b2.ROE                        as ROE_l3y,
-               b2.grossMargin                as grossMargin_l3y,
-               b2.ROA                        as ROA_l3y,
-               b2.NetProfitMarginonSales_TTM as NetProfitMarginonSales_TTM_l3y,
-               b2.incomeTaxRatio             as incomeTaxRatio_l3y,
-               b2.reinvestedIncomeRatio      as reinvestedIncomeRatio_l3y,
-               b2.depreciationRatio          as depreciationRatio_l3y,
-               b2.operatingCashRatio_TTM     as operatingCashRatio_TTM_l3y,
-               b2.avgFiexdOfAssets           as avgFiexdOfAssets_l3y,
-               b2.fiexdOfAssets              as fiexdOfAssets_l3y,
-               b2.acidTestRatio              as acidTestRatio_l3y,
-               b2.turnoverRatioOfReceivable  as turnoverRatioOfReceivable_l3y,
-               b2.turnoverRatioOfInventory   as turnoverRatioOfInventory_l3y,
-               b2.turnoverRatioOfTotalAssets as turnoverRatioOfTotalAssets_l3y,
-               b2.depreciationOftotalCosts   as depreciationOftotalCosts_l3y,
-               b2.cashOfnetProfit            as cashOfnetProfit_l3y,
-               b2.cashOfnetProfit_TTM        as cashOfnetProfit_TTM_l3y,
-               b2.cashOfinterest             as cashOfinterest_l3y,
-               b2.assetsLiabilitiesRatio     as assetsLiabilitiesRatio_l3y,
-               b2.tangibleAssetDebtRatio     as tangibleAssetDebtRatio_l3y,
-               b2.cashRatio                  as cashRatio_l3y,
-               b3.totalAssets                as totalAssets_l4y,
-               b3.avgTotalAssets             as avgTotalAssets_l4y,
-               b3.fixedAssets                as fixedAssets_l4y,
-               b3.avgFixedAssets             as avgFixedAssets_l4y,
-               b3.goodwill                   as goodwill_l4y,
-               b3.avgGoodwill                as avgGoodwill_l4y,
-               b3.inventory                  as inventory_l4y,
-               b3.moneyFunds                 as moneyFunds_l4y,
-               b3.accountsPayable            as accountsPayable_l4y,
-               b3.avgAccountsPayable         as avgAccountsPayable_l4y,
-               b3.avgInventory               as avgInventory_l4y,
-               b3.totalLiquidAssets          as totalLiquidAssets_l4y,
-               b3.avgTotalLiquidAssets       as avgTotalLiquidAssets_l4y,
-               b3.totalLiabilities           as totalLiabilities_l4y,
-               b3.avgTotalLiabilities        as avgTotalLiabilities_l4y,
-               b3.accountsReceivables        as accountsReceivables_l4y,
-               b3.avgAccountsReceivables     as avgAccountsReceivables_l4y,
-               b3.interCompanyReceivables    as interCompanyReceivables_l4y,
-               b3.avgInterCompanyReceivables as avgInterCompanyReceivables_l4y,
-               b3.prepayments                as prepayments_l4y,
-               b3.avgPrepayments             as avgPrepayments_l4y,
-               b3.totalCurrentLiabilities    as totalCurrentLiabilities_l4y,
-               b3.avgTotalCurrentLiabilities as avgTotalCurrentLiabilities_l4y,
-               b3.netCashOperatActiv         as netCashOperatActiv_l4y,
-               b3.cashOutInvestActiv         as cashOutInvestActiv_l4y,
-               b3.netProfit                  as netProfit_l4y,
-               b3.operatingRevenue_TTM       as operatingRevenue_TTM_l4y,
-               b3.operatingCosts_TTM         as operatingCosts_TTM_l4y,
-               b3.taxAndSurcharges_TTM       as taxAndSurcharges_TTM_l4y,
-               b3.salesCosts_TTM             as salesCosts_TTM_l4y,
-               b3.managementCosts_TTM        as managementCosts_TTM_l4y,
-               b3.explorationCosts_TTM       as explorationCosts_TTM_l4y,
-               b3.financialCosts_TTM         as financialCosts_TTM_l4y,
-               b3.assestsDevaluation_TTM     as assestsDevaluation_TTM_l4y,
-               b3.operatingProfit_TTM        as operatingProfit_TTM_l4y,
-               b3.totalProfit_TTM            as totalProfit_TTM_l4y,
-               b3.incomeTax_TTM              as incomeTax_TTM_l4y,
-               b3.netProfit_TTM              as netProfit_TTM_l4y,
-               b3.netProAftExtrGainLoss_TTM  as netProAftExtrGainLoss_TTM_l4y,
-               b3.interest_TTM               as interest_TTM_l4y,
-               b3.deprecForFixedAssets_TTM   as deprecForFixedAssets_TTM_l4y,
-               b3.netCashOperatActiv_TTM     as netCashOperatActiv_TTM_l4y,
-               b3.cashOutInvestActiv_TTM     as cashOutInvestActiv_TTM_l4y,
-               b3.ROE                        as ROE_l4y,
-               b3.grossMargin                as grossMargin_l4y,
-               b3.ROA                        as ROA_l4y,
-               b3.NetProfitMarginonSales_TTM as NetProfitMarginonSales_TTM_l4y,
-               b3.incomeTaxRatio             as incomeTaxRatio_l4y,
-               b3.reinvestedIncomeRatio      as reinvestedIncomeRatio_l4y,
-               b3.depreciationRatio          as depreciationRatio_l4y,
-               b3.operatingCashRatio_TTM     as operatingCashRatio_TTM_l4y,
-               b3.avgFiexdOfAssets           as avgFiexdOfAssets_l4y,
-               b3.fiexdOfAssets              as fiexdOfAssets_l4y,
-               b3.acidTestRatio              as acidTestRatio_l4y,
-               b3.turnoverRatioOfReceivable  as turnoverRatioOfReceivable_l4y,
-               b3.turnoverRatioOfInventory   as turnoverRatioOfInventory_l4y,
-               b3.turnoverRatioOfTotalAssets as turnoverRatioOfTotalAssets_l4y,
-               b3.depreciationOftotalCosts   as depreciationOftotalCosts_l4y,
-               b3.cashOfnetProfit            as cashOfnetProfit_l4y,
-               b3.cashOfnetProfit_TTM        as cashOfnetProfit_TTM_l4y,
-               b3.cashOfinterest             as cashOfinterest_l4y,
-               b3.assetsLiabilitiesRatio     as assetsLiabilitiesRatio_l4y,
-               b3.tangibleAssetDebtRatio     as tangibleAssetDebtRatio_l4y,
-               b3.cashRatio                  as cashRatio_l4y,
-               b4.totalAssets                as totalAssets_l5y,
-               b4.avgTotalAssets             as avgTotalAssets_l5y,
-               b4.fixedAssets                as fixedAssets_l5y,
-               b4.avgFixedAssets             as avgFixedAssets_l5y,
-               b4.goodwill                   as goodwill_l5y,
-               b4.avgGoodwill                as avgGoodwill_l5y,
-               b4.inventory                  as inventory_l5y,
-               b4.moneyFunds                 as moneyFunds_l5y,
-               b4.accountsPayable            as accountsPayable_l5y,
-               b4.avgAccountsPayable         as avgAccountsPayable_l5y,
-               b4.avgInventory               as avgInventory_l5y,
-               b4.totalLiquidAssets          as totalLiquidAssets_l5y,
-               b4.avgTotalLiquidAssets       as avgTotalLiquidAssets_l5y,
-               b4.totalLiabilities           as totalLiabilities_l5y,
-               b4.avgTotalLiabilities        as avgTotalLiabilities_l5y,
-               b4.accountsReceivables        as accountsReceivables_l5y,
-               b4.avgAccountsReceivables     as avgAccountsReceivables_l5y,
-               b4.interCompanyReceivables    as interCompanyReceivables_l5y,
-               b4.avgInterCompanyReceivables as avgInterCompanyReceivables_l5y,
-               b4.prepayments                as prepayments_l5y,
-               b4.avgPrepayments             as avgPrepayments_l5y,
-               b4.totalCurrentLiabilities    as totalCurrentLiabilities_l5y,
-               b4.avgTotalCurrentLiabilities as avgTotalCurrentLiabilities_l5y,
-               b4.netCashOperatActiv         as netCashOperatActiv_l5y,
-               b4.cashOutInvestActiv         as cashOutInvestActiv_l5y,
-               b4.netProfit                  as netProfit_l5y,
-               b4.operatingRevenue_TTM       as operatingRevenue_TTM_l5y,
-               b4.operatingCosts_TTM         as operatingCosts_TTM_l5y,
-               b4.taxAndSurcharges_TTM       as taxAndSurcharges_TTM_l5y,
-               b4.salesCosts_TTM             as salesCosts_TTM_l5y,
-               b4.managementCosts_TTM        as managementCosts_TTM_l5y,
-               b4.explorationCosts_TTM       as explorationCosts_TTM_l5y,
-               b4.financialCosts_TTM         as financialCosts_TTM_l5y,
-               b4.assestsDevaluation_TTM     as assestsDevaluation_TTM_l5y,
-               b4.operatingProfit_TTM        as operatingProfit_TTM_l5y,
-               b4.totalProfit_TTM            as totalProfit_TTM_l5y,
-               b4.incomeTax_TTM              as incomeTax_TTM_l5y,
-               b4.netProfit_TTM              as netProfit_TTM_l5y,
-               b4.netProAftExtrGainLoss_TTM  as netProAftExtrGainLoss_TTM_l5y,
-               b4.interest_TTM               as interest_TTM_l5y,
-               b4.deprecForFixedAssets_TTM   as deprecForFixedAssets_TTM_l5y,
-               b4.netCashOperatActiv_TTM     as netCashOperatActiv_TTM_l5y,
-               b4.cashOutInvestActiv_TTM     as cashOutInvestActiv_TTM_l5y,
-               b4.ROE                        as ROE_l5y,
-               b4.grossMargin                as grossMargin_l5y,
-               b4.ROA                        as ROA_l5y,
-               b4.NetProfitMarginonSales_TTM as NetProfitMarginonSales_TTM_l5y,
-               b4.incomeTaxRatio             as incomeTaxRatio_l5y,
-               b4.reinvestedIncomeRatio      as reinvestedIncomeRatio_l5y,
-               b4.depreciationRatio          as depreciationRatio_l5y,
-               b4.operatingCashRatio_TTM     as operatingCashRatio_TTM_l5y,
-               b4.avgFiexdOfAssets           as avgFiexdOfAssets_l5y,
-               b4.fiexdOfAssets              as fiexdOfAssets_l5y,
-               b4.acidTestRatio              as acidTestRatio_l5y,
-               b4.turnoverRatioOfReceivable  as turnoverRatioOfReceivable_l5y,
-               b4.turnoverRatioOfInventory   as turnoverRatioOfInventory_l5y,
-               b4.turnoverRatioOfTotalAssets as turnoverRatioOfTotalAssets_l5y,
-               b4.depreciationOftotalCosts   as depreciationOftotalCosts_l5y,
-               b4.cashOfnetProfit            as cashOfnetProfit_l5y,
-               b4.cashOfnetProfit_TTM        as cashOfnetProfit_TTM_l5y,
-               b4.cashOfinterest             as cashOfinterest_l5y,
-               b4.assetsLiabilitiesRatio     as assetsLiabilitiesRatio_l5y,
-               b4.tangibleAssetDebtRatio     as tangibleAssetDebtRatio_l5y,
-               b4.cashRatio                  as cashRatio_l5y,
-               d.totalAssets                 as totalAssets_lq,
-               d.avgTotalAssets              as avgTotalAssets_lq,
-               d.fixedAssets                 as fixedAssets_lq,
-               d.avgFixedAssets              as avgFixedAssets_lq,
-               d.goodwill                    as goodwill_lq,
-               d.avgGoodwill                 as avgGoodwill_lq,
-               d.inventory                   as inventory_lq,
-               d.moneyFunds                  as moneyFunds_lq,
-               d.accountsPayable             as accountsPayable_lq,
-               d.avgAccountsPayable          as avgAccountsPayable_lq,
-               d.avgInventory                as avgInventory_lq,
-               d.totalLiquidAssets           as totalLiquidAssets_lq,
-               d.avgTotalLiquidAssets        as avgTotalLiquidAssets_lq,
-               d.totalLiabilities            as totalLiabilities_lq,
-               d.avgTotalLiabilities         as avgTotalLiabilities_lq,
-               d.accountsReceivables         as accountsReceivables_lq,
-               d.avgAccountsReceivables      as avgAccountsReceivables_lq,
-               d.interCompanyReceivables     as interCompanyReceivables_lq,
-               d.avgInterCompanyReceivables  as avgInterCompanyReceivables_lq,
-               d.prepayments                 as prepayments_lq,
-               d.avgPrepayments              as avgPrepayments_lq,
-               d.totalCurrentLiabilities     as totalCurrentLiabilities_lq,
-               d.avgTotalCurrentLiabilities  as avgTotalCurrentLiabilities_lq,
-               d.netCashOperatActiv          as netCashOperatActiv_lq,
-               d.cashOutInvestActiv          as cashOutInvestActiv_lq,
-               d.netProfit                   as netProfit_lq,
-               d.operatingRevenue_TTM        as operatingRevenue_TTM_lq,
-               d.operatingCosts_TTM          as operatingCosts_TTM_lq,
-               d.taxAndSurcharges_TTM        as taxAndSurcharges_TTM_lq,
-               d.salesCosts_TTM              as salesCosts_TTM_lq,
-               d.managementCosts_TTM         as managementCosts_TTM_lq,
-               d.explorationCosts_TTM        as explorationCosts_TTM_lq,
-               d.financialCosts_TTM          as financialCosts_TTM_lq,
-               d.assestsDevaluation_TTM      as assestsDevaluation_TTM_lq,
-               d.operatingProfit_TTM         as operatingProfit_TTM_lq,
-               d.totalProfit_TTM             as totalProfit_TTM_lq,
-               d.incomeTax_TTM               as incomeTax_TTM_lq,
-               d.netProfit_TTM               as netProfit_TTM_lq,
-               d.netProAftExtrGainLoss_TTM   as netProAftExtrGainLoss_TTM_lq,
-               d.interest_TTM                as interest_TTM_lq,
-               d.deprecForFixedAssets_TTM    as deprecForFixedAssets_TTM_lq,
-               d.netCashOperatActiv_TTM      as netCashOperatActiv_TTM_lq,
-               d.cashOutInvestActiv_TTM      as cashOutInvestActiv_TTM_lq,
-               d.ROE                         as ROE_lq,
-               d.grossMargin                 as grossMargin_lq,
-               d.ROA                         as ROA_lq,
-               d.NetProfitMarginonSales_TTM  as NetProfitMarginonSales_TTM_lq,
-               d.incomeTaxRatio              as incomeTaxRatio_lq,
-               d.reinvestedIncomeRatio       as reinvestedIncomeRatio_lq,
-               d.depreciationRatio           as depreciationRatio_lq,
-               d.operatingCashRatio_TTM      as operatingCashRatio_TTM_lq,
-               d.avgFiexdOfAssets            as avgFiexdOfAssets_lq,
-               d.fiexdOfAssets               as fiexdOfAssets_lq,
-               d.acidTestRatio               as acidTestRatio_lq,
-               d.turnoverRatioOfReceivable   as turnoverRatioOfReceivable_lq,
-               d.turnoverRatioOfInventory    as turnoverRatioOfInventory_lq,
-               d.turnoverRatioOfTotalAssets  as turnoverRatioOfTotalAssets_lq,
-               d.depreciationOftotalCosts    as depreciationOftotalCosts_lq,
-               d.cashOfnetProfit             as cashOfnetProfit_lq,
-               d.cashOfnetProfit_TTM         as cashOfnetProfit_TTM_lq,
-               d.cashOfinterest              as cashOfinterest_lq,
-               d.assetsLiabilitiesRatio      as assetsLiabilitiesRatio_lq,
-               d.tangibleAssetDebtRatio      as tangibleAssetDebtRatio_lq,
-               d.cashRatio                   as cashRatio_lq
-          FROM t a
-          left join t b
-            on b.report_date = add_months(a.report_date, -12)
-           and a.code = b.code
-          left join t d
-            on d.report_date = add_months(a.report_date, -3)
-           and a.code = d.code
-          left join rp c
-            on c.report_date = a.report_date
-           and a.code = c.code
-          left join stock_info f
-            on a.code = f.code
-          left join t b1
-            on b1.report_date = add_months(a.report_date, -24)
-           and a.code = b1.code
-          left join t b2
-            on b2.report_date = add_months(a.report_date, -36)
-           and a.code = b2.code
-          left join t b3
-            on b3.report_date = add_months(a.report_date, -48)
-           and a.code = b3.code
-          left join t b4
-            on b4.report_date = add_months(a.report_date, -60)
-           and a.code = b4.code
+ (select code,
+         report_date,
+         totalAssets,
+         avgTotalAssets,
+         fixedAssets,
+         avgFixedAssets,
+         goodwill,
+         avgGoodwill,
+         inventory,
+         moneyFunds,
+         accountsPayable,
+         avgAccountsPayable,
+         avgInventory,
+         totalLiquidAssets,
+         avgTotalLiquidAssets,
+         totalLiabilities,
+         avgTotalLiabilities,
+         accountsReceivables,
+         avgAccountsReceivables,
+         interCompanyReceivables,
+         avgInterCompanyReceivables,
+         prepayments,
+         avgPrepayments,
+         totalCurrentLiabilities,
+         avgTotalCurrentLiabilities,
+         netCashOperatActiv,
+         cashOutInvestActiv,
+         netProfit,
+         operatingRevenue_TTM,
+         operatingCosts_TTM,
+         taxAndSurcharges_TTM,
+         salesCosts_TTM,
+         managementCosts_TTM,
+         explorationCosts_TTM,
+         financialCosts_TTM,
+         assestsDevaluation_TTM,
+         operatingProfit_TTM,
+         totalProfit_TTM,
+         incomeTax_TTM,
+         netProfit_TTM,
+         netProAftExtrGainLoss_TTM,
+         interest_TTM,
+         deprecForFixedAssets_TTM,
+         netCashOperatActiv_TTM,
+         cashOutInvestActiv_TTM
+         ---盈利能力
+        ,
+         case
+           when avgTotalAssets - avgGoodwill - avgtotalLiabilities <= 0 then
+            0
+           else
+            netProAftExtrGainLoss_TTM /
+            (avgTotalAssets - avgGoodwill - avgtotalLiabilities)
+         end as ROE,
+         case
+           when operatingCosts_TTM <= 0 then
+            0
+           else
+            operatingRevenue_TTM / operatingCosts_TTM - 1
+         end as grossMargin,
+         case
+           when avgTotalAssets - avgGoodwill <= 0 then
+            0
+           else
+            netProAftExtrGainLoss_TTM / (avgTotalAssets - avgGoodwill)
+         end as ROA,
+         case
+           when operatingRevenue_TTM <= 0 then
+            0
+           else
+            (netProAftExtrGainLoss_TTM) / (operatingRevenue_TTM)
+         end as NetProfitMarginonSales_TTM,
+         case
+           when netProAftExtrGainLoss_TTM <= 0 then
+            0
+           else
+            incomeTax_TTM / netProAftExtrGainLoss_TTM
+         end as incomeTaxRatio,
+         case
+           when operatingRevenue_TTM <= 0 then
+            0
+           else
+            cashOutInvestActiv_TTM / operatingRevenue_TTM
+         end as reinvestedIncomeRatio,
+         case
+           when operatingRevenue_TTM <= 0 then
+            0
+           else
+            deprecForFixedAssets_TTM / operatingRevenue_TTM
+         end as depreciationRatio,
+         case
+           when operatingRevenue_TTM <= 0 then
+            0
+           else
+            (accountsReceivables + inventory - accountsPayable) /
+            operatingRevenue_TTM
+         end AS operatingCashRatio_TTM
+         
+         ---运营模式
+        ,
+         case
+           when avgTotalAssets - avgGoodwill <= 0 then
+            0
+           else
+            avgFixedAssets / (avgTotalAssets - avgGoodwill)
+         end AS avgFiexdOfAssets,
+         case
+           when avgTotalAssets <= 0 then
+            0
+           else
+            avgFixedAssets / avgTotalAssets
+         end AS fiexdOfAssets,
+         case
+           when avgTotalCurrentLiabilities <= 0 then
+            0
+           else
+            (avgTotalLiquidAssets - avgInventory - avgPrepayments) /
+            avgTotalCurrentLiabilities
+         end AS acidTestRatio
+         
+         ---运营效率
+        ,
+         case
+           when avgAccountsReceivables <= 0 then
+            0
+           else
+            operatingRevenue_TTM / avgAccountsReceivables
+         end as turnoverRatioOfReceivable,
+         case
+           when avgInventory <= 0 then
+            0
+           else
+            operatingRevenue_TTM / avgInventory
+         end as turnoverRatioOfInventory,
+         case
+           when avgTotalAssets <= 0 then
+            0
+           else
+            operatingRevenue_TTM / avgTotalAssets
+         end as turnoverRatioOfTotalAssets,
+         case
+           when operatingRevenue_TTM - totalProfit_TTM <= 0 then
+            0
+           else
+            deprecForFixedAssets_TTM /
+            (operatingRevenue_TTM - totalProfit_TTM)
+         end as depreciationOftotalCosts
+         
+         ---利润质量
+        ,
+         case
+           when netProfit <= 0 then
+            0
+           else
+            netCashOperatActiv / netProfit
+         end AS cashOfnetProfit,
+         case
+           when netProfit_TTM <= 0 then
+            0
+           else
+            netCashOperatActiv_TTM / netProfit_TTM
+         end AS cashOfnetProfit_TTM,
+         case
+           when interest_TTM <= 0 then
+            0
+           else
+            netCashOperatActiv_TTM / interest_TTM
+         end as cashOfinterest
+         
+         ---偿债能力
+        ,
+         case
+           when totalAssets <= 0 then
+            0
+           else
+            totalLiabilities / totalAssets
+         end as assetsLiabilitiesRatio,
+         case
+           when totalCurrentLiabilities <= 0 then
+            0
+           else
+            totalLiabilities / totalCurrentLiabilities
+         end as tangibleAssetDebtRatio,
+         case
+           when totalCurrentLiabilities <= 0 then
+            0
+           else
+            (totalLiquidAssets - inventory - accountsReceivables -
+            prepayments) / totalCurrentLiabilities
+         end AS cashRatio
+    from stock_financial_TTM),
+rp as
+ (select code,
+       to_date(report_date,'yyyy-mm-dd') as report_date,
+       to_date(send_date,'yyyy-mm-dd') as send_date,
+       to_date(nvl(lead(send_date, 1) over(partition by code order by report_date),
+           to_char(sysdate, 'yyyy-mm-dd')),'yyyy-mm-dd') as end_date
+  from (select code,
+               to_char(report_date, 'yyyy-mm-dd') as report_date,
+               to_char(MIN(real_date), 'yyyy-mm-dd') as send_date
+          from stock_calendar
+         group by code, report_date) h)
+SELECT A.CODE,
+INDUSTRY,
+NAME,
+AREA,
+A.REPORT_DATE,
+ADD_MONTHS(A.REPORT_DATE, -12) AS LASTYEAR,
+ADD_MONTHS(A.REPORT_DATE, -3) AS LAG1,
+ADD_MONTHS(A.REPORT_DATE, -24) AS LAST2YEAR,
+ADD_MONTHS(A.REPORT_DATE, -36) AS LAST3YEAR,
+ADD_MONTHS(A.REPORT_DATE, -48) AS LAST4YEAR,
+ADD_MONTHS(A.REPORT_DATE, -60) AS LAST5YEAR,
+SEND_DATE,
+END_DATE,
+A.TOTALASSETS,
+A.AVGTOTALASSETS,
+A.FIXEDASSETS,
+A.AVGFIXEDASSETS,
+A.GOODWILL,
+A.AVGGOODWILL,
+A.INVENTORY,
+A.MONEYFUNDS,
+A.ACCOUNTSPAYABLE,
+A.AVGACCOUNTSPAYABLE,
+A.AVGINVENTORY,
+A.TOTALLIQUIDASSETS,
+A.AVGTOTALLIQUIDASSETS,
+A.TOTALLIABILITIES,
+A.AVGTOTALLIABILITIES,
+A.ACCOUNTSRECEIVABLES,
+A.AVGACCOUNTSRECEIVABLES,
+A.INTERCOMPANYRECEIVABLES,
+A.AVGINTERCOMPANYRECEIVABLES,
+A.PREPAYMENTS,
+A.AVGPREPAYMENTS,
+A.TOTALCURRENTLIABILITIES,
+A.AVGTOTALCURRENTLIABILITIES,
+A.NETCASHOPERATACTIV,
+A.CASHOUTINVESTACTIV,
+A.NETPROFIT,
+A.OPERATINGREVENUE_TTM,
+A.OPERATINGCOSTS_TTM,
+A.TAXANDSURCHARGES_TTM,
+A.SALESCOSTS_TTM,
+A.MANAGEMENTCOSTS_TTM,
+A.EXPLORATIONCOSTS_TTM,
+A.FINANCIALCOSTS_TTM,
+A.ASSESTSDEVALUATION_TTM,
+A.OPERATINGPROFIT_TTM,
+A.TOTALPROFIT_TTM,
+A.INCOMETAX_TTM,
+A.NETPROFIT_TTM,
+A.NETPROAFTEXTRGAINLOSS_TTM,
+A.INTEREST_TTM,
+A.DEPRECFORFIXEDASSETS_TTM,
+A.NETCASHOPERATACTIV_TTM,
+A.CASHOUTINVESTACTIV_TTM,
+A.ROE,
+A.GROSSMARGIN,
+A.ROA,
+A.NETPROFITMARGINONSALES_TTM,
+A.INCOMETAXRATIO,
+A.REINVESTEDINCOMERATIO,
+A.DEPRECIATIONRATIO,
+A.OPERATINGCASHRATIO_TTM,
+A.AVGFIEXDOFASSETS,
+A.FIEXDOFASSETS,
+A.ACIDTESTRATIO,
+A.TURNOVERRATIOOFRECEIVABLE,
+A.TURNOVERRATIOOFINVENTORY,
+A.TURNOVERRATIOOFTOTALASSETS,
+A.DEPRECIATIONOFTOTALCOSTS,
+A.CASHOFNETPROFIT,
+A.CASHOFNETPROFIT_TTM,
+A.CASHOFINTEREST,
+A.ASSETSLIABILITIESRATIO,
+A.TANGIBLEASSETDEBTRATIO,
+A.CASHRATIO,
+B.TOTALASSETS                 AS TOTALASSETS_LY,
+B.AVGTOTALASSETS              AS AVGTOTALASSETS_LY,
+B.FIXEDASSETS                 AS FIXEDASSETS_LY,
+B.AVGFIXEDASSETS              AS AVGFIXEDASSETS_LY,
+B.GOODWILL                    AS GOODWILL_LY,
+B.AVGGOODWILL                 AS AVGGOODWILL_LY,
+B.INVENTORY                   AS INVENTORY_LY,
+B.MONEYFUNDS                  AS MONEYFUNDS_LY,
+B.ACCOUNTSPAYABLE             AS ACCOUNTSPAYABLE_LY,
+B.AVGACCOUNTSPAYABLE          AS AVGACCOUNTSPAYABLE_LY,
+B.AVGINVENTORY                AS AVGINVENTORY_LY,
+B.TOTALLIQUIDASSETS           AS TOTALLIQUIDASSETS_LY,
+B.AVGTOTALLIQUIDASSETS        AS AVGTOTALLIQUIDASSETS_LY,
+B.TOTALLIABILITIES            AS TOTALLIABILITIES_LY,
+B.AVGTOTALLIABILITIES         AS AVGTOTALLIABILITIES_LY,
+B.ACCOUNTSRECEIVABLES         AS ACCOUNTSRECEIVABLES_LY,
+B.AVGACCOUNTSRECEIVABLES      AS AVGACCOUNTSRECEIVABLES_LY,
+B.INTERCOMPANYRECEIVABLES     AS INTERCOMPANYRECEIVABLES_LY,
+B.AVGINTERCOMPANYRECEIVABLES  AS AVGINTERCOMPANYRECEIVABLES_LY,
+B.PREPAYMENTS                 AS PREPAYMENTS_LY,
+B.AVGPREPAYMENTS              AS AVGPREPAYMENTS_LY,
+B.TOTALCURRENTLIABILITIES     AS TOTALCURRENTLIABILITIES_LY,
+B.AVGTOTALCURRENTLIABILITIES  AS AVGTOTALCURRENTLIABILITIES_LY,
+B.NETCASHOPERATACTIV          AS NETCASHOPERATACTIV_LY,
+B.CASHOUTINVESTACTIV          AS CASHOUTINVESTACTIV_LY,
+B.NETPROFIT                   AS NETPROFIT_LY,
+B.OPERATINGREVENUE_TTM        AS OPERATINGREVENUE_TTM_LY,
+B.OPERATINGCOSTS_TTM          AS OPERATINGCOSTS_TTM_LY,
+B.TAXANDSURCHARGES_TTM        AS TAXANDSURCHARGES_TTM_LY,
+B.SALESCOSTS_TTM              AS SALESCOSTS_TTM_LY,
+B.MANAGEMENTCOSTS_TTM         AS MANAGEMENTCOSTS_TTM_LY,
+B.EXPLORATIONCOSTS_TTM        AS EXPLORATIONCOSTS_TTM_LY,
+B.FINANCIALCOSTS_TTM          AS FINANCIALCOSTS_TTM_LY,
+B.ASSESTSDEVALUATION_TTM      AS ASSESTSDEVALUATION_TTM_LY,
+B.OPERATINGPROFIT_TTM         AS OPERATINGPROFIT_TTM_LY,
+B.TOTALPROFIT_TTM             AS TOTALPROFIT_TTM_LY,
+B.INCOMETAX_TTM               AS INCOMETAX_TTM_LY,
+B.NETPROFIT_TTM               AS NETPROFIT_TTM_LY,
+B.NETPROAFTEXTRGAINLOSS_TTM   AS NETPROAFTEXTRGAINLOSS_TTM_LY,
+B.INTEREST_TTM                AS INTEREST_TTM_LY,
+B.DEPRECFORFIXEDASSETS_TTM    AS DEPRECFORFIXEDASSETS_TTM_LY,
+B.NETCASHOPERATACTIV_TTM      AS NETCASHOPERATACTIV_TTM_LY,
+B.CASHOUTINVESTACTIV_TTM      AS CASHOUTINVESTACTIV_TTM_LY,
+B.ROE                         AS ROE_LY,
+B.GROSSMARGIN                 AS GROSSMARGIN_LY,
+B.ROA                         AS ROA_LY,
+B.NETPROFITMARGINONSALES_TTM  AS NETPROFITMARGINONSALES_TTM_LY,
+B.INCOMETAXRATIO              AS INCOMETAXRATIO_LY,
+B.REINVESTEDINCOMERATIO       AS REINVESTEDINCOMERATIO_LY,
+B.DEPRECIATIONRATIO           AS DEPRECIATIONRATIO_LY,
+B.OPERATINGCASHRATIO_TTM      AS OPERATINGCASHRATIO_TTM_LY,
+B.AVGFIEXDOFASSETS            AS AVGFIEXDOFASSETS_LY,
+B.FIEXDOFASSETS               AS FIEXDOFASSETS_LY,
+B.ACIDTESTRATIO               AS ACIDTESTRATIO_LY,
+B.TURNOVERRATIOOFRECEIVABLE   AS TURNOVERRATIOOFRECEIVABLE_LY,
+B.TURNOVERRATIOOFINVENTORY    AS TURNOVERRATIOOFINVENTORY_LY,
+B.TURNOVERRATIOOFTOTALASSETS  AS TURNOVERRATIOOFTOTALASSETS_LY,
+B.DEPRECIATIONOFTOTALCOSTS    AS DEPRECIATIONOFTOTALCOSTS_LY,
+B.CASHOFNETPROFIT             AS CASHOFNETPROFIT_LY,
+B.CASHOFNETPROFIT_TTM         AS CASHOFNETPROFIT_TTM_LY,
+B.CASHOFINTEREST              AS CASHOFINTEREST_LY,
+B.ASSETSLIABILITIESRATIO      AS ASSETSLIABILITIESRATIO_LY,
+B.TANGIBLEASSETDEBTRATIO      AS TANGIBLEASSETDEBTRATIO_LY,
+B.CASHRATIO                   AS CASHRATIO_LY,
+B1.TOTALASSETS                AS TOTALASSETS_L2Y,
+B1.AVGTOTALASSETS             AS AVGTOTALASSETS_L2Y,
+B1.FIXEDASSETS                AS FIXEDASSETS_L2Y,
+B1.AVGFIXEDASSETS             AS AVGFIXEDASSETS_L2Y,
+B1.GOODWILL                   AS GOODWILL_L2Y,
+B1.AVGGOODWILL                AS AVGGOODWILL_L2Y,
+B1.INVENTORY                  AS INVENTORY_L2Y,
+B1.MONEYFUNDS                 AS MONEYFUNDS_L2Y,
+B1.ACCOUNTSPAYABLE            AS ACCOUNTSPAYABLE_L2Y,
+B1.AVGACCOUNTSPAYABLE         AS AVGACCOUNTSPAYABLE_L2Y,
+B1.AVGINVENTORY               AS AVGINVENTORY_L2Y,
+B1.TOTALLIQUIDASSETS          AS TOTALLIQUIDASSETS_L2Y,
+B1.AVGTOTALLIQUIDASSETS       AS AVGTOTALLIQUIDASSETS_L2Y,
+B1.TOTALLIABILITIES           AS TOTALLIABILITIES_L2Y,
+B1.AVGTOTALLIABILITIES        AS AVGTOTALLIABILITIES_L2Y,
+B1.ACCOUNTSRECEIVABLES        AS ACCOUNTSRECEIVABLES_L2Y,
+B1.AVGACCOUNTSRECEIVABLES     AS AVGACCOUNTSRECEIVABLES_L2Y,
+B1.INTERCOMPANYRECEIVABLES    AS INTERCOMPANYRECEIVABLES_L2Y,
+B1.AVGINTERCOMPANYRECEIVABLES AS AVGINTERCOMPANYRECEIVABLES_L2Y,
+B1.PREPAYMENTS                AS PREPAYMENTS_L2Y,
+B1.AVGPREPAYMENTS             AS AVGPREPAYMENTS_L2Y,
+B1.TOTALCURRENTLIABILITIES    AS TOTALCURRENTLIABILITIES_L2Y,
+B1.AVGTOTALCURRENTLIABILITIES AS AVGTOTALCURRENTLIABILITIES_L2Y,
+B1.NETCASHOPERATACTIV         AS NETCASHOPERATACTIV_L2Y,
+B1.CASHOUTINVESTACTIV         AS CASHOUTINVESTACTIV_L2Y,
+B1.NETPROFIT                  AS NETPROFIT_L2Y,
+B1.OPERATINGREVENUE_TTM       AS OPERATINGREVENUE_TTM_L2Y,
+B1.OPERATINGCOSTS_TTM         AS OPERATINGCOSTS_TTM_L2Y,
+B1.TAXANDSURCHARGES_TTM       AS TAXANDSURCHARGES_TTM_L2Y,
+B1.SALESCOSTS_TTM             AS SALESCOSTS_TTM_L2Y,
+B1.MANAGEMENTCOSTS_TTM        AS MANAGEMENTCOSTS_TTM_L2Y,
+B1.EXPLORATIONCOSTS_TTM       AS EXPLORATIONCOSTS_TTM_L2Y,
+B1.FINANCIALCOSTS_TTM         AS FINANCIALCOSTS_TTM_L2Y,
+B1.ASSESTSDEVALUATION_TTM     AS ASSESTSDEVALUATION_TTM_L2Y,
+B1.OPERATINGPROFIT_TTM        AS OPERATINGPROFIT_TTM_L2Y,
+B1.TOTALPROFIT_TTM            AS TOTALPROFIT_TTM_L2Y,
+B1.INCOMETAX_TTM              AS INCOMETAX_TTM_L2Y,
+B1.NETPROFIT_TTM              AS NETPROFIT_TTM_L2Y,
+B1.NETPROAFTEXTRGAINLOSS_TTM  AS NETPROAFTEXTRGAINLOSS_TTM_L2Y,
+B1.INTEREST_TTM               AS INTEREST_TTM_L2Y,
+B1.DEPRECFORFIXEDASSETS_TTM   AS DEPRECFORFIXEDASSETS_TTM_L2Y,
+B1.NETCASHOPERATACTIV_TTM     AS NETCASHOPERATACTIV_TTM_L2Y,
+B1.CASHOUTINVESTACTIV_TTM     AS CASHOUTINVESTACTIV_TTM_L2Y,
+B1.ROE                        AS ROE_L2Y,
+B1.GROSSMARGIN                AS GROSSMARGIN_L2Y,
+B1.ROA                        AS ROA_L2Y,
+B1.NETPROFITMARGINONSALES_TTM AS NETPROFITMARGINONSALES_TTM_L2Y,
+B1.INCOMETAXRATIO             AS INCOMETAXRATIO_L2Y,
+B1.REINVESTEDINCOMERATIO      AS REINVESTEDINCOMERATIO_L2Y,
+B1.DEPRECIATIONRATIO          AS DEPRECIATIONRATIO_L2Y,
+B1.OPERATINGCASHRATIO_TTM     AS OPERATINGCASHRATIO_TTM_L2Y,
+B1.AVGFIEXDOFASSETS           AS AVGFIEXDOFASSETS_L2Y,
+B1.FIEXDOFASSETS              AS FIEXDOFASSETS_L2Y,
+B1.ACIDTESTRATIO              AS ACIDTESTRATIO_L2Y,
+B1.TURNOVERRATIOOFRECEIVABLE  AS TURNOVERRATIOOFRECEIVABLE_L2Y,
+B1.TURNOVERRATIOOFINVENTORY   AS TURNOVERRATIOOFINVENTORY_L2Y,
+B1.TURNOVERRATIOOFTOTALASSETS AS TURNOVERRATIOOFTOTALASSETS_L2Y,
+B1.DEPRECIATIONOFTOTALCOSTS   AS DEPRECIATIONOFTOTALCOSTS_L2Y,
+B1.CASHOFNETPROFIT            AS CASHOFNETPROFIT_L2Y,
+B1.CASHOFNETPROFIT_TTM        AS CASHOFNETPROFIT_TTM_L2Y,
+B1.CASHOFINTEREST             AS CASHOFINTEREST_L2Y,
+B1.ASSETSLIABILITIESRATIO     AS ASSETSLIABILITIESRATIO_L2Y,
+B1.TANGIBLEASSETDEBTRATIO     AS TANGIBLEASSETDEBTRATIO_L2Y,
+B1.CASHRATIO                  AS CASHRATIO_L2Y,
+B2.TOTALASSETS                AS TOTALASSETS_L3Y,
+B2.AVGTOTALASSETS             AS AVGTOTALASSETS_L3Y,
+B2.FIXEDASSETS                AS FIXEDASSETS_L3Y,
+B2.AVGFIXEDASSETS             AS AVGFIXEDASSETS_L3Y,
+B2.GOODWILL                   AS GOODWILL_L3Y,
+B2.AVGGOODWILL                AS AVGGOODWILL_L3Y,
+B2.INVENTORY                  AS INVENTORY_L3Y,
+B2.MONEYFUNDS                 AS MONEYFUNDS_L3Y,
+B2.ACCOUNTSPAYABLE            AS ACCOUNTSPAYABLE_L3Y,
+B2.AVGACCOUNTSPAYABLE         AS AVGACCOUNTSPAYABLE_L3Y,
+B2.AVGINVENTORY               AS AVGINVENTORY_L3Y,
+B2.TOTALLIQUIDASSETS          AS TOTALLIQUIDASSETS_L3Y,
+B2.AVGTOTALLIQUIDASSETS       AS AVGTOTALLIQUIDASSETS_L3Y,
+B2.TOTALLIABILITIES           AS TOTALLIABILITIES_L3Y,
+B2.AVGTOTALLIABILITIES        AS AVGTOTALLIABILITIES_L3Y,
+B2.ACCOUNTSRECEIVABLES        AS ACCOUNTSRECEIVABLES_L3Y,
+B2.AVGACCOUNTSRECEIVABLES     AS AVGACCOUNTSRECEIVABLES_L3Y,
+B2.INTERCOMPANYRECEIVABLES    AS INTERCOMPANYRECEIVABLES_L3Y,
+B2.AVGINTERCOMPANYRECEIVABLES AS AVGINTERCOMPANYRECEIVABLES_L3Y,
+B2.PREPAYMENTS                AS PREPAYMENTS_L3Y,
+B2.AVGPREPAYMENTS             AS AVGPREPAYMENTS_L3Y,
+B2.TOTALCURRENTLIABILITIES    AS TOTALCURRENTLIABILITIES_L3Y,
+B2.AVGTOTALCURRENTLIABILITIES AS AVGTOTALCURRENTLIABILITIES_L3Y,
+B2.NETCASHOPERATACTIV         AS NETCASHOPERATACTIV_L3Y,
+B2.CASHOUTINVESTACTIV         AS CASHOUTINVESTACTIV_L3Y,
+B2.NETPROFIT                  AS NETPROFIT_L3Y,
+B2.OPERATINGREVENUE_TTM       AS OPERATINGREVENUE_TTM_L3Y,
+B2.OPERATINGCOSTS_TTM         AS OPERATINGCOSTS_TTM_L3Y,
+B2.TAXANDSURCHARGES_TTM       AS TAXANDSURCHARGES_TTM_L3Y,
+B2.SALESCOSTS_TTM             AS SALESCOSTS_TTM_L3Y,
+B2.MANAGEMENTCOSTS_TTM        AS MANAGEMENTCOSTS_TTM_L3Y,
+B2.EXPLORATIONCOSTS_TTM       AS EXPLORATIONCOSTS_TTM_L3Y,
+B2.FINANCIALCOSTS_TTM         AS FINANCIALCOSTS_TTM_L3Y,
+B2.ASSESTSDEVALUATION_TTM     AS ASSESTSDEVALUATION_TTM_L3Y,
+B2.OPERATINGPROFIT_TTM        AS OPERATINGPROFIT_TTM_L3Y,
+B2.TOTALPROFIT_TTM            AS TOTALPROFIT_TTM_L3Y,
+B2.INCOMETAX_TTM              AS INCOMETAX_TTM_L3Y,
+B2.NETPROFIT_TTM              AS NETPROFIT_TTM_L3Y,
+B2.NETPROAFTEXTRGAINLOSS_TTM  AS NETPROAFTEXTRGAINLOSS_TTM_L3Y,
+B2.INTEREST_TTM               AS INTEREST_TTM_L3Y,
+B2.DEPRECFORFIXEDASSETS_TTM   AS DEPRECFORFIXEDASSETS_TTM_L3Y,
+B2.NETCASHOPERATACTIV_TTM     AS NETCASHOPERATACTIV_TTM_L3Y,
+B2.CASHOUTINVESTACTIV_TTM     AS CASHOUTINVESTACTIV_TTM_L3Y,
+B2.ROE                        AS ROE_L3Y,
+B2.GROSSMARGIN                AS GROSSMARGIN_L3Y,
+B2.ROA                        AS ROA_L3Y,
+B2.NETPROFITMARGINONSALES_TTM AS NETPROFITMARGINONSALES_TTM_L3Y,
+B2.INCOMETAXRATIO             AS INCOMETAXRATIO_L3Y,
+B2.REINVESTEDINCOMERATIO      AS REINVESTEDINCOMERATIO_L3Y,
+B2.DEPRECIATIONRATIO          AS DEPRECIATIONRATIO_L3Y,
+B2.OPERATINGCASHRATIO_TTM     AS OPERATINGCASHRATIO_TTM_L3Y,
+B2.AVGFIEXDOFASSETS           AS AVGFIEXDOFASSETS_L3Y,
+B2.FIEXDOFASSETS              AS FIEXDOFASSETS_L3Y,
+B2.ACIDTESTRATIO              AS ACIDTESTRATIO_L3Y,
+B2.TURNOVERRATIOOFRECEIVABLE  AS TURNOVERRATIOOFRECEIVABLE_L3Y,
+B2.TURNOVERRATIOOFINVENTORY   AS TURNOVERRATIOOFINVENTORY_L3Y,
+B2.TURNOVERRATIOOFTOTALASSETS AS TURNOVERRATIOOFTOTALASSETS_L3Y,
+B2.DEPRECIATIONOFTOTALCOSTS   AS DEPRECIATIONOFTOTALCOSTS_L3Y,
+B2.CASHOFNETPROFIT            AS CASHOFNETPROFIT_L3Y,
+B2.CASHOFNETPROFIT_TTM        AS CASHOFNETPROFIT_TTM_L3Y,
+B2.CASHOFINTEREST             AS CASHOFINTEREST_L3Y,
+B2.ASSETSLIABILITIESRATIO     AS ASSETSLIABILITIESRATIO_L3Y,
+B2.TANGIBLEASSETDEBTRATIO     AS TANGIBLEASSETDEBTRATIO_L3Y,
+B2.CASHRATIO                  AS CASHRATIO_L3Y,
+B3.TOTALASSETS                AS TOTALASSETS_L4Y,
+B3.AVGTOTALASSETS             AS AVGTOTALASSETS_L4Y,
+B3.FIXEDASSETS                AS FIXEDASSETS_L4Y,
+B3.AVGFIXEDASSETS             AS AVGFIXEDASSETS_L4Y,
+B3.GOODWILL                   AS GOODWILL_L4Y,
+B3.AVGGOODWILL                AS AVGGOODWILL_L4Y,
+B3.INVENTORY                  AS INVENTORY_L4Y,
+B3.MONEYFUNDS                 AS MONEYFUNDS_L4Y,
+B3.ACCOUNTSPAYABLE            AS ACCOUNTSPAYABLE_L4Y,
+B3.AVGACCOUNTSPAYABLE         AS AVGACCOUNTSPAYABLE_L4Y,
+B3.AVGINVENTORY               AS AVGINVENTORY_L4Y,
+B3.TOTALLIQUIDASSETS          AS TOTALLIQUIDASSETS_L4Y,
+B3.AVGTOTALLIQUIDASSETS       AS AVGTOTALLIQUIDASSETS_L4Y,
+B3.TOTALLIABILITIES           AS TOTALLIABILITIES_L4Y,
+B3.AVGTOTALLIABILITIES        AS AVGTOTALLIABILITIES_L4Y,
+B3.ACCOUNTSRECEIVABLES        AS ACCOUNTSRECEIVABLES_L4Y,
+B3.AVGACCOUNTSRECEIVABLES     AS AVGACCOUNTSRECEIVABLES_L4Y,
+B3.INTERCOMPANYRECEIVABLES    AS INTERCOMPANYRECEIVABLES_L4Y,
+B3.AVGINTERCOMPANYRECEIVABLES AS AVGINTERCOMPANYRECEIVABLES_L4Y,
+B3.PREPAYMENTS                AS PREPAYMENTS_L4Y,
+B3.AVGPREPAYMENTS             AS AVGPREPAYMENTS_L4Y,
+B3.TOTALCURRENTLIABILITIES    AS TOTALCURRENTLIABILITIES_L4Y,
+B3.AVGTOTALCURRENTLIABILITIES AS AVGTOTALCURRENTLIABILITIES_L4Y,
+B3.NETCASHOPERATACTIV         AS NETCASHOPERATACTIV_L4Y,
+B3.CASHOUTINVESTACTIV         AS CASHOUTINVESTACTIV_L4Y,
+B3.NETPROFIT                  AS NETPROFIT_L4Y,
+B3.OPERATINGREVENUE_TTM       AS OPERATINGREVENUE_TTM_L4Y,
+B3.OPERATINGCOSTS_TTM         AS OPERATINGCOSTS_TTM_L4Y,
+B3.TAXANDSURCHARGES_TTM       AS TAXANDSURCHARGES_TTM_L4Y,
+B3.SALESCOSTS_TTM             AS SALESCOSTS_TTM_L4Y,
+B3.MANAGEMENTCOSTS_TTM        AS MANAGEMENTCOSTS_TTM_L4Y,
+B3.EXPLORATIONCOSTS_TTM       AS EXPLORATIONCOSTS_TTM_L4Y,
+B3.FINANCIALCOSTS_TTM         AS FINANCIALCOSTS_TTM_L4Y,
+B3.ASSESTSDEVALUATION_TTM     AS ASSESTSDEVALUATION_TTM_L4Y,
+B3.OPERATINGPROFIT_TTM        AS OPERATINGPROFIT_TTM_L4Y,
+B3.TOTALPROFIT_TTM            AS TOTALPROFIT_TTM_L4Y,
+B3.INCOMETAX_TTM              AS INCOMETAX_TTM_L4Y,
+B3.NETPROFIT_TTM              AS NETPROFIT_TTM_L4Y,
+B3.NETPROAFTEXTRGAINLOSS_TTM  AS NETPROAFTEXTRGAINLOSS_TTM_L4Y,
+B3.INTEREST_TTM               AS INTEREST_TTM_L4Y,
+B3.DEPRECFORFIXEDASSETS_TTM   AS DEPRECFORFIXEDASSETS_TTM_L4Y,
+B3.NETCASHOPERATACTIV_TTM     AS NETCASHOPERATACTIV_TTM_L4Y,
+B3.CASHOUTINVESTACTIV_TTM     AS CASHOUTINVESTACTIV_TTM_L4Y,
+B3.ROE                        AS ROE_L4Y,
+B3.GROSSMARGIN                AS GROSSMARGIN_L4Y,
+B3.ROA                        AS ROA_L4Y,
+B3.NETPROFITMARGINONSALES_TTM AS NETPROFITMARGINONSALES_TTM_L4Y,
+B3.INCOMETAXRATIO             AS INCOMETAXRATIO_L4Y,
+B3.REINVESTEDINCOMERATIO      AS REINVESTEDINCOMERATIO_L4Y,
+B3.DEPRECIATIONRATIO          AS DEPRECIATIONRATIO_L4Y,
+B3.OPERATINGCASHRATIO_TTM     AS OPERATINGCASHRATIO_TTM_L4Y,
+B3.AVGFIEXDOFASSETS           AS AVGFIEXDOFASSETS_L4Y,
+B3.FIEXDOFASSETS              AS FIEXDOFASSETS_L4Y,
+B3.ACIDTESTRATIO              AS ACIDTESTRATIO_L4Y,
+B3.TURNOVERRATIOOFRECEIVABLE  AS TURNOVERRATIOOFRECEIVABLE_L4Y,
+B3.TURNOVERRATIOOFINVENTORY   AS TURNOVERRATIOOFINVENTORY_L4Y,
+B3.TURNOVERRATIOOFTOTALASSETS AS TURNOVERRATIOOFTOTALASSETS_L4Y,
+B3.DEPRECIATIONOFTOTALCOSTS   AS DEPRECIATIONOFTOTALCOSTS_L4Y,
+B3.CASHOFNETPROFIT            AS CASHOFNETPROFIT_L4Y,
+B3.CASHOFNETPROFIT_TTM        AS CASHOFNETPROFIT_TTM_L4Y,
+B3.CASHOFINTEREST             AS CASHOFINTEREST_L4Y,
+B3.ASSETSLIABILITIESRATIO     AS ASSETSLIABILITIESRATIO_L4Y,
+B3.TANGIBLEASSETDEBTRATIO     AS TANGIBLEASSETDEBTRATIO_L4Y,
+B3.CASHRATIO                  AS CASHRATIO_L4Y,
+B4.TOTALASSETS                AS TOTALASSETS_L5Y,
+B4.AVGTOTALASSETS             AS AVGTOTALASSETS_L5Y,
+B4.FIXEDASSETS                AS FIXEDASSETS_L5Y,
+B4.AVGFIXEDASSETS             AS AVGFIXEDASSETS_L5Y,
+B4.GOODWILL                   AS GOODWILL_L5Y,
+B4.AVGGOODWILL                AS AVGGOODWILL_L5Y,
+B4.INVENTORY                  AS INVENTORY_L5Y,
+B4.MONEYFUNDS                 AS MONEYFUNDS_L5Y,
+B4.ACCOUNTSPAYABLE            AS ACCOUNTSPAYABLE_L5Y,
+B4.AVGACCOUNTSPAYABLE         AS AVGACCOUNTSPAYABLE_L5Y,
+B4.AVGINVENTORY               AS AVGINVENTORY_L5Y,
+B4.TOTALLIQUIDASSETS          AS TOTALLIQUIDASSETS_L5Y,
+B4.AVGTOTALLIQUIDASSETS       AS AVGTOTALLIQUIDASSETS_L5Y,
+B4.TOTALLIABILITIES           AS TOTALLIABILITIES_L5Y,
+B4.AVGTOTALLIABILITIES        AS AVGTOTALLIABILITIES_L5Y,
+B4.ACCOUNTSRECEIVABLES        AS ACCOUNTSRECEIVABLES_L5Y,
+B4.AVGACCOUNTSRECEIVABLES     AS AVGACCOUNTSRECEIVABLES_L5Y,
+B4.INTERCOMPANYRECEIVABLES    AS INTERCOMPANYRECEIVABLES_L5Y,
+B4.AVGINTERCOMPANYRECEIVABLES AS AVGINTERCOMPANYRECEIVABLES_L5Y,
+B4.PREPAYMENTS                AS PREPAYMENTS_L5Y,
+B4.AVGPREPAYMENTS             AS AVGPREPAYMENTS_L5Y,
+B4.TOTALCURRENTLIABILITIES    AS TOTALCURRENTLIABILITIES_L5Y,
+B4.AVGTOTALCURRENTLIABILITIES AS AVGTOTALCURRENTLIABILITIES_L5Y,
+B4.NETCASHOPERATACTIV         AS NETCASHOPERATACTIV_L5Y,
+B4.CASHOUTINVESTACTIV         AS CASHOUTINVESTACTIV_L5Y,
+B4.NETPROFIT                  AS NETPROFIT_L5Y,
+B4.OPERATINGREVENUE_TTM       AS OPERATINGREVENUE_TTM_L5Y,
+B4.OPERATINGCOSTS_TTM         AS OPERATINGCOSTS_TTM_L5Y,
+B4.TAXANDSURCHARGES_TTM       AS TAXANDSURCHARGES_TTM_L5Y,
+B4.SALESCOSTS_TTM             AS SALESCOSTS_TTM_L5Y,
+B4.MANAGEMENTCOSTS_TTM        AS MANAGEMENTCOSTS_TTM_L5Y,
+B4.EXPLORATIONCOSTS_TTM       AS EXPLORATIONCOSTS_TTM_L5Y,
+B4.FINANCIALCOSTS_TTM         AS FINANCIALCOSTS_TTM_L5Y,
+B4.ASSESTSDEVALUATION_TTM     AS ASSESTSDEVALUATION_TTM_L5Y,
+B4.OPERATINGPROFIT_TTM        AS OPERATINGPROFIT_TTM_L5Y,
+B4.TOTALPROFIT_TTM            AS TOTALPROFIT_TTM_L5Y,
+B4.INCOMETAX_TTM              AS INCOMETAX_TTM_L5Y,
+B4.NETPROFIT_TTM              AS NETPROFIT_TTM_L5Y,
+B4.NETPROAFTEXTRGAINLOSS_TTM  AS NETPROAFTEXTRGAINLOSS_TTM_L5Y,
+B4.INTEREST_TTM               AS INTEREST_TTM_L5Y,
+B4.DEPRECFORFIXEDASSETS_TTM   AS DEPRECFORFIXEDASSETS_TTM_L5Y,
+B4.NETCASHOPERATACTIV_TTM     AS NETCASHOPERATACTIV_TTM_L5Y,
+B4.CASHOUTINVESTACTIV_TTM     AS CASHOUTINVESTACTIV_TTM_L5Y,
+B4.ROE                        AS ROE_L5Y,
+B4.GROSSMARGIN                AS GROSSMARGIN_L5Y,
+B4.ROA                        AS ROA_L5Y,
+B4.NETPROFITMARGINONSALES_TTM AS NETPROFITMARGINONSALES_TTM_L5Y,
+B4.INCOMETAXRATIO             AS INCOMETAXRATIO_L5Y,
+B4.REINVESTEDINCOMERATIO      AS REINVESTEDINCOMERATIO_L5Y,
+B4.DEPRECIATIONRATIO          AS DEPRECIATIONRATIO_L5Y,
+B4.OPERATINGCASHRATIO_TTM     AS OPERATINGCASHRATIO_TTM_L5Y,
+B4.AVGFIEXDOFASSETS           AS AVGFIEXDOFASSETS_L5Y,
+B4.FIEXDOFASSETS              AS FIEXDOFASSETS_L5Y,
+B4.ACIDTESTRATIO              AS ACIDTESTRATIO_L5Y,
+B4.TURNOVERRATIOOFRECEIVABLE  AS TURNOVERRATIOOFRECEIVABLE_L5Y,
+B4.TURNOVERRATIOOFINVENTORY   AS TURNOVERRATIOOFINVENTORY_L5Y,
+B4.TURNOVERRATIOOFTOTALASSETS AS TURNOVERRATIOOFTOTALASSETS_L5Y,
+B4.DEPRECIATIONOFTOTALCOSTS   AS DEPRECIATIONOFTOTALCOSTS_L5Y,
+B4.CASHOFNETPROFIT            AS CASHOFNETPROFIT_L5Y,
+B4.CASHOFNETPROFIT_TTM        AS CASHOFNETPROFIT_TTM_L5Y,
+B4.CASHOFINTEREST             AS CASHOFINTEREST_L5Y,
+B4.ASSETSLIABILITIESRATIO     AS ASSETSLIABILITIESRATIO_L5Y,
+B4.TANGIBLEASSETDEBTRATIO     AS TANGIBLEASSETDEBTRATIO_L5Y,
+B4.CASHRATIO                  AS CASHRATIO_L5Y,
+D.TOTALASSETS                 AS TOTALASSETS_LQ,
+D.AVGTOTALASSETS              AS AVGTOTALASSETS_LQ,
+D.FIXEDASSETS                 AS FIXEDASSETS_LQ,
+D.AVGFIXEDASSETS              AS AVGFIXEDASSETS_LQ,
+D.GOODWILL                    AS GOODWILL_LQ,
+D.AVGGOODWILL                 AS AVGGOODWILL_LQ,
+D.INVENTORY                   AS INVENTORY_LQ,
+D.MONEYFUNDS                  AS MONEYFUNDS_LQ,
+D.ACCOUNTSPAYABLE             AS ACCOUNTSPAYABLE_LQ,
+D.AVGACCOUNTSPAYABLE          AS AVGACCOUNTSPAYABLE_LQ,
+D.AVGINVENTORY                AS AVGINVENTORY_LQ,
+D.TOTALLIQUIDASSETS           AS TOTALLIQUIDASSETS_LQ,
+D.AVGTOTALLIQUIDASSETS        AS AVGTOTALLIQUIDASSETS_LQ,
+D.TOTALLIABILITIES            AS TOTALLIABILITIES_LQ,
+D.AVGTOTALLIABILITIES         AS AVGTOTALLIABILITIES_LQ,
+D.ACCOUNTSRECEIVABLES         AS ACCOUNTSRECEIVABLES_LQ,
+D.AVGACCOUNTSRECEIVABLES      AS AVGACCOUNTSRECEIVABLES_LQ,
+D.INTERCOMPANYRECEIVABLES     AS INTERCOMPANYRECEIVABLES_LQ,
+D.AVGINTERCOMPANYRECEIVABLES  AS AVGINTERCOMPANYRECEIVABLES_LQ,
+D.PREPAYMENTS                 AS PREPAYMENTS_LQ,
+D.AVGPREPAYMENTS              AS AVGPREPAYMENTS_LQ,
+D.TOTALCURRENTLIABILITIES     AS TOTALCURRENTLIABILITIES_LQ,
+D.AVGTOTALCURRENTLIABILITIES  AS AVGTOTALCURRENTLIABILITIES_LQ,
+D.NETCASHOPERATACTIV          AS NETCASHOPERATACTIV_LQ,
+D.CASHOUTINVESTACTIV          AS CASHOUTINVESTACTIV_LQ,
+D.NETPROFIT                   AS NETPROFIT_LQ,
+D.OPERATINGREVENUE_TTM        AS OPERATINGREVENUE_TTM_LQ,
+D.OPERATINGCOSTS_TTM          AS OPERATINGCOSTS_TTM_LQ,
+D.TAXANDSURCHARGES_TTM        AS TAXANDSURCHARGES_TTM_LQ,
+D.SALESCOSTS_TTM              AS SALESCOSTS_TTM_LQ,
+D.MANAGEMENTCOSTS_TTM         AS MANAGEMENTCOSTS_TTM_LQ,
+D.EXPLORATIONCOSTS_TTM        AS EXPLORATIONCOSTS_TTM_LQ,
+D.FINANCIALCOSTS_TTM          AS FINANCIALCOSTS_TTM_LQ,
+D.ASSESTSDEVALUATION_TTM      AS ASSESTSDEVALUATION_TTM_LQ,
+D.OPERATINGPROFIT_TTM         AS OPERATINGPROFIT_TTM_LQ,
+D.TOTALPROFIT_TTM             AS TOTALPROFIT_TTM_LQ,
+D.INCOMETAX_TTM               AS INCOMETAX_TTM_LQ,
+D.NETPROFIT_TTM               AS NETPROFIT_TTM_LQ,
+D.NETPROAFTEXTRGAINLOSS_TTM   AS NETPROAFTEXTRGAINLOSS_TTM_LQ,
+D.INTEREST_TTM                AS INTEREST_TTM_LQ,
+D.DEPRECFORFIXEDASSETS_TTM    AS DEPRECFORFIXEDASSETS_TTM_LQ,
+D.NETCASHOPERATACTIV_TTM      AS NETCASHOPERATACTIV_TTM_LQ,
+D.CASHOUTINVESTACTIV_TTM      AS CASHOUTINVESTACTIV_TTM_LQ,
+D.ROE                         AS ROE_LQ,
+D.GROSSMARGIN                 AS GROSSMARGIN_LQ,
+D.ROA                         AS ROA_LQ,
+D.NETPROFITMARGINONSALES_TTM  AS NETPROFITMARGINONSALES_TTM_LQ,
+D.INCOMETAXRATIO              AS INCOMETAXRATIO_LQ,
+D.REINVESTEDINCOMERATIO       AS REINVESTEDINCOMERATIO_LQ,
+D.DEPRECIATIONRATIO           AS DEPRECIATIONRATIO_LQ,
+D.OPERATINGCASHRATIO_TTM      AS OPERATINGCASHRATIO_TTM_LQ,
+D.AVGFIEXDOFASSETS            AS AVGFIEXDOFASSETS_LQ,
+D.FIEXDOFASSETS               AS FIEXDOFASSETS_LQ,
+D.ACIDTESTRATIO               AS ACIDTESTRATIO_LQ,
+D.TURNOVERRATIOOFRECEIVABLE   AS TURNOVERRATIOOFRECEIVABLE_LQ,
+D.TURNOVERRATIOOFINVENTORY    AS TURNOVERRATIOOFINVENTORY_LQ,
+D.TURNOVERRATIOOFTOTALASSETS  AS TURNOVERRATIOOFTOTALASSETS_LQ,
+D.DEPRECIATIONOFTOTALCOSTS    AS DEPRECIATIONOFTOTALCOSTS_LQ,
+D.CASHOFNETPROFIT             AS CASHOFNETPROFIT_LQ,
+D.CASHOFNETPROFIT_TTM         AS CASHOFNETPROFIT_TTM_LQ,
+D.CASHOFINTEREST              AS CASHOFINTEREST_LQ,
+D.ASSETSLIABILITIESRATIO      AS ASSETSLIABILITIESRATIO_LQ,
+D.TANGIBLEASSETDEBTRATIO      AS TANGIBLEASSETDEBTRATIO_LQ,
+D.CASHRATIO                   AS CASHRATIO_LQ
+  FROM T A
+  LEFT JOIN T B
+    ON B.REPORT_DATE = ADD_MONTHS(A.REPORT_DATE, -12)
+   AND A.CODE = B.CODE
+  LEFT JOIN T D
+    ON D.REPORT_DATE = ADD_MONTHS(A.REPORT_DATE, -3)
+    AND A.CODE = D.CODE
+  LEFT JOIN T B1
+    ON B1.REPORT_DATE = ADD_MONTHS(A.REPORT_DATE, -24)
+   AND A.CODE = B1.CODE
+  LEFT JOIN T B2
+    ON B2.REPORT_DATE = ADD_MONTHS(A.REPORT_DATE, -36)
+   AND A.CODE = B2.CODE
+  LEFT JOIN T B3
+    ON B3.REPORT_DATE = ADD_MONTHS(A.REPORT_DATE, -48)
+   AND A.CODE = B3.CODE
+  LEFT JOIN T B4
+    ON B4.REPORT_DATE = ADD_MONTHS(A.REPORT_DATE, -60)
+   AND A.CODE = B4.CODE  
+  LEFT JOIN RP C
+    ON C.REPORT_DATE = A.REPORT_DATE
+   AND A.CODE = C.CODE
+  LEFT JOIN STOCK_INFO F
+    ON A.CODE = F.CODE
         '''
     if type == 'day' and deal_date == None:
         deal_date
@@ -925,7 +925,34 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
                  sum(avgGoodwill) over(partition by order_date) as all_avgGoodwill,
                  sum(avgTotalLiabilities) over(partition by order_date) as all_avgTotalLiabilities,
                  sum(operatingRevenue_TTM) over(partition by order_date) as all_operatingRevenue_TTM,
-                 sum(operatingCosts_TTM) over(partition by order_date) as all_operatingCosts_TTM
+                 sum(operatingCosts_TTM) over(partition by order_date) as all_operatingCosts_TTM,
+                 LAG(TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG_MARKET,
+                 LAG(TOTAL_MARKET, 5) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG5_MARKET,
+                 LAG(TOTAL_MARKET, 20) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG20_MARKET,
+                 LAG(TOTAL_MARKET, 30) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG30_MARKET,
+                 LAG(TOTAL_MARKET, 60) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG60_MARKET,
+                 LAG(AVG_TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE_MARKET,
+                 LAG(AVG_TOTAL_MARKET, 2) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE2_MARKET,
+                 LAG(AVG_TOTAL_MARKET, 3) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE3_MARKET,
+                 LAG(AVG_TOTAL_MARKET, 5) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE5_MARKET,
+                 LAG(AVG_TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG_MARKET,
+                 LAG(AVG_TOTAL_MARKET, 5) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG5_MARKET,
+                 LAG(AVG_TOTAL_MARKET, 20) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG20_MARKET,
+                 LAG(AVG_TOTAL_MARKET, 30) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG30_MARKET,
+                 LAG(AVG_TOTAL_MARKET, 60) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG60_MARKET,
+                 
+                 AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS LAG5_TOR,
+                 
+                 AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS LAG20_TOR,
+                 
+                 AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS LAG30_TOR,
+                 
+                 AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS LAG60_TOR,
+                 MAX(high) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) - MIN(low) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS RNG_60,
+                 MAX(high) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) - MIN(low) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS RNG_30,
+                 MAX(high) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) - MIN(low) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS RNG_20,
+                 MAX(high) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) - MIN(low) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS RNG_5,
+                 LAG(high) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) - LAG(low) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS RNG_L
             from (select a.code,
                          a.order_date,
                          report_date,
@@ -946,9 +973,15 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
                          a.close,
                          a.volume as vol,
                          a.amount,
+                         a.amount / a.volume as avgrage,
                          b.shares_after * 10000 as shares,
+                         DECODE(b.shares_after * 10000,
+                                0,
+                                0,
+                                a.volume / b.shares_after / 100) as turnoverRatio,
                          round(a.close * b.shares_after * 10000, 2) AS total_market,
-                         round((a.amount / a.volume) * b.shares_after * 10000, 2) AS avg_total_market,
+                         round((a.amount / a.volume) * b.shares_after * 10000,
+                               2) AS avg_total_market,
                          case
                            when (netProfit_TTM <= 0 or
                                 netProAftExtrGainLoss_TTM <= 0) then
@@ -1412,9 +1445,7 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
                          assetsLiabilitiesRatio_lq,
                          tangibleAssetDebtRatio_lq,
                          cashRatio_lq
-                    from (select *
-                            from stock_market_day
-                           {s_condition}) a
+                    from (select * from stock_market_day {s_condition}) a
                     left join (select code,
                                      order_date,
                                      case
