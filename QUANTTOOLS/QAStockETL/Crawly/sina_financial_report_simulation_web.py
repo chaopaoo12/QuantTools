@@ -7,7 +7,6 @@ from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_date_stamp
 
 def read_data_from_sina(code,report_year,report_type,table_name,options):
     driver = webdriver.Chrome(chrome_options=options)
-    driver.maximize_window()
     driver.get('http://money.finance.sina.com.cn/corp/go.php/vFD_{report_type}/stockid/{code}/ctrl/{report_year}/displaytype/4.phtml'.format(code=code,report_year=report_year,report_type=report_type))
     soup = BeautifulSoup(driver.page_source, "html.parser").body
     driver.quit()
@@ -48,6 +47,7 @@ def get_stock_report_sina(code,report_year):
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
+    options.add_argument('headless')
     res2 = pd.DataFrame()
     for years in report_year:
         res1 = pd.DataFrame()
