@@ -42,6 +42,8 @@ def read_data_from_sina(code,options):
         res1 = pd.DataFrame([values[i:i+int(k)] for i in range(0,len(values),int(k))]).T
         table = table.append(res1.iloc[1:,])
     table.columns = cols
+    for i in [x for x in cols if x not in ['reason','begin_date','send_date','流通股']]:
+        table[i] = table[i].astype(float)
     table['code'] = code
     return(table)
 
