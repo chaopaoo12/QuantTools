@@ -12,4 +12,5 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_report_calendar_day, QA_
                                              QA_SU_save_fianacialTTM_momgo,QA_SU_save_financialfiles,
                                              QA_SU_save_stock_financial_ths_day,QA_SU_save_stock_financial_ths_his,
                                              QA_SU_save_stock_alpha_day, QA_SU_save_stock_alpha_his,
+                                             QA_SU_save_stock_financial_sina_day,QA_SU_save_stock_financial_sina_his,
                                              QA_SU_save_stock_financial_sina_day,QA_SU_save_stock_financial_sina_his)

@@ -45,7 +45,7 @@ def read_data_from_sina(code,options):
     table['code'] = code
     return(table)
 
-def get_stock_report_sina(code):
+def get_stock_shares_sina(code):
 
     headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                'Accept-Language': 'zh-CN,zh;q=0.9',
