@@ -15,6 +15,7 @@ def get_headers(report_date,headers):
     # 设置中文
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
+    options.add_argument('headless')
     driver = webdriver.Chrome(chrome_options=options)
     driver.get(url)
     cookies=driver.get_cookies()
@@ -38,7 +39,7 @@ def read_financial_report_date(report_date, headers = None, psize= 2000,vname="p
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
-
+    options.add_argument('headless')
     driver = webdriver.Chrome(chrome_options=options)
     driver.maximize_window()
     driver.get(strUrl1)
