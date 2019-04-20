@@ -9,7 +9,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report, QA
                                                    QA_fetch_stock_divyield,
                                                    QA_fetch_financial_TTM,
                                                    QA_fetch_stock_fianacial,
-                                                   QA_fetch_stock_alpha)
+                                                   QA_fetch_stock_alpha,
+                                                   QA_fetch_stock_shares)
 
 from QUANTAXIS.QAUtil.QADate import month_data
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,
@@ -44,7 +45,7 @@ def QA_fetch_stock_financial_calendar_adv(code, start="all", end=None, type='day
     return QA_DataStruct_Financial(QA_fetch_stock_financial_calendar(code, start, end, type=type))
 
 
-def QA_fetch_stock_divyield_adv(code, start="all", end=None, format='pd',type='crawl', collections=DATABASE.report_calendar):
+def QA_fetch_stock_divyield_adv(code, start="all", end=None, format='pd',type='crawl', collections=DATABASE.stock_divyield):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -120,3 +121,18 @@ def QA_fetch_stock_alpha_adv(code, start="all", end=None, format='pd', collectio
         return QA_DataStruct_Financial(QA_fetch_stock_alpha(code, start, end))
     else:
         return QA_DataStruct_Financial(QA_fetch_stock_alpha(code, start, end))
+
+def QA_fetch_stock_shares_adv(code, start="all", end=None, format='pd',type='crawl', collections=DATABASE.stock_shares):
+    '获取股票日线'
+    #code= [code] if isinstance(code,str) else code
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all':
+        start = '2001-01-01'
+        end = QA_util_today_str()
+    if end is None:
+        end = QA_util_today_str()
+    return QA_DataStruct_Financial(QA_fetch_stock_shares(code, start, end, type =type))
