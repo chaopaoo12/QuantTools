@@ -535,7 +535,7 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
         try:
-            #res['begin_date'] = res['begin_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            res['begin_date'] = res['begin_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
             res['crawl_date'] = res['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
             res['send_date'] = res['send_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
         except:
