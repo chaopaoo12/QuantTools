@@ -519,7 +519,7 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
         __data = []
         if type == 'day':
             cursor = collections.find({
-                'code': {'$in': code}, "begin_date": {
+                'code': {'$in': code}, "report_date": {
                     "$lte": QA_util_date_stamp(end),
                     "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
             res = pd.DataFrame([item for item in cursor])
@@ -529,12 +529,13 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
                     "$lte": QA_util_date_stamp(end),
                     "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
             res = pd.DataFrame([item for item in cursor])
+            print(res.shape)
         else:
             print("type must be one of [day, crawl]")
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
         try:
-            res['begin_date'] = res['begin_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            #res['begin_date'] = res['begin_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
             res['crawl_date'] = res['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
             res['send_date'] = res['send_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
         except:
