@@ -529,7 +529,6 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
                     "$lte": QA_util_date_stamp(end),
                     "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
             res = pd.DataFrame([item for item in cursor])
-            print(res.shape)
         else:
             print("type must be one of [day, crawl]")
 
