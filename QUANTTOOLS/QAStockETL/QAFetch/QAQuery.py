@@ -534,7 +534,7 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
 
         try:
             res = res.ix[:, ['BEGIN_DATE','CODE','CRAWL_DATE','EXE_SHARES',
-                             'NONTRA_ASHARES','NONTRA_BSHARES','PRE_SHARES,REASON',
+                             'NONTRA_ASHARES','NONTRA_BSHARES','PRE_SHARES','REASON',
                              'SEND_DATE','TOTAL_SHARES','TRA_ASHARES','TRA_BSHARES','TRA_HSHARES']]
             res['begin_date'] = res['begin_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
             res['crawl_date'] = res['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
