@@ -3,7 +3,8 @@
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch_stock_block_adv,
                                                QA_fetch_stock_day_adv)
 
-from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,QA_fetch_stock_divyield_adv)
+from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,
+                                           QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv)
 from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr)
 
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_sql_store_mysql
@@ -15,6 +16,11 @@ import datetime
 
 def QA_etl_stock_list():
     QA_util_sql_store_mysql(QA_fetch_stock_list_adv().reset_index(drop=True), "stock_list",if_exists='replace')
+
+def QA_etl_stock_shares():
+    data = QA_fetch_stock_shares_adv().data
+    data = data.drop("_id", axis=1)
+    QA_util_sql_store_mysql(data, "stock_shares",if_exists='replace')
 
 def QA_etl_stock_info():
     data = pd.DataFrame(QA_fetch_stock_basic_info_tushare())

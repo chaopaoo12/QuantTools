@@ -64,10 +64,10 @@ def QA_SU_save_stock_financial_sina_day():
 def QA_SU_save_stock_financial_sina_his():
     return save_stock_financial_sina.QA_SU_save_financial_report_his()
 
-def QA_SU_save_stock_financial_sina_day():
+def QA_SU_save_stock_shares_sina_day():
     return save_stock_shares_sina.QA_SU_save_stock_shares_day()
 
-def QA_SU_save_stock_financial_sina_his():
+def QA_SU_save_stock_shares_sina_his():
     return save_stock_shares_sina.QA_SU_save_stock_shares_his()
 
 def QA_SU_save_stock_alpha_day(code = None, date = None):
