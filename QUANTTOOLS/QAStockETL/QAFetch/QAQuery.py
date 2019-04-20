@@ -529,15 +529,17 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
                     "$lte": QA_util_date_stamp(end),
                     "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
             res = pd.DataFrame([item for item in cursor])
+            print(res.shape)
         else:
             print("type must be one of [day, crawl]")
 
         try:
-            res = res.ix[:, ['BEGIN_DATE','CODE','CRAWL_DATE','EXE_SHARES',
-                             'NONTRA_ASHARES','NONTRA_BSHARES','PRE_SHARES','REASON',
-                             'SEND_DATE','TOTAL_SHARES','TRA_ASHARES','TRA_BSHARES','TRA_HSHARES']]
+            res = res.ix[:, ['begin_date','code','crawl_date','exe_shares',
+                             'nontra_ashares','nontra_bshares','pre_shares','reason',
+                             'send_date','total_shares','tra_ashares','tra_bshares','tra_hshares']]
             res['begin_date'] = res['begin_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
             res['crawl_date'] = res['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            print(res.shape)
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
