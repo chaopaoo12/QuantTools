@@ -18,8 +18,7 @@ def QA_etl_stock_list():
     QA_util_sql_store_mysql(QA_fetch_stock_list_adv().reset_index(drop=True), "stock_list",if_exists='replace')
 
 def QA_etl_stock_shares():
-    data = QA_fetch_stock_shares_adv().data
-    data = data.drop("_id", axis=1)
+    data = QA_fetch_stock_shares_adv(list(QA_fetch_stock_list_adv()['code'])).data
     QA_util_sql_store_mysql(data, "stock_shares",if_exists='replace')
 
 def QA_etl_stock_info():
