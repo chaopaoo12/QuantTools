@@ -538,7 +538,6 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
                              'send_date','total_shares','tra_ashares','tra_bshares','tra_hshares']]
             res['begin_date'] = res['begin_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
             res['crawl_date'] = res['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
-            print(res.shape)
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
