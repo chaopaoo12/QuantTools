@@ -18,7 +18,9 @@ def QA_SU_save_stock_shares_day(client=DATABASE, ui_log = None, ui_progress = No
 
     code = list(QA_fetch_stock_list_adv()['code'])
     stock_shares = client.stock_shares
-    stock_shares.create_index([("code", pymongo.ASCENDING), ("begin_date", pymongo.ASCENDING), ('total_shares', pymongo.DESCENDING)], unique=True)
+    stock_shares.create_index([("code", pymongo.ASCENDING), ("begin_date", pymongo.ASCENDING),
+                               ('total_shares', pymongo.DESCENDING), ('reason', pymongo.DESCENDING)
+                                  , ('send_date', pymongo.DESCENDING)], unique=True)
     err = []
 
     def __saving_work(code, stock_shares):
