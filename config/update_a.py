@@ -50,4 +50,9 @@ QA_SU_save_stock_shares_sina_day()
 
 print("write data into sqldatabase")
 QA_etl_stock_shares()
+QA_SU_save_stock_divyield_day()
+QA_SU_save_report_calendar_day()
+QA_SU_save_stock_info_tushare()
+QA_SU_save_financialfiles()
+QA_SU_save_stock_financial_sina_day()
 
