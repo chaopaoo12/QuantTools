@@ -555,3 +555,100 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
     else:
         QA_util_log_info(
             'QA Error QA_fetch_stock_shares data parameter start=%s end=%s is not right' % (start, end))
+
+
+def QA_fetch_financial_report_sina(code, start_date, end_date, type ='report', ltype='EN', db=DATABASE):
+    """获取专业财务报表
+
+    Arguments:
+        code {[type]} -- [description]
+        report_date {[type]} -- [description]
+
+    Keyword Arguments:
+        ltype {str} -- [description] (default: {'EN'})
+        db {[type]} -- [description] (default: {DATABASE})
+
+    Raises:
+        e -- [description]
+
+    Returns:
+        pd.DataFrame -- [description]
+    """
+
+    if code is None:
+        code = list(QA_fetch_future_list_adv()['code'])
+
+    if isinstance(code, str):
+        code = [code]
+
+    if start_date is None:
+        start = '1995-01-01'
+    else:
+        start = start_date
+
+    if end_date is None:
+        end = QA_util_today_str()
+    else:
+        end = end_date
+
+    collection = db.stock_financial_sina
+    num_columns = [item[:3] for item in list(financial_dict.keys())]
+    CH_columns = [item[3:] for item in list(financial_dict.keys())]
+    EN_columns = list(financial_dict.values())
+
+    try:
+        if type == 'report':
+            cursor = collection.find({
+                'code': {'$in': code}, "report_date": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+            data = pd.DataFrame([item for item in cursor])
+        elif type == 'crawl':
+            cursor = collection.find({
+                'code': {'$in': code}, "crawl_date": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+            data = pd.DataFrame([item for item in cursor])
+        else:
+            print("type must be one of [report, crawl]")
+
+        if len(data) > 0:
+            res_pd = pd.DataFrame(data)
+            """
+            if ltype in ['CH', 'CN']:
+
+                cndict = dict(zip(num_columns, CH_columns))
+                cndict['283']='283'
+                try:
+                    cndict['284'] = '284'
+                    cndict['285'] = '285'
+                    cndict['286'] = '286'
+                except:
+                    pass
+                cndict['_id']='_id'
+                cndict['code']='code'
+                cndict['report_date']='report_date'
+                cndict['crawl_date']='crawl_date'
+                res_pd.columns = res_pd.columns.map(lambda x: cndict[x])
+            elif ltype is 'EN':
+                endict=dict(zip(num_columns,EN_columns))
+                endict['283']='283'
+                try:
+                    endict['284'] = '284'
+                    endict['285'] = '285'
+                    endict['286'] = '286'
+                except:
+                    pass
+                endict['_id']='_id'
+                endict['code']='code'
+                endict['report_date']='report_date'
+                endict['crawl_date']='crawl_date'
+                res_pd.columns = res_pd.columns.map(lambda x: endict[x])
+            """
+            res_pd['crawl_date'] = res_pd['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            res_pd['report_date'] = res_pd['report_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            return res_pd.replace(-4.039810335e+34, numpy.nan).set_index(['report_date', 'code'], drop=False)
+        else:
+            return None
+    except Exception as e:
+        raise e
