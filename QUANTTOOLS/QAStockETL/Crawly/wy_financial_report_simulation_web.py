@@ -33,7 +33,9 @@ def get_stock_report_wy(code):
             try:
                 df1 = pd.read_csv(excelFile,encoding='ANSI', na_values=["--"," --"," "],header=0).T
                 res = df1.reset_index().iloc[1:,:]
-                res.columns= [x.strip() for x in df1.reset_index().iloc[:1].values.tolist()[0]]
+                res.columns= [x.replace('(万元)','').replace(' ','').strip() for x in df1.reset_index().iloc[:1].values.tolist()[0]]
+                if type == 'xjllb':
+                    res.columns= [x+'C' if x in ['财务费用', '净利润', '少数股东损益'] else x.replace('(万元)','').replace(' ','').strip() for x in list(res.columns)]
                 res = res.set_index('报告日期')
                 data = pd.concat([data,res],axis=1,sort=False).fillna(0)
                 driver.quit()
@@ -49,7 +51,6 @@ def get_stock_report_wy(code):
     res = data.reset_index()
     new_index = list(res.columns)
     new_index[0] = "report_date"
-    new_index = [x.replace('(万元)','').replace(' ','').strip() for x in new_index]
     res.columns = new_index
     res["code"] = code
     res['crawl_date']=QA_util_today_str()
