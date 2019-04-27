@@ -39,7 +39,6 @@ def get_stock_report_wy(code):
                 res = res.set_index('报告日期')
                 data = pd.concat([data,res],axis=1,sort=False).fillna(0)
                 driver.quit()
-
                 try:
                     os.remove(excelFile)
                     print("Success Delete {code} {type} report file".format(code=code, type=type))
@@ -47,7 +46,7 @@ def get_stock_report_wy(code):
                     print("NO {code} {type} report file to Delete".format(code=code, type=type))
             except:
                 print('Error for reading')
-    res = res * 10000
+    data = data * 10000
     res = data.reset_index()
     new_index = list(res.columns)
     new_index[0] = "report_date"
