@@ -31,8 +31,11 @@ def get_stock_report_wy(code):
 
         if os.path.exists(excelFile) == True:
             try:
-                df1 = pd.read_csv(excelFile,encoding='ANSI').T.reset_index()
-                data = data.append(df1.T)
+                df1 = pd.read_csv(excelFile,encoding='ANSI', na_values=["--"," --"," "],header=0).T
+                res = df1.reset_index().iloc[1:,:]
+                res.columns= [x.strip() for x in df1.reset_index().iloc[:1].values.tolist()[0]]
+                res = res.set_index('报告日期')
+                data = pd.concat([data,res],axis=1,sort=False).fillna(0)
                 driver.quit()
 
                 try:
@@ -42,10 +45,14 @@ def get_stock_report_wy(code):
                     print("NO {code} {type} report file to Delete".format(code=code, type=type))
             except:
                 print('Error for reading')
-    res = data.T.iloc[1:,]
-    new_index = data.T[0:1].values.tolist()[0]
+    res = res * 10000
+    res = data.reset_index()
+    new_index = list(res.columns)
     new_index[0] = "report_date"
+    new_index = [x.replace('(万元)','').replace(' ','').strip() for x in new_index]
     res.columns = new_index
     res["code"] = code
     res['crawl_date']=QA_util_today_str()
+    res = res[res['report_date'].str.contains('Unnamed')==0]
+    res = res[res['report_date'].apply(len) == 10]
     return(res)
