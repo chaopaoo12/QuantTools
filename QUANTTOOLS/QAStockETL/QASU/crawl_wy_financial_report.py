@@ -20,7 +20,7 @@ def QA_SU_save_financial_report_day(client=DATABASE, ui_log = None, ui_progress 
     def __saving_work(code, stock_financial):
         try:
             QA_util_log_info(
-                '##JOB01 Now Saving THS financial_report==== {}'.format(str(code)), ui_log)
+                '##JOB01 Now Saving WY financial_report==== {}'.format(str(code)), ui_log)
 
             stock_financial.insert_many(QA_util_to_json_from_pandas(
                 QA_fetch_get_stock_report_wy(code)), ordered=False)
@@ -41,7 +41,7 @@ def QA_SU_save_financial_report_day(client=DATABASE, ui_log = None, ui_progress 
         __saving_work( item, stock_financial)
 
     if len(err) < 1:
-        QA_util_log_info('SUCCESS save THS financial_report ^_^',  ui_log)
+        QA_util_log_info('SUCCESS save WY financial_report ^_^',  ui_log)
     else:
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
@@ -62,7 +62,7 @@ def QA_SU_save_financial_report_his(client=DATABASE, ui_log = None, ui_progress 
     def __saving_work(code, stock_financial):
         try:
             QA_util_log_info(
-                '##JOB01 Now Saving THS financial_report==== {}'.format(str(code)), ui_log)
+                '##JOB01 Now Saving WY financial_report==== {}'.format(str(code)), ui_log)
             stock_financial.insert_many(QA_util_to_json_from_pandas(
                 QA_fetch_get_stock_report_wy(code)), ordered=False)
         except Exception as error0:
@@ -80,7 +80,7 @@ def QA_SU_save_financial_report_his(client=DATABASE, ui_log = None, ui_progress 
         __saving_work( item, stock_financial)
 
     if len(err) < 1:
-        QA_util_log_info('SUCCESS save THS financial_report ^_^',  ui_log)
+        QA_util_log_info('SUCCESS save WY financial_report ^_^',  ui_log)
     else:
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
