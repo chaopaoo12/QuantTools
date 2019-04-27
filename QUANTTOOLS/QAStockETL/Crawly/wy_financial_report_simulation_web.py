@@ -4,7 +4,7 @@ from time import sleep
 import os
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_date_stamp
 
-def get_stock_report_wy(code):
+def get_stock_report_ths(code):
 
     data = pd.DataFrame()
 
@@ -24,16 +24,14 @@ def get_stock_report_wy(code):
                 options.add_argument('%s="%s"' % (key, value))
             prefs = {'profile.default_content_settings.popups': 0, 'download.default_directory': 'd:\\'}
             options.add_experimental_option('prefs', prefs)
-            options.add_argument('headless')
             driver = webdriver.Chrome(chrome_options=options)
-            driver.maximize_window()
             driver.get('http://quotes.money.163.com/service/{type}_{code}.html'.format(code = code, type=type))
             sleep(seconds)
             seconds = seconds + 1
 
         if os.path.exists(excelFile) == True:
             try:
-                df1 = pd.read_csv(excelFile, sheet_name='Worksheet').T.reset_index()
+                df1 = pd.read_csv(excelFile,encoding='ANSI').T.reset_index()
                 data = data.append(df1.T)
                 driver.quit()
 
@@ -44,7 +42,6 @@ def get_stock_report_wy(code):
                     print("NO {code} {type} report file to Delete".format(code=code, type=type))
             except:
                 print('Error for reading')
-
     res = data.T.iloc[1:,]
     new_index = data.T[0:1].values.tolist()[0]
     new_index[0] = "report_date"

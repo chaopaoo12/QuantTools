@@ -25,9 +25,7 @@ def get_stock_report_ths(code):
                 options.add_argument('%s="%s"' % (key, value))
             prefs = {'profile.default_content_settings.popups': 0, 'download.default_directory': 'd:\\'}
             options.add_experimental_option('prefs', prefs)
-
             driver = webdriver.Chrome(chrome_options=options)
-            driver.maximize_window()
             driver.get('http://basic.10jqka.com.cn/api/stock/export.php?export={type}&type=report&code={code}'.format(code = code, type=type))
             sleep(seconds)
             seconds = seconds + 1
