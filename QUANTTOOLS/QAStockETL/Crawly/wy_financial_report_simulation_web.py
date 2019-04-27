@@ -24,7 +24,7 @@ def get_stock_report_wy(code):
                 options.add_argument('%s="%s"' % (key, value))
             prefs = {'profile.default_content_settings.popups': 0, 'download.default_directory': 'd:\\'}
             options.add_experimental_option('prefs', prefs)
-
+            options.add_argument('headless')
             driver = webdriver.Chrome(chrome_options=options)
             driver.maximize_window()
             driver.get('http://quotes.money.163.com/service/{type}_{code}.html'.format(code = code, type=type))
