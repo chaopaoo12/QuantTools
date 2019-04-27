@@ -4,7 +4,7 @@ from time import sleep
 import os
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_date_stamp
 
-def get_stock_report_ths(code):
+def get_stock_report_wy(code):
 
     data = pd.DataFrame()
 
