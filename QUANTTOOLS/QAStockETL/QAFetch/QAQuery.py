@@ -7,7 +7,7 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
                               QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_str2int, QA_util_date_int2str,
                               QA_util_to_json_from_pandas, QA_util_today_str)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
-from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict
+from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict, dict2
 
 def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype='EN', db=DATABASE):
     """获取专业财务报表
@@ -614,6 +614,10 @@ def QA_fetch_financial_report_wy(code, start_date, end_date, type ='report', lty
 
         if len(data) > 0:
             res_pd = pd.DataFrame(data)
+            res_pd = res_pd[list(dict2.keys())]
+            res_pd.columns = res_pd.columns.map(lambda x: dict2[x])
+            res_pd['netProAftExtrGainLoss']=res_pd['netProfitsBelToParComOwner'] - res_pd['nonOperatingIncome']
+
             """
             if ltype in ['CH', 'CN']:
 
