@@ -64,7 +64,6 @@ def QA_etl_stock_financial(type = "crawl", start_date = str(datetime.date.today(
             data = data.reset_index(drop=True).drop("_id",1).fillna(0)
             QA_util_sql_store_mysql(data, "stock_financial",if_exists='append')
 
-
 def QA_etl_stock_calendar(type = "crawl", start = str(datetime.date.today())):
     if type == "all":
         data = QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),start = "all", type = 'report').data.reset_index(drop=True)
