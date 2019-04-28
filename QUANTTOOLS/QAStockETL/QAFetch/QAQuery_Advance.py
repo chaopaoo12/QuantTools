@@ -12,7 +12,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_stock_fianacial,
                                                    QA_fetch_stock_alpha,
                                                    QA_fetch_stock_shares,
-                                                   QA_fetch_financial_report_sina)
+                                                   QA_fetch_financial_report_wy)
 
 from QUANTAXIS.QAUtil.QADate import month_data
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,
@@ -139,7 +139,7 @@ def QA_fetch_stock_shares_adv(code, start="all", end=None, format='pd',type='cra
         end = QA_util_today_str()
     return QA_DataStruct_Financial(QA_fetch_stock_shares(code, start, end, type =type))
 
-def QA_fetch_financial_report_sina_adv(code=None, start=None, end=None, type='report', ltype='EN'):
+def QA_fetch_financial_report_wy_adv(code=None, start=None, end=None, type='report', ltype='EN'):
     """高级财务查询接口
     Arguments:
         code {[type]} -- [description]
@@ -147,4 +147,4 @@ def QA_fetch_financial_report_sina_adv(code=None, start=None, end=None, type='re
     Keyword Arguments:
         end {[type]} -- [description] (default: {None})
     """
-    return QA_DataStruct_Financial(QA_fetch_financial_report_sina(code, start, end, type=type, ltype=ltype))
+    return QA_DataStruct_Financial(QA_fetch_financial_report_wy(code, start, end, type=type, ltype=ltype))

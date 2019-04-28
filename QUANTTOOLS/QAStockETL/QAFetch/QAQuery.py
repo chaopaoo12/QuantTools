@@ -557,7 +557,7 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
             'QA Error QA_fetch_stock_shares data parameter start=%s end=%s is not right' % (start, end))
 
 
-def QA_fetch_financial_report_sina(code, start_date, end_date, type ='report', ltype='EN', db=DATABASE):
+def QA_fetch_financial_report_wy(code, start_date, end_date, type ='report', ltype='EN', db=DATABASE):
     """获取专业财务报表
 
     Arguments:
@@ -591,7 +591,7 @@ def QA_fetch_financial_report_sina(code, start_date, end_date, type ='report', l
     else:
         end = end_date
 
-    collection = db.stock_financial_sina
+    collection = db.stock_financial_wy
     num_columns = [item[:3] for item in list(financial_dict.keys())]
     CH_columns = [item[3:] for item in list(financial_dict.keys())]
     EN_columns = list(financial_dict.values())
