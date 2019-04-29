@@ -1087,7 +1087,8 @@ SELECT A.CODE,
     elif type == 'all':
         s_condition = ''
 
-    sql3="""  select g.*,
+    sql3="""insert into stock_analysis_data
+  select g.*,
          decode(i_netProAftExtrGainLoss_TTM,
                 0,
                 0,
@@ -1149,7 +1150,21 @@ SELECT A.CODE,
          avg(PB) over(partition by order_date) as all_PB,
          avg(grossMargin) over(partition by order_date) as all_grossMargin,
          avg(ROE) over(partition by order_date) as all_ROE,
-         avg(ROA) over(partition by order_date) as all_ROA
+         avg(ROA) over(partition by order_date) as all_ROA,
+         AVG(all_total_market) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_AT_MARKET,
+         
+         AVG(all_total_market) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_AT_MARKET,
+         
+         AVG(all_total_market) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_AT_MARKET,
+         
+         AVG(all_total_market) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_AT_MARKET,
+         AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_AMOUNT,
+         
+         AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG5_AMOUNT,
+         
+         AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG5_AMOUNT,
+         
+         AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG5_AMOUNT
     from (select h.*,
                  sum(total_market) over(partition by order_date, industry) as i_total_market,
                  sum(netProAftExtrGainLoss_TTM) over(partition by order_date, industry) as i_netProAftExtrGainLoss_TTM,
@@ -1166,6 +1181,8 @@ SELECT A.CODE,
                  sum(operatingRevenue_TTM) over(partition by order_date) as all_operatingRevenue_TTM,
                  sum(operatingCosts_TTM) over(partition by order_date) as all_operatingCosts_TTM,
                  LAG(TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG_MARKET,
+                 LAG(TOTAL_MARKET, 2) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG2_MARKET,
+                 LAG(TOTAL_MARKET, 3) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG3_MARKET,
                  LAG(TOTAL_MARKET, 5) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG5_MARKET,
                  LAG(TOTAL_MARKET, 20) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG20_MARKET,
                  LAG(TOTAL_MARKET, 30) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG30_MARKET,
@@ -1180,18 +1197,88 @@ SELECT A.CODE,
                  LAG(AVG_TOTAL_MARKET, 30) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG30_MARKET,
                  LAG(AVG_TOTAL_MARKET, 60) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG60_MARKET,
                  
-                 AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS LAG5_TOR,
+                 AVG(TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_T_MARKET,
                  
-                 AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS LAG20_TOR,
+                 AVG(TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_T_MARKET,
                  
-                 AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS LAG30_TOR,
+                 AVG(TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_T_MARKET,
                  
-                 AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS LAG60_TOR,
-                 MAX(high) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) - MIN(low) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS RNG_60,
-                 MAX(high) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) - MIN(low) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS RNG_30,
-                 MAX(high) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) - MIN(low) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS RNG_20,
-                 MAX(high) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) - MIN(low) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS RNG_5,
-                 LAG(high) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) - LAG(low) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS RNG_L
+                 AVG(TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_T_MARKET,
+                 
+                 AVG(AVG_TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_A_MARKET,
+                 
+                 AVG(AVG_TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_A_MARKET,
+                 
+                 AVG(AVG_TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_A_MARKET,
+                 
+                 AVG(AVG_TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_A_MARKET,
+                 
+                 AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_TOR,
+                 
+                 AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_TOR,
+                 
+                 AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_TOR,
+                 
+                 AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_TOR,
+                 decode(LAG(TOTAL_MARKET, 60)
+                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC),
+                        0,
+                        0,
+                        (MAX(high_market)
+                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE
+                              RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) -
+                         MIN(low_market)
+                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE
+                              RANGE BETWEEN 59 PRECEDING AND CURRENT ROW)) /
+                        LAG(TOTAL_MARKET, 60)
+                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC)) AS RNG_60,
+                 decode(LAG(TOTAL_MARKET, 30)
+                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC),
+                        0,
+                        0,
+                        (MAX(high_market)
+                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE
+                              RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) -
+                         MIN(low_market)
+                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE
+                              RANGE BETWEEN 29 PRECEDING AND CURRENT ROW)) /
+                        LAG(TOTAL_MARKET, 30)
+                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC)) AS RNG_30,
+                 decode(LAG(TOTAL_MARKET, 20)
+                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC),
+                        0,
+                        0,
+                        (MAX(high_market)
+                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE
+                              RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) -
+                         MIN(low_market)
+                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE
+                              RANGE BETWEEN 19 PRECEDING AND CURRENT ROW)) /
+                        LAG(TOTAL_MARKET, 20)
+                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC)) AS RNG_20,
+                 decode(LAG(TOTAL_MARKET, 5)
+                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC),
+                        0,
+                        0,
+                        (MAX(high_market)
+                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE
+                              RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) -
+                         MIN(low_market)
+                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE
+                              RANGE BETWEEN 4 PRECEDING AND CURRENT ROW)) /
+                        LAG(TOTAL_MARKET, 5)
+                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC)) AS RNG_5,
+                 decode(LAG(TOTAL_MARKET, 2)
+                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC),
+                        0,
+                        0,
+                        (LAG(high_market)
+                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) -
+                         LAG(low_market)
+                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC)) /
+                        LAG(TOTAL_MARKET, 2)
+                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC)) AS RNG_L,
+                 sum(amount) over(partition by order_Date) as all_amount
             from (select a.code,
                          a.order_date,
                          report_date,
@@ -1219,6 +1306,9 @@ SELECT A.CODE,
                                 0,
                                 a.volume / b.shares_after / 100) as turnoverRatio,
                          round(a.close * b.shares_after * 10000, 2) AS total_market,
+                         round(a.open * b.shares_after * 10000, 2) AS open_market,
+                         round(a.high * b.shares_after * 10000, 2) AS high_market,
+                         round(a.low * b.shares_after * 10000, 2) AS low_market,
                          round((a.amount / a.volume) * b.shares_after * 10000,
                                2) AS avg_total_market,
                          case
@@ -1684,64 +1774,38 @@ SELECT A.CODE,
                          assetsLiabilitiesRatio_lq,
                          tangibleAssetDebtRatio_lq,
                          cashRatio_lq
-                    from (select * from stock_market_day {s_condition}) a
+                    from (select * where 
+                            from stock_market_day
+                           WHERE order_date >=
+                                 to_date('{deal_date}','yyyy-mm-dd') - 90
+                             ) a
                     left join (select code,
-                                     order_date,
-                                     case
-                                       when shares_before = 0 then
-                                        lead(shares_before)
-                                        over(partition by code order by
-                                             order_date)
-                                       else
-                                        shares_before
-                                     end as shares_before,
-                                     shares_after,
-                                     nvl(lead(order_date)
-                                         over(partition by code order by
-                                              order_date),
+                                     begin_date as order_date,
+                                     nvl(LAG(begin_date)
+                                         OVER(PARTITION BY CODE ORDER BY
+                                              begin_date desc),
                                          TO_DATE(to_char(SYSDATE, 'yyyy/mm/dd'),
-                                                 'yyyy/mm/dd')) as end_date
+                                                 'yyyy/mm/dd') + 1) AS end_date,
+                                     total_shares as shares_after,
+                                     LAG(total_shares) OVER(PARTITION BY CODE ORDER BY begin_date ASC) AS shares_before
                                 from (select code,
-                                             order_date,
-                                             max(shares_after) as shares_after,
-                                             max(shares_before) as shares_before
-                                        FROM (select h.*
-                                                from (select code,
-                                                             order_date,
-                                                             shares_after,
-                                                             shares_before,
-                                                             count(*) as abb
-                                                        from stock_xdxr
-                                                       where (shares_after > 0 or
-                                                             shares_before > 0)
-                                                         and shares_after !=
-                                                             shares_before
-                                                       GROUP BY code,
-                                                                order_date,
-                                                                shares_after,
-                                                                shares_before
-                                                      union
-                                                      SELECT code,
-                                                             to_date(timeToMarket,
-                                                                     'yyyymmdd') as order_date,
-                                                             0 as shares_after,
-                                                             0 as share_before,
-                                                             1 as abb
-                                                        FROM stock_info
-                                                       WHERE timeToMarket != 0) h) g
-                                       group by code, order_date) m) b
+                                             begin_date,
+                                             max(total_shares) as total_shares
+                                        from stock_shares
+                                       group by code, begin_date) h) b
                       on a.code = b.code
-                     and a.order_date > b.order_date
-                     and a.order_date <= b.end_date
+                     and a.order_date >= b.order_date
+                     and a.order_date < b.end_date
                     left join stock_financial_analysis c
                       on a.code = c.code
                      and c.send_date < a.order_date
                      and c.end_date >= a.order_date) h) g
-        """.format(s_condition=s_condition)
+   where order_date = to_date('{deal_date}','yyyy-mm-dd')
+        """.format(deal_date=deal_date)
     if type == 'day' or deal_date != None:
         actions = 'insert into stock_analysis_data '
     elif type == 'all':
-        actions = 'create table stock_analysis_data as'
+        print("please run this job in database")
 
 
     conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
