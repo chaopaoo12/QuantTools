@@ -2,7 +2,7 @@ from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv,QA_fetch_s
 import QUANTAXIS as QA
 import pandas as pd
 
-def get_indicator(code, start_date, end_date):
+def QA_fetch_get_indicator(code, start_date, end_date):
     data = QA_fetch_stock_day_adv(code,start_date,end_date).to_qfq()
     if data == None:
         return None
@@ -393,15 +393,3 @@ def get_indicator(code, start_date, end_date):
                         CDLTHRUSTING,CDLTRISTAR,CDLUNIQUE3RIVER,CDLUPSIDEGAP2CROWS,CDLXSIDEGAP3METHODS],
                        axis=1)
         return(res.dropna(how='all'))
-
-def QA_fetch_get_indicator(start_date, end_date):
-    codes = list(QA_fetch_stock_list_adv()['code'])
-
-    res = pd.DataFrame()
-    for code in codes:
-        data = get_indicator(code, start_date, end_date)
-
-        if data is not None:
-            res.append(data)
-
-    return(res)

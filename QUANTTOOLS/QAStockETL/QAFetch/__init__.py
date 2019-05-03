@@ -16,3 +16,5 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAFinancial import QA_fetch_get_stock_report_
 from QUANTTOOLS.QAStockETL.QAFetch.QAAlpha import QA_fetch_get_stock_alpha
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAShares import QA_fetch_get_stock_shares_sina
+
+from QUANTTOOLS.QAStockETL.QAFetch.QATIndicator import QA_fetch_get_indicator
