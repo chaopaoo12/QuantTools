@@ -1,6 +1,6 @@
 
 import pymongo
-from QUANTTOOLS.QAStockETL.QAUtil import QA_util_etl_stock_financial
+from QUANTTOOLS.QAStockETL.QAUtil import QA_util_etl_stock_quant
 from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_today_str,
                               QA_util_get_trade_range)
@@ -27,7 +27,7 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
         print('not a trading day')
     else:
         for deal_date in deal_date_list:
-            data = QA_util_etl_stock_financial(deal_date)
+            data = QA_util_etl_stock_quant(deal_date)
             if data is not None:
                 data = QA_util_to_json_from_pandas(data)
                 print("got '{deal_date}' stock financial data.".format(deal_date=deal_date))
