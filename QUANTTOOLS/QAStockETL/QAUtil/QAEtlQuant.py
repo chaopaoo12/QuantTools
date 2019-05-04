@@ -44,7 +44,6 @@ def QA_util_process_quantdata(start_date, end_date):
     conn.commit()
     conn.close()
 
-
 def QA_util_etl_stock_quant(start_date):
     sql = '''select code,
        name,
