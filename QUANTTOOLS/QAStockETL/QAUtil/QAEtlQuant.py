@@ -20,7 +20,7 @@ def QA_util_process_quantdata(start_date, end_date):
    LAG(AVG_TOTAL_MARKET, 3) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE3_MARKET,
    LAG(AVG_TOTAL_MARKET, 5) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE5_MARKET
             from (select *,
-                    from stock_analysis_data a where order_date >= (to_date('{start}', 'yyyy-mm-dd') - 5)
+                    from stock_analysis_data a where order_date >= (to_date('{deal_date}', 'yyyy-mm-dd') - 15)
            and order_date <= to_date('{deal_date}', 'yyyy-mm-dd')
                     ) A
         where ORDER_DATE = '{deal_date}'"""
@@ -31,18 +31,15 @@ def QA_util_process_quantdata(start_date, end_date):
     end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d")
 
     while start_date <= end_date:
-        if QA_util_if_trade(start_date.strftime("%Y-%m-%d")) == True:
-            print(start_date.strftime("%Y-%m-%d"), QA_util_get_last_day(start_date.strftime("%Y-%m-%d"),6))
-            sql2 = sql1.format(deal_date=start_date.strftime("%Y-%m-%d"), start = QA_util_get_pre_trade_date(start_date,6))
-            if QA_util_get_last_day(start_date.strftime("%Y-%m-%d"),6) == 'wrong date':
-                print(sql2)
-            cursor.execute(sql2)
-            print('quant analysis data for {deal_date} has been stored'.format(deal_date=start_date.strftime("%Y-%m-%d")))
-            start_date = start_date+datetime.timedelta(days=1)
-            conn.commit()
-        else:
-            print("not a trading day")
-            start_date = start_date+datetime.timedelta(days=1)
+        print(start_date.strftime("%Y-%m-%d"), QA_util_get_last_day(start_date.strftime("%Y-%m-%d"),5))
+        sql2 = sql1.format(deal_date=QA_util_get_pre_trade_date(start_date.strftime("%Y-%m-%d"),5))
+        if QA_util_get_last_day(start_date.strftime("%Y-%m-%d"),5) == 'wrong date':
+            print(sql2)
+        cursor.execute(sql2)
+        print('quant analysis data for {deal_date} has been stored'.format(deal_date=start_date.strftime("%Y-%m-%d")))
+        start_date = start_date+datetime.timedelta(days=1)
+        conn.commit()
+
     cursor.close()
     conn.commit()
     conn.close()
