@@ -14,7 +14,7 @@ def QA_SU_save_financial_report_day(client=DATABASE, ui_log = None, ui_progress 
     :return:
     '''
     END_DATE = QA_util_today_str()
-    START_DATE = QA_util_datetime_to_strdate(QA_util_add_days(QA_util_today_str(),-7))
+    START_DATE = QA_util_datetime_to_strdate(QA_util_add_days(QA_util_today_str(),-2))
 
     if QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),START_DATE,END_DATE).data is not None:
         code = list(QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),START_DATE,END_DATE).data['code'])
