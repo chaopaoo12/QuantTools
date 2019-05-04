@@ -107,7 +107,6 @@ def QA_etl_stock_financial_wy(type = "crawl", start_date = str(datetime.date.tod
         QA_util_sql_store_mysql(data, "stock_financial_wy",if_exists='replace')
     elif type == "crawl":
         data = QA_fetch_financial_report_wy_adv(list(QA_fetch_stock_list_adv()['code']),start_date,type = 'crawl').data
-        print(data)
         if data is None:
             print("We have no financial data for the day {}".format(str(datetime.date.today())))
         else:
