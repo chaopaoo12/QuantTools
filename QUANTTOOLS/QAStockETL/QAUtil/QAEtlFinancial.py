@@ -541,7 +541,7 @@ rp as
                end as report_date,
                to_char(to_date(timetomarket, 'yyyymmdd') - 1, 'yyyy-mm-dd') as send_date
           from stock_info
-         where length(timetomarket) = 6) h),
+         where length(timetomarket) = 8) h),
 res as
  (SELECT A.CODE,
          INDUSTRY,
