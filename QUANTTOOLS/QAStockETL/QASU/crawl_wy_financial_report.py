@@ -1,7 +1,8 @@
-from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pandas,QA_util_today_str)
+from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pandas,QA_util_today_str,QA_util_datetime_to_strdate)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 from QUANTTOOLS.QAStockETL.QAFetch.QAFinancial import QA_fetch_get_stock_report_wy
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_financial_calendar_adv
+from QUANTTOOLS.QAStockETL.QAUtil import QA_util_add_days
 import pymongo
 import gc
 
@@ -12,8 +13,11 @@ def QA_SU_save_financial_report_day(client=DATABASE, ui_log = None, ui_progress 
     历史全部数据
     :return:
     '''
-    if QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),QA_util_today_str()).data is not None:
-        code = list(QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),QA_util_today_str()).data['code'])
+    END_DATE = QA_util_today_str()
+    START_DATE = QA_util_datetime_to_strdate(QA_util_add_days(QA_util_today_str(),-7))
+
+    if QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),START_DATE,END_DATE).data is not None:
+        code = list(QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),START_DATE,END_DATE).data['code'])
         stock_financial = client.stock_financial_wy
         stock_financial.create_index([("code", pymongo.ASCENDING), ("report_date", pymongo.ASCENDING)], unique=True)
         err = []
