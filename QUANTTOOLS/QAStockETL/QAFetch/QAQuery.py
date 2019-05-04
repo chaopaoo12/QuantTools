@@ -676,6 +676,7 @@ def QA_fetch_stock_technical_index(code, start, end=None, format='pd', collectio
             res = res.drop_duplicates(
                 (['code', 'date']))
             res['date'] = res['date'].apply(lambda x: str(x)[0:10])
+            res = res.drop(['date_stamp'])
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
