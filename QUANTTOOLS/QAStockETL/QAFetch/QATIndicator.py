@@ -9,7 +9,7 @@ def QA_fetch_get_indicator(code, start_date, end_date):
     else:
         data = data.to_qfq()
         try:
-            VR = data.add_func(QA.QA_indicator_VR)
+            VR = data.add_func(QA.QA_indicator_VR)['VR']
         except:
             VR = pd.DataFrame()
         try:
@@ -61,7 +61,7 @@ def QA_fetch_get_indicator(code, start_date, end_date):
         except:
             RSI = pd.DataFrame()
         try:
-            CCI = data.add_func(QA.QA_indicator_CCI)
+            CCI = data.add_func(QA.QA_indicator_CCI)['CCI']
         except:
             CCI = pd.DataFrame()
         try:
