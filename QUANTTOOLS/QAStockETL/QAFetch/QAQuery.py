@@ -269,8 +269,8 @@ def QA_fetch_stock_fianacial(code, start, end = None, format='pd', collections=D
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
         res = pd.DataFrame([item for item in cursor])
         try:
-            res =  res.drop('_id', axis=1).drop_duplicates((['CODE', 'date']))
-            #res.columns = [i.lower() for i in list(res.columns)]
+            res.columns = [i.lower() if i == 'CODE' else i for i in list(res.columns)]
+            res =  res.drop('_id', axis=1).drop_duplicates((['code', 'date']))
 
         except:
             res = None
@@ -489,7 +489,7 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
                              'alpha_188',
                              'alpha_189',
                              'alpha_190',
-                             'alpha_191']]
+                             'alpha_191']].set_index(['code','date'])
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
@@ -676,7 +676,7 @@ def QA_fetch_stock_technical_index(code, start, end=None, format='pd', collectio
             res = res.drop_duplicates(
                 (['code', 'date']))
             res['date'] = res['date'].apply(lambda x: str(x)[0:10])
-            res = res.drop(['date_stamp'])
+            res = res.drop(['date_stamp'],axis=1).set_index(['code','date'])
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
