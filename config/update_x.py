@@ -47,7 +47,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_etl_stock_financial, QA_etl_stock_calendar,
                                    QA_etl_stock_block, QA_etl_stock_divyield,
                                    QA_etl_process_financial_day,QA_SU_save_stock_alpha_day,
-                                   QA_SU_save_save_stock_technical_index_day)
+                                   QA_SU_save_stock_technical_index_day)
 QA_SU_save_stock_day('tdx')
 QA_SU_save_stock_xdxr('tdx')
 QA_SU_save_stock_min('tdx')
@@ -60,7 +60,7 @@ QA_SU_save_stock_block('tdx')
 QA_SU_save_stock_info('tdx')
 QA_SU_save_stock_info_tushare()
 QA_SU_save_stock_alpha_day()
-QA_SU_save_save_stock_technical_index_day()
+QA_SU_save_stock_technical_index_day()
 
 print("write data into sqldatabase")
 QA_etl_stock_list()
