@@ -3,9 +3,8 @@ import pandas as pd
 import datetime
 
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
-                               QA_util_get_trade_range,QA_util_get_last_day,
                                QA_util_if_trade,QA_util_get_pre_trade_date)
-from QUANTTOOLS.QAStockETL.QAUtil.QADate import QA_util_add_days
+
 def QA_util_process_quantdata(type = 'day', start_date = None, end_date = None):
 
     if type == 'day' or start_date == None:
