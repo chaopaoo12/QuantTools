@@ -22,6 +22,7 @@ class Alpha_191:
         ###security = get_index_stocks(index)
         self.date = date
         self.end_date = QA_util_get_last_day(self.date, 250)
+        print(self.date, self.end_date)
         price = QA_fetch_stock_day_adv(code, self.end_date, self.date ).data.reset_index()
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
@@ -923,19 +924,19 @@ class Alpha_191:
 
     #############################################################################
     def alpha_075(self):
-        #COUNT(CLOSE>OPEN & BANCHMARKINDEXCLOSE<BANCHMARKINDEXOPEN,50)/COUNT(BANCHMARKINDEXCLOSE<BANCHMARKINDEXOPEN,50)
+        ### COUNT(CLOSE>OPEN & BANCHMARKINDEXCLOSE<BANCHMARKINDEXOPEN,50)/COUNT(BANCHMARKINDEXCLOSE<BANCHMARKINDEXOPEN,50)
         # Written by Jianing Lu
-        # 未实现
-        benchmark = get_price('000001.SH', None, end_date, '1d', ['open','close'], False, None, 50)
-        condition = benchmark['close'] < benchmark['open']
-        data1 = benchmark[condition]
-        numbench = len(data1)
-        timelist = data1.index.tolist()
-        data2 = pd.merge(self.close, data1, left_index=True, right_index=True).drop(['close', 'open'], axis=1)
-        data3 = pd.merge(self.open_price, data1, left_index=True, right_index=True).drop(['close', 'open'], axis=1)
-        data4 = data2[data2 > data3]
-        alpha = 1 - data4.isnull().sum(axis=0) / numbench
-        return alpha
+        # todo
+        #benchmark = get_price('000001.SH', None, end_date, '1d', ['open','close'], False, None, 50)
+        #condition = benchmark['close'] < benchmark['open']
+        #data1 = benchmark[condition]
+        #numbench = len(data1)
+        #timelist = data1.index.tolist()
+        #data2 = pd.merge(self.close, data1, left_index=True, right_index=True).drop(['close', 'open'], axis=1)
+        #data3 = pd.merge(self.open_price, data1, left_index=True, right_index=True).drop(['close', 'open'], axis=1)
+        #data4 = data2[data2 > data3]
+        #alpha = 1 - data4.isnull().sum(axis=0) / numbench
+        #return alpha
 
 
     #############################################################################

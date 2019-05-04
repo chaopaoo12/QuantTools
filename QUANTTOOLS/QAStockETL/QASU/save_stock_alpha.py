@@ -1,4 +1,4 @@
-from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pandas,QA_util_today_str,QA_util_get_trade_range)
+from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pandas,QA_util_today_str,QA_util_get_trade_range, QA_util_if_trade)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_alpha
 import pymongo
@@ -31,15 +31,14 @@ def QA_SU_save_stock_alpha_day(client=DATABASE, ui_log = None, ui_progress = Non
             err.append(str(date))
 
     for item in date:
-
         QA_util_log_info('The {} of Total {}'.format
                          ((date.index(item) +1), len(date)))
 
         strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((date.index(item) +1) / len(date) * 100))[0:4] + '%', ui_log)
         intProgressToLog = int(float((date.index(item) +1) / len(date) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
-
-        __saving_work( date, code, stock_alpha)
+        if QA_util_if_trade(item) == True:
+            __saving_work( date, code, stock_alpha)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save Stock Alpha ^_^',  ui_log)
@@ -78,14 +77,15 @@ def QA_SU_save_stock_alpha_his(client=DATABASE, ui_log = None, ui_progress = Non
             err.append(str(date))
 
     for item in deal_date_list:
+
         QA_util_log_info('The {} of Total {}'.format
                          ((deal_date_list.index(item) +1), len(deal_date_list)))
 
         strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((deal_date_list.index(item) +1) / len(deal_date_list) * 100))[0:4] + '%', ui_log)
         intProgressToLog = int(float((deal_date_list.index(item) + 1)/ len(deal_date_list) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
-
-        __saving_work( item, code, stock_alpha)
+        if QA_util_if_trade(item) == True:
+            __saving_work( item, code, stock_alpha)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save Stock Alpha ^_^',  ui_log)
