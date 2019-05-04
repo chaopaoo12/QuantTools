@@ -270,7 +270,7 @@ def QA_fetch_stock_fianacial(code, start, end = None, format='pd', collections=D
         res = pd.DataFrame([item for item in cursor])
         try:
             res.columns = [i.lower() if i == 'CODE' else i for i in list(res.columns)]
-            res =  res.drop('_id', axis=1).drop_duplicates((['code', 'date']))
+            res = res.drop(['date_stamp','_id'], axis=1).drop_duplicates((['code', 'date']))
 
         except:
             res = None
