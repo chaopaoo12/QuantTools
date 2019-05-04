@@ -11,6 +11,7 @@ def QA_fetch_get_indicator(code, start_date, end_date):
         data = data.to_qfq()
         try:
             VR = data.add_func(QA.QA_indicator_VR)['VR']
+            VR['VRSI_C'] = VR['VRSI']/QA.REF(VR['VRSI'], 1)-1
         except:
             VR = pd.DataFrame()
         try:
@@ -19,14 +20,27 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             VRSI = pd.DataFrame()
         try:
             VSTD = data.add_func(QA.QA_indicator_VSTD)
+            VSTD['VSTD'] = data.data['vol']/VSTD['VSTD']-1
+            ## todo VOL比较
         except:
             VSTD = pd.DataFrame()
         try:
             BOLL = data.add_func(QA.QA_indicator_BOLL)
+            BOLL['WIDTH'] = (BOLL['UB']-BOLL['LB'])/BOLL['BOLL']
+            BOLL['BOLL_CROSS1'] = QA.CROSS(BOLL['UB'], BOLL['BOLL'])
+            BOLL['BOLL_CROSS2'] = QA.CROSS(BOLL['BOLL'], BOLL['UB'])
+            BOLL['BOLL_CROSS3'] = QA.CROSS(BOLL['LB'], BOLL['BOLL'])
+            BOLL['BOLL_CROSS4'] = QA.CROSS(BOLL['BOLL'], BOLL['LB'])
         except:
             BOLL = pd.DataFrame()
         try:
             MIKE = data.add_func(QA.QA_indicator_MIKE)
+            MIKE['WR'] = MIKE['WR'] - data.data['close']
+            MIKE['MR'] = MIKE['MR'] - data.data['close']
+            MIKE['SR'] = MIKE['SR'] - data.data['close']
+            MIKE['WS'] = MIKE['WS'] - data.data['close']
+            MIKE['MS'] = MIKE['MS'] - data.data['close']
+            MIKE['SS'] = MIKE['SS'] - data.data['close']
         except:
             MIKE = pd.DataFrame()
         try:
@@ -35,18 +49,27 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             ASI = pd.DataFrame()
         try:
             OBV = data.add_func(QA.QA_indicator_OBV)
+            VR['OBV_C'] = VR['OBV']/QA.REF(VR['OBV'], 1)-1
         except:
             OBV = pd.DataFrame()
         try:
             PVT = data.add_func(QA.QA_indicator_PVT)
+            PVT['PVT_C'] = VR['PVT']/QA.REF(PVT['PVT'], 1)-1
         except:
             PVT = pd.DataFrame()
         try:
             VPT = data.add_func(QA.QA_indicator_VPT)
+            VPT['MARK'] = 0
+            VPT['VPT_CROSS1'] = QA.CROSS(VPT['VPT'], VPT['MARK'])
+            VPT['VPT_CROSS2'] = QA.CROSS(VPT['MARK'], VPT['VPT'])
+            VPT['VPT_CROSS3'] = QA.CROSS(VPT['MAVPT'], VPT['MARK'])
+            VPT['VPT_CROSS4'] = QA.CROSS(VPT['MARK'], VPT['MAVPT'])
         except:
             VPT = pd.DataFrame()
         try:
             KDJ = data.add_func(QA.QA_indicator_KDJ)
+            KDJ['KDJ_CROSS1'] = QA.CROSS(KDJ['KDJ_D'], KDJ['KDJ_K'])
+            KDJ['KDJ_CROSS2'] = QA.CROSS(KDJ['KDJ_K'], KDJ['KDJ_D'])
         except:
             KDJ = pd.DataFrame()
         try:
@@ -59,10 +82,17 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             ROC = pd.DataFrame()
         try:
             RSI = data.add_func(QA.QA_indicator_RSI)
+            RSI['RSI1_C'] = RSI['RSI1']/QA.REF(RSI['RSI1'], 1)-1
+            RSI['RSI2_C'] = RSI['RSI2']/QA.REF(RSI['RSI2'], 1)-1
+            RSI['RSI3_C'] = RSI['RSI3']/QA.REF(RSI['RSI3'], 1)-1
         except:
             RSI = pd.DataFrame()
         try:
             CCI = data.add_func(QA.QA_indicator_CCI)['CCI']
+            CCI['CCI_CROSS1'] = QA.CROSS(CCI['CCI'], CCI['a'])
+            CCI['CCI_CROSS2'] = QA.CROSS(CCI['a'], CCI['CCI'])
+            CCI['CCI_CROSS3'] = QA.CROSS(CCI['CCI'], CCI['b'])
+            CCI['CCI_CROSS4'] = QA.CROSS(CCI['b'], CCI['CCI'])
         except:
             CCI = pd.DataFrame()
         try:
@@ -71,6 +101,11 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             BIAS = pd.DataFrame()
         try:
             OSC = data.add_func(QA.QA_indicator_OSC)
+            OSC['MARK'] = 0
+            OSC['OSC_CROSS1'] = QA.CROSS(OSC['OSC'], OSC['MARK'])
+            OSC['OSC_CROSS2'] = QA.CROSS(OSC['MARK'], OSC['OSC'])
+            OSC['OSC_CROSS3'] = QA.CROSS(OSC['MAOSC'], OSC['MARK'])
+            OSC['OSC_CROSS4'] = QA.CROSS(OSC['MARK'], OSC['MAOSC'])
         except:
             OSC = pd.DataFrame()
         try:
@@ -79,26 +114,51 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             ADTM = pd.DataFrame()
         try:
             MACD = data.add_func(QA.QA_indicator_MACD)
+            MACD['CROSS_JC'] = QA.CROSS(MACD['DIFF'], MACD['DEA'])
+            MACD['CROSS_SC'] = QA.CROSS(MACD['DEA'], MACD['DIFF'])
         except:
             MACD = pd.DataFrame()
         try:
             DMI = data.add_func(QA.QA_indicator_DMI)
+            DMI['ADX_C'] = DMI['ADX']/QA.REF(DMI['ADX'], 1)-1
+            DMI['DI_M'] = DMI['DI1'] - DMI['DI2']
+            DMI['DI_CROSS1'] = QA.CROSS(DMI['DI1'], DMI['DI2'])
+            DMI['DI_CROSS2'] = QA.CROSS(DMI['DI2'], DMI['DI1'])
+            DMI['ADX_CROSS1'] = QA.CROSS(DMI['ADX'], DMI['ADXR'])
+            DMI['ADX_CROSS2'] = QA.CROSS(DMI['ADXR'], DMI['ADX'])
         except:
             DMI = pd.DataFrame()
         try:
             DMA = data.add_func(QA.QA_indicator_DMA)
+            DMA['DMA_CROSS1'] = QA.CROSS(DMA['AMA'], DMA['DDD'])
+            DMA['DMA_CROSS2'] = QA.CROSS(DMA['DDD'], DMA['AMA'])
         except:
             DMA = pd.DataFrame()
         try:
             PBX = data.add_func(QA.QA_indicator_PBX)
+            PBX['PBX1_C'] = PBX['PBX1']/QA.REF(PBX['PBX1'], 1)-1
+            PBX['PBX2_C'] = PBX['PBX2']/QA.REF(PBX['PBX2'], 1)-1
+            PBX['PBX3_C'] = PBX['PBX3']/QA.REF(PBX['PBX3'], 1)-1
+            PBX['PBX4_C'] = PBX['PBX4']/QA.REF(PBX['PBX4'], 1)-1
+            PBX['PBX5_C'] = PBX['PBX5']/QA.REF(PBX['PBX5'], 1)-1
+            PBX['PBX6_C'] = PBX['PBX6']/QA.REF(PBX['PBX6'], 1)-1
         except:
             PBX = pd.DataFrame()
         try:
             MTM = data.add_func(QA.QA_indicator_MTM)
+            MTM['MARK'] = 0
+            MTM['MTM_CROSS1'] = QA.CROSS(MTM['MTM'], MTM['MARK'])
+            MTM['MTM_CROSS2'] = QA.CROSS(MTM['MARK'], MTM['MTM'])
+            MTM['MTM_CROSS3'] = QA.CROSS(MTM['MAMTM'], MTM['MARK'])
+            MTM['MTM_CROSS4'] = QA.CROSS(MTM['MARK'], MTM['MAMTM'])
         except:
             MTM = pd.DataFrame()
         try:
             EXPMA = data.add_func(QA.QA_indicator_EXPMA)
+            EXPMA['MA1'] = data.data['close']/EXPMA['MA1']-1
+            EXPMA['MA2'] = data.data['close']/EXPMA['MA2']-1
+            EXPMA['MA3'] = data.data['close']/EXPMA['MA3']-1
+            EXPMA['MA4'] = data.data['close']/EXPMA['MA4']-1
         except:
             EXPMA = pd.DataFrame()
         try:
@@ -107,6 +167,7 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             CHO = pd.DataFrame()
         try:
             BBI = data.add_func(QA.QA_indicator_BBI)
+            BBI['BBI'] = BBI['BBI'] - data.data['close']
         except:
             BBI = pd.DataFrame()
         try:
@@ -119,10 +180,15 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             ATR = pd.DataFrame()
         try:
             SKDJ = data.add_func(QA.QA_indicator_SKDJ)
+            SKDJ['SKDJ_CROSS1'] = QA.CROSS(SKDJ['SKDJ_D'], SKDJ['SKDJ_K'])
+            SKDJ['SKDJ_CROSS2'] = QA.CROSS(SKDJ['SKDJ_K'], SKDJ['SKDJ_D'])
         except:
             SKDJ = pd.DataFrame()
         try:
             DDI = data.add_func(QA.QA_indicator_DDI)
+            DDI['DDI_C'] = DDI['DDI']/QA.REF(DDI['DDI'], 1)-1
+            DDI['AD_C'] = DDI['AD']/QA.REF(DDI['AD'], 1)-1
+            DDI['ADDI_C'] = DDI['ADDI']/QA.REF(DDI['ADDI'], 1)-1
         except:
             DDI = pd.DataFrame()
         try:
@@ -131,6 +197,12 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             shadow = pd.DataFrame()
         try:
             MA = data.add_func(QA.QA_indicator_MA,5,10,20,60,120,180)
+            MA['MA5'] = data.data['close']/MA['MA5']-1
+            MA['MA10'] = data.data['close']/MA['MA10']-1
+            MA['MA20'] = data.data['close']/MA['MA20']-1
+            MA['MA60'] = data.data['close']/MA['MA60']-1
+            MA['MA120'] = data.data['close']/MA['MA120']-1
+            MA['MA180'] = data.data['close']/MA['MA180']-1
         except:
             MA = pd.DataFrame()
         try:
@@ -395,132 +467,29 @@ def QA_fetch_get_indicator(code, start_date, end_date):
                         CDLSPINNINGTOP,CDLSTALLEDPATTERN,CDLSTICKSANDWICH,CDLTAKURI,CDLTASUKIGAP,
                         CDLTHRUSTING,CDLTRISTAR,CDLUNIQUE3RIVER,CDLUPSIDEGAP2CROWS,CDLXSIDEGAP3METHODS],
                        axis=1).dropna(how='all').reset_index()
-        res.columns = ['date','code','VR','VRSI',
-                       'VSTD','BOLL','UB','LB',
-                       'WR','MR','SR','WS','MS',
-                       'SS','ASI',
-                       'ASIT',
-                       'OBV',
-                       'PVT',
-                       'VPT',
-                       'MAVPT',
-                       'KDJ_K',
-                       'KDJ_D',
-                       'KDJ_J',
-                       'WR1',
-                       'WR2',
-                       'ROC',
-                       'ROCMA',
-                       'RSI1',
-                       'RSI2',
-                       'RSI3',
-                       'CCI',
-                       'BIAS1',
-                       'BIAS2',
-                       'BIAS3',
-                       'OSC',
-                       'MAOSC',
-                       'ADTM',
-                       'MAADTM',
-                       'DIF',
-                       'DEA',
-                       'MACD',
-                       'DI1',
-                       'DI2',
-                       'ADX',
-                       'ADXR',
-                       'DDD',
-                       'AMA',
-                       'PBX1',
-                       'PBX2',
-                       'PBX3',
-                       'PBX4',
-                       'PBX5',
-                       'PBX6',
-                       'MTM',
-                       'MTMMA',
-                       'MA1',
-                       'MA2',
-                       'MA3',
-                       'MA4',
-                       'CHO',
-                       'MACHO',
-                       'BBI',
-                       'MFI',
-                       'TR',
-                       'ATR',
-                       'RSV',
-                       'SKDJ_K',
-                       'SKDJ_D',
-                       'DDI',
-                       'ADDI',
-                       'AD',
-                       'MA5',
-                       'MA10',
-                       'MA20',
-                       'MA60',
-                       'MA120',
-                       'MA180',
-                       'CDL2CROWS',
-                       'CDL3BLACKCROWS',
-                       'CDL3INSIDE',
-                       'CDL3LINESTRIKE',
-                       'CDL3OUTSIDE',
-                       'CDL3STARSINSOUTH',
-                       'CDL3WHITESOLDIERS',
-                       'CDLABANDONEDBABY',
-                       'CDLADVANCEBLOCK',
-                       'CDLBELTHOLD',
-                       'CDLBREAKAWAY',
-                       'CDLCLOSINGMARUBOZU',
-                       'CDLCONCEALBABYSWALL',
-                       'CDLCOUNTERATTACK',
-                       'CDLDARKCLOUDCOVER',
-                       'CDLDOJI',
-                       'CDLDOJISTAR',
-                       'CDLDRAGONFLYDOJI',
-                       'CDLENGULFING',
-                       'CDLEVENINGDOJISTAR',
-                       'CDLEVENINGSTAR',
-                       'CDLGAPSIDESIDEWHITE',
-                       'CDLGRAVESTONEDOJI',
-                       'CDLHAMMER',
-                       'CDLHANGINGMAN',
-                       'CDLHARAMI',
-                       'CDLHARAMICROSS',
-                       'CDLHIGHWAVE',
-                       'CDLHIKKAKE',
-                       'CDLHIKKAKEMOD',
-                       'CDLHOMINGPIGEON',
-                       'CDLIDENTICAL3CROWS',
-                       'CDLINNECK',
-                       'CDLINVERTEDHAMMER',
-                       'CDLKICKING',
-                       'CDLKICKINGBYLENGTH',
-                       'CDLLADDERBOTTOM',
-                       'CDLLONGLEGGEDDOJI',
-                       'CDLLONGLINE',
-                       'CDLMARUBOZU',
-                       'CDLMATCHINGLOW',
-                       'CDLMATHOLD',
-                       'CDLMORNINGDOJISTAR',
-                       'CDLMORNINGSTAR',
-                       'CDLONNECK',
-                       'CDLPIERCING',
-                       'CDLRICKSHAWMAN',
-                       'CDLRISEFALL3METHODS',
-                       'CDLSEPARATINGLINES',
-                       'CDLSHOOTINGSTAR',
-                       'CDLSHORTLINE',
-                       'CDLSPINNINGTOP',
-                       'CDLSTALLEDPATTERN',
-                       'CDLSTICKSANDWICH',
-                       'CDLTAKURI',
-                       'CDLTASUKIGAP',
-                       'CDLTHRUSTING',
-                       'CDLTRISTAR',
-                       'CDLUNIQUE3RIVER',
-                       'CDLUPSIDEGAP2CROWS',
-                       'CDLXSIDEGAP3METHODS']
+        res.columns = ['date','code','VR','VRSI','VSTD','BOLL','UB','LB','WR','MR','SR','WS','MS','SS',
+                       'ASI','ASIT','OBV','PVT','VPT','MAVPT','KDJ_K','KDJ_D','KDJ_J','WR1','WR2','ROC',
+                       'ROCMA','RSI1','RSI2','RSI3','CCI','BIAS1','BIAS2','BIAS3','OSC','MAOSC','ADTM',
+                       'MAADTM','DIF','DEA','MACD','DI1','DI2','ADX','ADXR','DDD','AMA','PBX1','PBX2',
+                       'PBX3','PBX4','PBX5','PBX6','MTM','MTMMA','MA1','MA2','MA3','MA4','CHO','MACHO',
+                       'BBI','MFI','TR','ATR','RSV','SKDJ_K','SKDJ_D','DDI','ADDI','AD','MA5','MA10',
+                       'MA20','MA60','MA120','MA180','CDL2CROWS','CDL3BLACKCROWS','CDL3INSIDE',
+                       'CDL3LINESTRIKE','CDL3OUTSIDE','CDL3STARSINSOUTH','CDL3WHITESOLDIERS',
+                       'CDLABANDONEDBABY','CDLADVANCEBLOCK','CDLBELTHOLD','CDLBREAKAWAY','CDLCLOSINGMARUBOZU',
+                       'CDLCONCEALBABYSWALL','CDLCOUNTERATTACK','CDLDARKCLOUDCOVER','CDLDOJI','CDLDOJISTAR',
+                       'CDLDRAGONFLYDOJI','CDLENGULFING','CDLEVENINGDOJISTAR','CDLEVENINGSTAR','CDLGAPSIDESIDEWHITE',
+                       'CDLGRAVESTONEDOJI','CDLHAMMER','CDLHANGINGMAN','CDLHARAMI','CDLHARAMICROSS','CDLHIGHWAVE',
+                       'CDLHIKKAKE','CDLHIKKAKEMOD','CDLHOMINGPIGEON','CDLIDENTICAL3CROWS','CDLINNECK','CDLINVERTEDHAMMER',
+                       'CDLKICKING','CDLKICKINGBYLENGTH','CDLLADDERBOTTOM','CDLLONGLEGGEDDOJI','CDLLONGLINE','CDLMARUBOZU',
+                       'CDLMATCHINGLOW','CDLMATHOLD','CDLMORNINGDOJISTAR','CDLMORNINGSTAR','CDLONNECK','CDLPIERCING','CDLRICKSHAWMAN',
+                       'CDLRISEFALL3METHODS','CDLSEPARATINGLINES','CDLSHOOTINGSTAR','CDLSHORTLINE','CDLSPINNINGTOP','CDLSTALLEDPATTERN',
+                       'CDLSTICKSANDWICH','CDLTAKURI','CDLTASUKIGAP','CDLTHRUSTING','CDLTRISTAR','CDLUNIQUE3RIVER','CDLUPSIDEGAP2CROWS',
+                       'CDLXSIDEGAP3METHODS','VRSI_C','WIDTH','BOLL_CROSS1','BOLL_CROSS2','BOLL_CROSS3','BOLL_CROSS4',
+                       'OBV_C','PVT_C','VPT_CROSS1','VPT_CROSS2','VPT_CROSS3','VPT_CROSS4','KDJ_CROSS1','KDJ_CROSS2',
+                       'RSI1_C','RSI2_C','RSI3_C','CCI_CROSS1','CCI_CROSS2','CCI_CROSS3','CCI_CROSS4','OSC_CROSS1',
+                       'OSC_CROSS2','OSC_CROSS3','OSC_CROSS4','CROSS_JC','CROSS_SC','ADX_C','DI_M','DI_CROSS1',
+                       'DI_CROSS2','ADX_CROSS1','ADX_CROSS2','DMA_CROSS1','DMA_CROSS2','PBX1_C','PBX2_C',
+                       'PBX3_C','PBX4_C','PBX5_C','PBX6_C','MTM_CROSS1','MTM_CROSS2','MTM_CROSS3',
+                       'MTM_CROSS4','SKDJ_CROSS1','SKDJ_CROSS2','DDI_C','AD_C','ADDI_C']
         data = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
