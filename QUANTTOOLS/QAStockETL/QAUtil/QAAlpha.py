@@ -936,7 +936,7 @@ class Alpha_191:
         #data3 = pd.merge(self.open_price, data1, left_index=True, right_index=True).drop(['close', 'open'], axis=1)
         #data4 = data2[data2 > data3]
         #alpha = 1 - data4.isnull().sum(axis=0) / numbench
-        #return alpha
+        return None
 
 
     #############################################################################
