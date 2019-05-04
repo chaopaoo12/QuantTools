@@ -490,7 +490,6 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
                              'alpha_189',
                              'alpha_190',
                              'alpha_191']]
-            res['date'] = res['date'].apply(lambda x: QA_util_datetime_to_strdate(datetime.datetime.fromtimestamp(math.floor(x))))
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
@@ -537,8 +536,8 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
             res = res.ix[:, ['begin_date','code','crawl_date','exe_shares',
                              'nontra_ashares','nontra_bshares','pre_shares','reason',
                              'send_date','total_shares','tra_ashares','tra_bshares','tra_hshares']]
-            res['begin_date'] = res['begin_date'].apply(lambda x: QA_util_datetime_to_strdate(datetime.datetime.fromtimestamp(math.floor(x))))
-            res['crawl_date'] = res['crawl_date'].apply(lambda x: QA_util_datetime_to_strdate(datetime.datetime.fromtimestamp(math.floor(x))))
+            res['begin_date'] = res['begin_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            res['crawl_date'] = res['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
@@ -650,8 +649,8 @@ def QA_fetch_financial_report_wy(code, start_date, end_date, type ='report', lty
                 endict['crawl_date']='crawl_date'
                 res_pd.columns = res_pd.columns.map(lambda x: endict[x])
             """
-            res_pd['crawl_date'] = res_pd['crawl_date'].apply(lambda x: QA_util_datetime_to_strdate(datetime.datetime.fromtimestamp(math.floor(x))))
-            res_pd['report_date'] = res_pd['report_date'].apply(lambda x: QA_util_datetime_to_strdate(datetime.datetime.fromtimestamp(math.floor(x))))
+            res_pd['crawl_date'] = res_pd['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            res_pd['report_date'] = res_pd['report_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
             return res_pd.replace(-4.039810335e+34, numpy.nan).set_index(['report_date', 'code'], drop=False)
         else:
             return None
@@ -663,7 +662,6 @@ def QA_fetch_stock_technical_index(code, start, end=None, format='pd', collectio
     #code= [code] if isinstance(code,str) else code
     # code checking
     code = QA_util_code_tolist(code)
-
     if QA_util_date_valid(end):
 
         __data = []
@@ -677,7 +675,6 @@ def QA_fetch_stock_technical_index(code, start, end=None, format='pd', collectio
         try:
             res = res.drop_duplicates(
                 (['code', 'date']))
-            res['date'] = res['date'].apply(lambda x: QA_util_datetime_to_strdate(datetime.datetime.fromtimestamp(math.floor(x))))
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:

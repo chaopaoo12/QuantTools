@@ -20,7 +20,7 @@ def QA_SU_save_stock_technical_index_day(client=DATABASE, ui_log = None, ui_prog
     codes = list(QA_fetch_stock_list_adv()['code'])
 
     stock_technical_index = client.stock_technical_index
-    stock_technical_index.create_index([("code", pymongo.ASCENDING),("date", pymongo.ASCENDING)], unique=True)
+    stock_technical_index.create_index([("CODE", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(code, stock_technical_index):
@@ -65,7 +65,7 @@ def QA_SU_save_stock_technical_index_his(client=DATABASE, ui_log = None, ui_prog
     codes = list(QA_fetch_stock_list_adv()['code'])
 
     stock_technical_index = client.stock_technical_index
-    stock_technical_index.create_index([("code", pymongo.ASCENDING),("date", pymongo.ASCENDING)], unique=True)
+    stock_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(code, stock_technical_index):

@@ -522,5 +522,5 @@ def QA_fetch_get_indicator(code, start_date, end_date):
                        'CDLUNIQUE3RIVER',
                        'CDLUPSIDEGAP2CROWS',
                        'CDLXSIDEGAP3METHODS']
-        data = res.assign(date=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
+        data = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
