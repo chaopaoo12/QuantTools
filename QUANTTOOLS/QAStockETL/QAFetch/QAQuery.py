@@ -489,7 +489,7 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
                              'alpha_188',
                              'alpha_189',
                              'alpha_190',
-                             'alpha_191']].set_index(['code','date'])
+                             'alpha_191']].set_index(['date','code'])
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
@@ -676,7 +676,7 @@ def QA_fetch_stock_technical_index(code, start, end=None, format='pd', collectio
             res = res.drop_duplicates(
                 (['code', 'date']))
             res['date'] = res['date'].apply(lambda x: str(x)[0:10])
-            res = res.drop(['date_stamp'],axis=1).set_index(['code','date'])
+            res = res.drop(['date_stamp'],axis=1).set_index(['date','code'])
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
