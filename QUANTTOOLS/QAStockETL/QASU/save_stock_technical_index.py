@@ -52,7 +52,7 @@ def QA_SU_save_stock_technical_index_day(client=DATABASE, ui_log = None, ui_prog
         QA_util_log_info(err, ui_log)
 
 
-def QA_SU_save_stock_technical_index_his(client=DATABASE, ui_log = None, start_date=None,end_date=None):
+def QA_SU_save_stock_technical_index_his(client=DATABASE, ui_log = None, ui_progress = None):
 
     '''
      save stock_day
