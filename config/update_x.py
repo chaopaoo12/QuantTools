@@ -48,13 +48,12 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_etl_stock_block, QA_etl_stock_divyield,
                                    QA_etl_process_financial_day,QA_SU_save_stock_alpha_day,
                                    QA_SU_save_stock_technical_index_day)
+
+print("download day data ")
 QA_SU_save_stock_day('tdx')
 QA_SU_save_stock_xdxr('tdx')
-QA_SU_save_stock_min('tdx')
 QA_SU_save_index_day('tdx')
-QA_SU_save_index_min('tdx')
 QA_SU_save_etf_day('tdx')
-QA_SU_save_etf_min('tdx')
 QA_SU_save_stock_list('tdx')
 QA_SU_save_stock_block('tdx')
 QA_SU_save_stock_info('tdx')
@@ -68,3 +67,8 @@ QA_etl_stock_info()
 QA_etl_stock_xdxr(type == "all")
 QA_etl_stock_day()
 QA_etl_stock_block()
+
+print("download min data ")
+QA_SU_save_stock_min('tdx')
+QA_SU_save_index_min('tdx')
+QA_SU_save_etf_min('tdx')
