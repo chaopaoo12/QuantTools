@@ -4,7 +4,7 @@ import datetime
 
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
                                QA_util_get_trade_range,QA_util_get_last_day,
-                               QA_util_if_trade)
+                               QA_util_if_trade,QA_util_get_pre_trade_date)
 
 def QA_util_process_quantdata(start_date, end_date):
 
@@ -20,19 +20,20 @@ def QA_util_process_quantdata(start_date, end_date):
    LAG(AVG_TOTAL_MARKET, 3) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE3_MARKET,
    LAG(AVG_TOTAL_MARKET, 5) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE5_MARKET
             from (select *,
-                    from stock_analysis_data a where order_date >= (to_date('{start_date}', 'yyyy-mm-dd') - 5)
-           and order_date <= to_date('{start_date}', 'yyyy-mm-dd')
+                    from stock_analysis_data a where order_date >= (to_date('{start}', 'yyyy-mm-dd') - 5)
+           and order_date <= to_date('{deal_date}', 'yyyy-mm-dd')
                     ) A
-        where ORDER_DATE = (to_date('{start_date}', 'yyyy-mm-dd')-5)"""
+        where ORDER_DATE = '{deal_date}'"""
 
     conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
     cursor = conn.cursor()
     start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
     end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d")
+
     while start_date <= end_date:
         if QA_util_if_trade(start_date.strftime("%Y-%m-%d")) == True:
             print(start_date.strftime("%Y-%m-%d"), QA_util_get_last_day(start_date.strftime("%Y-%m-%d"),6))
-            sql2 = sql1.format(start_date=start_date.strftime("%Y-%m-%d"))
+            sql2 = sql1.format(deal_date=start_date.strftime("%Y-%m-%d"), start = QA_util_get_pre_trade_date(start_date,6))
             if QA_util_get_last_day(start_date.strftime("%Y-%m-%d"),6) == 'wrong date':
                 print(sql2)
             cursor.execute(sql2)
@@ -200,7 +201,7 @@ def QA_util_etl_stock_quant(start_date):
              end) * 100,
              2) as target5
   from QUANT_ANALYSIS_DATA A
- where order_date = (to_date('{start_date}', 'yyyy-mm-dd')-10)'''.format(start_date=start_date)
+ where order_date = to_date('{start_date}', 'yyyy-mm-dd')'''.format(start_date=QA_util_get_pre_trade_date(start_date,5))
     conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
     data = pd.read_sql(sql=sql, con=conn)
     data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
