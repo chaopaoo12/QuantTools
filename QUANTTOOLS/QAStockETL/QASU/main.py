@@ -77,10 +77,10 @@ def QA_SU_save_stock_shares_sina_day():
 def QA_SU_save_stock_shares_sina_his():
     return save_stock_shares_sina.QA_SU_save_stock_shares_his()
 
-def QA_SU_save_save_stock_technical_index_day():
+def QA_SU_save_stock_technical_index_day():
     return save_stock_technical_index.QA_SU_save_stock_technical_index_day()
 
-def QA_SU_save_save_stock_technical_index_his():
+def QA_SU_save_stock_technical_index_his():
     return save_stock_technical_index.QA_SU_save_stock_technical_index_day()
 
 def QA_SU_save_stock_alpha_day(code = None, date = None):
