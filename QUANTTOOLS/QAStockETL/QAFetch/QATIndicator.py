@@ -467,7 +467,7 @@ def QA_fetch_get_indicator(code, start_date, end_date):
                         CDLSPINNINGTOP,CDLSTALLEDPATTERN,CDLSTICKSANDWICH,CDLTAKURI,CDLTASUKIGAP,
                         CDLTHRUSTING,CDLTRISTAR,CDLUNIQUE3RIVER,CDLUPSIDEGAP2CROWS,CDLXSIDEGAP3METHODS],
                        axis=1).dropna(how='all').reset_index()
-        res.columns = ['date','code','VRSI','BOLL','UB','LB','WIDTH','BOLL_CROSS1','BOLL_CROSS2',
+        res = res.ix[:, ['date','code','VRSI','BOLL','UB','LB','WIDTH','BOLL_CROSS1','BOLL_CROSS2',
                        'BOLL_CROSS3','BOLL_CROSS4','WR','MR','SR','WS','MS','SS','ASI','ASIT',
                        'VPT','MAVPT','VPT_CROSS1','VPT_CROSS2','VPT_CROSS3','VPT_CROSS4','KDJ_K',
                        'KDJ_D','KDJ_J','KDJ_CROSS1','KDJ_CROSS2','WR1','WR2','ROC','ROCMA','RSI1',
@@ -489,6 +489,6 @@ def QA_fetch_get_indicator(code, start_date, end_date):
                        'CDLMATHOLD','CDLMORNINGDOJISTAR','CDLMORNINGSTAR','CDLONNECK','CDLPIERCING','CDLRICKSHAWMAN',
                        'CDLRISEFALL3METHODS','CDLSEPARATINGLINES','CDLSHOOTINGSTAR','CDLSHORTLINE','CDLSPINNINGTOP',
                        'CDLSTALLEDPATTERN','CDLSTICKSANDWICH','CDLTAKURI','CDLTASUKIGAP','CDLTHRUSTING','CDLTRISTAR',
-                       'CDLUNIQUE3RIVER','CDLUPSIDEGAP2CROWS','CDLXSIDEGAP3METHODS','date_stamp']
+                       'CDLUNIQUE3RIVER','CDLUPSIDEGAP2CROWS','CDLXSIDEGAP3METHODS','date_stamp']]
         data = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
