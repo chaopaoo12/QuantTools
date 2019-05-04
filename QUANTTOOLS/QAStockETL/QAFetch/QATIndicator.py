@@ -3,10 +3,11 @@ import QUANTAXIS as QA
 import pandas as pd
 
 def QA_fetch_get_indicator(code, start_date, end_date):
-    data = QA_fetch_stock_day_adv(code,start_date,end_date).to_qfq()
+    data = QA_fetch_stock_day_adv(code,start_date,end_date)
     if data == None:
         return None
     else:
+        data = data.to_qfq()
         try:
             VR = data.add_func(QA.QA_indicator_VR)
         except:
