@@ -95,12 +95,11 @@ def QA_etl_stock_divyield(type = "crawl", mark_day = str(datetime.date.today()))
 
 def QA_etl_process_financial_day(type = "day", deal_date = str(datetime.date.today())):
     if type == "day":
-        QA_util_process_stock_financial()
         QA_util_process_financial(deal_date=deal_date)
         QA_util_process_quantdata(deal_date=deal_date)
 
     elif type == "all":
-        QA_util_process_stock_financial()
+        print("Run This JOB in DataBase")
 
 def QA_etl_stock_financial_wy(type = "crawl", start_date = str(datetime.date.today())):
     if type == 'all':

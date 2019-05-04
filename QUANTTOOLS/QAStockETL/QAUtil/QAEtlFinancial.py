@@ -4,7 +4,7 @@ from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
                                QA_util_get_trade_range,QA_util_get_last_day,
                                QA_util_if_trade)
 
-def QA_util_process_stock_financial(deal_date = None, type = 'day'):
+def QA_util_process_stock_financial():
 
     sql1 = '''create table stock_financial_TTM as
  with f as

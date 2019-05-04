@@ -1,16 +1,14 @@
 import cx_Oracle
+from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
+                               QA_util_get_trade_range,QA_util_get_last_day,
+                               QA_util_if_trade)
 
 def QA_util_process_financial(deal_date = None, type = 'day'):
 
     if type == 'day' and deal_date == None:
-        deal_date
-
-    if type == 'day' or deal_date != None:
-        dateS = ''' where order_date  = to_date('{deal_date}','yyyy-mm-dd')
-        '''.format(deal_date = deal_date)
-        s_condition = dateS
+        deal_date = QA_util_today_str()
     elif type == 'all':
-        s_condition = ''
+        print("Run This JOB in DataBase")
 
     sql3="""insert into stock_analysis_data
   select g.*,
@@ -730,22 +728,11 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
                      and c.end_date >= a.order_date) h) g
    where order_date = to_date('{deal_date}','yyyy-mm-dd')
         """.format(deal_date=deal_date)
-    if type == 'day' or deal_date != None:
-        actions = 'insert into stock_analysis_data '
-    elif type == 'all':
-        print("please run this job in database")
-
-
     conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
     cursor = conn.cursor()
     if type == 'all' and deal_date == None:
-        cursor.execute('''drop table stock_analysis_data''')
-        sql3 = actions + sql3
-        cursor.execute(sql3)
-        conn.commit()
-        print('analysis data has been stored')
+        print("please run this job in database")
     elif type == 'day' or deal_date != None:
-        sql3 = actions + sql3
         cursor.execute(sql3)
         conn.commit()
         print('analysis data for {deal_date} has been stored'.format(deal_date=deal_date))

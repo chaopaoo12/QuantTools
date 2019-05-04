@@ -6,7 +6,11 @@ from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
                                QA_util_get_trade_range,QA_util_get_last_day,
                                QA_util_if_trade,QA_util_get_pre_trade_date)
 
-def QA_util_process_quantdata(start_date, end_date):
+def QA_util_process_quantdata(type = 'day', start_date = None, end_date = None):
+
+    if type == 'day' or start_date == None:
+        start_date = QA_util_today_str()
+        end_date = QA_util_today_str()
 
     sql1 = """INSERT INTO QUANT_ANALYSIS_DATA
   select *
@@ -44,7 +48,10 @@ def QA_util_process_quantdata(start_date, end_date):
     conn.commit()
     conn.close()
 
-def QA_util_etl_stock_quant(start_date):
+def QA_util_etl_stock_quant(type = 'day', deal_date = None):
+    if type == 'day' or deal_date == None:
+        deal_date = QA_util_today_str()
+
     sql = '''select code,
        name,
        industry,
@@ -197,13 +204,13 @@ def QA_util_etl_stock_quant(start_date):
              end) * 100,
              2) as target5
   from QUANT_ANALYSIS_DATA A
- where order_date = to_date('{start_date}', 'yyyy-mm-dd')'''.format(start_date=QA_util_get_pre_trade_date(start_date,5))
+ where order_date = to_date('{start_date}', 'yyyy-mm-dd')'''.format(start_date=QA_util_get_pre_trade_date(deal_date,5))
     conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
     data = pd.read_sql(sql=sql, con=conn)
     data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     conn.close()
     if data.shape[0] == 0:
-        print("No data For {start_date}".format(start_date=start_date))
+        print("No data For {start_date}".format(start_date=deal_date))
         return None
     else:
         return(data)
