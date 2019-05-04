@@ -498,50 +498,57 @@ A.NETPROFIT - A.NETPROAFTEXTRGAINLOSS AS EXTRGAINLOSS
     from stock_financial_TTM),
 rp as
  (select code,
-       to_date(report_date, 'yyyy-mm-dd') as report_date,
-       to_date(send_date, 'yyyy-mm-dd') as send_date,
-       to_date(COALESCE(lag(send_date)
-                        over(partition by code order by report_date desc),
-                        to_char(sysdate, 'yyyy-mm-dd')),
-               'yyyy-mm-dd') as end_date
+       report_date,
+       min(send_date) as send_date,
+       max(end_date) as end_date
   from (select code,
-               to_char(report_date, 'yyyy-mm-dd') as report_date,
-               to_char(MIN(real_date), 'yyyy-mm-dd') as send_date
-          from stock_calendar
-         group by code, report_date
-        union all
-        select code,
-               CASE
-                 WHEN to_char(to_date(timetomarket, 'yyyymmdd'), 'Q') = 1 THEN
-                  to_char(trunc(to_date(timetomarket, 'yyyymmdd'), 'year') - 1,
-                          'yyyy-mm-dd')
-                 when to_char(to_date(timetomarket, 'yyyymmdd'), 'Q') = 2 then
-                  to_char(to_date(concat(to_char(to_date(timetomarket,
-                                                         'yyyymmdd'),
-                                                 'yyyy'),
-                                         '0331'),
-                                  'yyyymmdd'),
-                          'yyyy-mm-dd')
-                 when to_char(to_date(timetomarket, 'yyyymmdd'), 'Q') = 3 then
-                  to_char(to_date(concat(to_char(to_date(timetomarket,
-                                                         'yyyymmdd'),
-                                                 'yyyy'),
-                                         '0630'),
-                                  'yyyymmdd'),
-                          'yyyy-mm-dd')
-                 when to_char(to_date(timetomarket, 'yyyymmdd'), 'Q') = 4 then
-                  to_char(to_date(concat(to_char(to_date(timetomarket,
-                                                         'yyyymmdd'),
-                                                 'yyyy'),
-                                         '0930'),
-                                  'yyyymmdd'),
-                          'yyyy-mm-dd')
-                 else
-                  null
-               end as report_date,
-               to_char(to_date(timetomarket, 'yyyymmdd') - 1, 'yyyy-mm-dd') as send_date
-          from stock_info
-         where length(timetomarket) = 8) h),
+               to_date(report_date, 'yyyy-mm-dd') as report_date,
+               to_date(send_date, 'yyyy-mm-dd') as send_date,
+               to_date(COALESCE(lag(send_date)
+                                over(partition by code order by report_date desc),
+                                to_char(sysdate, 'yyyy-mm-dd')),
+                       'yyyy-mm-dd') as end_date
+          from (select code,
+                       to_char(report_date, 'yyyy-mm-dd') as report_date,
+                       to_char(MIN(real_date), 'yyyy-mm-dd') as send_date
+                  from stock_calendar
+                 group by code, report_date
+                union all
+                select code,
+                       CASE
+                         WHEN to_char(to_date(timetomarket, 'yyyymmdd'), 'Q') = 1 THEN
+                          to_char(trunc(to_date(timetomarket, 'yyyymmdd'),
+                                        'year') - 1,
+                                  'yyyy-mm-dd')
+                         when to_char(to_date(timetomarket, 'yyyymmdd'), 'Q') = 2 then
+                          to_char(to_date(concat(to_char(to_date(timetomarket,
+                                                                 'yyyymmdd'),
+                                                         'yyyy'),
+                                                 '0331'),
+                                          'yyyymmdd'),
+                                  'yyyy-mm-dd')
+                         when to_char(to_date(timetomarket, 'yyyymmdd'), 'Q') = 3 then
+                          to_char(to_date(concat(to_char(to_date(timetomarket,
+                                                                 'yyyymmdd'),
+                                                         'yyyy'),
+                                                 '0630'),
+                                          'yyyymmdd'),
+                                  'yyyy-mm-dd')
+                         when to_char(to_date(timetomarket, 'yyyymmdd'), 'Q') = 4 then
+                          to_char(to_date(concat(to_char(to_date(timetomarket,
+                                                                 'yyyymmdd'),
+                                                         'yyyy'),
+                                                 '0930'),
+                                          'yyyymmdd'),
+                                  'yyyy-mm-dd')
+                         else
+                          null
+                       end as report_date,
+                       to_char(to_date(timetomarket, 'yyyymmdd') - 1,
+                               'yyyy-mm-dd') as send_date
+                  from stock_info
+                 where length(timetomarket) = 8) h) g
+ group by code, report_date),
 res as
  (SELECT A.CODE,
          INDUSTRY,
