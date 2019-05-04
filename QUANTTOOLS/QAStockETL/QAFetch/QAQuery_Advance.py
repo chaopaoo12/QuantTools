@@ -103,7 +103,7 @@ def QA_fetch_stock_fianacial_adv(code,
             code, start, end))
         return None
     else:
-        res_reset_index = res.set_index(['date', 'CODE'], drop=if_drop_index)
+        res_reset_index = res.set_index(['date', 'code'], drop=if_drop_index)
         # if res_reset_index is None:
         #     print("QA Error QA_fetch_stock_fianacial_adv set index 'datetime, code' return None")
         #     return None
