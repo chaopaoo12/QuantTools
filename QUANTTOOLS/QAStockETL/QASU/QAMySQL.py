@@ -110,5 +110,5 @@ def QA_etl_stock_financial_wy(type = "crawl", start_date = str(datetime.date.tod
         if data is None:
             print("We have no financial data for the day {}".format(str(datetime.date.today())))
         else:
-            data = data.reset_index(drop=True).drop("_id",1).fillna(0)
+            data = data.reset_index(drop=True).fillna(0)
             QA_util_sql_store_mysql(data, "stock_financial_wy",if_exists='append')
