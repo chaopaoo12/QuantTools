@@ -41,7 +41,10 @@ from QUANTAXIS.QASU.save_binance import (QA_SU_save_binance,
                                          QA_SU_save_binance_1min,
                                          QA_SU_save_binance_symbol)
 from QUANTTOOLS.QAStockETL import (QA_SU_save_report_calendar_his, QA_SU_save_stock_divyield_his, QA_SU_save_fianacialTTM_momgo,
-                                   QA_SU_save_stock_divyield_day,QA_SU_save_report_calendar_day, QA_SU_save_stock_fianacial_momgo_his)
+                                   QA_SU_save_stock_divyield_day,QA_SU_save_report_calendar_day,
+                                   QA_SU_save_stock_fianacial_momgo,QA_SU_save_stock_fianacial_momgo_his,
+                                   QA_SU_save_stock_financial_sina_day,QA_SU_save_stock_financial_sina_his,
+                                   QA_SU_save_stock_technical_index_day)
 from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_etl_stock_xdxr, QA_etl_stock_day,
                                    QA_etl_stock_financial, QA_etl_stock_calendar,
@@ -52,8 +55,6 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
 print("download day data ")
 QA_SU_save_stock_day('tdx')
 QA_SU_save_stock_xdxr('tdx')
-QA_SU_save_index_day('tdx')
-QA_SU_save_etf_day('tdx')
 QA_SU_save_stock_list('tdx')
 QA_SU_save_stock_block('tdx')
 QA_SU_save_stock_info('tdx')
@@ -68,8 +69,9 @@ QA_etl_stock_xdxr(type == "all")
 QA_etl_stock_day()
 QA_etl_stock_block()
 print("done")
-print("download min data ")
-QA_SU_save_stock_min('tdx')
-QA_SU_save_index_min('tdx')
-QA_SU_save_etf_min('tdx')
+print("processing quant data in sqldatabase")
+QA_etl_process_financial_day('day')
+print("done")
+print("write quant data into mongodb")
+QA_SU_save_stock_fianacial_momgo()
 print("done")
