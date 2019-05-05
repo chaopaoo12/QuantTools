@@ -68,7 +68,7 @@ QA_etl_stock_financial('all')
 
 print("write wy financial data into sqldatabase")
 QA_SU_save_stock_financial_wy_day()
-QA_etl_stock_financial_wy()
+QA_etl_stock_financial_wy('all')
 
 print("run financial data into sqldatabase")
 QA_util_process_stock_financial()
