@@ -53,23 +53,24 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
 print("write shares data into sqldatabase")
 QA_SU_save_stock_shares_sina_day()
 QA_etl_stock_shares()
-
+print("done")
 print("write divyield data into sqldatabase")
 QA_SU_save_stock_divyield_day()
 QA_etl_stock_divyield()
-
+print("done")
 print("write calendar data into sqldatabase")
 QA_SU_save_report_calendar_day()
 QA_etl_stock_calendar()
-
+print("done")
 print("write tdx financial data into sqldatabase")
 QA_SU_save_financialfiles()
 QA_etl_stock_financial('all')
-
+print("done")
 print("write wy financial data into sqldatabase")
 QA_SU_save_stock_financial_wy_day()
 QA_etl_stock_financial_wy('all')
-
+print("done")
 print("run financial data into sqldatabase")
 QA_util_process_stock_financial()
 QA_SU_save_fianacialTTM_momgo()
+print("done")

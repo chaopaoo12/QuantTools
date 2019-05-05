@@ -50,6 +50,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
 
 print("processing quant data in sqldatabase")
 QA_etl_process_financial_day('day')
-
+print("done")
 print("write quant data into mongodb")
 QA_SU_save_stock_fianacial_momgo()
+print("done")
