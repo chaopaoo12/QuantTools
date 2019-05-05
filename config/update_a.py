@@ -50,10 +50,6 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
 
 
 
-print("write shares data into sqldatabase")
-QA_SU_save_stock_shares_sina_day()
-QA_etl_stock_shares()
-print("done")
 print("write divyield data into sqldatabase")
 QA_SU_save_stock_divyield_day()
 QA_etl_stock_divyield()
@@ -73,4 +69,8 @@ print("done")
 print("run financial data into sqldatabase")
 QA_util_process_stock_financial()
 QA_SU_save_fianacialTTM_momgo()
+print("done")
+print("write shares data into sqldatabase")
+QA_SU_save_stock_shares_sina_day()
+QA_etl_stock_shares()
 print("done")
