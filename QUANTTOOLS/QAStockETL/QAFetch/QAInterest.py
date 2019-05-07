@@ -21,11 +21,13 @@ def get_interest_rate():
     data1.columns = ['LFYEAR' if x == '五年以上' else x for x in data1.columns]
     data1.columns = ['LHYEAR' if x == '六个月以内' else x for x in data1.columns]
     data1.columns = ['LOYEAR' if x == '六个月至一年' else x for x in data1.columns]
-    res = pd.concat([data1,data],axis=1)
+    res = pd.concat([data1,data],axis=1).reset_index().fillna(method='ffill')
+    res.columns = ['date' if x == 'index' else x for x in res.columns]
     res['crawl_date']=QA_util_today_str()
-    return(res.reset_index())
+    return(res)
 
 def QA_fetch_get_interest_rate():
     data = get_interest_rate()
     data = data.assign(crawl_date=data['crawl_date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
+    data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(data)

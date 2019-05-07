@@ -16,23 +16,23 @@ def QA_SU_save_financial_report_day(client=DATABASE, ui_log = None, ui_progress 
     END_DATE = QA_util_today_str()
     START_DATE = QA_util_datetime_to_strdate(QA_util_add_days(QA_util_today_str(),-2))
 
+    def __saving_work(code, stock_financial):
+        try:
+            QA_util_log_info(
+                '##JOB01 Now Saving WY financial_report==== {}'.format(str(code)), ui_log)
+
+            stock_financial.insert_many(QA_util_to_json_from_pandas(
+                QA_fetch_get_stock_report_wy(code)), ordered=False)
+            gc.collect()
+        except Exception as error0:
+            print(error0)
+            err.append(str(code))
+
     if QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),START_DATE,END_DATE).data is not None:
         code = list(QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),START_DATE,END_DATE).data['code'])
         stock_financial = client.stock_financial_wy
         stock_financial.create_index([("code", pymongo.ASCENDING), ("report_date", pymongo.ASCENDING)], unique=True)
         err = []
-
-        def __saving_work(code, stock_financial):
-            try:
-                QA_util_log_info(
-                    '##JOB01 Now Saving WY financial_report==== {}'.format(str(code)), ui_log)
-
-                stock_financial.insert_many(QA_util_to_json_from_pandas(
-                    QA_fetch_get_stock_report_wy(code)), ordered=False)
-                gc.collect()
-            except Exception as error0:
-                print(error0)
-                err.append(str(code))
 
         for item in code:
 
