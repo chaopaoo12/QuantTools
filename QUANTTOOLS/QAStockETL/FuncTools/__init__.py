@@ -3,3 +3,5 @@ from QUANTTOOLS.QAStockETL.FuncTools.database_settings import (Oracle_Database,O
                                                                Oralce_Server,MongoDB_Server,MongoDB_Database)
 
 from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict
+
+from QUANTTOOLS.QAStockETL.FuncTools.base_func import series_to_supervised
