@@ -332,4 +332,4 @@ def QA_util_etl_stock_quant(deal_date = None):
             return None
         else:
             data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
-            return(data)
+            return(data.drop_duplicates((['CODE', 'date_stamp'])))
