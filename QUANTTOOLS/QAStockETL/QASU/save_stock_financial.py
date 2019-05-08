@@ -21,6 +21,9 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
         elif end_date is not None:
             if end_date < start_date:
                 print('end_date should large than start_date')
+    col = DATABASE.stock_financial_analysis
+    col.create_index(
+        [("CODE", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
 
     deal_date_list = list(pd.date_range(start_date, end_date).map(lambda t:str(t.date())))
     if deal_date_list is None:
@@ -31,9 +34,7 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
             if data is not None:
                 data = QA_util_to_json_from_pandas(data)
                 print("got '{deal_date}' stock financial data.".format(deal_date=deal_date))
-                col = DATABASE.stock_financial_analysis
-                col.create_index(
-                    [("CODE", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
+
                 try:
                     col.insert_many(data, ordered=False)
                     print("'{deal_date}' stock financial data has been stored imto mongodb.".format(deal_date=deal_date))
