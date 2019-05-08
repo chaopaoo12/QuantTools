@@ -705,19 +705,32 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
                                      to_date('{deal_date}','yyyy-mm-dd') - 90
                                  ) a
                         left join (select code,
-                                         begin_date as order_date,
-                                         nvl(LAG(begin_date)
-                                             OVER(PARTITION BY CODE ORDER BY
-                                                  begin_date desc),
-                                             TO_DATE(to_char(SYSDATE, 'yyyy/mm/dd'),
-                                                     'yyyy/mm/dd') + 1) AS end_date,
-                                         total_shares as shares_after,
-                                         LAG(total_shares) OVER(PARTITION BY CODE ORDER BY begin_date ASC) AS shares_before
-                                    from (select code,
-                                                 begin_date,
-                                                 max(total_shares) as total_shares
-                                            from stock_shares
-                                           group by code, begin_date) h) b
+                                     order_date,
+                                     end_date,
+                                     shares_after,
+                                     coalesce(shares_before, shares_after) as shares_before,
+                                     tra_ashares_after,
+                                     coalesce(tra_ashares_before,
+                                              tra_ashares_after) as tra_ashares_before
+                                from (select code,
+                                             begin_date as order_date,
+                                             nvl(LAG(begin_date)
+                                                 OVER(PARTITION BY CODE ORDER BY
+                                                      begin_date desc),
+                                                 TO_DATE(to_char(SYSDATE,
+                                                                 'yyyy/mm/dd'),
+                                                         'yyyy/mm/dd') + 1) AS end_date,
+                                             total_shares as shares_after,
+                                             LAG(total_shares) OVER(PARTITION BY CODE ORDER BY begin_date ASC) AS shares_before,
+                                             
+                                             tra_ashares as tra_ashares_after,
+                                             LAG(tra_ashares) OVER(PARTITION BY CODE ORDER BY begin_date ASC) AS tra_ashares_before
+                                        from (select code,
+                                                     begin_date,
+                                                     max(total_shares) as total_shares,
+                                                     max(tra_ashares) as tra_ashares
+                                                from stock_shares
+                                               group by code, begin_date) h) g) b
                           on a.code = b.code
                          and a.order_date >= b.order_date
                          and a.order_date < b.end_date
