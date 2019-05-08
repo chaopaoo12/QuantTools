@@ -5,9 +5,9 @@ import datetime
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
                                QA_util_if_trade,QA_util_get_pre_trade_date)
 
-def QA_util_process_quantdata(type = 'day', start_date = None, end_date = None):
+def QA_util_process_quantdata(start_date = None, end_date = None):
 
-    if type == 'day' or start_date == None:
+    if start_date == None:
         start_date = QA_util_today_str()
         end_date = QA_util_today_str()
 
@@ -23,10 +23,10 @@ def QA_util_process_quantdata(type = 'day', start_date = None, end_date = None):
    LAG(AVG_TOTAL_MARKET, 3) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE3_MARKET,
    LAG(AVG_TOTAL_MARKET, 5) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE5_MARKET
             from (select *,
-                    from stock_analysis_data a where order_date <= (to_date('{deal_date}', 'yyyy-mm-dd') + 5)
-           and order_date >= to_date('{deal_date}', 'yyyy-mm-dd')
+                    from stock_analysis_data a where order_date <= (to_date('{end_date}', 'yyyy-mm-dd'))
+           and order_date >= to_date('{start_date}', 'yyyy-mm-dd')
                     ) A
-        where ORDER_DATE = '{deal_date}'"""
+        where ORDER_DATE = '{start_date}'"""
 
     conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
     cursor = conn.cursor()
@@ -36,7 +36,7 @@ def QA_util_process_quantdata(type = 'day', start_date = None, end_date = None):
     while start_date <= end_date:
         if QA_util_if_trade(start_date) == True:
             print(start_date.strftime("%Y-%m-%d"), QA_util_get_pre_trade_date(start_date.strftime("%Y-%m-%d"),5))
-            sql2 = sql1.format(deal_date=QA_util_get_pre_trade_date(start_date.strftime("%Y-%m-%d"),5))
+            sql2 = sql1.format(start_date=QA_util_get_pre_trade_date(start_date.strftime("%Y-%m-%d"),5), end_date = start_date)
             if QA_util_get_pre_trade_date(start_date.strftime("%Y-%m-%d"),5) == 'wrong date':
                 print(sql2)
             cursor.execute(sql2)
