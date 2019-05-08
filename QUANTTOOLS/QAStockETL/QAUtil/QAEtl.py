@@ -10,7 +10,7 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
     elif type == 'all':
         print("Run This JOB in DataBase")
     if QA_util_if_trade(deal_date) == True:
-        sql3="""insert into stock_analysis_data
+        sql3="""insert /*+ append parallel(b, 16) nologging */ into stock_analysis_data
       select /*+ parallel(b, 16) nologging */
    g.*,
    decode(i_netProAftExtrGainLoss_TTM,
