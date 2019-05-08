@@ -80,7 +80,7 @@ def halflife_ic(IC_data, halflife_weight,name, T):
         ic.append(data)
     return pd.DataFrame(ic, index=IC_data.index[T:], columns=[name])
 
-def get_data(start_date, end_date):
+def get_quant_data(start_date, end_date):
     alpha = QA_fetch_stock_alpha_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                                                         'alpha_009', 'alpha_010', 'alpha_011', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
                                                                                                         'alpha_018', 'alpha_019', 'alpha_020', 'alpha_021', 'alpha_022', 'alpha_023', 'alpha_024', 'alpha_025', 'alpha_026',
@@ -103,8 +103,6 @@ def get_data(start_date, end_date):
     stock_list = pd.DataFrame(QA_fetch_stock_basic_info_tushare())[['code','industry']]
     res = pd.merge(pd.merge(alpha,financial,how='right',left_on=['code','date'],right_on=['CODE','date']),
                    stock_list,how='left',left_on=['code'],right_on = ['code'])
-    res['moon'] =  res['TARGET3'].apply(lambda x: 1 if x > 3 else 0)
-    res['sun'] =  res['TARGET5'].apply(lambda x: 1 if x > 3 else 0)
     res1 = res[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                 'alpha_009', 'alpha_010', 'alpha_011', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
                 'alpha_018', 'alpha_019', 'alpha_020', 'alpha_021', 'alpha_022', 'alpha_023', 'alpha_024', 'alpha_025', 'alpha_026',
@@ -123,6 +121,6 @@ def get_data(start_date, end_date):
                 'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                 'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_180', 'alpha_184', 'alpha_185', 'alpha_186',
                 'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191','date','code','industry','PB', 'PBG', 'PC', 'PE', 'PEG', 'PM', 'PS', 'PSC', 'PSG',
-                'PT','moon','sun','TARGET','TARGET3','TARGET5','TOTAL_MARKET']]
+                'PT','TARGET','TARGET3','TARGET5','TOTAL_MARKET']]
     res1['date'] = pd.to_datetime(res1['date'])
     return(res1)
