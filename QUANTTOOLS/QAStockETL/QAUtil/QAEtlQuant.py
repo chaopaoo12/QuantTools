@@ -48,9 +48,8 @@ def QA_util_process_quantdata(type = 'day', start_date = None, end_date = None):
     conn.commit()
     conn.close()
 
-def QA_util_etl_stock_quant(type = 'day', deal_date = None):
-    if type == 'day' or deal_date == None:
-        deal_date = QA_util_today_str()
+def QA_util_etl_stock_quant(deal_date = None):
+
     sql = '''select code,
        name,
        industry,
@@ -317,16 +316,19 @@ def QA_util_etl_stock_quant(type = 'day', deal_date = None):
              2) as target5
   from QUANT_ANALYSIS_DATA A
  where order_date = to_date('{start_date}', 'yyyy-mm-dd')'''
-    if QA_util_if_trade(deal_date) == True:
-        sql = sql.format(start_date=QA_util_get_pre_trade_date(deal_date,5))
-        conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
-        data = pd.read_sql(sql=sql, con=conn)
-        data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
-        conn.close()
+    if deal_date is None:
+        print('Must Have A DATE ')
     else:
-        data = None
-    if data.shape[0] == 0 or data is None:
-        print("No data For {start_date}".format(start_date=deal_date))
-        return None
-    else:
-        return(data)
+        if QA_util_if_trade(QA_util_get_pre_trade_date(deal_date,5)) == True:
+            print(QA_util_get_pre_trade_date(deal_date,5))
+            sql = sql.format(start_date=QA_util_get_pre_trade_date(deal_date,5))
+            conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
+            data = pd.read_sql(sql=sql, con=conn)
+            conn.close()
+        else:
+            data = None
+        if data.shape[0] == 0 or data is None:
+            print("No data For {start_date}".format(start_date=deal_date))
+            return None
+        else:
+            return(data)

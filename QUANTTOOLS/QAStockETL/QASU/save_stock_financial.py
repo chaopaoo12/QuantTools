@@ -7,13 +7,12 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_tod
 import pandas as pd
 
 def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
-
-    if start_date == None:
-        if end_date == None:
+    if start_date is None:
+        if end_date is None:
             start_date = QA_util_today_str()
             end_date = start_date
         elif end_date is not None:
-            start_date = '2005-01-01'
+            start_date = '2007-01-01'
     elif start_date is not None:
         if end_date == None:
             start_date = QA_util_today_str()
