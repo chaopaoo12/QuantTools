@@ -733,6 +733,7 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
         if type == 'all' and deal_date == None:
             print("please run this job in database")
         elif type == 'day' or deal_date != None:
+            print(sql3)
             cursor.execute(sql3)
             conn.commit()
             print('analysis data for {deal_date} has been stored'.format(deal_date=deal_date))
