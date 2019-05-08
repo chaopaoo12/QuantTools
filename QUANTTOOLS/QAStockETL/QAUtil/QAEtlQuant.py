@@ -7,9 +7,11 @@ from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
 
 def QA_util_process_quantdata(start_date = None, end_date = None):
 
-    if start_date == None:
+    if start_date is None:
         start_date = QA_util_today_str()
         end_date = QA_util_today_str()
+    elif end_date is None:
+        end_date = start_date
 
     sql1 = """INSERT INTO QUANT_ANALYSIS_DATA
   select *
