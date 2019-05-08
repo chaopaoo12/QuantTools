@@ -63,8 +63,121 @@ def QA_util_etl_stock_quant(type = 'day', deal_date = None):
        amount,
        shares,
        total_market,
+       tra_total_market,
+       tra_total_market / total_market AS tra_rate,
        pe,
        pb,
+       roe,
+       roe_ly,
+       roe_l2y,
+       roe_l3y,
+       roe_l4y,
+       roa,
+       roa_ly,
+       roa_l2y,
+       roa_l3y,
+       roa_l4y,
+       grossMargin,
+       grossMargin_ly,
+       grossMargin_l2y,
+       grossMargin_l3y,
+       grossMargin_l4y,
+       case
+         when operatingRevenue_TTM_ly = 0 then
+          0
+         else
+          operatingRevenue_TTM / operatingRevenue_TTM_ly - 1
+       end AS operatingRinrate,
+       case
+         when operatingRevenue_TTM_l2y = 0 then
+          0
+         else
+          operatingRevenue_TTM_ly / operatingRevenue_TTM_l2y - 1
+       end AS operatingRinrate_ly,
+       case
+         when operatingRevenue_TTM_l3y = 0 then
+          0
+         else
+          operatingRevenue_TTM_l2y / operatingRevenue_TTM_l3y - 1
+       end AS operatingRinrate_l2y,
+       case
+         when operatingRevenue_TTM_l4y = 0 then
+          0
+         else
+          operatingRevenue_TTM_l3y / operatingRevenue_TTM_l4y - 1
+       end AS operatingRinrate_l3y,
+       case
+         when netProfit_TTM_ly = 0 then
+          0
+         else
+          netProfit_TTM / netProfit_TTM_ly - 1
+       end as netProfit_inrate,
+       case
+         when netProfit_TTM_l2y = 0 then
+          0
+         else
+          netProfit_TTM_ly / netProfit_TTM_l2y - 1
+       end as netProfit_inrate_ly,
+       case
+         when netProfit_TTM_l3y = 0 then
+          0
+         else
+          netProfit_TTM_l2y / netProfit_TTM_l3y - 1
+       end as netProfit_inrate_l2y,
+       case
+         when netProfit_TTM_l4y = 0 then
+          0
+         else
+          netProfit_TTM_l3y / netProfit_TTM_l4y - 1
+       end as netProfit_inrate_l3y,
+       case
+         when netCashOperatActiv_TTM_ly = 0 then
+          0
+         else
+          netCashOperatActiv_TTM / netCashOperatActiv_TTM_ly - 1
+       end as netCashOperatinrate,
+       case
+         when netCashOperatActiv_TTM_l2y = 0 then
+          0
+         else
+          netCashOperatActiv_TTM_ly / netCashOperatActiv_TTM_l2y - 1
+       end as netCashOperatinrate_ly,
+       case
+         when netCashOperatActiv_TTM_l3y = 0 then
+          0
+         else
+          netCashOperatActiv_TTM_l2y / netCashOperatActiv_TTM_l3y - 1
+       end as netCashOperatinrate_l2y,
+       case
+         when netCashOperatActiv_TTM_l4y = 0 then
+          0
+         else
+          netCashOperatActiv_TTM_l3y / netCashOperatActiv_TTM_l4y - 1
+       end as netCashOperatinrate_l3y,
+       case
+         when totalProfit_TTM_ly = 0 then
+          0
+         else
+          totalProfit_TTM / totalProfit_TTM_ly - 1
+       end as totalProfitinrate,
+       case
+         when totalProfit_TTM_l2y = 0 then
+          0
+         else
+          totalProfit_TTM_ly / totalProfit_TTM_l2y - 1
+       end as totalProfitinrate_ly,
+       case
+         when totalProfit_TTM_l3y = 0 then
+          0
+         else
+          totalProfit_TTM_l2y / totalProfit_TTM_l3y - 1
+       end as totalProfitinrate_l2y,
+       case
+         when totalProfit_TTM_l4y = 0 then
+          0
+         else
+          totalProfit_TTM_l3y / totalProfit_TTM_l4y - 1
+       end as totalProfitinrate_l3y,
        case
          when TOTALLIABILITIES = 0 then
           0
