@@ -36,18 +36,19 @@ def QA_util_process_quantdata(start_date = None, end_date = None):
     end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d")
 
     while start_date <= end_date:
+        print(start_date)
         if QA_util_if_trade(start_date) == True:
             print(start_date.strftime("%Y-%m-%d"), QA_util_get_pre_trade_date(start_date.strftime("%Y-%m-%d"),5))
             sql2 = sql1.format(start_date=QA_util_get_pre_trade_date(start_date.strftime("%Y-%m-%d"),5), end_date = start_date)
             if QA_util_get_pre_trade_date(start_date.strftime("%Y-%m-%d"),5) == 'wrong date':
                 print(sql2)
-            cursor.execute(sql2)
+            else:
+                cursor.execute(sql2)
             print('quant analysis data for {deal_date} has been stored'.format(deal_date=start_date.strftime("%Y-%m-%d")))
-            start_date = start_date+datetime.timedelta(days=1)
             conn.commit()
+            start_date = start_date+datetime.timedelta(days=1)
 
     cursor.close()
-    conn.commit()
     conn.close()
 
 def QA_util_etl_stock_quant(deal_date = None):
