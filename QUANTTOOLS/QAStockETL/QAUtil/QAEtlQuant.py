@@ -57,188 +57,203 @@ def QA_util_etl_stock_quant(deal_date = None):
        name,
        industry,
        to_char(order_date, 'yyyy-mm-dd') as "date",
-       open,
-       high,
-       low,
-       close,
-       vol,
-       amount,
-       shares,
        total_market,
-       tra_total_market,
-       tra_total_market / total_market AS tra_rate,
-       pe,
-       pb,
-       roe,
-       roe_ly,
-       roe_l2y,
-       roe_l3y,
-       roe_l4y,
-       roa,
-       roa_ly,
-       roa_l2y,
-       roa_l3y,
-       roa_l4y,
-       grossMargin,
-       grossMargin_ly,
-       grossMargin_l2y,
-       grossMargin_l3y,
-       grossMargin_l4y,
-       case
-         when operatingRevenue_TTM_ly = 0 then
-          0
-         else
-          operatingRevenue_TTM / operatingRevenue_TTM_ly - 1
-       end AS operatingRinrate,
-       case
-         when operatingRevenue_TTM_l2y = 0 then
-          0
-         else
-          operatingRevenue_TTM_ly / operatingRevenue_TTM_l2y - 1
-       end AS operatingRinrate_ly,
-       case
-         when operatingRevenue_TTM_l3y = 0 then
-          0
-         else
-          operatingRevenue_TTM_l2y / operatingRevenue_TTM_l3y - 1
-       end AS operatingRinrate_l2y,
-       case
-         when operatingRevenue_TTM_l4y = 0 then
-          0
-         else
-          operatingRevenue_TTM_l3y / operatingRevenue_TTM_l4y - 1
-       end AS operatingRinrate_l3y,
-       case
-         when netProfit_TTM_ly = 0 then
-          0
-         else
-          netProfit_TTM / netProfit_TTM_ly - 1
-       end as netProfit_inrate,
-       case
-         when netProfit_TTM_l2y = 0 then
-          0
-         else
-          netProfit_TTM_ly / netProfit_TTM_l2y - 1
-       end as netProfit_inrate_ly,
-       case
-         when netProfit_TTM_l3y = 0 then
-          0
-         else
-          netProfit_TTM_l2y / netProfit_TTM_l3y - 1
-       end as netProfit_inrate_l2y,
-       case
-         when netProfit_TTM_l4y = 0 then
-          0
-         else
-          netProfit_TTM_l3y / netProfit_TTM_l4y - 1
-       end as netProfit_inrate_l3y,
-       case
-         when netCashOperatActiv_TTM_ly = 0 then
-          0
-         else
-          netCashOperatActiv_TTM / netCashOperatActiv_TTM_ly - 1
-       end as netCashOperatinrate,
-       case
-         when netCashOperatActiv_TTM_l2y = 0 then
-          0
-         else
-          netCashOperatActiv_TTM_ly / netCashOperatActiv_TTM_l2y - 1
-       end as netCashOperatinrate_ly,
-       case
-         when netCashOperatActiv_TTM_l3y = 0 then
-          0
-         else
-          netCashOperatActiv_TTM_l2y / netCashOperatActiv_TTM_l3y - 1
-       end as netCashOperatinrate_l2y,
-       case
-         when netCashOperatActiv_TTM_l4y = 0 then
-          0
-         else
-          netCashOperatActiv_TTM_l3y / netCashOperatActiv_TTM_l4y - 1
-       end as netCashOperatinrate_l3y,
-       case
-         when totalProfit_TTM_ly = 0 then
-          0
-         else
-          totalProfit_TTM / totalProfit_TTM_ly - 1
-       end as totalProfitinrate,
-       case
-         when totalProfit_TTM_l2y = 0 then
-          0
-         else
-          totalProfit_TTM_ly / totalProfit_TTM_l2y - 1
-       end as totalProfitinrate_ly,
-       case
-         when totalProfit_TTM_l3y = 0 then
-          0
-         else
-          totalProfit_TTM_l2y / totalProfit_TTM_l3y - 1
-       end as totalProfitinrate_l2y,
-       case
-         when totalProfit_TTM_l4y = 0 then
-          0
-         else
-          totalProfit_TTM_l3y / totalProfit_TTM_l4y - 1
-       end as totalProfitinrate_l3y,
-       case
-         when TOTALLIABILITIES = 0 then
-          0
-         else
-          total_market / TOTALLIABILITIES
-       end as PT,
-       case
-         when MONEYFUNDS = 0 then
-          0
-         else
-          total_market / MONEYFUNDS
-       end as PM,
-       case
-         when OPERATINGREVENUE_TTM = 0 then
-          0
-         else
-          total_market / OPERATINGREVENUE_TTM
-       end as PS,
-       case
-         when OPERATINGCASHRATIO_TTM = 0 then
-          0
-         else
-          total_market / OPERATINGCASHRATIO_TTM
-       end as PSC,
-       case
-         when NETCASHOPERATACTIV_TTM = 0 then
-          0
-         else
-          total_market / NETCASHOPERATACTIV_TTM
-       end as PC,
-       case
-         when NETPROFIT_TTM_LY = 0 or NETPROFIT_TTM = NETPROFIT_TTM_LY then
-          0
-         else
-          pe / (NETPROFIT_TTM / NETPROFIT_TTM_LY - 1) / 100
-       end as PEG,
-       case
-         when OPERATINGREVENUE_TTM_LY = 0 or
-              OPERATINGREVENUE_TTM = OPERATINGREVENUE_TTM_LY then
-          0
-         else
-          PE / (OPERATINGREVENUE_TTM / OPERATINGREVENUE_TTM_LY - 1) / 100
-       end as PSG,
-       
-       case
-         when totalassets_LY = 0 or totalassets = totalassets_LY then
-          0
-         else
-          PE / (totalassets / totalassets_LY - 1) / 100
-       end as PBG,
-       AVG5_TOR,
-       AVG20_TOR,
-       AVG30_TOR,
-       AVG60_TOR,
-       RNG_L,
-       RNG_5,
-       RNG_20,
-       RNG_30,
-       RNG_60,
+       round(tra_total_market / total_market * 100, 2) AS tra_rate,
+       round(pe, 2) AS pe,
+       round(pb, 2) AS pb,
+       round(roe * 100, 2) AS roe,
+       round(roe_ly * 100, 2) AS roe_ly,
+       round(roe_l2y * 100, 2) AS roe_l2y,
+       round(roe_l3y * 100, 2) AS roe_l3y,
+       round(roe_l4y * 100, 2) AS roe_l4y,
+       round(roa * 100, 2) AS roa,
+       round(roa_ly * 100, 2) AS roa_ly,
+       round(roa_l2y * 100, 2) AS roa_l2y,
+       round(roa_l3y * 100, 2) AS roa_l3y,
+       round(roa_l4y * 100, 2) AS roa_l4y,
+       round(grossMargin * 100, 2) AS grossMargin,
+       round(grossMargin_ly * 100, 2) AS grossMargin_ly,
+       round(grossMargin_l2y * 100, 2) AS grossMargin_l2y,
+       round(grossMargin_l3y * 100, 2) AS grossMargin_l3y,
+       round(grossMargin_l4y * 100, 2) AS grossMargin_l4y,
+       round(case
+               when operatingRevenue_TTM_ly = 0 then
+                0
+               else
+                operatingRevenue_TTM / operatingRevenue_TTM_ly - 1
+             end * 100,
+             2) AS operatingRinrate,
+       round(case
+               when operatingRevenue_TTM_l2y = 0 then
+                0
+               else
+                operatingRevenue_TTM_ly / operatingRevenue_TTM_l2y - 1
+             end * 100,
+             2) AS operatingRinrate_ly,
+       round(case
+               when operatingRevenue_TTM_l3y = 0 then
+                0
+               else
+                operatingRevenue_TTM_l2y / operatingRevenue_TTM_l3y - 1
+             end * 100,
+             2) AS operatingRinrate_l2y,
+       round(case
+               when operatingRevenue_TTM_l4y = 0 then
+                0
+               else
+                operatingRevenue_TTM_l3y / operatingRevenue_TTM_l4y - 1
+             end * 100,
+             2) AS operatingRinrate_l3y,
+       round(case
+               when netProfit_TTM_ly = 0 then
+                0
+               else
+                netProfit_TTM / netProfit_TTM_ly - 1
+             end * 100,
+             2) as netProfit_inrate,
+       round(case
+               when netProfit_TTM_l2y = 0 then
+                0
+               else
+                netProfit_TTM_ly / netProfit_TTM_l2y - 1
+             end * 100,
+             2) as netProfit_inrate_ly,
+       round(case
+               when netProfit_TTM_l3y = 0 then
+                0
+               else
+                netProfit_TTM_l2y / netProfit_TTM_l3y - 1
+             end * 100,
+             2) as netProfit_inrate_l2y,
+       round(case
+               when netProfit_TTM_l4y = 0 then
+                0
+               else
+                netProfit_TTM_l3y / netProfit_TTM_l4y - 1
+             end * 100,
+             2) as netProfit_inrate_l3y,
+       round(case
+               when netCashOperatActiv_TTM_ly = 0 then
+                0
+               else
+                netCashOperatActiv_TTM / netCashOperatActiv_TTM_ly - 1
+             end * 100,
+             2) as netCashOperatinrate,
+       round(case
+               when netCashOperatActiv_TTM_l2y = 0 then
+                0
+               else
+                netCashOperatActiv_TTM_ly / netCashOperatActiv_TTM_l2y - 1
+             end * 100,
+             2) as netCashOperatinrate_ly,
+       round(case
+               when netCashOperatActiv_TTM_l3y = 0 then
+                0
+               else
+                netCashOperatActiv_TTM_l2y / netCashOperatActiv_TTM_l3y - 1
+             end * 100,
+             2) as netCashOperatinrate_l2y,
+       round(case
+               when netCashOperatActiv_TTM_l4y = 0 then
+                0
+               else
+                netCashOperatActiv_TTM_l3y / netCashOperatActiv_TTM_l4y - 1
+             end * 100,
+             2) as netCashOperatinrate_l3y,
+       round(case
+               when totalProfit_TTM_ly = 0 then
+                0
+               else
+                totalProfit_TTM / totalProfit_TTM_ly - 1
+             end * 100,
+             2) as totalProfitinrate,
+       round(case
+               when totalProfit_TTM_l2y = 0 then
+                0
+               else
+                totalProfit_TTM_ly / totalProfit_TTM_l2y - 1
+             end * 100,
+             2) as totalProfitinrate_ly,
+       round(case
+               when totalProfit_TTM_l3y = 0 then
+                0
+               else
+                totalProfit_TTM_l2y / totalProfit_TTM_l3y - 1
+             end * 100,
+             2) as totalProfitinrate_l2y,
+       round(case
+               when totalProfit_TTM_l4y = 0 then
+                0
+               else
+                totalProfit_TTM_l3y / totalProfit_TTM_l4y - 1
+             end * 100,
+             2) as totalProfitinrate_l3y,
+       round(case
+               when TOTALLIABILITIES = 0 then
+                0
+               else
+                total_market / TOTALLIABILITIES
+             end * 100,
+             2) as PT,
+       round(case
+               when MONEYFUNDS = 0 then
+                0
+               else
+                total_market / MONEYFUNDS
+             end * 100,
+             2) as PM,
+       round(case
+               when OPERATINGREVENUE_TTM = 0 then
+                0
+               else
+                total_market / OPERATINGREVENUE_TTM
+             end * 100,
+             2) as PS,
+       round(case
+               when OPERATINGCASHRATIO_TTM = 0 then
+                0
+               else
+                total_market / OPERATINGCASHRATIO_TTM
+             end * 100,
+             2) as PSC,
+       round(case
+               when NETCASHOPERATACTIV_TTM = 0 then
+                0
+               else
+                total_market / NETCASHOPERATACTIV_TTM
+             end * 100,
+             2) as PC,
+       round(case
+               when NETPROFIT_TTM_LY = 0 or NETPROFIT_TTM = NETPROFIT_TTM_LY then
+                0
+               else
+                pe / (NETPROFIT_TTM / NETPROFIT_TTM_LY - 1) / 100
+             end * 100,
+             2) as PEG,
+       round(case
+               when OPERATINGREVENUE_TTM_LY = 0 or
+                    OPERATINGREVENUE_TTM = OPERATINGREVENUE_TTM_LY then
+                0
+               else
+                PE / (OPERATINGREVENUE_TTM / OPERATINGREVENUE_TTM_LY - 1) / 100
+             end * 100,
+             2) as PSG,
+       round(case
+               when totalassets_LY = 0 or totalassets = totalassets_LY then
+                0
+               else
+                PE / (totalassets / totalassets_LY - 1) / 100
+             end * 100,
+             2) as PBG,
+       round(AVG5_TOR * 100, 2) as AVG5_TOR,
+       round(AVG20_TOR * 100, 2) as AVG20_TOR,
+       round(AVG30_TOR * 100, 2) as AVG30_TOR,
+       round(AVG60_TOR * 100, 2) as AVG60_TOR,
+       round(RNG_L * 100, 2) as RNG_L,
+       round(RNG_5 * 100, 2) as RNG_5,
+       round(RNG_20 * 100, 2) as RNG_20,
+       round(RNG_30 * 100, 2) as RNG_30,
+       round(RNG_60 * 100, 2) as RNG_60,
        round((case
                when LAG5_MARKET = 0 or LAG5_MARKET is null then
                 0
