@@ -4,7 +4,7 @@ from matplotlib.pylab import *
 import statsmodels.api as sml
 import numpy as np
 import math
-from QUANTTOOLS import QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv
+from QUANTTOOLS import QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 
@@ -99,10 +99,22 @@ def get_quant_data(start_date, end_date):
                                                                                                         'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                                                         'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_180', 'alpha_184', 'alpha_185', 'alpha_186',
                                                                                                         'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191','date','code']]
-    financial = QA_fetch_stock_fianacial_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data
-    stock_list = pd.DataFrame(QA_fetch_stock_basic_info_tushare())[['code','industry']]
-    res = pd.merge(pd.merge(alpha,financial,how='right',left_on=['code','date'],right_on=['CODE','date']),
-                   stock_list,how='left',left_on=['code'],right_on = ['code'])
+    financial = QA_fetch_stock_fianacial_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE',
+                                                                                                                 'AVG5', 'AVG20','AVG30','AVG60',
+                                                                                                                 'AVG5_TOR', 'AVG20_TOR','AVG30_TOR','AVG60_TOR',
+                                                                                                                 'GROSSMARGIN', 'GROSSMARGIN_L2Y','GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
+                                                                                                                 'LAG20', 'LAG30', 'LAG5', 'LAG60',
+                                                                                                                 'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
+                                                                                                                 'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',
+                                                                                                                 'OPERATINGRINRATE', 'OPERATINGRINRATE_L2Y', 'OPERATINGRINRATE_L3Y', 'OPERATINGRINRATE_LY',
+                                                                                                                 'PB', 'PBG', 'PC', 'PE', 'PEG', 'PM', 'PS', 'PSC', 'PSG', 'PT',
+                                                                                                                 'RNG_20', 'RNG_30', 'RNG_5', 'RNG_60', 'RNG_L',
+                                                                                                                 'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
+                                                                                                                 'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
+                                                                                                                 'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
+                                                                                                                 'TARGET', 'TARGET3', 'TARGET5']]
+    technical = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data
+    res = financial.join(alpha).join(technical)
     res1 = res[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                 'alpha_009', 'alpha_010', 'alpha_011', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
                 'alpha_018', 'alpha_019', 'alpha_020', 'alpha_021', 'alpha_022', 'alpha_023', 'alpha_024', 'alpha_025', 'alpha_026',
@@ -184,5 +196,4 @@ def get_quant_data(start_date, end_date):
                 'TARGET',
                 'TARGET3',
                 'TARGET5']]
-    res1['date'] = pd.to_datetime(res1['date'])
-    return(res1)
+    return(res)
