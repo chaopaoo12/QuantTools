@@ -29,6 +29,7 @@ def series_to_supervised(data, n_in=[1], n_out=1, dropnan=True):
     return agg
 
 def get_quant_data(start_date, end_date):
+    print("Got Alpha")
     alpha = QA_fetch_stock_alpha_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                                                         'alpha_009', 'alpha_010', 'alpha_011', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
                                                                                                         'alpha_018', 'alpha_019', 'alpha_020', 'alpha_021', 'alpha_022', 'alpha_023', 'alpha_024', 'alpha_025', 'alpha_026',
@@ -47,6 +48,7 @@ def get_quant_data(start_date, end_date):
                                                                                                         'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                                                         'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_180', 'alpha_184', 'alpha_185', 'alpha_186',
                                                                                                         'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']]
+    print("Got financial")
     financial = QA_fetch_stock_fianacial_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE',
                                                                                                                  'AVG5', 'AVG20','AVG30','AVG60',
                                                                                                                  'AVG5_TOR', 'AVG20_TOR','AVG30_TOR','AVG60_TOR',
@@ -61,6 +63,8 @@ def get_quant_data(start_date, end_date):
                                                                                                                  'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                                                                  'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
                                                                                                                  'TARGET', 'TARGET3', 'TARGET5']]
+    print("Got technical")
     technical = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data
+    print("Join")
     res = financial.join(alpha).join(technical)
     return(res)
