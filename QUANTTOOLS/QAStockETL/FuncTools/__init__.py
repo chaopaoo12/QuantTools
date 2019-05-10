@@ -4,4 +4,4 @@ from QUANTTOOLS.QAStockETL.FuncTools.database_settings import (Oracle_Database,O
 
 from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict
 
-from QUANTTOOLS.QAStockETL.FuncTools.base_func import series_to_supervised
+from QUANTTOOLS.QAStockETL.FuncTools.base_func import series_to_supervised, get_quant_data
