@@ -77,5 +77,5 @@ def get_quant_data(start_date, end_date):
                                                                              'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
                                                                              'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                                                                              'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
-                                                                             'TARGET', 'TARGET3', 'TARGET5']]).join(pd.get_dummies(res['INDUSTRY'],prefix='INDUSTRY'))
+                                                                             'TARGET', 'TARGET3', 'TARGET5','INDUSTRY']])
     return(res)
