@@ -12,6 +12,8 @@ from QUANTTOOLS.QAStockETL import (QA_SU_save_report_calendar_day, QA_SU_save_re
                                    QA_etl_stock_financial, QA_etl_stock_calendar,
                                    QA_etl_stock_block, QA_etl_stock_divyield,
                                    QA_etl_process_financial_day,
+                                   QA_etl_stock_alpha_day,
+                                   QA_etl_stock_technical_day,
                                    QA_SU_save_stock_alpha_day,QA_SU_save_stock_alpha_his,
                                    QA_SU_save_stock_financial_ths_day,QA_SU_save_stock_financial_ths_his,
                                    QA_SU_save_interest_rate)
