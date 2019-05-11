@@ -60,7 +60,7 @@ def QA_etl_stock_financial(type = "crawl", start_date = str(datetime.date.today(
         data = QA_fetch_financial_report_adv(list(QA_fetch_stock_list_adv()['code']),start_date,type = 'crawl').data
         print(data)
         if data is None:
-            print("We have no financial data for the day {}".format(mark_day))
+            print("We have no financial data for the day {}".format(start_date))
         else:
             data = data.reset_index(drop=True).drop("_id",1).fillna(0)
             QA_util_sql_store_mysql(data, "stock_financial",if_exists='append')
@@ -72,7 +72,7 @@ def QA_etl_stock_calendar(type = "crawl", start = str(datetime.date.today())):
     elif type == "crawl":
         data = QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']), start, type = 'crawl').data
         if data is None:
-            print("We have no calendar data for the day {}".format(mark_day))
+            print("We have no calendar data for the day {}".format(start))
         else:
             data = data.reset_index(drop=True)
             QA_util_sql_store_mysql(data, "stock_calendar",if_exists='append')
