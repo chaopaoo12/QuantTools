@@ -120,11 +120,11 @@ def QA_etl_stock_alpha_day(type = "day", mark_day = str(datetime.date.today())):
         data = QA_fetch_stock_alpha_adv(list(QA_fetch_stock_list_adv()['code'])).data.reset_index()
         QA_util_sql_store_mysql(data, "stock_alpha",if_exists='replace')
     elif type == "day":
-        data = QA_fetch_stock_alpha_adv(list(QA_fetch_stock_list_adv()['code']), mark_day)
+        data = QA_fetch_stock_alpha_adv(list(QA_fetch_stock_list_adv()['code']), mark_day).data
         if data is None:
             print("We have no Alpha data for the day {}".format(str(datetime.date.today())))
         else:
-            data = data.data.reset_index()
+            data = data.reset_index()
             QA_util_sql_store_mysql(data, "stock_alpha",if_exists='append')
 
 def QA_etl_stock_technical_day(type = "day", mark_day = str(datetime.date.today())):
@@ -132,9 +132,9 @@ def QA_etl_stock_technical_day(type = "day", mark_day = str(datetime.date.today(
         data = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code'])).data.reset_index()
         QA_util_sql_store_mysql(data, "stock_technical",if_exists='replace')
     elif type == "day":
-        data = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code']), mark_day)
+        data = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code']), mark_day).data
         if data is None:
             print("We have no Technical data for the day {}".format(str(datetime.date.today())))
         else:
-            data = data.data.reset_index()
+            data = data.reset_index()
             QA_util_sql_store_mysql(data, "stock_technical",if_exists='append')
