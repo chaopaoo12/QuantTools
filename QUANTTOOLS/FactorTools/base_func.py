@@ -4,13 +4,9 @@ from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 import  math
 
-def series_to_supervised(data, n_in=[1], n_out=1, groupby= None, dropnan=True):
+def series_to_supervised(data, n_in=[1], n_out=1, dropnan=True):
     cols_na = list(data.columns)
-    if groupby is None:
-        df = pd.DataFrame(data)
-    else:
-        df = pd.DataFrame(data).groupby(groupby)
-        grouped = data[groupby]
+    df = pd.DataFrame(data)
     cols, names = list(), list()
     # input sequence (t-n, ... t-1)
     for i in n_in:
@@ -27,7 +23,6 @@ def series_to_supervised(data, n_in=[1], n_out=1, groupby= None, dropnan=True):
     # put it all together
     agg = pd.concat(cols, axis=1)
     agg.columns = names
-    agg[groupby] = grouped
     # drop rows with NaN values
     if dropnan:
         agg.dropna(how='all',inplace=True)
