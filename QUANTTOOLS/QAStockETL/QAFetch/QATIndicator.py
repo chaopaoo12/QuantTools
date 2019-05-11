@@ -4,6 +4,7 @@ import pandas as pd
 from QUANTAXIS.QAUtil import QA_util_date_stamp
 
 def QA_fetch_get_indicator(code, start_date, end_date):
+    print(code, start_date, end_date)
     data = QA_fetch_stock_day_adv(code,start_date,end_date)
     if data == None:
         return None
