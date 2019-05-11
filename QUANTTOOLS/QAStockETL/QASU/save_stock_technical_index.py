@@ -61,7 +61,7 @@ def QA_SU_save_stock_technical_index_his(client=DATABASE, ui_log = None, ui_prog
     :return:
     '''
     END_DATE = QA_util_today_str()
-    START_DATE = "2007-01-01"
+    START_DATE = "2006-01-01"
     codes = list(QA_fetch_stock_list_adv()['code'])
 
     stock_technical_index = client.stock_technical_index
