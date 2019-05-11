@@ -23,10 +23,10 @@ def QA_SU_save_stock_technical_index_day(client=DATABASE, ui_log = None, ui_prog
     stock_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code, stock_technical_index):
+    def __saving_work(code,START_DATE,END_DATE, stock_technical_index):
         try:
             QA_util_log_info(
-                '##JOB01 Now Saving stock_technical_index==== {}'.format(str(code)), ui_log)
+                '##JOB01 Now Saving stock_technical_index from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
 
             stock_technical_index.insert_many(QA_util_to_json_from_pandas(
                 QA_fetch_get_indicator(code, START_DATE, END_DATE)), ordered=False)
@@ -43,7 +43,7 @@ def QA_SU_save_stock_technical_index_day(client=DATABASE, ui_log = None, ui_prog
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item, stock_technical_index)
+        __saving_work( item,START_DATE,END_DATE, stock_technical_index)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_index ^_^',  ui_log)
@@ -68,10 +68,10 @@ def QA_SU_save_stock_technical_index_his(client=DATABASE, ui_log = None, ui_prog
     stock_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code, stock_technical_index):
+    def __saving_work(code,START_DATE,END_DATE, stock_technical_index):
         try:
             QA_util_log_info(
-                '##JOB01 Now Saving stock_technical_index==== {}'.format(str(code)), ui_log)
+                '##JOB01 Now Saving stock_technical_index from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
 
             stock_technical_index.insert_many(QA_util_to_json_from_pandas(
                 QA_fetch_get_indicator(code, START_DATE, END_DATE)), ordered=False)
@@ -88,7 +88,7 @@ def QA_SU_save_stock_technical_index_his(client=DATABASE, ui_log = None, ui_prog
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item, stock_technical_index)
+        __saving_work( item,START_DATE,END_DATE, stock_technical_index)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_index ^_^',  ui_log)
