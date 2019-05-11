@@ -26,7 +26,7 @@ def series_to_supervised(data, n_in=[1], n_out=1, dropnan=True):
     agg.columns = names
     # drop rows with NaN values
     if dropnan:
-        agg.dropna(inplace=True)
+        agg.dropna(how='all',inplace=True)
     return agg
 
 def get_quant_data(start_date, end_date):
