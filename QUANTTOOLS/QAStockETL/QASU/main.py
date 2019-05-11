@@ -82,7 +82,7 @@ def QA_SU_save_stock_technical_index_day():
     return save_stock_technical_index.QA_SU_save_stock_technical_index_day()
 
 def QA_SU_save_stock_technical_index_his():
-    return save_stock_technical_index.QA_SU_save_stock_technical_index_day()
+    return save_stock_technical_index.QA_SU_save_stock_technical_index_his()
 
 def QA_SU_save_stock_alpha_day(code = None, date = None):
     return save_stock_alpha.QA_SU_save_stock_alpha_day(code = code, date = date)
