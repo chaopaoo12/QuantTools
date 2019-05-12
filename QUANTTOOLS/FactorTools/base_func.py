@@ -17,6 +17,9 @@ def filter_extreme_3sigma(array,n=3): #3 sigma
     array[array < mu - n*sigma] = mu - n*sigma
     return(array)
 
+def get_trans(data):
+    return(data.apply(filter_extreme_3sigma).apply(standardize_series))
+
 def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     cols_na = list(data.columns)
     if fill == True:
@@ -44,9 +47,7 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
         agg.dropna(how='all',inplace=True)
     return agg
 
-def get_trans(series):
-    std = filter_extreme_3sigma(series)
-    return(standardize_series(std))
+
 
 def get_quant_data(start_date, end_date):
 
@@ -82,8 +83,8 @@ def get_quant_data(start_date, end_date):
                                                                                                         'alpha_152', 'alpha_153', 'alpha_155', 'alpha_156', 'alpha_158', 'alpha_159', 'alpha_160', 'alpha_161', 'alpha_162',
                                                                                                         'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                                                         'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_180', 'alpha_184', 'alpha_185', 'alpha_186',
-                                                                                                        'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1])
-    technical = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data.groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1])
+                                                                                                        'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).groupby('date').apply(get_trans)
+    technical = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data.groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1]).groupby('date').apply(get_trans)
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
     cols = [i for i in list(fianacial.columns) if i not in ['GROSSMARGIN', 'GROSSMARGIN_L2Y', 'GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
                                                         'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
@@ -101,6 +102,6 @@ def get_quant_data(start_date, end_date):
                                                                                                             'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                                                                                                             'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                                                             'TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET']])
-    fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET']]].join(fianacial[['TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET']])
+    fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET']]].groupby('date').apply(get_trans).join(fianacial[['TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET']])
     res = fianacial.join(technical).join(alpha)
     return(res)
