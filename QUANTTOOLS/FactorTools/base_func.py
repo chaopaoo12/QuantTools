@@ -2,7 +2,20 @@ import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
-import  math
+import math
+import numpy as np
+
+def standardize_series(series): #原始值法
+    std = series.std()
+    mean = series.mean()
+    return (series-mean)/std
+
+def filter_extreme_3sigma(array,n=3): #3 sigma
+    sigma = array.std()
+    mu = array.mean()
+    array[array > mu + n*sigma] = mu + n*sigma
+    array[array < mu - n*sigma] = mu - n*sigma
+    return(array)
 
 def series_to_supervised(data, n_in=[1], n_out=1, dropnan=True):
     cols_na = list(data.columns)
@@ -28,10 +41,9 @@ def series_to_supervised(data, n_in=[1], n_out=1, dropnan=True):
         agg.dropna(how='all',inplace=True)
     return agg
 
-def get_trans(data):
-    from sklearn.preprocessing import StandardScaler
-    std = StandardScaler()
-    return(std.transform(std.fit_transform(data)))
+def get_trans(series):
+    std = filter_extreme_3sigma(series)
+    return(standardize_series(std))
 
 def get_quant_data(start_date, end_date):
 
