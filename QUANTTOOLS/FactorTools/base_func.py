@@ -47,8 +47,6 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
         agg.dropna(how='all',inplace=True)
     return agg
 
-
-
 def get_quant_data(start_date, end_date):
 
 
