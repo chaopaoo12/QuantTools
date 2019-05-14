@@ -46,7 +46,7 @@ def QA_util_process_quantdata(start_date = None, end_date = None):
                 cursor.execute(sql2)
             print('quant analysis data for {deal_date} has been stored'.format(deal_date=start_date.strftime("%Y-%m-%d")))
             conn.commit()
-            start_date = start_date+datetime.timedelta(days=1)
+        start_date = start_date+datetime.timedelta(days=1)
 
     cursor.close()
     conn.close()
