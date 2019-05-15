@@ -17,6 +17,11 @@ from sklearn.metrics import roc_auc_score
 
 
 #####prepare
+#Scale( Log(X+1) )
+#Log(X+1)
+#Scale( X )
+#X
+#sqrt( X + 3/8)
 #kmeans
 #t-sne
 
