@@ -37,7 +37,7 @@ def QA_util_process_quantdata(start_date = None, end_date = None):
 
     while start_date <= end_date:
         print(start_date)
-        if QA_util_if_trade(start_date) == True:
+        if QA_util_if_trade(start_date):
             print(start_date.strftime("%Y-%m-%d"), QA_util_get_pre_trade_date(start_date.strftime("%Y-%m-%d"),5))
             sql2 = sql1.format(start_date=QA_util_get_pre_trade_date(start_date.strftime("%Y-%m-%d"),5), end_date = start_date)
             if QA_util_get_pre_trade_date(start_date.strftime("%Y-%m-%d"),5) == 'wrong date':
