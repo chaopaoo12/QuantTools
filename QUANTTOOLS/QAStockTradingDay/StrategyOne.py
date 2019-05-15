@@ -6,6 +6,8 @@ from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import AdaBoostClassifier as ADA
 from sklearn.ensemble import BaggingClassifier
 from sklearn.manifold import t_sne
+from sklearn.cluster import KMeans
+from sklearn.externals import joblib
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
