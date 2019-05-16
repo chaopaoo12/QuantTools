@@ -43,12 +43,18 @@ from sklearn.metrics import roc_auc_score
 #####submit model
 #LogisticRegression
 
-def RandomForest():
-    pass
+def RandomForest(X_train, X_test, Y_train, Y_test):
+    rf0 = RandomForestClassifier(oob_score=True, random_state=10)
+    rf0.fit(X_train,Y_train)
+    rf0.predict(X_test)
+
+    return(rf0.predict(X_train))
 
 def GBDT():
     pass
 
+def xgboost():
+    pass
 
 class Stacking():
 
