@@ -499,9 +499,11 @@ A.NETPROFIT - A.NETPROAFTEXTRGAINLOSS AS EXTRGAINLOSS
 rp as
  (select code,
        report_date,
+       market_day,
        min(send_date) as send_date,
        max(end_date) as end_date
   from (select code,
+               market_day,
                to_date(report_date, 'yyyy-mm-dd') as report_date,
                to_date(send_date, 'yyyy-mm-dd') as send_date,
                to_date(COALESCE(lag(send_date)
@@ -510,7 +512,8 @@ rp as
                        'yyyy-mm-dd') as end_date
           from (select code,
                        to_char(report_date, 'yyyy-mm-dd') as report_date,
-                       to_char(MIN(real_date), 'yyyy-mm-dd') as send_date
+                       to_char(MIN(real_date), 'yyyy-mm-dd') as send_date,
+                       null as market_day
                   from stock_calendar
                  group by code, report_date
                 union all
@@ -545,10 +548,12 @@ rp as
                           null
                        end as report_date,
                        to_char(to_date(timetomarket, 'yyyymmdd') - 1,
-                               'yyyy-mm-dd') as send_date
+                               'yyyy-mm-dd') as send_date,
+                       to_char(to_date(timetomarket, 'yyyymmdd'),
+                               'yyyy-mm-dd') as market_day 
                   from stock_info
                  where length(timetomarket) = 8) h) g
- group by code, report_date),
+ group by code, report_date, market_day),
 res as
  (SELECT A.CODE,
          INDUSTRY,
