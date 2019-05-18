@@ -53,7 +53,7 @@ def QA_util_process_quantdata(start_date = None, end_date = None):
 
 def QA_util_etl_stock_quant(deal_date = None):
 
-    sql = '''code,
+    sql = '''select code,
        name,
        industry,
        to_char(order_date, 'yyyy-mm-dd') as "date",
