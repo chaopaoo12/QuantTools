@@ -57,6 +57,7 @@ def QA_util_etl_stock_quant(deal_date = None):
        name,
        industry,
        to_char(order_date, 'yyyy-mm-dd') as "date",
+       order_Date - market_day as days,
        total_market,
        round(tra_total_market / total_market * 100, 2) AS tra_rate,
        round(pe, 2) AS pe,
