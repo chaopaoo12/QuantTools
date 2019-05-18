@@ -63,7 +63,7 @@ def get_quant_data(start_date, end_date):
                                                                                                      'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                                                                                                      'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                                                      'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
-                                                                                                     'TARGET', 'TARGET3', 'TARGET5']]
+                                                                                                     'TARGET', 'TARGET3', 'TARGET5','AVG_TARGET']]
     alpha = QA_fetch_stock_alpha_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                                                         'alpha_009', 'alpha_010', 'alpha_011', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
                                                                                                         'alpha_018', 'alpha_019', 'alpha_020', 'alpha_021', 'alpha_022', 'alpha_023', 'alpha_024', 'alpha_025', 'alpha_026',
