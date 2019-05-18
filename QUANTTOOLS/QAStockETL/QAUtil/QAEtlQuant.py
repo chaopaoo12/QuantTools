@@ -53,7 +53,7 @@ def QA_util_process_quantdata(start_date = None, end_date = None):
 
 def QA_util_etl_stock_quant(deal_date = None):
 
-    sql = '''select code,
+    sql = '''code,
        name,
        industry,
        to_char(order_date, 'yyyy-mm-dd') as "date",
@@ -76,6 +76,51 @@ def QA_util_etl_stock_quant(deal_date = None):
        round(grossMargin_l2y * 100, 2) AS grossMargin_l2y,
        round(grossMargin_l3y * 100, 2) AS grossMargin_l3y,
        round(grossMargin_l4y * 100, 2) AS grossMargin_l4y,
+       round(assetsLiabilitiesRatio * 100, 2) AS assetsLiabilitiesRatio,
+       round(assetsLiabilitiesRatio_ly * 100, 2) AS assetsLiabilitiesRatio_ly,
+       round(assetsLiabilitiesRatio_l2y * 100, 2) AS assetsLiabilitiesRatio_l2y,
+       round(assetsLiabilitiesRatio_l3y * 100, 2) AS assetsLiabilitiesRatio_l3y,
+       round(assetsLiabilitiesRatio_l4y * 100, 2) AS assetsLiabilitiesRatio_l4y,
+       round(cashRatio * 100, 2) AS cashRatio,
+       round(cashRatio_ly * 100, 2) AS cashRatio_ly,
+       round(cashRatio_l2y * 100, 2) AS cashRatio_l2y,
+       round(cashRatio_l3y * 100, 2) AS cashRatio_l3y,
+       round(cashRatio_l4y * 100, 2) AS cashRatio_l4y,
+       round(tangibleAssetDebtRatio * 100, 2) AS tangibleAssetDebtRatio,
+       round(tangibleAssetDebtRatio_ly * 100, 2) AS tangibleAssetDebtRatio_ly,
+       round(tangibleAssetDebtRatio_l2y * 100, 2) AS tangibleAssetDebtRatio_l2y,
+       round(tangibleAssetDebtRatio_l3y * 100, 2) AS tangibleAssetDebtRatio_l3y,
+       round(tangibleAssetDebtRatio_l4y * 100, 2) AS tangibleAssetDebtRatio_l4y,
+       round(turnoverRatioOfTotalAssets * 100, 2) AS turnoverRatioOfTotalAssets,
+       round(turnoverRatioOfTotalAssets_ly * 100, 2) AS turnoverRatioOfTotalAssets_ly,
+       round(turnoverRatioOfTotalAssets_l2y * 100, 2) AS turnoverRatioOfTotalAssets_l2y,
+       round(turnoverRatioOfTotalAssets_l3y * 100, 2) AS turnoverRatioOfTotalAssets_l3y,
+       round(turnoverRatioOfTotalAssets_l4y * 100, 2) AS turnoverRatioOfTotalAssets_l4y,
+       
+       round(turnoverRatioOfTotalAssets * 100, 2) AS turnoverRatioOfTotalAssets,
+       round(turnoverRatioOfTotalAssets_ly * 100, 2) AS turnoverRatioOfTotalAssets_ly,
+       round(turnoverRatioOfTotalAssets_l2y * 100, 2) AS turnoverRatioOfTotalAssets_l2y,
+       round(turnoverRatioOfTotalAssets_l3y * 100, 2) AS turnoverRatioOfTotalAssets_l3y,
+       round(turnoverRatioOfTotalAssets_l4y * 100, 2) AS turnoverRatioOfTotalAssets_l4y,
+       
+       round(turnoverRatioOfReceivable * 100, 2) AS turnoverRatioOfReceivable,
+       round(turnoverRatioOfReceivable_ly * 100, 2) AS turnoverRatioOfReceivable_ly,
+       round(turnoverRatioOfReceivable_l2y * 100, 2) AS turnoverRatioOfReceivable_l2y,
+       round(turnoverRatioOfReceivable_l3y * 100, 2) AS turnoverRatioOfReceivable_l3y,
+       round(turnoverRatioOfReceivable_l4y * 100, 2) AS turnoverRatioOfReceivable_l4y,
+       
+       round(cashOfnetProfit_TTM * 100, 2) AS cashOfnetProfit_TTM,
+       round(cashOfnetProfit_TTM_ly * 100, 2) AS cashOfnetProfit_TTM_ly,
+       round(cashOfnetProfit_TTM_l2y * 100, 2) AS cashOfnetProfit_TTM_l2y,
+       round(cashOfnetProfit_TTM_l3y * 100, 2) AS cashOfnetProfit_TTM_l3y,
+       round(cashOfnetProfit_TTM_l4y * 100, 2) AS cashOfnetProfit_TTM_l4y,
+       
+       round(cashOfnetProfit * 100, 2) AS cashOfnetProfit,
+       round(cashOfnetProfit_ly * 100, 2) AS cashOfnetProfit_ly,
+       round(cashOfnetProfit_l2y * 100, 2) AS cashOfnetProfit_l2y,
+       round(cashOfnetProfit_l3y * 100, 2) AS cashOfnetProfit_l3y,
+       round(cashOfnetProfit_l4y * 100, 2) AS cashOfnetProfit_l4y,
+       
        round(case
                when operatingRevenue_TTM_ly = 0 then
                 0
@@ -255,6 +300,27 @@ def QA_util_etl_stock_quant(deal_date = None):
        round(RNG_30 * 100, 2) as RNG_30,
        round(RNG_60 * 100, 2) as RNG_60,
        round((case
+               when LAG_MARKET = 0 or LAG5_MARKET is null then
+                0
+               else
+                TOTAL_market / LAG_MARKET - 1
+             end) * 100,
+             2) as lag,
+       round((case
+               when LAG2_MARKET = 0 or LAG2_MARKET is null then
+                0
+               else
+                TOTAL_market / LAG2_MARKET - 1
+             end) * 100,
+             2) as lag2,
+       round((case
+               when LAG3_MARKET = 0 or LAG3_MARKET is null then
+                0
+               else
+                TOTAL_market / LAG3_MARKET - 1
+             end) * 100,
+             2) as lag3,
+       round((case
                when LAG5_MARKET = 0 or LAG5_MARKET is null then
                 0
                else
@@ -282,6 +348,97 @@ def QA_util_etl_stock_quant(deal_date = None):
                 TOTAL_market / LAG60_MARKET - 1
              end) * 100,
              2) as lag60,
+       round((case
+               when LAG_MARKET = 0 or LAG5_MARKET is null then
+                0
+               else
+                TOTAL_market / LAG_MARKET - 1
+             end) * 100,
+             2) - round((case
+                          when LAG_ALL_MARKET = 0 or LAG_ALL_MARKET is null then
+                           0
+                          else
+                           all_TOTAL_MARKET / LAG_ALL_MARKET - 1
+                        end) * 100,
+                        2) as diff_lag,
+       round((case
+               when LAG2_MARKET = 0 or LAG2_MARKET is null then
+                0
+               else
+                TOTAL_market / LAG2_MARKET - 1
+             end) * 100,
+             2) - round((case
+                          when LAG2_ALL_MARKET = 0 or LAG2_ALL_MARKET is null then
+                           0
+                          else
+                           all_TOTAL_MARKET / LAG2_ALL_MARKET - 1
+                        end) * 100,
+                        2) as diff_lag2,
+       round((case
+               when LAG3_MARKET = 0 or LAG3_MARKET is null then
+                0
+               else
+                TOTAL_market / LAG3_MARKET - 1
+             end) * 100,
+             2) - round((case
+                          when LAG3_ALL_MARKET = 0 or LAG3_ALL_MARKET is null then
+                           0
+                          else
+                           all_TOTAL_MARKET / LAG3_ALL_MARKET - 1
+                        end) * 100,
+                        2) as diff_lag3,
+       round((case
+               when LAG5_MARKET = 0 or LAG5_MARKET is null then
+                0
+               else
+                TOTAL_market / LAG5_MARKET - 1
+             end) * 100,
+             2) - round((case
+                          when LAG5_ALL_MARKET = 0 or LAG5_ALL_MARKET is null then
+                           0
+                          else
+                           all_TOTAL_MARKET / LAG5_ALL_MARKET - 1
+                        end) * 100,
+                        2) as diff_lag5,
+       round((case
+               when LAG20_MARKET = 0 or LAG20_MARKET is null then
+                0
+               else
+                TOTAL_market / LAG20_MARKET - 1
+             end) * 100,
+             2) - round((case
+                          when LAG20_ALL_MARKET = 0 or LAG20_ALL_MARKET is null then
+                           0
+                          else
+                           all_TOTAL_MARKET / LAG20_ALL_MARKET - 1
+                        end) * 100,
+                        2) as diff_lag20,
+       round((case
+               when LAG30_MARKET = 0 or LAG30_MARKET is null then
+                0
+               else
+                TOTAL_market / LAG30_MARKET - 1
+             end) * 100,
+             2) - round((case
+                          when LAG30_ALL_MARKET = 0 or LAG30_ALL_MARKET is null then
+                           0
+                          else
+                           all_TOTAL_MARKET / LAG30_ALL_MARKET - 1
+                        end) * 100,
+                        2) as diff_lag30,
+       round((case
+               when LAG60_MARKET = 0 or LAG60_MARKET is null then
+                0
+               else
+                TOTAL_market / LAG60_MARKET - 1
+             end) * 100,
+             2) - round((case
+                          when LAG60_ALL_MARKET = 0 or LAG60_ALL_MARKET is null then
+                           0
+                          else
+                           all_TOTAL_MARKET / LAG60_ALL_MARKET - 1
+                        end) * 100,
+                        2) as diff_lag60,
        round((case
                when AVG5_A_MARKET = 0 or AVG5_A_MARKET is null then
                 0
@@ -331,7 +488,14 @@ def QA_util_etl_stock_quant(deal_date = None):
                else
                 PRE5_MARKET / PRE_MARKET - 1
              end) * 100,
-             2) as target5
+             2) as target5,
+       round((case
+               when TOTAL_MARKET = 0 then
+                0
+               else
+                AVG_PRE_MARKET / TOTAL_MARKET /100 - 1
+             end) * 100,
+             2) as avg_target
   from QUANT_ANALYSIS_DATA A
  where order_date = to_date('{start_date}', 'yyyy-mm-dd')'''
     if deal_date is None:
