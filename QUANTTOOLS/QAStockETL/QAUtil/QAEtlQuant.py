@@ -489,7 +489,7 @@ def QA_util_etl_stock_quant(deal_date = None):
                when TOTAL_MARKET = 0 then
                 0
                else
-                AVG_PRE_MARKET / TOTAL_MARKET /100 - 1
+                AVG_PRE_MARKET / TOTAL_MARKET - 1
              end) * 100,
              2) as avg_target
   from QUANT_ANALYSIS_DATA A
