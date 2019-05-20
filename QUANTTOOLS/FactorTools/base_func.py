@@ -64,11 +64,6 @@ def get_quant_data(start_date, end_date):
                                                                                                      'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                                                      'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
                                                                                                      'TARGET', 'TARGET3', 'TARGET5','AVG_TARGET']]
-    for columnname in fianacial.columns:
-        if fianacial[columnname].dtype == 'float64':
-            fianacial[columnname]=fianacial[columnname].astype('float16')
-        if fianacial[columnname].dtype == 'int64':
-            fianacial[columnname]=fianacial[columnname].astype('int8')
     alpha = QA_fetch_stock_alpha_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                                                         'alpha_009', 'alpha_010', 'alpha_011', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
                                                                                                         'alpha_018', 'alpha_019', 'alpha_020', 'alpha_021', 'alpha_022', 'alpha_023', 'alpha_024', 'alpha_025', 'alpha_026',
@@ -87,17 +82,7 @@ def get_quant_data(start_date, end_date):
                                                                                                         'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                                                         'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_180', 'alpha_184', 'alpha_185', 'alpha_186',
                                                                                                         'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].groupby('date').apply(get_trans).groupby('code').apply(series_to_supervised,[30,10,7,5,3,1])
-    for columnname in alpha.columns:
-        if alpha[columnname].dtype == 'float64':
-            alpha[columnname]=alpha[columnname].astype('float16')
-        if alpha[columnname].dtype == 'int64':
-            alpha[columnname]=alpha[columnname].astype('int8')
     technical = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data.groupby('date').apply(get_trans).groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1])
-    for columnname in technical.columns:
-        if technical[columnname].dtype == 'float64':
-            technical[columnname]=technical[columnname].astype('float16')
-        if technical[columnname].dtype == 'int64':
-            technical[columnname]=technical[columnname].astype('int8')
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
     cols = [i for i in list(fianacial.columns) if i not in ['GROSSMARGIN', 'GROSSMARGIN_L2Y', 'GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
                                                         'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
