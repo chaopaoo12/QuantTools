@@ -60,6 +60,16 @@ def time_this_function(func):
 #####submit model
 #LogisticRegression
 
+from sklearn.metrics import confusion_matrix
+def customedscore(preds, dtrain):
+    label = dtrain.get_label()
+    pred = [int(i>=0.5) for i in preds]
+    confusion_matrixs = confusion_matrix(label, pred)
+    recall =float(confusion_matrixs[0][0]) / float(confusion_matrixs[0][1]+confusion_matrixs[0][0])
+    precision = float(confusion_matrixs[0][0]) / float(confusion_matrixs[1][0]+confusion_matrixs[0][0])
+    F = 5*precision* recall/(2*precision+3*recall)*100
+    return 'FSCORE',float(F)
+
 def model_report(y, y_pred, label):
     report = classification_report(y, y_pred)
     import re

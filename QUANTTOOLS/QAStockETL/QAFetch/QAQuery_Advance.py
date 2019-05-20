@@ -106,7 +106,12 @@ def QA_fetch_stock_fianacial_adv(code,
         res_reset_index = res.set_index(['date', 'code'], drop=if_drop_index)
         # if res_reset_index is None:
         #     print("QA Error QA_fetch_stock_fianacial_adv set index 'datetime, code' return None")
-        #     return None
+        #     return
+        for columnname in res_reset_index.columns:
+            if res_reset_index[columnname].dtype == 'float64':
+                res_reset_index[columnname]=res_reset_index[columnname].astype('float16')
+        if res_reset_index[columnname].dtype == 'int64':
+            res_reset_index[columnname]=res_reset_index[columnname].astype('int8')
         return QA_DataStruct_Stock_day(res_reset_index)
 
 
@@ -121,9 +126,21 @@ def QA_fetch_stock_alpha_adv(code, start="all", end=None, format='pd', collectio
     if start == 'all' or start == None:
         start = '2005-01-01'
         end = QA_util_today_str()
-        return QA_DataStruct_Financial(QA_fetch_stock_alpha(code, start, end))
+        data = QA_fetch_stock_alpha(code, start, end)
+        for columnname in data.columns:
+            if data[columnname].dtype == 'float64':
+                data[columnname]=data[columnname].astype('float16')
+        if data[columnname].dtype == 'int64':
+            data[columnname]=data[columnname].astype('int8')
+        return QA_DataStruct_Financial(data)
     else:
-        return QA_DataStruct_Financial(QA_fetch_stock_alpha(code, start, end))
+        data = QA_fetch_stock_alpha(code, start, end)
+        for columnname in data.columns:
+            if data[columnname].dtype == 'float64':
+                data[columnname]=data[columnname].astype('float16')
+        if data[columnname].dtype == 'int64':
+            data[columnname]=data[columnname].astype('int8')
+        return QA_DataStruct_Financial(data)
 
 def QA_fetch_stock_shares_adv(code, start="all", end=None, format='pd',type='crawl', collections=DATABASE.stock_shares):
     '获取股票日线'
@@ -161,6 +178,18 @@ def QA_fetch_stock_technical_index_adv(code, start="all", end=None, format='pd',
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        return QA_DataStruct_Financial(QA_fetch_stock_technical_index(code, start, end))
+        data = QA_fetch_stock_technical_index(code, start, end)
+        for columnname in data.columns:
+            if data[columnname].dtype == 'float64':
+                data[columnname]=data[columnname].astype('float16')
+        if data[columnname].dtype == 'int64':
+            data[columnname]=data[columnname].astype('int8')
+        return QA_DataStruct_Financial(data)
     else:
-        return QA_DataStruct_Financial(QA_fetch_stock_technical_index(code, start, end))
+        data = QA_fetch_stock_technical_index(code, start, end)
+        for columnname in data.columns:
+            if data[columnname].dtype == 'float64':
+                data[columnname]=data[columnname].astype('float16')
+        if data[columnname].dtype == 'int64':
+            data[columnname]=data[columnname].astype('int8')
+        return QA_DataStruct_Financial(data)

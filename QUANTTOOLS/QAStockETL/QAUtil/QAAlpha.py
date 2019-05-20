@@ -62,16 +62,17 @@ class Alpha_191:
         return len(na) - na.values.argmin()
 
     #############################################################################
-    #####成交量与日内价格波动秩关系
     def alpha_001(self):
+        #####成交量与日内价格波动秩关系
         data1 = self.volume.diff(1).rank(axis=1,pct=True)
         data2 = ((self.close - self.open_price)/self.open_price).rank(axis=1,pct=True)
         alpha = -data1.iloc[-6:,:].corrwith(data2.iloc[-6:,:]).dropna()
         alpha=alpha.dropna()
         return alpha
 
-    #####成交量与日内价格波动秩关系
+
     def alpha_002(self):
+        #####成交量与日内价格波动秩关系
         ##### -1 * delta((((close-low)-(high-close))/((high-low)),1))####
         result=((self.close-self.low)-(self.high-self.close))/((self.high-self.low)).diff()
         m=result.iloc[-1,:].dropna()
