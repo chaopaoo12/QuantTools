@@ -251,13 +251,6 @@ def QA_util_etl_stock_quant(deal_date = None):
              end * 100,
              2) as PS,
        round(case
-               when OPERATINGCASHRATIO_TTM = 0 then
-                0
-               else
-                total_market / OPERATINGCASHRATIO_TTM
-             end * 100,
-             2) as PSC,
-       round(case
                when NETCASHOPERATACTIV_TTM = 0 then
                 0
                else
