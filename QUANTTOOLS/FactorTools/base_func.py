@@ -58,7 +58,7 @@ def get_quant_data(start_date, end_date):
                                                                                                      'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
                                                                                                      'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',
                                                                                                      'OPERATINGRINRATE', 'OPERATINGRINRATE_L2Y', 'OPERATINGRINRATE_L3Y', 'OPERATINGRINRATE_LY',
-                                                                                                     'PB', 'PBG', 'PC', 'PE', 'PEG', 'PM', 'PS', 'PSC', 'PSG', 'PT',
+                                                                                                     'PB', 'PBG', 'PC', 'PE', 'PEG', 'PM', 'PS', 'PSG', 'PT',
                                                                                                      'RNG_20', 'RNG_30', 'RNG_5', 'RNG_60', 'RNG_L',
                                                                                                      'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                                                                                                      'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
