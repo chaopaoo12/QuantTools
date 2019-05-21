@@ -495,7 +495,7 @@ def QA_util_etl_stock_quant(deal_date = None):
                 AVG_PRE_MARKET / TOTAL_MARKET - 1
              end) * 100,
              2) as avg_target
-  from (select * QUANT_ANALYSIS_DATA 
+  from (select * from QUANT_ANALYSIS_DATA 
  where order_date = to_date('{start_date}', 'yyyy-mm-dd'))A
  left join (select CODE,
                     COUNT(DISTINCT decode(blockname, '上证50', 1, 0)) as SZ50,
