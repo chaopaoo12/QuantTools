@@ -5,7 +5,6 @@ import statsmodels.api as sml
 import numpy as np
 import math
 
-
 def standardize_series(series): #原始值法
     std = series.std()
     mean = series.mean()
