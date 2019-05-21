@@ -59,6 +59,16 @@ def QA_util_etl_stock_quant(deal_date = None):
        to_char(order_date, 'yyyy-mm-dd') as "date",
        order_Date - market_day as days,
        total_market,
+       SZ50,
+       HS300,
+       CY300,
+       SZ180,
+       SZ380,
+       SZ100,
+       SZ300,
+       ZZ100,
+       ZZ200,
+       CY50,
        round(tra_total_market / total_market * 100, 2) AS tra_rate,
        round(pe, 2) AS pe,
        round(pb, 2) AS pb,
@@ -485,8 +495,22 @@ def QA_util_etl_stock_quant(deal_date = None):
                 AVG_PRE_MARKET / TOTAL_MARKET - 1
              end) * 100,
              2) as avg_target
-  from QUANT_ANALYSIS_DATA A
- where order_date = to_date('{start_date}', 'yyyy-mm-dd')'''
+  from (select * QUANT_ANALYSIS_DATA 
+ where order_date = to_date('{start_date}', 'yyyy-mm-dd'))A
+ left join (select CODE,
+                    COUNT(DISTINCT decode(blockname, '上证50', 1, 0)) as SZ50,
+                    COUNT(DISTINCT decode(blockname, '沪深300', 1, 0)) as HS300,
+                    COUNT(DISTINCT decode(blockname, '创业300', 1, 0)) as CY300,
+                    COUNT(DISTINCT decode(blockname, '上证180', 1, 0)) as SZ180,
+                    COUNT(DISTINCT decode(blockname, '上证380', 1, 0)) as SZ380,
+                    COUNT(DISTINCT decode(blockname, '深证100', 1, 0)) as SZ100,
+                    COUNT(DISTINCT decode(blockname, '深证300', 1, 0)) as SZ300,
+                    COUNT(DISTINCT decode(blockname, '中证100', 1, 0)) as ZZ100,
+                    COUNT(DISTINCT decode(blockname, '中证200', 1, 0)) as ZZ200,
+                    COUNT(DISTINCT decode(blockname, '创业板50', 1, 0)) as CY50
+               from stock_block
+              GROUP BY CODE) b
+    on a.code = b.code'''
     if deal_date is None:
         print('Must Have A DATE ')
     else:
