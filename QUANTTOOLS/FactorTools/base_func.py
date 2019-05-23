@@ -102,4 +102,9 @@ def get_quant_data(start_date, end_date):
                                                                                                             'TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET']])
     fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET']]].groupby('date').apply(get_trans).join(fianacial[['TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET']])
     res = fianacial.join(technical).join(alpha)
+    for columnname in res.columns:
+        if res[columnname].dtype == 'float64':
+            res[columnname]=res[columnname].astype('float16')
+    if res[columnname].dtype == 'int64':
+        res[columnname]=res[columnname].astype('int8')
     return(res)
