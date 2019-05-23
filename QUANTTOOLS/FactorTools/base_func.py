@@ -11,14 +11,19 @@ def standardize_series(series): #原始值法
     return(round((series-mean)/std * 100,4))
 
 def filter_extreme_3sigma(array,n=3): #3 sigma
-    sigma = array.std()
-    mu = array.mean()
+    array1 = array.replace([np.inf, -np.inf], np.nan)
+    vmax = array1.max()
+    vmin = array1.min()
+    sigma = array1.std()
+    mu = array1.mean()
+    array = array.replace(np.inf, vmin)
+    array = array.replace(-np.inf, vmax)
     array[array > mu + n*sigma] = mu + n*sigma
     array[array < mu - n*sigma] = mu - n*sigma
     return(array)
 
 def get_trans(data):
-    return(data.apply(filter_extreme_3sigma).apply(standardize_series))
+    return(data.apply(filter_extreme_3sigma).apply(lambda x: (x - np.nanmean(x)) / np.nanstd(x)))
 
 def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     cols_na = list(data.columns)
