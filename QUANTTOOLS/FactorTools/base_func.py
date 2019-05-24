@@ -28,7 +28,10 @@ def get_trans(data):
 def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     cols_na = list(data.columns)
     if fill == True:
-        df = pd.DataFrame(data).fillna(method='ffill')
+        try:
+            df = pd.DataFrame(data).fillna(method='ffill')
+        except:
+            df = pd.DataFrame(data)
     else:
         df = pd.DataFrame(data)
     cols, names = list(), list()
