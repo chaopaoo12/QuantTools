@@ -31,6 +31,8 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
         for deal_date in deal_date_list:
             data = QA_util_etl_stock_quant(deal_date)
             if data is not None:
+                data = data.drop_duplicates(
+                    (['CODE', 'date']))
                 data = QA_util_to_json_from_pandas(data)
                 print("got '{deal_date}' stock financial data.".format(deal_date=deal_date))
 
