@@ -89,11 +89,26 @@ def get_quant_data(start_date, end_date):
                                                                                                         'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                                                         'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_180', 'alpha_184', 'alpha_185', 'alpha_186',
                                                                                                         'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].groupby('date').apply(get_trans).groupby('code').apply(series_to_supervised,[30,10,7,5,3,1])
+    for columnname in alpha.columns:
+        if alpha[columnname].dtype == 'float64':
+            alpha[columnname]=alpha[columnname].astype('float16')
+    if alpha[columnname].dtype == 'int64':
+        alpha[columnname]=alpha[columnname].astype('int8')
     technical = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data.groupby('date').apply(get_trans).groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1])
+    for columnname in technical.columns:
+        if technical[columnname].dtype == 'float64':
+            technical[columnname]=technical[columnname].astype('float16')
+    if technical[columnname].dtype == 'int64':
+        technical[columnname]=technical[columnname].astype('int8')
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
     fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET','SZ50','HS300','CY300','SZ180','SZ380',
                                                                            'SZ100','SZ300','ZZ100','ZZ200','CY50']]].groupby('date').apply(get_trans).join(fianacial[['TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET','SZ50','HS300','CY300','SZ180','SZ380',
                                                                                                                                                                       'SZ100','SZ300','ZZ100','ZZ200','CY50']])
+    for columnname in fianacial.columns:
+        if fianacial[columnname].dtype == 'float64':
+            fianacial[columnname]=fianacial[columnname].astype('float16')
+    if fianacial[columnname].dtype == 'int64':
+        fianacial[columnname]=fianacial[columnname].astype('int8')
     cols = [i for i in list(fianacial.columns) if i not in ['GROSSMARGIN', 'GROSSMARGIN_L2Y', 'GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
                                                         'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
                                                         'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',
@@ -115,9 +130,4 @@ def get_quant_data(start_date, end_date):
                                                                                                             'SZ100','SZ300','ZZ100','ZZ200','CY50',
                                                                                                             'TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET']])
     res = fianacial.join(technical).join(alpha)
-    for columnname in res.columns:
-        if res[columnname].dtype == 'float64':
-            res[columnname]=res[columnname].astype('float16')
-    if res[columnname].dtype == 'int64':
-        res[columnname]=res[columnname].astype('int8')
     return(res)
