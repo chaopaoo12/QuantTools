@@ -11,7 +11,7 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
         print("Run This JOB in DataBase")
     if QA_util_if_trade(deal_date) == True:
         sql3="""insert /*+ append parallel(b, 16) nologging */ into stock_analysis_data
-      select /*+ parallel(b, 16) nologging */
+   select /*+ parallel(b, 16) nologging */
    g.*,
    decode(i_netProAftExtrGainLoss_TTM,
           0,
@@ -115,6 +115,8 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
                  LAG(TOTAL_MARKET, 30) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG30_MARKET,
                  LAG(TOTAL_MARKET, 60) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG60_MARKET,
                  LAG(AVG_TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG_MARKET,
+                 LAG(AVG_TOTAL_MARKET, 2) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG2_MARKET,
+                 LAG(AVG_TOTAL_MARKET, 3) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG3_MARKET,
                  LAG(AVG_TOTAL_MARKET, 5) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG5_MARKET,
                  LAG(AVG_TOTAL_MARKET, 20) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG20_MARKET,
                  LAG(AVG_TOTAL_MARKET, 30) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG30_MARKET,
