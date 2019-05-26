@@ -870,171 +870,79 @@ def QA_util_etl_stock_quant(deal_date = None):
                when LAG_MARKET = 0 or LAG5_MARKET is null then
                 0
                else
-                TOTAL_market / LAG_MARKET - 1
+                CLOSE_QFQ / LAG_MARKET - 1
              end) * 100,
              2) as lag,
        round((case
                when LAG2_MARKET = 0 or LAG2_MARKET is null then
                 0
                else
-                TOTAL_market / LAG2_MARKET - 1
+                CLOSE_QFQ / LAG2_MARKET - 1
              end) * 100,
              2) as lag2,
        round((case
                when LAG3_MARKET = 0 or LAG3_MARKET is null then
                 0
                else
-                TOTAL_market / LAG3_MARKET - 1
+                CLOSE_QFQ / LAG3_MARKET - 1
              end) * 100,
              2) as lag3,
        round((case
                when LAG5_MARKET = 0 or LAG5_MARKET is null then
                 0
                else
-                TOTAL_market / LAG5_MARKET - 1
+                CLOSE_QFQ / LAG5_MARKET - 1
              end) * 100,
              2) as lag5,
        round((case
                when LAG20_MARKET = 0 or LAG20_MARKET is null then
                 0
                else
-                TOTAL_market / LAG20_MARKET - 1
+                CLOSE_QFQ / LAG20_MARKET - 1
              end) * 100,
              2) as lag20,
        round((case
                when LAG30_MARKET = 0 or LAG30_MARKET is null then
                 0
                else
-                TOTAL_market / LAG30_MARKET - 1
+                CLOSE_QFQ / LAG30_MARKET - 1
              end) * 100,
              2) as lag30,
        round((case
                when LAG60_MARKET = 0 or LAG60_MARKET is null then
                 0
                else
-                TOTAL_market / LAG60_MARKET - 1
+                CLOSE_QFQ / LAG60_MARKET - 1
              end) * 100,
              2) as lag60,
-       round((case
-               when LAG_MARKET = 0 or LAG5_MARKET is null then
-                0
-               else
-                TOTAL_market / LAG_MARKET - 1
-             end) * 100,
-             2) - round((case
-                          when LAG_ALL_MARKET = 0 or LAG_ALL_MARKET is null then
-                           0
-                          else
-                           all_TOTAL_MARKET / LAG_ALL_MARKET - 1
-                        end) * 100,
-                        2) as diff_lag,
-       round((case
-               when LAG2_MARKET = 0 or LAG2_MARKET is null then
-                0
-               else
-                TOTAL_market / LAG2_MARKET - 1
-             end) * 100,
-             2) - round((case
-                          when LAG2_ALL_MARKET = 0 or LAG2_ALL_MARKET is null then
-                           0
-                          else
-                           all_TOTAL_MARKET / LAG2_ALL_MARKET - 1
-                        end) * 100,
-                        2) as diff_lag2,
-       round((case
-               when LAG3_MARKET = 0 or LAG3_MARKET is null then
-                0
-               else
-                TOTAL_market / LAG3_MARKET - 1
-             end) * 100,
-             2) - round((case
-                          when LAG3_ALL_MARKET = 0 or LAG3_ALL_MARKET is null then
-                           0
-                          else
-                           all_TOTAL_MARKET / LAG3_ALL_MARKET - 1
-                        end) * 100,
-                        2) as diff_lag3,
-       round((case
-               when LAG5_MARKET = 0 or LAG5_MARKET is null then
-                0
-               else
-                TOTAL_market / LAG5_MARKET - 1
-             end) * 100,
-             2) - round((case
-                          when LAG5_ALL_MARKET = 0 or LAG5_ALL_MARKET is null then
-                           0
-                          else
-                           all_TOTAL_MARKET / LAG5_ALL_MARKET - 1
-                        end) * 100,
-                        2) as diff_lag5,
-       round((case
-               when LAG20_MARKET = 0 or LAG20_MARKET is null then
-                0
-               else
-                TOTAL_market / LAG20_MARKET - 1
-             end) * 100,
-             2) - round((case
-                          when LAG20_ALL_MARKET = 0 or LAG20_ALL_MARKET is null then
-                           0
-                          else
-                           all_TOTAL_MARKET / LAG20_ALL_MARKET - 1
-                        end) * 100,
-                        2) as diff_lag20,
-       round((case
-               when LAG30_MARKET = 0 or LAG30_MARKET is null then
-                0
-               else
-                TOTAL_market / LAG30_MARKET - 1
-             end) * 100,
-             2) - round((case
-                          when LAG30_ALL_MARKET = 0 or LAG30_ALL_MARKET is null then
-                           0
-                          else
-                           all_TOTAL_MARKET / LAG30_ALL_MARKET - 1
-                        end) * 100,
-                        2) as diff_lag30,
-       round((case
-               when LAG60_MARKET = 0 or LAG60_MARKET is null then
-                0
-               else
-                TOTAL_market / LAG60_MARKET - 1
-             end) * 100,
-             2) - round((case
-                          when LAG60_ALL_MARKET = 0 or LAG60_ALL_MARKET is null then
-                           0
-                          else
-                           all_TOTAL_MARKET / LAG60_ALL_MARKET - 1
-                        end) * 100,
-                        2) as diff_lag60,
        round((case
                when AVG5_A_MARKET = 0 or AVG5_A_MARKET is null then
                 0
                else
-                AVG_TOTAL_MARKET / AVG5_A_MARKET - 1
+                avgrage_qfq / AVG5_A_MARKET - 1
              end) * 100,
              2) as avg5,
        round((case
                when AVG20_A_MARKET = 0 or AVG20_A_MARKET is null then
                 0
                else
-                AVG_TOTAL_MARKET / AVG20_A_MARKET - 1
+                avgrage_qfq / AVG20_A_MARKET - 1
              end) * 100,
              2) as avg20,
        round((case
                when AVG30_A_MARKET = 0 or AVG30_A_MARKET is null then
                 0
                else
-                AVG_TOTAL_MARKET / AVG30_A_MARKET - 1
+                avgrage_qfq / AVG30_A_MARKET - 1
              end) * 100,
              2) as avg30,
        round((case
                when AVG60_A_MARKET = 0 or AVG60_A_MARKET is null then
                 0
                else
-                AVG_TOTAL_MARKET / AVG60_A_MARKET - 1
+                avgrage_qfq / AVG60_A_MARKET - 1
              end) * 100,
              2) as avg60,
-       
        round((case
                when PRE_MARKET = 0 then
                 0
@@ -1057,10 +965,10 @@ def QA_util_etl_stock_quant(deal_date = None):
              end) * 100,
              2) as target5,
        round((case
-               when CLOSE_QFQ = 0 then
+               when close_qfq = 0 then
                 0
                else
-                AVG_PRE_MARKET / CLOSE_QFQ - 1
+                AVG_PRE_MARKET / close_qfq - 1
              end) * 100,
              2) as avg_target
   from (select * from QUANT_ANALYSIS_DATA 
