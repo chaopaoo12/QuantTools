@@ -40,6 +40,11 @@ def time_this_function(func):
 #X
 #sqrt( X + 3/8)
 #kmeans
+#KMeans(n_clusters=2, random_state=9).fit_predict(X)
+#KMeans(n_clusters=2, random_state=9).fit_predict(X)
+#KMeans(n_clusters=2, random_state=9).fit_predict(X)
+#KMeans(n_clusters=2, random_state=9).fit_predict(X)
+
 #t-sne
 
 #####base model (20)
