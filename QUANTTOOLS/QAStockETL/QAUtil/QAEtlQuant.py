@@ -592,7 +592,6 @@ def QA_util_process_quantdata(start_date = None, end_date = None):
    LAG(AVG_TOTAL_MARKET, 2) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE2_MARKET,
    LAG(AVG_TOTAL_MARKET, 3) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE3_MARKET,
    LAG(AVG_TOTAL_MARKET, 5) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) AS AVG_PRE5_MARKET
-            from (select *,
                     from stock_analysis_data a where order_date <= (to_date('{end_date}', 'yyyy-mm-dd'))
            and order_date >= to_date('{start_date}', 'yyyy-mm-dd')
                     ) A
