@@ -56,9 +56,12 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
         agg.dropna(how='all',inplace=True)
     return agg
 
-def get_quant_data(start_date, end_date):
-    data = QA.QA_fetch_stock_block()
-    codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200','创业板50'])]['code'].drop_duplicates())
+def get_quant_data(start_date, end_date, block = False):
+    if block is True:
+        data = QA.QA_fetch_stock_block()
+        codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200','创业板50'])]['code'].drop_duplicates())
+    else:
+        codes = list(QA_fetch_stock_list_adv()['code'])
     fianacial = QA_fetch_stock_fianacial_adv(codes,start_date,end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE',
                                                                                                      'AVG5', 'AVG20','AVG30','AVG60',
                                                                                                      'AVG5_TOR', 'AVG20_TOR','AVG30_TOR','AVG60_TOR',
