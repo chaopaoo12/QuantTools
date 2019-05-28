@@ -2,6 +2,7 @@ import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
+import QUANTAXIS as QA
 import math
 import numpy as np
 
@@ -56,9 +57,9 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     return agg
 
 def get_quant_data(start_date, end_date):
-
-
-    fianacial = QA_fetch_stock_fianacial_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE',
+    data = QA.QA_fetch_stock_block()
+    codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200','创业板50'])]['code'].drop_duplicates())
+    fianacial = QA_fetch_stock_fianacial_adv(codes,start_date,end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE',
                                                                                                      'AVG5', 'AVG20','AVG30','AVG60',
                                                                                                      'AVG5_TOR', 'AVG20_TOR','AVG30_TOR','AVG60_TOR',
                                                                                                      'GROSSMARGIN', 'GROSSMARGIN_L2Y','GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
@@ -74,7 +75,7 @@ def get_quant_data(start_date, end_date):
                                                                                                      'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                                                      'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
                                                                                                      'TARGET', 'TARGET3', 'TARGET5','AVG_TARGET']]
-    alpha = QA_fetch_stock_alpha_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
+    alpha = QA_fetch_stock_alpha_adv(codes,start_date,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                                                         'alpha_009', 'alpha_010', 'alpha_011', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
                                                                                                         'alpha_018', 'alpha_019', 'alpha_020', 'alpha_021', 'alpha_022', 'alpha_023', 'alpha_024', 'alpha_025', 'alpha_026',
                                                                                                         'alpha_028', 'alpha_029', 'alpha_031', 'alpha_032', 'alpha_033', 'alpha_034', 'alpha_035', 'alpha_036', 'alpha_037',
@@ -97,7 +98,7 @@ def get_quant_data(start_date, end_date):
             alpha[columnname]=alpha[columnname].astype('float16')
     if alpha[columnname].dtype == 'int64':
         alpha[columnname]=alpha[columnname].astype('int8')
-    technical = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code']),start_date,end_date).data.groupby('date').apply(get_trans).groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1])
+    technical = QA_fetch_stock_technical_index_adv(codes,start_date,end_date).data.groupby('date').apply(get_trans).groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1])
     for columnname in technical.columns:
         if technical[columnname].dtype == 'float64':
             technical[columnname]=technical[columnname].astype('float16')
