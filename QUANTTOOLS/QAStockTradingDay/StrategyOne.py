@@ -1,11 +1,13 @@
 import sklearn.neural_network as sk_nn
-import sklearn.neighbors as sk_neighbors
+import sklearn.neighbors as KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.ensemble import AdaBoostClassifier as ADA
+from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import BaggingClassifier
-from sklearn.manifold import t_sne
+from sklearn.manifold import TSNE
 from sklearn.cluster import KMeans
 from sklearn.linear_model import LogisticRegression
 from xgboost import XGBClassifier
@@ -15,6 +17,7 @@ from sklearn.externals import joblib
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import cross_val_score
 import pandas as pd
 
 from sklearn.metrics import (accuracy_score,confusion_matrix,
@@ -40,22 +43,70 @@ def time_this_function(func):
 #X
 #sqrt( X + 3/8)
 #kmeans
-#KMeans(n_clusters=2, random_state=9).fit_predict(X)
-#KMeans(n_clusters=2, random_state=9).fit_predict(X)
-#KMeans(n_clusters=2, random_state=9).fit_predict(X)
-#KMeans(n_clusters=2, random_state=9).fit_predict(X)
+KMeans(n_clusters=2, random_state=0).fit_predict(X)
+KMeans(n_clusters=4, random_state=0).fit_predict(X)
+KMeans(n_clusters=8, random_state=0).fit_predict(X)
+KMeans(n_clusters=16, random_state=0).fit_predict(X)
 
 #t-sne
-
+X_tsne = TSNE(learning_rate=100).fit_transform(X)
 #####base model (20)
 #randomforest
+rf0 = RandomForestClassifier(oob_score=True, random_state=10)
+np.mean(cross_val_score(rf0, X, y, cv=10))
 #knn(2,3,4,5,6,7,8) 10
+knn_classifier=KNeighborsClassifier(2)
+knn_classifier=KNeighborsClassifier(4)
+knn_classifier=KNeighborsClassifier(8)
+knn_classifier=KNeighborsClassifier(16)
+knn_classifier=KNeighborsClassifier(32)
+knn_classifier=KNeighborsClassifier(64)
+knn_classifier=KNeighborsClassifier(128)
+knn_classifier=KNeighborsClassifier(256)
+knn_classifier=KNeighborsClassifier(512)
+knn_classifier=KNeighborsClassifier(1024)
+
+knn_classifier.fit(X,y)
+
 #GBDT
+gbm0 = GradientBoostingClassifier(random_state=10)
+gbm0.fit(X,y)
+
+param_test1 = {'n_estimators':range(20,81,10)}
+gsearch1 = GridSearchCV(estimator = GradientBoostingClassifier(learning_rate=0.1, min_samples_split=300,
+                                                               min_samples_leaf=20,max_depth=8,max_features='sqrt', subsample=0.8,random_state=10),
+                        param_grid = param_test1, scoring='roc_auc',iid=False,cv=5)
+gsearch1.fit(X,y)
+gsearch1.grid_scores_, gsearch1.best_params_, gsearch1.best_score_
+
+param_test2 = {'max_depth':range(3,14,2), 'min_samples_split':range(100,801,200)}
+gsearch2 = GridSearchCV(estimator = GradientBoostingClassifier(learning_rate=0.1, n_estimators=60, min_samples_leaf=20,
+                                                               max_features='sqrt', subsample=0.8, random_state=10),
+                        param_grid = param_test2, scoring='roc_auc',iid=False, cv=5)
+gsearch2.fit(X,y)
+gsearch2.grid_scores_, gsearch2.best_params_, gsearch2.best_score_
+
+param_test3 = {'min_samples_split':range(800,1900,200), 'min_samples_leaf':range(60,101,10)}
+gsearch3 = GridSearchCV(estimator = GradientBoostingClassifier(learning_rate=0.1, n_estimators=60,max_depth=7,
+                                                               max_features='sqrt', subsample=0.8, random_state=10),
+                        param_grid = param_test3, scoring='roc_auc',iid=False, cv=5)
+gsearch3.fit(X,y)
+gsearch3.grid_scores_, gsearch3.best_params_, gsearch3.best_score_
+
 #XGBOOST
 #ExtraTreesClassifier
+clf = ExtraTreesClassifier(n_estimators=10, max_depth=None,min_samples_split=2, random_state=0)
+clf.fit(X, y)
 #AdaBoostClassifier
+clf = AdaBoostClassifier(n_estimators=100, random_state=0)
+clf.fit(X, y)
 #BaggingClassifier
+clf = BaggingClassifier(n_estimators=100, random_state=0)
+clf.fit(X, y)
 #neural_network
+model = sk_nn.MLPClassifier(activation='tanh',solver='adam',alpha=0.0001,learning_rate='adaptive',learning_rate_init=0.001,max_iter=200)
+model = sk_nn.MLPClassifier(solver='lbfgs', alpha=1e-5,hidden_layer_sizes=(15,), random_state=1)
+model.fit(X, y)
 
 #####lv2 model
 #AdaBoostClassifier
