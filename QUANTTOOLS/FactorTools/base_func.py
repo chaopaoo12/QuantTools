@@ -92,6 +92,7 @@ def get_quant_data(start_date, end_date, block = False):
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200','创业板50'])]['code'].drop_duplicates())
     else:
         codes = list(QA_fetch_stock_list_adv()['code'])
+    print("Step One ===========>")
     fianacial = QA_fetch_stock_fianacial_adv(codes,start_date,end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE',
                                                                                                      'AVG5', 'AVG20','AVG30','AVG60',
                                                                                                      'AVG5_TOR', 'AVG20_TOR','AVG30_TOR','AVG60_TOR',
@@ -108,6 +109,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                                                                      'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                                                      'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
                                                                                                      'TARGET', 'TARGET3', 'TARGET5','AVG_TARGET']]
+    print("Step Two ===========>")
     alpha = QA_fetch_stock_alpha_adv(codes,start_date,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                                                         'alpha_009', 'alpha_010', 'alpha_011', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
                                                                                                         'alpha_018', 'alpha_019', 'alpha_020', 'alpha_021', 'alpha_022', 'alpha_023', 'alpha_024', 'alpha_025', 'alpha_026',
@@ -131,12 +133,14 @@ def get_quant_data(start_date, end_date, block = False):
             alpha[columnname]=alpha[columnname].astype('float16')
     if alpha[columnname].dtype == 'int64':
         alpha[columnname]=alpha[columnname].astype('int8')
+    print("Step Three ===========>")
     technical = QA_fetch_stock_technical_index_adv(codes,start_date,end_date).data.groupby('date').apply(get_trans).groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1])
     for columnname in technical.columns:
         if technical[columnname].dtype == 'float64':
             technical[columnname]=technical[columnname].astype('float16')
     if technical[columnname].dtype == 'int64':
         technical[columnname]=technical[columnname].astype('int8')
+    print("Step Four ===========>")
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
     fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET','SZ50','HS300','CY300','SZ180','SZ380',
                                                                            'SZ100','SZ300','ZZ100','ZZ200','CY50']]].groupby('date').apply(get_trans).join(fianacial[['TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET','SZ50','HS300','CY300','SZ180','SZ380',
@@ -156,6 +160,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                         'TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET',
                                                         'SZ50','HS300','CY300','SZ180','SZ380',
                                                         'SZ100','SZ300','ZZ100','ZZ200','CY50']]
+    print("Step Five ===========>")
     fianacial = fianacial[cols].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).join(fianacial[['GROSSMARGIN', 'GROSSMARGIN_L2Y', 'GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
                                                                                                             'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
                                                                                                             'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',
@@ -166,5 +171,6 @@ def get_quant_data(start_date, end_date, block = False):
                                                                                                             'SZ50','HS300','CY300','SZ180','SZ380',
                                                                                                             'SZ100','SZ300','ZZ100','ZZ200','CY50',
                                                                                                             'TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET']])
+    print("Step Six ===========>")
     res = fianacial.join(technical).join(alpha)
     return(res)
