@@ -7,12 +7,18 @@ import math
 import numpy as np
 
 def standardize_series(series): #原始值法
+    if (np.max(series) == 1 and np.min(series) == 0) or (np.max(series) == np.min(series)) :
+        return(series)
+    else:
+        std = np.std(series)
+        mean = np.mean(series)
+        return(round((series-mean)/std,4))
+
+def normalization_series(series): #原始值法
     if series.max() ==1 and series.min == 0:
         return(series)
     else:
-        std = series.std()
-        mean = series.mean()
-        return(round((series-mean)/std * 100,4))
+        return((series-series.min)/(series.max-series.min))
 
 def filter_extreme_3sigma(array,n=3): #3 sigma
     array1 = array.replace([np.inf, -np.inf], np.nan)
