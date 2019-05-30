@@ -18,7 +18,6 @@ def time_this_function(func):
         return result
     return inner
 
-@time_this_function
 def standardize_series(series): #原始值法
     if (np.max(series) == 1 and np.min(series) == 0) or (np.max(series) == np.min(series)) :
         return(series)
@@ -27,14 +26,12 @@ def standardize_series(series): #原始值法
         mean = np.mean(series)
         return(round((series-mean)/std,4))
 
-@time_this_function
 def normalization_series(series): #原始值法
     if series.max() ==1 and series.min == 0:
         return(series)
     else:
         return((series-series.min)/(series.max-series.min))
 
-@time_this_function
 def filter_extreme_3sigma(array,n=3): #3 sigma
     array1 = array.replace([np.inf, -np.inf], np.nan)
     vmax = array1.max()
@@ -50,11 +47,9 @@ def filter_extreme_3sigma(array,n=3): #3 sigma
         array[array < mu - n*sigma] = mu - n*sigma
         return(array)
 
-@time_this_function
 def get_trans(data):
     return(data.apply(filter_extreme_3sigma).apply(standardize_series))
 
-@time_this_function
 def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     cols_na = list(data.columns)
     if fill == True:
