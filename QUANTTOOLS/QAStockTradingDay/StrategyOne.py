@@ -24,17 +24,7 @@ from sklearn.metrics import (accuracy_score,confusion_matrix,
                              classification_report,roc_curve,roc_auc_score,
                              auc,precision_score,recall_score,f1_score)
 
-import time
-from functools import wraps
-def time_this_function(func):
-    #作为装饰器使用，返回函数执行需要花费的时间
-    @wraps(func)
-    def wrapper(*args,**kwargs):
-        start=time.time()
-        result=func(*args,**kwargs)
-        end=time.time()
-        print(func.__name__,end-start)
-        return result
+
 
 #####prepare
 #Scale( Log(X+1) )
