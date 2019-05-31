@@ -62,12 +62,12 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     cols, names = list(), list()
     # input sequence (t-n, ... t-1)
     for i in n_in:
-        cols.append(df.diff(i)/df.shift(i))
+        cols.append(df.shift(i))
         names += [('%s(t-%d)' % (j, i)) for j in cols_na]
     # forecast sequence (t, t+1, ... t+n)
     #print(range(0, n_out))
     for i in range(0, n_out):
-        cols.append(df.diff(-i)/df.shift(-i))
+        cols.append(df.shift(-i))
         if i == 0:
             names += [('%s(t)' % (j)) for j in cols_na]
         else:
@@ -103,7 +103,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                                                                      'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                                                                                                      'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                                                      'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
-                                                                                                     'TARGET', 'TARGET3', 'TARGET5','AVG_TARGET']]
+                                                                                                     'TARGET', 'TARGET3', 'TARGET5','AVG_TARGET']].groupby('code').fillna(method='ffill')
     print("Step Two ===========>")
     alpha = QA_fetch_stock_alpha_adv(codes,start_date,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                                                         'alpha_009', 'alpha_010', 'alpha_011', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',

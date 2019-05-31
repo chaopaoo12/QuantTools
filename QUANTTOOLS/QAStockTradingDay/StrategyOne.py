@@ -1,5 +1,5 @@
 import sklearn.neural_network as sk_nn
-import sklearn.neighbors as KNeighborsClassifier
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingRegressor
@@ -45,21 +45,21 @@ X_tsne = TSNE(learning_rate=100).fit_transform(X)
 rf0 = RandomForestClassifier(oob_score=True, random_state=10)
 np.mean(cross_val_score(rf0, X, y, cv=10))
 #knn(2,3,4,5,6,7,8) 10
-knn_classifier=KNeighborsClassifier(2)
-knn_classifier=KNeighborsClassifier(4)
-knn_classifier=KNeighborsClassifier(8)
-knn_classifier=KNeighborsClassifier(16)
-knn_classifier=KNeighborsClassifier(32)
-knn_classifier=KNeighborsClassifier(64)
-knn_classifier=KNeighborsClassifier(128)
-knn_classifier=KNeighborsClassifier(256)
-knn_classifier=KNeighborsClassifier(512)
-knn_classifier=KNeighborsClassifier(1024)
+knn2_classifier=KNeighborsClassifier(2)
+knn4_classifier=KNeighborsClassifier(4)
+knn8_classifier=KNeighborsClassifier(8)
+knn16_classifier=KNeighborsClassifier(16)
+knn32_classifier=KNeighborsClassifier(32)
+knn64_classifier=KNeighborsClassifier(64)
+knn128_classifier=KNeighborsClassifier(128)
+knn256_classifier=KNeighborsClassifier(256)
+knn512_classifier=KNeighborsClassifier(512)
+knn1024_classifier=KNeighborsClassifier(1024)
 
 knn_classifier.fit(X,y)
 
 #GBDT
-gbm0 = GradientBoostingClassifier(random_state=10)
+gbm0 = GradientBoostingClassifier(random_state=0)
 gbm0.fit(X,y)
 
 param_test1 = {'n_estimators':range(20,81,10)}
@@ -105,6 +105,8 @@ model.fit(X, y)
 
 #####submit model
 #LogisticRegression
+lr_model = LogisticRegression()
+
 import time
 from functools import wraps
 def time_this_function(func):
@@ -142,10 +144,6 @@ def model_report(y, y_pred, label):
 def RandomForest(x_train,y_train,x_dev,y_dev,x_test,y_test,x_test2,y_test2):
     rf0 = RandomForestClassifier(oob_score=True, random_state=10)
     rf0.fit(x_train,y_train)
-    rf0.predict(x_dev)
-    rf0.predict(x_dev)
-    rf0.predict(x_dev)
-
     return(rf0.predict(x_train))
 
 @time_this_function
@@ -212,3 +210,43 @@ class Stacking():
 
     def level_three(self):
         pass
+
+from sklearn.model_selection import KFold
+from sklearn.base import BaseEstimator, RegressorMixin, TransformerMixin, clone
+import numpy as np
+#对于分类问题可以使用 ClassifierMixin
+
+
+class StackingAveragedModels(BaseEstimator, RegressorMixin, TransformerMixin):
+    def __init__(self, base_models, meta_model, n_folds=5):
+        self.base_models = base_models
+        self.meta_model = meta_model
+        self.n_folds = n_folds
+
+    # 我们将原来的模型clone出来，并且进行实现fit功能
+    def fit(self, X, y):
+        self.base_models_ = [list() for x in self.base_models]
+        self.meta_model_ = clone(self.meta_model)
+        kfold = KFold(n_splits=self.n_folds, shuffle=True, random_state=156)
+
+        #对于每个模型，使用交叉验证的方法来训练初级学习器，并且得到次级训练集
+        out_of_fold_predictions = np.zeros((X.shape[0], len(self.base_models)))
+        for i, model in enumerate(self.base_models):
+            for train_index, holdout_index in kfold.split(X, y):
+                self.base_models_[i].append(instance)
+                instance = clone(model)
+                instance.fit(X[train_index], y[train_index])
+                y_pred = instance.predict(X[holdout_index])
+                out_of_fold_predictions[holdout_index, i] = y_pred
+
+        # 使用次级训练集来训练次级学习器
+        self.meta_model_.fit(out_of_fold_predictions, y)
+        return self
+
+    #在上面的fit方法当中，我们已经将我们训练出来的初级学习器和次级学习器保存下来了
+    #predict的时候只需要用这些学习器构造我们的次级预测数据集并且进行预测就可以了
+    def predict(self, X):
+        meta_features = np.column_stack([
+            np.column_stack([model.predict(X) for model in base_models]).mean(axis=1)
+            for base_models in self.base_models_ ])
+        return self.meta_model_.predict(meta_features)
