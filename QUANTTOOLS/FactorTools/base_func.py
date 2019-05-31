@@ -62,7 +62,7 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     cols, names = list(), list()
     # input sequence (t-n, ... t-1)
     for i in n_in:
-        cols.append(df.shift(i))
+        cols.append(df.diff(i)/df.shift(i))
         names += [('%s(t-%d)' % (j, i)) for j in cols_na]
     # forecast sequence (t, t+1, ... t+n)
     #print(range(0, n_out))
