@@ -91,10 +91,10 @@ def QA_etl_stock_xdxr(type = "day", mark_day = str(datetime.date.today())):
 def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today())):
     codes = list(QA_fetch_stock_list_adv()['code'])
     if type == "all":
-        data = QA_ETL_stock_day(codes)
+        data = QA_ETL_stock_day(codes).reset_index()
         QA_util_sql_store_mysql(data, "stock_market_day",if_exists='replace')
     elif type == "day":
-        data = QA_ETL_stock_day(list(QA_fetch_stock_list_adv()['code']), mark_day, mark_day)
+        data = QA_ETL_stock_day(list(QA_fetch_stock_list_adv()['code']), mark_day, mark_day).reset_index()
         if data is None:
             print("We have no MARKET data for the day {}".format(mark_day))
         else:
