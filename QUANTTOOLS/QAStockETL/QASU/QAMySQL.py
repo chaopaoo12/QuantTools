@@ -51,10 +51,16 @@ def pct(data):
 def QA_ETL_stock_day(codes, start=None,end=None):
     if start is None:
         data = QA_fetch_stock_day_adv(codes)
+        res1 = data.to_qfq().data
+        res1.columns = [x + '_qfq' for x in res1.columns]
+        data = data.data.join(res1).fillna(0).reset_index()
         res = data.groupby('code').apply(pct).reset_index(drop = True).set_index(['date','code'])
     else:
         start_date = QA_util_get_pre_trade_date(start,60)
         data = QA_fetch_stock_day_adv(codes,start_date,end)
+        res1 = data.to_qfq().data
+        res1.columns = [x + '_qfq' for x in res1.columns]
+        data = data.data.join(res1).fillna(0).reset_index()
         res = data.groupby('code').apply(pct).reset_index(drop = True).set_index(['date','code']).loc[pd.date_range('start', 'end', freq='D')]
     return(res)
 
