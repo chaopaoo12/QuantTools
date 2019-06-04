@@ -61,7 +61,7 @@ def QA_ETL_stock_day(codes, start=None,end=None):
         res1 = data.to_qfq().data
         res1.columns = [x + '_qfq' for x in res1.columns]
         data = data.data.join(res1).fillna(0).reset_index()
-        res = data.groupby('code').apply(pct).reset_index(drop = True).set_index(['date','code']).loc[pd.date_range('start', 'end', freq='D')]
+        res = data.groupby('code').apply(pct).reset_index(drop = True).set_index(['date','code']).loc[pd.date_range(start, end, freq='D')]
     return(res)
 
 def QA_etl_stock_list():
