@@ -1,7 +1,7 @@
 
 # ETL
 from QUANTTOOLS.QAStockETL.QAUtil.QAEtl import QA_util_process_financial
-from QUANTTOOLS.QAStockETL.QAUtil.QAEtlQuant import QA_util_process_quantdata,QA_util_etl_stock_quant
+from QUANTTOOLS.QAStockETL.QAUtil.QAEtlQuant import QA_util_etl_stock_quant
 from QUANTTOOLS.QAStockETL.QAUtil.QAEtlFinancial import QA_util_etl_financial_TTM,QA_util_process_stock_financial
 
 #SQL
