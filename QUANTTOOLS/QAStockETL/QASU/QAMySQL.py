@@ -12,7 +12,7 @@ from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fe
 
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_sql_store_mysql
 from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_process_financial,QA_util_etl_financial_TTM,\
-    QA_util_process_stock_financial,QA_util_process_quantdata,QA_util_etl_stock_quant)
+    QA_util_process_stock_financial,QA_util_etl_stock_quant)
 
 import pandas as pd
 import datetime
