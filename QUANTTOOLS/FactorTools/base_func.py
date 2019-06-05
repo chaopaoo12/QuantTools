@@ -117,6 +117,9 @@ def get_target(codes, start_date, end_date):
     data = data.data.join(res1).fillna(0).reset_index()
     res = data.groupby('code').apply(pct)[['date','code',
                                            'TARGET','TARGET3','TARGET5','AVG_TARGET']].set_index(['date','code'])
+    res = res.reset_index()
+    res['date'] = res['date'].apply(lambda x: str(x)[0:10])
+    res = res.set_index(['date','code'])
     return(res)
 
 @time_this_function
