@@ -145,8 +145,6 @@ def QA_etl_process_financial_day(type = "day", deal_date = str(datetime.date.tod
     if type == "day":
         print("Step One =================")
         QA_util_process_financial(deal_date=deal_date)
-        print("Step Two =================")
-        QA_util_process_quantdata(start_date=deal_date)
 
     elif type == "all":
         print("Run This JOB in DataBase")
