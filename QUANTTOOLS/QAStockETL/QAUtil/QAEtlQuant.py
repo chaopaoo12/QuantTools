@@ -305,28 +305,28 @@ def QA_util_etl_stock_quant(deal_date = None):
                when AVG5_A_MARKET = 0 or AVG5_A_MARKET is null then
                 0
                else
-                avgrage_qfq / AVG5_A_MARKET - 1
+                avg_total_market / AVG5_A_MARKET - 1
              end) * 100,
              2) as avg5,
        round((case
                when AVG20_A_MARKET = 0 or AVG20_A_MARKET is null then
                 0
                else
-                avgrage_qfq / AVG20_A_MARKET - 1
+                avg_total_market / AVG20_A_MARKET - 1
              end) * 100,
              2) as avg20,
        round((case
                when AVG30_A_MARKET = 0 or AVG30_A_MARKET is null then
                 0
                else
-                avgrage_qfq / AVG30_A_MARKET - 1
+                avg_total_market / AVG30_A_MARKET - 1
              end) * 100,
              2) as avg30,
        round((case
                when AVG60_A_MARKET = 0 or AVG60_A_MARKET is null then
                 0
                else
-                avgrage_qfq / AVG60_A_MARKET - 1
+                avg_total_market / AVG60_A_MARKET - 1
              end) * 100,
              2) as avg60
   from (select *
