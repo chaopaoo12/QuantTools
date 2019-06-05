@@ -447,7 +447,7 @@ def QA_util_etl_stock_quant(deal_date = None):
                      (rank() over(partition by code order by pb desc) / 60),
                      2) as pb_rank
           from stock_analysis_data
-         where order_date > to_date({b_date}, 'yyyy-mm-dd')) A  where "date" = {start_date})A
+         where order_date > to_date('{b_date}', 'yyyy-mm-dd')) A  where "date" = '{start_date}')A
   left join (select CODE,
                     COUNT(DISTINCT decode(blockname, '上证50', 1, 0)) as SZ50,
                     COUNT(DISTINCT decode(blockname, '沪深300', 1, 0)) as HS300,
