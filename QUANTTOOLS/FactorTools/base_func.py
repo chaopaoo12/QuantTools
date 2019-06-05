@@ -84,7 +84,10 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     return agg
 
 def perank(data):
-    data['PE_PCT']= data['PE'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x * 100), 2))
+    data['PE_5PCT']= data['PE'].rolling(window=5).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x * 100), 2))
+    data['PE_15PCT']= data['PE'].rolling(window=15).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x * 100), 2))
+    data['PE_30PCT']= data['PE'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x * 100), 2))
+    data['PE_60PCT']= data['PE'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x * 100), 2))
     return(data)
 
 def pct(data):
