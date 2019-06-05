@@ -357,7 +357,7 @@ def QA_util_etl_stock_quant(deal_date = None):
             conn.close()
         else:
             data = None
-        if data.shape[0] == 0 or data is None:
+        if data is None:
             print("No data For {start_date}".format(start_date=deal_date))
             return None
         else:
