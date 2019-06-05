@@ -88,6 +88,10 @@ def perank(data):
     data['PE_15PCT']= data['PE'].rolling(window=15).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)))
     data['PE_30PCT']= data['PE'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)))
     data['PE_60PCT']= data['PE'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)))
+    data['PB_5PCT']= data['PB'].rolling(window=5).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)))
+    data['PB_15PCT']= data['PB'].rolling(window=15).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)))
+    data['PB_30PCT']= data['PB'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)))
+    data['PB_60PCT']= data['PB'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)))
     return(data)
 
 def pct(data):
