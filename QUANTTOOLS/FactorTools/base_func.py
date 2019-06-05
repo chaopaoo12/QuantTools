@@ -165,8 +165,8 @@ def get_quant_data(start_date, end_date, block = False):
         technical[columnname]=technical[columnname].astype('int8')
     print("Step Four ===========>")
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
-    fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50']]].groupby('date').apply(get_trans).join(fianacial[['TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET','SZ50','HS300','CY300','SZ180','SZ380',
+    fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
+                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
                                                                                                                                                                       'SZ100','SZ300','ZZ100','ZZ200','CY50']])
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
@@ -180,7 +180,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                         'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
                                                         'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                                                         'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
-                                                        'TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET',
+                                                        'INDUSTRY','TOTAL_MARKET',
                                                         'SZ50','HS300','CY300','SZ180','SZ380',
                                                         'SZ100','SZ300','ZZ100','ZZ200','CY50']]
     print("Step Five ===========>")
@@ -193,7 +193,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                                                                             'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                                                             'SZ50','HS300','CY300','SZ180','SZ380',
                                                                                                             'SZ100','SZ300','ZZ100','ZZ200','CY50',
-                                                                                                            'TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET']])
+                                                                                                            'INDUSTRY','TOTAL_MARKET']])
     print("Step Six ===========>")
     target = get_target(codes, start_date, end_date)
     res = target.join(fianacial).join(technical).join(alpha)
