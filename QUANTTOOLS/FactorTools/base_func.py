@@ -101,7 +101,7 @@ def pct(data):
 
 def get_target(codes, start_date, end_date):
     data = QA_fetch_stock_day_adv(codes,start_date,end_date)
-    res1 = data.data.to_qfq().data
+    res1 = data.to_qfq().data
     res1.columns = [x + '_qfq' for x in res1.columns]
     data = data.data.join(res1).fillna(0).reset_index()
     res = data.groupby('code').apply(pct)[['date','code',
