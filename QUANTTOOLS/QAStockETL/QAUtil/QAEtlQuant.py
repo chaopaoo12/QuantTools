@@ -126,7 +126,7 @@ def QA_util_etl_stock_quant(deal_date = None):
        avg60,
        pe_rank,
        pb_rank
-  from (select code,
+  from ( select * from (select code,
                name,
                industry,
                to_char(order_date, 'yyyy-mm-dd') as "date",
@@ -447,8 +447,8 @@ def QA_util_etl_stock_quant(deal_date = None):
                      (rank() over(partition by code order by pb desc) / 60),
                      2) as pb_rank
           from stock_analysis_data
- where order_date > to_date('{b_date}', 'yyyy-mm-dd'))A
- left join (select CODE,
+         where order_date > to_date({b_date}, 'yyyy-mm-dd')) A  where "date" = {start_date})A
+  left join (select CODE,
                     COUNT(DISTINCT decode(blockname, '上证50', 1, 0)) as SZ50,
                     COUNT(DISTINCT decode(blockname, '沪深300', 1, 0)) as HS300,
                     COUNT(DISTINCT decode(blockname, '创业300', 1, 0)) as CY300,
@@ -461,8 +461,7 @@ def QA_util_etl_stock_quant(deal_date = None):
                     COUNT(DISTINCT decode(blockname, '创业板50', 1, 0)) as CY50
                from stock_block
               GROUP BY CODE) b
-    on a.code = b.code
-    where "date" = {start_date}'''
+    on a.code = b.code'''
     if deal_date is None:
         print('Must Have A DATE ')
     else:
