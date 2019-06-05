@@ -10,7 +10,7 @@ import math
 import numpy as np
 
 import time
-from functools import wraps
+
 def time_this_function(func):
     #作为装饰器使用，返回函数执行需要花费的时间
     def inner(*args,**kwargs):
@@ -83,6 +83,10 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
         agg.dropna(how='all',inplace=True)
     return agg
 
+def perank(data):
+    data['PE_PCT']= data['PE'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x * 100), 2))
+    return(data)
+
 def pct(data):
     data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
     data['PRE_MARKET']= data['close_qfq'].shift(-1).apply(lambda x:round(x * 100,2))
@@ -132,6 +136,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                                                                      'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                                                                                                      'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                                                      'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY']].groupby('code').fillna(method='ffill')
+    fianacial = fianacial.groupby('code').apply(perank)
     print("Step Two ===========>")
     alpha = QA_fetch_stock_alpha_adv(codes,start,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                                                         'alpha_009', 'alpha_010', 'alpha_011', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
