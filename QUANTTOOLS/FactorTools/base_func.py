@@ -1,6 +1,7 @@
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv)
-from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
+from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch_stock_block_adv,
+                                               QA_fetch_stock_day_adv)
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 import QUANTAXIS as QA
 import math
@@ -79,6 +80,31 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     if dropnan:
         agg.dropna(how='all',inplace=True)
     return agg
+
+def pct(data):
+    data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
+    data['PRE_MARKET']= data['close_qfq'].shift(-1).apply(lambda x:round(x * 100,2))
+    data['PRE2_MARKET']= data['close_qfq'].shift(-2).apply(lambda x:round(x * 100,2))
+    data['PRE3_MARKET']= data['close_qfq'].shift(-3).apply(lambda x:round(x * 100,2))
+    data['PRE5_MARKET']= data['close_qfq'].shift(-5).apply(lambda x:round(x * 100,2))
+    data['AVG_PRE_MARKET']= data['AVG_TOTAL_MARKET'].shift(-1).apply(lambda x:round(x * 100,2))
+    data['AVG_PRE2_MARKET']= data['AVG_TOTAL_MARKET'].shift(-2).apply(lambda x:round(x * 100,2))
+    data['AVG_PRE3_MARKET']= data['AVG_TOTAL_MARKET'].shift(-3).apply(lambda x:round(x * 100,2))
+    data['AVG_PRE5_MARKET']= data['AVG_TOTAL_MARKET'].shift(-5).apply(lambda x:round(x * 100,2))
+    data['TARGET'] = (data['PRE2_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    data['TARGET3'] = (data['PRE3_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    data['TARGET5'] = (data['PRE5_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    data['AVG_TARGET'] = data['AVG_TOTAL_MARKET'].pct_change(-1).apply(lambda x:round(x * 100,2))
+    return(data)
+
+def get_target(codes, start_date, end_date):
+    data = QA_fetch_stock_day_adv(codes,start_date,end_date)
+    res1 = data.data.to_qfq().data
+    res1.columns = [x + '_qfq' for x in res1.columns]
+    data = data.data.join(res1).fillna(0).reset_index()
+    res = data.groupby('code').apply(pct)[['date','code',
+                                           'TARGET','TARGET3','TARGET5','AVG_TARGET']].set_index(['date','code'])
+    return(res)
 
 @time_this_function
 def get_quant_data(start_date, end_date, block = False):
@@ -166,5 +192,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                                                                             'SZ100','SZ300','ZZ100','ZZ200','CY50',
                                                                                                             'TARGET', 'TARGET3', 'TARGET5','INDUSTRY','TOTAL_MARKET','AVG_TARGET']])
     print("Step Six ===========>")
-    res = fianacial.join(technical).join(alpha)
+    target = get_target(codes, start_date, end_date)
+    res = target.join(fianacial).join(technical).join(alpha)
+
     return(res)
