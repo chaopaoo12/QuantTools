@@ -102,8 +102,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                                                                      'RNG_20', 'RNG_30', 'RNG_5', 'RNG_60', 'RNG_L',
                                                                                                      'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                                                                                                      'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
-                                                                                                     'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
-                                                                                                     'TARGET', 'TARGET3', 'TARGET5','AVG_TARGET']].groupby('code').fillna(method='ffill')
+                                                                                                     'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY']].groupby('code').fillna(method='ffill')
     print("Step Two ===========>")
     alpha = QA_fetch_stock_alpha_adv(codes,start_date,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                                                         'alpha_009', 'alpha_010', 'alpha_011', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
