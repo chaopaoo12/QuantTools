@@ -440,9 +440,11 @@ def QA_util_etl_stock_quant(deal_date = None):
                         avg_total_market / AVG60_A_MARKET - 1
                      end) * 100,
                      2) as avg60,
-               round((rank() over(partition by code order by pe desc)) / 60 - 1,
+               round(1 -
+                     (rank() over(partition by code order by pe desc)) / 60,
                      2) as pe_rank,
-               round((rank() over(partition by code order by pb desc)) / 60 - 1,
+               round(1 -
+                     (rank() over(partition by code order by pb desc)) / 60,
                      2) as pb_rank
           from stock_analysis_data
  where order_date >= to_date('{b_date}', 'yyyy-mm-dd'))A
