@@ -84,10 +84,10 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     return agg
 
 def perank(data):
-    data['PE_5PCT']= data['PE'].rolling(window=5).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x * 100), 2))
-    data['PE_15PCT']= data['PE'].rolling(window=15).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x * 100), 2))
-    data['PE_30PCT']= data['PE'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x * 100), 2))
-    data['PE_60PCT']= data['PE'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x * 100), 2))
+    data['PE_5PCT']= data['PE'].rolling(window=5).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)))
+    data['PE_15PCT']= data['PE'].rolling(window=15).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)))
+    data['PE_30PCT']= data['PE'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)))
+    data['PE_60PCT']= data['PE'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)))
     return(data)
 
 def pct(data):
@@ -174,8 +174,8 @@ def get_quant_data(start_date, end_date, block = False):
     print("Step Four ===========>")
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
     fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                                                                                                                      'SZ100','SZ300','ZZ100','ZZ200','CY50']])
+                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50','PE_5PCT','PE_15PCT','PE_30PCT','PE_60PCT']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
+                                                                                                                                                                      'SZ100','SZ300','ZZ100','ZZ200','CY50','PE_5PCT','PE_15PCT','PE_30PCT','PE_60PCT']])
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
             fianacial[columnname]=fianacial[columnname].astype('float16')
@@ -190,7 +190,8 @@ def get_quant_data(start_date, end_date, block = False):
                                                         'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                         'INDUSTRY','TOTAL_MARKET',
                                                         'SZ50','HS300','CY300','SZ180','SZ380',
-                                                        'SZ100','SZ300','ZZ100','ZZ200','CY50']]
+                                                        'SZ100','SZ300','ZZ100','ZZ200','CY50',
+                                                        'PE_5PCT','PE_15PCT','PE_30PCT','PE_60PCT']]
     print("Step Five ===========>")
     fianacial = fianacial[cols].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).join(fianacial[['GROSSMARGIN', 'GROSSMARGIN_L2Y', 'GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
                                                                                                             'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
@@ -201,7 +202,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                                                                             'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                                                             'SZ50','HS300','CY300','SZ180','SZ380',
                                                                                                             'SZ100','SZ300','ZZ100','ZZ200','CY50',
-                                                                                                            'INDUSTRY','TOTAL_MARKET']])
+                                                                                                            'INDUSTRY','TOTAL_MARKET','PE_5PCT','PE_15PCT','PE_30PCT','PE_60PCT']])
     print("Step Six ===========>")
     target = get_target(codes, start_date, end_date)
     res = target.join(fianacial).join(technical).join(alpha)
