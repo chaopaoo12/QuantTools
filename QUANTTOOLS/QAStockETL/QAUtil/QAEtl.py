@@ -12,7 +12,7 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
     if QA_util_if_trade(deal_date) == True:
         sql3="""insert /*+ append parallel(b, 16) nologging */
 into stock_analysis_data
-  select /*+ parallel(b, 16) nologging */
+   select /*+ parallel(b, 16) nologging */
    g.*,
    decode(i_netProAftExtrGainLoss_TTM,
           0,
@@ -36,7 +36,6 @@ into stock_analysis_data
           0,
           0,
           i_netProAftExtrGainLoss_TTM / (i_avgTotalAssets - i_avgGoodwill)) as i_ROA_total,
-   
    avg(PE) over(partition by order_date, industry) as i_PE,
    avg(PB) over(partition by order_date, industry) as i_PB,
    avg(grossMargin) over(partition by order_date, industry) as i_grossMargin,
@@ -66,41 +65,15 @@ into stock_analysis_data
           0,
           all_netProAftExtrGainLoss_TTM /
           (all_avgTotalAssets - all_avgGoodwill)) as all_ROA_total,
-   
    avg(PE) over(partition by order_date) as all_PE,
    avg(PB) over(partition by order_date) as all_PB,
    avg(grossMargin) over(partition by order_date) as all_grossMargin,
    avg(ROE) over(partition by order_date) as all_ROE,
    avg(ROA) over(partition by order_date) as all_ROA,
-   AVG(all_total_market) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_AT_MARKET,
-   
-   AVG(all_total_market) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_AT_MARKET,
-   
-   AVG(all_total_market) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_AT_MARKET,
-   
-   AVG(all_total_market) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_AT_MARKET,
    AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_AMOUNT,
-   
-   AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG5_AMOUNT,
-   
-   AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG5_AMOUNT,
-   
-   AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG5_AMOUNT,
-   LAG(all_TOTAL_MARKET) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG_ALL_MARKET,
-   LAG(all_TOTAL_MARKET, 2) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG2_ALL_MARKET,
-   LAG(all_TOTAL_MARKET, 3) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG3_ALL_MARKET,
-   LAG(all_TOTAL_MARKET, 5) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG5_ALL_MARKET,
-   LAG(all_TOTAL_MARKET, 20) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG20_ALL_MARKET,
-   LAG(all_TOTAL_MARKET, 30) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG30_ALL_MARKET,
-   LAG(all_TOTAL_MARKET, 60) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG60_ALL_MARKET,
-   null as PRE_MARKET,
-   null as PRE2_MARKET,
-   null as PRE3_MARKET,
-   null as PRE5_MARKET,
-   null as AVG_PRE_MARKET,
-   null as AVG2_PRE_MARKET,
-   null as AVG3_PRE_MARKET,
-   null as AVG5_PRE_MARKET
+   AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_AMOUNT,
+   AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_AMOUNT,
+   AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_AMOUNT
     from (select h.*,
                  sum(total_market) over(partition by order_date, industry) as i_total_market,
                  sum(netProAftExtrGainLoss_TTM) over(partition by order_date, industry) as i_netProAftExtrGainLoss_TTM,
@@ -116,102 +89,10 @@ into stock_analysis_data
                  sum(avgTotalLiabilities) over(partition by order_date) as all_avgTotalLiabilities,
                  sum(operatingRevenue_TTM) over(partition by order_date) as all_operatingRevenue_TTM,
                  sum(operatingCosts_TTM) over(partition by order_date) as all_operatingCosts_TTM,
-                 LAG(close_qfq) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG_MARKET,
-                 LAG(close_qfq, 2) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG2_MARKET,
-                 LAG(close_qfq, 3) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG3_MARKET,
-                 LAG(close_qfq, 5) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG5_MARKET,
-                 LAG(close_qfq, 20) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG20_MARKET,
-                 LAG(close_qfq, 30) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG30_MARKET,
-                 LAG(close_qfq, 60) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS LAG60_MARKET,
-                 LAG(avgrage_qfq) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG_MARKET,
-                 LAG(avgrage_qfq, 2) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG2_MARKET,
-                 LAG(avgrage_qfq, 3) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG3_MARKET,
-                 LAG(avgrage_qfq, 5) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG5_MARKET,
-                 LAG(avgrage_qfq, 20) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG20_MARKET,
-                 LAG(avgrage_qfq, 30) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG30_MARKET,
-                 LAG(avgrage_qfq, 60) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) AS AVG_LAG60_MARKET,
-                 
-                 AVG(close_qfq) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_T_MARKET,
-                 
-                 AVG(close_qfq) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_T_MARKET,
-                 
-                 AVG(close_qfq) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_T_MARKET,
-                 
-                 AVG(close_qfq) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_T_MARKET,
-                 
-                 AVG(avgrage_qfq) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_A_MARKET,
-                 
-                 AVG(avgrage_qfq) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_A_MARKET,
-                 
-                 AVG(avgrage_qfq) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_A_MARKET,
-                 
-                 AVG(avgrage_qfq) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_A_MARKET,
-                 
                  AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_TOR,
-                 
                  AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_TOR,
-                 
                  AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_TOR,
-                 
                  AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_TOR,
-                 decode(LAG(close_qfq, 60)
-                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC),
-                        0,
-                        0,
-                        (MAX(high_qfq)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC
-                              RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) -
-                         MIN(low_qfq)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC
-                              RANGE BETWEEN 59 PRECEDING AND CURRENT ROW)) /
-                        LAG(close_qfq, 60)
-                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC)) AS RNG_60,
-                 decode(LAG(close_qfq, 30)
-                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC),
-                        0,
-                        0,
-                        (MAX(high_qfq)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC
-                              RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) -
-                         MIN(low_qfq)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC
-                              RANGE BETWEEN 29 PRECEDING AND CURRENT ROW)) /
-                        LAG(close_qfq, 30)
-                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC)) AS RNG_30,
-                 decode(LAG(close_qfq, 20)
-                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC),
-                        0,
-                        0,
-                        (MAX(high_qfq)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC
-                              RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) -
-                         MIN(low_qfq)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC
-                              RANGE BETWEEN 19 PRECEDING AND CURRENT ROW)) /
-                        LAG(close_qfq, 20)
-                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC)) AS RNG_20,
-                 decode(LAG(close_qfq, 5)
-                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC),
-                        0,
-                        0,
-                        (MAX(high_qfq)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC
-                              RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) -
-                         MIN(low_qfq)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC
-                              RANGE BETWEEN 4 PRECEDING AND CURRENT ROW)) /
-                        LAG(close_qfq, 5)
-                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC)) AS RNG_5,
-                 decode(LAG(close_qfq, 2)
-                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC),
-                        0,
-                        0,
-                        (LAG(high_qfq)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) -
-                         LAG(low_qfq)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC)) /
-                        LAG(close_qfq, 2)
-                        OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC)) AS RNG_L,
                  sum(amount) over(partition by order_Date) as all_amount
             from (select a.code,
                          a.order_date,
@@ -228,33 +109,56 @@ into stock_analysis_data
                          industry,
                          name,
                          area,
-                         a.open,
-                         a.high,
-                         a.low,
-                         a.close,
-                         a.volume as vol,
-                         a.amount,
-                         a.amount / a.volume / 100 as avgrage,
-                         a.open_qfq,
-                         a.high_qfq,
-                         a.low_qfq,
-                         a.close_qfq,
-                         a.volume_qfq as vol_qfq,
-                         a.amount_qfq,
-                         a.amount_qfq / a.volume_qfq / 100 as avgrage_qfq,
+                         a.OPEN,
+                         a.HIGH,
+                         a.LOW,
+                         a.CLOSE,
+                         a.VOLUME,
+                         a.AMOUNT,
+                         a.OPEN_QFQ,
+                         a.HIGH_QFQ,
+                         a.LOW_QFQ,
+                         a.CLOSE_QFQ,
+                         a.VOLUME_QFQ,
+                         a.AMOUNT_QFQ,
+                         a.avg_total_market,
+                         a.lag_market,
+                         a.lag2_market,
+                         a.lag3_market,
+                         a.lag5_market,
+                         a.lag20_market,
+                         a.lag30_market,
+                         a.lag60_market,
+                         a.avg_lag_market,
+                         a.avg_lag2_market,
+                         a.avg_lag3_market,
+                         a.avg_lag5_market,
+                         a.avg_lag20_market,
+                         a.avg_lag30_market,
+                         a.avg_lag60_market,
+                         a.avg5_t_market,
+                         a.avg20_t_market,
+                         a.avg30_t_market,
+                         a.avg60_t_market,
+                         a.avg5_a_market,
+                         a.avg20_a_market,
+                         a.avg30_a_market,
+                         a.avg60_a_market,
+                         a.rng_l,
+                         a.rng_5,
+                         a.rng_20,
+                         a.rng_30,
+                         a.rng_60,
                          b.shares_after * 10000 as shares,
-                         b.tra_ashares_after * 10000 as tra_shares,
                          DECODE(b.shares_after * 10000,
                                 0,
                                 0,
                                 a.volume / b.shares_after / 100) as turnoverRatio,
                          round(a.close * b.shares_after * 10000, 2) AS total_market,
-                         round(a.close * b.tra_ashares_after * 10000, 2) AS tra_total_market,
                          round(a.open * b.shares_after * 10000, 2) AS open_market,
                          round(a.high * b.shares_after * 10000, 2) AS high_market,
                          round(a.low * b.shares_after * 10000, 2) AS low_market,
-                         round((a.amount / a.volume) * b.shares_after * 10000,
-                               2) AS avg_total_market,
+                         round(a.close * b.tra_ashares_after * 10000, 2) AS tra_total_market,
                          case
                            when (netProfit_TTM <= 0 or
                                 netProAftExtrGainLoss_TTM <= 0) then
