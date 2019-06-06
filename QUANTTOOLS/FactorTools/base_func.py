@@ -107,7 +107,7 @@ def pct(data):
     data['TARGET'] = (data['PRE2_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     data['TARGET3'] = (data['PRE3_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     data['TARGET5'] = (data['PRE5_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
-    data['AVG_TARGET'] = data['AVG_TOTAL_MARKET'].pct_change(-1).apply(lambda x:round(x * 100,2))
+    data['AVG_TARGET'] = data['AVG_TOTAL_MARKET'].pct_change(1).shift(-1).apply(lambda x:round(x * 100,2))
     return(data)
 
 def get_target(codes, start_date, end_date):
