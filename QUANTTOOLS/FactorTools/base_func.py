@@ -181,8 +181,8 @@ def get_quant_data(start_date, end_date, block = False):
     print("Step Four ===========>")
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
     fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50','PE_5PCT','PE_15PCT','PE_30PCT','PE_60PCT']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                                                                                                                      'SZ100','SZ300','ZZ100','ZZ200','CY50','PE_5PCT','PE_15PCT','PE_30PCT','PE_60PCT']])
+                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
+                                                                                                                                                                      'SZ100','SZ300','ZZ100','ZZ200','CY50']])
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
             fianacial[columnname]=fianacial[columnname].astype('float16')
@@ -198,7 +198,8 @@ def get_quant_data(start_date, end_date, block = False):
                                                         'INDUSTRY','TOTAL_MARKET',
                                                         'SZ50','HS300','CY300','SZ180','SZ380',
                                                         'SZ100','SZ300','ZZ100','ZZ200','CY50',
-                                                        'PE_5PCT','PE_15PCT','PE_30PCT','PE_60PCT']]
+                                                        'PE_5PCT','PE_15PCT','PE_30PCT','PE_60PCT',
+                                                        'PB_5PCT','PB_15PCT','PB_30PCT','PB_60PCT']]
     print("Step Five ===========>")
     fianacial = fianacial[cols].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).join(fianacial[['GROSSMARGIN', 'GROSSMARGIN_L2Y', 'GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
                                                                                                             'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
@@ -209,7 +210,8 @@ def get_quant_data(start_date, end_date, block = False):
                                                                                                             'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                                                             'SZ50','HS300','CY300','SZ180','SZ380',
                                                                                                             'SZ100','SZ300','ZZ100','ZZ200','CY50',
-                                                                                                            'INDUSTRY','TOTAL_MARKET','PE_5PCT','PE_15PCT','PE_30PCT','PE_60PCT']])
+                                                                                                            'INDUSTRY','TOTAL_MARKET',
+                                                                                                            'PE_5PCT','PE_15PCT','PE_30PCT','PE_60PCT','PB_5PCT','PB_15PCT','PB_30PCT','PB_60PCT']])
     print("Step Six ===========>")
     target = get_target(codes, start_date, end_date)
     res = target.join(fianacial).join(technical).join(alpha)
