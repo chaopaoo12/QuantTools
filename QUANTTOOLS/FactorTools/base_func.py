@@ -124,7 +124,7 @@ def get_target(codes, start_date, end_date):
 
 @time_this_function
 def get_quant_data(start_date, end_date, block = False):
-    start = QA_util_get_pre_trade_date(start_date,30)
+    start = QA_util_get_pre_trade_date(start_date,61)
     if block is True:
         data = QA.QA_fetch_stock_block()
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200','创业板50'])]['code'].drop_duplicates())
