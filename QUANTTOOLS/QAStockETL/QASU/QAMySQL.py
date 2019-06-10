@@ -17,6 +17,15 @@ from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_process_financial,QA_util_etl_
 import pandas as pd
 import datetime
 
+from scipy import stats
+def rolling_ols(y):
+    '''
+    滚动回归，返回滚动回归后的回归系数
+    rb: 因变量序列
+    '''
+    model = stats.linregress(y, pd.Series(range(1,len(y)+1)))
+    return(round(model.slope,2))
+
 def pct(data):
     data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
     data['LAG_MARKET']= data['close_qfq'].shift(1).apply(lambda x:round(x ,2))
@@ -51,11 +60,11 @@ def pct(data):
     data['RNG_20']= ((data['high_qfq'].rolling(window=20).max()-data['low_qfq'].rolling(window=20).min())/data['low_qfq'].rolling(window=5).min()).apply(lambda x:round(x * 100 ,2))
     data['RNG_30']= ((data['high_qfq'].rolling(window=30).max()-data['low_qfq'].rolling(window=30).min())/data['low_qfq'].rolling(window=5).min()).apply(lambda x:round(x * 100 ,2))
     data['RNG_60']= ((data['high_qfq'].rolling(window=60).max()-data['low_qfq'].rolling(window=60).min())/data['low_qfq'].rolling(window=5).min()).apply(lambda x:round(x * 100 ,2))
-    data['AVG5_C_MARKET']= data['AVG5_T_MARKET'].pct_change(periods=1).apply(lambda x:round(x * 100 ,2))
-    data['AVG10_C_MARKET']= data['AVG10_T_MARKET'].pct_change(periods=1).apply(lambda x:round(x * 100 ,2))
-    data['AVG20_C_MARKET']= data['AVG20_T_MARKET'].pct_change(periods=1).apply(lambda x:round(x * 100 ,2))
-    data['AVG30_C_MARKET']= data['AVG30_T_MARKET'].pct_change(periods=1).apply(lambda x:round(x * 100 ,2))
-    data['AVG60_C_MARKET']= data['AVG60_T_MARKET'].pct_change(periods=1).apply(lambda x:round(x * 100 ,2))
+    data['AVG5_C_MARKET']= data['AVG5_T_MARKET'].rolling(window=5).apply(rolling_ols)
+    data['AVG10_C_MARKET']= data['AVG10_T_MARKET'].rolling(window=10).apply(rolling_ols)
+    data['AVG20_C_MARKET']= data['AVG20_T_MARKET'].rolling(window=20).apply(rolling_ols)
+    data['AVG30_C_MARKET']= data['AVG30_T_MARKET'].rolling(window=30).apply(rolling_ols)
+    data['AVG60_C_MARKET']= data['AVG60_T_MARKET'].rolling(window=60).apply(rolling_ols)
     return(data.dropna(how='any'))
 
 def QA_ETL_stock_day(codes, start=None,end=None):
