@@ -770,7 +770,7 @@ into stock_analysis_data
                          cashOfinterest_lq,
                          assetsLiabilitiesRatio_lq,
                          tangibleAssetDebtRatio_lq,
-                         cashRatio_lq,
+                         cashRatio_lq
                         from (select *  
                                 from stock_market_day
                                WHERE order_date >=
