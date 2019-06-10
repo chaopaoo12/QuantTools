@@ -73,7 +73,7 @@ def QA_fetch_get_indicator(code, start_date, end_date):
         except:
             KDJ = pd.DataFrame()
         try:
-            WR = data.add_func(QA.QA_indicator_WR,1,2)
+            WR = data.add_func(QA.QA_indicator_WR,10,6)
         except:
             WR = pd.DataFrame()
         try:
