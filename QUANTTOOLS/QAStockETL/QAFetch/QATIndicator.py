@@ -74,8 +74,8 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             KDJ = pd.DataFrame()
         try:
             WR = data.add_func(QA.QA_indicator_WR,10,6)
-            WR['CCI_CROSS1'] = QA.CROSS(WR['WR1'], WR['WR2'])
-            WR['CCI_CROSS2'] = QA.CROSS(WR['WR2'], WR['WR1'])
+            WR['WR_CROSS1'] = QA.CROSS(WR['WR1'], WR['WR2'])
+            WR['WR_CROSS2'] = QA.CROSS(WR['WR2'], WR['WR1'])
         except:
             WR = pd.DataFrame()
         try:
@@ -476,8 +476,8 @@ def QA_fetch_get_indicator(code, start_date, end_date):
         res = res.ix[:, ['date','code','VRSI','BOLL','UB','LB','WIDTH','BOLL_CROSS1','BOLL_CROSS2',
                        'BOLL_CROSS3','BOLL_CROSS4','WR','MR','SR','WS','MS','SS','ASI','ASIT',
                        'VPT','MAVPT','VPT_CROSS1','VPT_CROSS2','VPT_CROSS3','VPT_CROSS4','KDJ_K',
-                       'KDJ_D','KDJ_J','KDJ_CROSS1','KDJ_CROSS2','WR1','WR2','ROC','ROCMA','RSI1',
-                       'RSI2','RSI3','RSI1_C','RSI2_C','RSI3_C','BIAS1','BIAS2','BIAS3','OSC','MAOSC',
+                       'KDJ_D','KDJ_J','KDJ_CROSS1','KDJ_CROSS2','WR1','WR2','WR_CROSS1','WR_CROSS1','ROC','ROCMA','RSI1',
+                       'RSI2','RSI3','RSI1_C','RSI2_C','RSI3_C','BIAS1','BIAS2','BIAS3','BIAS_CROSS1','BIAS_CROSS2','OSC','MAOSC',
                        'OSC_CROSS1','OSC_CROSS2','OSC_CROSS3','OSC_CROSS4','ADTM','MAADTM','DI1','DI2',
                        'ADX','ADXR','ADX_C','DI_M','DI_CROSS1','DI_CROSS2','ADX_CROSS1','ADX_CROSS2',
                        'DDD','AMA','DMA_CROSS1','DMA_CROSS2','PBX1','PBX2','PBX3','PBX4','PBX5','PBX6',
@@ -495,6 +495,7 @@ def QA_fetch_get_indicator(code, start_date, end_date):
                        'CDLMATHOLD','CDLMORNINGDOJISTAR','CDLMORNINGSTAR','CDLONNECK','CDLPIERCING','CDLRICKSHAWMAN',
                        'CDLRISEFALL3METHODS','CDLSEPARATINGLINES','CDLSHOOTINGSTAR','CDLSHORTLINE','CDLSPINNINGTOP',
                        'CDLSTALLEDPATTERN','CDLSTICKSANDWICH','CDLTAKURI','CDLTASUKIGAP','CDLTHRUSTING','CDLTRISTAR',
-                       'CDLUNIQUE3RIVER','CDLUPSIDEGAP2CROWS','CDLXSIDEGAP3METHODS','date_stamp']]
+                       'CDLUNIQUE3RIVER','CDLUPSIDEGAP2CROWS','CDLXSIDEGAP3METHODS','RSI_CROSS1','RSI_CROSS2',
+                        'VRSI_C']]
         data = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
