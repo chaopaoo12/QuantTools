@@ -473,10 +473,10 @@ def QA_fetch_get_indicator(code, start_date, end_date):
                         CDLSPINNINGTOP,CDLSTALLEDPATTERN,CDLSTICKSANDWICH,CDLTAKURI,CDLTASUKIGAP,
                         CDLTHRUSTING,CDLTRISTAR,CDLUNIQUE3RIVER,CDLUPSIDEGAP2CROWS,CDLXSIDEGAP3METHODS],
                        axis=1).dropna(how='all').reset_index()
-        res = res.ix[:, ['date','code','VRSI','BOLL','UB','LB','WIDTH','BOLL_CROSS1','BOLL_CROSS2',
+        res = res.ix[:, ['date','code','VRSI','VRSI_C','BOLL','UB','LB','WIDTH','BOLL_CROSS1','BOLL_CROSS2',
                        'BOLL_CROSS3','BOLL_CROSS4','WR','MR','SR','WS','MS','SS','ASI','ASIT',
                        'VPT','MAVPT','VPT_CROSS1','VPT_CROSS2','VPT_CROSS3','VPT_CROSS4','KDJ_K',
-                       'KDJ_D','KDJ_J','KDJ_CROSS1','KDJ_CROSS2','WR1','WR2','WR_CROSS1','WR_CROSS1','ROC','ROCMA','RSI1',
+                       'KDJ_D','KDJ_J','KDJ_CROSS1','KDJ_CROSS2','WR1','WR2','WR_CROSS1','WR_CROSS2','ROC','ROCMA','RSI1',
                        'RSI2','RSI3','RSI_CROSS1','RSI_CROSS2','RSI1_C','RSI2_C','RSI3_C','BIAS1','BIAS2','BIAS3','BIAS_CROSS1','BIAS_CROSS2',
                         'OSC','MAOSC','OSC_CROSS1','OSC_CROSS2','OSC_CROSS3','OSC_CROSS4','ADTM','MAADTM','DI1','DI2',
                        'ADX','ADXR','ADX_C','DI_M','DI_CROSS1','DI_CROSS2','ADX_CROSS1','ADX_CROSS2',
@@ -495,6 +495,6 @@ def QA_fetch_get_indicator(code, start_date, end_date):
                        'CDLMATHOLD','CDLMORNINGDOJISTAR','CDLMORNINGSTAR','CDLONNECK','CDLPIERCING','CDLRICKSHAWMAN',
                        'CDLRISEFALL3METHODS','CDLSEPARATINGLINES','CDLSHOOTINGSTAR','CDLSHORTLINE','CDLSPINNINGTOP',
                        'CDLSTALLEDPATTERN','CDLSTICKSANDWICH','CDLTAKURI','CDLTASUKIGAP','CDLTHRUSTING','CDLTRISTAR',
-                       'CDLUNIQUE3RIVER','CDLUPSIDEGAP2CROWS','CDLXSIDEGAP3METHODS','VRSI_C']]
+                       'CDLUNIQUE3RIVER','CDLUPSIDEGAP2CROWS','CDLXSIDEGAP3METHODS']]
         data = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
