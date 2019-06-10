@@ -11,11 +11,11 @@ def QA_fetch_get_indicator(code, start_date, end_date):
         data = data.to_qfq()
         try:
             VR = data.add_func(QA.QA_indicator_VR)['VR']
-            VR['VRSI_C'] = VR['VRSI']/QA.REF(VR['VRSI'], 1)-1
         except:
             VR = pd.DataFrame()
         try:
             VRSI = data.add_func(QA.QA_indicator_VRSI)
+            VRSI['VRSI_C'] = VRSI['VRSI']/QA.REF(VRSI['VRSI'], 1)-1
         except:
             VRSI = pd.DataFrame()
         try:
