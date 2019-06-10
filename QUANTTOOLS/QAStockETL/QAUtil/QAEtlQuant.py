@@ -328,7 +328,17 @@ def QA_util_etl_stock_quant(deal_date = None):
                else
                 AVG_TOTAL_MARKET / AVG60_A_MARKET - 1
              end) * 100,
-             2) as avg60
+             2) as avg60,
+             AVG5_CR,
+               AVG10_CR,
+               AVG20_CR,
+               AVG30_CR,
+               AVG60_CR,
+               AVG5_TR,
+               AVG10_TR,
+               AVG20_TR,
+               AVG30_TR,
+               AVG60_TR
   from (select *
           from stock_analysis_data
  where order_date = to_date('{start_date}', 'yyyy-mm-dd'))A
