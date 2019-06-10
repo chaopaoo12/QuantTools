@@ -95,9 +95,10 @@ into stock_analysis_data
                  AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_TOR,
                  case
                    when LAG(avg5_c_market)
-                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 or
-                        (avg5_c_market / LAG(avg5_c_market)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC)) >= 0 then
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 then
+                    0
+                   when avg5_c_market / LAG(avg5_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) >= 0 then
                     0
                    when avg5_c_market < 0 then
                     -1
@@ -108,9 +109,10 @@ into stock_analysis_data
                  end AS AVG5_CR,
                  case
                    when LAG(avg10_c_market)
-                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 or
-                        (avg10_c_market / LAG(avg10_c_market)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC)) >= 0 then
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 then
+                    0
+                   when avg10_c_market / LAG(avg10_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) >= 0 then
                     0
                    when avg10_c_market < 0 then
                     -1
@@ -121,9 +123,10 @@ into stock_analysis_data
                  end AS AVG10_CR,
                  case
                    when LAG(avg20_c_market)
-                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 or
-                        (avg20_c_market / LAG(avg20_c_market)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC)) >= 0 then
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 then
+                    0
+                   when avg20_c_market / LAG(avg20_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) >= 0 then
                     0
                    when avg20_c_market < 0 then
                     -1
@@ -134,9 +137,10 @@ into stock_analysis_data
                  end AS AVG20_CR,
                  case
                    when LAG(avg30_c_market)
-                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 or
-                        (avg30_c_market / LAG(avg30_c_market)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC)) >= 0 then
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 then
+                    0
+                   when avg30_c_market / LAG(avg30_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) >= 0 then
                     0
                    when avg30_c_market < 0 then
                     -1
@@ -147,9 +151,10 @@ into stock_analysis_data
                  end AS AVG30_CR,
                  case
                    when LAG(avg60_c_market)
-                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 OR
-                        (avg60_c_market / LAG(avg60_c_market)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC)) >= 0 then
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 then
+                    0
+                   when avg60_c_market / LAG(avg60_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) >= 0 then
                     0
                    when avg60_c_market < 0 then
                     -1
@@ -161,9 +166,10 @@ into stock_analysis_data
                  
                  case
                    when LAG(avg5_c_market)
-                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 or
-                        (avg5_c_market / LAG(avg5_c_market)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC)) <= 0 then
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 then
+                    0
+                   when avg5_c_market / LAG(avg5_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) <= 0 then
                     0
                    when avg5_c_market < 0 then
                     -1
@@ -174,9 +180,10 @@ into stock_analysis_data
                  end AS AVG5_TR,
                  case
                    when LAG(avg10_c_market)
-                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 or
-                        (avg10_c_market / LAG(avg10_c_market)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC)) <= 0 then
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 then
+                    0
+                   when avg10_c_market / LAG(avg10_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) <= 0 then
                     0
                    when avg10_c_market < 0 then
                     -1
@@ -187,9 +194,10 @@ into stock_analysis_data
                  end AS AVG10_TR,
                  case
                    when LAG(avg20_c_market)
-                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 or
-                        (avg20_c_market / LAG(avg20_c_market)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC)) <= 0 then
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 then
+                    0
+                   when avg20_c_market / LAG(avg20_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) <= 0 then
                     0
                    when avg20_c_market < 0 then
                     -1
@@ -200,9 +208,10 @@ into stock_analysis_data
                  end AS AVG20_TR,
                  case
                    when LAG(avg30_c_market)
-                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 or
-                        (avg30_c_market / LAG(avg30_c_market)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC)) <= 0 then
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 then
+                    0
+                   when avg30_c_market / LAG(avg30_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) <= 0 then
                     0
                    when avg30_c_market < 0 then
                     -1
@@ -213,9 +222,10 @@ into stock_analysis_data
                  end AS AVG30_TR,
                  case
                    when LAG(avg60_c_market)
-                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 OR
-                        (avg60_c_market / LAG(avg60_c_market)
-                         OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC)) <= 0 then
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) = 0 then
+                    0
+                   when avg60_c_market / LAG(avg60_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) <= 0 then
                     0
                    when avg60_c_market < 0 then
                     -1
@@ -224,7 +234,6 @@ into stock_analysis_data
                    else
                     0
                  end AS AVG60_TR,
-                 
                  sum(amount) over(partition by order_Date) as all_amount
             from (select a.code,
                          a.order_date,
@@ -762,7 +771,6 @@ into stock_analysis_data
                          assetsLiabilitiesRatio_lq,
                          tangibleAssetDebtRatio_lq,
                          cashRatio_lq,
-                         null as QA
                         from (select *  
                                 from stock_market_day
                                WHERE order_date >=
@@ -786,7 +794,6 @@ into stock_analysis_data
                                                          'yyyy/mm/dd') + 1) AS end_date,
                                              total_shares as shares_after,
                                              LAG(total_shares) OVER(PARTITION BY CODE ORDER BY begin_date ASC) AS shares_before,
-                                             
                                              tra_ashares as tra_ashares_after,
                                              LAG(tra_ashares) OVER(PARTITION BY CODE ORDER BY begin_date ASC) AS tra_ashares_before
                                         from (select code,
