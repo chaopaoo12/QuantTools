@@ -20,7 +20,7 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             VRSI = pd.DataFrame()
         try:
             VSTD = data.add_func(QA.QA_indicator_VSTD)
-            VSTD['VSTD'] = data.data['vol']/VSTD['VSTD']-1
+            VSTD['VSTD'] = data.data['volume']/VSTD['VSTD']-1
             ## todo VOL比较
         except:
             VSTD = pd.DataFrame()
@@ -74,6 +74,8 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             KDJ = pd.DataFrame()
         try:
             WR = data.add_func(QA.QA_indicator_WR,10,6)
+            WR['CCI_CROSS1'] = QA.CROSS(WR['WR1'], WR['WR2'])
+            WR['CCI_CROSS2'] = QA.CROSS(WR['WR2'], WR['WR1'])
         except:
             WR = pd.DataFrame()
         try:
@@ -85,6 +87,8 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             RSI['RSI1_C'] = RSI['RSI1']/QA.REF(RSI['RSI1'], 1)-1
             RSI['RSI2_C'] = RSI['RSI2']/QA.REF(RSI['RSI2'], 1)-1
             RSI['RSI3_C'] = RSI['RSI3']/QA.REF(RSI['RSI3'], 1)-1
+            RSI['RSI_CROSS1'] = QA.CROSS(RSI['RSI1'], RSI['RSI3'])
+            RSI['RSI_CROSS2'] = QA.CROSS(RSI['RSI3'], RSI['RSI1'])
         except:
             RSI = pd.DataFrame()
         try:
@@ -97,6 +101,8 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             CCI = pd.DataFrame()
         try:
             BIAS = data.add_func(QA.QA_indicator_BIAS,6,12,24)
+            BIAS['BIAS_CROSS1'] = QA.CROSS(BIAS['BIAS1'], BIAS['BIAS3'])
+            BIAS['BIAS_CROSS2'] = QA.CROSS(BIAS['BIAS3'], BIAS['BIAS1'])
         except:
             BIAS = pd.DataFrame()
         try:
