@@ -22,7 +22,6 @@ class Alpha_191:
         ###security = get_index_stocks(index)
         self.date = date
         self.end_date = QA_util_get_last_day(self.date, 250)
-        print(self.date, self.end_date)
         price = QA_fetch_stock_day_adv(code, self.end_date, self.date ).data.reset_index()
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
