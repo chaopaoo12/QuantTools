@@ -213,9 +213,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                         'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                         'INDUSTRY','TOTAL_MARKET',
                                                         'SZ50','HS300','CY300','SZ180','SZ380',
-                                                        'SZ100','SZ300','ZZ100','ZZ200','CY50',
-                                                        'PE_5PCT','PE_15PCT','PE_30PCT','PE_60PCT',
-                                                        'PB_5PCT','PB_15PCT','PB_30PCT','PB_60PCT']]
+                                                        'SZ100','SZ300','ZZ100','ZZ200','CY50']]
     print("Step Five ===========>")
     fianacial = fianacial[cols].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).join(fianacial[['GROSSMARGIN', 'GROSSMARGIN_L2Y', 'GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
                                                                                                             'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
