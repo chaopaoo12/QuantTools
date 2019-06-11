@@ -19,7 +19,6 @@ def QA_SU_save_stock_alpha_day(client=DATABASE, ui_log = None, ui_progress = Non
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    print(date)
     def __saving_work(date, code, stock_alpha):
         try:
             QA_util_log_info(
@@ -39,7 +38,7 @@ def QA_SU_save_stock_alpha_day(client=DATABASE, ui_log = None, ui_progress = Non
         intProgressToLog = int(float((date.index(item) +1) / len(date) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
         if QA_util_if_trade(item) == True:
-            __saving_work( date, code, stock_alpha)
+            __saving_work( item, code, stock_alpha)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save Stock Alpha ^_^',  ui_log)
