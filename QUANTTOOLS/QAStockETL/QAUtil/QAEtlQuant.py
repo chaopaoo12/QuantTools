@@ -249,6 +249,7 @@ def QA_util_etl_stock_quant(deal_date = None):
        round(AVG60_TOR * 100, 2) as AVG60_TOR,
        round(RNG_L * 100, 2) as RNG_L,
        round(RNG_5 * 100, 2) as RNG_5,
+       round(RNG_10 * 100, 2) as RNG_10,
        round(RNG_20 * 100, 2) as RNG_20,
        round(RNG_30 * 100, 2) as RNG_30,
        round(RNG_60 * 100, 2) as RNG_60,
@@ -281,6 +282,13 @@ def QA_util_etl_stock_quant(deal_date = None):
              end) * 100,
              2) as lag5,
        round((case
+               when LAG10_MARKET = 0 or LAG10_MARKET is null then
+                0
+               else
+                CLOSE_QFQ / LAG10_MARKET - 1
+             end) * 100,
+             2) as lag10,      
+       round((case
                when LAG20_MARKET = 0 or LAG20_MARKET is null then
                 0
                else
@@ -308,6 +316,13 @@ def QA_util_etl_stock_quant(deal_date = None):
                 CLOSE_QFQ / AVG5_A_MARKET - 1
              end) * 100,
              2) as avg5,
+       round((case
+               when AVG10_A_MARKET = 0 or AVG10_A_MARKET is null then
+                0
+               else
+                CLOSE_QFQ / AVG10_A_MARKET - 1
+             end) * 100,
+             2) as avg10,      
        round((case
                when AVG20_A_MARKET = 0 or AVG20_A_MARKET is null then
                 0
