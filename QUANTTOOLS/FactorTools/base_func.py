@@ -85,13 +85,25 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
 
 def perank(data):
     data['PE_5PCT']= data['PE'].rolling(window=5).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_15PCT']= data['PE'].rolling(window=15).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
+    data['PE_10PCT']= data['PE'].rolling(window=10).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
+    data['PE_20PCT']= data['PE'].rolling(window=20).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
     data['PE_30PCT']= data['PE'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
     data['PE_60PCT']= data['PE'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
     data['PB_5PCT']= data['PB'].rolling(window=5).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_15PCT']= data['PB'].rolling(window=15).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
+    data['PB_10PCT']= data['PB'].rolling(window=10).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
+    data['PB_20PCT']= data['PB'].rolling(window=20).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
     data['PB_30PCT']= data['PB'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
     data['PB_60PCT']= data['PB'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PE_5VAL']= data['PE'].rolling(window=5).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PE_10VAL']= data['PE'].rolling(window=10).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PE_20VAL']= data['PE'].rolling(window=20).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PE_30VAL']= data['PE'].rolling(window=30).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PE_60VAL']= data['PE'].rolling(window=60).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PB_5VAL']= data['PB'].rolling(window=5).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PB_10VAL']= data['PB'].rolling(window=10).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PB_20VAL']= data['PB'].rolling(window=20).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PB_30VAL']= data['PB'].rolling(window=30).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PB_60VAL']= data['PB'].rolling(window=60).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
     return(data)
 
 def pct(data):
