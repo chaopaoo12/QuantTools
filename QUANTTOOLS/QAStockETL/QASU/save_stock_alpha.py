@@ -12,12 +12,13 @@ def QA_SU_save_stock_alpha_day(client=DATABASE, ui_log = None, ui_progress = Non
     :return:
     '''
     if date is None:
-        date = list(QA_util_today_str())
+        date = [QA_util_today_str()]
     if code is None:
         code = list(QA_fetch_stock_list_adv()['code'])
     stock_alpha = client.stock_alpha
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
+
     print(date)
     def __saving_work(date, code, stock_alpha):
         try:
