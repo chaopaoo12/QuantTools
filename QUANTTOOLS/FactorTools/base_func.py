@@ -183,8 +183,10 @@ def get_quant_data(start_date, end_date, block = False):
     print("Step Four ===========>")
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
     fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                                                                                                                      'SZ100','SZ300','ZZ100','ZZ200','CY50']])
+                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50', 'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
+                                                                           'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
+                                                                                                                                                                      'SZ100','SZ300','ZZ100','ZZ200','CY50', 'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
+                                                                                                                                                                                     'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR']])
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
             fianacial[columnname]=fianacial[columnname].astype('float16')
@@ -212,8 +214,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                                                                             'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                                                             'SZ50','HS300','CY300','SZ180','SZ380',
                                                                                                             'SZ100','SZ300','ZZ100','ZZ200','CY50',
-                                                                                                            'INDUSTRY','TOTAL_MARKET',
-                                                                                                            'PE_5PCT','PE_15PCT','PE_30PCT','PE_60PCT','PB_5PCT','PB_15PCT','PB_30PCT','PB_60PCT']])
+                                                                                                            'INDUSTRY','TOTAL_MARKET']])
     print("Step Six ===========>")
     target = get_target(codes, start_date, end_date)
     res = target.join(fianacial).join(technical).join(alpha)
