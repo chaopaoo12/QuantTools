@@ -12,7 +12,7 @@ def QA_SU_save_stock_alpha_day(client=DATABASE, ui_log = None, ui_progress = Non
     :return:
     '''
     if date is None:
-        date = [QA_util_today_str()]
+        date = QA_util_today_str()
     if code is None:
         code = list(QA_fetch_stock_list_adv()['code'])
     stock_alpha = client.stock_alpha
