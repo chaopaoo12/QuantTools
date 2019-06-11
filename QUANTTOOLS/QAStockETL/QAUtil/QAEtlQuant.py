@@ -244,17 +244,18 @@ def QA_util_etl_stock_quant(deal_date = None):
              end * 100,
              2) as PBG,
        round(AVG5_TOR * 100, 2) as AVG5_TOR,
+       round(AVG10_TOR * 100, 2) as AVG10_TOR,
        round(AVG20_TOR * 100, 2) as AVG20_TOR,
        round(AVG30_TOR * 100, 2) as AVG30_TOR,
        round(AVG60_TOR * 100, 2) as AVG60_TOR,
-       round(RNG_L * 100, 2) as RNG_L,
-       round(RNG_5 * 100, 2) as RNG_5,
-       round(RNG_10 * 100, 2) as RNG_10,
-       round(RNG_20 * 100, 2) as RNG_20,
-       round(RNG_30 * 100, 2) as RNG_30,
-       round(RNG_60 * 100, 2) as RNG_60,
+       RNG_L,
+       RNG_5,
+       RNG_10,
+       RNG_20,
+       RNG_30,
+       RNG_60,
        round((case
-               when LAG_MARKET = 0 or LAG5_MARKET is null then
+               when LAG_MARKET = 0 or LAG_MARKET is null then
                 0
                else
                 CLOSE_QFQ / LAG_MARKET - 1
@@ -287,7 +288,7 @@ def QA_util_etl_stock_quant(deal_date = None):
                else
                 CLOSE_QFQ / LAG10_MARKET - 1
              end) * 100,
-             2) as lag10,      
+             2) as lag10,
        round((case
                when LAG20_MARKET = 0 or LAG20_MARKET is null then
                 0
@@ -322,7 +323,7 @@ def QA_util_etl_stock_quant(deal_date = None):
                else
                 CLOSE_QFQ / AVG10_A_MARKET - 1
              end) * 100,
-             2) as avg10,      
+             2) as avg10,
        round((case
                when AVG20_A_MARKET = 0 or AVG20_A_MARKET is null then
                 0
@@ -344,16 +345,16 @@ def QA_util_etl_stock_quant(deal_date = None):
                 CLOSE_QFQ / AVG60_A_MARKET - 1
              end) * 100,
              2) as avg60,
-             AVG5_CR,
-               AVG10_CR,
-               AVG20_CR,
-               AVG30_CR,
-               AVG60_CR,
-               AVG5_TR,
-               AVG10_TR,
-               AVG20_TR,
-               AVG30_TR,
-               AVG60_TR
+       AVG5_CR,
+       AVG10_CR,
+       AVG20_CR,
+       AVG30_CR,
+       AVG60_CR,
+       AVG5_TR,
+       AVG10_TR,
+       AVG20_TR,
+       AVG30_TR,
+       AVG60_TR
   from (select *
           from stock_analysis_data
  where order_date = to_date('{start_date}', 'yyyy-mm-dd'))A
