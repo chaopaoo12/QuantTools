@@ -164,7 +164,7 @@ def get_quant_data(start_date, end_date, block = False):
     if alpha[columnname].dtype == 'int64':
         alpha[columnname]=alpha[columnname].astype('int8')
     print("Step Three ===========>")
-    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.groupby('date').groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1])
+    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.groupby('date').apply(get_trans).groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1])
     for columnname in technical.columns:
         if technical[columnname].dtype == 'float64':
             technical[columnname]=technical[columnname].astype('float16')
