@@ -1,5 +1,5 @@
 import pandas as pd
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv)
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv,QA_fetch_stock_financial_percent_adv)
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch_stock_block_adv,
                                                QA_fetch_stock_day_adv)
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
@@ -137,7 +137,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                                           'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
                                                                           'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR',
                                                                          'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY']].groupby('code').fillna(method='ffill')
-    perank = ''
+    perank = QA_fetch_stock_financial_percent_adv(codes,start,end_date).groupby('code').fillna(method='ffill')
     fianacial = fianacial.join(perank)
     print("Step Two ===========>")
     alpha = QA_fetch_stock_alpha_adv(codes,start,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
