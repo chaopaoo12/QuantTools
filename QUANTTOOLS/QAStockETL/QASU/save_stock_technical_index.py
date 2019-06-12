@@ -2,7 +2,7 @@
 import pymongo
 from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_info, QA_util_add_months,
-                              QA_util_to_json_from_pandas, QA_util_today_str,
+                              QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date,
                               QA_util_datetime_to_strdate)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_indicator
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
@@ -16,7 +16,7 @@ def QA_SU_save_stock_technical_index_day(client=DATABASE, ui_log = None, ui_prog
     :return:
     '''
     END_DATE = QA_util_today_str()
-    START_DATE = QA_util_datetime_to_strdate(QA_util_add_months(QA_util_today_str(),-1))
+    START_DATE = QA_util_get_pre_trade_date(QA_util_today_str(),180)
     codes = list(QA_fetch_stock_list_adv()['code'])
 
     stock_technical_index = client.stock_technical_index
