@@ -42,7 +42,7 @@ def QA_SU_save_stock_fianacial_percent(code, start_date=None,end_date=None,clien
                 (['code', 'date']))
             print("got from '{from_}' to '{to_}' stock financial percent data.".format(from_ =start_date, to_ = end_date))
             if data is not None:
-                stock_financial_percent.insert_many(data = QA_util_to_json_from_pandas(data), ordered=False)
+                stock_financial_percent.insert_many(data, ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
