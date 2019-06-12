@@ -13,7 +13,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_stock_alpha,
                                                    QA_fetch_stock_shares,
                                                    QA_fetch_financial_report_wy,
-                                                   QA_fetch_stock_technical_index)
+                                                   QA_fetch_stock_technical_index,
+                                                   QA_fetch_stock_financial_percent)
 
 from QUANTAXIS.QAUtil.QADate import month_data
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,
@@ -167,4 +168,21 @@ def QA_fetch_stock_technical_index_adv(code, start="all", end=None, format='pd',
         return QA_DataStruct_Financial(data)
     else:
         data = QA_fetch_stock_technical_index(code, start, end)
+        return QA_DataStruct_Financial(data)
+
+def QA_fetch_stock_financial_percent_adv(code, start="all", end=None, format='pd', collections=DATABASE.stock_financial_percent):
+    '获取股票财报日历'
+    #code= [code] if isinstance(code,str) else code
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2008-01-01'
+        end = QA_util_today_str()
+        data = QA_fetch_stock_financial_percent(code, start, end)
+        return QA_DataStruct_Financial(data)
+    else:
+        data = QA_fetch_stock_financial_percent(code, start, end)
         return QA_DataStruct_Financial(data)
