@@ -40,7 +40,6 @@ def QA_SU_save_stock_fianacial_percent(code, start_date=None,end_date=None,clien
             data = QA_fetch_get_stock_financial_percent(code, START_DATE, END_DATE)
             data = data.drop_duplicates(
                 (['code', 'date']))
-            print("got from '{from_}' to '{to_}' stock financial percent data.".format(from_ =start_date, to_ = end_date))
             if data is not None:
                 stock_financial_percent.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
