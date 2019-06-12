@@ -36,7 +36,7 @@ def QA_SU_save_stock_fianacial_percent(code, start_date=None,end_date=None,clien
     def __saving_work(code,START_DATE,END_DATE, stock_financial_percent):
         try:
             QA_util_log_info(
-                '##JOB01 Now Saving stock_technical_index from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
+                '##JOB01 Now Saving stock_fianacial_percent from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
             data = QA_fetch_get_stock_financial_percent(code, START_DATE, END_DATE)
             data = data.drop_duplicates(
                 (['code', 'date']))
@@ -58,7 +58,7 @@ def QA_SU_save_stock_fianacial_percent(code, start_date=None,end_date=None,clien
         __saving_work( item,start_date, end_date, stock_financial_percent)
 
     if len(err) < 1:
-        QA_util_log_info('SUCCESS save stock_technical_index ^_^',  ui_log)
+        QA_util_log_info('SUCCESS save stock_fianacial_percent ^_^',  ui_log)
     else:
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
