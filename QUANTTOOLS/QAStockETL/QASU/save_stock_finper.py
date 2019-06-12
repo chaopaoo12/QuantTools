@@ -46,6 +46,7 @@ def QA_SU_save_stock_fianacial_percent(code, start_date=None,end_date=None,clien
         except Exception as error0:
             print(error0)
             err.append(str(code))
+
     for item in code:
         strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((code.index(item) +1) / len(code) * 100))[0:4] + '%', ui_log)
         intProgressToLog = int(float((code.index(item) +1) / len(code) * 100))
