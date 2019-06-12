@@ -55,5 +55,5 @@ def QA_fetch_get_stock_financial_percent(code,start_date,end_date):
     fianacial = QA_fetch_stock_fianacial_adv(code,start,end_date).data[['PB', 'PE', 'PEG', 'PS']].fillna(method='ffill')
     fianacial = perank(fianacial).loc[pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])].reset_index()
     fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['PB', 'PE', 'PEG', 'PS']]]
-    fianacial = fianacial.assign(date_stamp=fianacial['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
+    fianacial['date_stamp'] = fianacial['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10]))
     return(fianacial)
