@@ -37,9 +37,12 @@ def QA_SU_save_stock_fianacial_percent(code, start_date=None,end_date=None,clien
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving stock_technical_index from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
-
-            stock_financial_percent.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_stock_financial_percent(code, START_DATE, END_DATE)), ordered=False)
+            data = QA_fetch_get_stock_financial_percent(code, START_DATE, END_DATE)
+            data = data.drop_duplicates(
+                (['code', 'date']))
+            print("got from '{from_}' to '{to_}' stock financial percent data.".format(from_ =start_date, to_ = end_date))
+            if data is not None:
+                stock_financial_percent.insert_many(data = QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -52,14 +55,7 @@ def QA_SU_save_stock_fianacial_percent(code, start_date=None,end_date=None,clien
         strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((code.index(item) +1) / len(code) * 100))[0:4] + '%', ui_log)
         intProgressToLog = int(float((code.index(item) +1) / len(code) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
-        data = QA_fetch_get_stock_financial_percent(item,start_date,end_date)
-        if data is not None:
-            data = data.drop_duplicates(
-                (['code', 'date']))
-            data = QA_util_to_json_from_pandas(data)
-            print("got from '{from_}' to '{to_}' stock financial percent data.".format(from_ =start_date, to_ = end_date))
-
-            __saving_work( item,start_date, end_date, stock_financial_percent)
+        __saving_work( item,start_date, end_date, stock_financial_percent)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_index ^_^',  ui_log)
