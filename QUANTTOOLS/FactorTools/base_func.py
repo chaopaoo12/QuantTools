@@ -83,29 +83,6 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
         agg.dropna(how='all',inplace=True)
     return agg
 
-def perank(data):
-    data['PE_5PCT']= data['PE'].rolling(window=5).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_10PCT']= data['PE'].rolling(window=10).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
-    data['PE_20PCT']= data['PE'].rolling(window=20).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_30PCT']= data['PE'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_60PCT']= data['PE'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_5PCT']= data['PB'].rolling(window=5).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_10PCT']= data['PB'].rolling(window=10).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
-    data['PB_20PCT']= data['PB'].rolling(window=20).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
-    data['PB_30PCT']= data['PB'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_60PCT']= data['PB'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_5VAL']= data['PE'].rolling(window=5).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_10VAL']= data['PE'].rolling(window=10).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_20VAL']= data['PE'].rolling(window=20).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_30VAL']= data['PE'].rolling(window=30).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_60VAL']= data['PE'].rolling(window=60).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_5VAL']= data['PB'].rolling(window=5).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_10VAL']= data['PB'].rolling(window=10).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_20VAL']= data['PB'].rolling(window=20).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_30VAL']= data['PB'].rolling(window=30).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_60VAL']= data['PB'].rolling(window=60).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    return(data)
-
 def pct(data):
     data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
     data['PRE_MARKET']= data['close_qfq'].shift(-1).apply(lambda x:round(x * 100,2))
@@ -160,7 +137,8 @@ def get_quant_data(start_date, end_date, block = False):
                                                                           'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
                                                                           'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR',
                                                                          'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY']].groupby('code').fillna(method='ffill')
-    fianacial = fianacial.groupby('code').apply(perank)
+    perank = ''
+    fianacial = fianacial.join(perank)
     print("Step Two ===========>")
     alpha = QA_fetch_stock_alpha_adv(codes,start,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                 'alpha_009', 'alpha_010', 'alpha_011', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',

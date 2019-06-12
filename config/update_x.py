@@ -51,6 +51,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_etl_stock_block, QA_etl_stock_divyield,
                                    QA_etl_process_financial_day,QA_SU_save_stock_alpha_day,
                                    QA_SU_save_stock_technical_index_day,
+                                   QA_SU_save_stock_fianacial_percent_day,
                                    QA_etl_stock_alpha_day,
                                    QA_etl_stock_technical_day)
 
@@ -79,3 +80,4 @@ print("done")
 print("write quant data into mongodb")
 QA_SU_save_stock_fianacial_momgo()
 print("done")
+QA_SU_save_stock_fianacial_percent_day()
