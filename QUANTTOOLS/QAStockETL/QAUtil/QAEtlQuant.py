@@ -208,28 +208,28 @@ def QA_util_etl_stock_quant(deal_date = None):
              end * 100,
              2) as PM,
        round(case
-               when OPERATINGREVENUE_TTM = 0 then
+               when OPERATINGREVENUE_TTM <= 0 then
                 0
                else
                 total_market / OPERATINGREVENUE_TTM
              end * 100,
              2) as PS,
        round(case
-               when NETCASHOPERATACTIV_TTM = 0 then
+               when NETCASHOPERATACTIV_TTM <= 0 then
                 0
                else
                 total_market / NETCASHOPERATACTIV_TTM
              end * 100,
              2) as PC,
        round(case
-               when NETPROFIT_TTM_LY = 0 or NETPROFIT_TTM = NETPROFIT_TTM_LY then
+               when NETPROFIT_TTM_LY <= 0 or NETPROFIT_TTM = NETPROFIT_TTM_LY then
                 0
                else
                 pe / (NETPROFIT_TTM / NETPROFIT_TTM_LY - 1) / 100
              end * 100,
              2) as PEG,
        round(case
-               when OPERATINGREVENUE_TTM_LY = 0 or
+               when OPERATINGREVENUE_TTM_LY <= 0 or
                     OPERATINGREVENUE_TTM = OPERATINGREVENUE_TTM_LY then
                 0
                else
