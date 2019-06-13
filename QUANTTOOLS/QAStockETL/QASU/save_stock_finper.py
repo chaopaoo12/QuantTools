@@ -41,14 +41,14 @@ def QA_SU_save_stock_fianacial_percent(code, start_date=None,end_date=None,clien
             data = data.drop_duplicates(
                 (['code', 'date']))
             QA_util_log_info(
-                '##JOB01 Got Data stock_fianacial_percent from {START_DATE} to {END_DATE} '.format(START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
+                '##JOB02 Got Data stock_fianacial_percent from {START_DATE} to {END_DATE} '.format(START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
             if data is not None:
                 stock_financial_percent.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
                 QA_util_log_info(
-                    '##JOB01 Now stock_fianacial_percent saved from {START_DATE} to {END_DATE} '.format(START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
+                    '##JOB03 Now stock_fianacial_percent saved from {START_DATE} to {END_DATE} '.format(START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
             else:
                 QA_util_log_info(
-                    '##JOB01 No Data stock_fianacial_percent from {START_DATE} to {END_DATE} '.format(START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
+                    '##JOB04 No Data stock_fianacial_percent from {START_DATE} to {END_DATE} '.format(START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
         except Exception as error0:
             print(error0)
             err.append(str(code))
