@@ -48,7 +48,7 @@ def QA_SU_save_stock_fianacial_percent(code, start_date=None,end_date=None,clien
                     '##JOB03 Now stock_fianacial_percent saved from {START_DATE} to {END_DATE} '.format(START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
             else:
                 QA_util_log_info(
-                    '##JOB04 No Data stock_fianacial_percent from {START_DATE} to {END_DATE} '.format(START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
+                    '##JOB01 No Data stock_fianacial_percent from {START_DATE} to {END_DATE} '.format(START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
         except Exception as error0:
             print(error0)
             err.append(str(code))
