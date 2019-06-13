@@ -11,9 +11,9 @@ from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch
 
 def QA_SU_save_stock_fianacial_percent(code, start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
     if code is None:
-        code = list(QA_fetch_stock_list_adv()['code'])
+        codes = list(QA_fetch_stock_list_adv()['code'])
     else:
-        code = QA_util_code_tolist(code)
+        codes = QA_util_code_tolist(code)
 
     if start_date is None:
         if end_date is None:
@@ -52,8 +52,13 @@ def QA_SU_save_stock_fianacial_percent(code, start_date=None,end_date=None,clien
         except Exception as error0:
             print(error0)
             err.append(str(code))
-
-    __saving_work( code, start_date, end_date, stock_financial_percent)
+    for item in codes:
+        QA_util_log_info('The {} of Total {}'.format
+                         ((codes.index(item) +1), len(codes)))
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(item) +1) / len(codes) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
+        QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+        __saving_work( item, start_date, end_date, stock_financial_percent)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_fianacial_percent ^_^',  ui_log)
