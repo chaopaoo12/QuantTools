@@ -61,10 +61,10 @@ def pct(data):
     data['RNG_30']= ((data['high_qfq'].rolling(window=30).max()/data['low_qfq'].rolling(window=30).min())-1).apply(lambda x:round(x * 100 ,2))
     data['RNG_60']= ((data['high_qfq'].rolling(window=60).max()/data['low_qfq'].rolling(window=60).min())-1).apply(lambda x:round(x * 100 ,2))
     data['AVG5_C_MARKET']= data['AVG5_T_MARKET'].rolling(window=5).apply(rolling_ols,raw=True)
-    data['AVG10_C_MARKET']= data['AVG10_T_MARKET'].rolling(window=10).apply(rolling_ols,raw=True)
-    data['AVG20_C_MARKET']= data['AVG20_T_MARKET'].rolling(window=20).apply(rolling_ols,raw=True)
-    data['AVG30_C_MARKET']= data['AVG30_T_MARKET'].rolling(window=30).apply(rolling_ols,raw=True)
-    data['AVG60_C_MARKET']= data['AVG60_T_MARKET'].rolling(window=60).apply(rolling_ols,raw=True)
+    data['AVG10_C_MARKET']= data['AVG10_T_MARKET'].rolling(window=5).apply(rolling_ols,raw=True)
+    data['AVG20_C_MARKET']= data['AVG20_T_MARKET'].rolling(window=5).apply(rolling_ols,raw=True)
+    data['AVG30_C_MARKET']= data['AVG30_T_MARKET'].rolling(window=5).apply(rolling_ols,raw=True)
+    data['AVG60_C_MARKET']= data['AVG60_T_MARKET'].rolling(window=5).apply(rolling_ols,raw=True)
     return(data)
 
 def QA_ETL_stock_day(codes, start=None,end=None):
@@ -75,7 +75,7 @@ def QA_ETL_stock_day(codes, start=None,end=None):
         data = data.data.join(res1).fillna(0).reset_index()
         res = data.groupby('code').apply(pct).reset_index(drop = True).set_index(['date','code'])
     else:
-        start_date = QA_util_get_pre_trade_date(start,120)
+        start_date = QA_util_get_pre_trade_date(start,60)
         data = QA_fetch_stock_day_adv(codes,start_date,end)
         res1 = data.to_qfq().data
         res1.columns = [x + '_qfq' for x in res1.columns]
