@@ -16,7 +16,7 @@ def QA_SU_save_stock_technical_index_day(client=DATABASE, ui_log = None, ui_prog
     :return:
     '''
     END_DATE = QA_util_today_str()
-    START_DATE = QA_util_today_str()
+    START_DATE = QA_util_get_pre_trade_date(QA_util_today_str(),3)
     codes = list(QA_fetch_stock_list_adv()['code'])
 
     stock_technical_index = client.stock_technical_index
