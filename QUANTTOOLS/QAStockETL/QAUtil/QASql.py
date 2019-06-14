@@ -23,6 +23,7 @@
 # SOFTWARE.
 
 import pymongo
+import pandas as pd
 from motor.motor_asyncio import AsyncIOMotorClient
 from sqlalchemy import types, create_engine
 import asyncio
@@ -104,6 +105,7 @@ def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", pas
                         if_exists=if_exists, dtype=dtyp)
     except Exception as e:
         print("Table '%s' already exists." % (table_name))
+        print(e)
 
     #sql_start = "insert into {} ({}) values(%s,%s,%s)".format(table_name, columns)
     sql_end = ",".join([":" + str(i) for i in list(range(1,data.shape[1]+1))])
@@ -117,7 +119,7 @@ def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", pas
     else:
         break_num = 1000000
     try:
-        for i in chunks([tuple(x) for x in data.values], break_num):
+        for i in chunks([tuple(x) for x in data.where((pd.notnull(data)), None).values], break_num):
             cursor.executemany(sql, i)
         print("{} has been stored into Table {} Mysql DataBase ".format(
             table_name, table_name))
