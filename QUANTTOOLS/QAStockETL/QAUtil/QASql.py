@@ -98,7 +98,7 @@ def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", pas
         '-', '_').replace('/', '_').replace(';', '')
     data.columns = columns.split(",")
     columns = ",".join(data.columns)
-    dtyp = {c:types.VARCHAR(data[c].str.len().max())
+    dtyp = {c:types.VARCHAR(126)
             for c in data.columns[data.dtypes == 'object'].tolist()}
     try:
         data[:0].to_sql(table_name, engine,
