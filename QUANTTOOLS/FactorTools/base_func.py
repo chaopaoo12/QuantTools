@@ -172,24 +172,10 @@ def get_quant_data(start_date, end_date, block = False):
         technical[columnname]=technical[columnname].astype('int8')
     print("Step Four ===========>")
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
-    cols = [i for i in list(fianacial.columns) if i not in ['GROSSMARGIN', 'GROSSMARGIN_L2Y', 'GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
-                                                            'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
-                                                            'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',
-                                                            'OPERATINGRINRATE', 'OPERATINGRINRATE_L2Y', 'OPERATINGRINRATE_L3Y', 'OPERATINGRINRATE_LY',
-                                                            'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
-                                                            'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
-                                                            'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
-                                                            'INDUSTRY','TOTAL_MARKET',
+    cols = [i for i in list(fianacial.columns) if i not in ['INDUSTRY','TOTAL_MARKET',
                                                             'SZ50','HS300','CY300','SZ180','SZ380',
                                                             'SZ100','SZ300','ZZ100','ZZ200','CY50']]
-    fianacial = fianacial[cols].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).join(fianacial[['GROSSMARGIN', 'GROSSMARGIN_L2Y', 'GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
-                                                                                                            'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
-                                                                                                            'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',
-                                                                                                            'OPERATINGRINRATE', 'OPERATINGRINRATE_L2Y', 'OPERATINGRINRATE_L3Y', 'OPERATINGRINRATE_LY',
-                                                                                                            'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
-                                                                                                            'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
-                                                                                                            'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
-                                                                                                            'SZ50','HS300','CY300','SZ180','SZ380',
+    fianacial = fianacial[cols].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).join(fianacial[['SZ50','HS300','CY300','SZ180','SZ380',
                                                                                                             'SZ100','SZ300','ZZ100','ZZ200','CY50',
                                                                                                             'INDUSTRY','TOTAL_MARKET']])
     print("Step Five ===========>")
