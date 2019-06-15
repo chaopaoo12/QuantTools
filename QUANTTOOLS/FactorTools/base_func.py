@@ -137,7 +137,7 @@ def get_quant_data(start_date, end_date, block = False):
                                                                           'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
                                                                           'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR',
                                                                          'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY']].groupby('code').fillna(method='ffill')
-    perank = QA_fetch_stock_financial_percent_adv(codes,start,end_date).groupby('code').fillna(method='ffill')
+    perank = QA_fetch_stock_financial_percent_adv(codes,start,end_date).data.groupby('code').fillna(method='ffill')
     fianacial = fianacial.join(perank)
     print("Step Two ===========>")
     alpha = QA_fetch_stock_alpha_adv(codes,start,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
@@ -206,5 +206,4 @@ def get_quant_data(start_date, end_date, block = False):
     print("Step Six ===========>")
     target = get_target(codes, start_date, end_date)
     res = target.join(fianacial).join(technical).join(alpha)
-
     return(res)
