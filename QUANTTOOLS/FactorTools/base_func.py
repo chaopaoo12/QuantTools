@@ -112,8 +112,8 @@ def get_target(codes, start_date, end_date):
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':
             res[columnname]=res[columnname].astype('float16')
-    if res[columnname].dtype == 'int64':
-        res[columnname]=res[columnname].astype('int8')
+        if res[columnname].dtype == 'int64':
+            res[columnname]=res[columnname].astype('int8')
     return(res)
 
 @time_this_function
@@ -167,15 +167,15 @@ def get_quant_data(start_date, end_date, block = False):
     for columnname in alpha.columns:
         if alpha[columnname].dtype == 'float64':
             alpha[columnname]=alpha[columnname].astype('float16')
-    if alpha[columnname].dtype == 'int64':
-        alpha[columnname]=alpha[columnname].astype('int8')
+        if alpha[columnname].dtype == 'int64':
+            alpha[columnname]=alpha[columnname].astype('int8')
     print("Step Three ===========>")
     technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.astype(float).groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1]).loc[rng1].groupby('date').apply(get_trans)
     for columnname in technical.columns:
         if technical[columnname].dtype == 'float64':
             technical[columnname]=technical[columnname].astype('float16')
-    if technical[columnname].dtype == 'int64':
-        technical[columnname]=technical[columnname].astype('int8')
+        if technical[columnname].dtype == 'int64':
+            technical[columnname]=technical[columnname].astype('int8')
     print("Step Four ===========>")
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
     cols = [i for i in list(fianacial.columns) if i not in ['INDUSTRY','TOTAL_MARKET',
@@ -191,8 +191,8 @@ def get_quant_data(start_date, end_date, block = False):
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
             fianacial[columnname]=fianacial[columnname].astype('float16')
-    if fianacial[columnname].dtype == 'int64':
-        fianacial[columnname]=fianacial[columnname].astype('int8')
+        if fianacial[columnname].dtype == 'int64':
+            fianacial[columnname]=fianacial[columnname].astype('int8')
     print("Step Six ===========>")
     target = get_target(codes, start_date, end_date)
     res = target.join(fianacial).join(technical).join(alpha).fillna(0)
