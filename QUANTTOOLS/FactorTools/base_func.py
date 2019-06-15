@@ -114,6 +114,7 @@ def get_target(codes, start_date, end_date):
 @time_this_function
 def get_quant_data(start_date, end_date, block = False):
     start = QA_util_get_pre_trade_date(start_date,61)
+    rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     if block is True:
         data = QA.QA_fetch_stock_block()
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200','创业板50'])]['code'].drop_duplicates())
@@ -157,14 +158,14 @@ def get_quant_data(start_date, end_date, block = False):
                                                                 'alpha_152', 'alpha_153', 'alpha_155', 'alpha_156', 'alpha_158', 'alpha_159', 'alpha_160', 'alpha_161', 'alpha_162',
                                                                 'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                 'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_180', 'alpha_184', 'alpha_185', 'alpha_186',
-                                                                'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).groupby('date').apply(get_trans)
+                                                                'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).loc[rng1].groupby('date').apply(get_trans)
     for columnname in alpha.columns:
         if alpha[columnname].dtype == 'float64':
             alpha[columnname]=alpha[columnname].astype('float16')
     if alpha[columnname].dtype == 'int64':
         alpha[columnname]=alpha[columnname].astype('int8')
     print("Step Three ===========>")
-    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1]).groupby('date').apply(get_trans)
+    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.astype(float).groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1]).loc[rng1].groupby('date').apply(get_trans)
     for columnname in technical.columns:
         if technical[columnname].dtype == 'float64':
             technical[columnname]=technical[columnname].astype('float16')
@@ -175,15 +176,13 @@ def get_quant_data(start_date, end_date, block = False):
     cols = [i for i in list(fianacial.columns) if i not in ['INDUSTRY','TOTAL_MARKET',
                                                             'SZ50','HS300','CY300','SZ180','SZ380',
                                                             'SZ100','SZ300','ZZ100','ZZ200','CY50']]
-    fianacial = fianacial[cols].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).join(fianacial[['SZ50','HS300','CY300','SZ180','SZ380',
+    fianacial = fianacial[cols].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).loc[rng1].join(fianacial.loc[rng1][['SZ50','HS300','CY300','SZ180','SZ380',
                                                                                                             'SZ100','SZ300','ZZ100','ZZ200','CY50',
                                                                                                             'INDUSTRY','TOTAL_MARKET']])
     print("Step Five ===========>")
     fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50', 'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
-                                                                           'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                                                                                                                                     'SZ100','SZ300','ZZ100','ZZ200','CY50', 'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
-                                                                                                                                                                                     'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR']])
+                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
+                                                                                                                                                                                     'SZ100','SZ300','ZZ100','ZZ200','CY50']])
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
             fianacial[columnname]=fianacial[columnname].astype('float16')
