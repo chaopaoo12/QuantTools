@@ -76,7 +76,7 @@ def ETL_stock_day(codes, start=None,end=None):
         res = data.groupby('code').apply(pct).reset_index(drop = True).set_index(['date','code'])
         res = res.where((pd.notnull(res)), None)
     else:
-        start_date = QA_util_get_pre_trade_date(start,65)
+        start_date = QA_util_get_pre_trade_date(start,70)
         data = QA_fetch_stock_day_adv(codes,start_date,end)
         res1 = data.to_qfq().data
         res1.columns = [x + '_qfq' for x in res1.columns]
