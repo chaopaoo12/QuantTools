@@ -205,5 +205,5 @@ def get_quant_data(start_date, end_date, block = False):
                                                                                                             'INDUSTRY','TOTAL_MARKET']])
     print("Step Six ===========>")
     target = get_target(codes, start_date, end_date)
-    res = target.join(fianacial).join(technical).join(alpha)
+    res = target.join(fianacial).join(technical).join(alpha).fillna(0)
     return(res)
