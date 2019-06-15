@@ -157,14 +157,14 @@ def get_quant_data(start_date, end_date, block = False):
                                                                 'alpha_152', 'alpha_153', 'alpha_155', 'alpha_156', 'alpha_158', 'alpha_159', 'alpha_160', 'alpha_161', 'alpha_162',
                                                                 'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                 'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_180', 'alpha_184', 'alpha_185', 'alpha_186',
-                                                                'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].groupby('date').apply(get_trans).groupby('code').apply(series_to_supervised,[30,10,7,5,3,1])
+                                                                'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).groupby('date').apply(get_trans)
     for columnname in alpha.columns:
         if alpha[columnname].dtype == 'float64':
             alpha[columnname]=alpha[columnname].astype('float16')
     if alpha[columnname].dtype == 'int64':
         alpha[columnname]=alpha[columnname].astype('int8')
     print("Step Three ===========>")
-    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.groupby('date').apply(get_trans).groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1])
+    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1]).groupby('date').apply(get_trans)
     for columnname in technical.columns:
         if technical[columnname].dtype == 'float64':
             technical[columnname]=technical[columnname].astype('float16')
@@ -172,27 +172,16 @@ def get_quant_data(start_date, end_date, block = False):
         technical[columnname]=technical[columnname].astype('int8')
     print("Step Four ===========>")
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
-    fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50', 'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
-                                                                           'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                                                                                                                      'SZ100','SZ300','ZZ100','ZZ200','CY50', 'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
-                                                                                                                                                                                     'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR']])
-    for columnname in fianacial.columns:
-        if fianacial[columnname].dtype == 'float64':
-            fianacial[columnname]=fianacial[columnname].astype('float16')
-    if fianacial[columnname].dtype == 'int64':
-        fianacial[columnname]=fianacial[columnname].astype('int8')
     cols = [i for i in list(fianacial.columns) if i not in ['GROSSMARGIN', 'GROSSMARGIN_L2Y', 'GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
-                                                        'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
-                                                        'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',
-                                                        'OPERATINGRINRATE', 'OPERATINGRINRATE_L2Y', 'OPERATINGRINRATE_L3Y', 'OPERATINGRINRATE_LY',
-                                                        'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
-                                                        'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
-                                                        'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
-                                                        'INDUSTRY','TOTAL_MARKET',
-                                                        'SZ50','HS300','CY300','SZ180','SZ380',
-                                                        'SZ100','SZ300','ZZ100','ZZ200','CY50']]
-    print("Step Five ===========>")
+                                                            'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
+                                                            'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',
+                                                            'OPERATINGRINRATE', 'OPERATINGRINRATE_L2Y', 'OPERATINGRINRATE_L3Y', 'OPERATINGRINRATE_LY',
+                                                            'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
+                                                            'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
+                                                            'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
+                                                            'INDUSTRY','TOTAL_MARKET',
+                                                            'SZ50','HS300','CY300','SZ180','SZ380',
+                                                            'SZ100','SZ300','ZZ100','ZZ200','CY50']]
     fianacial = fianacial[cols].groupby('code').apply(series_to_supervised,[30,10,7,5,3,1]).join(fianacial[['GROSSMARGIN', 'GROSSMARGIN_L2Y', 'GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
                                                                                                             'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
                                                                                                             'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',
@@ -203,6 +192,17 @@ def get_quant_data(start_date, end_date, block = False):
                                                                                                             'SZ50','HS300','CY300','SZ180','SZ380',
                                                                                                             'SZ100','SZ300','ZZ100','ZZ200','CY50',
                                                                                                             'INDUSTRY','TOTAL_MARKET']])
+    print("Step Five ===========>")
+    fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
+                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50', 'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
+                                                                           'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
+                                                                                                                                                                                     'SZ100','SZ300','ZZ100','ZZ200','CY50', 'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
+                                                                                                                                                                                     'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR']])
+    for columnname in fianacial.columns:
+        if fianacial[columnname].dtype == 'float64':
+            fianacial[columnname]=fianacial[columnname].astype('float16')
+    if fianacial[columnname].dtype == 'int64':
+        fianacial[columnname]=fianacial[columnname].astype('int8')
     print("Step Six ===========>")
     target = get_target(codes, start_date, end_date)
     res = target.join(fianacial).join(technical).join(alpha).fillna(0)
