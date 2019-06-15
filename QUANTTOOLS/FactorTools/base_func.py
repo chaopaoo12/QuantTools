@@ -109,6 +109,11 @@ def get_target(codes, start_date, end_date):
     res = res.reset_index()
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
     res = res.set_index(['date','code'])
+    for columnname in res.columns:
+        if res[columnname].dtype == 'float64':
+            res[columnname]=res[columnname].astype('float16')
+    if res[columnname].dtype == 'int64':
+        res[columnname]=res[columnname].astype('int8')
     return(res)
 
 @time_this_function
