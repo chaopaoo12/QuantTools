@@ -97,9 +97,7 @@ def pct(data):
     data['TARGET3'] = (data['PRE3_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     data['TARGET5'] = (data['PRE5_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     data['AVG_TARGET'] = data['AVG_TOTAL_MARKET'].pct_change(1).shift(-1).apply(lambda x:round(x * 100,2))
-    return(data[['PRE_MARKET','PRE2_MARKET','PRE3_MARKET','PRE5_MARKET',
-                 'AVG_PRE_MARKET','AVG_PRE2_MARKET','AVG_PRE3_MARKET','AVG_PRE5_MARKET',
-                 'TARGET','TARGET3','TARGET5','AVG_TARGET']])
+    return(data)
 
 def get_target(codes, start_date, end_date):
     data = QA_fetch_stock_day_adv(codes,start_date,end_date)
@@ -196,6 +194,6 @@ def get_quant_data(start_date, end_date, block = False):
         if fianacial[columnname].dtype == 'int64':
             fianacial[columnname]=fianacial[columnname].astype('int8')
     print("Step Six ===========>")
-    target = get_target(codes, start_date, end_date)[['TARGET','TARGET3','TARGET5','AVG_TARGET']]
+    target = get_target(codes, start_date, end_date)
     res = target.join(fianacial).join(technical).join(alpha).fillna(0)
     return(res)
