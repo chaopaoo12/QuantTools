@@ -34,7 +34,8 @@ from QUANTAXIS.QASU.main import (QA_SU_save_etf_day, QA_SU_save_etf_min,
                                  QA_SU_save_stock_info,
                                  QA_SU_save_stock_info_tushare,
                                  QA_SU_save_stock_list, QA_SU_save_stock_min,
-                                 QA_SU_save_stock_xdxr)
+                                 QA_SU_save_stock_xdxr,QA_SU_save_index_list,
+                                 QA_SU_save_index_day)
 from QUANTAXIS.QASU.save_binance import (QA_SU_save_binance,
                                          QA_SU_save_binance_1day,
                                          QA_SU_save_binance_1hour,
@@ -59,6 +60,7 @@ print("download day data ")
 QA_SU_save_stock_day('tdx')
 QA_SU_save_stock_xdxr('tdx')
 QA_SU_save_stock_list('tdx')
+QA_SU_save_index_list('tdx')
 QA_SU_save_stock_block('tdx')
 QA_SU_save_stock_info('tdx')
 QA_SU_save_stock_info_tushare()
@@ -71,6 +73,7 @@ QA_etl_stock_info()
 QA_etl_stock_xdxr(type == "all")
 QA_etl_stock_day()
 QA_etl_stock_block()
+QA_SU_save_index_day('tdx')
 QA_etl_stock_alpha_day("day")
 QA_etl_stock_technical_day("day")
 print("done")
