@@ -533,7 +533,7 @@ def QA_fetch_stock_financial_percent(code, start, end=None, format='pd', collect
         res = pd.DataFrame([item for item in cursor])
         try:
             res = res.drop_duplicates(
-                (['code', 'date'])).set_index(['date','code'])
+                (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
