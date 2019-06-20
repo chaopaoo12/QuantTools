@@ -34,8 +34,7 @@ from QUANTAXIS.QASU.main import (QA_SU_save_etf_day, QA_SU_save_etf_min,
                                  QA_SU_save_stock_info,
                                  QA_SU_save_stock_info_tushare,
                                  QA_SU_save_stock_list, QA_SU_save_stock_min,
-                                 QA_SU_save_stock_xdxr,QA_SU_save_index_list,
-                                 QA_SU_save_index_day)
+                                 QA_SU_save_stock_xdxr,QA_SU_save_index_list)
 from QUANTAXIS.QASU.save_binance import (QA_SU_save_binance,
                                          QA_SU_save_binance_1day,
                                          QA_SU_save_binance_1hour,
