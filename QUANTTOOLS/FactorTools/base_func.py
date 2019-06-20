@@ -99,16 +99,32 @@ def pct(data):
     data['AVG_TARGET'] = data['AVG_TOTAL_MARKET'].pct_change(1).shift(-1).apply(lambda x:round(x * 100,2))
     return(data)
 
+def index_pct(market):
+    market['PRE_MARKET']= market['close'].shift(-1)
+    market['PRE2_MARKET']= market['close'].shift(-2)
+    market['PRE3_MARKET']= market['close'].shift(-3)
+    market['PRE5_MARKET']= market['close'].shift(-5)
+    market['INDEX_TARGET'] = (market['PRE2_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    market['INDEX_TARGET3'] = (market['PRE3_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    market['INDEX_TARGET5'] = (market['PRE5_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    return(market)
+
 def get_target(codes, start_date, end_date):
     data = QA_fetch_stock_day_adv(codes,start_date,end_date)
+    market = QA.QA_fetch_index_day(['000001'],start_date,end_date,format='pd')['close'].reset_index()
+    market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
     res1 = data.to_qfq().data
     res1.columns = [x + '_qfq' for x in res1.columns]
     data = data.data.join(res1).fillna(0).reset_index()
     res = data.groupby('code').apply(pct)[['date','code',
                                            'TARGET','TARGET3','TARGET5','AVG_TARGET']].set_index(['date','code'])
     res = res.reset_index()
+    res = pd.merge(res,market,on='date')
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
     res = res.set_index(['date','code'])
+    res['INDEX_TARGET'] = res['TARGET'] - res['INDEX_TARGET']
+    res['INDEX_TARGET3'] = res['TARGET3'] - res['INDEX_TARGET3']
+    res['INDEX_TARGET5'] = res['TARGET5'] - res['INDEX_TARGET5']
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':
             res[columnname]=res[columnname].astype('float16')
