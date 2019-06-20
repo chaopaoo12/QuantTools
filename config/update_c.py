@@ -47,7 +47,6 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_etl_process_financial_day,QA_util_process_quantdata)
 
 print("download index & etf data ")
-QA_SU_save_index_day('tdx')
 QA_SU_save_etf_day('tdx')
 print("done")
 print("download min data ")
