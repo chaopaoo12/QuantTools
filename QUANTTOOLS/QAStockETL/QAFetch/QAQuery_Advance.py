@@ -15,8 +15,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_financial_report_wy,
                                                    QA_fetch_stock_technical_index,
                                                    QA_fetch_stock_financial_percent,
-                                                   QA_fetch_stock_quant_data,
-                                                   QA_fetch_stock_quant_pre)
+                                                   QA_fetch_get_stock_quant_data,
+                                                   QA_fetch_get_stock_quant_pre)
 
 from QUANTAXIS.QAUtil.QADate import month_data
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,
@@ -189,7 +189,7 @@ def QA_fetch_stock_financial_percent_adv(code, start="all", end=None, format='pd
         data = QA_fetch_stock_financial_percent(code, start, end)
         return QA_DataStruct_Financial(data)
 
-def QA_fetch_stock_quant_data_adv(code, start="all", end=None, format='pd', collections=DATABASE.stock_quant_data):
+def QA_fetch_get_stock_quant_data_adv(code, start="all", end=None, format='pd', collections=DATABASE.stock_quant_data):
     '获取股票量化机器学习最终指标V1'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -200,13 +200,13 @@ def QA_fetch_stock_quant_data_adv(code, start="all", end=None, format='pd', coll
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_quant_data(code, start, end)
+        data = QA_fetch_get_stock_quant_data(code, start, end)
         return QA_DataStruct_Financial(data)
     else:
-        data = QA_fetch_stock_quant_data(code, start, end)
+        data = QA_fetch_get_stock_quant_data(code, start, end)
         return QA_DataStruct_Financial(data)
 
-def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, format='pd'):
+def QA_fetch_get_stock_quant_pre_adv(code, start="all", end=None, format='pd'):
     '获取股票量化机器学习数据查询接口'
     end = start if end is None else end
     start = str(start)[0:10]
@@ -216,8 +216,8 @@ def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, format='pd'):
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_quant_pre(code, start, end)
+        data = QA_fetch_get_stock_quant_pre(code, start, end)
         return QA_DataStruct_Financial(data)
     else:
-        data = QA_fetch_stock_quant_pre(code, start, end)
+        data = QA_fetch_get_stock_quant_pre(code, start, end)
         return QA_DataStruct_Financial(data)
