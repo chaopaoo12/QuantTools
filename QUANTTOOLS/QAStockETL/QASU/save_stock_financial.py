@@ -35,7 +35,7 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None, ui_log = Non
                 QA_util_log_info(
                     '##JOB01 Pre Data stock financial data ============== {deal_date} '.format(deal_date=deal_date), ui_log)
                 data = QA_util_to_json_from_pandas(data)
-                print("got '{deal_date}' stock financial data.".format(deal_date=deal_date))
+                print("got stock financial data ============== {deal_date}".format(deal_date=deal_date))
                 QA_util_log_info(
                     '##JOB02 Got Data stock financial data ============== {deal_date}'.format(deal_date=deal_date), ui_log)
                 try:

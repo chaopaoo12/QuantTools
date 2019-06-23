@@ -2,7 +2,6 @@ import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv,QA_fetch_stock_financial_percent_adv)
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch_stock_block_adv,
                                                QA_fetch_stock_day_adv)
-from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
                                QA_util_if_trade,QA_util_get_pre_trade_date)
 import QUANTAXIS as QA
@@ -166,5 +165,6 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
             fianacial[columnname]=fianacial[columnname].astype('float16')
         if fianacial[columnname].dtype == 'int64':
             fianacial[columnname]=fianacial[columnname].astype('int8')
-    res = fianacial.join(technical).join(alpha).fillna(0)
+    res = fianacial.join(technical).join(alpha).fillna(0).reset_index()
+    res = res.assign(date_stamp=res['date'].apply(lambda x: str(x)[0:10]))
     return(res)

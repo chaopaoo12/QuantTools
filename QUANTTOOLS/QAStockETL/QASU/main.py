@@ -27,7 +27,7 @@ from QUANTTOOLS.QAStockETL.QASU import crawl_jrj_financial_reportdate as save_fi
     save_stock_alpha as save_stock_alpha, save_financialfiles as save_financialfiles,\
     crawl_sina_financial_report as save_stock_financial_sina, crawl_sina_shares_change as save_stock_shares_sina,\
     crawl_wy_financial_report as save_stock_financial_wy, save_stock_technical_index as save_stock_technical_index,\
-    crawl_interest_rate as crawl_interest_rate, save_stock_finper as save_stock_finper
+    crawl_interest_rate as crawl_interest_rate, save_stock_finper as save_stock_finper, save_stock_quant as save_stock_quant
 from QUANTAXIS.QAUtil import QA_util_today_str
 
 def QA_SU_save_report_calendar_day():
@@ -101,3 +101,9 @@ def QA_SU_save_stock_fianacial_percent_day(code = None, start_date = None, end_d
 
 def QA_SU_save_stock_fianacial_percent_his(code = None, start_date = '2008-01-01', end_date = None):
     return save_stock_finper.QA_SU_save_stock_fianacial_percent(code = code, start_date = start_date ,end_date = end_date)
+
+def QA_SU_save_stock_quant_data_day(code = None, start_date = None, end_date = None):
+    return save_stock_quant.QA_SU_save_stock_quant_day(code = code, start_date = start_date ,end_date = end_date)
+
+def QA_SU_save_stock_quant_data_his(code = None, start_date = '2008-01-01', end_date = None):
+    return save_stock_finper.QA_SU_save_stock_quant_his(code = code, start_date = start_date ,end_date = end_date)
