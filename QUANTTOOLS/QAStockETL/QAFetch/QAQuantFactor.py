@@ -6,8 +6,6 @@ import QUANTAXIS as QA
 import math
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import get_trans,series_to_supervised,time_this_function
 
-
-
 @time_this_function
 def QA_fetch_get_quant_data(codes, start_date, end_date):
     '获取股票量化机器学习最终指标V1'
