@@ -138,7 +138,7 @@ def get_quant_data(start_date, end_date, block = False):
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     if block is True:
         data = QA.QA_fetch_stock_block()
-        codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200','创业板50'])]['code'].drop_duplicates())
+        codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
     else:
         codes = list(QA_fetch_stock_list_adv()['code'])
     print("Step One ===========>")
