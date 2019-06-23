@@ -19,7 +19,7 @@ class model_ver1():
         if mark != 'star' and 'mark' not in list(self.data.columns):
             print('must train star first!')
         else:
-            cols = [i for i in self.data.columns if i not in ['moon','venus','mars','sun','star','TARGET','TARGET3','TARGET5','AVG_TARGET']]
+            cols = [i for i in self.data.columns if i not in ['moon','venus','mars','sun','star','TARGET','TARGET3','TARGET5','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
             if mark not in self.mark:
                 print("mark should been set in ('moon','venus','mars','sun') ")
             elif mark == 'moon':
@@ -36,7 +36,7 @@ class model_ver1():
         if mark != 'star' and 'mark' not in list(self.data.columns):
             print('must train star first!')
         else:
-            cols = [i for i in self.data.columns if i not in ['moon','venus','mars','sun','star','TARGET','TARGET3','TARGET5','AVG_TARGET']]
+            cols = [i for i in self.data.columns if i not in ['moon','venus','mars','sun','star','TARGET','TARGET3','TARGET5','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
             model.fit(self.data.loc[self.rng_train][cols],self.data.loc[self.rng_train][mark])
             y_pred = model.predict(self.data.loc[self.rng_train][cols])
             y_pred_test = model.predict(self.data.loc[self.rng_test][cols])
