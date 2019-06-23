@@ -574,6 +574,11 @@ def QA_fetch_get_stock_quant_data(code, start, end=None, format='pd', collection
         try:
             res = res.drop_duplicates(
                 (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])
+            for columnname in res.columns:
+                if res[columnname].dtype == 'float64':
+                    res[columnname]=res[columnname].astype('float16')
+                if res[columnname].dtype == 'int64':
+                    res[columnname]=res[columnname].astype('int8')
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
