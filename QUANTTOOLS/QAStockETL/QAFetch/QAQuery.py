@@ -3,6 +3,7 @@ import numpy
 import pandas as pd
 import datetime
 import math
+import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
                               QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_str2int, QA_util_date_int2str,
                               QA_util_to_json_from_pandas, QA_util_today_str,QA_util_datetime_to_strdate)
@@ -589,3 +590,69 @@ def QA_fetch_stock_quant_data(code, start, end=None, format='pd', collections=DA
     else:
         QA_util_log_info(
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
+
+def pct(data):
+    data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
+    data['PRE_MARKET']= data['close_qfq'].shift(-1).apply(lambda x:round(x * 100,2))
+    data['PRE2_MARKET']= data['close_qfq'].shift(-2).apply(lambda x:round(x * 100,2))
+    data['PRE3_MARKET']= data['close_qfq'].shift(-3).apply(lambda x:round(x * 100,2))
+    data['PRE5_MARKET']= data['close_qfq'].shift(-5).apply(lambda x:round(x * 100,2))
+    data['AVG_PRE_MARKET']= data['AVG_TOTAL_MARKET'].shift(-1).apply(lambda x:round(x * 100,2))
+    data['AVG_PRE2_MARKET']= data['AVG_TOTAL_MARKET'].shift(-2).apply(lambda x:round(x * 100,2))
+    data['AVG_PRE3_MARKET']= data['AVG_TOTAL_MARKET'].shift(-3).apply(lambda x:round(x * 100,2))
+    data['AVG_PRE5_MARKET']= data['AVG_TOTAL_MARKET'].shift(-5).apply(lambda x:round(x * 100,2))
+    data['TARGET'] = (data['PRE2_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    data['TARGET3'] = (data['PRE3_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    data['TARGET5'] = (data['PRE5_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    data['AVG_TARGET'] = data['AVG_TOTAL_MARKET'].pct_change(1).shift(-1).apply(lambda x:round(x * 100,2))
+    return(data)
+
+def index_pct(market):
+    market['PRE_MARKET']= market['close'].shift(-1)
+    market['PRE2_MARKET']= market['close'].shift(-2)
+    market['PRE3_MARKET']= market['close'].shift(-3)
+    market['PRE5_MARKET']= market['close'].shift(-5)
+    market['INDEX_TARGET'] = (market['PRE2_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    market['INDEX_TARGET3'] = (market['PRE3_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    market['INDEX_TARGET5'] = (market['PRE5_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    return(market)
+
+def get_target(codes, start_date, end_date):
+    data = QA.QA_fetch_stock_day_adv(codes,start_date,end_date)
+    market = QA.QA_fetch_index_day(['000001'],start_date,end_date,format='pd')['close'].reset_index()
+    market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
+    res1 = data.to_qfq().data
+    res1.columns = [x + '_qfq' for x in res1.columns]
+    data = data.data.join(res1).fillna(0).reset_index()
+    res = data.groupby('code').apply(pct)[['date','code',
+                                           'TARGET','TARGET3','TARGET5','AVG_TARGET']].set_index(['date','code'])
+    res = res.reset_index()
+    res = pd.merge(res,market,on='date')
+    res['date'] = res['date'].apply(lambda x: str(x)[0:10])
+    res = res.set_index(['date','code'])
+    res['INDEX_TARGET'] = res['TARGET'] - res['INDEX_TARGET']
+    res['INDEX_TARGET3'] = res['TARGET3'] - res['INDEX_TARGET3']
+    res['INDEX_TARGET5'] = res['TARGET5'] - res['INDEX_TARGET5']
+    for columnname in res.columns:
+        if res[columnname].dtype == 'float64':
+            res[columnname]=res[columnname].astype('float16')
+        if res[columnname].dtype == 'int64':
+            res[columnname]=res[columnname].astype('int8')
+    return(res)
+
+def QA_fetch_stock_quant_pre(code, start, end=None, format='pd'):
+    stock = QA_fetch_stock_quant_data(code, start, end)
+    target = get_target(code, start, end)
+    res = target.join(stock)
+    if format in ['P', 'p', 'pandas', 'pd']:
+        return res
+    elif format in ['json', 'dict']:
+        return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+    elif format in ['n', 'N', 'numpy']:
+        return numpy.asarray(res)
+    elif format in ['list', 'l', 'L']:
+        return numpy.asarray(res).tolist()
+    else:
+        print("QA Error QA_fetch_stock_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+        return None
