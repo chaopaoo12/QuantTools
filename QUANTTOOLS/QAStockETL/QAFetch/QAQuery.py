@@ -555,7 +555,7 @@ def QA_fetch_stock_financial_percent(code, start, end=None, format='pd', collect
             'QA Error QA_fetch_stock_financial_percent data parameter start=%s end=%s is not right' % (start, end))
 
 
-def QA_fetch_get_stock_quant_data(code, start, end=None, format='pd', collections=DATABASE.stock_quant_data):
+def QA_fetch_stock_quant_data(code, start, end=None, format='pd', collections=DATABASE.stock_quant_data):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
@@ -597,7 +597,7 @@ def QA_fetch_get_stock_quant_data(code, start, end=None, format='pd', collection
         QA_util_log_info(
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
-def QA_fetch_get_stock_target(codes, start_date, end_date):
+def QA_fetch_stock_target(codes, start_date, end_date):
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end_date)
     market = QA.QA_fetch_index_day(['000001'],start_date,end_date,format='pd')['close'].reset_index()
     market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
@@ -620,10 +620,10 @@ def QA_fetch_get_stock_target(codes, start_date, end_date):
             res[columnname]=res[columnname].astype('int8')
     return(res)
 
-def QA_fetch_get_stock_quant_pre(code, start, end=None, format='pd'):
-    stock = QA_fetch_get_stock_quant_data(code, start, end)
-    target = QA_fetch_get_stock_target(code, start, end)
-    res = target.join(stock)
+def QA_fetch_stock_quant_pre(code, start, end=None, format='pd'):
+    res = QA_fetch_stock_quant_data(code, start, end)
+    target = QA_fetch_stock_target(code, start, end)
+    res = target.join(res)
     if format in ['P', 'p', 'pandas', 'pd']:
         return res
     elif format in ['json', 'dict']:
