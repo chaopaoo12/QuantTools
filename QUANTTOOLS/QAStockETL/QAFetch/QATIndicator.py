@@ -13,6 +13,14 @@ def rolling_ols(y):
     model = stats.linregress(y, pd.Series(range(1,len(y)+1)))
     return(round(model.slope,2))
 
+def function(a, b):
+    if a > b:
+        return 1
+    elif a < b:
+        return -1
+    else:
+        return 0
+
 def QA_fetch_get_indicator(code, start_date, end_date):
     data = QA_fetch_stock_day_adv(code,start_date,end_date)
     if data == None:
@@ -149,9 +157,10 @@ def QA_fetch_get_indicator(code, start_date, end_date):
             MACD = data.add_func(QA.QA_indicator_MACD)
             MACD['CROSS_JC'] = QA.CROSS(MACD['DIF'], MACD['DEA'])
             MACD['CROSS_SC'] = QA.CROSS(MACD['DEA'], MACD['DIF'])
+            MACD['MACD_TR'] = MACD.apply(lambda x: function(x.DEA,x.DIF), axis = 1)
         except:
             MACD = data.data.assign(DIF=None,DEA=None,MACD=None,
-                               CROSS_JC=0,CROSS_SC=0,)[['DIF','DEA','MACD','CROSS_JC','CROSS_SC']]
+                               CROSS_JC=0,CROSS_SC=0,)[['DIF','DEA','MACD','CROSS_JC','CROSS_SC','MACD_TR']]
         try:
             DMI = data.add_func(QA.QA_indicator_DMI)
             DMI['ADX_C'] = DMI['ADX']/QA.REF(DMI['ADX'], 1)-1
