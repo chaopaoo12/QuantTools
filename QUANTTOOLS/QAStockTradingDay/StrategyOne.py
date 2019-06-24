@@ -7,8 +7,7 @@ from QUANTAXIS.QAUtil import QA_util_code_tolist
 
 class model_ver1():
 
-    def __init__(self, model, data, start_date, end_date, mark, test_size =0.01):
-        self.model = model
+    def __init__(self, data, start_date, end_date, mark, test_size =0.01):
         self.data = data
         self.mark = QA_util_code_tolist(mark)
         self.rng = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
@@ -77,14 +76,14 @@ class model_ver1():
                 self.sun.report = [train_report, test_report]
                 self.star.crosstab = [train_cross, test_cross]
 
-    def training(self, mark):
+    def training(self, model, mark):
         print('mark star first')
-        model = XGBClassifier()
-        self.model_p(model, 'star')
+        model1 = XGBClassifier()
+        self.model_p(model1, 'star')
         print('star has been set')
         for i in mark:
             print('mark i on training')
-            self.model_p(self.model, i)
+            self.model_p(model, i)
 
     def train_test_split(x,test_size=0.1):
         split_row = len(x) - int(test_size * len(x))
