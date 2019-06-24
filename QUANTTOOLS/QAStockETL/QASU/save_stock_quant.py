@@ -82,7 +82,6 @@ def QA_SU_save_stock_quant_his(code=None, start_date=None,end_date=None, ui_log 
         QA_util_log_info(
             '##JOB01 Pre Data stock quant data ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
         data = QA_util_to_json_from_pandas(data)
-        print('got stock quant data ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
         QA_util_log_info(
             '##JOB02 Got Data stock quant data ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
         try:
