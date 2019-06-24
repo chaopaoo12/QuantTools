@@ -85,6 +85,12 @@ class model_ver1():
             print('mark i on training')
             self.model_p(model, i)
 
+    def save_model(self):
+        pass
+
+    def save_result(self):
+        pass
+
     def train_test_split(x,test_size=0.1):
         split_row = len(x) - int(test_size * len(x))
         x_train = x.iloc[:split_row]
