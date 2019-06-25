@@ -597,7 +597,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, format='pd', collections=DA
         QA_util_log_info(
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
-def QA_fetch_stock_target(codes, start_date, end_date):
+def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
     end = QA_util_get_pre_trade_date(end_date,-5)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
@@ -606,7 +606,7 @@ def QA_fetch_stock_target(codes, start_date, end_date):
     res1 = data.to_qfq().data
     res1.columns = [x + '_qfq' for x in res1.columns]
     data = data.data.join(res1).fillna(0).reset_index()
-    res = data.groupby('code').apply(pct)[['date','code',
+    res = data.groupby('code').apply(pct, type=type)[['date','code',
                                            'TARGET','TARGET3','TARGET5','AVG_TARGET']].set_index(['date','code'])
     res = res.reset_index()
     res = pd.merge(res,market,on='date')

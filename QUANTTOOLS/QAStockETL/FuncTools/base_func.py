@@ -74,20 +74,37 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
         agg.dropna(how='all',inplace=True)
     return agg
 
-def pct(data):
-    data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
-    data['PRE_MARKET']= data['close_qfq'].shift(-1).apply(lambda x:round(x * 100,2))
-    data['PRE2_MARKET']= data['close_qfq'].shift(-2).apply(lambda x:round(x * 100,2))
-    data['PRE3_MARKET']= data['close_qfq'].shift(-3).apply(lambda x:round(x * 100,2))
-    data['PRE5_MARKET']= data['close_qfq'].shift(-5).apply(lambda x:round(x * 100,2))
-    data['AVG_PRE_MARKET']= data['AVG_TOTAL_MARKET'].shift(-1).apply(lambda x:round(x * 100,2))
-    data['AVG_PRE2_MARKET']= data['AVG_TOTAL_MARKET'].shift(-2).apply(lambda x:round(x * 100,2))
-    data['AVG_PRE3_MARKET']= data['AVG_TOTAL_MARKET'].shift(-3).apply(lambda x:round(x * 100,2))
-    data['AVG_PRE5_MARKET']= data['AVG_TOTAL_MARKET'].shift(-5).apply(lambda x:round(x * 100,2))
-    data['TARGET'] = (data['PRE2_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
-    data['TARGET3'] = (data['PRE3_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
-    data['TARGET5'] = (data['PRE5_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
-    data['AVG_TARGET'] = data['AVG_TOTAL_MARKET'].pct_change(1).shift(-1).apply(lambda x:round(x * 100,2))
+def pct(data, type = 'close'):
+    if type == 'close':
+        data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
+        data['PRE_MARKET']= data['close_qfq'].shift(-1).apply(lambda x:round(x * 100,2))
+        data['PRE2_MARKET']= data['close_qfq'].shift(-2).apply(lambda x:round(x * 100,2))
+        data['PRE3_MARKET']= data['close_qfq'].shift(-3).apply(lambda x:round(x * 100,2))
+        data['PRE5_MARKET']= data['close_qfq'].shift(-5).apply(lambda x:round(x * 100,2))
+        data['AVG_PRE_MARKET']= data['AVG_TOTAL_MARKET'].shift(-1).apply(lambda x:round(x * 100,2))
+        data['AVG_PRE2_MARKET']= data['AVG_TOTAL_MARKET'].shift(-2).apply(lambda x:round(x * 100,2))
+        data['AVG_PRE3_MARKET']= data['AVG_TOTAL_MARKET'].shift(-3).apply(lambda x:round(x * 100,2))
+        data['AVG_PRE5_MARKET']= data['AVG_TOTAL_MARKET'].shift(-5).apply(lambda x:round(x * 100,2))
+        data['TARGET'] = (data['PRE2_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+        data['TARGET3'] = (data['PRE3_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+        data['TARGET5'] = (data['PRE5_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+        data['AVG_TARGET'] = data['AVG_TOTAL_MARKET'].pct_change(1).shift(-1).apply(lambda x:round(x * 100,2))
+    elif type == 'high':
+        data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
+        data['PRE_MARKET']= data['high_qfq'].shift(-1).apply(lambda x:round(x * 100,2))
+        data['PRE2_MARKET']= data['high_qfq'].shift(-2).apply(lambda x:round(x * 100,2))
+        data['PRE3_MARKET']= data['high_qfq'].shift(-3).apply(lambda x:round(x * 100,2))
+        data['PRE5_MARKET']= data['high_qfq'].shift(-5).apply(lambda x:round(x * 100,2))
+        data['AVG_PRE_MARKET']= data['AVG_TOTAL_MARKET'].shift(-1).apply(lambda x:round(x * 100,2))
+        data['AVG_PRE2_MARKET']= data['AVG_TOTAL_MARKET'].shift(-2).apply(lambda x:round(x * 100,2))
+        data['AVG_PRE3_MARKET']= data['AVG_TOTAL_MARKET'].shift(-3).apply(lambda x:round(x * 100,2))
+        data['AVG_PRE5_MARKET']= data['AVG_TOTAL_MARKET'].shift(-5).apply(lambda x:round(x * 100,2))
+        data['TARGET'] = (data['PRE2_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+        data['TARGET3'] = (data['PRE3_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+        data['TARGET5'] = (data['PRE5_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+        data['AVG_TARGET'] = data['AVG_TOTAL_MARKET'].pct_change(1).shift(-1).apply(lambda x:round(x * 100,2))
+    else:
+        data=None
     return(data)
 
 def index_pct(market):
