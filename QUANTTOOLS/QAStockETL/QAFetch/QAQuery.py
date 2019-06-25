@@ -6,7 +6,7 @@ import math
 import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
                               QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_str2int, QA_util_date_int2str,
-                              QA_util_to_json_from_pandas, QA_util_today_str,QA_util_datetime_to_strdate)
+                              QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
 from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict, dict2
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import pct,index_pct
@@ -598,8 +598,10 @@ def QA_fetch_stock_quant_data(code, start, end=None, format='pd', collections=DA
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
 def QA_fetch_stock_target(codes, start_date, end_date):
-    data = QA.QA_fetch_stock_day_adv(codes,start_date,end_date)
-    market = QA.QA_fetch_index_day(['000001'],start_date,end_date,format='pd')['close'].reset_index()
+    end = QA_util_get_pre_trade_date(end_date,-5)
+    rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+    data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
+    market = QA.QA_fetch_index_day(['000001'],start_date,end,format='pd')['close'].reset_index()
     market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
     res1 = data.to_qfq().data
     res1.columns = [x + '_qfq' for x in res1.columns]
@@ -609,7 +611,7 @@ def QA_fetch_stock_target(codes, start_date, end_date):
     res = res.reset_index()
     res = pd.merge(res,market,on='date')
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
-    res = res.set_index(['date','code'])
+    res = res.set_index(['date','code']).loc[rng1]
     res['INDEX_TARGET'] = res['TARGET'] - res['INDEX_TARGET']
     res['INDEX_TARGET3'] = res['TARGET3'] - res['INDEX_TARGET3']
     res['INDEX_TARGET5'] = res['TARGET5'] - res['INDEX_TARGET5']
