@@ -3,7 +3,7 @@ import pymongo
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_quant_data
 from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_today_str,QA_util_log_info,
-                              QA_util_get_trade_range)
+                              QA_util_get_trade_range,QA_util_if_trade)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 import pandas as pd
 
@@ -32,7 +32,10 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
         print('not a trading day')
     else:
         for deal_date in deal_date_list:
-            data = QA_fetch_get_quant_data(code, deal_date,deal_date)
+            if QA_util_if_trade(deal_date):
+                data = QA_fetch_get_quant_data(code, deal_date,deal_date)
+            else:
+                data = None
             if data is not None:
                 data = data.drop_duplicates(
                     (['code', 'date']))
