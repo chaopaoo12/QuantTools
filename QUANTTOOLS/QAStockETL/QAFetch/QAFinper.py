@@ -52,7 +52,7 @@ def perank(data):
 
 def QA_fetch_get_stock_financial_percent(code,start_date,end_date):
     start = QA_util_get_pre_trade_date(start_date,61)
-    fianacial = QA_fetch_stock_fianacial_adv(code,start,end_date).data[['PB', 'PE', 'PEG', 'PS']].fillna(method='ffill')
+    fianacial = QA_fetch_stock_fianacial_adv(code,start,end_date).data[['PB', 'PE', 'PEG', 'PS']].groupby('code').fillna(method='ffill')
     try:
         fianacial = fianacial.groupby('code').apply(perank).loc[pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])].reset_index()
         fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['PB', 'PE', 'PEG', 'PS']]]
