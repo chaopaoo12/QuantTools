@@ -1,22 +1,28 @@
 
 import pymongo
-from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_info, QA_util_add_months,
                               QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date,
                               QA_util_datetime_to_strdate)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_indicator
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
-import pandas as pd
 
-def QA_SU_save_stock_technical_index_day(client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_stock_technical_index_day(START_DATE=None,END_DATE=None,client=DATABASE, ui_log = None, ui_progress = None):
     '''
      save stock_day
     计算技术指标
     历史全部数据
     :return:
     '''
-    END_DATE = QA_util_today_str()
-    START_DATE = QA_util_get_pre_trade_date(QA_util_today_str(),3)
+    if START_DATE == None:
+        if END_DATE == None:
+            END_DATE = QA_util_today_str()
+            START_DATE = QA_util_get_pre_trade_date(QA_util_today_str(),3)
+        else:
+            START_DATE = QA_util_get_pre_trade_date(END_DATE,3)
+    else:
+        START_DATE = QA_util_get_pre_trade_date(START_DATE,3)
+        if END_DATE == None:
+            END_DATE = QA_util_today_str()
     codes = list(QA_fetch_stock_list_adv()['code'])
 
     stock_technical_index = client.stock_technical_index
@@ -52,7 +58,7 @@ def QA_SU_save_stock_technical_index_day(client=DATABASE, ui_log = None, ui_prog
         QA_util_log_info(err, ui_log)
 
 
-def QA_SU_save_stock_technical_index_his(client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_stock_technical_index_his(START_DATE=None,END_DATE=None,client=DATABASE, ui_log = None, ui_progress = None):
 
     '''
      save stock_day
@@ -60,8 +66,17 @@ def QA_SU_save_stock_technical_index_his(client=DATABASE, ui_log = None, ui_prog
     历史全部数据
     :return:
     '''
-    END_DATE = QA_util_today_str()
-    START_DATE = "2006-01-01"
+    if START_DATE == None:
+        if END_DATE == None:
+            END_DATE = QA_util_today_str()
+            START_DATE = "2006-01-01"
+        else:
+            START_DATE = QA_util_get_pre_trade_date(END_DATE,3)
+    else:
+        START_DATE = QA_util_get_pre_trade_date(START_DATE,3)
+        if END_DATE == None:
+            END_DATE = QA_util_today_str()
+
     codes = list(QA_fetch_stock_list_adv()['code'])
 
     stock_technical_index = client.stock_technical_index
