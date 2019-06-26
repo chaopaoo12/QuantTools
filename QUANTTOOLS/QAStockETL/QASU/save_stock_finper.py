@@ -9,7 +9,7 @@ from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch
                                                QA_fetch_stock_day_adv)
 
 
-def QA_SU_save_stock_fianacial_percent(code, start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_stock_fianacial_percent(code = None, start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
     if code is None:
         codes = list(QA_fetch_stock_list_adv()['code'])
     else:
