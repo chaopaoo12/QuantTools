@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import time
+import math
 
 def time_this_function(func):
     #作为装饰器使用，返回函数执行需要花费的时间
@@ -40,6 +41,22 @@ def filter_extreme_3sigma(array,n=3): #3 sigma
         array[array > mu + n*sigma] = mu + n*sigma
         array[array < mu - n*sigma] = mu - n*sigma
         return(array)
+
+# 去极值，标准化，中性化
+def neutralization(factor,mkt_cap = True, industry = True):
+    y = factor
+    if type(mkt_cap) == pd.Series:
+        LnMktCap = mkt_cap.apply(lambda x:math.log(x))
+        if industry: #行业、市值
+            dummy_industry = pd.get_dummies(factor.index)
+            x = pd.concat([LnMktCap,dummy_industry.T],axis = 1)
+        else: #仅市值
+            x = LnMktCap
+    elif type(industry) == pd.Series: #仅行业
+        dummy_industry = pd.get_dummies(factor.index)
+        x = dummy_industry.T
+    result = sml.OLS(y.astype(float),x.astype(float)).fit()
+    return result.resid
 
 def get_trans(data):
     return(data.apply(filter_extreme_3sigma).apply(standardize_series))

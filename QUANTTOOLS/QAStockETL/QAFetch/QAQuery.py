@@ -8,8 +8,20 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
                               QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_str2int, QA_util_date_int2str,
                               QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
+from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict, dict2
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import pct,index_pct
+
+def QA_fetch_stock_industry(stock_code):
+    '''
+    根据tushare 的数据库查找上市的日期
+    :param stock_code: '600001'
+    :return: string 上市日期 eg： '2018-05-15'
+    '''
+    items = QA_fetch_stock_basic_info_tushare()
+    for row in items:
+        if row['code'] == stock_code:
+            return row['industry']
 
 def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype='EN', db=DATABASE):
     """获取专业财务报表
