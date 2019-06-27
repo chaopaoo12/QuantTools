@@ -5,7 +5,6 @@ from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_today_str,QA_util_log_info,
                               QA_util_get_trade_range,QA_util_if_trade)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
-import pandas as pd
 
 def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log = None, ui_progress = None):
     if start_date is None:
