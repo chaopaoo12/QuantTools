@@ -11,13 +11,10 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
     '获取股票量化机器学习最终指标V1'
     start = QA_util_get_pre_trade_date(start_date,61)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
-    fianacial = QA_fetch_stock_fianacial_adv(codes,start,end_date).data[[ 'TOTAL_MARKET', 'TRA_RATE',
+    fianacial = QA_fetch_stock_fianacial_adv(codes,start,end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE',
                                                                           'AVG5','AVG10','AVG20','AVG30','AVG60',
                                                                           'AVG5_TOR', 'AVG20_TOR','AVG30_TOR','AVG60_TOR',
                                                                           'GROSSMARGIN', 'GROSSMARGIN_L2Y','GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
-                                                                          'LAG5','LAG10','LAG20','LAG30','LAG60',
-                                                                          'SZ50','HS300','CY300','SZ180','SZ380',
-                                                                          'SZ100','SZ300','ZZ100','ZZ200','CY50',
                                                                           'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
                                                                           'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',
                                                                           'OPERATINGRINRATE', 'OPERATINGRINRATE_L2Y', 'OPERATINGRINRATE_L3Y', 'OPERATINGRINRATE_LY',
@@ -47,33 +44,27 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
                                                                  'alpha_152', 'alpha_153', 'alpha_155', 'alpha_156', 'alpha_158', 'alpha_159', 'alpha_160', 'alpha_161', 'alpha_162',
                                                                  'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                  'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_180', 'alpha_184', 'alpha_185', 'alpha_186',
-                                                                 'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].groupby('code').apply(series_to_supervised,[10,7,5,3,1]).loc[rng1].groupby('date').apply(get_trans)
+                                                                 'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].groupby('code').apply(series_to_supervised,[10,7,5,3,1]).loc[rng1]
     for columnname in alpha.columns:
         if alpha[columnname].dtype == 'float64':
             alpha[columnname]=alpha[columnname].astype('float16')
         if alpha[columnname].dtype == 'int64':
             alpha[columnname]=alpha[columnname].astype('int8')
-    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.astype(float).groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1]).loc[rng1].groupby('date').apply(get_trans)
+    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.astype(float).groupby('code').apply(series_to_supervised,[10,7,5,4,3,2,1]).loc[rng1]
     for columnname in technical.columns:
         if technical[columnname].dtype == 'float64':
             technical[columnname]=technical[columnname].astype('float16')
         if technical[columnname].dtype == 'int64':
             technical[columnname]=technical[columnname].astype('int8')
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
-    cols = [i for i in list(fianacial.columns) if i not in ['INDUSTRY','TOTAL_MARKET',
-                                                            'SZ50','HS300','CY300','SZ180','SZ380',
-                                                            'SZ100','SZ300','ZZ100','ZZ200','CY50']]
-    fianacial = fianacial[cols].groupby('code').apply(series_to_supervised,[10,7,5,3,1]).loc[rng1].join(fianacial.loc[rng1][['SZ50','HS300','CY300','SZ180','SZ380',
-                                                                                                                                'SZ100','SZ300','ZZ100','ZZ200','CY50',
-                                                                                                                                'INDUSTRY','TOTAL_MARKET']])
-    fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                           'SZ100','SZ300','ZZ100','ZZ200','CY50']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET','SZ50','HS300','CY300','SZ180','SZ380',
-                                                                                                                                                                      'SZ100','SZ300','ZZ100','ZZ200','CY50']])
+    cols = [i for i in list(fianacial.columns) if i not in ['INDUSTRY','TOTAL_MARKET']]
+    fianacial = fianacial[cols].groupby('code').apply(series_to_supervised,[10,7,5,3,1]).loc[rng1].join(fianacial.loc[rng1][['INDUSTRY','TOTAL_MARKET']])
+    fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['INDUSTRY','TOTAL_MARKET']]].groupby('date').apply(get_trans).join(fianacial[['INDUSTRY','TOTAL_MARKET']])
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
             fianacial[columnname]=fianacial[columnname].astype('float16')
         if fianacial[columnname].dtype == 'int64':
             fianacial[columnname]=fianacial[columnname].astype('int8')
-    res = fianacial.join(technical).join(alpha).fillna(0).reset_index()
+    res = fianacial.join(technical).join(alpha).groupby('date').apply(get_trans).fillna(0).reset_index()
     res = res.assign(date_stamp=res['date'].apply(lambda x: str(x)[0:10]))
     return(res)
