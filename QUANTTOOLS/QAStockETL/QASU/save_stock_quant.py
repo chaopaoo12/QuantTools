@@ -27,7 +27,7 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
     col.create_index(
         [("code", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
 
-    deal_date_list = list(pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10]))
+    deal_date_list = QA_util_get_trade_range(start_date, end_date)
     if deal_date_list is None:
         print('not a trading day')
     else:
