@@ -106,4 +106,4 @@ def QA_SU_save_stock_quant_data_day(code = None, start_date = None, end_date = N
     return save_stock_quant.QA_SU_save_stock_quant_day(code = code, start_date = start_date ,end_date = end_date)
 
 def QA_SU_save_stock_quant_data_his(code = None, start_date = '2008-01-01', end_date = None):
-    return save_stock_quant.QA_SU_save_stock_quant_his(code = code, start_date = start_date ,end_date = end_date)
+    return save_stock_quant.QA_SU_save_stock_quant_day(code = code, start_date = start_date ,end_date = end_date)
