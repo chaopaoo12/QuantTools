@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import time
 import math
+import statsmodels.api as sml
 
 def time_this_function(func):
     #作为装饰器使用，返回函数执行需要花费的时间
@@ -28,38 +29,40 @@ def normalization_series(series): #原始值法
         return((series-series.min)/(series.max-series.min))
 
 def filter_extreme_3sigma(array,n=3): #3 sigma
-    array1 = array.replace([np.inf, -np.inf], np.nan)
-    vmax = array1.max()
-    vmin = array1.min()
-    if vmax ==1 and vmin == 0:
-        return(array1)
+    if array.dtype in list(['int8','int16','int32','int64','float16','float32','float64']):
+        array1 = array.replace([np.inf, -np.inf], np.nan)
+        vmax = array1.max()
+        vmin = array1.min()
+        if vmax ==1 and vmin == 0:
+            return(array1)
+        else:
+            sigma = array1.std()
+            mu = array1.mean()
+            array = array.replace(np.inf, vmin)
+            array = array.replace(-np.inf, vmax)
+            array[array > mu + n*sigma] = mu + n*sigma
+            array[array < mu - n*sigma] = mu - n*sigma
+            return(array)
     else:
-        sigma = array1.std()
-        mu = array1.mean()
-        array = array.replace(np.inf, vmin)
-        array = array.replace(-np.inf, vmax)
-        array[array > mu + n*sigma] = mu + n*sigma
-        array[array < mu - n*sigma] = mu - n*sigma
         return(array)
 
-# 去极值，标准化，中性化
-def neutralization(factor,mkt_cap = True, industry = True):
+def neutralization(factor, mkt_cap=None, industry = None):
     y = factor
-    if type(mkt_cap) == pd.Series:
+    if mkt_cap is not None:
         LnMktCap = mkt_cap.apply(lambda x:math.log(x))
-        if industry: #行业、市值
-            dummy_industry = pd.get_dummies(factor.index)
-            x = pd.concat([LnMktCap,dummy_industry.T],axis = 1)
+        if industry is not None: #行业、市值
+            dummy_industry = pd.get_dummies(industry)
+            x = pd.concat([LnMktCap,dummy_industry],axis = 1)
         else: #仅市值
             x = LnMktCap
-    elif type(industry) == pd.Series: #仅行业
-        dummy_industry = pd.get_dummies(factor.index)
-        x = dummy_industry.T
+    elif industry is not None: #仅行业
+        dummy_industry = pd.get_dummies(industry)
+        x = dummy_industry
     result = sml.OLS(y.astype(float),x.astype(float)).fit()
     return result.resid
 
 def get_trans(data):
-    return(data.apply(filter_extreme_3sigma).apply(standardize_series))
+    return(data.apply(filter_extreme_3sigma)[[i for i in list(data.columns) if i not in ['TOTAL_MARKET','INDUSTRY']]].apply(lambda x:standardize_series(neutralization(x,data['TOTAL_MARKET'],data['INDUSTRY']))))
 
 def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     cols_na = list(data.columns)

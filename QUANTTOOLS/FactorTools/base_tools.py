@@ -4,6 +4,7 @@ from matplotlib.pylab import *
 import statsmodels.api as sml
 import numpy as np
 import math
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry
 
 def standardize_series(series): #原始值法
     std = series.std()
@@ -35,12 +36,12 @@ def neutralization(factor,mkt_cap = True, industry = True):
     if type(mkt_cap) == pd.Series:
         LnMktCap = mkt_cap.apply(lambda x:math.log(x))
         if industry: #行业、市值
-            dummy_industry = pd.get_dummies(factor.index)
+            dummy_industry = QA_fetch_stock_industry(factor.index)
             x = pd.concat([LnMktCap,dummy_industry.T],axis = 1)
         else: #仅市值
             x = LnMktCap
     elif type(industry) == pd.Series: #仅行业
-        dummy_industry = pd.get_dummies(factor.index)
+        dummy_industry = pd.get_dummies(industry)
         x = dummy_industry.T
     result = sml.OLS(y.astype(float),x.astype(float)).fit()
     return result.resid
