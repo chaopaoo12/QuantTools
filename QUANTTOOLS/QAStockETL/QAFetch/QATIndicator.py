@@ -533,4 +533,5 @@ def QA_fetch_get_indicator(code, start_date, end_date):
                        axis=1).dropna(how='all').reset_index()
         res = res[[x for x in list(res.columns) if x not in ['MARK','a','b']]]
         data = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
+        data = data.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
         return(data)
