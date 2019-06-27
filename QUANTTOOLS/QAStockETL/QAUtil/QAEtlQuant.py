@@ -26,6 +26,8 @@ def QA_util_etl_stock_quant(deal_date = None):
        round(tra_total_market / total_market * 100, 2) AS tra_rate,
        round(pe, 2) AS pe,
        round(pb, 2) AS pb,
+       pe_rank,
+       pb_rank,
        round(roe * 100, 2) AS roe,
        round(roe_ly * 100, 2) AS roe_ly,
        round(roe_l2y * 100, 2) AS roe_l2y,
