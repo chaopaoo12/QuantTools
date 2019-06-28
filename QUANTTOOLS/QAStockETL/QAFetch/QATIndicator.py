@@ -1,7 +1,7 @@
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv,QA_fetch_stock_day_adv
 import QUANTAXIS as QA
 import pandas as pd
-from QUANTAXIS.QAUtil import QA_util_date_stamp
+from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date
 import numpy as np
 
 from scipy import stats
@@ -22,7 +22,9 @@ def function(a, b):
         return 0
 
 def QA_fetch_get_indicator(code, start_date, end_date):
-    data = QA_fetch_stock_day_adv(code,start_date,end_date)
+    start = QA_util_get_pre_trade_date(start_date,180)
+    rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+    data = QA_fetch_stock_day_adv(code,start,end_date)
     if data == None:
         return None
     else:
@@ -530,7 +532,7 @@ def QA_fetch_get_indicator(code, start_date, end_date):
                         CDLRISEFALL3METHODS,CDLSEPARATINGLINES,CDLSHOOTINGSTAR,CDLSHORTLINE,
                         CDLSPINNINGTOP,CDLSTALLEDPATTERN,CDLSTICKSANDWICH,CDLTAKURI,CDLTASUKIGAP,
                         CDLTHRUSTING,CDLTRISTAR,CDLUNIQUE3RIVER,CDLUPSIDEGAP2CROWS,CDLXSIDEGAP3METHODS],
-                       axis=1).dropna(how='all').reset_index()
+                       axis=1).loc[rng1].dropna(how='all').reset_index()
         res = res[[x for x in list(res.columns) if x not in ['MARK','a','b']]]
         data = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         data = data.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
