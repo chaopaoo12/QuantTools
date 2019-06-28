@@ -13,7 +13,7 @@ from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fe
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_sql_store_mysql
 from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_process_financial,QA_util_etl_financial_TTM,\
     QA_util_process_stock_financial,QA_util_etl_stock_quant)
-
+import numpy as np
 import pandas as pd
 import datetime
 
@@ -23,8 +23,11 @@ def rolling_ols(y):
     滚动回归，返回滚动回归后的回归系数
     rb: 因变量序列
     '''
-    model = stats.linregress(y, pd.Series(range(1,len(y)+1)))
+    #slope = np.diff(y)/np.diff(pd.Series(range(1,len(y)+1)))
+    #return(slope)
+    model = stats.linregress(pd.Series(range(1,len(y)+1)),y)
     return(round(model.slope,2))
+
 
 def pct(data):
     data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
