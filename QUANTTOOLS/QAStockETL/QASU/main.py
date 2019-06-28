@@ -107,3 +107,15 @@ def QA_SU_save_stock_quant_data_day(code = None, start_date = None, end_date = N
 
 def QA_SU_save_stock_quant_data_his(code = None, start_date = '2008-01-01', end_date = None):
     return save_stock_quant.QA_SU_save_stock_quant_day(code = code, start_date = start_date ,end_date = end_date)
+
+def QA_SU_save_stock_technical_week_day(START_DATE=None,END_DATE=None):
+    return save_stock_technical_index.QA_SU_save_stock_technical_week_day(START_DATE=START_DATE,END_DATE=END_DATE)
+
+def QA_SU_save_stock_technical_week_his(START_DATE=None,END_DATE=None):
+    return save_stock_technical_index.QA_SU_save_stock_technical_week_his(START_DATE=START_DATE,END_DATE=END_DATE)
+
+def QA_SU_save_stock_technical_month_day(START_DATE=None,END_DATE=None):
+    return save_stock_technical_index.QA_SU_save_stock_technical_month_day(START_DATE=START_DATE,END_DATE=END_DATE)
+
+def QA_SU_save_stock_technical_month_his(START_DATE=None,END_DATE=None):
+    return save_stock_technical_index.QA_SU_save_stock_technical_month_his(START_DATE=START_DATE,END_DATE=END_DATE)

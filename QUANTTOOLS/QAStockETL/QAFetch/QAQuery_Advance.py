@@ -156,7 +156,7 @@ def QA_fetch_financial_report_wy_adv(code=None, start=None, end=None, type='repo
     """
     return QA_DataStruct_Financial(QA_fetch_financial_report_wy(code, start, end, type=type, ltype=ltype))
 
-def QA_fetch_stock_technical_index_adv(code, start="all", end=None, format='pd', collections=DATABASE.stock_technical_index):
+def QA_fetch_stock_technical_index_adv(code, start="all", end=None, type='day', format='pd', collections=DATABASE.stock_technical_index):
     '获取股票财报日历'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -167,10 +167,10 @@ def QA_fetch_stock_technical_index_adv(code, start="all", end=None, format='pd',
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_technical_index(code, start, end)
+        data = QA_fetch_stock_technical_index(code, start, end, type)
         return QA_DataStruct_Financial(data)
     else:
-        data = QA_fetch_stock_technical_index(code, start, end)
+        data = QA_fetch_stock_technical_index(code, start, end, type)
         return QA_DataStruct_Financial(data)
 
 def QA_fetch_stock_financial_percent_adv(code, start="all", end=None, format='pd', collections=DATABASE.stock_financial_percent):

@@ -491,10 +491,18 @@ def QA_fetch_financial_report_wy(code, start_date, end_date, type ='report', lty
     except Exception as e:
         raise e
 
-def QA_fetch_stock_technical_index(code, start, end=None, format='pd', collections=DATABASE.stock_technical_index):
+def QA_fetch_stock_technical_index(code, start, end=None, type='day', format='pd'):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
+    if type == 'day':
+        collections=DATABASE.stock_technical_index
+    elif type == 'week':
+        collections=DATABASE.stock_technical_week
+    elif type == 'month':
+        collections=DATABASE.stock_technical_month
+    else:
+        print("type should be in ['day', 'week', 'month']")
     code = QA_util_code_tolist(code)
     if QA_util_date_valid(end):
 
