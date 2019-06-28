@@ -533,12 +533,12 @@ def get_indicator(data,rng1):
     return(res)
 
 def ohlc(data,N=7):
-    data['open'] = data['open'].rolling(window=N).apply(lambda x:x[0])
-    data['high'] = data['high'].rolling(window=N).apply(lambda x:x.max())
-    data['low'] = data['low'].rolling(window=N).apply(lambda x:x.min())
-    data['close'] = data['close'].rolling(window=N).apply(lambda x:x[-1])
-    data['volume'] = data['volume'].rolling(window=N).apply(lambda x:x.sum())
-    data['amount'] = data['amount'].rolling(window=N).apply(lambda x:x.sum())
+    data['open'] = data['open'].rolling(window=N).apply(lambda x:x[0],raw=True)
+    data['high'] = data['high'].rolling(window=N).apply(lambda x:x.max(),raw=True)
+    data['low'] = data['low'].rolling(window=N).apply(lambda x:x.min(),raw=True)
+    data['close'] = data['close'].rolling(window=N).apply(lambda x:x[-1],raw=True)
+    data['volume'] = data['volume'].rolling(window=N).apply(lambda x:x.sum(),raw=True)
+    data['amount'] = data['amount'].rolling(window=N).apply(lambda x:x.sum(),raw=True)
     return(data)
 
 def QA_fetch_get_indicator(code, start_date, end_date, type = 'day'):
