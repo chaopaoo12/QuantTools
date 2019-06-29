@@ -359,7 +359,9 @@ def QA_util_etl_stock_quant(deal_date = None):
        avg10_c_market,
        avg20_c_market,
        avg30_c_market,
-       avg60_c_market
+       avg60_c_market,
+       pe_rank,
+       pb_rank
   from (select *
           from stock_analysis_data
  where order_date = to_date('{start_date}', 'yyyy-mm-dd'))A
