@@ -53,6 +53,8 @@ def get_indicator(data,rng1):
         BOLL['BOLL_CROSS2'] = QA.CROSS(BOLL['BOLL'], BOLL['UB'])
         BOLL['BOLL_CROSS3'] = QA.CROSS(BOLL['LB'], BOLL['BOLL'])
         BOLL['BOLL_CROSS4'] = QA.CROSS(BOLL['BOLL'], BOLL['LB'])
+        BOLL['UB'] = BOLL['UB'] / data['close'] - 1
+        BOLL['LB'] = BOLL['LB'] / data['close'] - 1
     except:
         BOLL = data.data.assign(BOLL=None,UB=None,LB=None,WIDTH=None,
                                 BOLL_CROSS1=0,BOLL_CROSS2=0,BOLL_CROSS3=0,
@@ -60,12 +62,6 @@ def get_indicator(data,rng1):
                                                 'BOLL_CROSS2','BOLL_CROSS3','BOLL_CROSS4']]
     try:
         MIKE = data.add_func(QA.QA_indicator_MIKE)
-        MIKE['WR'] = MIKE['WR'] - data['close']
-        MIKE['MR'] = MIKE['MR'] - data['close']
-        MIKE['SR'] = MIKE['SR'] - data['close']
-        MIKE['WS'] = MIKE['WS'] - data['close']
-        MIKE['MS'] = MIKE['MS'] - data['close']
-        MIKE['SS'] = MIKE['SS'] - data['close']
     except:
         MIKE = data.data.assign(WR=None,MR=None,SR=None,WS=None,MS=None,SS=None)[['WR','MR','SR','WS','MS','SS']]
     try:
@@ -229,7 +225,7 @@ def get_indicator(data,rng1):
         CHO = data.data.assign(CHO=None,MACHO=None)[['CHO','MACHO']]
     try:
         BBI = data.add_func(QA.QA_indicator_BBI)
-        BBI['BBI'] = BBI['BBI'] - data['close']
+        BBI['BBI'] = data['close']/BBI['BBI'] - 1
         BBI['BBI_CROSS1'] = QA.CROSS(BBI['BBI'], data['close'])
         BBI['BBI_CROSS2'] = QA.CROSS(data['close'], BBI['BBI'])
     except:
@@ -266,12 +262,6 @@ def get_indicator(data,rng1):
         shadow = data.data.assign(SHA_LOW=None,SHA_UP=None,BODY=None,BODY_ABS=None,PRICE_PCG=None)[['SHA_LOW','SHA_UP','BODY','BODY_ABS','PRICE_PCG']]
     try:
         MA = data.add_func(QA.QA_indicator_MA,5,10,20,60,120,180)
-        MA['MA5'] = data['close']/MA['MA5']-1
-        MA['MA10'] = data['close']/MA['MA10']-1
-        MA['MA20'] = data['close']/MA['MA20']-1
-        MA['MA60'] = data['close']/MA['MA60']-1
-        MA['MA120'] = data['close']/MA['MA120']-1
-        MA['MA180'] = data['close']/MA['MA180']-1
     except:
         MA = data.data.assign(MA5=None,MA10=None,MA20=None,MA60=None,
                               MA120=None,MA180=None)[['MA5','MA10','MA20','MA60','MA120','MA180']]
@@ -536,6 +526,22 @@ def get_indicator(data,rng1):
                     CDLSPINNINGTOP,CDLSTALLEDPATTERN,CDLSTICKSANDWICH,CDLTAKURI,CDLTASUKIGAP,
                     CDLTHRUSTING,CDLTRISTAR,CDLUNIQUE3RIVER,CDLUPSIDEGAP2CROWS,CDLXSIDEGAP3METHODS],
                    axis=1).dropna(how='all')
+    res['MIKE_WRJC'] = QA.CROSS(res['MA5'], res['WR'])
+    res['MIKE_WRSC'] = QA.CROSS(res['WR'], res['MA5'])
+    res['MIKE_WSJC'] = QA.CROSS(res['MA5'], res['WS'])
+    res['MIKE_WSSC'] = QA.CROSS(res['WS'], res['MA5'])
+    res['WR'] = data['close']/res['WR']  - 1
+    res['MR'] = data['close']/res['MR'] - 1
+    res['SR'] = data['close']/res['SR'] - 1
+    res['WS'] = data['close']/res['WS'] - 1
+    res['MS'] = data['close']/res['MS'] - 1
+    res['SS'] = data['close']/res['SS'] - 1
+    res['MA5'] = data['close']/res['MA5']-1
+    res['MA10'] = data['close']/res['MA10']-1
+    res['MA20'] = data['close']/res['MA20']-1
+    res['MA60'] = data['close']/res['MA60']-1
+    res['MA120'] = data['close']/res['MA120']-1
+    res['MA180'] = data['close']/res['MA180']-1
     res = res[[x for x in list(res.columns) if x not in ['MARK','a','b']]].loc[rng1].reset_index()
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
