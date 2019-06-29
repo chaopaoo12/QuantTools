@@ -49,17 +49,12 @@ def get_indicator(data,rng1):
     try:
         BOLL = data.add_func(QA.QA_indicator_BOLL)
         BOLL['WIDTH'] = (BOLL['UB']-BOLL['LB'])/BOLL['BOLL']
-        BOLL['BOLL_CROSS1'] = QA.CROSS(BOLL['UB'], BOLL['BOLL'])
-        BOLL['BOLL_CROSS2'] = QA.CROSS(BOLL['BOLL'], BOLL['UB'])
-        BOLL['BOLL_CROSS3'] = QA.CROSS(BOLL['LB'], BOLL['BOLL'])
-        BOLL['BOLL_CROSS4'] = QA.CROSS(BOLL['BOLL'], BOLL['LB'])
-        BOLL['UB'] = BOLL['UB'] / data['close'] - 1
-        BOLL['LB'] = BOLL['LB'] / data['close'] - 1
+        BOLL['UB'] = data['close'] / BOLL['UB'] - 1
+        BOLL['LB'] = data['close'] / BOLL['LB'] - 1
     except:
         BOLL = data.data.assign(BOLL=None,UB=None,LB=None,WIDTH=None,
                                 BOLL_CROSS1=0,BOLL_CROSS2=0,BOLL_CROSS3=0,
-                                BOLL_CROSS4=0)[['BOLL','UB','LB','WIDTH','BOLL_CROSS1',
-                                                'BOLL_CROSS2','BOLL_CROSS3','BOLL_CROSS4']]
+                                BOLL_CROSS4=0)[['BOLL','UB','LB','WIDTH']]
     try:
         MIKE = data.add_func(QA.QA_indicator_MIKE)
     except:
