@@ -354,7 +354,12 @@ def QA_util_etl_stock_quant(deal_date = None):
        AVG10_TR,
        AVG20_TR,
        AVG30_TR,
-       AVG60_TR
+       AVG60_TR,
+       avg5_c_market,
+       avg10_c_market,
+       avg20_c_market,
+       avg30_c_market,
+       avg60_c_market
   from (select *
           from stock_analysis_data
  where order_date = to_date('{start_date}', 'yyyy-mm-dd'))A
