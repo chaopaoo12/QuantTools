@@ -48,6 +48,11 @@ def perank(data):
     data['PS_20VAL']= data['PS'].rolling(window=20).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
     data['PS_30VAL']= data['PS'].rolling(window=30).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
     data['PS_60VAL']= data['PS'].rolling(window=60).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PERANK_10PCT']= data['PE_RANK'].rolling(window=10).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PERANK_20PCT']= data['PE_RANK'].rolling(window=20).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PERANK_30PCT']= data['PE_RANK'].rolling(window=30).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PERANK_60PCT']= data['PE_RANK'].rolling(window=60).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data['PERANK_90PCT']= data['PE_RANK'].rolling(window=90).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
     return(data)
 
 def QA_fetch_get_stock_financial_percent(code,start_date,end_date):
