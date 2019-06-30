@@ -8,7 +8,7 @@ from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
 import QUANTAXIS as QA
 
 def perank(data):
-    data = data.sort_values('date',ascending=True).fillna(method='ffill')
+    #data = data.sort_values('date',ascending=True).fillna(method='ffill')
     data['PE_90PCT']= data['PE'].rolling(window=90).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
     data['PE_10PCT']= data['PE'].rolling(window=10).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
     data['PE_20PCT']= data['PE'].rolling(window=20).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
