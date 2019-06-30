@@ -33,7 +33,7 @@ def QA_SU_save_financial_report_day(client=DATABASE, ui_log = None, ui_progress 
         stock_financial.create_index([("code", pymongo.ASCENDING), ("report_date", pymongo.ASCENDING)], unique=True)
         err = []
 
-        for item in list(set(code)):
+        for item in list(set(list(code['code'].values))):
 
             QA_util_log_info('The {} of Total {}'.format
                              ((code.index(item) +1), len(code)))
@@ -74,7 +74,7 @@ def QA_SU_save_financial_report_his(client=DATABASE, ui_log = None, ui_progress 
             print(error0)
             err.append(str(code))
 
-    for item in list(set(code)):
+    for item in list(set(list(code['code'].values))):
         QA_util_log_info('The {} of Total {}'.format
                          ((code.index(item) +1), len(code)))
 
