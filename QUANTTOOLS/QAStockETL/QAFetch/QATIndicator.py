@@ -4,8 +4,9 @@ import pandas as pd
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date
 import numpy as np
 from QUANTAXIS.QAData import QA_DataStruct_Stock_day
-
+from QUANTAXIS.QAIndicator.base import *
 from scipy import stats
+
 def rolling_ols(y):
     '''
     滚动回归，返回滚动回归后的回归系数
@@ -13,6 +14,29 @@ def rolling_ols(y):
     '''
     model = stats.linregress(y, pd.Series(range(1,len(y)+1)))
     return(round(model.slope,2))
+
+def MIKE_NEW(DataFrame,MIKE_N=12,MA_N=5):
+    HIGH = DataFrame.high
+    LOW = DataFrame.low
+    CLOSE = DataFrame.close
+    TYP = (HIGH+LOW+CLOSE)/3
+    LL = LLV(LOW, MIKE_N)
+    HH = HHV(HIGH, MIKE_N)
+    WR = TYP+(TYP-LL)
+    MR = TYP+(HH-LL)
+    SR = 2*HH-LL
+    WS = TYP-(HH-TYP)
+    MS = TYP-(HH-LL)
+    SS = 2*LL-HH
+    MA5 = MA(CLOSE, MA_N)
+    MIKE_WRSC = QA.CROSS(MA5, WR)
+    MIKE_WRJC = QA.CROSS(WR, MA5)
+    MIKE_WSSC = QA.CROSS(MA5, WS)
+    MIKE_WSJC = QA.CROSS(WS, MA5)
+    MIKE_TR = np.abs(MA5 - WS) / np.abs(WR - MA5)
+    MIKE_TR = [0 if x > 1 else 1 for x in MIKE_TR]
+    return pd.DataFrame({'WR':WR,'MR':MR,'SR':SR,'WS':WS,'MS':MS,'SS':SS
+                        ,'MIKE_WRSC':MIKE_WRSC,'MIKE_WRJC':MIKE_WRJC,'MIKE_WSSC':MIKE_WSSC,'MIKE_WSJC':MIKE_WSJC,'MIKE_TR':MIKE_TR})
 
 def function(a, b):
     if a > b:
@@ -56,9 +80,16 @@ def get_indicator(data,rng1):
                                 BOLL_CROSS1=0,BOLL_CROSS2=0,BOLL_CROSS3=0,
                                 BOLL_CROSS4=0)[['BOLL','UB','LB','WIDTH']]
     try:
-        MIKE = data.add_func(QA.QA_indicator_MIKE)
+        MIKE = data.add_func(MIKE_NEW)
     except:
-        MIKE = data.data.assign(WR=None,MR=None,SR=None,WS=None,MS=None,SS=None)[['WR','MR','SR','WS','MS','SS']]
+        MIKE = data.data.assign(WR=None,MR=None,SR=None,WS=None,MS=None,SS=None,
+                                MIKE_WRSC=0,MIKE_WRJC=0,MIKE_WSSC=0,MIKE_WSJC=0,MIKE_TR=0)[['WR','MR','SR','WS','MS','SS',
+                                                                                            'MIKE_WRSC','MIKE_WRJC','MIKE_WSSC','MIKE_WSJC','MIKE_TR']]
+    try:
+        MA = data.add_func(QA.QA_indicator_MA,5,10,20,60,120,180)
+    except:
+        MA = data.data.assign(MA5=None,MA10=None,MA20=None,MA60=None,
+                              MA120=None,MA180=None)[['MA5','MA10','MA20','MA60','MA120','MA180']]
     try:
         ASI = data.add_func(QA.QA_indicator_ASI)
     except:
@@ -255,11 +286,6 @@ def get_indicator(data,rng1):
         shadow.columns=['SHA_LOW','SHA_UP','BODY','BODY_ABS','PRICE_PCG']
     except:
         shadow = data.data.assign(SHA_LOW=None,SHA_UP=None,BODY=None,BODY_ABS=None,PRICE_PCG=None)[['SHA_LOW','SHA_UP','BODY','BODY_ABS','PRICE_PCG']]
-    try:
-        MA = data.add_func(QA.QA_indicator_MA,5,10,20,60,120,180)
-    except:
-        MA = data.data.assign(MA5=None,MA10=None,MA20=None,MA60=None,
-                              MA120=None,MA180=None)[['MA5','MA10','MA20','MA60','MA120','MA180']]
     try:
         CDL2CROWS = data.add_func(QA.QAIndicator.talib_indicators.CDL2CROWS)
     except:
@@ -521,21 +547,13 @@ def get_indicator(data,rng1):
                     CDLSPINNINGTOP,CDLSTALLEDPATTERN,CDLSTICKSANDWICH,CDLTAKURI,CDLTASUKIGAP,
                     CDLTHRUSTING,CDLTRISTAR,CDLUNIQUE3RIVER,CDLUPSIDEGAP2CROWS,CDLXSIDEGAP3METHODS],
                    axis=1).dropna(how='all')
-    res['MIKE_WRSC'] = QA.CROSS(res['MA5'], res['WR'])
-    res['MIKE_WRJC'] = QA.CROSS(res['WR'], res['MA5'])
-    res['MIKE_WSSC'] = QA.CROSS(res['MA5'], res['WS'])
-    res['MIKE_WSJC'] = QA.CROSS(res['WS'], res['MA5'])
-    res['MIKE_TR'] = np.abs(res['WS'] - res['MA5']) / np.abs(res['WR'] - res['MA5'])
-    res['MIKE_TR'] = res['MIKE_TR'].apply(lambda x: 0 if x > 1 else 1)
-    res[res['WR'] <= res['MA5']][res['MIKE_TR'] == 0]['MIKE_TR'] = 1
-    res[res['MA5'] >= res['WS']][res['MIKE_TR'] == 1]['MIKE_TR'] = 0
-    #res['WR'] = data['close']/res['WR']  - 1
+    res['WR'] = data['close']/res['WR']  - 1
     res['MR'] = data['close']/res['MR'] - 1
     res['SR'] = data['close']/res['SR'] - 1
-    #res['WS'] = data['close']/res['WS'] - 1
+    res['WS'] = data['close']/res['WS'] - 1
     res['MS'] = data['close']/res['MS'] - 1
     res['SS'] = data['close']/res['SS'] - 1
-    #res['MA5'] = data['close']/res['MA5']-1
+    res['MA5'] = data['close']/res['MA5']-1
     res['MA10'] = data['close']/res['MA10']-1
     res['MA20'] = data['close']/res['MA20']-1
     res['MA60'] = data['close']/res['MA60']-1
