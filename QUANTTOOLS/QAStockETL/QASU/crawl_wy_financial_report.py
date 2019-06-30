@@ -13,8 +13,6 @@ def QA_SU_save_financial_report_day(client=DATABASE, ui_log = None, ui_progress 
     历史全部数据
     :return:
     '''
-    END_DATE = QA_util_today_str()
-    START_DATE = QA_util_datetime_to_strdate(QA_util_add_days(QA_util_today_str(),-7))
 
     def __saving_work(code, stock_financial):
         try:
