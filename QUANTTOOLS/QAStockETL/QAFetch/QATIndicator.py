@@ -521,19 +521,21 @@ def get_indicator(data,rng1):
                     CDLSPINNINGTOP,CDLSTALLEDPATTERN,CDLSTICKSANDWICH,CDLTAKURI,CDLTASUKIGAP,
                     CDLTHRUSTING,CDLTRISTAR,CDLUNIQUE3RIVER,CDLUPSIDEGAP2CROWS,CDLXSIDEGAP3METHODS],
                    axis=1).dropna(how='all')
-    res['MIKE_WRJC'] = QA.CROSS(res['MA5'], res['WR'])
-    res['MIKE_WRSC'] = QA.CROSS(res['WR'], res['MA5'])
-    res['MIKE_WSJC'] = QA.CROSS(res['MA5'], res['WS'])
-    res['MIKE_WSSC'] = QA.CROSS(res['WS'], res['MA5'])
+    res['MIKE_WRSC'] = QA.CROSS(res['MA5'], res['WR'])
+    res['MIKE_WRJC'] = QA.CROSS(res['WR'], res['MA5'])
+    res['MIKE_WSSC'] = QA.CROSS(res['MA5'], res['WS'])
+    res['MIKE_WSJC'] = QA.CROSS(res['WS'], res['MA5'])
     res['MIKE_TR'] = np.abs(res['WS'] - res['MA5']) / np.abs(res['WR'] - res['MA5'])
     res['MIKE_TR'] = res['MIKE_TR'].apply(lambda x: 0 if x > 1 else 1)
-    res['WR'] = data['close']/res['WR']  - 1
+    res[res['WR'] <= res['MA5']][res['MIKE_TR'] == 0]['MIKE_TR'] = 1
+    res[res['MA5'] >= res['WS']][res['MIKE_TR'] == 1]['MIKE_TR'] = 0
+    #res['WR'] = data['close']/res['WR']  - 1
     res['MR'] = data['close']/res['MR'] - 1
     res['SR'] = data['close']/res['SR'] - 1
-    res['WS'] = data['close']/res['WS'] - 1
+    #res['WS'] = data['close']/res['WS'] - 1
     res['MS'] = data['close']/res['MS'] - 1
     res['SS'] = data['close']/res['SS'] - 1
-    res['MA5'] = data['close']/res['MA5']-1
+    #res['MA5'] = data['close']/res['MA5']-1
     res['MA10'] = data['close']/res['MA10']-1
     res['MA20'] = data['close']/res['MA20']-1
     res['MA60'] = data['close']/res['MA60']-1
