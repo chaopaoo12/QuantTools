@@ -8,7 +8,7 @@ from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
 import QUANTAXIS as QA
 
 def perank(data):
-    data = data.sort_values('date',ascending=True, inplace=True)
+    data = data.sort_values('date',ascending=True).fillna(method='ffill')
     data['PE_90PCT']= data['PE'].rolling(window=90).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
     data['PE_10PCT']= data['PE'].rolling(window=10).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
     data['PE_20PCT']= data['PE'].rolling(window=20).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
@@ -63,7 +63,7 @@ def perank(data):
 
 def QA_fetch_get_stock_financial_percent(code,start_date,end_date):
     start = QA_util_get_pre_trade_date(start_date,91)
-    fianacial = QA_fetch_stock_fianacial_adv(code,start,end_date).data[['PB', 'PE', 'PEG', 'PS','PB_RANK','PE_RANK']].groupby('code').fillna(method='ffill')
+    fianacial = QA_fetch_stock_fianacial_adv(code,start,end_date).data[['PB', 'PE', 'PEG', 'PS','PB_RANK','PE_RANK']]
     try:
         fianacial = fianacial.groupby('code').apply(perank).loc[pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])].reset_index()
         fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['PB', 'PE', 'PEG', 'PS','PB_RANK','PE_RANK']]]

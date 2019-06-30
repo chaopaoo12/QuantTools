@@ -97,6 +97,7 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     return agg
 
 def pct(data, type = 'close'):
+    data = data.sort_values('date',ascending=True)
     if type == 'close':
         data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
         data['PRE_MARKET']= data['close_qfq'].shift(-1).apply(lambda x:round(x * 100,2))
@@ -130,6 +131,7 @@ def pct(data, type = 'close'):
     return(data)
 
 def index_pct(market):
+    market = market.sort_values('date',ascending=True)
     market['PRE_MARKET']= market['close'].shift(-1)
     market['PRE2_MARKET']= market['close'].shift(-2)
     market['PRE3_MARKET']= market['close'].shift(-3)
