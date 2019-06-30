@@ -6,7 +6,8 @@ import math
 import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
                               QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_str2int, QA_util_date_int2str,
-                              QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date)
+                              QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date,QA_util_datetime_to_strdate,
+                              QA_util_add_months,QA_util_getBetweenQuarter)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict, dict2
@@ -391,7 +392,7 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
             'QA Error QA_fetch_stock_shares data parameter start=%s end=%s is not right' % (start, end))
 
 
-def QA_fetch_financial_report_wy(code, start_date, end_date, type ='report', ltype='EN', db=DATABASE):
+def QA_fetch_financial_report_wy(code, start_date = None, end_date = None, type ='report', ltype='EN', db=DATABASE):
     """获取专业财务报表
 
     Arguments:
@@ -658,3 +659,19 @@ def QA_fetch_stock_quant_pre(code, start, end=None, format='pd'):
     else:
         print("QA Error QA_fetch_stock_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
         return None
+
+def QA_fetch_financial_code(codes,N=6):
+    END_DATE = QA_util_datetime_to_strdate(QA_util_add_months(QA_util_today_str(),-3))
+    START_DATE = QA_util_datetime_to_strdate(QA_util_add_months(QA_util_today_str(),-N*12))
+    date_list = list(pd.DataFrame.from_dict(QA_util_getBetweenQuarter(START_DATE,END_DATE)).T.iloc[:,1])
+    res = pd.DataFrame([list((x,  y)) for x in codes for y in date_list])
+    res.columns=['code','report_date']
+    market_day = pd.DataFrame(QA_fetch_stock_basic_info_tushare())[['code','timeToMarket']].set_index('code')
+    market_day['TM'] = market_day['timeToMarket'].apply(lambda x:str(QA_util_add_months(QA_util_date_int2str(int(x)),-36) if x >0 else None)[0:10])
+    res1 = res.set_index('code').join(market_day['TM']).reset_index()
+    res2 = res1[res1['TM'] <= res1['report_date']]
+    res2['report_date'] = res2['report_date'].astype('datetime64[ns]')
+    real = QA_fetch_financial_report_wy(codes)[['code','report_date']].reset_index(drop=True)
+    real['MARK'] = 1
+    r = pd.merge(res2,real, on=['code','report_date'],how='left')
+    return(r[r['MARK'] != 1])

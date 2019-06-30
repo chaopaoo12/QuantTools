@@ -45,4 +45,5 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv, QA_fet
                                            QA_fetch_stock_financial_percent,QA_fetch_stock_financial_percent_adv,
                                            QA_fetch_stock_quant_data,QA_fetch_stock_quant_data_adv,
                                            QA_fetch_stock_quant_pre,QA_fetch_stock_quant_pre_adv,
-                                           QA_fetch_stock_target,QA_fetch_stock_target_adv,QA_fetch_stock_industry)
+                                           QA_fetch_stock_target,QA_fetch_stock_target_adv,QA_fetch_stock_industry,
+                                           QA_fetch_financial_code)
