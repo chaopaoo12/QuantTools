@@ -525,6 +525,8 @@ def get_indicator(data,rng1):
     res['MIKE_WRSC'] = QA.CROSS(res['WR'], res['MA5'])
     res['MIKE_WSJC'] = QA.CROSS(res['MA5'], res['WS'])
     res['MIKE_WSSC'] = QA.CROSS(res['WS'], res['MA5'])
+    res['MIKE_TR'] = np.abs(res['WS'] - res['MA5']) / np.abs(res['WR'] - res['MA5'])
+    res['MIKE_TR'] = res['MIKE_TR'].apply(lambda x: 0 if x > 1 else 1)
     res['WR'] = data['close']/res['WR']  - 1
     res['MR'] = data['close']/res['MR'] - 1
     res['SR'] = data['close']/res['SR'] - 1
