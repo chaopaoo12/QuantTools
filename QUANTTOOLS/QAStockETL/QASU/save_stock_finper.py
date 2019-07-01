@@ -125,9 +125,9 @@ def QA_SU_save_stock_fianacial_percent_his(code = None, start_date=None,end_date
     for i in range(0, len(codes), 1000):
         code = codes[i:i+1000]
         QA_util_log_info('The {} of Total {}'.format
-                         ((i * 1000 +1), len(codes)))
-        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((i * 1000 +1) / len(codes) * 100))[0:4] + '%', ui_log)
-        intProgressToLog = int(float((i * 1000 +1) / len(codes) * 100))
+                         (((i +1) * 1000 ), len(codes)))
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float(((i + 1) * 1000) / len(codes) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float(((i +1) * 1000 ) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
         __saving_work( code, start_date, end_date, stock_financial_percent)
 
