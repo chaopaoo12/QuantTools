@@ -114,7 +114,7 @@ def pct(data, type = 'close'):
         data['AVG_TARGET'] = data['AVG_TOTAL_MARKET'].pct_change(1).shift(-1).apply(lambda x:round(x * 100,2))
     elif type == 'high':
         data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
-        data['PRE_MARKET']= data['high_qfq'].shift(-1).apply(lambda x:round(x * 100,2))
+        data['PRE_MARKET']= data['close_qfq'].shift(-1).apply(lambda x:round(x * 100,2))
         data['PRE2_MARKET']= data['high_qfq'].shift(-2).apply(lambda x:round(x * 100,2))
         data['PRE3_MARKET']= data['high_qfq'].shift(-3).apply(lambda x:round(x * 100,2))
         data['PRE5_MARKET']= data['high_qfq'].shift(-5).apply(lambda x:round(x * 100,2))
