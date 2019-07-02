@@ -75,8 +75,8 @@ into stock_analysis_data
    AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_AMOUNT,
    AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_AMOUNT,
    AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_AMOUNT,
-   rank() over(partition by order_Date order by pe) as pe_rank,
-   rank() over(partition by order_Date order by pb) as pb_rank
+   percent_rank() over(partition by order_date order by pe) as pe_rank,
+   percent_rank() over(partition by order_date order by pb) as pb_rank
     from (select h.*,
                  sum(total_market) over(partition by order_date, industry) as i_total_market,
                  sum(netProAftExtrGainLoss_TTM) over(partition by order_date, industry) as i_netProAftExtrGainLoss_TTM,
@@ -167,7 +167,20 @@ into stock_analysis_data
                    else
                     0
                  end AS AVG60_CR,
-                 
+                 case
+                   when LAG(avg90_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) = 0 then
+                    0
+                   when avg90_c_market / LAG(avg90_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) >= 0 then
+                    0
+                   when avg90_c_market < 0 then
+                    -1
+                   when avg90_c_market > 0 then
+                    1
+                   else
+                    0
+                 end AS AVG90_CR,
                  case
                    when LAG(avg5_c_market)
                     OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) = 0 then
@@ -238,6 +251,20 @@ into stock_analysis_data
                    else
                     0
                  end AS AVG60_TR,
+                 case
+                   when LAG(avg90_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) = 0 then
+                    0
+                   when avg90_c_market / LAG(avg90_c_market)
+                    OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) <= 0 then
+                    0
+                   when avg90_c_market < 0 then
+                    -1
+                   when avg90_c_market > 0 then
+                    1
+                   else
+                    0
+                 end AS AVG90_TR,
                  sum(amount) over(partition by order_Date) as all_amount
             from (select a.code,
                          a.order_date,
@@ -275,6 +302,7 @@ into stock_analysis_data
                          a.lag20_market,
                          a.lag30_market,
                          a.lag60_market,
+                         a.lag90_market,
                          a.avg_lag_market,
                          a.avg_lag2_market,
                          a.avg_lag3_market,
@@ -283,27 +311,32 @@ into stock_analysis_data
                          a.avg_lag20_market,
                          a.avg_lag30_market,
                          a.avg_lag60_market,
+                         a.avg_lag90_market,
                          a.avg5_t_market,
                          a.avg10_t_market,
                          a.avg20_t_market,
                          a.avg30_t_market,
                          a.avg60_t_market,
+                         a.avg90_t_market,
                          a.avg5_a_market,
                          a.avg10_a_market,
                          a.avg20_a_market,
                          a.avg30_a_market,
                          a.avg60_a_market,
+                         a.avg90_a_market,
                          a.avg5_c_market,
                          a.avg10_c_market,
                          a.avg20_c_market,
                          a.avg30_c_market,
                          a.avg60_c_market,
+                         a.avg90_c_market,
                          a.rng_l,
                          a.rng_5,
                          a.rng_10,
                          a.rng_20,
                          a.rng_30,
                          a.rng_60,
+                         a.rng_90,
                          b.shares_after * 10000 as shares,
                          DECODE(b.shares_after * 10000,
                                 0,
