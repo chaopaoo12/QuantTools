@@ -13,16 +13,6 @@ def QA_util_etl_stock_quant(deal_date = None):
        to_char(order_date, 'yyyy-mm-dd') as "date",
        order_Date - market_day as days,
        total_market,
-       SZ50,
-       HS300,
-       CY300,
-       SZ180,
-       SZ380,
-       SZ100,
-       SZ300,
-       ZZ100,
-       ZZ200,
-       CY50,
        round(tra_total_market / total_market * 100, 2) AS tra_rate,
        round(pe, 2) AS pe,
        round(pb, 2) AS pb,
@@ -254,6 +244,7 @@ def QA_util_etl_stock_quant(deal_date = None):
        RNG_20,
        RNG_30,
        RNG_60,
+       RNG_90,
        round((case
                when LAG_MARKET = 0 or LAG_MARKET is null then
                 0
@@ -311,6 +302,13 @@ def QA_util_etl_stock_quant(deal_date = None):
              end) * 100,
              2) as lag60,
        round((case
+               when LAG90_MARKET = 0 or LAG90_MARKET is null then
+                0
+               else
+                CLOSE_QFQ / LAG90_MARKET - 1
+             end) * 100,
+             2) as lag90,      
+       round((case
                when AVG5_A_MARKET = 0 or AVG5_A_MARKET is null then
                 0
                else
@@ -345,40 +343,36 @@ def QA_util_etl_stock_quant(deal_date = None):
                 CLOSE_QFQ / AVG60_A_MARKET - 1
              end) * 100,
              2) as avg60,
+       round((case
+               when AVG90_A_MARKET = 0 or AVG90_A_MARKET is null then
+                0
+               else
+                CLOSE_QFQ / AVG90_A_MARKET - 1
+             end) * 100,
+             2) as avg90,      
        AVG5_CR,
        AVG10_CR,
        AVG20_CR,
        AVG30_CR,
        AVG60_CR,
+       AVG90_CR,
        AVG5_TR,
        AVG10_TR,
        AVG20_TR,
        AVG30_TR,
        AVG60_TR,
+       AVG90_TR,
        avg5_c_market,
        avg10_c_market,
        avg20_c_market,
        avg30_c_market,
        avg60_c_market,
+       avg90_c_market,
        pe_rank,
        pb_rank
-  from (select *
-          from stock_analysis_data
- where order_date = to_date('{start_date}', 'yyyy-mm-dd'))A
- left join (select CODE,
-                    COUNT(DISTINCT decode(blockname, '上证50', 1, 0)) as SZ50,
-                    COUNT(DISTINCT decode(blockname, '沪深300', 1, 0)) as HS300,
-                    COUNT(DISTINCT decode(blockname, '创业300', 1, 0)) as CY300,
-                    COUNT(DISTINCT decode(blockname, '上证180', 1, 0)) as SZ180,
-                    COUNT(DISTINCT decode(blockname, '上证380', 1, 0)) as SZ380,
-                    COUNT(DISTINCT decode(blockname, '深证100', 1, 0)) as SZ100,
-                    COUNT(DISTINCT decode(blockname, '深证300', 1, 0)) as SZ300,
-                    COUNT(DISTINCT decode(blockname, '中证100', 1, 0)) as ZZ100,
-                    COUNT(DISTINCT decode(blockname, '中证200', 1, 0)) as ZZ200,
-                    COUNT(DISTINCT decode(blockname, '创业板50', 1, 0)) as CY50
-               from stock_block
-              GROUP BY CODE) b
-    on a.code = b.code'''
+  from stock_analysis_data
+ where order_date = to_date('{start_date}', 'yyyy-mm-dd')
+'''
     if deal_date is None:
         print('Must Have A DATE ')
     else:
