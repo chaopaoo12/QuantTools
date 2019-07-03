@@ -29,6 +29,7 @@ def rolling_ols(y):
     return(round(model.slope,2))
 
 def pct(data):
+    data=data.set_index('date')
     data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
     data[['LAG_MARKET','AVG_LAG_MARKET','LAG_HIGH','LAG_LOW']]= data.shift(1)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
     data[['LAG2_MARKET','AVG_LAG2_MARKET']]= data.shift(2)[['close_qfq','AVG_TOTAL_MARKET']]
