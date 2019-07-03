@@ -7,58 +7,27 @@ from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
                                QA_util_if_trade,QA_util_get_pre_trade_date)
 import QUANTAXIS as QA
 
+def rolling_n(data, N):
+    data = data.rolling(window=N).agg([lambda x:x['PE'].rank(pct=True).iloc[-1],
+                                        lambda x:(x['PE']/x['PE'].median()-1).iloc[-1],
+                                        lambda x:x['PB'].rank(pct=True).iloc[-1],
+                                        lambda x:(x['PB']/x['PB'].median()-1).iloc[-1],
+                                        lambda x:x['PEG'].rank(pct=True).iloc[-1],
+                                        lambda x:(x['PEG']/x['PEG'].median()-1).iloc[-1],
+                                        lambda x:x['PS'].rank(pct=True).iloc[-1],
+                                        lambda x:(x['PS']/x['PS'].median()-1).iloc[-1],
+                                        lambda x:(x['PE_RANK']/x['PE_RANK'].median()-1).iloc[-1],
+                                        lambda x:(x['PB_RANK']/x['PB_RANK'].median()-1).iloc[-1]]
+                                       )
+    return(data)
+
 def perank(data):
-    #data = data.sort_values('date',ascending=True).fillna(method='ffill')
-    data['PE_90PCT']= data['PE'].rolling(window=90).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_10PCT']= data['PE'].rolling(window=10).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
-    data['PE_20PCT']= data['PE'].rolling(window=20).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_30PCT']= data['PE'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_60PCT']= data['PE'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_90VAL']= data['PE'].rolling(window=90).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_10VAL']= data['PE'].rolling(window=10).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_20VAL']= data['PE'].rolling(window=20).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_30VAL']= data['PE'].rolling(window=30).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PE_60VAL']= data['PE'].rolling(window=60).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_90PCT']= data['PB'].rolling(window=90).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_10PCT']= data['PB'].rolling(window=10).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
-    data['PB_20PCT']= data['PB'].rolling(window=20).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
-    data['PB_30PCT']= data['PB'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_60PCT']= data['PB'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_90VAL']= data['PB'].rolling(window=90).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_10VAL']= data['PB'].rolling(window=10).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_20VAL']= data['PB'].rolling(window=20).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_30VAL']= data['PB'].rolling(window=30).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PB_60VAL']= data['PB'].rolling(window=60).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PEG_90PCT']= data['PEG'].rolling(window=90).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PEG_10PCT']= data['PEG'].rolling(window=10).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
-    data['PEG_20PCT']= data['PEG'].rolling(window=20).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
-    data['PEG_30PCT']= data['PEG'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PEG_60PCT']= data['PEG'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PEG_90VAL']= data['PEG'].rolling(window=90).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PEG_10VAL']= data['PEG'].rolling(window=10).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PEG_20VAL']= data['PEG'].rolling(window=20).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PEG_30VAL']= data['PEG'].rolling(window=30).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PEG_60VAL']= data['PEG'].rolling(window=60).apply(lambda x: (pd.DataFrame(x)-pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PS_90PCT']= data['PS'].rolling(window=90).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PS_10PCT']= data['PS'].rolling(window=10).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
-    data['PS_20PCT']= data['PS'].rolling(window=20).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x, 2)),raw=True)
-    data['PS_30PCT']= data['PS'].rolling(window=30).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PS_60PCT']= data['PS'].rolling(window=60).apply(lambda x: pd.DataFrame(x).rank(pct=True).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PS_90VAL']= data['PS'].rolling(window=90).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PS_10VAL']= data['PS'].rolling(window=10).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PS_20VAL']= data['PS'].rolling(window=20).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PS_30VAL']= data['PS'].rolling(window=30).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PS_60VAL']= data['PS'].rolling(window=60).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PERANK_10PCT']= data['PE_RANK'].rolling(window=10).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PERANK_20PCT']= data['PE_RANK'].rolling(window=20).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PERANK_30PCT']= data['PE_RANK'].rolling(window=30).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PERANK_60PCT']= data['PE_RANK'].rolling(window=60).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PERANK_90PCT']= data['PE_RANK'].rolling(window=90).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PBRANK_10PCT']= data['PB_RANK'].rolling(window=10).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PBRANK_20PCT']= data['PB_RANK'].rolling(window=20).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PBRANK_30PCT']= data['PB_RANK'].rolling(window=30).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PBRANK_60PCT']= data['PB_RANK'].rolling(window=60).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
-    data['PBRANK_90PCT']= data['PB_RANK'].rolling(window=90).apply(lambda x: (pd.DataFrame(x)/pd.DataFrame(x).median()-1).iloc[-1].apply(lambda x:round(x , 2)),raw=True)
+    data = data.set_index('date')
+    data[['PE_10PCT','PE_10VAL','PB_10PCT','PB_10VAL','PEG_10PCT','PEG_10VAL','PS_10PCT','PS_10VAL','PERANK_10VAL','PBRANK_10VAL']] = rolling_n(data, 10)
+    data[['PE_20PCT','PE_20VAL','PB_20PCT','PB_20VAL','PEG_20PCT','PEG_20VAL','PS_20PCT','PS_20VAL','PERANK_20VAL','PBRANK_20VAL']] = rolling_n(data, 20)
+    data[['PE_30PCT','PE_30VAL','PB_30PCT','PB_30VAL','PEG_30PCT','PEG_30VAL','PS_30PCT','PS_30VAL','PERANK_30VAL','PBRANK_30VAL']] = rolling_n(data, 30)
+    data[['PE_60PCT','PE_60VAL','PB_60PCT','PB_60VAL','PEG_60PCT','PEG_60VAL','PS_60PCT','PS_60VAL','PERANK_60VAL','PBRANK_60VAL']] = rolling_n(data, 60)
+    data[['PE_90PCT','PE_90VAL','PB_90PCT','PB_90VAL','PEG_90PCT','PEG_90VAL','PS_90PCT','PS_90VAL','PERANK_90VAL','PBRANK_90VAL']] = rolling_n(data, 90)
     return(data)
 
 def QA_fetch_get_stock_financial_percent(code,start_date,end_date):
