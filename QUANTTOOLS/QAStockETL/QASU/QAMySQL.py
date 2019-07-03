@@ -28,58 +28,41 @@ def rolling_ols(y):
     model = stats.linregress(pd.Series(range(1,len(y)+1)),y)
     return(round(model.slope,2))
 
-
 def pct(data):
     data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
-    data['LAG_MARKET']= data['close_qfq'].shift(1).apply(lambda x:round(x ,2))
-    data['LAG2_MARKET']= data['close_qfq'].shift(2).apply(lambda x:round(x ,2))
-    data['LAG3_MARKET']= data['close_qfq'].shift(3).apply(lambda x:round(x ,2))
-    data['LAG5_MARKET']= data['close_qfq'].shift(5).apply(lambda x:round(x ,2))
-    data['LAG10_MARKET']= data['close_qfq'].shift(10).apply(lambda x:round(x ,2))
-    data['LAG20_MARKET']= data['close_qfq'].shift(20).apply(lambda x:round(x ,2))
-    data['LAG30_MARKET']= data['close_qfq'].shift(30).apply(lambda x:round(x ,2))
-    data['LAG60_MARKET']= data['close_qfq'].shift(60).apply(lambda x:round(x ,2))
-    data['LAG90_MARKET']= data['close_qfq'].shift(90).apply(lambda x:round(x ,2))
-    data['LAG30_HIGH']= data['high_qfq'].shift(30).apply(lambda x:round(x ,2))
-    data['LAG60_HIGH']= data['high_qfq'].shift(60).apply(lambda x:round(x ,2))
-    data['LAG90_HIGH']= data['high_qfq'].shift(90).apply(lambda x:round(x ,2))
-    data['LAG30_LOW']= data['low_qfq'].shift(30).apply(lambda x:round(x ,2))
-    data['LAG60_LOW']= data['low_qfq'].shift(60).apply(lambda x:round(x ,2))
-    data['LAG90_LOW']= data['low_qfq'].shift(90).apply(lambda x:round(x ,2))
-    data['AVG_LAG_MARKET']= data['AVG_TOTAL_MARKET'].shift(1).apply(lambda x:round(x ,2))
-    data['AVG_LAG2_MARKET']= data['AVG_TOTAL_MARKET'].shift(2).apply(lambda x:round(x ,2))
-    data['AVG_LAG3_MARKET']= data['AVG_TOTAL_MARKET'].shift(3).apply(lambda x:round(x ,2))
-    data['AVG_LAG5_MARKET']= data['AVG_TOTAL_MARKET'].shift(5).apply(lambda x:round(x ,2))
-    data['AVG_LAG10_MARKET']= data['AVG_TOTAL_MARKET'].shift(10).apply(lambda x:round(x ,2))
-    data['AVG_LAG20_MARKET']= data['AVG_TOTAL_MARKET'].shift(20).apply(lambda x:round(x ,2))
-    data['AVG_LAG30_MARKET']= data['AVG_TOTAL_MARKET'].shift(30).apply(lambda x:round(x ,2))
-    data['AVG_LAG60_MARKET']= data['AVG_TOTAL_MARKET'].shift(60).apply(lambda x:round(x ,2))
-    data['AVG_LAG90_MARKET']= data['AVG_TOTAL_MARKET'].shift(90).apply(lambda x:round(x ,2))
-    data['AVG5_T_MARKET']= data['close_qfq'].rolling(window=5).mean().apply(lambda x:round(x ,2))
-    data['AVG10_T_MARKET']= data['close_qfq'].rolling(window=10).mean().apply(lambda x:round(x ,2))
-    data['AVG20_T_MARKET']= data['close_qfq'].rolling(window=20).mean().apply(lambda x:round(x ,2))
-    data['AVG30_T_MARKET']= data['close_qfq'].rolling(window=30).mean().apply(lambda x:round(x ,2))
-    data['AVG60_T_MARKET']= data['close_qfq'].rolling(window=60).mean().apply(lambda x:round(x ,2))
-    data['AVG90_T_MARKET']= data['close_qfq'].rolling(window=90).mean().apply(lambda x:round(x ,2))
-    data['AVG5_A_MARKET']= data['AVG_TOTAL_MARKET'].rolling(window=5).mean().apply(lambda x:round(x ,2))
-    data['AVG10_A_MARKET']= data['AVG_TOTAL_MARKET'].rolling(window=10).mean().apply(lambda x:round(x ,2))
-    data['AVG20_A_MARKET']= data['AVG_TOTAL_MARKET'].rolling(window=20).mean().apply(lambda x:round(x ,2))
-    data['AVG30_A_MARKET']= data['AVG_TOTAL_MARKET'].rolling(window=30).mean().apply(lambda x:round(x ,2))
-    data['AVG60_A_MARKET']= data['AVG_TOTAL_MARKET'].rolling(window=60).mean().apply(lambda x:round(x ,2))
-    data['AVG90_A_MARKET']= data['AVG_TOTAL_MARKET'].rolling(window=90).mean().apply(lambda x:round(x ,2))
-    data['RNG_L']= ((data['high_qfq'].shift(1)-data['low_qfq'].shift(1))/data['low_qfq'].shift(1)).apply(lambda x:round(x * 100 ,2))
-    data['RNG_5']= ((data['high_qfq'].rolling(window=5).max()/data['low_qfq'].rolling(window=5).min())-1).apply(lambda x:round(x  ,2))
-    data['RNG_10']= ((data['high_qfq'].rolling(window=10).max()/data['low_qfq'].rolling(window=10).min())-1).apply(lambda x:round(x * 100 ,2))
-    data['RNG_20']= ((data['high_qfq'].rolling(window=20).max()/data['low_qfq'].rolling(window=20).min())-1).apply(lambda x:round(x * 100 ,2))
-    data['RNG_30']= ((data['high_qfq'].rolling(window=30).max()/data['low_qfq'].rolling(window=30).min())-1).apply(lambda x:round(x * 100 ,2))
-    data['RNG_60']= ((data['high_qfq'].rolling(window=60).max()/data['low_qfq'].rolling(window=60).min())-1).apply(lambda x:round(x * 100 ,2))
-    data['RNG_90']= ((data['high_qfq'].rolling(window=90).max()/data['low_qfq'].rolling(window=60).min())-1).apply(lambda x:round(x * 100 ,2))
-    data['AVG5_C_MARKET']= data['AVG5_T_MARKET'].rolling(window=5).apply(rolling_ols,raw=True)
-    data['AVG10_C_MARKET']= data['AVG10_T_MARKET'].rolling(window=5).apply(rolling_ols,raw=True)
-    data['AVG20_C_MARKET']= data['AVG20_T_MARKET'].rolling(window=5).apply(rolling_ols,raw=True)
-    data['AVG30_C_MARKET']= data['AVG30_T_MARKET'].rolling(window=5).apply(rolling_ols,raw=True)
-    data['AVG60_C_MARKET']= data['AVG60_T_MARKET'].rolling(window=5).apply(rolling_ols,raw=True)
-    data['AVG90_C_MARKET']= data['AVG90_T_MARKET'].rolling(window=5).apply(rolling_ols,raw=True)
+    data[['LAG_MARKET','AVG_LAG_MARKET','LAG_HIGH','LAG_LOW']]= data.shift(1)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
+    data[['LAG2_MARKET','AVG_LAG2_MARKET']]= data.shift(2)[['close_qfq','AVG_TOTAL_MARKET']]
+    data[['LAG3_MARKET','AVG_LAG3_MARKET']]= data.shift(3)[['close_qfq','AVG_TOTAL_MARKET']]
+    data[['LAG5_MARKET','AVG_LAG5_MARKET']]= data.shift(5)[['close_qfq','AVG_TOTAL_MARKET']]
+    data[['LAG10_MARKET','AVG_LAG10_MARKET']]= data.shift(10)[['close_qfq','AVG_TOTAL_MARKET']]
+    data[['LAG20_MARKET','AVG_LAG20_MARKET']]= data.shift(20)[['close_qfq','AVG_TOTAL_MARKET']]
+    data[['LAG30_MARKET','AVG_LAG30_MARKET','LAG30_HIGH','LAG30_LOW']]= data.shift(30)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
+    data[['LAG60_MARKET','AVG_LAG60_MARKET','LAG60_HIGH','LAG60_LOW']]= data.shift(60)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
+    data[['LAG90_MARKET','AVG_LAG90_MARKET','LAG90_HIGH','LAG90_LOW']]= data.shift(90)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
+    data[['AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10']] = data.rolling(window=10).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min'})
+    data[['AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20']] = data.rolling(window=20).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min'})
+    data[['AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30']] = data.rolling(window=30).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min'})
+    data[['AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60']] = data.rolling(window=60).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min'})
+    data[['AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90']] = data.rolling(window=90).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min'})
+    data[['AVG5_T_MARKET','AVG5_A_MARKET','HIGH_5','LOW_5',
+          'AVG5_C_MARKET','AVG10_C_MARKET','AVG20_C_MARKET',
+          'AVG30_C_MARKET','AVG60_C_MARKET','AVG90_C_MARKET']] = data.rolling(window=5).agg({'close_qfq':'mean',
+                                                                                             'AVG_TOTAL_MARKET':'mean',
+                                                                                             'high_qfq':'max',
+                                                                                             'low_qfq':'min',
+                                                                                             'AVG5_T_MARKET':rolling_ols,
+                                                                                             'AVG10_T_MARKET':rolling_ols,
+                                                                                             'AVG20_T_MARKET':rolling_ols,
+                                                                                             'AVG30_T_MARKET':rolling_ols,
+                                                                                             'AVG90_T_MARKET':rolling_ols})
+    data['RNG_L']= (data['LAG_HIGH']/data['LAG_LOW']-1).apply(lambda x:round(x ,2))
+    data['RNG_5']= (data['HIGH_5']/data['LOW_5']-1).apply(lambda x:round(x ,2))
+    data['RNG_10']= (data['HIGH_10']/data['LOW_10']-1).apply(lambda x:round(x ,2))
+    data['RNG_20']= (data['HIGH_20']/data['LOW_20']-1).apply(lambda x:round(x ,2))
+    data['RNG_30']= (data['HIGH_30']/data['LOW_30']-1).apply(lambda x:round(x ,2))
+    data['RNG_60']= (data['HIGH_60']/data['LOW_60']-1).apply(lambda x:round(x ,2))
+    data['RNG_90']= (data['HIGH_90']/data['LOW_90']-1).apply(lambda x:round(x ,2))
+
     return(data)
 
 def ETL_stock_day(codes, start=None,end=None):
