@@ -55,7 +55,7 @@ def pct(data):
                                                                                              'AVG20_T_MARKET':rolling_ols,
                                                                                              'AVG30_T_MARKET':rolling_ols,
                                                                                              'AVG60_T_MARKET':rolling_ols,
-                                                                                             'AVG90_T_MARKET':rolling_ols})
+                                                                                             'AVG90_T_MARKET':rolling_ols}).reset_index(level=0,drop=True)
     data['RNG_L']= (data['LAG_HIGH']/data['LAG_LOW']-1).apply(lambda x:round(x ,2))
     data['RNG_5']= (data['HIGH_5']/data['LOW_5']-1).apply(lambda x:round(x ,2))
     data['RNG_10']= (data['HIGH_10']/data['LOW_10']-1).apply(lambda x:round(x ,2))
