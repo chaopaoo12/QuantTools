@@ -73,6 +73,7 @@ def get_indicator(data,rng1):
     try:
         BOLL = data.add_func(QA.QA_indicator_BOLL)
         BOLL['WIDTH'] = (BOLL['UB']-BOLL['LB'])/BOLL['BOLL']
+        BOLL['BOLL'] = data['close'] / BOLL['BOLL'] - 1
         BOLL['UB'] = data['close'] / BOLL['UB'] - 1
         BOLL['LB'] = data['close'] / BOLL['LB'] - 1
     except:
