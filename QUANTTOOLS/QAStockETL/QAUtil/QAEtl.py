@@ -97,6 +97,11 @@ into stock_analysis_data
                  AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_TOR,
                  AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_TOR,
                  AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_TOR,
+                 AVG(rng) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_RNG,
+                 AVG(rng) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 9 PRECEDING AND CURRENT ROW) AS AVG10_RNG,
+                 AVG(rng) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_RNG,
+                 AVG(rng) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_RNG,
+                 AVG(rng) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_RNG,
                  case
                    when LAG(avg5_c_market)
                     OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC) = 0 then
@@ -330,6 +335,7 @@ into stock_analysis_data
                          a.avg30_c_market,
                          a.avg60_c_market,
                          a.avg90_c_market,
+                         a.high / a.low - 1 as rng,
                          a.rng_l,
                          a.rng_5,
                          a.rng_10,
