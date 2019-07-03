@@ -623,19 +623,21 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
     market = QA.QA_fetch_index_day(['000001'],start_date,end,format='pd')['close'].reset_index()
-    market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
+    market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
     res1 = data.to_qfq().data
     res1.columns = [x + '_qfq' for x in res1.columns]
     data = data.data.join(res1).fillna(0).reset_index()
     res = data.groupby('code').apply(pct, type=type)[['date','code',
-                                           'TARGET','TARGET3','TARGET5','AVG_TARGET']].set_index(['date','code'])
+                                           'TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET']].set_index(['date','code'])
     res = res.reset_index()
     res = pd.merge(res,market,on='date')
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
     res = res.set_index(['date','code']).loc[rng1]
     res['INDEX_TARGET'] = res['TARGET'] - res['INDEX_TARGET']
     res['INDEX_TARGET3'] = res['TARGET3'] - res['INDEX_TARGET3']
+    res['INDEX_TARGET4'] = res['TARGET4'] - res['INDEX_TARGET4']
     res['INDEX_TARGET5'] = res['TARGET5'] - res['INDEX_TARGET5']
+    res['INDEX_TARGET10'] = res['TARGET10'] - res['INDEX_TARGET10']
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':
             res[columnname]=res[columnname].astype('float16')
