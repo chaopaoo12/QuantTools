@@ -67,17 +67,6 @@ def QA_SU_save_stock_fianacial_percent(code = None, start_date=None,end_date=Non
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
 
-
-import pymongo
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_financial_percent
-from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
-from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_today_str,QA_util_code_tolist,QA_util_log_info,
-                              QA_util_get_trade_range)
-import pandas as pd
-from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch_stock_block_adv,
-                                               QA_fetch_stock_day_adv)
-
-
 def QA_SU_save_stock_fianacial_percent_his(code = None, start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
     if code is None:
         codes = list(QA_fetch_stock_list_adv()['code'])
