@@ -110,13 +110,14 @@ def QA_SU_save_stock_fianacial_percent_his(code = None, start_date=None,end_date
         except Exception as error0:
             print(error0)
             err.append(str(code))
-
-    for i in range(0, len(codes), 1000):
-        code = codes[i:i+1000]
+    k=500
+    n = len(range(0, len(codes), k))
+    for i in range(0, len(codes), k):
+        code = codes[i:i+k]
         QA_util_log_info('The {} of Total {}'.format
-                         ((i +1000 ), len(codes)))
-        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((i + 1000) / len(codes) * 100))[0:4] + '%', ui_log)
-        intProgressToLog = int(float((i + 1000 ) / len(codes) * 100))
+                         ((i +k ), len(codes)))
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((i + k) / len(codes) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((i + k ) / len(codes) * 100 ))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
         __saving_work( code, start_date, end_date, stock_financial_percent)
 
