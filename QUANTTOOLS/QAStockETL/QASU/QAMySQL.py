@@ -29,7 +29,6 @@ def rolling_ols(y):
     return(round(model.slope,2))
 
 def pct(data):
-    data=data.set_index('date')
     res=data
     res['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
     res[['LAG_MARKET','AVG_LAG_MARKET','LAG_HIGH','LAG_LOW']]= data.shift(1)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
@@ -68,7 +67,7 @@ def pct(data):
     res['RNG_60']= (res['HIGH_60']/res['LOW_60']-1).apply(lambda x:round(x ,2))
     res['RNG_90']= (res['HIGH_90']/res['LOW_90']-1).apply(lambda x:round(x ,2))
 
-    return(data)
+    return(res)
 
 def ETL_stock_day(codes, start=None,end=None):
     if start is None:
@@ -76,7 +75,7 @@ def ETL_stock_day(codes, start=None,end=None):
         res1 = data.to_qfq().data
         res1.columns = [x + '_qfq' for x in res1.columns]
         data = data.data.join(res1).fillna(0).reset_index()
-        res = data.groupby('code').apply(pct).reset_index(drop = True).set_index(['date','code'])
+        res = data.groupby('code').apply(pct)
         res = res.where((pd.notnull(res)), None)
     else:
         start_date = QA_util_get_pre_trade_date(start,100)
@@ -85,7 +84,7 @@ def ETL_stock_day(codes, start=None,end=None):
         res1.columns = [x + '_qfq' for x in res1.columns]
         data = data.data.join(res1).fillna(0).reset_index()
         res = data.groupby('code').apply(pct)
-        res = res.reset_index(level = 0,drop = True).reset_index().set_index(['date','code']).loc[pd.date_range(start, end, freq='D')]
+        res = res.loc[pd.date_range(start, end, freq='D')]
     return(res)
 
 def ETL_stock_day(codes, start=None,end=None):
