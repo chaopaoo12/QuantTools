@@ -38,6 +38,7 @@ def QA_SU_save_stock_fianacial_percent(code = None, start_date=None,end_date=Non
             QA_util_log_info(
                 '##JOB01 Pre Data stock_fianacial_percent from {START_DATE} to {END_DATE} '.format(START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
             data = QA_fetch_get_stock_financial_percent(code, START_DATE, END_DATE)
+            print('mark')
             data = data.drop_duplicates(
                 (['code', 'date']))
             QA_util_log_info(
@@ -59,7 +60,7 @@ def QA_SU_save_stock_fianacial_percent(code = None, start_date=None,end_date=Non
         strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(item) +1) / len(codes) * 100))[0:4] + '%', ui_log)
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
-        __saving_work( codes, start_date, end_date, stock_financial_percent)
+        __saving_work( item, start_date, end_date, stock_financial_percent)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_fianacial_percent ^_^',  ui_log)
@@ -96,6 +97,7 @@ def QA_SU_save_stock_fianacial_percent_his(code = None, start_date=None,end_date
             QA_util_log_info(
                 '##JOB01 Pre Data stock_fianacial_percent from {START_DATE} to {END_DATE} '.format(START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
             data = QA_fetch_get_stock_financial_percent(code, START_DATE, END_DATE)
+            print('MARK')
             data = data.drop_duplicates(
                 (['code', 'date']))
             QA_util_log_info(
