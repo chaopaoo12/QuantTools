@@ -96,7 +96,6 @@ def QA_SU_save_stock_fianacial_percent_his(code = None, start_date=None,end_date
             QA_util_log_info(
                 '##JOB01 Pre Data stock_fianacial_percent from {START_DATE} to {END_DATE} '.format(START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
             data = QA_fetch_get_stock_financial_percent(code, START_DATE, END_DATE)
-            print('MARK')
             data = data.drop_duplicates(
                 (['code', 'date']))
             QA_util_log_info(
