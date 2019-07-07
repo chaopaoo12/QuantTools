@@ -20,7 +20,8 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
                                                                           'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',
                                                                           'OPERATINGRINRATE', 'OPERATINGRINRATE_L2Y', 'OPERATINGRINRATE_L3Y', 'OPERATINGRINRATE_LY',
                                                                           'PB', 'PBG', 'PC', 'PE', 'PEG', 'PM', 'PS','PSG','PT',
-                                                                          'RNG_L','RNG_5','RNG_10','RNG_20', 'RNG_30', 'RNG_60',
+                                                                          'RNG','RNG_L','RNG_5','RNG_10','RNG_20', 'RNG_30', 'RNG_60',
+                                                                          'AVG5_RNG','AVG10_RNG','AVG20_RNG','AVG30_RNG','AVG60_RNG',
                                                                           'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                                                                           'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                           'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
@@ -57,6 +58,8 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
             technical[columnname]=technical[columnname].astype('float16')
         if technical[columnname].dtype == 'int64':
             technical[columnname]=technical[columnname].astype('int8')
+    fianacial['FINA_VAL']= fianacial['NETPROFIT_INRATE']/fianacial['ROE']
+    fianacial['RNG_RES']= (fianacial['AVG60_RNG']*60) / fianacial['RNG_60']
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
     cols = [i for i in list(fianacial.columns) if i not in ['INDUSTRY','TOTAL_MARKET']]
     fianacial = fianacial[cols].groupby('code').apply(series_to_supervised,[12,6,5,3,1]).loc[rng1].join(fianacial.loc[rng1][['INDUSTRY','TOTAL_MARKET']])
