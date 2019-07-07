@@ -150,5 +150,5 @@ def index_pct(market):
     market['INDEX_TARGET3'] = (market['PRE3_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     market['INDEX_TARGET4'] = (market['PRE4_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     market['INDEX_TARGET5'] = (market['PRE5_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
-    market['INDEX_TARGET310'] = (market['PRE10_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    market['INDEX_TARGET10'] = (market['PRE10_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     return(market)
