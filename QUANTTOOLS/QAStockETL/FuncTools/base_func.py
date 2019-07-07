@@ -140,12 +140,12 @@ def index_pct(market):
     market['INDEX_TARGET3'] = (market['PRE3_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     market['INDEX_TARGET5'] = (market['PRE5_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
 
-    market[['PRE_MARKET']]= market.shift(-1)['close']
-    market[['PRE2_MARKET']]= market.shift(-2)['close']
-    market[['PRE3_MARKET']]= market.shift(-3)['close']
-    market[['PRE4_MARKET']]= market.shift(-4)['close']
-    market[['PRE5_MARKET']]= market.shift(-5)['close']
-    market[['PRE10_MARKET']]= market.shift(-10)['close']
+    market['PRE_MARKET']= market.shift(-1)['close']
+    market['PRE2_MARKET']= market.shift(-2)['close']
+    market['PRE3_MARKET']= market.shift(-3)['close']
+    market['PRE4_MARKET']= market.shift(-4)['close']
+    market['PRE5_MARKET']= market.shift(-5)['close']
+    market['PRE10_MARKET']= market.shift(-10)['close']
     market['INDEX_TARGET'] = (market['PRE2_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     market['INDEX_TARGET3'] = (market['PRE3_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     market['INDEX_TARGET4'] = (market['PRE4_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
