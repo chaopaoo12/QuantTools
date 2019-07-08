@@ -126,10 +126,10 @@ def QA_fetch_stock_alpha_adv(code, start="all", end=None, format='pd', collectio
         start = '2005-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_alpha(code, start, end)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_alpha(code, start, end)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_stock_shares_adv(code, start="all", end=None, format='pd',type='crawl', collections=DATABASE.stock_shares):
     '获取股票日线'
@@ -168,10 +168,10 @@ def QA_fetch_stock_technical_index_adv(code, start="all", end=None, type='day', 
         start = '2008-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_technical_index(code, start, end, type)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_technical_index(code, start, end, type)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_stock_financial_percent_adv(code, start="all", end=None, format='pd', collections=DATABASE.stock_financial_percent):
     '获取股票财报日历'
@@ -185,10 +185,10 @@ def QA_fetch_stock_financial_percent_adv(code, start="all", end=None, format='pd
         start = '2008-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_financial_percent(code, start, end)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_financial_percent(code, start, end)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_stock_quant_data_adv(code, start="all", end=None, format='pd', collections=DATABASE.stock_quant_data):
     '获取股票量化机器学习最终指标V1'
@@ -202,10 +202,10 @@ def QA_fetch_stock_quant_data_adv(code, start="all", end=None, format='pd', coll
         start = '2008-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_quant_data(code, start, end)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_quant_data(code, start, end)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, format='pd'):
     '获取股票量化机器学习数据查询接口'
@@ -218,10 +218,10 @@ def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, format='pd'):
         start = '2008-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_quant_pre(code, start, end)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_quant_pre(code, start, end)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_stock_target_adv(code, start="all", end=None, type='close', format='pd'):
     '获取股票量化机器学习数据查询接口'
@@ -234,7 +234,7 @@ def QA_fetch_stock_target_adv(code, start="all", end=None, type='close', format=
         start = '2008-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_target(code, start, end, type=type)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_target(code, start, end, type=type)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
