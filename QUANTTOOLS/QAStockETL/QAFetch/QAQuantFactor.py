@@ -26,8 +26,8 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
                                                                           'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                           'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
                                                                           'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR',
-                                                                          'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY']].groupby('code').fillna(method='ffill')
-    perank = QA_fetch_stock_financial_percent_adv(codes,start,end_date).data.groupby('code').fillna(method='ffill')
+                                                                          'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY']]
+    perank = QA_fetch_stock_financial_percent_adv(codes,start,end_date).data
     fianacial = fianacial.join(perank)
     alpha = QA_fetch_stock_alpha_adv(codes,start,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                  'alpha_009', 'alpha_010', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',

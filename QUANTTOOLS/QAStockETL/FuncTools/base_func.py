@@ -56,7 +56,7 @@ def neutralization(factor, mkt_cap=None, industry = None):
     return result.resid
 
 def get_trans(data):
-    res1 = data[[i for i in list(data.columns) if i not in ['TOTAL_MARKET','INDUSTRY']]].apply(filter_extreme_3sigma).apply(lambda x:standardize_series(neutralization(x,data['TOTAL_MARKET'],data['INDUSTRY'])))
+    res1 = data[[i for i in list(data.columns) if i != 'INDUSTRY']].apply(lambda x:standardize_series(filter_extreme_3sigma(x)))
     return(res1)
 
 def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
