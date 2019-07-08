@@ -94,6 +94,6 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
             if list(res.columns)[j].find(cols[i]) == -1:
                 continue
             col_tar.append(list(res.columns)[j])
-    res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(get_trans).join(res[col_tar])
+    res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(get_trans).join(res[col_tar]).reset_index()
     res = res.assign(date_stamp=res['date'].apply(lambda x: str(x)[0:10]))
     return(res)
