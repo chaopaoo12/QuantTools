@@ -12,7 +12,7 @@ from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict, dict2
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import pct,index_pct
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_quant_data
+
 
 def QA_fetch_stock_industry(stock_code):
     '''
@@ -646,11 +646,8 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
             res[columnname]=res[columnname].astype('int8')
     return(res)
 
-def QA_fetch_stock_quant_pre(code, start, end=None, type = 'crawl', format='pd'):
-    if type == 'crawl':
-        res = QA_fetch_stock_quant_data(code, start, end)
-    elif type == 'model':
-        res = QA_fetch_get_quant_data(code, start, end)
+def QA_fetch_stock_quant_pre(code, start, end=None, format='pd'):
+    res = QA_fetch_stock_quant_data(code, start, end)
     target = QA_fetch_stock_target(code, start, end)
     res = target.join(res)
     if format in ['P', 'p', 'pandas', 'pd']:
