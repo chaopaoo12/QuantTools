@@ -29,22 +29,16 @@ def normalization_series(series): #原始值法
         return((series-series.min)/(series.max-series.min))
 
 def filter_extreme_3sigma(array,n=3): #3 sigma
-    if array.dtype in list(['int8','int16','int32','int64','float16','float32','float64']):
-        array1 = array.replace([np.inf, -np.inf], np.nan)
-        vmax = array1.max()
-        vmin = array1.min()
-        if vmax ==1 and vmin == 0:
-            return(array1)
-        else:
-            sigma = array1.std()
-            mu = array1.mean()
-            array = array.replace(np.inf, vmin)
-            array = array.replace(-np.inf, vmax)
-            array[array > mu + n*sigma] = mu + n*sigma
-            array[array < mu - n*sigma] = mu - n*sigma
-            return(array)
-    else:
-        return(array)
+    array1 = array.replace([np.inf, -np.inf], np.nan).astype(float)
+    vmin = array1.min()
+    vmax = array1.max()
+    sigma = array1.std()
+    mu = array1.mean()
+    array1 = array.replace(np.inf, vmin).astype(float)
+    array = array1.replace(-np.inf, vmax).astype(float)
+    array[array > mu + n*sigma] = mu + n*sigma
+    array[array < mu - n*sigma] = mu - n*sigma
+    return(array)
 
 def neutralization(factor, mkt_cap=None, industry = None):
     y = factor
@@ -62,7 +56,7 @@ def neutralization(factor, mkt_cap=None, industry = None):
     return result.resid
 
 def get_trans(data):
-    res1 = data.apply(filter_extreme_3sigma)[[i for i in list(data.columns) if i not in ['TOTAL_MARKET','INDUSTRY']]].apply(lambda x:standardize_series(neutralization(x,data['TOTAL_MARKET'],data['INDUSTRY'])))
+    res1 = data[[i for i in list(data.columns) if i not in ['TOTAL_MARKET','INDUSTRY']]].apply(filter_extreme_3sigma).apply(lambda x:standardize_series(neutralization(x,data['TOTAL_MARKET'],data['INDUSTRY'])))
     return(res1)
 
 def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
