@@ -234,13 +234,13 @@ def get_indicator(data,rng1):
         PBX['PBX4_C'] = PBX['PBX4']/QA.REF(PBX['PBX4'], 1)-1
         PBX['PBX5_C'] = PBX['PBX5']/QA.REF(PBX['PBX5'], 1)-1
         PBX['PBX6_C'] = PBX['PBX6']/QA.REF(PBX['PBX6'], 1)-1
-        PBX['PBX_TR'] = PBX['PBX1','PBX2','PBX3','PBX4','PBX5','PBX6'].apply(rolling_ols, axis=1)
+        #PBX['PBX_TR'] = PBX['PBX1','PBX2','PBX3','PBX4','PBX5','PBX6'].apply(rolling_ols, axis=1)
     except:
         PBX = data.data.assign(PBX1=None,PBX2=None,PBX3=None,PBX4=None,PBX5=None,PBX6=None,
                                PBX1_C=None,PBX2_C=None,PBX3_C=None,PBX4_C=None,PBX5_C=None,PBX6_C=None,
-                               PBX_STD=None, PBX_TR= None)[['PBX1','PBX2','PBX3','PBX4','PBX5','PBX6',
+                               PBX_STD=None)[['PBX1','PBX2','PBX3','PBX4','PBX5','PBX6',
                                                             'PBX1_C','PBX2_C','PBX3_C','PBX4_C','PBX5_C','PBX6_C',
-                                                            'PBX_STD','PBX_TR']]
+                                                            'PBX_STD']]
     try:
         MTM = data.add_func(QA.QA_indicator_MTM)
         MTM['MARK'] = 0
