@@ -22,7 +22,7 @@ def get_stock_report_wy(code):
             options = webdriver.ChromeOptions()
             for (key,value) in headers.items():
                 options.add_argument('%s="%s"' % (key, value))
-            options.add_argument('headless')
+            #options.add_argument('headless')
             prefs = {'profile.default_content_settings.popups': 0, 'download.default_directory': 'd:\\'}
             options.add_experimental_option('prefs', prefs)
             driver = webdriver.Chrome(chrome_options=options)
