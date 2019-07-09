@@ -38,6 +38,23 @@ def MIKE_NEW(DataFrame,MIKE_N=12,MA_N=5):
     return pd.DataFrame({'WR':WR,'MR':MR,'SR':SR,'WS':WS,'MS':MS,'SS':SS
                         ,'MIKE_WRSC':MIKE_WRSC,'MIKE_WRJC':MIKE_WRJC,'MIKE_WSSC':MIKE_WSSC,'MIKE_WSJC':MIKE_WSJC,'MIKE_TR':MIKE_TR})
 
+def indicator_ATR(DataFrame, N=14):
+    """
+    输出TR:(最高价-最低价)和昨收-最高价的绝对值的较大值和昨收-最低价的绝对值的较大值
+    输出真实波幅:TR的N日简单移动平均
+    算法：今日振幅、今日最高与昨收差价、今日最低与昨收差价中的最大值，为真实波幅，求真实波幅的N日移动平均
+
+    参数：N　天数，一般取14
+
+    """
+    C = DataFrame['close']
+    H = DataFrame['high']
+    L = DataFrame['low']
+    TR = MAX(MAX((H - L), ABS(REF(C, 1) - H)), ABS(REF(C, 1) - L))
+    atr = MA(TR, N)
+    atrc = atr / REF(C, 1)
+    return pd.DataFrame({'TR': TR, 'ATR': atr, 'ATRR':atrc})
+
 def function(a, b):
     if a > b:
         return 1
@@ -263,10 +280,9 @@ def get_indicator(data,rng1):
     except:
         MFI = data.data.assign(MFI=None,MFI_C=None)[['MFI','MFI_C']]
     try:
-        ATR = data.add_func(QA.QA_indicator_ATR)
-        # todo ATR指标应用
+        ATR = data.add_func(indicator_ATR)
     except:
-        ATR = data.data.assign(TR=None,ATR=None)[['TR','ATR']]
+        ATR = data.data.assign(TR=None,ATR=None,ATRR=None)[['TR','ATR','ATRR']]
     try:
         SKDJ = data.add_func(QA.QA_indicator_SKDJ)
         SKDJ['SKDJ_CROSS1'] = QA.CROSS(SKDJ['SKDJ_D'], SKDJ['SKDJ_K'])
