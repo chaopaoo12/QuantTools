@@ -1,4 +1,4 @@
 from QUANTTOOLS.FactorTools.SingelePeriodFactorTest import SingelePeriodFactorTest
 from QUANTTOOLS.FactorTools.MultiPeriodFactorTest import MultiPeriodFactorTest
 
-from QUANTTOOLS.FactorTools.base_func import series_to_supervised, get_quant_data
+from QUANTTOOLS.FactorTools.base_func import get_quant_data
