@@ -52,9 +52,8 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
             alpha[columnname]=alpha[columnname].astype('float16')
         if alpha[columnname].dtype == 'int64':
             alpha[columnname]=alpha[columnname].astype('int8')
-    cols = ['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C','PBX_TR']
-    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data
-    technical = technical[[x for x in list(technical.columns) if x not in cols]].groupby('code').apply(series_to_supervised,[12,7,6,4,3,2,1]).loc[rng1]
+    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1)
+    technical = technical.groupby('code').apply(series_to_supervised,[12,7,6,4,3,2,1]).loc[rng1]
     for columnname in technical.columns:
         if technical[columnname].dtype == 'float64':
             technical[columnname]=technical[columnname].astype('float16')
@@ -63,6 +62,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
     fianacial['FINA_VAL']= fianacial['NETPROFIT_INRATE']/fianacial['ROE']
     fianacial['RNG_RES']= (fianacial['AVG60_RNG']*60) / fianacial['RNG_60']
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
+    INDUSTRY = fianacial[['TOTAL_MARKET','INDUSTRY']].loc[rng1]
     fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['INDUSTRY','TOTAL_MARKET']]].groupby('code').apply(series_to_supervised,[12,6,5,3,1]).loc[rng1].join(fianacial.loc[rng1][['INDUSTRY','TOTAL_MARKET']]).loc[rng1]
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
@@ -92,6 +92,8 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
             if list(res.columns)[j].find(cols[i]) == -1:
                 continue
             col_tar.append(list(res.columns)[j])
-    res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(get_trans).join(res[col_tar]).reset_index()
+    col_tar = list(set(col_tar))
+    res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(get_trans).join(res[col_tar])
+    res = pd.concat([res,INDUSTRY],axis=1).reset_index()
     res = res.assign(date_stamp=res['date'].apply(lambda x: str(x)[0:10]))
     return(res)
