@@ -62,7 +62,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
     fianacial['FINA_VAL']= fianacial['NETPROFIT_INRATE']/fianacial['ROE']
     fianacial['RNG_RES']= (fianacial['AVG60_RNG']*60) / fianacial['RNG_60']
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
-    INDUSTRY = fianacial[['TOTAL_MARKET','INDUSTRY']].loc[rng1]
+    INDUSTRY = fianacial[['INDUSTRY']].loc[rng1]
     fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['INDUSTRY','TOTAL_MARKET']]].groupby('code').apply(series_to_supervised,[12,6,5,3,1]).loc[rng1].join(fianacial.loc[rng1][['INDUSTRY','TOTAL_MARKET']]).loc[rng1]
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
