@@ -64,7 +64,12 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
     fianacial['RNG_RES']= (fianacial['AVG60_RNG']*60) / fianacial['RNG_60']
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
     fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['INDUSTRY','TOTAL_MARKET']]].groupby('code').apply(series_to_supervised,[12,6,5,3,1]).loc[rng1].join(fianacial.loc[rng1][['INDUSTRY','TOTAL_MARKET']]).loc[rng1]
-
+    for columnname in fianacial.columns:
+        if fianacial[columnname].dtype == 'float64':
+            fianacial[columnname]=fianacial[columnname].astype('float16')
+        if fianacial[columnname].dtype == 'int64':
+            fianacial[columnname]=fianacial[columnname].astype('int8')
+    res = fianacial.join(technical).join(alpha)
     cols = ['AVG5_CR','AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR','AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR'
         ,'ADTM_CROSS1','ADTM_CROSS2','ADX_CROSS1','ADX_CROSS2','BBI_CROSS1','BBI_CROSS2','BIAS_CROSS1','BIAS_CROSS2'
         ,'CCI_CROSS1','CCI_CROSS2','CCI_CROSS3','CCI_CROSS4','CDL2CROWS','CDL3BLACKCROWS','CDL3INSIDE','CDL3LINESTRIKE'
@@ -81,13 +86,6 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
         ,'KDJ_CROSS2','MACD_TR','MIKE_TR','MIKE_WRJC','MIKE_WRSC','MIKE_WSJC','MIKE_WSSC','MTM_CROSS1','MTM_CROSS2','MTM_CROSS3'
         ,'MTM_CROSS4','OSC_CROSS1','OSC_CROSS2','OSC_CROSS3','OSC_CROSS4','PBX_TR','RSI_CROSS1','RSI_CROSS2','SKDJ_CROSS1'
         ,'SKDJ_CROSS2','VPT_CROSS1','VPT_CROSS2','VPT_CROSS3','VPT_CROSS4','WR_CROSS1','WR_CROSS2']
-
-    for columnname in fianacial.columns:
-        if fianacial[columnname].dtype == 'float64':
-            fianacial[columnname]=fianacial[columnname].astype('float16')
-        if fianacial[columnname].dtype == 'int64':
-            fianacial[columnname]=fianacial[columnname].astype('int8')
-    res = fianacial.join(technical).join(alpha)
     col_tar = []
     for i in range(len(cols)):
         for j in range(len(list(res.columns))):
