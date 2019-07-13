@@ -29,14 +29,18 @@ def MIKE_NEW(DataFrame,MIKE_N=12,MA_N=5):
     MS = TYP-(HH-LL)
     SS = 2*LL-HH
     MA5 = MA(CLOSE, MA_N)
+    UB = MA5 + 2 * STD(CLOSE, 20)
+    LB = MA5 - 2 * STD(CLOSE, 20)
     MIKE_WRSC = QA.CROSS(MA5, WR)
     MIKE_WRJC = QA.CROSS(WR, MA5)
     MIKE_WSSC = QA.CROSS(MA5, WS)
     MIKE_WSJC = QA.CROSS(WS, MA5)
     MIKE_TR = np.abs(MA5 - WS) / np.abs(WR - MA5)
     MIKE_TR = [0 if x > 1 else 1 for x in MIKE_TR]
+    MIKE_BOLL = ((WR > UB) & (WS > LB)) *1
     return pd.DataFrame({'WR':WR,'MR':MR,'SR':SR,'WS':WS,'MS':MS,'SS':SS
-                        ,'MIKE_WRSC':MIKE_WRSC,'MIKE_WRJC':MIKE_WRJC,'MIKE_WSSC':MIKE_WSSC,'MIKE_WSJC':MIKE_WSJC,'MIKE_TR':MIKE_TR})
+                            ,'MIKE_WRSC':MIKE_WRSC,'MIKE_WRJC':MIKE_WRJC,'MIKE_WSSC':MIKE_WSSC,'MIKE_WSJC':MIKE_WSJC,
+                         'MIKE_TR':MIKE_TR,'MIKE_BOLL':MIKE_BOLL})
 
 def indicator_ATR(DataFrame, N=14):
     """
@@ -88,7 +92,7 @@ def get_indicator(data,rng1):
     except:
         VSTD = data.data.assign(VSTD=None)['VSTD']
     try:
-        BOLL = data.add_func(QA.QA_indicator_BOLL, N=5, P=2)
+        BOLL = data.add_func(QA.QA_indicator_BOLL)
         BOLL['WIDTH'] = (BOLL['UB']-BOLL['LB'])/BOLL['BOLL']
         BOLL['BOLL'] = data['close'] / BOLL['BOLL'] - 1
         BOLL['UB'] = data['close'] / BOLL['UB'] - 1
