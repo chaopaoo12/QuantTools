@@ -88,7 +88,7 @@ def get_indicator(data,rng1):
     except:
         VSTD = data.data.assign(VSTD=None)['VSTD']
     try:
-        BOLL = data.add_func(QA.QA_indicator_BOLL)
+        BOLL = data.add_func(QA.QA_indicator_BOLL, N=5, P=2)
         BOLL['WIDTH'] = (BOLL['UB']-BOLL['LB'])/BOLL['BOLL']
         BOLL['BOLL'] = data['close'] / BOLL['BOLL'] - 1
         BOLL['UB'] = data['close'] / BOLL['UB'] - 1
