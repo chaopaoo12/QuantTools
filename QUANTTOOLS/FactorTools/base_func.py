@@ -11,6 +11,7 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False):
     if block is True:
         data = QA.QA_fetch_stock_block()
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
+        codes = [i for i in codes if i.startswith('300') == False]
     else:
         codes = list(QA_fetch_stock_list_adv()['code'])
     if type == 'crawl':
