@@ -594,7 +594,7 @@ def ohlc(data,N=7):
     data['amount'] = data['amount'].rolling(window=N).apply(lambda x:x.sum(),raw=True)
     return(data)
 
-def QA_fetch_get_indicator(code, start_date, end_date, type = 'day'):
+def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
     if type == 'day':
         start = QA_util_get_pre_trade_date(start_date,180)
         rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
@@ -620,6 +620,38 @@ def QA_fetch_get_indicator(code, start_date, end_date, type = 'day'):
         try:
             data = data.to_qfq()
             data = QA_DataStruct_Stock_day(data.data.groupby('code',sort=True).apply(ohlc,30))
+        except:
+            print("No data")
+    if data == None:
+        return None
+    else:
+        data = get_indicator(data,rng1)
+        return(data)
+
+def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
+    if type == 'day':
+        start = QA_util_get_pre_trade_date(start_date,180)
+        rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+        data = QA.QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])
+        try:
+            data = QA_DataStruct_Stock_day(data)
+        except:
+            print("No data")
+    elif type == 'week':
+        start = QA_util_get_pre_trade_date(start_date,187)
+        rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+        data = QA.QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])
+        try:
+            data = QA_DataStruct_Stock_day(data.groupby('code',sort=True).apply(ohlc,7))
+        except:
+            print("No data")
+
+    elif type == 'month':
+        start = QA_util_get_pre_trade_date(start_date,210)
+        rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+        data = QA.QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])
+        try:
+            data = QA_DataStruct_Stock_day(data.groupby('code',sort=True).apply(ohlc,30))
         except:
             print("No data")
     if data == None:

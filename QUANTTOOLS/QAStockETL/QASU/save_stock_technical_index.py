@@ -3,7 +3,7 @@ import pymongo
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_info, QA_util_add_months,
                               QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date,
                               QA_util_datetime_to_strdate)
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_indicator
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_indicator
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 
 def QA_SU_save_stock_technical_index_day(START_DATE=None,END_DATE=None,client=DATABASE, ui_log = None, ui_progress = None):
@@ -35,7 +35,7 @@ def QA_SU_save_stock_technical_index_day(START_DATE=None,END_DATE=None,client=DA
                 '##JOB01 Now Saving stock_technical_index from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
 
             stock_technical_index.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_indicator(code, START_DATE, END_DATE)), ordered=False)
+                QA_fetch_get_stock_indicator(code, START_DATE, END_DATE)), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -89,7 +89,7 @@ def QA_SU_save_stock_technical_index_his(START_DATE=None,END_DATE=None,client=DA
                 '##JOB01 Now Saving stock_technical_index from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
 
             stock_technical_index.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_indicator(code, START_DATE, END_DATE)), ordered=False)
+                QA_fetch_get_stock_indicator(code, START_DATE, END_DATE)), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -140,7 +140,7 @@ def QA_SU_save_stock_technical_week_day(START_DATE=None,END_DATE=None,client=DAT
                 '##JOB01 Now Saving stock_technical_week from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
 
             stock_technical_week.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_indicator(code, START_DATE, END_DATE, type='week')), ordered=False)
+                QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='week')), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -194,7 +194,7 @@ def QA_SU_save_stock_technical_week_his(START_DATE=None,END_DATE=None,client=DAT
                 '##JOB01 Now Saving stock_technical_week from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
 
             stock_technical_week.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_indicator(code, START_DATE, END_DATE, type='week')), ordered=False)
+                QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='week')), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -245,7 +245,7 @@ def QA_SU_save_stock_technical_month_day(START_DATE=None,END_DATE=None,client=DA
                 '##JOB01 Now Saving stock_technical_month from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
 
             stock_technical_month.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_indicator(code, START_DATE, END_DATE, type='month')), ordered=False)
+                QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='month')), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -299,7 +299,7 @@ def QA_SU_save_stock_technical_month_his(START_DATE=None,END_DATE=None,client=DA
                 '##JOB01 Now Saving stock_technical_month from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
 
             stock_technical_month.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_indicator(code, START_DATE, END_DATE, type='month')), ordered=False)
+                QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='month')), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
