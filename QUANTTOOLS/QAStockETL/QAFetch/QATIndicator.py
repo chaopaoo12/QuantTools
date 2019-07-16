@@ -31,10 +31,10 @@ def MIKE_NEW(DataFrame,MIKE_N=12,MA_N=5):
     MA5 = MA(CLOSE, MA_N)
     UB = MA5 + 2 * STD(CLOSE, 20)
     LB = MA5 - 2 * STD(CLOSE, 20)
-    MIKE_WRSC = QA.CROSS(MA5, WR)
-    MIKE_WRJC = QA.CROSS(WR, MA5)
-    MIKE_WSSC = QA.CROSS(MA5, WS)
-    MIKE_WSJC = QA.CROSS(WS, MA5)
+    MIKE_WRSC = QA.CROSS(UB, WR)
+    MIKE_WRJC = QA.CROSS(WR, UB)
+    MIKE_WSSC = QA.CROSS(LB, WS)
+    MIKE_WSJC = QA.CROSS(WS, LB)
     MIKE_TR = np.abs(MA5 - WS) / np.abs(WR - MA5)
     MIKE_TR = [0 if x > 1 else 1 for x in MIKE_TR]
     MIKE_BOLL = ((WR > UB) & (WS > LB)) *1
