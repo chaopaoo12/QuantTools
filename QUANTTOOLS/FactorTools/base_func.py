@@ -17,7 +17,7 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False):
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date )
     if type == 'model':
-        res = QA_fetch_get_quant_data(codes, start_date, end_date).set_index(['date','code'])
+        res = QA_fetch_get_quant_data(codes, start_date, end_date).set_index(['date','code']).drop(['date'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date)
         res = target.join(res)
     return(res)
