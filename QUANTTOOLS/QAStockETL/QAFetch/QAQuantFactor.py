@@ -52,8 +52,10 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
             alpha[columnname]=alpha[columnname].astype('float16')
         if alpha[columnname].dtype == 'int64':
             alpha[columnname]=alpha[columnname].astype('int8')
-    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1)
-    technical = technical.groupby('code').apply(series_to_supervised,[12,7,6,4,3,2,1]).loc[rng1]
+    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
+    tech_week = QA_fetch_stock_technical_index_adv(codes,start,end_date, 'week').data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
+    tech_week.columns = [x + '_WK' for x in tech_week.columns]
+    technical = technical.join(tech_week)
     for columnname in technical.columns:
         if technical[columnname].dtype == 'float64':
             technical[columnname]=technical[columnname].astype('float16')
