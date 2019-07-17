@@ -20,4 +20,6 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False):
         res = QA_fetch_get_quant_data(codes, start_date, end_date).set_index(['date','code']).drop(['date'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date)
         res = target.join(res)
+    dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
+    res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
