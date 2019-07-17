@@ -42,9 +42,9 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_etl_process_financial_day,QA_SU_save_stock_alpha_day,
                                    QA_SU_save_stock_technical_index_day,
                                    QA_SU_save_stock_fianacial_percent_day,
-                                   QA_etl_stock_alpha_day,
+                                   QA_etl_stock_alpha_day,QA_util_process_stock_financial,
                                    QA_etl_stock_technical_day,QA_SU_save_stock_quant_data_day,
-                                   QA_SU_save_stock_fianacial_momgo,
+                                   QA_SU_save_stock_fianacial_momgo,QA_SU_save_fianacialTTM_momgo,
                                    QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_month_day)
 
 print("download day data ")
@@ -70,6 +70,10 @@ QA_etl_stock_block()
 QA_SU_save_index_day('tdx')
 #QA_etl_stock_alpha_day("day")
 #QA_etl_stock_technical_day("day")
+print("done")
+print("run financial data into sqldatabase")
+QA_util_process_stock_financial()
+QA_SU_save_fianacialTTM_momgo()
 print("done")
 print("processing quant data in sqldatabase")
 QA_etl_process_financial_day('day')
