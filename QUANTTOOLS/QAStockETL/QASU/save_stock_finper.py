@@ -3,7 +3,7 @@ import pymongo
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_financial_percent
 from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_today_str,QA_util_code_tolist,QA_util_log_info,
-                              QA_util_get_trade_range)
+                              QA_util_get_trade_range,QA_util_get_pre_trade_date)
 import pandas as pd
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch_stock_block_adv,
                                                QA_fetch_stock_day_adv)
@@ -17,8 +17,8 @@ def QA_SU_save_stock_fianacial_percent(code = None, start_date=None,end_date=Non
 
     if start_date is None:
         if end_date is None:
-            start_date = QA_util_today_str()
-            end_date = start_date
+            start_date = QA_util_get_pre_trade_date(QA_util_today_str(),1)
+            end_date = QA_util_today_str()
         elif end_date is not None:
             start_date = '2008-01-01'
     elif start_date is not None:
