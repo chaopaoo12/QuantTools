@@ -98,5 +98,5 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
     col_tar = list(set(col_tar))
     res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(get_trans).join(res[col_tar])
     res = pd.concat([res,INDUSTRY],axis=1).reset_index()
-    res = res.assign(date_stamp=res['date'].apply(lambda x: str(x)[0:10]))
+    res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
