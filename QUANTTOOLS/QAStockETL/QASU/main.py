@@ -105,7 +105,7 @@ def QA_SU_save_stock_fianacial_percent_his(code = None, start_date = '2008-01-01
 def QA_SU_save_stock_quant_data_day(code = None, start_date = None, end_date = None):
     return save_stock_quant.QA_SU_save_stock_quant_day(code = code, start_date = start_date ,end_date = end_date)
 
-def QA_SU_save_stock_quant_data_his(code = None, start_date = '2008-01-01', end_date = None):
+def QA_SU_save_stock_quant_data_his(code = None, start_date = '2008-01-01', end_date = QA_util_today_str()):
     return save_stock_quant.QA_SU_save_stock_quant_day(code = code, start_date = start_date ,end_date = end_date)
 
 def QA_SU_save_stock_technical_week_day(START_DATE=None,END_DATE=None):
