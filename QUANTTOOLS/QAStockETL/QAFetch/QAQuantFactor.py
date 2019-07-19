@@ -14,7 +14,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
     fianacial = QA_fetch_stock_fianacial_adv(codes,start,end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE',
                                                                           'AVG5','AVG10','AVG20','AVG30','AVG60',
                                                                           'LAG','LAG5','LAG10','LAG20','LAG30','LAG60',
-                                                                          'AVG5_TOR', 'AVG20_TOR','AVG30_TOR','AVG60_TOR',
+                                                                          'LAG_TOR','AVG5_TOR', 'AVG20_TOR','AVG30_TOR','AVG60_TOR',
                                                                           'GROSSMARGIN', 'GROSSMARGIN_L2Y','GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
                                                                           'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
                                                                           'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',

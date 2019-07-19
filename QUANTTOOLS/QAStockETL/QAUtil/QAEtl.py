@@ -92,6 +92,7 @@ into stock_analysis_data
                  sum(avgTotalLiabilities) over(partition by order_date) as all_avgTotalLiabilities,
                  sum(operatingRevenue_TTM) over(partition by order_date) as all_operatingRevenue_TTM,
                  sum(operatingCosts_TTM) over(partition by order_date) as all_operatingCosts_TTM,
+                 LAG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE DESC) as LAG_TOR,
                  AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_TOR,
                  AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 9 PRECEDING AND CURRENT ROW) AS AVG10_TOR,
                  AVG(TURNOVERRATIO) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_TOR,

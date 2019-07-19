@@ -233,6 +233,7 @@ def QA_util_etl_stock_quant(deal_date = None):
                 PE / (totalassets / totalassets_LY - 1) / 100
              end * 100,
              2) as PBG,
+       round(LAG_TOR * 100, 2) as LAG_TOR,
        round(AVG5_TOR * 100, 2) as AVG5_TOR,
        round(AVG10_TOR * 100, 2) as AVG10_TOR,
        round(AVG20_TOR * 100, 2) as AVG20_TOR,
