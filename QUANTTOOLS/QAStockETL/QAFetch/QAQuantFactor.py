@@ -65,8 +65,8 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
     fianacial['RNG60_RES']= (fianacial['AVG60_RNG']*60) / fianacial['RNG_60']
     fianacial['RNG20_RES']= (fianacial['AVG60_RNG']*20) / fianacial['RNG_20']
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
-    INDUSTRY = fianacial[['INDUSTRY','DAYS','LAG_TOR']].loc[rng1]
-    INDUSTRY.columns = ['INDUSTRY','DAYS_O','LAG_TOR_O']
+    INDUSTRY = fianacial[['INDUSTRY','RNG_L','LAG_TOR']].loc[rng1]
+    INDUSTRY.columns = ['INDUSTRY','RNG_L_O','LAG_TOR_O']
     fianacial = fianacial.loc[rng1]
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
