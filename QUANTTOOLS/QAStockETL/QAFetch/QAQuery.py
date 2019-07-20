@@ -649,7 +649,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
 def QA_fetch_stock_quant_pre(code, start, end=None, format='pd'):
     res = QA_fetch_stock_quant_data(code, start, end)
     target = QA_fetch_stock_target(code, start, end)
-    res = target.join(res)
+    res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
         return res
     elif format in ['json', 'dict']:
