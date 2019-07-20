@@ -50,4 +50,4 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None, ui_log = Non
                 pass
             else:
                 QA_util_log_info(
-                    '##JOB01 No Data stock_fianacial_percent ============== {deal_date} '.format(deal_date=deal_date), ui_log)
+                    '##JOB01 No Data stock_fianacial_data ============== {deal_date} '.format(deal_date=deal_date), ui_log)
