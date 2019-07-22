@@ -67,6 +67,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
     INDUSTRY = fianacial[['INDUSTRY']].loc[rng1]
     TOR = fianacial[['RNG_L','LAG_TOR','DAYS']].astype('float16').loc[rng1]
+    TOR.columns = ['RNG_LO','LAG_TORO','DAYSO']
     fianacial = fianacial.loc[rng1]
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
