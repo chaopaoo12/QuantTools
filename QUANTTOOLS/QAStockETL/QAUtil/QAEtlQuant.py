@@ -378,7 +378,7 @@ def QA_util_etl_stock_quant(deal_date = None):
        pe_rank,
        pb_rank
   from stock_analysis_data a
- where order_date = to_date('{start_date}', 'yyyy-mm-dd')
+ where order_date >= to_date('{start_date}', 'yyyy-mm-dd')
  and (turnoverRatio * 1000 >= 10 or order_Date - market_day >= 15)
 '''
     if deal_date is None:
@@ -386,7 +386,7 @@ def QA_util_etl_stock_quant(deal_date = None):
     else:
         if QA_util_if_trade(deal_date) == True:
             print(deal_date)
-            sql = sql.format(start_date=deal_date)
+            sql = sql.format(start_date=QA_util_get_pre_trade_date(deal_date,1))
             conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
             data = pd.read_sql(sql=sql, con=conn)
             conn.close()
