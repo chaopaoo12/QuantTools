@@ -670,7 +670,7 @@ def QA_fetch_financial_code(codes,N=6):
     res = pd.DataFrame([list((x,  y)) for x in codes for y in date_list])
     res.columns=['code','report_date']
     market_day = pd.DataFrame(QA_fetch_stock_basic_info_tushare())[['code','timeToMarket']].set_index('code')
-    market_day['TM'] = market_day['timeToMarket'].apply(lambda x:str(QA_util_add_months(QA_util_date_int2str(int(x)),-36) if x >0 else None)[0:10])
+    market_day['TM'] = market_day['timeToMarket'].apply(lambda x:str(QA_util_add_months(QA_util_date_int2str(int(x)),0) if x >0 else None)[0:10])
     res1 = res.set_index('code').join(market_day['TM']).reset_index()
     res2 = res1[res1['TM'] <= res1['report_date']]
     res2['report_date'] = res2['report_date'].astype('datetime64[ns]')
