@@ -65,8 +65,8 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
     fianacial['RNG60_RES']= (fianacial['AVG60_RNG']*60) / fianacial['RNG_60']
     fianacial['RNG20_RES']= (fianacial['AVG60_RNG']*20) / fianacial['RNG_20']
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
-    INDUSTRY = fianacial[['INDUSTRY','RNG_L','LAG_TOR','DAYS']].loc[rng1]
-    INDUSTRY.columns = ['INDUSTRY','RNG_L_O','LAG_TOR_O','DAYS_O']
+    INDUSTRY = fianacial[['INDUSTRY']].loc[rng1]
+    TOR = fianacial[['RNG_L','LAG_TOR','DAYS']].astype('float16').loc[rng1]
     fianacial = fianacial.loc[rng1]
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
@@ -98,6 +98,6 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
             col_tar.append(list(res.columns)[j])
     col_tar = list(set(col_tar))
     res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(get_trans).join(res[col_tar])
-    res = pd.concat([res,INDUSTRY],axis=1).reset_index()
+    res = pd.concat([res,INDUSTRY,TOR],axis=1).reset_index()
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
