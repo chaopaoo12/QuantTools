@@ -99,7 +99,8 @@ def pct(data, type = 'close'):
         data[['PRE4_MARKET','AVG_PRE4_MARKET']]= data.shift(-4)[['close_qfq','AVG_TOTAL_MARKET']]
         data[['PRE5_MARKET','AVG_PRE5_MARKET']]= data.shift(-5)[['close_qfq','AVG_TOTAL_MARKET']]
         data[['PRE10_MARKET','AVG_PRE10_MARKET']]= data.shift(-10)[['close_qfq','AVG_TOTAL_MARKET']]
-        data['MARK'] = (data['high_mark'] == data['low_mark']) * 1
+        data['OPEN_MARK'] = (data['high_mark'] == data['low_mark']) * 1
+        data['PASS_MARK'] = (data['PRE_MARKET']/data['close_qfq']-1).apply(lambda x:round(x * 100,2))
         data['TARGET'] = (data['PRE2_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
         data['TARGET3'] = (data['PRE3_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
         data['TARGET4'] = (data['PRE4_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
