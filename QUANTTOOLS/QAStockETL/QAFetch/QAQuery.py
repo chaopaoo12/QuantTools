@@ -11,8 +11,7 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict, dict2
-from QUANTTOOLS.QAStockETL.FuncTools.base_func import pct,index_pct
-
+from QUANTTOOLS.QAStockETL.FuncTools.base_func import pct,index_pct,time_this_function
 
 def QA_fetch_stock_industry(stock_code):
     '''
@@ -576,7 +575,7 @@ def QA_fetch_stock_financial_percent(code, start, end=None, format='pd', collect
         QA_util_log_info(
             'QA Error QA_fetch_stock_financial_percent data parameter start=%s end=%s is not right' % (start, end))
 
-
+@time_this_function
 def QA_fetch_stock_quant_data(code, start, end=None, format='pd', collections=DATABASE.stock_quant_data):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
