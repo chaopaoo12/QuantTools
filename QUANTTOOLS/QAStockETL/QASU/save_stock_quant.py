@@ -98,7 +98,7 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
                                    'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                    'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_184', 'alpha_185', 'alpha_186',
                                    'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']]
-                index_data = data[['AD','ADDI','ADDI_C','ADTM','ADX','ADXR','ADX_C','AD_C',
+                index_data = data[['code','date','date_stamp','AD','ADDI','ADDI_C','ADTM','ADX','ADXR','ADX_C','AD_C',
                                    'AMA','ASI','ASIT','ATR','ATRR','BBI','BIAS1','BIAS2',
                                    'BIAS3','BODY','BODY_ABS','BOLL','CCI','CHO','DDD','DDI',
                                    'DDI_C','DEA','DI1','DI2','DIF','DI_M','KDJ_D','KDJ_J',
@@ -136,7 +136,7 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
                                    'SKDJ_CROSS2','CDLDOJISTAR','RSI_CROSS2','OSC_CROSS1',
                                    'CDLRISEFALL3METHODS','CDLLONGLEGGEDDOJI','MIKE_WSSC',
                                    'CDLDARKCLOUDCOVER','CHO_CROSS2','CDLENGULFING']]
-                week_data = data[['AD_WK','ADDI_WK','ADDI_C_WK','ADTM_WK','ADX_WK','ADXR_WK','ADX_C_WK','AD_C_WK',
+                week_data = data[['code','date','date_stamp','AD_WK','ADDI_WK','ADDI_C_WK','ADTM_WK','ADX_WK','ADXR_WK','ADX_C_WK','AD_C_WK',
                                   'AMA_WK','ASI_WK','ASIT_WK','ATR_WK','ATRR_WK','BBI_WK','BIAS1_WK','BIAS2_WK',
                                   'BIAS3_WK','BODY_WK','BODY_ABS_WK','BOLL_WK','CCI_WK','CHO_WK','DDD_WK','DDI_WK',
                                   'DDI_C_WK','DEA_WK','DI1_WK','DI2_WK','DIF_WK','DI_M_WK','KDJ_D_WK','KDJ_J_WK',
