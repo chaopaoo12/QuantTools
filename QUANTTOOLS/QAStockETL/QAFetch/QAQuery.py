@@ -581,24 +581,55 @@ def QA_fetch_stock_quant_data(code, start, end=None, format='pd', collections=DA
     #code= [code] if isinstance(code,str) else code
     # code checking
     code = QA_util_code_tolist(code)
-
+    financial = DATABASE.stock_quant_data_financial
+    index = DATABASE.stock_quant_data_index
+    week = DATABASE.stock_quant_data_week
+    alpha = DATABASE.stock_quant_data_alpha
     if QA_util_date_valid(end):
 
         __data = []
-        cursor = collections.find({
+        cursor = financial.find({
             'code': {'$in': code}, "date_stamp": {
                 "$lte": QA_util_date_stamp(end),
                 "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
-        #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
+        financial_res = pd.DataFrame([item for item in cursor])
 
-        res = pd.DataFrame([item for item in cursor])
+        cursor = index.find({
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+        index_res = pd.DataFrame([item for item in cursor])
+
+        cursor = week.find({
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+        week_res = pd.DataFrame([item for item in cursor])
+
+        cursor = alpha.find({
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+        alpha_res = pd.DataFrame([item for item in cursor])
         try:
-            res = res.drop_duplicates(
-                (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])
+            res = financial_res.drop_duplicates(
+                (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code']).join(
+                index_res.drop_duplicates(
+                    (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])).join(
+                week_res.drop_duplicates(
+                    (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])).join(
+                alpha_res.drop_duplicates(
+                    (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code']))
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
                     res[columnname]=res[columnname].astype('float16')
+                if res[columnname].dtype == 'float32':
+                    res[columnname]=res[columnname].astype('float16')
                 if res[columnname].dtype == 'int64':
+                    res[columnname]=res[columnname].astype('int8')
+                if res[columnname].dtype == 'int32':
+                    res[columnname]=res[columnname].astype('int8')
+                if res[columnname].dtype == 'int16':
                     res[columnname]=res[columnname].astype('int8')
         except:
             res = None
