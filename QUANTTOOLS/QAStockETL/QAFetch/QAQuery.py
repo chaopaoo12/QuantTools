@@ -659,7 +659,8 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
     res1.columns = [x + '_qfq' for x in res1.columns]
     data = data.data.join(res1).fillna(0).reset_index()
     res = data.groupby('code').apply(pct, type=type)[['date','code','OPEN_MARK','PASS_MARK',
-                                           'TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET']].set_index(['date','code'])
+                                                    'TARGET','TARGET3','TARGET4','TARGET5',
+                                                      'TARGET10','AVG_TARGET']].set_index(['date','code'])
     res = res.reset_index()
     res = pd.merge(res,market,on='date')
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
