@@ -585,7 +585,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, format='pd', collections=DA
     index = DATABASE.stock_quant_data_index
     week = DATABASE.stock_quant_data_week
     alpha = DATABASE.stock_quant_data_alpha
-    block = QA.QA_fetch_stock_block(QA.QA_fetch_stock_list_adv().code.tolist()).reset_index(drop=True).drop_duplicates()
+    block = QA.QA_fetch_stock_block(code).reset_index(drop=True).drop_duplicates()
     block = pd.crosstab(block['code'],block['blockname'])
     if QA_util_date_valid(end):
 
