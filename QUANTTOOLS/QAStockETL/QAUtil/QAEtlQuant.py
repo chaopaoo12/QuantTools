@@ -386,7 +386,7 @@ def QA_util_etl_stock_quant(deal_date = None):
     else:
         if QA_util_if_trade(deal_date) == True:
             print(deal_date)
-            sql = sql.format(start_date=QA_util_get_pre_trade_date(deal_date,1))
+            sql = sql.format(start_date=QA_util_get_pre_trade_date(deal_date))
             conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
             data = pd.read_sql(sql=sql, con=conn)
             conn.close()
