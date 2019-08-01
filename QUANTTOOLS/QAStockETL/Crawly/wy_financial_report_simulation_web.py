@@ -3,6 +3,7 @@ from selenium import webdriver
 from time import sleep
 import os
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_date_stamp
+from bs4 import BeautifulSoup
 
 def get_stock_report_wy(code):
 
@@ -57,3 +58,56 @@ def get_stock_report_wy(code):
     res = res[res['report_date'].str.contains('Unnamed')==0]
     res = res[res['report_date'].apply(len) == 10]
     return(res)
+
+def read_data_data_from_wy(code,report_type,options):
+    driver = webdriver.Chrome()
+    driver.get('http://quotes.money.163.com/f10/{report_type}_{code}.html'.format(report_type=report_type,code=code))
+    soup = BeautifulSoup(driver.page_source, "html.parser")
+    driver.quit()
+    index = [i.string.replace('(万元)','').replace('合计','') for i in soup.find_all(class_='col_l')[0].tbody.find_all(class_='td_1')]
+    if report_type == 'zcfzb':
+        index = ['少数股东权益B' if x == '少数股东权益' else x for x in index]
+        index = ['财务费用B' if x == '财务费用' else x for x in index]
+    elif report_type == 'lrb':
+        index = ['少数股东权益P' if x == '少数股东权益' else x for x in index]
+        index = ['财务费用P' if x == '财务费用' else x for x in index]
+    elif report_type == 'xjllb':
+        index = ['少数股东损益C' if x == '少数股东损益' else x for x in index]
+        index = ['净利润C' if x == '净利润' else x for x in index]
+    cols = [i.string for i in soup.find_all(class_='col_r')[0].find_all(class_='dbrow')[0].find_all('th')]
+    x = []
+    for i in soup.find_all(class_='col_r')[0].find_all('tr'):
+        x.append([float(i.string.replace(',','').replace('--','0')) for i in i.find_all('td') if i.string is not None])
+    res =pd.DataFrame(x[1:],index=index,columns=cols).T
+    return(res)
+
+def read_stock_report_wy(code):
+
+    headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+               'Accept-Language': 'zh-CN,zh;q=0.9',
+               'Cache-Control': 'max-age=0',
+               'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
+               'Connection': 'keep-alive'
+               }
+    options = webdriver.ChromeOptions()
+    for (key,value) in headers.items():
+        options.add_argument('%s="%s"' % (key, value))
+    options.add_argument('headless')
+    res1 = pd.DataFrame()
+    for report_type in ['zcfzb','lrb','xjllb']:
+        res = read_data_data_from_wy(code,report_type,options)
+        if res1.shape[0]==0:
+            res1 = res
+        else:
+            res1 = res1.join(res)
+    if res1 is None:
+        return None
+    else:
+        res1['code'] = code
+        res1['crawl_date']=QA_util_today_str()
+        res = res1.reset_index()
+        try:
+            res.columns = ['report_date' if x == 'index' else x for x in list(res1.reset_index().columns)]
+        except:
+            pass
+        return(res)
