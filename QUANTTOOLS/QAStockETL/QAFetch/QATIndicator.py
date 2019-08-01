@@ -597,16 +597,16 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
     if type == 'day':
         start = QA_util_get_pre_trade_date(start_date,180)
         rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
-        data = QA_fetch_stock_day_adv(code,start,end_date)
         try:
+            data = QA_fetch_stock_day_adv(code,start,end_date)
             data = data.to_qfq()
         except:
             print("No data")
     elif type == 'week':
         start = QA_util_get_pre_trade_date(start_date,187)
         rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
-        data = QA_fetch_stock_day_adv(code,start,end_date)
         try:
+            data = QA_fetch_stock_day_adv(code,start,end_date)
             data = data.to_qfq()
             data = QA_DataStruct_Stock_day(data.data.groupby('code',sort=True).apply(ohlc,7))
         except:
@@ -615,8 +615,8 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
     elif type == 'month':
         start = QA_util_get_pre_trade_date(start_date,210)
         rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
-        data = QA_fetch_stock_day_adv(code,start,end_date)
         try:
+            data = QA_fetch_stock_day_adv(code,start,end_date)
             data = data.to_qfq()
             data = QA_DataStruct_Stock_day(data.data.groupby('code',sort=True).apply(ohlc,30))
         except:
@@ -631,16 +631,16 @@ def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
     if type == 'day':
         start = QA_util_get_pre_trade_date(start_date,180)
         rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
-        data = QA.QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])
         try:
+            data = QA.QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])
             data = QA_DataStruct_Stock_day(data)
         except:
             print("No data")
     elif type == 'week':
         start = QA_util_get_pre_trade_date(start_date,187)
         rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
-        data = QA.QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])
         try:
+            data = QA.QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])
             data = QA_DataStruct_Stock_day(data.groupby('code',sort=True).apply(ohlc,7))
         except:
             print("No data")
@@ -648,8 +648,8 @@ def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
     elif type == 'month':
         start = QA_util_get_pre_trade_date(start_date,210)
         rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
-        data = QA.QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])
         try:
+            data = QA.QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])
             data = QA_DataStruct_Stock_day(data.groupby('code',sort=True).apply(ohlc,30))
         except:
             print("No data")
