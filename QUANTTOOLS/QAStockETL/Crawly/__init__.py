@@ -10,3 +10,5 @@ from QUANTTOOLS.QAStockETL.Crawly.sina_financial_report_simulation_web import ge
 from QUANTTOOLS.QAStockETL.Crawly.sina_shares_change_simulation_web import get_stock_shares_sina
 
 from QUANTTOOLS.QAStockETL.Crawly.wy_financial_report_simulation_web import get_stock_report_wy, read_stock_report_wy
+
+from QUANTTOOLS.QAStockETL.Crawly.sina_company_simulation_web import get_usstock_list_sina

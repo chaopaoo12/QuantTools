@@ -27,3 +27,5 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAInterest import QA_fetch_get_interest_rate
 from QUANTTOOLS.QAStockETL.QAFetch.QAFinper import QA_fetch_get_stock_financial_percent
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_quant_data
+
+from QUANTTOOLS.QAStockETL.QAFetch.QAhkstock import QA_fetch_get_usstock_list_sina

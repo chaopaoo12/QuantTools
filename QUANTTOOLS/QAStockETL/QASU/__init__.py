@@ -24,4 +24,5 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_report_calendar_day, QA_
                                              QA_SU_save_stock_fianacial_percent_his,
                                              QA_SU_save_stock_quant_data_day,QA_SU_save_stock_quant_data_his,
                                              QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_week_his,
-                                             QA_SU_save_stock_technical_month_day,QA_SU_save_stock_technical_month_his)
+                                             QA_SU_save_stock_technical_month_day,QA_SU_save_stock_technical_month_his,
+                                             QA_SU_save_usstock_list_day)
