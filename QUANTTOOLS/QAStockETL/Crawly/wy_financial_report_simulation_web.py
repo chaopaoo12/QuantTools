@@ -64,16 +64,13 @@ def read_data_data_from_wy(code,report_type,options):
     driver.get('http://quotes.money.163.com/f10/{report_type}_{code}.html'.format(report_type=report_type,code=code))
     soup = BeautifulSoup(driver.page_source, "html.parser")
     driver.quit()
-    index = [i.string.replace('(万元)','').replace('合计','') for i in soup.find_all(class_='col_l')[0].tbody.find_all(class_='td_1')]
-    if report_type == 'zcfzb':
-        index = ['少数股东权益B' if x == '少数股东权益' else x for x in index]
-        index = ['财务费用B' if x == '财务费用' else x for x in index]
-    elif report_type == 'lrb':
-        index = ['少数股东权益P' if x == '少数股东权益' else x for x in index]
-        index = ['财务费用P' if x == '财务费用' else x for x in index]
+    index = [i.string.replace('(万元)','') for i in soup.find_all(class_='col_l')[0].tbody.find_all(class_='td_1')]
+    if report_type == 'lrb':
+        index = ['少数股东损益' if x == '少数股东损益' else x for x in index]
     elif report_type == 'xjllb':
         index = ['少数股东损益C' if x == '少数股东损益' else x for x in index]
         index = ['净利润C' if x == '净利润' else x for x in index]
+        index = ['财务费用C' if x == '财务费用' else x for x in index]
     cols = [i.string for i in soup.find_all(class_='col_r')[0].find_all(class_='dbrow')[0].find_all('th')]
     x = []
     for i in soup.find_all(class_='col_r')[0].find_all('tr'):
