@@ -465,7 +465,7 @@ def get_indicator(data,rng1):
     try:
         CDLMARUBOZU = data.add_func(QA.QAIndicator.talib_indicators.CDLMARUBOZU)
     except:
-        CDLMARUBOZU = data.data.assign(CDLHARAMI=0)['CDLMARUBOZU']
+        CDLMARUBOZU = data.data.assign(CDLMARUBOZU=0)['CDLMARUBOZU']
     try:
         CDLMATCHINGLOW = data.add_func(QA.QAIndicator.talib_indicators.CDLMATCHINGLOW)
     except:
