@@ -28,7 +28,7 @@ from QUANTTOOLS.QAStockETL.QASU import crawl_jrj_financial_reportdate as save_fi
     crawl_sina_financial_report as save_stock_financial_sina, crawl_sina_shares_change as save_stock_shares_sina,\
     crawl_wy_financial_report as save_stock_financial_wy, save_stock_technical_index as save_stock_technical_index,\
     crawl_interest_rate as crawl_interest_rate, save_stock_finper as save_stock_finper, save_stock_quant as save_stock_quant,\
-    crawl_sina_hkstock as crawl_sina_hkstock
+    crawl_sina_usstock as crawl_sina_hkstock
 from QUANTAXIS.QAUtil import QA_util_today_str
 
 def QA_SU_save_report_calendar_day():

@@ -31,7 +31,8 @@ from QUANTTOOLS.QAStockETL.QASU import (QA_SU_save_report_calendar_day, QA_SU_sa
                                         QA_SU_save_stock_quant_data_day,
                                         QA_SU_save_stock_quant_data_his,
                                         QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_week_his,
-                                        QA_SU_save_stock_technical_month_day,QA_SU_save_stock_technical_month_his)
+                                        QA_SU_save_stock_technical_month_day,QA_SU_save_stock_technical_month_his,
+                                        QA_SU_save_usstock_list_day)
 
 from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_process_financial,QA_util_etl_financial_TTM,
                                           QA_util_etl_stock_quant,QA_util_sql_store_mysql,QA_util_process_stock_financial)
