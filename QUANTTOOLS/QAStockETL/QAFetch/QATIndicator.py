@@ -35,7 +35,9 @@ def MIKE_NEW(DataFrame,MIKE_N=12,MA_N=5):
     MIKE_WRJC = QA.CROSS(WR, UB)
     MIKE_WSSC = QA.CROSS(LB, WS)
     MIKE_WSJC = QA.CROSS(WS, LB)
-    MIKE_TR = (WS > LB) *1
+    MIKE_TR = ((MIKE_WSJC + MIKE_WRJC) >0) *1 + 2 *1* ((MIKE_WSSC+MIKE_WRSC) > 0)
+    MIKE_TR = MIKE_TR.replace(0,np.nan)
+    MIKE_TR = MIKE_TR.groupby('code').fillna(method='ffill').replace(2,0).fillna(0)
     MIKE_BOLL = ((WR > UB) & (WS > LB)) *1
     return pd.DataFrame({'WR':WR,'MR':MR,'SR':SR,'WS':WS,'MS':MS,'SS':SS
                             ,'MIKE_WRSC':MIKE_WRSC,'MIKE_WRJC':MIKE_WRJC,'MIKE_WSSC':MIKE_WSSC,'MIKE_WSJC':MIKE_WSJC,
