@@ -710,4 +710,7 @@ def QA_fetch_stock_quant_pre(code, start, end=None, format='pd'):
 def QA_fetch_financial_code(N=10):
     START_DATE = QA_util_get_pre_trade_date(QA_util_today_str(),N)
     code = list(QA_fetch_stock_financial_calendar(QA.QA_fetch_stock_list_adv().code.tolist(),START_DATE)['code'])
+    market_day = pd.DataFrame(QA_fetch_stock_basic_info_tushare())[['code','timeToMarket']].set_index('code')
+    market_day['TM'] = market_day['timeToMarket'].apply(lambda x:str(QA_util_add_months(QA_util_date_int2str(int(x)),0) if x >0 else None)[0:10])
+    code = list(market_day[market_day['TM']>= START_DATE]['code']) + code
     return(code)
