@@ -707,19 +707,7 @@ def QA_fetch_stock_quant_pre(code, start, end=None, format='pd'):
         print("QA Error QA_fetch_stock_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
         return None
 
-def QA_fetch_financial_code(codes,N=6):
-    END_DATE = QA_util_datetime_to_strdate(QA_util_add_months(QA_util_today_str(),-3))
-    START_DATE = QA_util_datetime_to_strdate(QA_util_add_months(QA_util_today_str(),-N*12))
-    date_list = list(pd.DataFrame.from_dict(QA_util_getBetweenQuarter(START_DATE,END_DATE)).T.iloc[:,1])
-    QA_fetch_stock_financial_calendar(QA.QA_fetch_stock_list_adv().code.tolist(),)
-    res = pd.DataFrame([list((x,  y)) for x in codes for y in date_list])
-    res.columns=['code','report_date']
-    market_day = pd.DataFrame(QA_fetch_stock_basic_info_tushare())[['code','timeToMarket']].set_index('code')
-    market_day['TM'] = market_day['timeToMarket'].apply(lambda x:str(QA_util_add_months(QA_util_date_int2str(int(x)),0) if x >0 else None)[0:10])
-    res1 = res.set_index('code').join(market_day['TM']).reset_index()
-    res2 = res1[res1['TM'] <= res1['report_date']]
-    res2['report_date'] = res2['report_date'].astype('datetime64[ns]')
-    real = QA_fetch_financial_report_wy(codes)[['code','report_date']].reset_index(drop=True)
-    real['MARK'] = 1
-    r = pd.merge(res2,real, on=['code','report_date'],how='left')
-    return(r[r['MARK'] != 1])
+def QA_fetch_financial_code(N=10):
+    START_DATE = QA_util_get_pre_trade_date(QA_util_today_str(),N)
+    code = list(QA_fetch_stock_financial_calendar(QA.QA_fetch_stock_list_adv().code.tolist(),START_DATE)['code'])
+    return(code)
