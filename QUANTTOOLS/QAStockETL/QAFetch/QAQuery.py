@@ -125,6 +125,16 @@ def QA_fetch_stock_financial_calendar(code, start, end=None, format='pd',type = 
     # code checking
     code = QA_util_code_tolist(code)
 
+    if start is None:
+        start = '1995-01-01'
+    else:
+        start = start
+
+    if end is None:
+        end = QA_util_today_str()
+    else:
+        end = end
+
     if QA_util_date_valid(end):
 
         __data = []
@@ -701,6 +711,7 @@ def QA_fetch_financial_code(codes,N=6):
     END_DATE = QA_util_datetime_to_strdate(QA_util_add_months(QA_util_today_str(),-3))
     START_DATE = QA_util_datetime_to_strdate(QA_util_add_months(QA_util_today_str(),-N*12))
     date_list = list(pd.DataFrame.from_dict(QA_util_getBetweenQuarter(START_DATE,END_DATE)).T.iloc[:,1])
+    QA_fetch_stock_financial_calendar(QA.QA_fetch_stock_list_adv().code.tolist(),)
     res = pd.DataFrame([list((x,  y)) for x in codes for y in date_list])
     res.columns=['code','report_date']
     market_day = pd.DataFrame(QA_fetch_stock_basic_info_tushare())[['code','timeToMarket']].set_index('code')

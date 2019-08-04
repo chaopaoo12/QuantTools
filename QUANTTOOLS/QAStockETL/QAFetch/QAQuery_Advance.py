@@ -38,16 +38,16 @@ def QA_fetch_financial_report_adv(code=None, start=None, end=None, type='report'
 def QA_fetch_stock_financial_calendar_adv(code, start="all", end=None, type='day', format='pd', collections=DATABASE.report_calendar):
     '获取股票财报日历'
     #code= [code] if isinstance(code,str) else code
-    end = start if end is None else end
-    start = str(start)[0:10]
-    end = str(end)[0:10]
-
     # code checking
     if start == 'all':
         start = '2007-01-01'
         end = QA_util_today_str()
     if end is None:
         end = QA_util_today_str()
+
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
 
     return QA_DataStruct_Financial(QA_fetch_stock_financial_calendar(code, start, end, type=type))
 
