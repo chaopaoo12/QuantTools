@@ -714,3 +714,43 @@ def QA_fetch_financial_code(ndays=10):
     market_day['TM'] = market_day['timeToMarket'].apply(lambda x:str(QA_util_add_months(QA_util_date_int2str(int(x)),0) if x >0 else None)[0:10])
     code = list(market_day[market_day['TM'] >= START]['code'].values) + code
     return(code)
+
+
+def QA_fetch_interest_rate(start, end=None, format='pd', collections=DATABASE.interest_rate):
+    '获取股票日线'
+    #code= [code] if isinstance(code,str) else code
+    # code checking
+    if end is None:
+        end = QA_util_today_str()
+    if start is None:
+        start = '1999-01-01'
+
+    if QA_util_date_valid(end):
+
+        __data = []
+        cursor = collections.find({
+            "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+        #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
+
+        res = pd.DataFrame([item for item in cursor])
+        try:
+            res = res
+        except:
+            res = None
+        if format in ['P', 'p', 'pandas', 'pd']:
+            return res
+        elif format in ['json', 'dict']:
+            return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+        elif format in ['n', 'N', 'numpy']:
+            return numpy.asarray(res)
+        elif format in ['list', 'l', 'L']:
+            return numpy.asarray(res).tolist()
+        else:
+            print("QA Error Interest Rate format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            return None
+    else:
+        QA_util_log_info(
+            'QA Error Interest Rate data parameter start=%s end=%s is not right' % (start, end))
