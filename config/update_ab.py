@@ -49,13 +49,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_util_process_stock_financial,QA_etl_stock_financial_wy,QA_SU_save_usstock_list_day)
 
 
-
-print("write divyield data into sqldatabase")
-QA_SU_save_usstock_list_day()
-QA_SU_save_stock_divyield_day()
-QA_etl_stock_divyield()
-print("done")
-print("write calendar data into sqldatabase")
-QA_SU_save_report_calendar_day()
-QA_etl_stock_calendar()
+print("write shares data into sqldatabase")
+QA_SU_save_stock_shares_sina_day()
+QA_etl_stock_shares()
 print("done")
