@@ -59,8 +59,19 @@ def get_stock_report_wy(code):
     res = res[res['report_date'].apply(len) == 10]
     return(res)
 
-def read_data_data_from_wy(code,report_type,options):
-    driver = webdriver.Chrome()
+def read_data_data_from_wy(code,report_type):
+    headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+               'Accept-Language': 'zh-CN,zh;q=0.9',
+               'Cache-Control': 'max-age=0',
+               'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
+               'Connection': 'keep-alive'
+               }
+    options = webdriver.ChromeOptions()
+    for (key,value) in headers.items():
+        options.add_argument('%s="%s"' % (key, value))
+    options.add_argument('headless')
+
+    driver = webdriver.Chrome(options = options)
     driver.get('http://quotes.money.163.com/f10/{report_type}_{code}.html'.format(report_type=report_type,code=code))
     soup = BeautifulSoup(driver.page_source, "html.parser")
     driver.quit()
@@ -74,25 +85,14 @@ def read_data_data_from_wy(code,report_type,options):
     cols = [i.string for i in soup.find_all(class_='col_r')[0].find_all(class_='dbrow')[0].find_all('th')]
     x = []
     for i in soup.find_all(class_='col_r')[0].find_all('tr'):
-        x.append([float(i.string.replace(',','').replace('--','0')) for i in i.find_all('td') if i.string is not None])
+        x.append([float(i.string.replace(',','').replace('--','0')) * 10000 for i in i.find_all('td') if i.string is not None])
     res =pd.DataFrame(x[1:],index=index,columns=cols).T
     return(res)
 
 def read_stock_report_wy(code):
-
-    headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-               'Accept-Language': 'zh-CN,zh;q=0.9',
-               'Cache-Control': 'max-age=0',
-               'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
-               'Connection': 'keep-alive'
-               }
-    options = webdriver.ChromeOptions()
-    for (key,value) in headers.items():
-        options.add_argument('%s="%s"' % (key, value))
-    options.add_argument('headless')
     res1 = pd.DataFrame()
     for report_type in ['zcfzb','lrb','xjllb']:
-        res = read_data_data_from_wy(code,report_type,options)
+        res = read_data_data_from_wy(code,report_type)
         if res1.shape[0]==0:
             res1 = res
         else:
