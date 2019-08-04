@@ -253,4 +253,4 @@ def QA_fetch_interest_rate_adv(start="all", end=None, format='pd'):
         end = QA_util_today_str()
     if end is None:
         end = QA_util_today_str()
-    return QA_DataStruct_Financial(QA_fetch_interest_rate(start, end))
+    return QA_fetch_interest_rate(start, end)
