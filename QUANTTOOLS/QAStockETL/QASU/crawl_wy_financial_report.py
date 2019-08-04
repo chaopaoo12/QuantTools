@@ -48,7 +48,7 @@ def QA_SU_save_financial_report_day(client=DATABASE, ui_log = None, ui_progress 
             QA_util_log_info(' ERROR CODE \n ',  ui_log)
             QA_util_log_info(err, ui_log)
     else:
-        print("No report send")
+        QA_util_log_info(' No report send \n ',  ui_log)
 
 def QA_SU_save_financial_report_his(client=DATABASE, ui_log = None, ui_progress = None):
     '''
