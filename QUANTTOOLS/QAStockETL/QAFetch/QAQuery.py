@@ -736,7 +736,7 @@ def QA_fetch_interest_rate(start, end=None, format='pd', collections=DATABASE.in
 
         res = pd.DataFrame([item for item in cursor])
         try:
-            res = res
+            res = res.drop(columns=['crawl_date','date_stamp'])
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
