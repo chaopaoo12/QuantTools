@@ -71,7 +71,6 @@ def QA_SU_save_financial_report_his(client=DATABASE, ui_log = None, ui_progress 
         except Exception as error0:
             print(error0)
             err.append(str(code))
-    code = list(set(list(code.values)))
     for item in code:
         QA_util_log_info('The {} of Total {}'.format
                          ((code.index(item) +1), len(code)))
