@@ -25,7 +25,7 @@ def QA_SU_save_financial_report_day(client=DATABASE, ui_log = None, ui_progress 
         except Exception as error0:
             print(error0)
             err.append(str(code))
-    code = QA_fetch_financial_code(list(QA_fetch_stock_list_adv()['code']))['code']
+    code = QA_fetch_financial_code(list(QA_fetch_stock_list_adv()['code']))
     if code is not None:
         stock_financial = client.stock_financial_wy
         stock_financial.create_index([("code", pymongo.ASCENDING), ("report_date", pymongo.ASCENDING)], unique=True)
