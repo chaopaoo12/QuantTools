@@ -57,7 +57,7 @@ def QA_SU_save_financial_report_his(client=DATABASE, ui_log = None, ui_progress 
     反向查询四个季度财报
     :return:
     '''
-    code = QA_fetch_financial_code(list(QA_fetch_stock_list_adv()['code']))['code']
+    code = list(QA_fetch_stock_list_adv()['code'])
     stock_financial = client.stock_financial_wy
     stock_financial.create_index([("code", pymongo.ASCENDING), ("report_date", pymongo.ASCENDING)], unique=True)
     err = []
