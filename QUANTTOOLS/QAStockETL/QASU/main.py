@@ -61,8 +61,8 @@ def QA_SU_save_stock_financial_ths_day():
 def QA_SU_save_stock_financial_ths_his():
     return save_stock_financial_ths.QA_SU_save_financial_report_his()
 
-def QA_SU_save_stock_financial_wy_day():
-    return save_stock_financial_wy.QA_SU_save_financial_report_day()
+def QA_SU_save_stock_financial_wy_day(code=None):
+    return save_stock_financial_wy.QA_SU_save_financial_report_day(code=code)
 
 def QA_SU_save_stock_financial_wy_his():
     return save_stock_financial_wy.QA_SU_save_financial_report_his()
