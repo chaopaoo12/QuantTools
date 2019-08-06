@@ -24,7 +24,7 @@ def QA_SU_save_usstock_list_day(client=DATABASE, ui_log = None, ui_progress = No
             gc.collect()
         except Exception as error0:
             print(error0)
-            err.append()
+            #err.append()
 
     __saving_work(sina_usstock)
 
