@@ -459,7 +459,7 @@ def get_indicator(data,rng1):
     try:
         CDLLONGLEGGEDDOJI = data.add_func(QA.QAIndicator.talib_indicators.CDLLONGLEGGEDDOJI)
     except:
-        CDLLONGLEGGEDDOJI = data.data.assign(CDLHARAMI=0)['CDLHARAMI']
+        CDLLONGLEGGEDDOJI = data.data.assign(CDLLONGLEGGEDDOJI=0)['CDLLONGLEGGEDDOJI']
     try:
         CDLLONGLINE = data.add_func(QA.QAIndicator.talib_indicators.CDLLONGLINE)
     except:
