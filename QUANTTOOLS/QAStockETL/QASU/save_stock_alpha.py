@@ -13,8 +13,6 @@ def QA_SU_save_stock_alpha_day(client=DATABASE, ui_log = None, ui_progress = Non
     '''
     if date is None:
         date = [QA_util_today_str()]
-    else:
-        date = QA_util_code_tolist(date)
     if code is None:
         code = list(QA_fetch_stock_list_adv()['code'])
     stock_alpha = client.stock_alpha
@@ -32,7 +30,7 @@ def QA_SU_save_stock_alpha_day(client=DATABASE, ui_log = None, ui_progress = Non
             print(error0)
             err.append(str(date))
 
-    for item in date:
+    for item in list(date):
         QA_util_log_info('The {} of Total {}'.format
                          ((date.index(item) +1), len(date)))
 
