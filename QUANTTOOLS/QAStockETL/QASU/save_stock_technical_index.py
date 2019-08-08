@@ -78,9 +78,9 @@ def QA_SU_save_stock_technical_index_his(START_DATE=None,END_DATE=None,client=DA
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving stock_technical_index from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
-
+            data = QA_fetch_get_stock_indicator(code, START_DATE, END_DATE).set_index(['date','code']).dropna(how='all').reset_index()
             stock_technical_index.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_stock_indicator(code, START_DATE, END_DATE)), ordered=False)
+                data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -129,9 +129,9 @@ def QA_SU_save_stock_technical_week_day(START_DATE=None,END_DATE=None,client=DAT
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving stock_technical_week from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
-
+            data = QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='week').set_index(['date','code']).dropna(how='all').reset_index()
             stock_technical_week.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='week')), ordered=False)
+                data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -174,9 +174,9 @@ def QA_SU_save_stock_technical_week_his(START_DATE=None,END_DATE=None,client=DAT
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving stock_technical_week from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
-
+            data = QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='week').set_index(['date','code']).dropna(how='all').reset_index()
             stock_technical_week.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='week')), ordered=False)
+                data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -225,9 +225,9 @@ def QA_SU_save_stock_technical_month_day(START_DATE=None,END_DATE=None,client=DA
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving stock_technical_month from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
-
+            data = QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='month').set_index(['date','code']).dropna(how='all').reset_index()
             stock_technical_month.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='month')), ordered=False)
+                data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -270,9 +270,9 @@ def QA_SU_save_stock_technical_month_his(START_DATE=None,END_DATE=None,client=DA
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving stock_technical_month from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
-
+            data = QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='month').set_index(['date','code']).dropna(how='all').reset_index()
             stock_technical_month.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='month')), ordered=False)
+                data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
