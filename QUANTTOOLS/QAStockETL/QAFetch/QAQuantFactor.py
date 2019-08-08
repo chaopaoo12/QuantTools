@@ -11,8 +11,6 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
     '获取股票量化机器学习最终指标V1'
     start = QA_util_get_pre_trade_date(start_date,15)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
-    if len(rng1) == 1:
-        rng1 = rng1[0]
     fianacial = QA_fetch_stock_fianacial_adv(codes,start,end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE', 'DAYS',
                                                                           'AVG5','AVG10','AVG20','AVG30','AVG60',
                                                                           'LAG','LAG5','LAG10','LAG20','LAG30','LAG60',
