@@ -597,7 +597,7 @@ def ohlc(data,N=7):
 
 def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
     if type == 'day':
-        start = QA_util_get_pre_trade_date(start_date,180)
+        start = QA_util_get_pre_trade_date(start_date,200)
         rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
         try:
             data = QA_fetch_stock_day_adv(code,start,end_date)
@@ -605,7 +605,7 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
         except:
             print("No data")
     elif type == 'week':
-        start = QA_util_get_pre_trade_date(start_date,187)
+        start = QA_util_get_pre_trade_date(start_date,200)
         rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
         try:
             data = QA_fetch_stock_day_adv(code,start,end_date)
@@ -615,7 +615,7 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
             print("No data")
 
     elif type == 'month':
-        start = QA_util_get_pre_trade_date(start_date,210)
+        start = QA_util_get_pre_trade_date(start_date,220)
         rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
         try:
             data = QA_fetch_stock_day_adv(code,start,end_date)
