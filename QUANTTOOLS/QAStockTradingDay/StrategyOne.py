@@ -53,6 +53,9 @@ class model():
 
     def __init__(self):
         self.info=dict()
+        self.info['train_status']=dict()
+        self.info['test_status']=dict()
+        self.info['dev_status']=dict()
 
     def get_data(self, start, end, type='crawl', block=True):
         self.data = get_quant_data(start , end, type, block)
@@ -74,11 +77,11 @@ class model():
         self.info['test_rng'] = [test_start,test_end]
 
     def prepare_data(self, test_size = 0.2, dev_size = 0.2, random_state=0):
-        X_train, X_test, Y_train, Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols],self.data.loc[self.TR_RNG]['star'], test_size=test_size, random_state=random_state)
+        self.X_train, X_test, self.Y_train, Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols],self.data.loc[self.TR_RNG]['star'], test_size=test_size, random_state=random_state)
         self.X_test, self.X_dev, self.Y_test, self.Y_dev = train_test_split(X_test,Y_test, test_size=dev_size, random_state=random_state)
         self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols],self.data.loc[self.TE_RNG]['star']
 
-    def build_moedl(self, n_estimators=500):
+    def build_model(self, n_estimators=500):
         self.model = XGBClassifier(n_estimators=n_estimators,seed=1)
 
     def model_running(self):
@@ -145,7 +148,7 @@ class model():
         elif self.info['dev_status']['precision'] == False or self.info['dev_status']['recall'] == False:
             self.info['dev_status']['tstus'] = False
 
-def save_model(self, working_dir = 'D:\\model\\current'):
+    def save_model(self, working_dir = 'D:\\model\\current'):
         if mkdir(working_dir):
             try:
                 joblib.dump(self.model, working_dir+"\\current.joblib.dat")
@@ -185,5 +188,30 @@ def model_predict(model, start, end, cols):
     b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
     return(b[b['y_pred']==1])
 
-def check_model():
-    pass
+def check_model(model, start, end, cols, target):
+    data = get_quant_data(start, end, type='crawl',block = True)
+    data['star'] = data['TARGET'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x >= target else 0)
+    cols1 = [i for i in data.columns if i not in ['moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO','LAG_TORO','OPEN_MARK','PASS_MARK',
+                                                  'TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET',
+                                                  'INDEX_TARGET','INDUSTRY',
+                                                  'INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10','date_stamp']]
+    train = pd.DataFrame()
+    n_cols = []
+    for i in cols:
+        if i in cols1:
+            train[i] = data[i].astype('float')
+        else:
+            train[i] = 0
+            n_cols.append(i)
+    train.index = data.index
+    print(n_cols)
+    b = data[['star','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+    b['y_pred'] = model.predict(train)
+    bina = pd.DataFrame(model.predict_proba(train))[[0,1]]
+    bina.index = b.index
+    b[['Z_PROB','O_PROB']] = bina
+    b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
+    report = classification_report(b['star'],b['y_pred'], output_dict=True)
+    c = b[b['RANK']<=5]
+    top_report = classification_report(c['star'],c['y_pred'], output_dict=True)
+    return(report,top_report)
