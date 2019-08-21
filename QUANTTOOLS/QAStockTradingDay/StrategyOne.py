@@ -6,6 +6,9 @@ from sklearn.metrics import (accuracy_score,confusion_matrix,
 
 from sklearn.model_selection import train_test_split
 from QUANTTOOLS.FactorTools.base_func import get_quant_data
+from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_info, QA_util_add_months,
+                              QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date,
+                              QA_util_datetime_to_strdate)
 import joblib
 
 #def train_test_split(x, y, type = 'all',test_size=0.3):
@@ -53,6 +56,7 @@ class model():
 
     def __init__(self):
         self.info=dict()
+        self.info['date'] = QA_util_today_str()
         self.info['train_status']=dict()
         self.info['test_status']=dict()
         self.info['dev_status']=dict()
