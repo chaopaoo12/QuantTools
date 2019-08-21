@@ -62,7 +62,7 @@ class model():
         self.info['dev_status']=dict()
 
     def get_data(self, start, end, type='crawl', block=True):
-        self.data = get_quant_data(start = start, end = end, type = type, block=block)
+        self.data = get_quant_data(start, end, type = type, block=block)
         print(self.data.shape)
 
     def set_target(self, mark):
