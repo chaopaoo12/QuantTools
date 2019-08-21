@@ -61,19 +61,21 @@ class model():
         self.info['test_status']=dict()
         self.info['dev_status']=dict()
 
-    def get_data(self, start, end, type='crawl', block=True):
+    def get_data(self, start, end, type ='crawl', block=True):
         self.data = get_quant_data(start, end, type = type, block=block)
         print(self.data.shape)
 
-    def set_target(self, mark, type = 'value'):
-        if type == 'value':
-            self.data['star'] = self.data['TARGET'].groupby('date').apply(lambda x :1 if x >= mark else 0)
-            self.data.loc[self.data['PASS_MARK'] >= 9.95,'star'] = 0
-        elif type == 'percent':
-            self.data['star'] = self.data['TARGET'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
-            self.data.loc[self.data['PASS_MARK'] >= 9.95,'star'] = 0
-        else:
-            print("target type must be in ['value','percent']")
+    def set_target(self, mark):
+        self.data['star'] = self.data['TARGET'].groupby('date').apply(lambda x : 1 if x >= mark else 0)
+        self.data.loc[self.data['PASS_MARK'] >= 9.95,'star'] = 0
+        #if type == 'value':
+        #    self.data['star'] = self.data['TARGET'].groupby('date').apply(lambda x : 1 if x >= mark else 0)
+        #    self.data.loc[self.data['PASS_MARK'] >= 9.95,'star'] = 0
+        #elif type == 'percent':
+        #    self.data['star'] = self.data['TARGET'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
+        #    self.data.loc[self.data['PASS_MARK'] >= 9.95,'star'] = 0
+        #else:
+        #    print("target type must be in ['value','percent']")
         self.cols = [i for i in self.data.columns if i not in ['moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
                                                                'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3',
                                                                'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
