@@ -45,6 +45,64 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_etl_stock_financial, QA_etl_stock_calendar,
                                    QA_etl_stock_block, QA_etl_stock_divyield,
                                    QA_etl_process_financial_day)
+from QUANTAXIS.QASU.main import (QA_SU_save_etf_day, QA_SU_save_etf_min,
+                                 QA_SU_save_financialfiles,
+                                 QA_SU_save_index_day, QA_SU_save_index_min,
+                                 QA_SU_save_stock_block, QA_SU_save_stock_day,
+                                 QA_SU_save_stock_info,
+                                 QA_SU_save_stock_info_tushare,
+                                 QA_SU_save_stock_list, QA_SU_save_stock_min,
+                                 QA_SU_save_stock_xdxr,QA_SU_save_index_list)
+from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
+                                   QA_etl_stock_xdxr, QA_etl_stock_day,
+                                   QA_etl_stock_financial, QA_etl_stock_calendar,
+                                   QA_etl_stock_block, QA_etl_stock_divyield,
+                                   QA_etl_process_financial_day,QA_SU_save_stock_alpha_day,
+                                   QA_SU_save_stock_technical_index_day,
+                                   QA_SU_save_stock_fianacial_percent_day,
+                                   QA_etl_stock_alpha_day,QA_util_process_stock_financial,
+                                   QA_etl_stock_technical_day,QA_SU_save_stock_quant_data_day,
+                                   QA_SU_save_stock_fianacial_momgo,QA_SU_save_fianacialTTM_momgo,
+                                   QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_month_day)
+from  QUANTAXIS.QAUtil import QA_util_today_str
+mark_day = QA_util_today_str()
+print("download day data ")
+QA_SU_save_stock_xdxr('tdx')
+QA_SU_save_stock_list('tdx')
+QA_SU_save_index_list('tdx')
+QA_SU_save_stock_block('tdx')
+QA_SU_save_stock_info('tdx')
+QA_SU_save_stock_info_tushare()
+QA_SU_save_stock_day('tdx')
+QA_SU_save_index_day('tdx')
+print("done")
+print("write data into sqldatabase")
+QA_etl_stock_list()
+QA_etl_stock_info()
+QA_etl_stock_xdxr(type == "all")
+QA_etl_stock_day('day',mark_day)
+QA_etl_stock_block()
+#QA_etl_stock_alpha_day("day")
+#QA_etl_stock_technical_day("day")
+print("done")
+print("run financial data into sqldatabase")
+QA_util_process_stock_financial()
+QA_SU_save_fianacialTTM_momgo()
+print("done")
+print("processing quant data in sqldatabase")
+QA_etl_process_financial_day('day',mark_day)
+print("done")
+print("write quant data into mongodb")
+QA_SU_save_stock_fianacial_momgo(mark_day,mark_day)
+print("save quant indicator")
+QA_SU_save_stock_fianacial_percent_day(start_date = mark_day, end_date = mark_day)
+
+QA_SU_save_stock_alpha_day(date = mark_day)
+QA_SU_save_stock_technical_index_day(START_DATE=mark_day, END_DATE = mark_day)
+QA_SU_save_stock_technical_week_day(START_DATE=mark_day, END_DATE = mark_day)
+QA_SU_save_stock_quant_data_day(start_date = mark_day, end_date = mark_day)
+print("done")
+QA_SU_save_stock_technical_month_day(START_DATE = mark_day, END_DATE = mark_day)
 
 print("download index & etf data ")
 QA_SU_save_etf_day('tdx')
