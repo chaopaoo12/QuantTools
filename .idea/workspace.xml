@@ -2,17 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d7afb2b0-0a9c-40a8-bb48-185a26027412" name="Default Changelist" comment="add">
-      <change beforePath="$PROJECT_DIR$/.idea/mongoSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mongoSettings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/base_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/base_func.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuantFactor.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuantFactor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery_Advance.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery_Advance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,10 +37,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_func.py">
+        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="85" lean-forward="true" selection-start-line="85" selection-end-line="132" selection-end-column="15" />
+            <state relative-caret-position="-583">
+              <caret line="54" column="14" lean-forward="true" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -56,45 +49,28 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuantFactor.py">
+        <entry file="file://$PROJECT_DIR$/config/update_x.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery_Advance.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="191" column="37" selection-start-line="191" selection-start-column="4" selection-end-line="191" selection-end-column="37" />
-              <folding>
-                <element signature="e#1#16#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="458">
-              <caret line="44" column="104" selection-start-line="44" selection-start-column="72" selection-end-line="44" selection-end-column="104" />
+            <state relative-caret-position="199">
+              <caret line="34" column="45" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/__init__.py">
+        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="22" column="87" lean-forward="true" selection-start-line="22" selection-start-column="87" selection-end-line="22" selection-end-column="87" />
+            <state>
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/QAMySQL.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -108,40 +84,41 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>CCI</find>
-      <find>OSC</find>
-      <find>VPT</find>
-      <find>MAOSC</find>
-      <find>QA_etl_stock_financial</find>
-      <find>QA_util_process_financial</find>
-      <find>QA_etl_process_financial_day</find>
       <find>QA_util_process_stock_financial</find>
-      <find>QA_util_get_pre_trade_date</find>
+      <find>timelist</find>
+      <find>benchmark</find>
+      <find>__data</find>
+      <find>QA_etl_process_financial_day</find>
+      <find>QA_util_today_str</find>
       <find>QA_SU_save_stock_fianacial_momgo</find>
-      <find>QA_SU_save_stock_fianacial_momgo_his</find>
-      <find>QA_fetch_stock_fianacial_adv</find>
-      <find>wraps</find>
-      <find>rank</find>
-      <find>WR</find>
-      <find>BIAS_CROSS2</find>
-      <find>VRSI_C</find>
-      <find>VRSI</find>
-      <find>WR1</find>
-      <find>print</find>
-      <find>OBV</find>
-      <find>'a'</find>
-      <find>'MARK'</find>
-      <find>_C</find>
-      <find>MARK</find>
-      <find>TODO</find>
-      <find>res</find>
-      <find>QA_fetch_stock_financial_percent_dav</find>
-      <find>QA_fetch_stock_financial_percent_adv</find>
-      <find>QA_SU_save_index_day</find>
+      <find>QA_SU_save_stock_fianacial_percent_day</find>
+      <find>QA_SU_save_stock_quant_data_day</find>
+      <find>BOLL</find>
+      <find>headl</find>
+      <find>CDLMARUBOZU</find>
+      <find>MIKE</find>
+      <find>QA_fetch_index_day</find>
+      <find>QA_SU_save_usstock_list_day</find>
+      <find>QA_fetch_get_stock_report_wy</find>
+      <find>head</find>
+      <find>QA_fetch_stock_financial_calendar</find>
+      <find>start</find>
+      <find>interest_rate</find>
+      <find>QA_SU_save_interest_rate</find>
+      <find>QA_fetch_financial_code</find>
+      <find>list</find>
+      <find>182</find>
+      <find>075</find>
+      <find>QA_fetch_stock_block</find>
+      <find>QA_util_code_tolist</find>
+      <find>CDLHARAMI</find>
+      <find>QA_fetch_get_stock_indicator</find>
+      <find>QA_SU_save_stock_technical_index_day</find>
     </findStrings>
     <replaceStrings>
       <replace />
       <replace>data</replace>
+      <replace>90</replace>
     </replaceStrings>
     <dirStrings>
       <dir>F:\workspace\QuantTools\QAStockETL\Crawl</dir>
@@ -153,72 +130,26 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_sina_financial_report.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/sina_financial_report_simulation_web.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/sina_shares_change_simulation_web.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/jrj_divyield_simulation_web.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/jrj_simulation_web.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAShares.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_sina_shares_change.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/__init__.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/ths_financial_report_simulation_web.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAFinancial.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/wy_financial_report_simulation_web.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/financial_mean.py" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/ff601ac7-7c39-44d2-a8d4-1e3e133b052d/console_6.sql" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/ff601ac7-7c39-44d2-a8d4-1e3e133b052d/console_7.sql" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/wy_financial_calendar_simulation_web.py" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/ff601ac7-7c39-44d2-a8d4-1e3e133b052d/console_8.sql" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAAlpha.py" />
-        <option value="$PROJECT_DIR$/config/update_a.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAInterest.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_wy_financial_report.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_interest_rate.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_tools.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/FactorTools/__init__.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/__init__.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtlFinancial.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/__init__.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_alpha.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtlQuant.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QATIndicator.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtl.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAFinper.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_technical_index.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_finper.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QASql.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/QAMySQL.py" />
-        <option value="$PROJECT_DIR$/config/update_c.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_func.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_financial.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_quant.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/__init__.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/__init__.py" />
         <option value="$PROJECT_DIR$/config/update_x.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/main.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuantFactor.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/base_func.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery_Advance.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/__init__.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/__init__.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/__init__.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py" />
       </list>
     </option>
   </component>
-  <component name="MavenProjectNavigator">
-    <treeState>
-      <expand />
-      <select />
-    </treeState>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="F:\workspace\QuantTools\.idea" />
+      </set>
+    </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1780" />
-    <option name="y" value="-14" />
+    <option name="x" value="-2148" />
+    <option name="y" value="14" />
     <option name="width" value="1938" />
     <option name="height" value="1092" />
   </component>
+  <component name="ProjectId" id="1PanqPGlLUfEfiDk0sfdFR2GbwA" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
@@ -242,39 +173,18 @@
             <path>
               <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
               <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
+              <item name="quantspider" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
               <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
               <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="FactorTools" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAIndexTradingDay" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
               <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
               <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
               <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-              <item name="Crawly" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-              <item name="FuncTools" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
@@ -299,28 +209,16 @@
             </path>
             <path>
               <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-              <item name="Database Consoles" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-              <item name="Extensions" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
+              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
+              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
+              <item name="QAStockTradingDay" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -330,21 +228,22 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/config" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.mongoOptions" />
+    <property name="project.structure.side.proportion" value="0.4319853" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="vcs.patch.to.clipboard" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\workspace\QuantTools\config" />
       <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockETL\QASU" />
       <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockETL\QAFetch" />
       <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockETL\Crawly" />
-      <recent name="F:\workspace\QuantTools\config" />
       <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockETL\QAUtil" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -743,356 +642,611 @@
       <workItem from="1561041906470" duration="47000" />
       <workItem from="1561042263883" duration="25000" />
       <workItem from="1561284045261" duration="81000" />
-      <workItem from="1561294824162" duration="3434000" />
+      <workItem from="1561294824162" duration="4346000" />
+      <workItem from="1561308436110" duration="1633000" />
+      <workItem from="1561343228678" duration="66000" />
+      <workItem from="1561353505452" duration="40000" />
+      <workItem from="1561354637239" duration="30000" />
+      <workItem from="1561354750105" duration="195000" />
+      <workItem from="1561355333783" duration="86000" />
+      <workItem from="1561356929959" duration="23000" />
+      <workItem from="1561375398287" duration="1691000" />
+      <workItem from="1561379274488" duration="5430000" />
+      <workItem from="1561467831191" duration="89000" />
+      <workItem from="1561481099720" duration="308000" />
+      <workItem from="1561481758216" duration="407000" />
+      <workItem from="1561487772176" duration="910000" />
+      <workItem from="1561493280536" duration="53000" />
+      <workItem from="1561523353196" duration="2581000" />
+      <workItem from="1561526034353" duration="9592000" />
+      <workItem from="1561562870940" duration="5893000" />
+      <workItem from="1561614551453" duration="321000" />
+      <workItem from="1561618651048" duration="48000" />
+      <workItem from="1561626798566" duration="28000" />
+      <workItem from="1561626898455" duration="610000" />
+      <workItem from="1561627554524" duration="5580000" />
+      <workItem from="1561635688215" duration="117000" />
+      <workItem from="1561636490987" duration="942000" />
+      <workItem from="1561637523295" duration="115000" />
+      <workItem from="1561637674164" duration="1030000" />
+      <workItem from="1561638760760" duration="360000" />
+      <workItem from="1561639537110" duration="529000" />
+      <workItem from="1561640340011" duration="890000" />
+      <workItem from="1561646471980" duration="1562000" />
+      <workItem from="1561652355627" duration="1938000" />
+      <workItem from="1561654490769" duration="240000" />
+      <workItem from="1561655044470" duration="964000" />
+      <workItem from="1561696895410" duration="1162000" />
+      <workItem from="1561706282375" duration="3058000" />
+      <workItem from="1561709377940" duration="262000" />
+      <workItem from="1561709808060" duration="2605000" />
+      <workItem from="1561714531142" duration="3953000" />
+      <workItem from="1561785456052" duration="826000" />
+      <workItem from="1561787400195" duration="11285000" />
+      <workItem from="1561832951977" duration="176000" />
+      <workItem from="1561834813279" duration="4083000" />
+      <workItem from="1561875597426" duration="114000" />
+      <workItem from="1561875731816" duration="4551000" />
+      <workItem from="1561885918309" duration="1878000" />
+      <workItem from="1561887932012" duration="100000" />
+      <workItem from="1561888201659" duration="4095000" />
+      <workItem from="1561900833158" duration="1913000" />
+      <workItem from="1561905603915" duration="59000" />
+      <workItem from="1561905693314" duration="1921000" />
+      <workItem from="1561907684975" duration="171000" />
+      <workItem from="1561907882294" duration="4697000" />
+      <workItem from="1561978358955" duration="219000" />
+      <workItem from="1561995075655" duration="42000" />
+      <workItem from="1561995136890" duration="15000" />
+      <workItem from="1561995215968" duration="209000" />
+      <workItem from="1561995469359" duration="482000" />
+      <workItem from="1562039767437" duration="45000" />
+      <workItem from="1562049809589" duration="131000" />
+      <workItem from="1562065130700" duration="433000" />
+      <workItem from="1562065773423" duration="1072000" />
+      <workItem from="1562078904491" duration="4264000" />
+      <workItem from="1562129014185" duration="2194000" />
+      <workItem from="1562174330296" duration="13420000" />
+      <workItem from="1562194621573" duration="283000" />
+      <workItem from="1562216100119" duration="109000" />
+      <workItem from="1562220191720" duration="734000" />
+      <workItem from="1562239223239" duration="3481000" />
+      <workItem from="1562243497243" duration="31000" />
+      <workItem from="1562268929486" duration="41000" />
+      <workItem from="1562304137967" duration="729000" />
+      <workItem from="1562311109449" duration="1911000" />
+      <workItem from="1562392840976" duration="624000" />
+      <workItem from="1562405647234" duration="816000" />
+      <workItem from="1562420977419" duration="258000" />
+      <workItem from="1562423339699" duration="739000" />
+      <workItem from="1562481078206" duration="540000" />
+      <workItem from="1562483545658" duration="143000" />
+      <workItem from="1562485433091" duration="745000" />
+      <workItem from="1562512942903" duration="9000" />
+      <workItem from="1562516795491" duration="12000" />
+      <workItem from="1562562163063" duration="725000" />
+      <workItem from="1562564566764" duration="11938000" />
+      <workItem from="1562594568296" duration="45000" />
+      <workItem from="1562596311700" duration="4155000" />
+      <workItem from="1562604301255" duration="13000" />
+      <workItem from="1562606907798" duration="2286000" />
+      <workItem from="1562611114468" duration="661000" />
+      <workItem from="1562616844105" duration="2217000" />
+      <workItem from="1562653310486" duration="43000" />
+      <workItem from="1562653385375" duration="148000" />
+      <workItem from="1562654241953" duration="911000" />
+      <workItem from="1562655193595" duration="83000" />
+      <workItem from="1562656199849" duration="800000" />
+      <workItem from="1562666966414" duration="467000" />
+      <workItem from="1562668291204" duration="22000" />
+      <workItem from="1562668345211" duration="18000" />
+      <workItem from="1562670116518" duration="150000" />
+      <workItem from="1562670627203" duration="827000" />
+      <workItem from="1562679736932" duration="11000" />
+      <workItem from="1562690366159" duration="1230000" />
+      <workItem from="1562694237696" duration="3009000" />
+      <workItem from="1562773466779" duration="51000" />
+      <workItem from="1562781438413" duration="56000" />
+      <workItem from="1562782353566" duration="28000" />
+      <workItem from="1562782981515" duration="413000" />
+      <workItem from="1562783849850" duration="6688000" />
+      <workItem from="1562793716419" duration="878000" />
+      <workItem from="1562817599888" duration="756000" />
+      <workItem from="1562821029127" duration="1884000" />
+      <workItem from="1562976720320" duration="1290000" />
+      <workItem from="1562999190342" duration="563000" />
+      <workItem from="1562999765321" duration="2846000" />
+      <workItem from="1563107155028" duration="464000" />
+      <workItem from="1563107648563" duration="648000" />
+      <workItem from="1563177696714" duration="311000" />
+      <workItem from="1563194241751" duration="964000" />
+      <workItem from="1563212477199" duration="1211000" />
+      <workItem from="1563283588794" duration="1831000" />
+      <workItem from="1563286750268" duration="1255000" />
+      <workItem from="1563293375998" duration="664000" />
+      <workItem from="1563294092254" duration="510000" />
+      <workItem from="1563295847060" duration="1240000" />
+      <workItem from="1563332362596" duration="2361000" />
+      <workItem from="1563364413743" duration="1086000" />
+      <workItem from="1563367830363" duration="22000" />
+      <workItem from="1563367909817" duration="640000" />
+      <workItem from="1563391771438" duration="700000" />
+      <workItem from="1563458007549" duration="155000" />
+      <workItem from="1563459299709" duration="89000" />
+      <workItem from="1563463023308" duration="615000" />
+      <workItem from="1563465919857" duration="92000" />
+      <workItem from="1563468831395" duration="21000" />
+      <workItem from="1563469084289" duration="30000" />
+      <workItem from="1563469504749" duration="311000" />
+      <workItem from="1563472676441" duration="614000" />
+      <workItem from="1563531829927" duration="158000" />
+      <workItem from="1563537117566" duration="46000" />
+      <workItem from="1563541730808" duration="532000" />
+      <workItem from="1563547977385" duration="89000" />
+      <workItem from="1563548704969" duration="28000" />
+      <workItem from="1563548758213" duration="617000" />
+      <workItem from="1563553978714" duration="546000" />
+      <workItem from="1563631084155" duration="680000" />
+      <workItem from="1563633143984" duration="1103000" />
+      <workItem from="1563636294991" duration="2540000" />
+      <workItem from="1563643938180" duration="81000" />
+      <workItem from="1563644178558" duration="752000" />
+      <workItem from="1563675929416" duration="110000" />
+      <workItem from="1563676239314" duration="1217000" />
+      <workItem from="1563721600760" duration="988000" />
+      <workItem from="1563767669789" duration="3972000" />
+      <workItem from="1563776283281" duration="306000" />
+      <workItem from="1563776752682" duration="70000" />
+      <workItem from="1563778622109" duration="636000" />
+      <workItem from="1563811459378" duration="6000" />
+      <workItem from="1563818599121" duration="243000" />
+      <workItem from="1563818981116" duration="143000" />
+      <workItem from="1563824733885" duration="163000" />
+      <workItem from="1563826675028" duration="2616000" />
+      <workItem from="1563860372786" duration="24000" />
+      <workItem from="1563992792126" duration="119000" />
+      <workItem from="1563997665226" duration="182000" />
+      <workItem from="1564078995836" duration="152000" />
+      <workItem from="1564174930572" duration="1436000" />
+      <workItem from="1564190947335" duration="2796000" />
+      <workItem from="1564198190467" duration="142000" />
+      <workItem from="1564280420215" duration="427000" />
+      <workItem from="1564281355361" duration="2741000" />
+      <workItem from="1564314910227" duration="55000" />
+      <workItem from="1564421243671" duration="1381000" />
+      <workItem from="1564423475422" duration="2157000" />
+      <workItem from="1564425836018" duration="254000" />
+      <workItem from="1564429905246" duration="14000" />
+      <workItem from="1564452697140" duration="1328000" />
+      <workItem from="1564459604963" duration="885000" />
+      <workItem from="1564532270332" duration="12000" />
+      <workItem from="1564533228959" duration="218000" />
+      <workItem from="1564536605287" duration="181000" />
+      <workItem from="1564537049233" duration="20000" />
+      <workItem from="1564546644760" duration="137000" />
+      <workItem from="1564586158328" duration="412000" />
+      <workItem from="1564588825588" duration="138000" />
+      <workItem from="1564621274683" duration="4278000" />
+      <workItem from="1564634845998" duration="1515000" />
+      <workItem from="1564639573067" duration="5000" />
+      <workItem from="1564639824488" duration="2081000" />
+      <workItem from="1564672354776" duration="202000" />
+      <workItem from="1564672594275" duration="1121000" />
+      <workItem from="1564692931158" duration="580000" />
+      <workItem from="1564767714497" duration="52000" />
+      <workItem from="1564803833756" duration="444000" />
+      <workItem from="1564804321213" duration="1004000" />
+      <workItem from="1564879430248" duration="786000" />
+      <workItem from="1564881099358" duration="601000" />
+      <workItem from="1564881774667" duration="54000" />
+      <workItem from="1564882400888" duration="114000" />
+      <workItem from="1564883172623" duration="2253000" />
+      <workItem from="1564896405050" duration="3217000" />
+      <workItem from="1564973302608" duration="249000" />
+      <workItem from="1564981667754" duration="72000" />
+      <workItem from="1564981801089" duration="54000" />
+      <workItem from="1564982883944" duration="78000" />
+      <workItem from="1564983072300" duration="844000" />
+      <workItem from="1565002752034" duration="1441000" />
+      <workItem from="1565046801393" duration="706000" />
+      <workItem from="1565051554978" duration="632000" />
+      <workItem from="1565105368394" duration="59000" />
+      <workItem from="1565111658642" duration="759000" />
+      <workItem from="1565113592032" duration="6000" />
+      <workItem from="1565114730969" duration="22000" />
+      <workItem from="1565114969800" duration="377000" />
+      <workItem from="1565151424511" duration="107000" />
+      <workItem from="1565168855771" duration="225000" />
+      <workItem from="1565169146314" duration="445000" />
+      <workItem from="1565238118533" duration="687000" />
+      <workItem from="1565239524784" duration="225000" />
+      <workItem from="1565239795745" duration="34000" />
+      <workItem from="1565240229860" duration="48000" />
+      <workItem from="1565250625948" duration="109000" />
+      <workItem from="1565250933481" duration="22000" />
+      <workItem from="1565264604125" duration="361000" />
+      <workItem from="1565265148565" duration="234000" />
+      <workItem from="1565266040753" duration="549000" />
+      <workItem from="1565267063044" duration="3497000" />
+      <workItem from="1565278261811" duration="101000" />
+      <workItem from="1565348671768" duration="633000" />
+      <workItem from="1565746311063" duration="1528000" />
+      <workItem from="1565749193936" duration="82000" />
+      <workItem from="1565752193498" duration="6755000" />
+      <workItem from="1565764997832" duration="60000" />
+      <workItem from="1565870537825" duration="189000" />
+      <workItem from="1566121015237" duration="186000" />
+      <workItem from="1566121271004" duration="783000" />
+      <workItem from="1566122072536" duration="639000" />
+      <workItem from="1566123866939" duration="1111000" />
+      <workItem from="1566181742609" duration="1262000" />
+      <workItem from="1566183642974" duration="61000" />
+      <workItem from="1566187907970" duration="99000" />
+      <workItem from="1566189061031" duration="1681000" />
+      <workItem from="1566299831122" duration="5138000" />
+      <workItem from="1566309119151" duration="126000" />
+      <workItem from="1566310432646" duration="71000" />
+      <workItem from="1566310550522" duration="1943000" />
+      <workItem from="1566320183181" duration="2431000" />
+      <workItem from="1566329197686" duration="38000" />
+      <workItem from="1566347413329" duration="1634000" />
+      <workItem from="1566351791081" duration="38000" />
+      <workItem from="1566357187340" duration="2032000" />
+      <workItem from="1566381119825" duration="2147000" />
+      <workItem from="1566389212738" duration="264000" />
+      <workItem from="1566389535895" duration="17000" />
+      <workItem from="1566389855447" duration="254000" />
+      <workItem from="1566410099571" duration="3956000" />
+      <workItem from="1566438239069" duration="260000" />
     </task>
-    <task id="LOCAL-00431" summary="add">
-      <created>1560351065628</created>
-      <option name="number" value="00431" />
-      <option name="presentableId" value="LOCAL-00431" />
+    <task id="LOCAL-00663" summary="add">
+      <created>1564644258846</created>
+      <option name="number" value="00663" />
+      <option name="presentableId" value="LOCAL-00663" />
       <option name="project" value="LOCAL" />
-      <updated>1560351065628</updated>
+      <updated>1564644258846</updated>
     </task>
-    <task id="LOCAL-00432" summary="add">
-      <created>1560351122720</created>
-      <option name="number" value="00432" />
-      <option name="presentableId" value="LOCAL-00432" />
+    <task id="LOCAL-00664" summary="add">
+      <created>1564672655633</created>
+      <option name="number" value="00664" />
+      <option name="presentableId" value="LOCAL-00664" />
       <option name="project" value="LOCAL" />
-      <updated>1560351122720</updated>
+      <updated>1564672655634</updated>
     </task>
-    <task id="LOCAL-00433" summary="add">
-      <created>1560351757988</created>
-      <option name="number" value="00433" />
-      <option name="presentableId" value="LOCAL-00433" />
+    <task id="LOCAL-00665" summary="add">
+      <created>1564693408158</created>
+      <option name="number" value="00665" />
+      <option name="presentableId" value="LOCAL-00665" />
       <option name="project" value="LOCAL" />
-      <updated>1560351757988</updated>
+      <updated>1564693408159</updated>
     </task>
-    <task id="LOCAL-00434" summary="add">
-      <created>1560356372523</created>
-      <option name="number" value="00434" />
-      <option name="presentableId" value="LOCAL-00434" />
+    <task id="LOCAL-00666" summary="add">
+      <created>1564804257804</created>
+      <option name="number" value="00666" />
+      <option name="presentableId" value="LOCAL-00666" />
       <option name="project" value="LOCAL" />
-      <updated>1560356372524</updated>
+      <updated>1564804257806</updated>
     </task>
-    <task id="LOCAL-00435" summary="add">
-      <created>1560356401315</created>
-      <option name="number" value="00435" />
-      <option name="presentableId" value="LOCAL-00435" />
+    <task id="LOCAL-00667" summary="add">
+      <created>1564826346485</created>
+      <option name="number" value="00667" />
+      <option name="presentableId" value="LOCAL-00667" />
       <option name="project" value="LOCAL" />
-      <updated>1560356401315</updated>
+      <updated>1564826346486</updated>
     </task>
-    <task id="LOCAL-00436" summary="add">
-      <created>1560356445380</created>
-      <option name="number" value="00436" />
-      <option name="presentableId" value="LOCAL-00436" />
+    <task id="LOCAL-00668" summary="add">
+      <created>1564879599670</created>
+      <option name="number" value="00668" />
+      <option name="presentableId" value="LOCAL-00668" />
       <option name="project" value="LOCAL" />
-      <updated>1560356445380</updated>
+      <updated>1564879599670</updated>
     </task>
-    <task id="LOCAL-00437" summary="add">
-      <created>1560357445875</created>
-      <option name="number" value="00437" />
-      <option name="presentableId" value="LOCAL-00437" />
+    <task id="LOCAL-00669" summary="add">
+      <created>1564881673428</created>
+      <option name="number" value="00669" />
+      <option name="presentableId" value="LOCAL-00669" />
       <option name="project" value="LOCAL" />
-      <updated>1560357445876</updated>
+      <updated>1564881673428</updated>
     </task>
-    <task id="LOCAL-00438" summary="add">
-      <created>1560359412215</created>
-      <option name="number" value="00438" />
-      <option name="presentableId" value="LOCAL-00438" />
+    <task id="LOCAL-00670" summary="add">
+      <created>1564882447387</created>
+      <option name="number" value="00670" />
+      <option name="presentableId" value="LOCAL-00670" />
       <option name="project" value="LOCAL" />
-      <updated>1560359412216</updated>
+      <updated>1564882447388</updated>
     </task>
-    <task id="LOCAL-00439" summary="add">
-      <created>1560360628451</created>
-      <option name="number" value="00439" />
-      <option name="presentableId" value="LOCAL-00439" />
+    <task id="LOCAL-00671" summary="add">
+      <created>1564882496073</created>
+      <option name="number" value="00671" />
+      <option name="presentableId" value="LOCAL-00671" />
       <option name="project" value="LOCAL" />
-      <updated>1560360628451</updated>
+      <updated>1564882496073</updated>
     </task>
-    <task id="LOCAL-00440" summary="add">
-      <created>1560361116879</created>
-      <option name="number" value="00440" />
-      <option name="presentableId" value="LOCAL-00440" />
+    <task id="LOCAL-00672" summary="add">
+      <created>1564885768031</created>
+      <option name="number" value="00672" />
+      <option name="presentableId" value="LOCAL-00672" />
       <option name="project" value="LOCAL" />
-      <updated>1560361116879</updated>
+      <updated>1564885768032</updated>
     </task>
-    <task id="LOCAL-00441" summary="add">
-      <created>1560361404843</created>
-      <option name="number" value="00441" />
-      <option name="presentableId" value="LOCAL-00441" />
+    <task id="LOCAL-00673" summary="add">
+      <created>1564886030896</created>
+      <option name="number" value="00673" />
+      <option name="presentableId" value="LOCAL-00673" />
       <option name="project" value="LOCAL" />
-      <updated>1560361404843</updated>
+      <updated>1564886030896</updated>
     </task>
-    <task id="LOCAL-00442" summary="add">
-      <created>1560392385941</created>
-      <option name="number" value="00442" />
-      <option name="presentableId" value="LOCAL-00442" />
+    <task id="LOCAL-00674" summary="add">
+      <created>1564886114759</created>
+      <option name="number" value="00674" />
+      <option name="presentableId" value="LOCAL-00674" />
       <option name="project" value="LOCAL" />
-      <updated>1560392385942</updated>
+      <updated>1564886114759</updated>
     </task>
-    <task id="LOCAL-00443" summary="add">
-      <created>1560392478788</created>
-      <option name="number" value="00443" />
-      <option name="presentableId" value="LOCAL-00443" />
+    <task id="LOCAL-00675" summary="add">
+      <created>1564886179752</created>
+      <option name="number" value="00675" />
+      <option name="presentableId" value="LOCAL-00675" />
       <option name="project" value="LOCAL" />
-      <updated>1560392478788</updated>
+      <updated>1564886179752</updated>
     </task>
-    <task id="LOCAL-00444" summary="add">
-      <created>1560402362079</created>
-      <option name="number" value="00444" />
-      <option name="presentableId" value="LOCAL-00444" />
+    <task id="LOCAL-00676" summary="add">
+      <created>1564897072701</created>
+      <option name="number" value="00676" />
+      <option name="presentableId" value="LOCAL-00676" />
       <option name="project" value="LOCAL" />
-      <updated>1560402362079</updated>
+      <updated>1564897072703</updated>
     </task>
-    <task id="LOCAL-00445" summary="add">
-      <created>1560402508492</created>
-      <option name="number" value="00445" />
-      <option name="presentableId" value="LOCAL-00445" />
+    <task id="LOCAL-00677" summary="add">
+      <created>1564898279995</created>
+      <option name="number" value="00677" />
+      <option name="presentableId" value="LOCAL-00677" />
       <option name="project" value="LOCAL" />
-      <updated>1560402508492</updated>
+      <updated>1564898279995</updated>
     </task>
-    <task id="LOCAL-00446" summary="add">
-      <created>1560402982463</created>
-      <option name="number" value="00446" />
-      <option name="presentableId" value="LOCAL-00446" />
+    <task id="LOCAL-00678" summary="add">
+      <created>1564898292290</created>
+      <option name="number" value="00678" />
+      <option name="presentableId" value="LOCAL-00678" />
       <option name="project" value="LOCAL" />
-      <updated>1560402982464</updated>
+      <updated>1564898292290</updated>
     </task>
-    <task id="LOCAL-00447" summary="add">
-      <created>1560406215908</created>
-      <option name="number" value="00447" />
-      <option name="presentableId" value="LOCAL-00447" />
+    <task id="LOCAL-00679" summary="add">
+      <created>1564898302899</created>
+      <option name="number" value="00679" />
+      <option name="presentableId" value="LOCAL-00679" />
       <option name="project" value="LOCAL" />
-      <updated>1560406215910</updated>
+      <updated>1564898302899</updated>
     </task>
-    <task id="LOCAL-00448" summary="add">
-      <created>1560406265887</created>
-      <option name="number" value="00448" />
-      <option name="presentableId" value="LOCAL-00448" />
+    <task id="LOCAL-00680" summary="add">
+      <created>1564898365975</created>
+      <option name="number" value="00680" />
+      <option name="presentableId" value="LOCAL-00680" />
       <option name="project" value="LOCAL" />
-      <updated>1560406265887</updated>
+      <updated>1564898365975</updated>
     </task>
-    <task id="LOCAL-00449" summary="add">
-      <created>1560415491657</created>
-      <option name="number" value="00449" />
-      <option name="presentableId" value="LOCAL-00449" />
+    <task id="LOCAL-00681" summary="add">
+      <created>1564898785562</created>
+      <option name="number" value="00681" />
+      <option name="presentableId" value="LOCAL-00681" />
       <option name="project" value="LOCAL" />
-      <updated>1560415491658</updated>
+      <updated>1564898785562</updated>
     </task>
-    <task id="LOCAL-00450" summary="add">
-      <created>1560426693497</created>
-      <option name="number" value="00450" />
-      <option name="presentableId" value="LOCAL-00450" />
+    <task id="LOCAL-00682" summary="add">
+      <created>1564898804344</created>
+      <option name="number" value="00682" />
+      <option name="presentableId" value="LOCAL-00682" />
       <option name="project" value="LOCAL" />
-      <updated>1560426693498</updated>
+      <updated>1564898804344</updated>
     </task>
-    <task id="LOCAL-00451" summary="add">
-      <created>1560427128753</created>
-      <option name="number" value="00451" />
-      <option name="presentableId" value="LOCAL-00451" />
+    <task id="LOCAL-00683" summary="add">
+      <created>1564898942450</created>
+      <option name="number" value="00683" />
+      <option name="presentableId" value="LOCAL-00683" />
       <option name="project" value="LOCAL" />
-      <updated>1560427128754</updated>
+      <updated>1564898942450</updated>
     </task>
-    <task id="LOCAL-00452" summary="add">
-      <created>1560431874148</created>
-      <option name="number" value="00452" />
-      <option name="presentableId" value="LOCAL-00452" />
+    <task id="LOCAL-00684" summary="add">
+      <created>1564973469618</created>
+      <option name="number" value="00684" />
+      <option name="presentableId" value="LOCAL-00684" />
       <option name="project" value="LOCAL" />
-      <updated>1560431874149</updated>
+      <updated>1564973469618</updated>
     </task>
-    <task id="LOCAL-00453" summary="add">
-      <created>1560433876996</created>
-      <option name="number" value="00453" />
-      <option name="presentableId" value="LOCAL-00453" />
+    <task id="LOCAL-00685" summary="add">
+      <created>1564981726526</created>
+      <option name="number" value="00685" />
+      <option name="presentableId" value="LOCAL-00685" />
       <option name="project" value="LOCAL" />
-      <updated>1560433876997</updated>
+      <updated>1564981726527</updated>
     </task>
-    <task id="LOCAL-00454" summary="add">
-      <created>1560497671971</created>
-      <option name="number" value="00454" />
-      <option name="presentableId" value="LOCAL-00454" />
+    <task id="LOCAL-00686" summary="add">
+      <created>1565105408624</created>
+      <option name="number" value="00686" />
+      <option name="presentableId" value="LOCAL-00686" />
       <option name="project" value="LOCAL" />
-      <updated>1560497671971</updated>
+      <updated>1565105408624</updated>
     </task>
-    <task id="LOCAL-00455" summary="add">
-      <created>1560500786743</created>
-      <option name="number" value="00455" />
-      <option name="presentableId" value="LOCAL-00455" />
+    <task id="LOCAL-00687" summary="add">
+      <created>1565111832023</created>
+      <option name="number" value="00687" />
+      <option name="presentableId" value="LOCAL-00687" />
       <option name="project" value="LOCAL" />
-      <updated>1560500786743</updated>
+      <updated>1565111832024</updated>
     </task>
-    <task id="LOCAL-00456" summary="add">
-      <created>1560525084256</created>
-      <option name="number" value="00456" />
-      <option name="presentableId" value="LOCAL-00456" />
+    <task id="LOCAL-00688" summary="add">
+      <created>1565115283769</created>
+      <option name="number" value="00688" />
+      <option name="presentableId" value="LOCAL-00688" />
       <option name="project" value="LOCAL" />
-      <updated>1560525084257</updated>
+      <updated>1565115283769</updated>
     </task>
-    <task id="LOCAL-00457" summary="add">
-      <created>1560570308805</created>
-      <option name="number" value="00457" />
-      <option name="presentableId" value="LOCAL-00457" />
+    <task id="LOCAL-00689" summary="add">
+      <created>1565238781234</created>
+      <option name="number" value="00689" />
+      <option name="presentableId" value="LOCAL-00689" />
       <option name="project" value="LOCAL" />
-      <updated>1560570308805</updated>
+      <updated>1565238781235</updated>
     </task>
-    <task id="LOCAL-00458" summary="add">
-      <created>1560589908692</created>
-      <option name="number" value="00458" />
-      <option name="presentableId" value="LOCAL-00458" />
+    <task id="LOCAL-00690" summary="add">
+      <created>1565240265244</created>
+      <option name="number" value="00690" />
+      <option name="presentableId" value="LOCAL-00690" />
       <option name="project" value="LOCAL" />
-      <updated>1560589908692</updated>
+      <updated>1565240265244</updated>
     </task>
-    <task id="LOCAL-00459" summary="add">
-      <created>1560589926966</created>
-      <option name="number" value="00459" />
-      <option name="presentableId" value="LOCAL-00459" />
+    <task id="LOCAL-00691" summary="add">
+      <created>1565250719983</created>
+      <option name="number" value="00691" />
+      <option name="presentableId" value="LOCAL-00691" />
       <option name="project" value="LOCAL" />
-      <updated>1560589926967</updated>
+      <updated>1565250719984</updated>
     </task>
-    <task id="LOCAL-00460" summary="add">
-      <created>1560590450671</created>
-      <option name="number" value="00460" />
-      <option name="presentableId" value="LOCAL-00460" />
+    <task id="LOCAL-00692" summary="add">
+      <created>1565264957877</created>
+      <option name="number" value="00692" />
+      <option name="presentableId" value="LOCAL-00692" />
       <option name="project" value="LOCAL" />
-      <updated>1560590450672</updated>
+      <updated>1565264957877</updated>
     </task>
-    <task id="LOCAL-00461" summary="add">
-      <created>1560590624660</created>
-      <option name="number" value="00461" />
-      <option name="presentableId" value="LOCAL-00461" />
+    <task id="LOCAL-00693" summary="add">
+      <created>1565265359240</created>
+      <option name="number" value="00693" />
+      <option name="presentableId" value="LOCAL-00693" />
       <option name="project" value="LOCAL" />
-      <updated>1560590624660</updated>
+      <updated>1565265359240</updated>
     </task>
-    <task id="LOCAL-00462" summary="add">
-      <created>1560597925659</created>
-      <option name="number" value="00462" />
-      <option name="presentableId" value="LOCAL-00462" />
+    <task id="LOCAL-00694" summary="add">
+      <created>1565266074414</created>
+      <option name="number" value="00694" />
+      <option name="presentableId" value="LOCAL-00694" />
       <option name="project" value="LOCAL" />
-      <updated>1560597925659</updated>
+      <updated>1565266074415</updated>
     </task>
-    <task id="LOCAL-00463" summary="add">
-      <created>1560598608781</created>
-      <option name="number" value="00463" />
-      <option name="presentableId" value="LOCAL-00463" />
+    <task id="LOCAL-00695" summary="add">
+      <created>1565266467176</created>
+      <option name="number" value="00695" />
+      <option name="presentableId" value="LOCAL-00695" />
       <option name="project" value="LOCAL" />
-      <updated>1560598608782</updated>
+      <updated>1565266467176</updated>
     </task>
-    <task id="LOCAL-00464" summary="add">
-      <created>1560598685040</created>
-      <option name="number" value="00464" />
-      <option name="presentableId" value="LOCAL-00464" />
+    <task id="LOCAL-00696" summary="add">
+      <created>1565270090541</created>
+      <option name="number" value="00696" />
+      <option name="presentableId" value="LOCAL-00696" />
       <option name="project" value="LOCAL" />
-      <updated>1560598685040</updated>
+      <updated>1565270090542</updated>
     </task>
-    <task id="LOCAL-00465" summary="add">
-      <created>1560689602104</created>
-      <option name="number" value="00465" />
-      <option name="presentableId" value="LOCAL-00465" />
+    <task id="LOCAL-00697" summary="add">
+      <created>1565270426018</created>
+      <option name="number" value="00697" />
+      <option name="presentableId" value="LOCAL-00697" />
       <option name="project" value="LOCAL" />
-      <updated>1560689602105</updated>
+      <updated>1565270426018</updated>
     </task>
-    <task id="LOCAL-00466" summary="add">
-      <created>1560705705336</created>
-      <option name="number" value="00466" />
-      <option name="presentableId" value="LOCAL-00466" />
+    <task id="LOCAL-00698" summary="add">
+      <created>1565273293943</created>
+      <option name="number" value="00698" />
+      <option name="presentableId" value="LOCAL-00698" />
       <option name="project" value="LOCAL" />
-      <updated>1560705705337</updated>
+      <updated>1565273293943</updated>
     </task>
-    <task id="LOCAL-00467" summary="add">
-      <created>1560747788502</created>
-      <option name="number" value="00467" />
-      <option name="presentableId" value="LOCAL-00467" />
+    <task id="LOCAL-00699" summary="add">
+      <created>1565273420238</created>
+      <option name="number" value="00699" />
+      <option name="presentableId" value="LOCAL-00699" />
       <option name="project" value="LOCAL" />
-      <updated>1560747788503</updated>
+      <updated>1565273420238</updated>
     </task>
-    <task id="LOCAL-00468" summary="add">
-      <created>1560785367039</created>
-      <option name="number" value="00468" />
-      <option name="presentableId" value="LOCAL-00468" />
+    <task id="LOCAL-00700" summary="add">
+      <created>1565278349368</created>
+      <option name="number" value="00700" />
+      <option name="presentableId" value="LOCAL-00700" />
       <option name="project" value="LOCAL" />
-      <updated>1560785367040</updated>
+      <updated>1565278349368</updated>
     </task>
-    <task id="LOCAL-00469" summary="add">
-      <created>1561015249091</created>
-      <option name="number" value="00469" />
-      <option name="presentableId" value="LOCAL-00469" />
+    <task id="LOCAL-00701" summary="add">
+      <created>1565749090065</created>
+      <option name="number" value="00701" />
+      <option name="presentableId" value="LOCAL-00701" />
       <option name="project" value="LOCAL" />
-      <updated>1561015249092</updated>
+      <updated>1565749090065</updated>
     </task>
-    <task id="LOCAL-00470" summary="add">
-      <created>1561015425044</created>
-      <option name="number" value="00470" />
-      <option name="presentableId" value="LOCAL-00470" />
+    <task id="LOCAL-00702" summary="add">
+      <created>1565764962380</created>
+      <option name="number" value="00702" />
+      <option name="presentableId" value="LOCAL-00702" />
       <option name="project" value="LOCAL" />
-      <updated>1561015425044</updated>
+      <updated>1565764962381</updated>
     </task>
-    <task id="LOCAL-00471" summary="add">
-      <created>1561015674381</created>
-      <option name="number" value="00471" />
-      <option name="presentableId" value="LOCAL-00471" />
+    <task id="LOCAL-00703" summary="add">
+      <created>1566310585039</created>
+      <option name="number" value="00703" />
+      <option name="presentableId" value="LOCAL-00703" />
       <option name="project" value="LOCAL" />
-      <updated>1561015674382</updated>
+      <updated>1566310585042</updated>
     </task>
-    <task id="LOCAL-00472" summary="add">
-      <created>1561284078880</created>
-      <option name="number" value="00472" />
-      <option name="presentableId" value="LOCAL-00472" />
+    <task id="LOCAL-00704" summary="add">
+      <created>1566327527191</created>
+      <option name="number" value="00704" />
+      <option name="presentableId" value="LOCAL-00704" />
       <option name="project" value="LOCAL" />
-      <updated>1561284078882</updated>
+      <updated>1566327527191</updated>
     </task>
-    <task id="LOCAL-00473" summary="add">
-      <created>1561295082350</created>
-      <option name="number" value="00473" />
-      <option name="presentableId" value="LOCAL-00473" />
+    <task id="LOCAL-00705" summary="add">
+      <created>1566348803592</created>
+      <option name="number" value="00705" />
+      <option name="presentableId" value="LOCAL-00705" />
       <option name="project" value="LOCAL" />
-      <updated>1561295082351</updated>
+      <updated>1566348803592</updated>
     </task>
-    <task id="LOCAL-00474" summary="add">
-      <created>1561296047398</created>
-      <option name="number" value="00474" />
-      <option name="presentableId" value="LOCAL-00474" />
+    <task id="LOCAL-00706" summary="add">
+      <created>1566387621342</created>
+      <option name="number" value="00706" />
+      <option name="presentableId" value="LOCAL-00706" />
       <option name="project" value="LOCAL" />
-      <updated>1561296047398</updated>
+      <updated>1566387621343</updated>
     </task>
-    <task id="LOCAL-00475" summary="add">
-      <created>1561296153258</created>
-      <option name="number" value="00475" />
-      <option name="presentableId" value="LOCAL-00475" />
+    <task id="LOCAL-00707" summary="add">
+      <created>1566389238523</created>
+      <option name="number" value="00707" />
+      <option name="presentableId" value="LOCAL-00707" />
       <option name="project" value="LOCAL" />
-      <updated>1561296153258</updated>
+      <updated>1566389238525</updated>
     </task>
-    <task id="LOCAL-00476" summary="add">
-      <created>1561296414463</created>
-      <option name="number" value="00476" />
-      <option name="presentableId" value="LOCAL-00476" />
+    <task id="LOCAL-00708" summary="add">
+      <created>1566390093231</created>
+      <option name="number" value="00708" />
+      <option name="presentableId" value="LOCAL-00708" />
       <option name="project" value="LOCAL" />
-      <updated>1561296414463</updated>
+      <updated>1566390093232</updated>
     </task>
-    <task id="LOCAL-00477" summary="add">
-      <created>1561296477198</created>
-      <option name="number" value="00477" />
-      <option name="presentableId" value="LOCAL-00477" />
+    <task id="LOCAL-00709" summary="add">
+      <created>1566410261991</created>
+      <option name="number" value="00709" />
+      <option name="presentableId" value="LOCAL-00709" />
       <option name="project" value="LOCAL" />
-      <updated>1561296477198</updated>
+      <updated>1566410261992</updated>
     </task>
-    <task id="LOCAL-00478" summary="add">
-      <created>1561296812449</created>
-      <option name="number" value="00478" />
-      <option name="presentableId" value="LOCAL-00478" />
+    <task id="LOCAL-00710" summary="add">
+      <created>1566437851400</created>
+      <option name="number" value="00710" />
+      <option name="presentableId" value="LOCAL-00710" />
       <option name="project" value="LOCAL" />
-      <updated>1561296812450</updated>
+      <updated>1566437851400</updated>
     </task>
-    <task id="LOCAL-00479" summary="add">
-      <created>1561298085682</created>
-      <option name="number" value="00479" />
-      <option name="presentableId" value="LOCAL-00479" />
+    <task id="LOCAL-00711" summary="add">
+      <created>1566438341360</created>
+      <option name="number" value="00711" />
+      <option name="presentableId" value="LOCAL-00711" />
       <option name="project" value="LOCAL" />
-      <updated>1561298085682</updated>
+      <updated>1566438341362</updated>
     </task>
-    <option name="localTasksCounter" value="480" />
+    <option name="localTasksCounter" value="712" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="480160000" />
+    <option name="totallyTimeSpent" value="22030000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1106,7 +1260,7 @@
   <component name="ToolWindowManager">
     <frame x="-1929" y="-9" width="1938" height="1098" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24034335" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Learn" order="3" />
@@ -1117,56 +1271,58 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.3290461" />
+      <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" order="8" weight="0.3290461" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.47693133" visible="true" weight="0.32690248" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.52306867" side_tool="true" weight="0.32690248" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.3279743" />
-      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49892703" weight="0.3279743" />
-      <window_info anchor="bottom" id="Database Console" order="13" weight="0.3290461" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" sideWeight="0.49840763" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Database" order="3" weight="0.26609442" />
-      <window_info anchor="right" id="Maven" order="4" weight="0.3299356" />
-      <window_info anchor="right" id="SciView" order="5" weight="0.3299356" />
-      <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info anchor="right" id="Mongo Explorer" order="7" sideWeight="0.49203822" weight="0.23766094" />
-      <window_info anchor="right" x="0" y="0" width="434" height="898" id="Documentation" order="8" sideWeight="0.5079618" side_tool="true" weight="0.23766094" />
-    </layout>
-    <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.31759655" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Designer" order="2" />
-      <window_info id="Learn" order="3" />
-      <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.3290461" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" order="8" weight="0.3290461" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.47693133" visible="true" weight="0.32690248" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.52306867" side_tool="true" visible="true" weight="0.32690248" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.3279743" />
-      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49892703" weight="0.3279743" />
-      <window_info anchor="bottom" id="Database Console" order="13" weight="0.3290461" />
+      <window_info anchor="bottom" id="Database Changes" order="8" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3290461" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.3290461" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Database" order="3" weight="0.26609442" />
-      <window_info anchor="right" id="Maven" order="4" weight="0.3299356" />
-      <window_info anchor="right" id="SciView" order="5" weight="0.3299356" />
-      <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info anchor="right" id="Mongo Explorer" order="7" weight="0.23766094" />
-    </layout-to-restore>
+      <window_info anchor="right" id="Maven" order="3" />
+      <window_info anchor="right" id="Mongo Explorer" order="4" />
+      <window_info anchor="right" id="Palette&#9;" order="5" />
+      <window_info anchor="right" id="SciView" order="6" />
+      <window_info anchor="right" id="Database" order="7" />
+      <window_info anchor="right" x="0" y="0" width="434" height="898" id="Documentation" order="8" side_tool="true" weight="0.3299356" />
+    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add" />
@@ -1177,130 +1333,39 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_sina_shares_change.py">
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="92">
-          <caret line="4" selection-start-line="4" selection-end-line="4" selection-end-column="57" />
+          <caret line="4" column="105" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="105" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QADate.py">
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_technical_index.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" column="20" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="46">
+          <caret line="2" selection-start-line="2" selection-end-line="4" selection-end-column="58" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.IntelliJIdea2019.1/system/python_stubs/-791851423/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="477" column="4" selection-start-line="477" selection-start-column="4" selection-end-line="477" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/update_a.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="74" column="19" selection-start-line="74" selection-end-line="74" selection-end-column="19" />
-          <folding>
-            <element signature="e#1190#1732#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_wy_financial_report.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="25" column="24" lean-forward="true" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAInterest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="28" column="30" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_interest_rate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="5" column="28" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#131#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/jrj_simulation_web.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="52" column="27" lean-forward="true" selection-start-line="52" selection-start-column="27" selection-end-line="52" selection-end-column="27" />
-          <folding>
-            <element signature="e#9#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" column="81" selection-end-line="3" selection-end-column="81" />
-          <folding>
-            <element signature="e#0#82#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/crawl_sina_financial_report.py">
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <folding>
-            <element signature="e#0#131#0" expanded="true" />
+            <element signature="e#2#728#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-          <folding>
-            <element signature="e#1#218#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/QAMySQL.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="37" column="22" selection-start-line="37" selection-start-column="22" selection-end-line="37" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="2" column="65" selection-start-line="2" selection-start-column="65" selection-end-line="2" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_tools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="920">
-          <caret line="45" column="23" selection-start-line="45" selection-start-column="23" selection-end-line="45" selection-end-column="23" />
+        <state relative-caret-position="-583">
+          <caret line="54" column="14" lean-forward="true" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
@@ -1309,423 +1374,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAAlpha.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="10" column="20" lean-forward="true" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+        <state relative-caret-position="276">
+          <caret line="12" column="34" selection-start-line="12" selection-start-column="34" selection-end-line="12" selection-end-column="34" />
           <folding>
             <element signature="e#0#46#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/config/update_x.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="34" column="45" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
+        <state>
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtlFinancial.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="1132" column="13" selection-start-line="1132" selection-start-column="13" selection-end-line="1132" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAFinancial.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="14" column="32" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#105#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_financialfiles.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-966" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAShares.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="5" column="103" lean-forward="true" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="103" />
-          <folding>
-            <element signature="e#0#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-623">
-          <caret line="776" column="37" selection-start-line="776" selection-start-column="37" selection-end-line="776" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_financial_TTM.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-          <folding>
-            <element signature="e#1#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtlQuant.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="80" column="29" lean-forward="true" selection-start-line="80" selection-start-column="29" selection-end-line="80" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_alpha.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
-          <folding>
-            <element signature="e#0#145#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QATIndicator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-10149">
-          <caret line="67" column="49" selection-start-line="67" selection-start-column="49" selection-end-line="67" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#92#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QASql.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="100" column="11" selection-start-line="100" selection-start-column="11" selection-end-line="100" selection-end-column="11" />
-          <folding>
-            <element signature="e#1147#1161#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/QAMySQL.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="81" column="55" selection-start-line="81" selection-start-column="55" selection-end-line="81" selection-end-column="55" />
-          <folding>
-            <element signature="e#2#170#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/wy_financial_report_simulation_web.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-328">
-          <caret line="25" column="57" selection-start-line="25" selection-start-column="57" selection-end-line="25" selection-end-column="57" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/ths_financial_report_simulation_web.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1058">
-          <caret line="46" column="26" selection-start-line="46" selection-start-column="26" selection-end-line="46" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/sina_shares_change_simulation_web.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="40" column="37" selection-start-line="40" selection-start-column="37" selection-end-line="40" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/sina_financial_report_simulation_web.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="29" column="52" selection-start-line="29" selection-start-column="52" selection-end-line="29" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/Crawly/jrj_divyield_simulation_web.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="14" column="39" lean-forward="true" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
-          <folding>
-            <element signature="e#9#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/update_c.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="713">
-          <caret line="48" column="35" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
-          <folding>
-            <element signature="e#1190#1732#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAFinper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="52" column="17" lean-forward="true" selection-start-line="52" selection-start-column="4" selection-end-line="52" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_technical_index.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="17" column="34" lean-forward="true" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
-          <folding>
-            <element signature="e#1#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_finper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1125">
-          <caret line="56" column="61" selection-start-line="56" selection-start-column="61" selection-end-line="56" selection-end-column="61" />
-          <folding>
-            <element signature="e#1#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_financial.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="42" column="37" lean-forward="true" selection-start-line="42" selection-start-column="37" selection-end-line="42" selection-end-column="37" />
-          <folding>
-            <element signature="e#1#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_quant.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="13" column="33" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="33" />
-          <folding>
-            <element signature="e#1#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAcalendar.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="6" column="101" lean-forward="true" selection-start-line="6" selection-start-column="15" selection-end-line="6" selection-end-column="101" />
-          <folding>
-            <element signature="e#1#67#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/update_x.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="477">
-          <caret line="78" column="13" lean-forward="true" selection-start-line="78" selection-start-column="13" selection-end-line="78" selection-end-column="13" />
-          <folding>
-            <element signature="e#1190#1754#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="15" column="101" lean-forward="true" selection-start-line="15" selection-start-column="101" selection-end-line="15" selection-end-column="101" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="106" lean-forward="true" selection-start-line="106" selection-end-line="106" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_func.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="85" lean-forward="true" selection-start-line="85" selection-end-line="132" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="11" column="84" lean-forward="true" selection-start-line="11" selection-start-column="84" selection-end-line="11" selection-end-column="84" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="615" column="15" lean-forward="true" selection-start-line="615" selection-start-column="15" selection-end-line="615" selection-end-column="15" />
-          <folding>
-            <element signature="e#1#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/base_func.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="730">
-          <caret line="92" column="13" selection-start-line="92" selection-start-column="4" selection-end-line="92" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuantFactor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery_Advance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="191" column="37" selection-start-line="191" selection-start-column="4" selection-end-line="191" selection-end-column="37" />
-          <folding>
-            <element signature="e#1#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="44" column="104" selection-start-line="44" selection-start-column="72" selection-end-line="44" selection-end-column="104" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="22" column="87" lean-forward="true" selection-start-line="22" selection-start-column="87" selection-end-line="22" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>Python 3.6 (QUANT) interpreter library</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <last-edited>Python 3.6</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>QuantTools</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ScopeChooserConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
   </component>
 </project>

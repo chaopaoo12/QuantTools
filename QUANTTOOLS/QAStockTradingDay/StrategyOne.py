@@ -65,7 +65,7 @@ class model():
         self.data = get_quant_data(start, end, type = type, block=block)
         print(self.data.shape)
 
-    def set_target(self, mark):
+    def set_target(self, mark, type = 'value'):
         if type == 'value':
             self.data['star'] = self.data['TARGET'].apply(lambda x : 1 if x >= mark else 0)
             self.data.loc[self.data['PASS_MARK'] >= 9.95,'star'] = 0
