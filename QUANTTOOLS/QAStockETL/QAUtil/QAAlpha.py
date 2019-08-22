@@ -2,7 +2,7 @@ from scipy.stats import rankdata
 import scipy as sp
 import numpy as np
 import pandas as pd
-from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_stock_list
+from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_stock_list,QA_fetch_index_day_adv
 from QUANTAXIS.QAUtil import (DATABASE,QA_util_getBetweenQuarter, QA_util_get_next_day,
                               QA_util_get_real_date, QA_util_log_info,QA_util_add_months,
                               QA_util_to_json_from_pandas, trade_date_sse,QA_util_today_str,
@@ -26,7 +26,7 @@ class Alpha_191:
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
         price = price[price['date'] != self.end_date].set_index(['date','code']).to_panel()
-        ###benchmark_price = get_price(index, None, end_date, '1d',['open','close','low','high','avg_price','prev_close','volume'], False, None, 250,is_panel=1)
+        benchmark_price = QA_fetch_index_day_adv('000300', self.end_date, self.date).data.reset_index[['open','close','low','high','amount','volume']].set_index(['date','code']).to_panel()
         ###分别取开盘价，收盘价，最高价，最低价，最低价，均价，成交量#######
         self.open_price = price.loc['open',:,:].fillna(method = 'ffill')
         self.close      = price.loc['close',:,:].fillna(method = 'ffill')
@@ -36,8 +36,8 @@ class Alpha_191:
         self.prev_close = price.loc['prev_close',:,:].fillna(method = 'ffill')
         self.volume     = price.loc['volume',:,:].fillna(method = 'ffill')
         self.amount     = price.loc['amount',:,:].fillna(method = 'ffill')
-        ###self.benchmark_open_price = benchmark_price.loc[:, 'open']
-        ###self.benchmark_close_price = benchmark_price.loc[:, 'close']
+        self.benchmark_open_price = benchmark_price.loc[:, 'open']
+        self.benchmark_close_price = benchmark_price.loc[:, 'close']
         #########################################################################
 
     # TSRANK 函数
@@ -928,10 +928,9 @@ class Alpha_191:
         # Written by Jianing Lu
         # todo
         #benchmark = get_price('000001.SH', None, end_date, '1d', ['open','close'], False, None, 50)
-        #condition = benchmark['close'] < benchmark['open']
+        #condition = self.benchmark_close_price < self.benchmark_open_price
         #data1 = benchmark[condition]
         #numbench = len(data1)
-        #timelist = data1.index.tolist()
         #data2 = pd.merge(self.close, data1, left_index=True, right_index=True).drop(['close', 'open'], axis=1)
         #data3 = pd.merge(self.open_price, data1, left_index=True, right_index=True).drop(['close', 'open'], axis=1)
         #data4 = data2[data2 > data3]
@@ -2199,18 +2198,17 @@ class Alpha_191:
 
     def alpha_182(self):
         ##### COUNT((CLOSE>OPEN & BANCHMARKINDEXCLOSE>BANCHMARKINDEXOPEN)OR(CLOSE<OPEN & BANCHMARKINDEXCLOSE<BANCHMARKINDEXOPEN),20)/20 #####
-        ##### cond1 = (self.close>self.open_price)
-        ##### cond2 = (self.benchmark_open_price>self.benchmark_close_price)
-        ##### cond3 = (self.close<self.open_price)
-        ##### cond4 = (self.benchmark_open_price<self.benchmark_close_price)
-        ##### func1 = lambda x: np.asarray(x) & np.asarray(cond2)
-        ##### func2 = lambda x: np.asarray(x) & np.asarray(cond4)
-        ##### cond = cond1.apply(func1)|cond3.apply(func2)
-        ##### count = cond.rolling(20).apply(self.count_cond_182)
-        ##### alpha = (count/20).iloc[-1,:]
-        ##### alpha=alpha.dropna()
-        ##### return alpha
-        return 0
+        cond1 = (self.close>self.open_price)
+        cond2 = (self.benchmark_open_price>self.benchmark_close_price)
+        cond3 = (self.close<self.open_price)
+        cond4 = (self.benchmark_open_price<self.benchmark_close_price)
+        func1 = lambda x: np.asarray(x) & np.asarray(cond2)
+        func2 = lambda x: np.asarray(x) & np.asarray(cond4)
+        cond = cond1.apply(func1)|cond3.apply(func2)
+        count = cond.rolling(20).apply(self.count_cond_182)
+        alpha = (count/20).iloc[-1,:]
+        alpha=alpha.dropna()
+        return alpha
 
 
     def alpha_183(self):
