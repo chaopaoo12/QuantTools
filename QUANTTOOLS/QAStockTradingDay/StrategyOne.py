@@ -133,31 +133,46 @@ class model():
         elif self.info['test_report']['1']['recall'] < 0.3:
             print("召回率不足,模型需要优化")
             self.info['train_status']['recall'] = False
+        else:
+            self.info['train_status']['precision'] = True
+            self.info['train_status']['recall'] = True
 
 
         if abs(self.info['train_report']['1']['precision'] - self.info['test_report']['1']['precision']) > 0.1:
             print("过拟合:精确率差异过大")
             self.info['test_status']['precision'] = False
-
         elif abs(self.info['train_report']['1']['recall'] - self.info['test_report']['1']['recall']) > 0.05:
             print("过拟合:召回差异过大")
             self.info['test_status']['recall'] = False
+        else:
+            self.info['test_status']['precision'] = True
+            self.info['test_status']['recall'] = True
 
 
         if abs(self.info['test_report']['1']['precision'] - self.info['dev_report']['1']['precision']) > 0.1:
             print("风险:测试集与校验集结果差异显著 精确率差异过大")
             self.info['dev_status']['precision'] = False
-
         elif abs(self.info['test_report']['1']['recall'] - self.info['dev_report']['1']['recall']) > 0.05:
             print("风险:测试集与校验集结果差异显著 召回差异过大")
             self.info['dev_status']['recall'] = False
+        else:
+            self.info['dev_status']['precision'] = True
+            self.info['dev_status']['recall'] = True
 
         if self.info['train_status']['precision'] == False or self.info['train_status']['recall'] == False:
-            self.info['train_status']['tstus'] = False
-        elif self.info['test_status']['precision'] == False or self.info['test_status']['recall'] == False:
-            self.info['test_status']['tstus'] = False
-        elif self.info['dev_status']['precision'] == False or self.info['dev_status']['recall'] == False:
-            self.info['dev_status']['tstus'] = False
+            self.info['train_status']['status'] = False
+        else:
+            self.info['train_status']['status'] = True
+
+        if self.info['test_status']['precision'] == False or self.info['test_status']['recall'] == False:
+            self.info['test_status']['status'] = False
+        else:
+            self.info['test_status']['status'] = True
+
+        if self.info['dev_status']['precision'] == False or self.info['dev_status']['recall'] == False:
+            self.info['dev_status']['status'] = False
+        else:
+            self.info['dev_status']['status'] = True
 
     def save_model(self, working_dir = 'D:\\model\\current'):
         if mkdir(working_dir):
