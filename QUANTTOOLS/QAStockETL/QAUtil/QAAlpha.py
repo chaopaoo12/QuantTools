@@ -26,7 +26,7 @@ class Alpha_191:
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
         price = price[price['date'] != self.end_date].set_index(['date','code']).to_panel()
-        benchmark_price = QA_fetch_index_day_adv('000300', self.end_date, self.date).data.reset_index[['open','close','low','high','amount','volume']].set_index(['date','code']).to_panel()
+        #benchmark_price = QA_fetch_index_day_adv('000300', self.end_date, self.date).data.reset_index()[['date','code','open','close','low','high','amount','volume']].set_index(['date','code']).to_panel()
         ###分别取开盘价，收盘价，最高价，最低价，最低价，均价，成交量#######
         self.open_price = price.loc['open',:,:].fillna(method = 'ffill')
         self.close      = price.loc['close',:,:].fillna(method = 'ffill')
@@ -36,8 +36,8 @@ class Alpha_191:
         self.prev_close = price.loc['prev_close',:,:].fillna(method = 'ffill')
         self.volume     = price.loc['volume',:,:].fillna(method = 'ffill')
         self.amount     = price.loc['amount',:,:].fillna(method = 'ffill')
-        self.benchmark_open_price = benchmark_price.loc[:, 'open']
-        self.benchmark_close_price = benchmark_price.loc[:, 'close']
+        #self.benchmark_open_price = benchmark_price.loc[:, 'open']
+        #self.benchmark_close_price = benchmark_price.loc[:, 'close']
         #########################################################################
 
     # TSRANK 函数
