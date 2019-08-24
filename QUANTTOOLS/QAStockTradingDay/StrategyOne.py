@@ -88,7 +88,7 @@ class model():
         self.info['test_rng'] = [test_start,test_end]
 
     def prepare_data(self, test_size = 0.2, random_state=0):
-        self.X_train, X_test, self.Y_train, Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols],self.data.loc[self.TR_RNG]['star'], test_size=test_size, random_state=random_state)
+        self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols],self.data.loc[self.TR_RNG]['star'], test_size=test_size, random_state=random_state)
         self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols],self.data.loc[self.TE_RNG]['star']
 
     def build_model(self, n_estimators=500):
