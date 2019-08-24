@@ -144,10 +144,10 @@ class model():
 
         if abs(self.info['test_report']['1']['precision'] - self.info['rng_report']['1']['precision']) > 0.1:
             print("风险:测试集与校验集结果差异显著 精确率差异过大")
-            self.info['rng_report']['precision'] = False
+            self.info['rng_status']['precision'] = False
         elif abs(self.info['test_report']['1']['recall'] - self.info['rng_report']['1']['recall']) > 0.05:
             print("风险:测试集与校验集结果差异显著 召回差异过大")
-            self.info['rng_report']['recall'] = False
+            self.info['rng_status']['recall'] = False
         else:
             self.info['rng_status']['precision'] = True
             self.info['rng_status']['recall'] = True
