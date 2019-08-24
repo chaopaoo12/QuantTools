@@ -59,7 +59,7 @@ class model():
         self.info['date'] = QA_util_today_str()
         self.info['train_status']=dict()
         self.info['test_status']=dict()
-        self.info['dev_status']=dict()
+        self.info['rng_status']=dict()
 
     def get_data(self, start, end, type ='crawl', block=True):
         self.data = get_quant_data(start, end, type = type, block=block)
@@ -87,9 +87,8 @@ class model():
         self.info['train_rng'] = [train_start,train_end]
         self.info['test_rng'] = [test_start,test_end]
 
-    def prepare_data(self, test_size = 0.2, dev_size = 0.2, random_state=0):
+    def prepare_data(self, test_size = 0.2, random_state=0):
         self.X_train, X_test, self.Y_train, Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols],self.data.loc[self.TR_RNG]['star'], test_size=test_size, random_state=random_state)
-        self.X_test, self.X_dev, self.Y_test, self.Y_dev = train_test_split(X_test,Y_test, test_size=dev_size, random_state=random_state)
         self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols],self.data.loc[self.TE_RNG]['star']
 
     def build_model(self, n_estimators=500):
@@ -97,15 +96,13 @@ class model():
 
     def model_running(self):
         self.model.fit(self.X_train,self.Y_train, eval_metric=list(["auc",'error','map']),
-                       eval_set=[(self.X_test,self.Y_test)], verbose=True)
+                       eval_set=[(self.X_test,self.Y_test),(self.X_RNG,self.Y_RNG)], verbose=True)
         y_pred = self.model.predict(self.X_train)
         y_pred_test = self.model.predict(self.X_test)
-        y_pred_dev = self.model.predict(self.X_dev)
         y_pred_rng = self.model.predict(self.X_RNG)
 
         accuracy_train = accuracy_score(self.Y_train,y_pred)
         accuracy_test = accuracy_score(self.Y_test,y_pred_test)
-        accuracy_dev = accuracy_score(self.Y_dev,y_pred_dev)
         accuracy_rng = accuracy_score(self.Y_RNG,y_pred_rng)
 
         print("accuracy_train:"+str(accuracy_train)+"; precision_score On Train:"+str(precision_score(self.Y_train,y_pred)))
@@ -114,15 +111,11 @@ class model():
         print("accuracy_test:"+str(accuracy_test)+"; precision_score On test:"+str(precision_score(self.Y_test, y_pred_test)))
         self.test_report = classification_report(self.Y_test,y_pred_test, output_dict=True)
         print(self.test_report)
-        print("accuracy_dev:"+str(accuracy_dev)+"; precision_score On dev:"+str(precision_score(self.Y_dev,y_pred_dev)))
-        self.dev_report = classification_report(self.Y_dev,y_pred_dev, output_dict=True)
-        print(self.dev_report)
         print("accuracy_rng:"+str(accuracy_rng)+"; precision_score On rng:"+str(precision_score(self.Y_RNG,y_pred_rng)))
         self.rng_report = classification_report(self.Y_RNG,y_pred_rng, output_dict=True)
         print(self.rng_report)
         self.info['train_report'] = self.train_report
         self.info['test_report'] = self.test_report
-        self.info['dev_report'] = self.dev_report
         self.info['rng_report'] = self.rng_report
 
     def model_check(self):
@@ -149,15 +142,15 @@ class model():
             self.info['test_status']['recall'] = True
 
 
-        if abs(self.info['test_report']['1']['precision'] - self.info['dev_report']['1']['precision']) > 0.1:
+        if abs(self.info['test_report']['1']['precision'] - self.info['rng_report']['1']['precision']) > 0.1:
             print("风险:测试集与校验集结果差异显著 精确率差异过大")
-            self.info['dev_status']['precision'] = False
-        elif abs(self.info['test_report']['1']['recall'] - self.info['dev_report']['1']['recall']) > 0.05:
+            self.info['rng_report']['precision'] = False
+        elif abs(self.info['test_report']['1']['recall'] - self.info['rng_report']['1']['recall']) > 0.05:
             print("风险:测试集与校验集结果差异显著 召回差异过大")
-            self.info['dev_status']['recall'] = False
+            self.info['rng_report']['recall'] = False
         else:
-            self.info['dev_status']['precision'] = True
-            self.info['dev_status']['recall'] = True
+            self.info['rng_status']['precision'] = True
+            self.info['rng_status']['recall'] = True
 
         if self.info['train_status']['precision'] == False or self.info['train_status']['recall'] == False:
             self.info['train_status']['status'] = False
@@ -169,10 +162,10 @@ class model():
         else:
             self.info['test_status']['status'] = True
 
-        if self.info['dev_status']['precision'] == False or self.info['dev_status']['recall'] == False:
-            self.info['dev_status']['status'] = False
+        if self.info['rng_status']['precision'] == False or self.info['rng_status']['recall'] == False:
+            self.info['rng_status']['status'] = False
         else:
-            self.info['dev_status']['status'] = True
+            self.info['rng_status']['status'] = True
 
     def save_model(self, working_dir = 'D:\\model\\current'):
         if mkdir(working_dir):
