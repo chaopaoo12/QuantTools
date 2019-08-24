@@ -216,7 +216,7 @@ def model_predict(model, start, end, cols):
 
 def check_model(model, start, end, cols, target):
     data = get_quant_data(start, end, type='crawl',block = True)
-    data['star'] = data['TARGET'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x >= target else 0)
+    data['star'] = data['TARGET'].apply(lambda x :1 if x >= target else 0)
     cols1 = [i for i in data.columns if i not in ['moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO','LAG_TORO','OPEN_MARK','PASS_MARK',
                                                   'TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET',
                                                   'INDEX_TARGET','INDUSTRY',
