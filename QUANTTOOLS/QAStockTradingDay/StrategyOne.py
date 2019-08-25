@@ -11,16 +11,11 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_i
                               QA_util_datetime_to_strdate)
 import joblib
 
-#def train_test_split(x, y, type = 'all',test_size=0.3):
-#    if type == 'date':
-#        split_row = len(x) - int(test_size * len(x))
-#        x_train = x.iloc[:split_row]
-#        x_test = x.iloc[split_row:]
-#        y_train = y.iloc[:split_row]
-#        y_test = y.iloc[split_row:]
-#    elif type == 'all':
-#        train_test_split(x, y, test_size = test_size)
-#    return x_train,x_test, y_train, y_test
+def train_test_split_date(x, test_size=0.3):
+    split_row = len(x) - int(test_size * len(x))
+    x_train = x.iloc[:split_row]
+    x_test = x.iloc[split_row:]
+    return x_train, x_test
 
 def mkdir(path):
     # 引入模块
@@ -88,7 +83,10 @@ class model():
         self.info['test_rng'] = [test_start,test_end]
 
     def prepare_data(self, test_size = 0.2, random_state=0):
+        self.train_rng, self.test_rng = train_test_split_date(self.TR_RNG, test_size)
         self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols],self.data.loc[self.TR_RNG]['star'], test_size=test_size, random_state=random_state)
+        self.X_train, self.Y_train = self.data.loc[self.train_rng][self.cols],self.data.loc[self.train_rng]['star']
+        self.X_test, self.Y_test = self.data.loc[self.test_rng][self.cols],self.data.loc[self.test_rng]['star']
         self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols],self.data.loc[self.TE_RNG]['star']
 
     def build_model(self, n_estimators=500):
