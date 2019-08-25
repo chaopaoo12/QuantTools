@@ -82,11 +82,15 @@ class model():
         self.info['train_rng'] = [train_start,train_end]
         self.info['test_rng'] = [test_start,test_end]
 
-    def prepare_data(self, test_size = 0.2, random_state=0):
-        self.train_rng, self.test_rng = train_test_split_date(self.TR_RNG, test_size)
-        self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols],self.data.loc[self.TR_RNG]['star'], test_size=test_size, random_state=random_state)
-        self.X_train, self.Y_train = self.data.loc[self.train_rng][self.cols],self.data.loc[self.train_rng]['star']
-        self.X_test, self.Y_test = self.data.loc[self.test_rng][self.cols],self.data.loc[self.test_rng]['star']
+    def prepare_data(self, type = 'date', test_size = 0.2, random_state=0):
+        if type == 'date':
+            self.train_rng, self.test_rng = train_test_split_date(self.TR_RNG, test_size)
+            self.X_train, self.Y_train = self.data.loc[self.train_rng][self.cols],self.data.loc[self.train_rng]['star']
+            self.X_test, self.Y_test = self.data.loc[self.test_rng][self.cols],self.data.loc[self.test_rng]['star']
+        elif type == 'random':
+            self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols],self.data.loc[self.TR_RNG]['star'], test_size=test_size, random_state=random_state)
+        else:
+            print('type must be in [date, random]')
         self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols],self.data.loc[self.TE_RNG]['star']
 
     def build_model(self, n_estimators=500):
