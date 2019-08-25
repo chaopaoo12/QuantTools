@@ -13,8 +13,8 @@ import joblib
 
 def train_test_split_date(x, test_size=0.3):
     split_row = len(x) - int(test_size * len(x))
-    x_train = x.iloc[:split_row]
-    x_test = x.iloc[split_row:]
+    x_train = x.iloc[:split_row].fillna(0)
+    x_test = x.iloc[split_row:].fillna(0)
     return x_train, x_test
 
 def mkdir(path):
