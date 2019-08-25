@@ -10,6 +10,68 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_i
                               QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date,
                               QA_util_datetime_to_strdate)
 import joblib
+import keras
+from keras.models import Sequential
+from keras.layers.core import Dense, Dropout, Activation
+from keras.layers import LSTM
+from keras import backend as K
+from keras.metrics import top_k_categorical_accuracy
+import tensorflow as tf
+#from tensorflow.keras.metrics import top_k_categorical_accuracy
+
+def precision(y_true, y_pred):
+    # Calculates the precision
+    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
+    precision = true_positives / (predicted_positives + K.epsilon())
+    return precision
+
+def recall(y_true, y_pred):
+    # Calculates the recall
+    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+    recall = true_positives / (possible_positives + K.epsilon())
+    return recall
+
+def auc(y_true, y_pred):
+    ptas = tf.stack([binary_PTA(y_true,y_pred,k) for k in np.linspace(0, 1, 1000)],axis=0)
+    pfas = tf.stack([binary_PFA(y_true,y_pred,k) for k in np.linspace(0, 1, 1000)],axis=0)
+    pfas = tf.concat([tf.ones((1,)) ,pfas],axis=0)
+    binSizes = -(pfas[1:]-pfas[:-1])
+    s = ptas*binSizes
+    return K.sum(s, axis=0)
+
+# PFA, prob false alert for binary classifier
+def binary_PFA(y_true, y_pred, threshold=K.variable(value=0.5)):
+    y_pred = K.cast(y_pred >= threshold, 'float32')
+    # N = total number of negative labels
+    N = K.sum(1 - y_true)
+    # FP = total number of false alerts, alerts from the negative class labels
+    FP = K.sum(y_pred - y_pred * y_true)
+    return FP/N
+
+# P_TA prob true alerts for binary classifier
+def binary_PTA(y_true, y_pred, threshold=K.variable(value=0.5)):
+    y_pred = K.cast(y_pred >= threshold, 'float32')
+    # P = total number of positive labels
+    P = K.sum(y_true)
+    # TP = total number of correct alerts, alerts from the positive class labels
+    TP = K.sum(y_pred * y_true)
+    return TP/P
+
+def f1_loss(y_true, y_pred):
+    #计算tp、tn、fp、fn
+    tp = K.sum(K.cast(y_true*y_pred, 'float'), axis=0)
+    tn = K.sum(K.cast((1-y_true)*(1-y_pred), 'float'), axis=0)
+    fp = K.sum(K.cast((1-y_true)*y_pred, 'float'), axis=0)
+    fn = K.sum(K.cast(y_true*(1-y_pred), 'float'), axis=0)
+    #percision与recall，这里的K.epsilon代表一个小正数，用来避免分母为零
+    p = tp / (tp + fp + K.epsilon())
+    r = tp / (tp + fn + K.epsilon())
+    #计算f1
+    f1 = 1.25 * p * r / (0.25 * p + 1 * r + K.epsilon())
+    f1 = tf.where(tf.is_nan(f1), tf.zeros_like(f1), f1)#其实就是把nan换成0
+    return 1 - K.mean(f1)
 
 def train_test_split_date(x, test_size=0.3):
     split_row = len(x) - int(test_size * len(x))
@@ -91,17 +153,36 @@ class model():
             self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols],self.data.loc[self.TR_RNG]['star'], test_size=test_size, random_state=random_state)
         else:
             print('type must be in [date, random]')
-        self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols],self.data.loc[self.TE_RNG]['star']
+        self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols].fillna(0),self.data.loc[self.TE_RNG]['star'].fillna(0)
 
-    def build_model(self, n_estimators=500):
-        self.model = XGBClassifier(n_estimators=n_estimators,seed=1)
+    def build_model(self):
+        self.model = Sequential() #建立模型
+        self.model.add(Dense(input_dim = len(self.cols), units = 2400)) #添加输入层、隐藏层的连接
+        self.model.add(Activation('relu')) #以Relu函数为激活函数
+        #self.model.add(Dropout(0.25))
+        self.model.add(Dense(input_dim = 2400, units = 1200)) #添加隐藏层、隐藏层的连接
+        self.model.add(Activation('relu')) #以Relu函数为激活函数
+        #self.model.add(Dropout(0.3))
+        #self.model.add(Dense(input_dim = 120, units = 120)) #添加隐藏层、隐藏层的连接
+        #self.model.add(Activation('relu')) #以Relu函数为激活函数
+        self.model.add(Dropout(0.3))
+        self.model.add(Dense(input_dim = 1200, units = 1200)) #添加隐藏层、隐藏层的连接
+        self.model.add(Activation('relu')) #以Relu函数为激活函数
+        self.model.add(Dropout(0.3))
+        self.model.add(Dense(input_dim = 1200, units = 1)) #添加隐藏层、输出层的连接
+        self.model.add(Activation('sigmoid')) #以sigmoid函数为激活函数
+        self.model.compile(loss=f1_loss, optimizer='adam',
+                      metrics=['accuracy',auc,precision,recall])
 
-    def model_running(self):
-        self.model.fit(self.X_train,self.Y_train, eval_metric=list(["auc",'error','map']),
-                       eval_set=[(self.X_test,self.Y_test),(self.X_RNG,self.Y_RNG)], verbose=True)
-        y_pred = self.model.predict(self.X_train)
-        y_pred_test = self.model.predict(self.X_test)
-        y_pred_rng = self.model.predict(self.X_RNG)
+    def model_running(self,nb_epoch = 300, batch_size = 50000):
+        self.history = self.model.fit(self.X_train.values, self.Y_train.values,
+                            batch_size=batch_size,
+                            epochs=nb_epoch,
+                            verbose=1,
+                            validation_data=(self.X_test.values, self.Y_test.values))
+        y_pred = self.model.predict_classes(self.X_train)
+        y_pred_test = self.model.predict_classes(self.X_test)
+        y_pred_rng = self.model.predict_classes(self.X_RNG)
 
         accuracy_train = accuracy_score(self.Y_train,y_pred)
         accuracy_test = accuracy_score(self.Y_test,y_pred_test)
@@ -202,8 +283,8 @@ def model_predict(model, start, end, cols):
     train.index = data.index
     print(n_cols)
     b = data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
-    b['y_pred'] = model.predict(train)
-    bina = pd.DataFrame(model.predict_proba(train))[[0,1]]
+    b['y_pred'] = model.predict_classes(train)
+    bina = pd.DataFrame(model.predict(train))[[0,1]]
     bina.index = b.index
     b[['Z_PROB','O_PROB']] = bina
     b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
