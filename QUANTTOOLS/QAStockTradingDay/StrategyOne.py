@@ -13,8 +13,8 @@ import joblib
 
 def train_test_split_date(x, test_size=0.3):
     split_row = len(x) - int(test_size * len(x))
-    x_train = x.iloc[:split_row].fillna(0)
-    x_test = x.iloc[split_row:].fillna(0)
+    x_train = x.iloc[:split_row]
+    x_test = x.iloc[split_row:]
     return x_train, x_test
 
 def mkdir(path):
@@ -85,8 +85,8 @@ class model():
     def prepare_data(self, type = 'date', test_size = 0.2, random_state=0):
         if type == 'date':
             self.train_rng, self.test_rng = train_test_split_date(self.TR_RNG, test_size)
-            self.X_train, self.Y_train = self.data.loc[self.train_rng][self.cols],self.data.loc[self.train_rng]['star']
-            self.X_test, self.Y_test = self.data.loc[self.test_rng][self.cols],self.data.loc[self.test_rng]['star']
+            self.X_train, self.Y_train = self.data.loc[self.train_rng][self.cols].fillna(0),self.data.loc[self.train_rng]['star'].fillna(0)
+            self.X_test, self.Y_test = self.data.loc[self.test_rng][self.cols].fillna(0),self.data.loc[self.test_rng]['star'].fillna(0)
         elif type == 'random':
             self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols],self.data.loc[self.TR_RNG]['star'], test_size=test_size, random_state=random_state)
         else:
