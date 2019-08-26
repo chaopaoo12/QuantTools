@@ -18,6 +18,7 @@ from keras import backend as K
 from keras.metrics import top_k_categorical_accuracy
 import tensorflow as tf
 #from tensorflow.keras.metrics import top_k_categorical_accuracy
+import numpy as np
 
 def precision(y_true, y_pred):
     # Calculates the precision
