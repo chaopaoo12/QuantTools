@@ -70,7 +70,7 @@ def f1_loss(y_true, y_pred):
     p = tp / (tp + fp + K.epsilon())
     r = tp / (tp + fn + K.epsilon())
     #计算f1
-    f1 = 1.25 * p * r / (0.25 * p + 1 * r + K.epsilon())
+    f1 = 1.01 * p * r / (0.01 * p + 1 * r + K.epsilon())
     f1 = tf.where(tf.is_nan(f1), tf.zeros_like(f1), f1)#其实就是把nan换成0
     return 1 - K.mean(f1)
 
