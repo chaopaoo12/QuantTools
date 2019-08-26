@@ -175,7 +175,7 @@ class model():
         self.model.compile(loss=f1_loss, optimizer='adam',
                       metrics=['accuracy',auc,precision,recall])
 
-    def model_running(self,nb_epoch = 300, batch_size = 50000):
+    def model_running(self,nb_epoch = 100, batch_size = 50000):
         self.history = self.model.fit(self.X_train.values, self.Y_train.values,
                             batch_size=batch_size,
                             epochs=nb_epoch,
