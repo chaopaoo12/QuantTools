@@ -181,7 +181,11 @@ class model():
                             epochs=nb_epoch,
                             verbose=1,
                             validation_data=(self.X_test.values, self.Y_test.values))
-        score = model.evaluate(self.X_RNG.fillna(0).values, self.Y_RNG, verbose=0)
+        self.score = model.evaluate(self.X_RNG.fillna(0).values, self.Y_RNG, verbose=0)
+        print('Rng loss:', self.score[0])
+        print('Rng accuracy:', self.score[1])
+        print('Rng precision:', self.score[3])
+        print('Rng recall:', self.score[4])
         y_pred = self.model.predict_classes(self.X_train)
         y_pred_test = self.model.predict_classes(self.X_test)
         y_pred_rng = self.model.predict_classes(self.X_RNG)
