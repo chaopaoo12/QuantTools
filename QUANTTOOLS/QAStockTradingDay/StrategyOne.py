@@ -172,7 +172,7 @@ class model():
         self.model.add(Dropout(0.3))
         self.model.add(Dense(input_dim = 1200, units = 1)) #添加隐藏层、输出层的连接
         self.model.add(Activation('sigmoid')) #以sigmoid函数为激活函数
-        self.model.compile(loss=binary_crossentropy, optimizer='adam',
+        self.model.compile(loss='binary_crossentropy', optimizer='adam',
                       metrics=['accuracy',auc,precision,recall])
 
     def model_running(self,nb_epoch = 100, batch_size = 50000):
