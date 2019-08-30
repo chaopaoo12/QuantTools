@@ -93,7 +93,7 @@ def pct(data, type = 'close'):
     data = data.sort_values('date',ascending=True)
     if type == 'close':
         data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
-        data[['PRE_MARKET','AVG_PRE_MARKET','high_mark','low_mark']]= data.shift(-1)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
+        data[['PRE_DATE','PRE_MARKET','AVG_PRE_MARKET','high_mark','low_mark']]= data.shift(-1)[['date','close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
         data[['PRE2_MARKET','AVG_PRE2_MARKET']]= data.shift(-2)[['close_qfq','AVG_TOTAL_MARKET']]
         data[['PRE3_MARKET','AVG_PRE3_MARKET']]= data.shift(-3)[['close_qfq','AVG_TOTAL_MARKET']]
         data[['PRE4_MARKET','AVG_PRE4_MARKET']]= data.shift(-4)[['close_qfq','AVG_TOTAL_MARKET']]
