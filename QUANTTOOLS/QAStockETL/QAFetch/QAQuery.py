@@ -677,7 +677,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
                                                       'TARGET10','AVG_TARGET']]
     res = pd.merge(res,market,on='date')
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
-    res['next_date'] = res['date'].apply(QA_util_get_pre_trade_date, -1)
+    res['next_date'] = res['date'].apply(QA_util_get_pre_trade_date, -2)
     res['PRE_DATE'] = res['PRE_DATE'].apply(lambda x: str(x)[0:10])
     res = res.set_index(['date','code']).loc[rng1]
     res['INDEX_TARGET'] = res['TARGET'] - res['INDEX_TARGET']
