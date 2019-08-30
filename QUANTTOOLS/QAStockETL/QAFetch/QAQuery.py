@@ -672,12 +672,13 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
     res1 = data.to_qfq().data
     res1.columns = [x + '_qfq' for x in res1.columns]
     data = data.data.join(res1).fillna(0).reset_index()
-    res = data.groupby('code').apply(pct, type=type)[['date','code','OPEN_MARK','PASS_MARK',
+    res = data.groupby('code').apply(pct, type=type)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
                                                     'TARGET','TARGET3','TARGET4','TARGET5',
-                                                      'TARGET10','AVG_TARGET']].set_index(['date','code'])
-    res = res.reset_index()
+                                                      'TARGET10','AVG_TARGET']]
     res = pd.merge(res,market,on='date')
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
+    res['next_date'] = res['date'].apply(QA_util_get_pre_trade_date, -1)
+    res['PRE_DATE'] = res['PRE_DATE'].apply(lambda x: str(x)[0:10])
     res = res.set_index(['date','code']).loc[rng1]
     res['INDEX_TARGET'] = res['TARGET'] - res['INDEX_TARGET']
     res['INDEX_TARGET3'] = res['TARGET3'] - res['INDEX_TARGET3']
