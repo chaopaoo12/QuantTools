@@ -145,61 +145,49 @@ class model():
         self.info['train_rng'] = [train_start,train_end]
         self.info['test_rng'] = [test_start,test_end]
 
-    def prepare_data(self, type = 'date', test_size = 0.2, random_state=0):
-        if type == 'date':
+    def prepare_data(self, type = 'date', test_size = 0.2, dev_size = 0.2, random_state=0):
+        if self.dev_start is None and type == 'date':
             self.train_rng, self.test_rng = train_test_split_date(self.TR_RNG, test_size)
+            self.test_rng, self.dev_rng = train_test_split_date(self.test_rng, dev_size)
             self.X_train, self.Y_train = self.data.loc[self.train_rng][self.cols].fillna(0),self.data.loc[self.train_rng]['star'].fillna(0)
             self.X_test, self.Y_test = self.data.loc[self.test_rng][self.cols].fillna(0),self.data.loc[self.test_rng]['star'].fillna(0)
-        elif type == 'random':
+            self.X_dev, self.Y_dev = self.data.loc[self.dev_rng][self.cols].fillna(0),self.data.loc[self.dev_rng]['star'].fillna(0)
+        elif self.dev_start is None and type == 'random':
             self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols],self.data.loc[self.TR_RNG]['star'], test_size=test_size, random_state=random_state)
-        else:
-            print('type must be in [date, random]')
+            self.X_test, self.X_dev, self.Y_test, self.Y_dev = train_test_split(self.X_test,self.Y_test, test_size=dev_size, random_state=random_state)
         self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols].fillna(0),self.data.loc[self.TE_RNG]['star'].fillna(0)
 
-    def build_model(self):
-        self.model = Sequential() #建立模型
-        self.model.add(Dense(input_dim = len(self.cols), units = 2400)) #添加输入层、隐藏层的连接
-        self.model.add(Activation('relu')) #以Relu函数为激活函数
-        #self.model.add(Dropout(0.25))
-        self.model.add(Dense(input_dim = 2400, units = 1200)) #添加隐藏层、隐藏层的连接
-        self.model.add(Activation('relu')) #以Relu函数为激活函数
-        #self.model.add(Dropout(0.3))
-        #self.model.add(Dense(input_dim = 120, units = 120)) #添加隐藏层、隐藏层的连接
-        #self.model.add(Activation('relu')) #以Relu函数为激活函数
-        self.model.add(Dropout(0.3))
-        self.model.add(Dense(input_dim = 1200, units = 1200)) #添加隐藏层、隐藏层的连接
-        self.model.add(Activation('relu')) #以Relu函数为激活函数
-        self.model.add(Dropout(0.3))
-        self.model.add(Dense(input_dim = 1200, units = 1)) #添加隐藏层、输出层的连接
-        self.model.add(Activation('sigmoid')) #以sigmoid函数为激活函数
-        self.model.compile(loss='binary_crossentropy', optimizer='adam',
-                      metrics=['accuracy',auc,precision,recall])
+    def build_model(self, max_depth = 3, subsample = 0.95, seed=1):
+        XGBClassifier(max_depth = max_depth, subsample= subsample,seed=seed)
 
-    def model_running(self,nb_epoch = 100, batch_size = 50000):
-        self.history = self.model.fit(self.X_train.values, self.Y_train.values,
-                            batch_size=batch_size,
-                            epochs=nb_epoch,
-                            verbose=1,
-                            validation_data=(self.X_test.values, self.Y_test.values))
-        self.score = self.model.evaluate(self.X_RNG.fillna(0).values, self.Y_RNG, verbose=0)
-        print('Rng loss:', self.score[0])
-        print('Rng accuracy:', self.score[1])
-        print('Rng precision:', self.score[3])
-        print('Rng recall:', self.score[4])
+    def model_running(self):
+        self.model.fit(self.X_train,self.Y_train,
+                                      eval_metric=list(["auc",'error','map']),
+                                      eval_set=[(self.X_test,self.Y_test),
+                                                (self.X_dev,self.Y_dev)],
+                                      verbose=True)
         y_pred = self.model.predict_classes(self.X_train)
         y_pred_test = self.model.predict_classes(self.X_test)
+        y_pred_dev = self.model.predict_classes(self.X_dev)
         y_pred_rng = self.model.predict_classes(self.X_RNG)
 
         accuracy_train = accuracy_score(self.Y_train,y_pred)
         accuracy_test = accuracy_score(self.Y_test,y_pred_test)
+        accuracy_dev = accuracy_score(self.Y_dev,y_pred_dev)
         accuracy_rng = accuracy_score(self.Y_RNG,y_pred_rng)
 
         print("accuracy_train:"+str(accuracy_train)+"; precision_score On Train:"+str(precision_score(self.Y_train,y_pred)))
         self.train_report = classification_report(self.Y_train,y_pred, output_dict=True)
         print(self.train_report)
+
         print("accuracy_test:"+str(accuracy_test)+"; precision_score On test:"+str(precision_score(self.Y_test, y_pred_test)))
         self.test_report = classification_report(self.Y_test,y_pred_test, output_dict=True)
         print(self.test_report)
+
+        print("accuracy_test:"+str(accuracy_dev)+"; precision_score On test:"+str(precision_score(self.Y_dev, y_pred_dev)))
+        self.dev_report = classification_report(self.Y_dev,y_pred_dev, output_dict=True)
+        print(self.dev_report)
+
         print("accuracy_rng:"+str(accuracy_rng)+"; precision_score On rng:"+str(precision_score(self.Y_RNG,y_pred_rng)))
         self.rng_report = classification_report(self.Y_RNG,y_pred_rng, output_dict=True)
         print(self.rng_report)
