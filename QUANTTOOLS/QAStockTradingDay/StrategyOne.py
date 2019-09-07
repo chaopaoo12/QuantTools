@@ -121,6 +121,7 @@ class model():
 
     def get_data(self, start, end, type ='crawl', block=True):
         self.data = get_quant_data(start, end, type = type, block=block)
+        self.data = self.data[self.data['DAYSO']>= 90][self.data['next_date'] == self.data['PRE_DATE']]
         print(self.data.shape)
 
     def set_target(self, mark, type = 'value'):
@@ -128,7 +129,6 @@ class model():
             self.data['star'] = self.data['TARGET'].apply(lambda x : 1 if x >= mark else 0)
             self.data.loc[self.data['PASS_MARK'] >= 9.95,'star'] = 0
         elif type == 'percent':
-            self.data = self.data[self.data['DAYSO']>= 90][self.data['next_date'] == self.data['PRE_DATE']]
             self.data['star'] = self.data['TARGET'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
             #self.data.loc[self.data['PASS_MARK'] >= 9.95,'star'] = 0
         else:
@@ -263,10 +263,11 @@ def load_model(working_dir= 'D:\\model\\current'):
 
 def model_predict(model, start, end, cols):
     data = get_quant_data(start, end, type='crawl',block = True)
-    cols1 = [i for i in data.columns if i not in ['moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO','LAG_TORO','OPEN_MARK','PASS_MARK',
-                                                  'TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET',
-                                                  'INDEX_TARGET','INDUSTRY',
-                                                  'INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10','date_stamp']]
+    cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
+                                                  'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3',
+                                                  'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
+                                                  'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
+                                                  'INDEX_TARGET10','date_stamp','PRE_DATE','next_date']]
     train = pd.DataFrame()
     n_cols = []
     for i in cols:
@@ -285,13 +286,18 @@ def model_predict(model, start, end, cols):
     b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
     return(b[b['y_pred']==1])
 
-def check_model(model, start, end, cols, target):
+def check_model(model, start, end, cols,target, type = 'value'):
     data = get_quant_data(start, end, type='crawl',block = True)
-    data['star'] = data['TARGET'].apply(lambda x :1 if x >= target else 0)
-    cols1 = [i for i in data.columns if i not in ['moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO','LAG_TORO','OPEN_MARK','PASS_MARK',
-                                                  'TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET',
-                                                  'INDEX_TARGET','INDUSTRY',
-                                                  'INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10','date_stamp']]
+    data = data[data['DAYSO']>= 90][data['next_date'] == data['PRE_DATE']]
+    if type == 'value':
+        data['star'] = data['TARGET'].apply(lambda x :1 if x >= target else 0)
+    elif type == 'percent':
+        data['star'] = data['TARGET'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= target else 0)
+    cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
+                                                   'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3',
+                                                   'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
+                                                   'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
+                                                   'INDEX_TARGET10','date_stamp','PRE_DATE','next_date']]
     train = pd.DataFrame()
     n_cols = []
     for i in cols:
