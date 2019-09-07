@@ -167,10 +167,10 @@ class model():
                                       eval_set=[(self.X_test,self.Y_test),
                                                 (self.X_dev,self.Y_dev)],
                                       verbose=True)
-        y_pred = self.model.predict_classes(self.X_train)
-        y_pred_test = self.model.predict_classes(self.X_test)
-        y_pred_dev = self.model.predict_classes(self.X_dev)
-        y_pred_rng = self.model.predict_classes(self.X_RNG)
+        y_pred = self.model.predict(self.X_train)
+        y_pred_test = self.model.predict(self.X_test)
+        y_pred_dev = self.model.predict(self.X_dev)
+        y_pred_rng = self.model.predict(self.X_RNG)
 
         accuracy_train = accuracy_score(self.Y_train,y_pred)
         accuracy_test = accuracy_score(self.Y_test,y_pred_test)
