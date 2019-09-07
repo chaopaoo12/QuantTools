@@ -159,7 +159,7 @@ class model():
         self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols].fillna(0),self.data.loc[self.TE_RNG]['star'].fillna(0)
 
     def build_model(self, max_depth = 3, subsample = 0.95, seed=1):
-        XGBClassifier(max_depth = max_depth, subsample= subsample,seed=seed)
+        self.model = XGBClassifier(max_depth = max_depth, subsample= subsample,seed=seed)
 
     def model_running(self):
         self.model.fit(self.X_train,self.Y_train,
