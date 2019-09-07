@@ -147,13 +147,13 @@ class model():
         self.info['test_rng'] = [test_start,test_end]
 
     def prepare_data(self, type = 'date', test_size = 0.2, dev_size = 0.2, random_state=0):
-        if self.dev_start is None and type == 'date':
+        if type == 'date':
             self.train_rng, self.test_rng = train_test_split_date(self.TR_RNG, test_size)
             self.test_rng, self.dev_rng = train_test_split_date(self.test_rng, dev_size)
             self.X_train, self.Y_train = self.data.loc[self.train_rng][self.cols].fillna(0),self.data.loc[self.train_rng]['star'].fillna(0)
             self.X_test, self.Y_test = self.data.loc[self.test_rng][self.cols].fillna(0),self.data.loc[self.test_rng]['star'].fillna(0)
             self.X_dev, self.Y_dev = self.data.loc[self.dev_rng][self.cols].fillna(0),self.data.loc[self.dev_rng]['star'].fillna(0)
-        elif self.dev_start is None and type == 'random':
+        elif type == 'random':
             self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols],self.data.loc[self.TR_RNG]['star'], test_size=test_size, random_state=random_state)
             self.X_test, self.X_dev, self.Y_test, self.Y_dev = train_test_split(self.X_test,self.Y_test, test_size=dev_size, random_state=random_state)
         self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols].fillna(0),self.data.loc[self.TE_RNG]['star'].fillna(0)
