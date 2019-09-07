@@ -185,7 +185,7 @@ class model():
         self.test_report = classification_report(self.Y_test,y_pred_test, output_dict=True)
         print(self.test_report)
 
-        print("accuracy_test:"+str(accuracy_dev)+"; precision_score On test:"+str(precision_score(self.Y_dev, y_pred_dev)))
+        print("accuracy_dev:"+str(accuracy_dev)+"; precision_score On test:"+str(precision_score(self.Y_dev, y_pred_dev)))
         self.dev_report = classification_report(self.Y_dev,y_pred_dev, output_dict=True)
         print(self.dev_report)
 
