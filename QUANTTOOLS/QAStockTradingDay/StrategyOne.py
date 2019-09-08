@@ -127,10 +127,8 @@ class model():
     def set_target(self, mark, type = 'value'):
         if type == 'value':
             self.data['star'] = self.data['TARGET'].apply(lambda x : 1 if x >= mark else 0)
-            self.data.loc[self.data['PASS_MARK'] >= 9.95,'star'] = 0
         elif type == 'percent':
             self.data['star'] = self.data['TARGET'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
-            #self.data.loc[self.data['PASS_MARK'] >= 9.95,'star'] = 0
         else:
             print("target type must be in ['value','percent']")
         self.cols = [i for i in self.data.columns if i not in ['moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
