@@ -87,22 +87,26 @@ def ETL_stock_day(codes, start=None,end=None):
         res = res.loc[pd.date_range(start, end, freq='D')].reset_index()
     return(res)
 
-def ETL_stock_day(codes, start=None,end=None):
+def ETL_stock_day(codes, start=None, end=None):
     if start is None:
-        data = QA_fetch_stock_day_adv(codes)
-        res1 = data.to_qfq().data
-        res1.columns = [x + '_qfq' for x in res1.columns]
-        data = data.data.join(res1).fillna(0).reset_index()
-        res = data.groupby('code').apply(pct).reset_index(level = 0,drop = True).reset_index().set_index(['date','code'])
-        res = res.where((pd.notnull(res)), None)
+        start = '2008-01-01'
+    elif end is None:
+        end = QA_util_today_str()
+
+    if start != end:
+        rng = pd.Series(pd.date_range(start, end, freq='D')).apply(lambda x: str(x)[0:10])
     else:
-        start_date = QA_util_get_pre_trade_date(start,100)
-        data = QA_fetch_stock_day_adv(codes,start_date,end)
-        res1 = data.to_qfq().data
-        res1.columns = [x + '_qfq' for x in res1.columns]
-        data = data.data.join(res1).fillna(0).reset_index()
-        res = data.groupby('code').apply(pct)
-        res = res.reset_index(level = 0,drop = True).reset_index().set_index(['date','code']).loc[pd.Series(pd.date_range(start, end, freq='D')).apply(lambda x: str(x)[0:10])]
+        rng = str(start)[0:10]
+
+    start_date = QA_util_get_pre_trade_date(start,100)
+    data = QA_fetch_stock_day_adv(codes,start_date,end)
+    res1 = data.to_qfq().data
+    res1.columns = [x + '_qfq' for x in res1.columns]
+    data = data.data.join(res1).fillna(0).reset_index()
+    res = data.groupby('code').apply(pct)
+    res = res.reset_index(level = 0,drop = True).reset_index().set_index(['date','code']).loc[rng]
+    res = res.where((pd.notnull(res)), None)
+
     return(res)
 
 def QA_etl_stock_list():
