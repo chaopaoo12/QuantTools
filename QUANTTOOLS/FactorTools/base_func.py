@@ -19,7 +19,7 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False):
         target = QA_fetch_stock_target(codes, start_date, end_date)
         res = res.join(target)
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
-    dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
-    dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
-    res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
+    #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
+    #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
+    #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
