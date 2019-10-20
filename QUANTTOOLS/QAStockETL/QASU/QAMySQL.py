@@ -90,7 +90,8 @@ def ETL_stock_day(codes, start=None,end=None):
 def ETL_stock_day(codes, start=None, end=None):
     if start is None:
         start = '2008-01-01'
-    elif end is None:
+
+    if end is None:
         end = QA_util_today_str()
 
     if start != end:
