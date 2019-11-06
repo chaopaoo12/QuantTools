@@ -632,8 +632,8 @@ def QA_fetch_stock_quant_data(code, start, end=None, format='pd', collections=DA
                 week_res.drop_duplicates(
                     (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])).join(
                 alpha_res.drop_duplicates(
-                    (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])).join(
-                block, on = 'code', lsuffix='_caller', rsuffix='_other')
+                    (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code']))
+            res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
                     res[columnname]=res[columnname].astype('float16')

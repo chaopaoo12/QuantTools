@@ -80,6 +80,14 @@ def train_test_split_date(x, test_size=0.3):
     x_test = x.iloc[split_row:]
     return x_train, x_test
 
+def train_test_split_date(x, test_size=0.3):
+    ind = np.arange(len(x))
+    np.random.shuffle(x)
+    split_row = len(x) - int(test_size * len(x))
+    x_train = x[ind[:split_row]]
+    x_test = x[ind[split_row:]]
+    return x_train, x_test
+
 def mkdir(path):
     # 引入模块
     import os
@@ -128,7 +136,7 @@ class model():
         if type == 'value':
             self.data['star'] = self.data['TARGET'].apply(lambda x : 1 if x >= mark else 0)
         elif type == 'percent':
-            self.data['star'] = self.data['TARGET'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
+            self.data['star'] = self.data['TARGET5'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
         else:
             print("target type must be in ['value','percent']")
         self.cols = [i for i in self.data.columns if i not in ['moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
@@ -144,20 +152,11 @@ class model():
         self.info['train_rng'] = [train_start,train_end]
         self.info['test_rng'] = [test_start,test_end]
 
-    def prepare_data(self, type = 'date', test_size = 0.2, dev_size = 0.2, random_state=0):
-        if type == 'date':
-            self.train_rng, self.test_rng = train_test_split_date(self.TR_RNG, test_size)
-            self.test_rng, self.dev_rng = train_test_split_date(self.test_rng, dev_size)
-            self.X_train, self.Y_train = self.data.loc[self.train_rng][self.cols].fillna(0),self.data.loc[self.train_rng]['star'].fillna(0)
-            self.X_test, self.Y_test = self.data.loc[self.test_rng][self.cols].fillna(0),self.data.loc[self.test_rng]['star'].fillna(0)
-            self.X_dev, self.Y_dev = self.data.loc[self.dev_rng][self.cols].fillna(0),self.data.loc[self.dev_rng]['star'].fillna(0)
-        elif type == 'random':
-            self.train_rng, self.test_rng = train_test_split(self.TR_RNG, test_size)
-            self.test_rng, self.dev_rng = train_test_split(self.test_rng, dev_size)
-            self.X_train, self.Y_train = self.data.loc[self.train_rng][self.cols].fillna(0),self.data.loc[self.train_rng]['star'].fillna(0)
-            self.X_test, self.Y_test = self.data.loc[self.test_rng][self.cols].fillna(0),self.data.loc[self.test_rng]['star'].fillna(0)
-            self.X_dev, self.Y_dev = self.data.loc[self.dev_rng][self.cols].fillna(0),self.data.loc[self.dev_rng]['star'].fillna(0)
-        self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols].fillna(0),self.data.loc[self.TE_RNG]['star'].fillna(0)
+    def prepare_data(self, test_size = 0.2, dev_size = 0.2, random_state=0):
+
+        self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'].fillna(0), test_size = test_size, random_state=random_state)
+        self.X_test, self.X_dev, self.Y_test, self.Y_dev = train_test_split(self.X_test,self.Y_test, test_size=dev_size, random_state=random_state)
+        #self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols].fillna(0),self.data.loc[self.TE_RNG]['star'].fillna(0)
 
     def build_model(self, max_depth = 3, subsample = 0.95, seed=1):
         self.model = XGBClassifier(max_depth = max_depth, subsample= subsample,seed=seed)
@@ -171,12 +170,12 @@ class model():
         y_pred = self.model.predict(self.X_train)
         y_pred_test = self.model.predict(self.X_test)
         y_pred_dev = self.model.predict(self.X_dev)
-        y_pred_rng = self.model.predict(self.X_RNG)
+        #y_pred_rng = self.model.predict(self.X_RNG)
 
         accuracy_train = accuracy_score(self.Y_train,y_pred)
         accuracy_test = accuracy_score(self.Y_test,y_pred_test)
         accuracy_dev = accuracy_score(self.Y_dev,y_pred_dev)
-        accuracy_rng = accuracy_score(self.Y_RNG,y_pred_rng)
+        #accuracy_rng = accuracy_score(self.Y_RNG,y_pred_rng)
 
         print("accuracy_train:"+str(accuracy_train)+"; precision_score On Train:"+str(precision_score(self.Y_train,y_pred)))
         self.train_report = classification_report(self.Y_train,y_pred, output_dict=True)
@@ -190,12 +189,12 @@ class model():
         self.dev_report = classification_report(self.Y_dev,y_pred_dev, output_dict=True)
         print(self.dev_report)
 
-        print("accuracy_rng:"+str(accuracy_rng)+"; precision_score On rng:"+str(precision_score(self.Y_RNG,y_pred_rng)))
-        self.rng_report = classification_report(self.Y_RNG,y_pred_rng, output_dict=True)
-        print(self.rng_report)
+        #print("accuracy_rng:"+str(accuracy_rng)+"; precision_score On rng:"+str(precision_score(self.Y_RNG,y_pred_rng)))
+        #self.rng_report = classification_report(self.Y_RNG,y_pred_rng, output_dict=True)
+        #print(self.rng_report)
         self.info['train_report'] = self.train_report
         self.info['test_report'] = self.test_report
-        self.info['rng_report'] = self.rng_report
+        #self.info['rng_report'] = self.rng_report
 
     def model_check(self):
         if self.info['test_report']['1']['precision'] <0.75:
@@ -220,17 +219,6 @@ class model():
             self.info['test_status']['precision'] = True
             self.info['test_status']['recall'] = True
 
-
-        if abs(self.info['test_report']['1']['precision'] - self.info['rng_report']['1']['precision']) > 0.1:
-            print("风险:测试集与校验集结果差异显著 精确率差异过大")
-            self.info['rng_status']['precision'] = False
-        elif abs(self.info['test_report']['1']['recall'] - self.info['rng_report']['1']['recall']) > 0.05:
-            print("风险:测试集与校验集结果差异显著 召回差异过大")
-            self.info['rng_status']['recall'] = False
-        else:
-            self.info['rng_status']['precision'] = True
-            self.info['rng_status']['recall'] = True
-
         if self.info['train_status']['precision'] == False or self.info['train_status']['recall'] == False:
             self.info['train_status']['status'] = False
         else:
@@ -241,10 +229,6 @@ class model():
         else:
             self.info['test_status']['status'] = True
 
-        if self.info['rng_status']['precision'] == False or self.info['rng_status']['recall'] == False:
-            self.info['rng_status']['status'] = False
-        else:
-            self.info['rng_status']['status'] = True
 
     def save_model(self, working_dir = 'D:\\model\\current'):
         if mkdir(working_dir):
@@ -280,8 +264,8 @@ def model_predict(model, start, end, cols):
     train.index = data.index
     print(n_cols)
     b = data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
-    b['y_pred'] = model.predict(train)
-    bina = pd.DataFrame(model.predict_proba(train))[[0,1]]
+    b['y_pred'] = model.predict(train[cols])
+    bina = pd.DataFrame(model.predict_proba(train[cols]))[[0,1]]
     bina.index = b.index
     b[['Z_PROB','O_PROB']] = bina
     b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
@@ -310,8 +294,8 @@ def check_model(model, start, end, cols,target, type = 'value'):
     train.index = data.index
     print(n_cols)
     b = data[['star','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
-    b['y_pred'] = model.predict(train)
-    bina = pd.DataFrame(model.predict_proba(train))[[0,1]]
+    b['y_pred'] = model.predict(train[cols])
+    bina = pd.DataFrame(model.predict_proba(train[cols]))[[0,1]]
     bina.index = b.index
     b[['Z_PROB','O_PROB']] = bina
     b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)

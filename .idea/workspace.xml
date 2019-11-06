@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d7afb2b0-0a9c-40a8-bb48-185a26027412" name="Default Changelist" comment="add">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/QUANTTOOLS/account_manage/base_func.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_func.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,40 +39,24 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py">
+        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-583">
-              <caret line="54" column="14" lean-forward="true" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/update_x.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="34" column="45" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
+            <state relative-caret-position="176">
+              <caret line="673" column="33" selection-start-line="673" selection-start-column="33" selection-end-line="673" selection-end-column="33" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py">
+        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="-2786">
+              <caret line="145" column="47" lean-forward="true" selection-start-line="145" selection-start-column="47" selection-end-line="145" selection-end-column="47" />
               <folding>
-                <element signature="e#0#32#0" expanded="true" />
+                <element signature="e#0#19#0" expanded="true" />
               </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/QAMySQL.py">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -84,16 +70,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>QA_util_process_stock_financial</find>
-      <find>timelist</find>
-      <find>benchmark</find>
-      <find>__data</find>
-      <find>QA_etl_process_financial_day</find>
-      <find>QA_util_today_str</find>
-      <find>QA_SU_save_stock_fianacial_momgo</find>
-      <find>QA_SU_save_stock_fianacial_percent_day</find>
-      <find>QA_SU_save_stock_quant_data_day</find>
-      <find>BOLL</find>
       <find>headl</find>
       <find>CDLMARUBOZU</find>
       <find>MIKE</find>
@@ -108,12 +84,22 @@
       <find>QA_fetch_financial_code</find>
       <find>list</find>
       <find>182</find>
-      <find>075</find>
       <find>QA_fetch_stock_block</find>
       <find>QA_util_code_tolist</find>
       <find>CDLHARAMI</find>
       <find>QA_fetch_get_stock_indicator</find>
       <find>QA_SU_save_stock_technical_index_day</find>
+      <find>precision</find>
+      <find>benchmark</find>
+      <find>075</find>
+      <find>QA_fetch_index_day_adv</find>
+      <find>dev</find>
+      <find>rng_status</find>
+      <find>train_test_split</find>
+      <find>train_rng</find>
+      <find>pct</find>
+      <find>yesterday</find>
+      <find>neutralization</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -132,6 +118,17 @@
       <list>
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/__init__.py" />
         <option value="$PROJECT_DIR$/config/update_x.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/base_func.py" />
+        <option value="$PROJECT_DIR$/config/update_c.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/message/email.py" />
+        <option value="$PROJECT_DIR$/config/daily_running.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/message_func/email.py" />
+        <option value="$PROJECT_DIR$/config/aotu_newstock.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/account_manage/base_func.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_func.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py" />
+        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/QAMySQL.py" />
         <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py" />
       </list>
     </option>
@@ -144,8 +141,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-2148" />
-    <option name="y" value="14" />
+    <option name="x" value="-1722" />
+    <option name="y" value="72" />
     <option name="width" value="1938" />
     <option name="height" value="1092" />
   </component>
@@ -158,6 +155,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -184,7 +182,32 @@
               <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
               <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
               <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
+              <item name="account_manage" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
+              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
+              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
+              <item name="FactorTools" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
+              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
+              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
+              <item name="message_func" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
+              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
+              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
               <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
+              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
+              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
+              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
+              <item name="FuncTools" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
@@ -213,11 +236,15 @@
               <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
               <item name="QAStockTradingDay" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
+              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
+              <item name="QUANTTOOLS.egg-info" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -897,301 +924,51 @@
       <workItem from="1566389535895" duration="17000" />
       <workItem from="1566389855447" duration="254000" />
       <workItem from="1566410099571" duration="3956000" />
-      <workItem from="1566438239069" duration="260000" />
-    </task>
-    <task id="LOCAL-00663" summary="add">
-      <created>1564644258846</created>
-      <option name="number" value="00663" />
-      <option name="presentableId" value="LOCAL-00663" />
-      <option name="project" value="LOCAL" />
-      <updated>1564644258846</updated>
-    </task>
-    <task id="LOCAL-00664" summary="add">
-      <created>1564672655633</created>
-      <option name="number" value="00664" />
-      <option name="presentableId" value="LOCAL-00664" />
-      <option name="project" value="LOCAL" />
-      <updated>1564672655634</updated>
-    </task>
-    <task id="LOCAL-00665" summary="add">
-      <created>1564693408158</created>
-      <option name="number" value="00665" />
-      <option name="presentableId" value="LOCAL-00665" />
-      <option name="project" value="LOCAL" />
-      <updated>1564693408159</updated>
-    </task>
-    <task id="LOCAL-00666" summary="add">
-      <created>1564804257804</created>
-      <option name="number" value="00666" />
-      <option name="presentableId" value="LOCAL-00666" />
-      <option name="project" value="LOCAL" />
-      <updated>1564804257806</updated>
-    </task>
-    <task id="LOCAL-00667" summary="add">
-      <created>1564826346485</created>
-      <option name="number" value="00667" />
-      <option name="presentableId" value="LOCAL-00667" />
-      <option name="project" value="LOCAL" />
-      <updated>1564826346486</updated>
-    </task>
-    <task id="LOCAL-00668" summary="add">
-      <created>1564879599670</created>
-      <option name="number" value="00668" />
-      <option name="presentableId" value="LOCAL-00668" />
-      <option name="project" value="LOCAL" />
-      <updated>1564879599670</updated>
-    </task>
-    <task id="LOCAL-00669" summary="add">
-      <created>1564881673428</created>
-      <option name="number" value="00669" />
-      <option name="presentableId" value="LOCAL-00669" />
-      <option name="project" value="LOCAL" />
-      <updated>1564881673428</updated>
-    </task>
-    <task id="LOCAL-00670" summary="add">
-      <created>1564882447387</created>
-      <option name="number" value="00670" />
-      <option name="presentableId" value="LOCAL-00670" />
-      <option name="project" value="LOCAL" />
-      <updated>1564882447388</updated>
-    </task>
-    <task id="LOCAL-00671" summary="add">
-      <created>1564882496073</created>
-      <option name="number" value="00671" />
-      <option name="presentableId" value="LOCAL-00671" />
-      <option name="project" value="LOCAL" />
-      <updated>1564882496073</updated>
-    </task>
-    <task id="LOCAL-00672" summary="add">
-      <created>1564885768031</created>
-      <option name="number" value="00672" />
-      <option name="presentableId" value="LOCAL-00672" />
-      <option name="project" value="LOCAL" />
-      <updated>1564885768032</updated>
-    </task>
-    <task id="LOCAL-00673" summary="add">
-      <created>1564886030896</created>
-      <option name="number" value="00673" />
-      <option name="presentableId" value="LOCAL-00673" />
-      <option name="project" value="LOCAL" />
-      <updated>1564886030896</updated>
-    </task>
-    <task id="LOCAL-00674" summary="add">
-      <created>1564886114759</created>
-      <option name="number" value="00674" />
-      <option name="presentableId" value="LOCAL-00674" />
-      <option name="project" value="LOCAL" />
-      <updated>1564886114759</updated>
-    </task>
-    <task id="LOCAL-00675" summary="add">
-      <created>1564886179752</created>
-      <option name="number" value="00675" />
-      <option name="presentableId" value="LOCAL-00675" />
-      <option name="project" value="LOCAL" />
-      <updated>1564886179752</updated>
-    </task>
-    <task id="LOCAL-00676" summary="add">
-      <created>1564897072701</created>
-      <option name="number" value="00676" />
-      <option name="presentableId" value="LOCAL-00676" />
-      <option name="project" value="LOCAL" />
-      <updated>1564897072703</updated>
-    </task>
-    <task id="LOCAL-00677" summary="add">
-      <created>1564898279995</created>
-      <option name="number" value="00677" />
-      <option name="presentableId" value="LOCAL-00677" />
-      <option name="project" value="LOCAL" />
-      <updated>1564898279995</updated>
-    </task>
-    <task id="LOCAL-00678" summary="add">
-      <created>1564898292290</created>
-      <option name="number" value="00678" />
-      <option name="presentableId" value="LOCAL-00678" />
-      <option name="project" value="LOCAL" />
-      <updated>1564898292290</updated>
-    </task>
-    <task id="LOCAL-00679" summary="add">
-      <created>1564898302899</created>
-      <option name="number" value="00679" />
-      <option name="presentableId" value="LOCAL-00679" />
-      <option name="project" value="LOCAL" />
-      <updated>1564898302899</updated>
-    </task>
-    <task id="LOCAL-00680" summary="add">
-      <created>1564898365975</created>
-      <option name="number" value="00680" />
-      <option name="presentableId" value="LOCAL-00680" />
-      <option name="project" value="LOCAL" />
-      <updated>1564898365975</updated>
-    </task>
-    <task id="LOCAL-00681" summary="add">
-      <created>1564898785562</created>
-      <option name="number" value="00681" />
-      <option name="presentableId" value="LOCAL-00681" />
-      <option name="project" value="LOCAL" />
-      <updated>1564898785562</updated>
-    </task>
-    <task id="LOCAL-00682" summary="add">
-      <created>1564898804344</created>
-      <option name="number" value="00682" />
-      <option name="presentableId" value="LOCAL-00682" />
-      <option name="project" value="LOCAL" />
-      <updated>1564898804344</updated>
-    </task>
-    <task id="LOCAL-00683" summary="add">
-      <created>1564898942450</created>
-      <option name="number" value="00683" />
-      <option name="presentableId" value="LOCAL-00683" />
-      <option name="project" value="LOCAL" />
-      <updated>1564898942450</updated>
-    </task>
-    <task id="LOCAL-00684" summary="add">
-      <created>1564973469618</created>
-      <option name="number" value="00684" />
-      <option name="presentableId" value="LOCAL-00684" />
-      <option name="project" value="LOCAL" />
-      <updated>1564973469618</updated>
-    </task>
-    <task id="LOCAL-00685" summary="add">
-      <created>1564981726526</created>
-      <option name="number" value="00685" />
-      <option name="presentableId" value="LOCAL-00685" />
-      <option name="project" value="LOCAL" />
-      <updated>1564981726527</updated>
-    </task>
-    <task id="LOCAL-00686" summary="add">
-      <created>1565105408624</created>
-      <option name="number" value="00686" />
-      <option name="presentableId" value="LOCAL-00686" />
-      <option name="project" value="LOCAL" />
-      <updated>1565105408624</updated>
-    </task>
-    <task id="LOCAL-00687" summary="add">
-      <created>1565111832023</created>
-      <option name="number" value="00687" />
-      <option name="presentableId" value="LOCAL-00687" />
-      <option name="project" value="LOCAL" />
-      <updated>1565111832024</updated>
-    </task>
-    <task id="LOCAL-00688" summary="add">
-      <created>1565115283769</created>
-      <option name="number" value="00688" />
-      <option name="presentableId" value="LOCAL-00688" />
-      <option name="project" value="LOCAL" />
-      <updated>1565115283769</updated>
-    </task>
-    <task id="LOCAL-00689" summary="add">
-      <created>1565238781234</created>
-      <option name="number" value="00689" />
-      <option name="presentableId" value="LOCAL-00689" />
-      <option name="project" value="LOCAL" />
-      <updated>1565238781235</updated>
-    </task>
-    <task id="LOCAL-00690" summary="add">
-      <created>1565240265244</created>
-      <option name="number" value="00690" />
-      <option name="presentableId" value="LOCAL-00690" />
-      <option name="project" value="LOCAL" />
-      <updated>1565240265244</updated>
-    </task>
-    <task id="LOCAL-00691" summary="add">
-      <created>1565250719983</created>
-      <option name="number" value="00691" />
-      <option name="presentableId" value="LOCAL-00691" />
-      <option name="project" value="LOCAL" />
-      <updated>1565250719984</updated>
-    </task>
-    <task id="LOCAL-00692" summary="add">
-      <created>1565264957877</created>
-      <option name="number" value="00692" />
-      <option name="presentableId" value="LOCAL-00692" />
-      <option name="project" value="LOCAL" />
-      <updated>1565264957877</updated>
-    </task>
-    <task id="LOCAL-00693" summary="add">
-      <created>1565265359240</created>
-      <option name="number" value="00693" />
-      <option name="presentableId" value="LOCAL-00693" />
-      <option name="project" value="LOCAL" />
-      <updated>1565265359240</updated>
-    </task>
-    <task id="LOCAL-00694" summary="add">
-      <created>1565266074414</created>
-      <option name="number" value="00694" />
-      <option name="presentableId" value="LOCAL-00694" />
-      <option name="project" value="LOCAL" />
-      <updated>1565266074415</updated>
-    </task>
-    <task id="LOCAL-00695" summary="add">
-      <created>1565266467176</created>
-      <option name="number" value="00695" />
-      <option name="presentableId" value="LOCAL-00695" />
-      <option name="project" value="LOCAL" />
-      <updated>1565266467176</updated>
-    </task>
-    <task id="LOCAL-00696" summary="add">
-      <created>1565270090541</created>
-      <option name="number" value="00696" />
-      <option name="presentableId" value="LOCAL-00696" />
-      <option name="project" value="LOCAL" />
-      <updated>1565270090542</updated>
-    </task>
-    <task id="LOCAL-00697" summary="add">
-      <created>1565270426018</created>
-      <option name="number" value="00697" />
-      <option name="presentableId" value="LOCAL-00697" />
-      <option name="project" value="LOCAL" />
-      <updated>1565270426018</updated>
-    </task>
-    <task id="LOCAL-00698" summary="add">
-      <created>1565273293943</created>
-      <option name="number" value="00698" />
-      <option name="presentableId" value="LOCAL-00698" />
-      <option name="project" value="LOCAL" />
-      <updated>1565273293943</updated>
-    </task>
-    <task id="LOCAL-00699" summary="add">
-      <created>1565273420238</created>
-      <option name="number" value="00699" />
-      <option name="presentableId" value="LOCAL-00699" />
-      <option name="project" value="LOCAL" />
-      <updated>1565273420238</updated>
-    </task>
-    <task id="LOCAL-00700" summary="add">
-      <created>1565278349368</created>
-      <option name="number" value="00700" />
-      <option name="presentableId" value="LOCAL-00700" />
-      <option name="project" value="LOCAL" />
-      <updated>1565278349368</updated>
-    </task>
-    <task id="LOCAL-00701" summary="add">
-      <created>1565749090065</created>
-      <option name="number" value="00701" />
-      <option name="presentableId" value="LOCAL-00701" />
-      <option name="project" value="LOCAL" />
-      <updated>1565749090065</updated>
-    </task>
-    <task id="LOCAL-00702" summary="add">
-      <created>1565764962380</created>
-      <option name="number" value="00702" />
-      <option name="presentableId" value="LOCAL-00702" />
-      <option name="project" value="LOCAL" />
-      <updated>1565764962381</updated>
-    </task>
-    <task id="LOCAL-00703" summary="add">
-      <created>1566310585039</created>
-      <option name="number" value="00703" />
-      <option name="presentableId" value="LOCAL-00703" />
-      <option name="project" value="LOCAL" />
-      <updated>1566310585042</updated>
-    </task>
-    <task id="LOCAL-00704" summary="add">
-      <created>1566327527191</created>
-      <option name="number" value="00704" />
-      <option name="presentableId" value="LOCAL-00704" />
-      <option name="project" value="LOCAL" />
-      <updated>1566327527191</updated>
+      <workItem from="1566438239069" duration="1295000" />
+      <workItem from="1566445718545" duration="354000" />
+      <workItem from="1566479145443" duration="297000" />
+      <workItem from="1566500562506" duration="1925000" />
+      <workItem from="1566612763813" duration="603000" />
+      <workItem from="1566614140968" duration="3193000" />
+      <workItem from="1566660827707" duration="5000" />
+      <workItem from="1566697658309" duration="709000" />
+      <workItem from="1566698470365" duration="11000" />
+      <workItem from="1566698838011" duration="625000" />
+      <workItem from="1566708876165" duration="78000" />
+      <workItem from="1566742101873" duration="601000" />
+      <workItem from="1566751727729" duration="2934000" />
+      <workItem from="1566790058000" duration="2523000" />
+      <workItem from="1566793079889" duration="183000" />
+      <workItem from="1566797228345" duration="11000" />
+      <workItem from="1566844290360" duration="1185000" />
+      <workItem from="1566879106009" duration="210000" />
+      <workItem from="1566890486421" duration="13000" />
+      <workItem from="1566896810625" duration="235000" />
+      <workItem from="1567009693871" duration="3398000" />
+      <workItem from="1567186348466" duration="311000" />
+      <workItem from="1567186817487" duration="95000" />
+      <workItem from="1567491634153" duration="390000" />
+      <workItem from="1567765013282" duration="3994000" />
+      <workItem from="1567780734441" duration="237000" />
+      <workItem from="1567815542809" duration="152000" />
+      <workItem from="1567826971693" duration="1215000" />
+      <workItem from="1567832092903" duration="1446000" />
+      <workItem from="1567848627024" duration="31000" />
+      <workItem from="1567867787807" duration="1202000" />
+      <workItem from="1567910586004" duration="299000" />
+      <workItem from="1567924972939" duration="348000" />
+      <workItem from="1567934222966" duration="2836000" />
+      <workItem from="1567944807779" duration="1327000" />
+      <workItem from="1567956573990" duration="1758000" />
+      <workItem from="1568174888111" duration="7145000" />
+      <workItem from="1568280011010" duration="2739000" />
+      <workItem from="1568777469253" duration="59000" />
+      <workItem from="1568780206957" duration="557000" />
+      <workItem from="1568781129082" duration="2000000" />
+      <workItem from="1569835692370" duration="409000" />
+      <workItem from="1570507216470" duration="2054000" />
+      <workItem from="1571603181640" duration="297000" />
+      <workItem from="1571613632336" duration="5476000" />
     </task>
     <task id="LOCAL-00705" summary="add">
       <created>1566348803592</created>
@@ -1242,11 +1019,305 @@
       <option name="project" value="LOCAL" />
       <updated>1566438341362</updated>
     </task>
-    <option name="localTasksCounter" value="712" />
+    <task id="LOCAL-00712" summary="add">
+      <created>1566438577241</created>
+      <option name="number" value="00712" />
+      <option name="presentableId" value="LOCAL-00712" />
+      <option name="project" value="LOCAL" />
+      <updated>1566438577241</updated>
+    </task>
+    <task id="LOCAL-00713" summary="add">
+      <created>1566446054157</created>
+      <option name="number" value="00713" />
+      <option name="presentableId" value="LOCAL-00713" />
+      <option name="project" value="LOCAL" />
+      <updated>1566446054158</updated>
+    </task>
+    <task id="LOCAL-00714" summary="add">
+      <created>1566479428148</created>
+      <option name="number" value="00714" />
+      <option name="presentableId" value="LOCAL-00714" />
+      <option name="project" value="LOCAL" />
+      <updated>1566479428149</updated>
+    </task>
+    <task id="LOCAL-00715" summary="add">
+      <created>1566525546599</created>
+      <option name="number" value="00715" />
+      <option name="presentableId" value="LOCAL-00715" />
+      <option name="project" value="LOCAL" />
+      <updated>1566525546599</updated>
+    </task>
+    <task id="LOCAL-00716" summary="add">
+      <created>1566614295775</created>
+      <option name="number" value="00716" />
+      <option name="presentableId" value="LOCAL-00716" />
+      <option name="project" value="LOCAL" />
+      <updated>1566614295776</updated>
+    </task>
+    <task id="LOCAL-00717" summary="add">
+      <created>1566615234949</created>
+      <option name="number" value="00717" />
+      <option name="presentableId" value="LOCAL-00717" />
+      <option name="project" value="LOCAL" />
+      <updated>1566615234949</updated>
+    </task>
+    <task id="LOCAL-00718" summary="add">
+      <created>1566616009350</created>
+      <option name="number" value="00718" />
+      <option name="presentableId" value="LOCAL-00718" />
+      <option name="project" value="LOCAL" />
+      <updated>1566616009350</updated>
+    </task>
+    <task id="LOCAL-00719" summary="add">
+      <created>1566617685571</created>
+      <option name="number" value="00719" />
+      <option name="presentableId" value="LOCAL-00719" />
+      <option name="project" value="LOCAL" />
+      <updated>1566617685571</updated>
+    </task>
+    <task id="LOCAL-00720" summary="add">
+      <created>1566697992543</created>
+      <option name="number" value="00720" />
+      <option name="presentableId" value="LOCAL-00720" />
+      <option name="project" value="LOCAL" />
+      <updated>1566697992543</updated>
+    </task>
+    <task id="LOCAL-00721" summary="add">
+      <created>1566698239792</created>
+      <option name="number" value="00721" />
+      <option name="presentableId" value="LOCAL-00721" />
+      <option name="project" value="LOCAL" />
+      <updated>1566698239792</updated>
+    </task>
+    <task id="LOCAL-00722" summary="add">
+      <created>1566752510158</created>
+      <option name="number" value="00722" />
+      <option name="presentableId" value="LOCAL-00722" />
+      <option name="project" value="LOCAL" />
+      <updated>1566752510158</updated>
+    </task>
+    <task id="LOCAL-00723" summary="add">
+      <created>1566752627627</created>
+      <option name="number" value="00723" />
+      <option name="presentableId" value="LOCAL-00723" />
+      <option name="project" value="LOCAL" />
+      <updated>1566752627627</updated>
+    </task>
+    <task id="LOCAL-00724" summary="add">
+      <created>1566755011828</created>
+      <option name="number" value="00724" />
+      <option name="presentableId" value="LOCAL-00724" />
+      <option name="project" value="LOCAL" />
+      <updated>1566755011828</updated>
+    </task>
+    <task id="LOCAL-00725" summary="add">
+      <created>1566791222626</created>
+      <option name="number" value="00725" />
+      <option name="presentableId" value="LOCAL-00725" />
+      <option name="project" value="LOCAL" />
+      <updated>1566791222626</updated>
+    </task>
+    <task id="LOCAL-00726" summary="add">
+      <created>1566791566612</created>
+      <option name="number" value="00726" />
+      <option name="presentableId" value="LOCAL-00726" />
+      <option name="project" value="LOCAL" />
+      <updated>1566791566612</updated>
+    </task>
+    <task id="LOCAL-00727" summary="add">
+      <created>1566792872584</created>
+      <option name="number" value="00727" />
+      <option name="presentableId" value="LOCAL-00727" />
+      <option name="project" value="LOCAL" />
+      <updated>1566792872584</updated>
+    </task>
+    <task id="LOCAL-00728" summary="add">
+      <created>1566793289382</created>
+      <option name="number" value="00728" />
+      <option name="presentableId" value="LOCAL-00728" />
+      <option name="project" value="LOCAL" />
+      <updated>1566793289383</updated>
+    </task>
+    <task id="LOCAL-00729" summary="add">
+      <created>1566844569013</created>
+      <option name="number" value="00729" />
+      <option name="presentableId" value="LOCAL-00729" />
+      <option name="project" value="LOCAL" />
+      <updated>1566844569014</updated>
+    </task>
+    <task id="LOCAL-00730" summary="add">
+      <created>1566879221432</created>
+      <option name="number" value="00730" />
+      <option name="presentableId" value="LOCAL-00730" />
+      <option name="project" value="LOCAL" />
+      <updated>1566879221432</updated>
+    </task>
+    <task id="LOCAL-00731" summary="add">
+      <created>1566879249515</created>
+      <option name="number" value="00731" />
+      <option name="presentableId" value="LOCAL-00731" />
+      <option name="project" value="LOCAL" />
+      <updated>1566879249515</updated>
+    </task>
+    <task id="LOCAL-00732" summary="add">
+      <created>1567186110235</created>
+      <option name="number" value="00732" />
+      <option name="presentableId" value="LOCAL-00732" />
+      <option name="project" value="LOCAL" />
+      <updated>1567186110236</updated>
+    </task>
+    <task id="LOCAL-00733" summary="add">
+      <created>1567186123175</created>
+      <option name="number" value="00733" />
+      <option name="presentableId" value="LOCAL-00733" />
+      <option name="project" value="LOCAL" />
+      <updated>1567186123175</updated>
+    </task>
+    <task id="LOCAL-00734" summary="add">
+      <created>1567186617264</created>
+      <option name="number" value="00734" />
+      <option name="presentableId" value="LOCAL-00734" />
+      <option name="project" value="LOCAL" />
+      <updated>1567186617265</updated>
+    </task>
+    <task id="LOCAL-00735" summary="add">
+      <created>1567186893390</created>
+      <option name="number" value="00735" />
+      <option name="presentableId" value="LOCAL-00735" />
+      <option name="project" value="LOCAL" />
+      <updated>1567186893391</updated>
+    </task>
+    <task id="LOCAL-00736" summary="add">
+      <created>1567491851745</created>
+      <option name="number" value="00736" />
+      <option name="presentableId" value="LOCAL-00736" />
+      <option name="project" value="LOCAL" />
+      <updated>1567491851746</updated>
+    </task>
+    <task id="LOCAL-00737" summary="add">
+      <created>1567780696309</created>
+      <option name="number" value="00737" />
+      <option name="presentableId" value="LOCAL-00737" />
+      <option name="project" value="LOCAL" />
+      <updated>1567780696310</updated>
+    </task>
+    <task id="LOCAL-00738" summary="add">
+      <created>1567780946717</created>
+      <option name="number" value="00738" />
+      <option name="presentableId" value="LOCAL-00738" />
+      <option name="project" value="LOCAL" />
+      <updated>1567780946718</updated>
+    </task>
+    <task id="LOCAL-00739" summary="add">
+      <created>1567815639905</created>
+      <option name="number" value="00739" />
+      <option name="presentableId" value="LOCAL-00739" />
+      <option name="project" value="LOCAL" />
+      <updated>1567815639906</updated>
+    </task>
+    <task id="LOCAL-00740" summary="add">
+      <created>1567827558562</created>
+      <option name="number" value="00740" />
+      <option name="presentableId" value="LOCAL-00740" />
+      <option name="project" value="LOCAL" />
+      <updated>1567827558563</updated>
+    </task>
+    <task id="LOCAL-00741" summary="add">
+      <created>1567838488103</created>
+      <option name="number" value="00741" />
+      <option name="presentableId" value="LOCAL-00741" />
+      <option name="project" value="LOCAL" />
+      <updated>1567838488106</updated>
+    </task>
+    <task id="LOCAL-00742" summary="add">
+      <created>1567838525510</created>
+      <option name="number" value="00742" />
+      <option name="presentableId" value="LOCAL-00742" />
+      <option name="project" value="LOCAL" />
+      <updated>1567838525510</updated>
+    </task>
+    <task id="LOCAL-00743" summary="add">
+      <created>1567848496464</created>
+      <option name="number" value="00743" />
+      <option name="presentableId" value="LOCAL-00743" />
+      <option name="project" value="LOCAL" />
+      <updated>1567848496464</updated>
+    </task>
+    <task id="LOCAL-00744" summary="add">
+      <created>1567891430043</created>
+      <option name="number" value="00744" />
+      <option name="presentableId" value="LOCAL-00744" />
+      <option name="project" value="LOCAL" />
+      <updated>1567891430043</updated>
+    </task>
+    <task id="LOCAL-00745" summary="add">
+      <created>1567910869954</created>
+      <option name="number" value="00745" />
+      <option name="presentableId" value="LOCAL-00745" />
+      <option name="project" value="LOCAL" />
+      <updated>1567910869955</updated>
+    </task>
+    <task id="LOCAL-00746" summary="add">
+      <created>1567935737681</created>
+      <option name="number" value="00746" />
+      <option name="presentableId" value="LOCAL-00746" />
+      <option name="project" value="LOCAL" />
+      <updated>1567935737683</updated>
+    </task>
+    <task id="LOCAL-00747" summary="add">
+      <created>1567951893415</created>
+      <option name="number" value="00747" />
+      <option name="presentableId" value="LOCAL-00747" />
+      <option name="project" value="LOCAL" />
+      <updated>1567951893415</updated>
+    </task>
+    <task id="LOCAL-00748" summary="add">
+      <created>1567953657566</created>
+      <option name="number" value="00748" />
+      <option name="presentableId" value="LOCAL-00748" />
+      <option name="project" value="LOCAL" />
+      <updated>1567953657566</updated>
+    </task>
+    <task id="LOCAL-00749" summary="add">
+      <created>1567962710093</created>
+      <option name="number" value="00749" />
+      <option name="presentableId" value="LOCAL-00749" />
+      <option name="project" value="LOCAL" />
+      <updated>1567962710094</updated>
+    </task>
+    <task id="LOCAL-00750" summary="add">
+      <created>1568179652100</created>
+      <option name="number" value="00750" />
+      <option name="presentableId" value="LOCAL-00750" />
+      <option name="project" value="LOCAL" />
+      <updated>1568179652101</updated>
+    </task>
+    <task id="LOCAL-00751" summary="add">
+      <created>1568179660829</created>
+      <option name="number" value="00751" />
+      <option name="presentableId" value="LOCAL-00751" />
+      <option name="project" value="LOCAL" />
+      <updated>1568179660829</updated>
+    </task>
+    <task id="LOCAL-00752" summary="add">
+      <created>1568188174559</created>
+      <option name="number" value="00752" />
+      <option name="presentableId" value="LOCAL-00752" />
+      <option name="project" value="LOCAL" />
+      <updated>1568188174559</updated>
+    </task>
+    <task id="LOCAL-00753" summary="add">
+      <created>1571603413505</created>
+      <option name="number" value="00753" />
+      <option name="presentableId" value="LOCAL-00753" />
+      <option name="project" value="LOCAL" />
+      <updated>1571603413505</updated>
+    </task>
+    <option name="localTasksCounter" value="754" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22030000" />
+    <option name="totallyTimeSpent" value="78535000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1259,8 +1330,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1929" y="-9" width="1938" height="1098" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Learn" order="3" />
@@ -1274,9 +1346,10 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3290461" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.3290461" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.3290461" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.3290461" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -1290,6 +1363,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -1347,34 +1430,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#2#728#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/QAMySQL.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-583">
-          <caret line="54" column="14" lean-forward="true" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAAlpha.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
+        <state relative-caret-position="253">
           <caret line="12" column="34" selection-start-line="12" selection-start-column="34" selection-end-line="12" selection-end-column="34" />
           <folding>
             <element signature="e#0#46#0" expanded="true" />
@@ -1382,18 +1443,177 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/update_x.py">
+    <entry file="file://$PROJECT_DIR$/config/aotu_newstock.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="34" column="45" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
+        <state relative-caret-position="345">
+          <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/message_func/email.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="137" column="14" selection-start-line="137" selection-start-column="4" selection-end-line="137" selection-end-column="14" />
+          <folding>
+            <element signature="e#14#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/account_manage/base_func.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="2" column="23" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_func.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="17" column="76" selection-start-line="17" selection-start-column="76" selection-end-line="17" selection-end-column="76" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QADate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="483">
+          <caret line="22" column="7" selection-start-line="22" selection-start-column="7" selection-end-line="22" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="1380">
+          <caret line="69" column="20" selection-start-line="69" selection-start-column="20" selection-end-line="69" selection-end-column="20" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/update_x.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="429">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/database_settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuantFactor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="59" column="52" selection-start-line="59" selection-start-column="52" selection-end-line="59" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/base_func.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="521">
+          <caret line="69" column="14" selection-start-line="69" selection-start-column="14" selection-end-line="69" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/daily_running.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="3" column="83" selection-start-line="3" selection-start-column="67" selection-end-line="3" selection-end-column="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/update_a.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-560" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/update_ab.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-399" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/update_ac.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="52" column="29" lean-forward="true" selection-start-line="52" selection-start-column="29" selection-end-line="52" selection-end-column="29" />
+          <folding>
+            <element signature="e#1190#1732#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="87" column="57" lean-forward="true" selection-start-line="87" selection-start-column="57" selection-end-line="87" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/update_c.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="62" column="20" lean-forward="true" selection-start-line="62" selection-start-column="20" selection-end-line="62" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="880" column="31" selection-start-line="880" selection-start-column="31" selection-end-line="880" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/QAMySQL.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="193" lean-forward="true" selection-start-line="193" selection-end-line="193" />
+          <folding>
+            <element signature="e#2#170#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="673" column="33" selection-start-line="673" selection-start-column="33" selection-end-line="673" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2786">
+          <caret line="145" column="47" lean-forward="true" selection-start-line="145" selection-start-column="47" selection-end-line="145" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
