@@ -134,7 +134,7 @@ class model():
 
     def set_target(self, mark, type = 'value'):
         if type == 'value':
-            self.data['star'] = self.data['TARGET'].apply(lambda x : 1 if x >= mark else 0)
+            self.data['star'] = self.data['TARGET5'].apply(lambda x : 1 if x >= mark else 0)
         elif type == 'percent':
             self.data['star'] = self.data['TARGET5'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
         else:
@@ -156,7 +156,7 @@ class model():
 
         self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'].fillna(0), test_size = test_size, random_state=random_state)
         self.X_test, self.X_dev, self.Y_test, self.Y_dev = train_test_split(self.X_test,self.Y_test, test_size=dev_size, random_state=random_state)
-        #self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols].fillna(0),self.data.loc[self.TE_RNG]['star'].fillna(0)
+        self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols].fillna(0),self.data.loc[self.TE_RNG]['star'].fillna(0)
 
     def build_model(self, max_depth = 3, subsample = 0.95, seed=1):
         self.model = XGBClassifier(max_depth = max_depth, subsample= subsample,seed=seed)
@@ -170,12 +170,12 @@ class model():
         y_pred = self.model.predict(self.X_train)
         y_pred_test = self.model.predict(self.X_test)
         y_pred_dev = self.model.predict(self.X_dev)
-        #y_pred_rng = self.model.predict(self.X_RNG)
+        y_pred_rng = self.model.predict(self.X_RNG)
 
         accuracy_train = accuracy_score(self.Y_train,y_pred)
         accuracy_test = accuracy_score(self.Y_test,y_pred_test)
         accuracy_dev = accuracy_score(self.Y_dev,y_pred_dev)
-        #accuracy_rng = accuracy_score(self.Y_RNG,y_pred_rng)
+        accuracy_rng = accuracy_score(self.Y_RNG,y_pred_rng)
 
         print("accuracy_train:"+str(accuracy_train)+"; precision_score On Train:"+str(precision_score(self.Y_train,y_pred)))
         self.train_report = classification_report(self.Y_train,y_pred, output_dict=True)
@@ -189,12 +189,12 @@ class model():
         self.dev_report = classification_report(self.Y_dev,y_pred_dev, output_dict=True)
         print(self.dev_report)
 
-        #print("accuracy_rng:"+str(accuracy_rng)+"; precision_score On rng:"+str(precision_score(self.Y_RNG,y_pred_rng)))
-        #self.rng_report = classification_report(self.Y_RNG,y_pred_rng, output_dict=True)
-        #print(self.rng_report)
+        print("accuracy_rng:"+str(accuracy_rng)+"; precision_score On rng:"+str(precision_score(self.Y_RNG,y_pred_rng)))
+        self.rng_report = classification_report(self.Y_RNG,y_pred_rng, output_dict=True)
+        print(self.rng_report)
         self.info['train_report'] = self.train_report
         self.info['test_report'] = self.test_report
-        #self.info['rng_report'] = self.rng_report
+        self.info['rng_report'] = self.rng_report
 
     def model_check(self):
         if self.info['test_report']['1']['precision'] <0.75:
@@ -275,9 +275,9 @@ def check_model(model, start, end, cols,target, type = 'value'):
     data = get_quant_data(start, end, type='crawl',block = True)
     data = data[data['DAYSO']>= 90][data['next_date'] == data['PRE_DATE']]
     if type == 'value':
-        data['star'] = data['TARGET'].apply(lambda x :1 if x >= target else 0)
+        data['star'] = data['TARGET5'].apply(lambda x :1 if x >= target else 0)
     elif type == 'percent':
-        data['star'] = data['TARGET'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= target else 0)
+        data['star'] = data['TARGET5'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= target else 0)
     cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
                                                    'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3',
                                                    'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
