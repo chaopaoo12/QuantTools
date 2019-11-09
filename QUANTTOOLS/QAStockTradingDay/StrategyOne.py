@@ -264,8 +264,8 @@ def model_predict(model, start, end, cols):
     train.index = data.index
     print(n_cols)
     b = data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
-    b['y_pred'] = model.predict(train[cols])
-    bina = pd.DataFrame(model.predict_proba(train[cols]))[[0,1]]
+    b['y_pred'] = model.predict(train[cols].fillna(0))
+    bina = pd.DataFrame(model.predict_proba(train[cols].fillna(0)))[[0,1]]
     bina.index = b.index
     b[['Z_PROB','O_PROB']] = bina
     b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
