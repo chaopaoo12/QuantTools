@@ -99,7 +99,7 @@ def build_head():
 
 def build_table(data, title, sub_tile = None):
     pd.set_option('display.max_colwidth', -1)
-    df_html = data.to_html(escape=False)
+    df_html = data.to_html(index=False,escape=False)
     body = \
         """
         <body>
