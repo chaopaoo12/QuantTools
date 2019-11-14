@@ -44,6 +44,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_SU_save_stock_fianacial_momgo,QA_SU_save_fianacialTTM_momgo,
                                    QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_month_day)
 from  QUANTAXIS.QAUtil import QA_util_today_str
+from QUANTTOOLS.QAStockTradingDay.daily_job import job111
 mark_day = QA_util_today_str()
 print("download day data ")
 QA_SU_save_stock_xdxr('tdx')
@@ -82,7 +83,7 @@ QA_SU_save_stock_technical_week_day(START_DATE=mark_day, END_DATE = mark_day)
 QA_SU_save_stock_quant_data_day(start_date = mark_day, end_date = mark_day)
 print("done")
 QA_SU_save_stock_technical_month_day(START_DATE = mark_day, END_DATE = mark_day)
-
+job111(mark_day)
 print("download index & etf data ")
 QA_SU_save_etf_day('tdx')
 print("done")
