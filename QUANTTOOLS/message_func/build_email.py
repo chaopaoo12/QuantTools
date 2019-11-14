@@ -128,7 +128,7 @@ def build_table(data, title, sub_tile = None):
             </p>
         </div>
         </body>
-        """.format(title=title,sub_tile=sub_tile,df_html=data)
+        """.format(title=title,sub_tile=sub_tile,df_html=df_html)
     return(body)
 
 
