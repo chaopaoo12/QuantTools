@@ -7,6 +7,6 @@ def job111(date):
     if datetime.strptime(date, "%Y-%m-%d").weekday() == 5:
         train(date, working_dir=working_dir)
     elif datetime.strptime(date, "%Y-%m-%d").weekday() < 5:
-        predict(date, account1='name:client-1', working_dir=working_dir)
+        predict(date)
     else:
         pass
