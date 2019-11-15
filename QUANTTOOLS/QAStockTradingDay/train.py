@@ -1,7 +1,7 @@
 #coding=utf-8
 
 from QUANTTOOLS.QAStockTradingDay.setting import working_dir, yun_ip, yun_port, easytrade_password
-import QUANTTOOLS.QAStockTradingDay.StrategyOne.model as model1
+from QUANTTOOLS.QAStockTradingDay.StrategyOne import model
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 import pandas as pd
 from datetime import datetime,timedelta
@@ -11,7 +11,7 @@ delta3 = timedelta(days=7)
 delta4 = timedelta(days=8)
 
 def train(date, working_dir=working_dir):
-    model = model1()
+    model = model()
     model.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
     model.set_target(mark =0.42, type = 'percent')
     model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
