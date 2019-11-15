@@ -11,18 +11,18 @@ delta3 = timedelta(days=7)
 delta4 = timedelta(days=8)
 
 def train(date, working_dir=working_dir):
-    model = model()
-    model.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
-    model.set_target(mark =0.42, type = 'percent')
-    model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
+    model1 = model()
+    model1.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
+    model1.set_target(mark =0.42, type = 'percent')
+    model1.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
                         train_end=(datetime.strptime(date, "%Y-%m-%d")-delta4).strftime('%Y-%m-%d'),
                         test_start=(datetime.strptime(date, "%Y-%m-%d")-delta3).strftime('%Y-%m-%d'),
                         test_end=date)
-    model.prepare_data()
-    model.build_model()
-    model.model_running()
-    model.model_check()
-    model.save_model(working_dir = working_dir)
+    model1.prepare_data()
+    model1.build_model()
+    model1.model_running()
+    model1.model_check()
+    model1.save_model(working_dir = working_dir)
 
     msg1 = '模型训练日期:{model_date}'.format(model.info['date'])
     body1 = build_table(pd.DataFrame(model.info['train_report']), '训练集情况')
