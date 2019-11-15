@@ -14,4 +14,4 @@ def send_actionnotice(strategy_id,
                       price=None,
                       user = QAPRO_ID,
                       now = str(datetime.datetime.now)):
-    requests.post("http://www.yutiansut.com/signal?user_id={}&template=xiadan_report&strategy_id={}&realaccount={}&code={}&order_direction={}&order_offset={}&price={}&volume={}&order_time={}".format(user = user, strategy_id = strategy_id, account = account, code = code, direction= direction, offset= offset, price = price, volume = volume, now =now))
+    requests.post("http://www.yutiansut.com/signal?user_id={user}&template=xiadan_report&strategy_id={strategy_id}&realaccount={account}&code={code}&order_direction={direction}&order_offset={offset}&price={price}&volume={volume}&order_time={now}".format(user = user, strategy_id = strategy_id, account = account, code = code, direction= direction, offset= offset, price = price, volume = volume, now =now))
