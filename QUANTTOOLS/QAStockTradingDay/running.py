@@ -48,7 +48,7 @@ def predict(date, account1='name:client-1', working_dir=working_dir):
     ##当前持仓
     positions = client.get_positions(account1)['positions'][['证券代码','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)','当前持仓']]
 
-    msg1 = '模型训练日期:{model_date}'.format(model.info['date'])
+    msg1 = '模型训练日期:{model_date}'.format(info_temp['date'])
     body1 = build_table(table1, '近段时间内模型盈利报告')
     body2 = build_table(res, '目标持仓')
     body3 = build_table(positions, '目前持仓')
