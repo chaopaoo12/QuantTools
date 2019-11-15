@@ -24,9 +24,9 @@ def train(date, working_dir=working_dir):
     model1.model_check()
     model1.save_model(working_dir = working_dir)
 
-    msg1 = '模型训练日期:{model_date}'.format(model.info['date'])
-    body1 = build_table(pd.DataFrame(model.info['train_report']), '训练集情况')
-    body2 = build_table(pd.DataFrame(model.info['test_report']), '测试集情况')
+    msg1 = '模型训练日期:{model_date}'.format(model1.info['date'])
+    body1 = build_table(pd.DataFrame(model1.info['train_report']), '训练集情况')
+    body2 = build_table(pd.DataFrame(model1.info['test_report']), '测试集情况')
     #body3 = build_table(positions, '目前持仓')
 
     msg = build_email(build_head(),msg1,body1,body2)
