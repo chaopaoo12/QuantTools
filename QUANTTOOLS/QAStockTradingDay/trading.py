@@ -16,7 +16,7 @@ delta3 = timedelta(days=7)
 delta4 = timedelta(days=8)
 
 
-def predict(date,strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir):
+def trading(date,strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir):
     try:
         logging.basicConfig(level=logging.DEBUG)
         client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
