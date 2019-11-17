@@ -4,8 +4,8 @@ from QUANTTOOLS.message_func.email import send_email
 
 logging.basicConfig(level=logging.DEBUG)
 client = strategyease_sdk.Client(host='132.232.89.97', port=8888, key='123456')
-
 account1='name:client-1'
+
 try:
     account_info = client.get_account(account1)
     print(account_info)
