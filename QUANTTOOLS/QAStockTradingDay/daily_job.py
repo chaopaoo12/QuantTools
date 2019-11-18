@@ -15,4 +15,4 @@ def job111(date):
 
 
 def trading(date):
-    trading(QA_util_get_last_day(date))
+    trading(date)
