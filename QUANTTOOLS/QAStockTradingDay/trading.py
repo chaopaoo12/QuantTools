@@ -1,4 +1,4 @@
-import QUANTAXIS as QA
+from QUANTAXIS.QAFetch import QA_fetch_get_stock_realtime
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockTradingDay.StrategyOne import load_model, model_predict
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
@@ -26,7 +26,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
 
     tar = model_predict(model_temp, str(date[0:7])+"-01",date,info_temp['cols'])
     res = pd.concat([tar[tar['RANK'] <= 5].loc[date][['Z_PROB','O_PROB','RANK']],
-                     QA.QAFetch.QA_fetch_get_stock_realtime('tdx',code=list(tar[tar['RANK'] <= 5].loc[date].index)).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']],
+                     QA_fetch_get_stock_realtime('tdx',code=list(tar[tar['RANK'] <= 5].loc[date].index)).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']],
                      QA_fetch_stock_fianacial_adv(list(tar[tar['RANK'] <= 5].loc[date].index),date,date).data.reset_index('date')[['NAME','INDUSTRY']]],
                     axis=1)
     print('计算资金分配')
