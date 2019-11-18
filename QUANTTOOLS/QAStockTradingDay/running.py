@@ -36,16 +36,16 @@ def predict(date, account1='name:client-1', working_dir=working_dir):
                      QA_fetch_stock_day_adv(list(tar[tar['RANK'] <= 5].loc[date].index),date,date).data.loc[date].reset_index('date')['close'],
                      QA_fetch_stock_fianacial_adv(list(tar[tar['RANK'] <= 5].loc[date].index),date,date).data.reset_index('date')[['NAME','INDUSTRY']]],
                     axis=1)
-    #计算资金分配
+    print('计算资金分配')
     avg_account = sub_accounts['可用金额']/tar[tar['RANK'] <= 5].loc[date].shape[0]
     res = res.assign(tar=avg_account[0])
     res['cnt'] = (res['tar']/res['close']/100).apply(lambda x:round(x,0)*100)
     res['real'] = res['cnt'] * res['close']
 
-    ##近日盈利情况
+    print('近日盈利情况')
     table1 = tar[tar['RANK']<=5].groupby('date').mean()
 
-    ##当前持仓
+    print('当前持仓')
     positions = client.get_positions(account1)['positions'][['证券代码','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)','当前持仓']]
 
     msg1 = '模型训练日期:{model_date}'.format(model_date=info_temp['date'])
