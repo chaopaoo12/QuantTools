@@ -1,19 +1,12 @@
 import QUANTAXIS as QA
 from QUANTTOOLS.message_func.wechat import send_actionnotice
-from QUANTTOOLS.QAStockTradingDay.StrategyOne import model, load_model, model_predict, check_model
+from QUANTTOOLS.QAStockTradingDay.StrategyOne import load_model, model_predict
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
 import pandas as pd
 import logging
 import strategyease_sdk
-from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
+from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.QAStockTradingDay.setting import working_dir, yun_ip, yun_port, easytrade_password
-
-from datetime import datetime,timedelta
-delta = timedelta(days=6)
-delta1 = timedelta(days=1)
-delta3 = timedelta(days=7)
-delta4 = timedelta(days=8)
-
 
 def trading(date, strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir):
     try:
