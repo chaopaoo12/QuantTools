@@ -7,6 +7,7 @@ import logging
 import strategyease_sdk
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 from QUANTTOOLS.QAStockTradingDay.setting import working_dir, yun_ip, yun_port, easytrade_password
+
 from datetime import datetime,timedelta
 delta = timedelta(days=6)
 delta1 = timedelta(days=1)
@@ -55,7 +56,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
                                                                                         target=res.loc[i]['cnt'],
                                                                                         tar=res.loc[i]['real']))
             try:
-                client.sell(account1, symbol=i, type='MARKET', priceType=4, amount=abs(mark)/100)
+                client.sell(account1, symbol=i, type='MARKET', priceType=4, amount=abs(mark))
                 send_actionnotice(strategy_id,
                                   account_info,
                                   '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= res.loc[i]['NAME'], INDUSTRY=res.loc[i]['INDUSTRY']),
@@ -80,7 +81,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
                                                                                         target=res.loc[i]['cnt'],
                                                                                         tar=res.loc[i]['real']))
             try:
-                client.buy(account1, symbol=i, type='MARKET', priceType=4, amount=abs(mark)/100)
+                client.buy(account1, symbol=i, type='MARKET', priceType=4, amount=abs(mark))
                 send_actionnotice(strategy_id,
                                   account_info,
                                   '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= res.loc[i]['NAME'], INDUSTRY=res.loc[i]['INDUSTRY']),
