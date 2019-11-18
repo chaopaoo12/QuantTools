@@ -55,7 +55,7 @@ def predict(date, account1='name:client-1', working_dir=working_dir):
 
     msg = build_email(build_head(),msg1,body1,body2,body3)
 
-    send_email('交易报告', msg, 'date')
+    send_email('交易报告:'+ date, msg, 'date')
 
 
 
