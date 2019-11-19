@@ -21,6 +21,13 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
         sub_accounts = client.get_positions(account1)['sub_accounts']
     except:
         send_email('错误报告', '云服务器错误,请检查', 'date')
+        send_actionnotice(strategy_id,
+                          '错误报告:{}'.format(date),
+                          '云服务器错误,请检查',
+                          direction = 'HOLD',
+                          offset='HOLD',
+                          volume=None
+                          )
 
     try:
         QA_util_log_info(
@@ -28,6 +35,13 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
         model_temp,info_temp = load_model(working_dir = working_dir)
     except:
         send_email('错误报告', '无法正确加载模型,请检查', 'date')
+        send_actionnotice(strategy_id,
+                          '错误报告:{}'.format(date),
+                          '无法正确加载模型,请检查',
+                          direction = 'HOLD',
+                          offset='HOLD',
+                          volume=None
+                          )
 
     QA_util_log_info(
         '##JOB03 Now Model Predict ==== {}'.format(str(date)), ui_log)

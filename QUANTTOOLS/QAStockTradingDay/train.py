@@ -5,13 +5,14 @@ from QUANTTOOLS.QAStockTradingDay.StrategyOne import model
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 import pandas as pd
 from QUANTAXIS.QAUtil import (QA_util_log_info)
+from QUANTTOOLS.message_func.wechat import send_actionnotice
 from datetime import datetime,timedelta
 delta = timedelta(days=6)
 delta1 = timedelta(days=1)
 delta3 = timedelta(days=7)
 delta4 = timedelta(days=8)
 
-def train(date, working_dir=working_dir, ui_log = None):
+def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log = None):
     QA_util_log_info(
         '##JOB01 Now Model Init ==== {}'.format(str(date)), ui_log)
     model1 = model()
@@ -47,3 +48,10 @@ def train(date, working_dir=working_dir, ui_log = None):
     msg = build_email(build_head(),msg1,body1,body2)
 
     send_email('交易报告', msg, 'date')
+    send_actionnotice(strategy_id,
+                      '报告:{}'.format(date),
+                      '模型训练完成,请查收结果',
+                      direction = 'HOLD',
+                      offset='HOLD',
+                      volume=None
+                      )
