@@ -13,7 +13,13 @@ try:
     print(account_info)
 except:
     send_email('错误报告', '云服务器错误,请检查', 'date')
-
+    send_actionnotice('自动打新',
+                      '错误报告:{}'.format(mark_day),
+                      '云服务器错误,请检查',
+                      direction = 'HOLD',
+                      offset='HOLD',
+                      volume=None
+                      )
 #to_do
 #自动打新
 try:
