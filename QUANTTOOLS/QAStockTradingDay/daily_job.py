@@ -8,7 +8,7 @@ def job111(date):
     if datetime.strptime(date, "%Y-%m-%d").weekday() == 5:
         train(date, working_dir=working_dir)
     elif datetime.strptime(date, "%Y-%m-%d").weekday() < 5:
-        date = QA_util_get_last_day(date)
+        #date = QA_util_get_last_day(date)
         predict(date)
     else:
         pass
