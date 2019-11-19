@@ -58,7 +58,7 @@ def predict(date, strategy_id='机器学习1号', account1='name:client-1', work
 
     QA_util_log_info(
         '##JOB04 Now Funding Decision ==== {}'.format(str(date)), ui_log)
-    avg_account = sub_accounts['可用金额']/tar[tar['RANK'] <= 5].loc[date].shape[0]
+    avg_account = sub_accounts['总 资 产']/tar[tar['RANK'] <= 5].loc[date].shape[0]
     res = res.assign(tar=avg_account[0])
     res['cnt'] = (res['tar']/res['close']/100).apply(lambda x:round(x,0)*100)
     res['real'] = res['cnt'] * res['close']
