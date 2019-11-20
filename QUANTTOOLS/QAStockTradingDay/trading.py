@@ -86,6 +86,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
             INDUSTRY = None
 
         mark = cnt - float(positions[positions['证券代码'] == i]['当前持仓'].get(0,default=0))
+        print(mark)
         if mark <= -100:
             #卖出mark i
             print('卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
