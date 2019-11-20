@@ -166,5 +166,6 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
                               offset='OPEN',
                               volume=abs(mark)
                               )
+    return(res)
 
 
