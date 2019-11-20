@@ -79,9 +79,9 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
         '##JOB06 Now Trading ==== {}'.format(str(date)), ui_log)
 
     for i in res[res['mark'] < 0].index:
-        cnt = float(res.get_value(i, 'cnt'))
-        tar = float(res.get_value(i, 'real'))
-        NAME = res.get_value(i, 'NAME')
+        cnt = float(res.at[i, 'cnt'])
+        tar = float(res.at[i, 'real'])
+        NAME = res.at[i, 'NAME']
         INDUSTRY = res.get_value(i, 'INDUSTRY')
         mark = abs(float(res.get_value(i, 'mark')))
 
