@@ -50,7 +50,7 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
 
     QA_util_log_info(
         '##JOB04 Now Current Holding ==== {}'.format(str(date)), ui_log)
-    positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)','当前持仓']]
+    positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
 
     r1 = pd.concat([tar[tar['RANK'] <= 5].loc[date][['Z_PROB','O_PROB','RANK']],
                     positions.set_index('证券代码')],axis=1)
