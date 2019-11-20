@@ -72,7 +72,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
         '##JOB06 Now Trading ==== {}'.format(str(date)), ui_log)
     for i in list(positions['证券代码']) + list(res.index):
         try:
-            cnt = float(res.get_value(i,'cnt',default=int(0)))
+            cnt = float(res.get_value(i,'cnt'))
         except KeyError:
             cnt = 0
 
