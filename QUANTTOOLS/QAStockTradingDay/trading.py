@@ -66,7 +66,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
 
     QA_util_log_info(
         '##JOB05 Now Current Holding ==== {}'.format(str(date)), ui_log)
-    positions = client.get_positions(account1)['positions'][['证券代码','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)','当前持仓']]
+    positions = client.get_positions(account1)['positions'][['证券代码',"证券名称",'股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)','当前持仓']]
 
     QA_util_log_info(
         '##JOB06 Now Trading ==== {}'.format(str(date)), ui_log)
@@ -76,23 +76,29 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
     for i in list(positions['证券代码']) + list(res.index):
         try:
             cnt = float(res.get_value(i,'cnt'))
+            tar = float(res.get_value(i,'real'))
+            NAME = float(res.get_value(i,'NAME'))
+            INDUSTRY = float(res.get_value(i,'INDUSTRY'))
         except KeyError:
             cnt = 0
+            tar = 0
+            NAME = positions[positions['证券代码'] == i]['证券名称'].get(0)
+            INDUSTRY = None
 
-        mark = cnt - float(positions[positions['证券代码'] == i]['当前持仓'].get(int(0),default=int(0)))
+        mark = cnt - float(positions[positions['证券代码'] == i]['当前持仓'].get(0,default=0))
         if mark < -100:
             #卖出mark i
             print('卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
-                                                                                        NAME= res.loc[i]['NAME'],
-                                                                                        INDUSTRY=res.loc[i]['INDUSTRY'],
+                                                                                        NAME= NAME,
+                                                                                        INDUSTRY= INDUSTRY,
                                                                                         cnt=abs(mark),
-                                                                                        target=res.loc[i]['cnt'],
-                                                                                        tar=res.loc[i]['real']))
+                                                                                        target=cnt,
+                                                                                        tar=tar))
             try:
                 client.sell(account1, symbol=i, type='MARKET', priceType=4, amount=abs(mark))
                 send_actionnotice(strategy_id,
                                   account_info,
-                                  '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= res.loc[i]['NAME'], INDUSTRY=res.loc[i]['INDUSTRY']),
+                                  '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= NAME, INDUSTRY=INDUSTRY),
                                   direction = 'SELL',
                                   offset='OPEN',
                                   volume=abs(mark)
@@ -100,7 +106,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
             except:
                 send_actionnotice(strategy_id,
                                   account_info,
-                                  '{code}({NAME},{INDUSTRY}) 交易失败'.format(code=i,NAME= res.loc[i]['NAME'], INDUSTRY=res.loc[i]['INDUSTRY']),
+                                  '{code}({NAME},{INDUSTRY}) 交易失败'.format(code=i,NAME= NAME, INDUSTRY=INDUSTRY),
                                   direction = 'SELL',
                                   offset='OPEN',
                                   volume=abs(mark)
@@ -108,16 +114,16 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
 
         elif mark > 100:
             print('买入 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
-                                                                                        NAME= res.loc[i]['NAME'],
-                                                                                        INDUSTRY=res.loc[i]['INDUSTRY'],
+                                                                                        NAME= NAME,
+                                                                                        INDUSTRY=INDUSTRY,
                                                                                         cnt=abs(mark),
-                                                                                        target=res.loc[i]['cnt'],
-                                                                                        tar=res.loc[i]['real']))
+                                                                                        target=cnt,
+                                                                                        tar=tar))
             try:
                 client.buy(account1, symbol=i, type='MARKET', priceType=4, amount=abs(mark))
                 send_actionnotice(strategy_id,
                                   account_info,
-                                  '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= res.loc[i]['NAME'], INDUSTRY=res.loc[i]['INDUSTRY']),
+                                  '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= NAME, INDUSTRY=INDUSTRY),
                                   direction = 'BUY',
                                   offset='OPEN',
                                   volume=abs(mark)
@@ -125,20 +131,20 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
             except:
                 send_actionnotice(strategy_id,
                                   account_info,
-                                  '{code}({NAME},{INDUSTRY}) 交易失败'.format(code=i,NAME= res.loc[i]['NAME'], INDUSTRY=res.loc[i]['INDUSTRY']),
+                                  '{code}({NAME},{INDUSTRY}) 交易失败'.format(code=i,NAME= NAME, INDUSTRY=INDUSTRY),
                                   direction = 'BUY',
                                   offset='OPEN',
                                   volume=abs(mark)
                                   )
         elif mark >= -100 and mark <= 100:
             print('继续持有 {code}({NAME},{INDUSTRY}), 目标持仓:{target},总金额:{tar}'.format(code=i,
-                                                                                   NAME= res.loc[i]['NAME'],
-                                                                                   INDUSTRY=res.loc[i]['INDUSTRY'],
-                                                                                   target=res.loc[i]['cnt'],
-                                                                                   tar=res.loc[i]['real']))
+                                                                                   NAME= NAME,
+                                                                                   INDUSTRY=INDUSTRY,
+                                                                                   target=cnt,
+                                                                                   tar=tar))
             send_actionnotice(strategy_id,
                               account_info,
-                              '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= res.loc[i]['NAME'], INDUSTRY=res.loc[i]['INDUSTRY']),
+                              '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= NAME, INDUSTRY=INDUSTRY),
                               direction = 'HOLD',
                               offset='HOLD',
                               volume=abs(mark)
