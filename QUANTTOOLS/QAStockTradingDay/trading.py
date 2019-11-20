@@ -61,7 +61,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
     res['cnt'] = (res['tar']/res['ask1']/100).apply(lambda x:round(x,0)*100)
     res['real'] = res['cnt'] * res['ask1']
     res = res.sort_values(by='ask1',ascending=False)
-    res['cnt'][-1] = round((res['real'][-1]-(res['real'].sum()-res['tar'].sum()))/res['ask1'][-1]/100,0)*100
+    res.ix[-1,'cnt'] = round((res['real'][-1]-(res['real'].sum()-res['tar'].sum()))/res['ask1'][-1]/100,0)*100
     res['real'] = res['cnt'] * res['ask1']
 
     QA_util_log_info(
