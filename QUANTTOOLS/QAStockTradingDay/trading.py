@@ -71,7 +71,8 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
     QA_util_log_info(
         '##JOB06 Now Trading ==== {}'.format(str(date)), ui_log)
     for i in list(positions['证券代码']) + list(res.index):
-        mark = float(res.loc[i]['cnt']) - float(positions[positions['证券代码'] == i]['当前持仓'].get(int(0),default=int(0)))
+
+        mark = float(res.get_value(i,'cnt',default=int(0))) - float(positions[positions['证券代码'] == i]['当前持仓'].get(int(0),default=int(0)))
         if mark < -100:
             #卖出mark i
             print('卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
