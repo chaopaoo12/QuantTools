@@ -82,7 +82,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
         except KeyError:
             cnt = 0
             tar = 0
-            NAME = positions[positions['证券代码'] == i]['证券名称'].get(0)
+            NAME = positions[positions['证券代码'] == i]['证券名称']
             INDUSTRY = None
 
         try:
