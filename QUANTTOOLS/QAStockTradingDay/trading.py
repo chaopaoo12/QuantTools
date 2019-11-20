@@ -54,7 +54,7 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
 
     r1 = pd.concat([tar[tar['RANK'] <= 5].loc[date][['Z_PROB','O_PROB','RANK']],
                     positions.set_index('证券代码')],axis=1)
-    r1['当前持仓'] = r1['当前持仓'].fillna(0)
+    r1['可用余额'] = r1['可用余额'].fillna(0)
 
     QA_util_log_info(
         '##JOB05 Now Concat Result ==== {}'.format(str(date)), ui_log)
