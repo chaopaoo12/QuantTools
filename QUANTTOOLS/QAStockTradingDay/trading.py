@@ -8,6 +8,7 @@ import strategyease_sdk
 from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.QAStockTradingDay.setting import working_dir, yun_ip, yun_port, easytrade_password
 from QUANTAXIS.QAUtil import QA_util_log_info
+import time
 
 def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', working_dir= working_dir, ui_log= None):
     try:
@@ -108,6 +109,8 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
                               volume=abs(mark)
                               )
 
+    time.sleep(10)
+
     for i in res[res['mark'] == 0].index:
         cnt = float(res.get_value(i, 'cnt'))
         tar = float(res.get_value(i, 'real'))
@@ -126,6 +129,8 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
                           offset='HOLD',
                           volume=abs(mark)
                           )
+
+    time.sleep(10)
 
     for i in res[res['mark'] > 0].index:
         cnt = float(res.get_value(i, 'cnt'))
