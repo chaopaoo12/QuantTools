@@ -17,6 +17,7 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
         logging.basicConfig(level=logging.DEBUG)
         client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
         account1=account1
+        client.cancel_all(account1)
         account_info = client.get_account(account1)
         print(account_info)
         sub_accounts = client.get_positions(account1)['sub_accounts']
