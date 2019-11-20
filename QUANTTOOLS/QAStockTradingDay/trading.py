@@ -66,7 +66,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
 
     QA_util_log_info(
         '##JOB05 Now Current Holding ==== {}'.format(str(date)), ui_log)
-    positions = client.get_positions(account1)['positions'][['证券代码',"证券名称",'股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)','当前持仓']]
+    positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)','当前持仓']]
 
     QA_util_log_info(
         '##JOB06 Now Trading ==== {}'.format(str(date)), ui_log)
@@ -86,7 +86,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
             INDUSTRY = None
 
         mark = cnt - float(positions[positions['证券代码'] == i]['当前持仓'].get(0,default=0))
-        if mark < -100:
+        if mark <= -100:
             #卖出mark i
             print('卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
                                                                                         NAME= NAME,
@@ -112,7 +112,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
                                   volume=abs(mark)
                                   )
 
-        elif mark > 100:
+        elif mark >= 100:
             print('买入 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
                                                                                         NAME= NAME,
                                                                                         INDUSTRY=INDUSTRY,
@@ -136,7 +136,7 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
                                   offset='OPEN',
                                   volume=abs(mark)
                                   )
-        elif mark >= -100 and mark <= 100:
+        elif abs(mark) < 100:
             print('继续持有 {code}({NAME},{INDUSTRY}), 目标持仓:{target},总金额:{tar}'.format(code=i,
                                                                                    NAME= NAME,
                                                                                    INDUSTRY=INDUSTRY,
