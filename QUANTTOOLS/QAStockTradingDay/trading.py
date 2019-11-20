@@ -77,8 +77,8 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
         try:
             cnt = float(res.get_value(i,'cnt'))
             tar = float(res.get_value(i,'real'))
-            NAME = float(res.get_value(i,'NAME'))
-            INDUSTRY = float(res.get_value(i,'INDUSTRY'))
+            NAME = res.get_value(i,'NAME')
+            INDUSTRY = res.get_value(i,'INDUSTRY')
         except KeyError:
             cnt = 0
             tar = 0
