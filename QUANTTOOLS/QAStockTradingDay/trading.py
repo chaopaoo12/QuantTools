@@ -73,7 +73,7 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
     res = res.sort_values(by='ask1', ascending= False)
     res.ix[-1, 'cnt'] = round((res['real'][-1]-(res['real'].sum()-res['tar'].sum()))/res['ask1'][-1]/100, 0)*100
     res['real'] = res['cnt'] * res['ask1']
-    res['mark'] = res['cnt'] - res['当前持仓'].apply(lambda x:float(x))
+    res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
 
     QA_util_log_info(
         '##JOB06 Now Trading ==== {}'.format(str(date)), ui_log)
