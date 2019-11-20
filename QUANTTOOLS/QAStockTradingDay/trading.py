@@ -70,6 +70,9 @@ def trading(date, strategy_id='机器学习1号', account1='name:client-1', work
 
     QA_util_log_info(
         '##JOB06 Now Trading ==== {}'.format(str(date)), ui_log)
+    print(res)
+
+    print(positions)
     for i in list(positions['证券代码']) + list(res.index):
         try:
             cnt = float(res.get_value(i,'cnt'))
