@@ -82,8 +82,8 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
         cnt = float(res.at[i, 'cnt'])
         tar = float(res.at[i, 'real'])
         NAME = res.at[i, 'NAME']
-        INDUSTRY = res.get_value(i, 'INDUSTRY')
-        mark = abs(float(res.get_value(i, 'mark')))
+        INDUSTRY = res.at[i, 'INDUSTRY']
+        mark = abs(float(res.at[i, 'mark']))
 
         print('卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
                                                                                     NAME= NAME,
