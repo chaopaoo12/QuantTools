@@ -9,6 +9,7 @@ from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.QAStockTradingDay.setting import working_dir, yun_ip, yun_port, easytrade_password
 from QUANTAXIS.QAUtil import QA_util_log_info
 import time
+from QUANTTOOLS.account_manage.trading_message import send_trading_message
 
 def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', working_dir= working_dir, ui_log= None):
     try:
@@ -96,23 +97,9 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
                                                                                     cnt=abs(mark),
                                                                                     target=cnt,
                                                                                     tar=tar))
-        try:
-            client.sell(account1, symbol=i, type='MARKET', priceType=4, amount=abs(mark))
-            send_actionnotice(strategy_id,
-                              account_info,
-                              '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= NAME, INDUSTRY=INDUSTRY),
-                              direction = 'SELL',
-                              offset='OPEN',
-                              volume=abs(mark)
-                              )
-        except:
-            send_actionnotice(strategy_id,
-                              account_info,
-                              '{code}({NAME},{INDUSTRY}) 交易失败'.format(code=i,NAME= NAME, INDUSTRY=INDUSTRY),
-                              direction = 'SELL',
-                              offset='OPEN',
-                              volume=abs(mark)
-                              )
+        e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='MARKET', priceType=4, client=client)
+        while len(e) > 0:
+            e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='MARKET', priceType=4, client=client)
 
     time.sleep(10)
 
@@ -149,23 +136,9 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
                                                                                     cnt=abs(mark),
                                                                                     target=cnt,
                                                                                     tar=tar))
-        try:
-            client.buy(account1, symbol=i, type='MARKET', priceType=4, amount=abs(mark))
-            send_actionnotice(strategy_id,
-                              account_info,
-                              '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= NAME, INDUSTRY=INDUSTRY),
-                              direction = 'BUY',
-                              offset='OPEN',
-                              volume=abs(mark)
-                              )
-        except:
-            send_actionnotice(strategy_id,
-                              account_info,
-                              '{code}({NAME},{INDUSTRY}) 交易失败'.format(code=i,NAME= NAME, INDUSTRY=INDUSTRY),
-                              direction = 'BUY',
-                              offset='OPEN',
-                              volume=abs(mark)
-                              )
+        e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='MARKET', priceType=4, client=client)
+        while len(e) > 0:
+            e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='MARKET', priceType=4, client=client)
     return(res)
 
 
