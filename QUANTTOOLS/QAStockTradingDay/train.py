@@ -36,16 +36,16 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     model1.model_check()
     QA_util_log_info(
         '##JOB06 Now Save Model ==== {}'.format(str(date)), ui_log)
+    important = model1.model_important()
     model1.save_model(working_dir = working_dir)
-
     QA_util_log_info(
         '##JOB06 Now Model Trainning Report ==== {}'.format(str(date)), ui_log)
     msg1 = '模型训练日期:{model_date}'.format(model_date=model1.info['date'])
     body1 = build_table(pd.DataFrame(model1.info['train_report']), '训练集情况')
     body2 = build_table(pd.DataFrame(model1.info['test_report']), '测试集情况')
-    #body3 = build_table(positions, '目前持仓')
+    body3 = build_table(important.head(50), '特征重要性')
 
-    msg = build_email(build_head(),msg1,body1,body2)
+    msg = build_email(build_head(),msg1,body1,body2,body3)
 
     send_email('交易报告', msg, 'date')
     send_actionnotice(strategy_id,

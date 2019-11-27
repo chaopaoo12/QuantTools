@@ -135,6 +135,10 @@ class model():
                 print("dump fail")
                 return(False)
 
+    def model_important(self):
+        importance = pd.DataFrame({'featur' :list(self.X_train.columns),'value':list(self.model.feature_importances_)}).sort_values(by='value',ascending=False)
+        return(importance)
+
 def load_model(working_dir= 'D:\\model\\current'):
     model = joblib.load(working_dir+"\\current.joblib.dat")
     info = joblib.load(working_dir+"\\current_info.joblib.dat")
