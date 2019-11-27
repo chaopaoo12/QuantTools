@@ -586,7 +586,7 @@ def QA_fetch_stock_financial_percent(code, start, end=None, format='pd', collect
             'QA Error QA_fetch_stock_financial_percent data parameter start=%s end=%s is not right' % (start, end))
 
 @time_this_function
-def QA_fetch_stock_quant_data(code, start, end=None, format='pd', collections=DATABASE.stock_quant_data):
+def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', collections=DATABASE.stock_quant_data):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
@@ -595,9 +595,10 @@ def QA_fetch_stock_quant_data(code, start, end=None, format='pd', collections=DA
     index = DATABASE.stock_quant_data_index
     week = DATABASE.stock_quant_data_week
     alpha = DATABASE.stock_quant_data_alpha
-    block = QA.QA_fetch_stock_block(code).reset_index(drop=True).drop_duplicates(['blockname','code'])
-    block = pd.crosstab(block['code'],block['blockname'])
-    block.columns = ['S_' + i for i  in  list(block.columns)]
+    if block:
+        block = QA.QA_fetch_stock_block(code).reset_index(drop=True).drop_duplicates(['blockname','code'])
+        block = pd.crosstab(block['code'],block['blockname'])
+        block.columns = ['S_' + i for i  in  list(block.columns)]
     if QA_util_date_valid(end):
 
         __data = []
@@ -633,7 +634,8 @@ def QA_fetch_stock_quant_data(code, start, end=None, format='pd', collections=DA
                     (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])).join(
                 alpha_res.drop_duplicates(
                     (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code']))
-            res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
+            if block:
+                res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
                     res[columnname]=res[columnname].astype('float16')
