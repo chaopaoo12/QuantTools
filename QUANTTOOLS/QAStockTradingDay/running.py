@@ -47,7 +47,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
 
     QA_util_log_info(
         '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
-    data, train, tar = model_predict(model_temp, str(trading_date[0:7])+"-01",trading_date,info_temp['cols'])
+    tar = model_predict(model_temp, str(trading_date[0:7])+"-01",trading_date,info_temp['cols'])
 
     QA_util_log_info(
         '##JOB03 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)
