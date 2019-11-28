@@ -167,7 +167,7 @@ def model_predict(model, start, end, cols, type='crawl', block = True, sub_block
     bina.index = b.index
     b[['Z_PROB','O_PROB']] = bina
     b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
-    return(b[b['y_pred']==1])
+    return(data, train, b[b['y_pred']==1])
 
 def check_model(model, start, end, cols, target, type = 'value',block=True, sub_block=True):
     data = get_quant_data(start, end, type=type,block = block, sub_block=sub_block)
