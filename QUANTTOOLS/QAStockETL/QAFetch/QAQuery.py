@@ -595,7 +595,7 @@ def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', c
     index = DATABASE.stock_quant_data_index
     week = DATABASE.stock_quant_data_week
     alpha = DATABASE.stock_quant_data_alpha
-    if block:
+    if block is True:
         block = QA.QA_fetch_stock_block(code).reset_index(drop=True).drop_duplicates(['blockname','code'])
         block = pd.crosstab(block['code'],block['blockname'])
         block.columns = ['S_' + i for i  in  list(block.columns)]
@@ -634,8 +634,9 @@ def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', c
                     (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])).join(
                 alpha_res.drop_duplicates(
                     (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code']))
-            if block:
+            if block is True:
                 res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
+
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
                     res[columnname]=res[columnname].astype('float16')
@@ -694,8 +695,8 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
             res[columnname]=res[columnname].astype('int8')
     return(res)
 
-def QA_fetch_stock_quant_pre(code, start, end=None, format='pd'):
-    res = QA_fetch_stock_quant_data(code, start, end)
+def QA_fetch_stock_quant_pre(code, start, end=None, block = True, format='pd'):
+    res = QA_fetch_stock_quant_data(code, start, end, block)
     target = QA_fetch_stock_target(code, start, end)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
