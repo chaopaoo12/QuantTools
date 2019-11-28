@@ -599,6 +599,7 @@ def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', c
         block = QA.QA_fetch_stock_block(code).reset_index(drop=True).drop_duplicates(['blockname','code'])
         block = pd.crosstab(block['code'],block['blockname'])
         block.columns = ['S_' + i for i  in  list(block.columns)]
+
     if QA_util_date_valid(end):
 
         __data = []
@@ -634,8 +635,6 @@ def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', c
                     (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])).join(
                 alpha_res.drop_duplicates(
                     (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code']))
-            if block is True:
-                res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
@@ -650,6 +649,10 @@ def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', c
                     res[columnname]=res[columnname].astype('int8')
         except:
             res = None
+
+        if block is True and res is not None:
+            res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
+
         if format in ['P', 'p', 'pandas', 'pd']:
             return res
         elif format in ['json', 'dict']:
