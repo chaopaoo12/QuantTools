@@ -51,10 +51,11 @@ def predict(date, strategy_id='机器学习1号', account1='name:client-1', work
 
     QA_util_log_info(
         '##JOB03 Now Concat Result ==== {}'.format(str(date)), ui_log)
-    tar1 = tar[tar['RANK'] <= 5].loc[date][['Z_PROB','O_PROB','RANK']]
-    close = QA_fetch_stock_day_adv(list(tar[tar['RANK'] <= 5].loc[date].index),date,date).data.loc[date].reset_index('date')['close']
-    info = QA_fetch_stock_fianacial_adv(list(tar[tar['RANK'] <= 5].loc[date].index),date,date).data.reset_index('date')[['NAME','INDUSTRY']]
-    res = pd.concat([tar1,close,info],axis=1)
+    tar1 = tar[tar['RANK'] <= 5].loc[[date]]
+    tar2 = tar1[['Z_PROB','O_PROB','RANK']]
+    close = QA_fetch_stock_day_adv(list(tar1.index),date,date).data.loc[date].reset_index('date')['close']
+    info = QA_fetch_stock_fianacial_adv(list(tar1.index),date,date).data.reset_index('date')[['NAME','INDUSTRY']]
+    res = pd.concat([tar2,close,info],axis=1)
 
     QA_util_log_info(
         '##JOB04 Now Funding Decision ==== {}'.format(str(date)), ui_log)
