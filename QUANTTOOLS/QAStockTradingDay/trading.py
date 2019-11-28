@@ -11,10 +11,10 @@ from QUANTAXIS.QAUtil import QA_util_log_info
 import time
 from QUANTTOOLS.account_manage.trading_message import send_trading_message
 
-def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', working_dir= working_dir, ui_log= None):
+def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:client-1', working_dir= working_dir, ui_log= None):
     try:
         QA_util_log_info(
-            '##JOB01 Now Got Account Info ==== {}'.format(str(date)), ui_log)
+            '##JOB01 Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
         logging.basicConfig(level=logging.DEBUG)
         client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
         account1=account1
@@ -23,9 +23,9 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
         print(account_info)
         sub_accounts = client.get_positions(account1)['sub_accounts']
     except:
-        send_email('错误报告', '云服务器错误,请检查', 'date')
+        send_email('错误报告', '云服务器错误,请检查', trading_date)
         send_actionnotice(strategy_id,
-                          '错误报告:{}'.format(date),
+                          '错误报告:{}'.format(trading_date),
                           '云服务器错误,请检查',
                           direction = 'HOLD',
                           offset='HOLD',
@@ -34,12 +34,12 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
 
     try:
         QA_util_log_info(
-            '##JOB02 Now Load Model ==== {}'.format(str(date)), ui_log)
+            '##JOB02 Now Load Model ==== {}'.format(str(trading_date)), ui_log)
         model_temp,info_temp = load_model(working_dir = working_dir)
     except:
-        send_email('错误报告', '无法正确加载模型,请检查', 'date')
+        send_email('错误报告', '无法正确加载模型,请检查', trading_date)
         send_actionnotice(strategy_id,
-                          '错误报告:{}'.format(date),
+                          '错误报告:{}'.format(trading_date),
                           '无法正确加载模型,请检查',
                           direction = 'HOLD',
                           offset='HOLD',
@@ -47,27 +47,27 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
                           )
 
     QA_util_log_info(
-        '##JOB03 Now Model Predict ==== {}'.format(str(date)), ui_log)
-    tar = model_predict(model_temp, str(date[0:7])+"-01",date,info_temp['cols'])
+        '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
+    tar = model_predict(model_temp, str(trading_date[0:7])+"-01",trading_date,info_temp['cols'])
 
     QA_util_log_info(
-        '##JOB04 Now Current Holding ==== {}'.format(str(date)), ui_log)
+        '##JOB04 Now Current Holding ==== {}'.format(str(trading_date)), ui_log)
     positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
 
-    r1 = pd.concat([tar[tar['RANK'] <= 5].loc[date][['Z_PROB','O_PROB','RANK']],
+    r1 = pd.concat([tar[tar['RANK'] <= 5].loc[trading_date][['Z_PROB','O_PROB','RANK']],
                     positions.set_index('证券代码')],axis=1)
     r1['可用余额'] = r1['可用余额'].fillna(0)
 
     QA_util_log_info(
-        '##JOB05 Now Concat Result ==== {}'.format(str(date)), ui_log)
+        '##JOB05 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)
     res = pd.concat([r1,
                      QA_fetch_get_stock_realtime('tdx', code=list(r1.index)).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']],
-                     QA_fetch_stock_fianacial_adv(list(r1.index), date, date).data.reset_index('date')[['NAME','INDUSTRY']]],
+                     QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]],
                     axis=1)
 
     QA_util_log_info(
-        '##JOB06 Now Funding Decision ==== {}'.format(str(date)), ui_log)
-    avg_account = sub_accounts['总 资 产']/tar[tar['RANK'] <= 5].loc[date].shape[0]
+        '##JOB06 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
+    avg_account = sub_accounts['总 资 产']/tar[tar['RANK'] <= 5].loc[trading_date].shape[0]
     res = res.assign(tar=avg_account[0])
     res.ix[res['RANK'].isnull(),'tar'] = 0
     res['cnt'] = (res['tar']/res['ask1']/100).apply(lambda x: round(x, 0)*100)
@@ -82,7 +82,7 @@ def trading(date, strategy_id= '机器学习1号', account1= 'name:client-1', wo
     res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
 
     QA_util_log_info(
-        '##JOB06 Now Trading ==== {}'.format(str(date)), ui_log)
+        '##JOB06 Now Trading ==== {}'.format(str(trading_date)), ui_log)
 
     for i in res[res['mark'] < 0].index:
         cnt = float(res.at[i, 'cnt'])
