@@ -595,10 +595,6 @@ def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', c
     index = DATABASE.stock_quant_data_index
     week = DATABASE.stock_quant_data_week
     alpha = DATABASE.stock_quant_data_alpha
-    if block is True:
-        block = QA.QA_fetch_stock_block(code).reset_index(drop=True).drop_duplicates(['blockname','code'])
-        block = pd.crosstab(block['code'],block['blockname'])
-        block.columns = ['S_' + i for i  in  list(block.columns)]
 
     if QA_util_date_valid(end):
 
@@ -647,11 +643,16 @@ def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', c
                     res[columnname]=res[columnname].astype('int8')
                 if res[columnname].dtype == 'int16':
                     res[columnname]=res[columnname].astype('int8')
+
+            if block is True:
+                block = QA.QA_fetch_stock_block(code).reset_index(drop=True).drop_duplicates(['blockname','code'])
+                block = pd.crosstab(block['code'],block['blockname'])
+                block.columns = ['S_' + i for i  in  list(block.columns)]
+                res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
+            else:
+                print('a')
         except:
             res = None
-
-        if block is True and res is not None:
-            res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
 
         if format in ['P', 'p', 'pandas', 'pd']:
             return res
