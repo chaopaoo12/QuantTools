@@ -169,8 +169,8 @@ def model_predict(model, start, end, cols, type='crawl', block = True, sub_block
     b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
     return(b[b['y_pred']==1])
 
-def check_model(model, start, end, cols,target, type = 'value'):
-    data = get_quant_data(start, end, type='crawl',block = True)
+def check_model(model, start, end, cols, target, type = 'value',block=True, sub_block=True):
+    data = get_quant_data(start, end, type=type,block = block, sub_block=sub_block)
     data = data[data['DAYSO']>= 90][data['next_date'] == data['PRE_DATE']]
     if type == 'value':
         data['star'] = data['TARGET5'].apply(lambda x :1 if x >= target else 0)
