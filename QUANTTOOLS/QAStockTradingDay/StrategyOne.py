@@ -52,8 +52,8 @@ class model():
         self.X_test, self.X_dev, self.Y_test, self.Y_dev = train_test_split(self.X_test,self.Y_test, test_size=dev_size, random_state=random_state)
         self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols].fillna(0),self.data.loc[self.TE_RNG]['star'].fillna(0)
 
-    def build_model(self, max_depth = 3, subsample = 0.95, seed=1):
-        self.model = XGBClassifier(max_depth = max_depth, subsample= subsample,seed=seed)
+    def build_model(self, n_estimators=100, max_depth = 3, subsample = 0.95, seed=1):
+        self.model = XGBClassifier(n_estimators = n_estimators, max_depth = max_depth, subsample= subsample,seed=seed)
 
     def model_running(self):
         self.model.fit(self.X_train,self.Y_train,
