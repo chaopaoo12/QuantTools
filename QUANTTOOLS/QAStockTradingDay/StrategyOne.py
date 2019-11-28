@@ -21,8 +21,8 @@ class model():
         self.info['test_status']=dict()
         self.info['rng_status']=dict()
 
-    def get_data(self, start, end, type ='crawl', block=True):
-        self.data = get_quant_data(start, end, type = type, block=block)
+    def get_data(self, start, end, type ='crawl', block=True, sub_block=True):
+        self.data = get_quant_data(start, end, type = type, block=block, sub_block= sub_block)
         self.data = self.data[self.data['DAYSO']>= 90][self.data['next_date'] == self.data['PRE_DATE']]
         print(self.data.shape)
 
