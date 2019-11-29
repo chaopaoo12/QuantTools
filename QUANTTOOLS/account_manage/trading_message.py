@@ -26,4 +26,4 @@ def send_trading_message(account1, strategy_id, account_info, code, NAME, INDUST
                           )
         print(e)
         codes.append(code)
-    return(e)
+    return(codes)
