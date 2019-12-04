@@ -24,7 +24,7 @@ except:
 #自动打新
 try:
     client.purchase_new_stocks(account1)
-    send_email('错误报告', '打新成功', 'date')
+    send_email('每日打新', '打新成功', 'date')
     send_actionnotice('自动打新',
                       '报告:{}'.format(mark_day),
                       '自动打新完成,请查收结果',
