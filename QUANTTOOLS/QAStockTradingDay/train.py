@@ -47,7 +47,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
 
     msg = build_email(build_head(),msg1,body1,body2,body3)
 
-    send_email('交易报告', msg, 'date')
+    send_email('模型训练报告', msg, 'date')
     send_actionnotice(strategy_id,
                       '报告:{}'.format(date),
                       '模型训练完成,请查收结果',
