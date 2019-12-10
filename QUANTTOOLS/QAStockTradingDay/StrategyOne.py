@@ -200,4 +200,4 @@ def check_model(model, start, end, cols, target, type = 'value',block=True, sub_
     report = classification_report(b['star'],b['y_pred'], output_dict=True)
     c = b[b['RANK']<=5]
     top_report = classification_report(c['star'],c['y_pred'], output_dict=True)
-    return(report,top_report)
+    return(c, report,top_report)
