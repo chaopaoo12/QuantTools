@@ -1117,10 +1117,16 @@ SELECT A.CODE,
         '''
     conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
     cursor = conn.cursor()
-    cursor.execute('''drop table stock_financial_TTM''')
+    try:
+        cursor.execute('''drop table stock_financial_TTM''')
+    except:
+        pass
     cursor.execute(sql1)
     conn.commit()
-    cursor.execute('''drop table stock_financial_analysis''')
+    try:
+        cursor.execute('''drop table stock_financial_analysis''')
+    except:
+        pass
     cursor.execute(sql2)
     conn.commit()
     print("financial TTM report has been stored")
