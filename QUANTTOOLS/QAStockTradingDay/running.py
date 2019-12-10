@@ -10,9 +10,10 @@ from QUANTTOOLS.message_func import build_head, build_table, build_email, send_e
 from QUANTTOOLS.QAStockTradingDay.setting import working_dir, yun_ip, yun_port, easytrade_password
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
-
+from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day
 
 def predict(trading_date, strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir, ui_log = None):
+
     try:
         QA_util_log_info(
             '##JOB01 Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
@@ -47,6 +48,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
 
     QA_util_log_info(
         '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
+    report,top_report = check_model(model_temp, QA_util_get_last_day(trading_date,1),QA_util_get_last_day(trading_date,1),info_temp['cols'])
     tar = model_predict(model_temp, str(trading_date[0:7])+"-01",trading_date,info_temp['cols'])
 
     QA_util_log_info(
@@ -78,8 +80,10 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     body1 = build_table(table1, '近段时间内模型盈利报告')
     body2 = build_table(res, '目标持仓')
     body3 = build_table(positions, '目前持仓')
+    body4 = build_table(report, '上一交易日模型报告')
+    body5 = build_table(top_report, '上一交易日模型报告Top')
 
-    msg = build_email(build_head(),msg1,body1,body2,body3)
+    msg = build_email(build_head(),msg1,body4,body5,body1,body2,body3)
 
     send_email('交易报告:'+ trading_date, msg, 'date')
 
