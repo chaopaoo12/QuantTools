@@ -169,13 +169,10 @@ def model_predict(model, start, end, cols, type='crawl', block = True, sub_block
     b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
     return(b[b['y_pred']==1])
 
-def check_model(model, start, end, cols, target, type = 'value',block=True, sub_block=True):
-    data = get_quant_data(start, end, type=type,block = block, sub_block=sub_block)
+def check_model(model, start, end, cols, target, type = 'crawl',block=True, sub_block=True):
+    data = get_quant_data(start, end, type= type,block = block, sub_block=sub_block)
     data = data[data['DAYSO']>= 90][data['next_date'] == data['PRE_DATE']]
-    if type == 'value':
-        data['star'] = data['TARGET5'].apply(lambda x :1 if x >= target else 0)
-    elif type == 'percent':
-        data['star'] = data['TARGET5'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= target else 0)
+    data['star'] = data['TARGET5'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= target else 0)
     cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
                                                    'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3',
                                                    'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
