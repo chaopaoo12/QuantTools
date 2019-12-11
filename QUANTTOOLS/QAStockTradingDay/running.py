@@ -48,7 +48,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
 
     QA_util_log_info(
         '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
-    stock_list,report,top_report = check_model(model_temp, QA_util_get_last_day(trading_date,1),QA_util_get_last_day(trading_date,1),info_temp['cols'], 0.42)
+    #stock_list,report,top_report = check_model(model_temp, QA_util_get_last_day(trading_date,1),QA_util_get_last_day(trading_date,1),info_temp['cols'], 0.42)
     tar = model_predict(model_temp, str(trading_date[0:7])+"-01",trading_date,info_temp['cols'])
 
     QA_util_log_info(
