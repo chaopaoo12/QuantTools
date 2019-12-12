@@ -167,34 +167,17 @@ def model_predict(model, start, end, cols, type='crawl', block = True, sub_block
     bina.index = b.index
     b[['Z_PROB','O_PROB']] = bina
     b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
-    return(b[b['y_pred']==1])
+    return(b[b['y_pred']==1], b)
 
-def check_model(model, start, end, cols, target, type = 'crawl',block=True, sub_block=True):
-    data = get_quant_data(start, end, type= type,block = block, sub_block=sub_block)
-    data = data[data['DAYSO']>= 90][data['next_date'] == data['PRE_DATE']]
-    data['star'] = data['TARGET5'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= target else 0)
-    cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
-                                                   'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3',
-                                                   'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
-                                                   'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
-                                                   'INDEX_TARGET10','date_stamp','PRE_DATE','next_date']]
-    train = pd.DataFrame()
-    n_cols = []
-    for i in cols:
-        if i in cols1:
-            train[i] = data[i].astype('float')
-        else:
-            train[i] = 0
-            n_cols.append(i)
-    train.index = data.index
-    print(n_cols)
-    b = data[['star','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
-    b['y_pred'] = model.predict(train[cols].fillna(0))
-    bina = pd.DataFrame(model.predict_proba(train[cols].fillna(0)))[[0,1]]
-    bina.index = b.index
-    b[['Z_PROB','O_PROB']] = bina
-    b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
+def check_model(model, start, end, cols, target, type = 'value',block=True, sub_block=True):
+    tar,b = model_predict(model, start,end, cols, block = block, sub_block= sub_block)
+    if type == 'value':
+        b['star'] = b['TARGET5'].apply(lambda x : 1 if x >= target else 0)
+    elif type == 'percent':
+        b['star'] = b['TARGET5'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= target else 0)
+    else:
+        print("target type must be in ['value','percent']")
     report = classification_report(b['star'],b['y_pred'], output_dict=True)
     c = b[b['RANK']<=5]
     top_report = classification_report(c['star'],c['y_pred'], output_dict=True)
-    return(c, report,top_report)
+    return(c, report, top_report)
