@@ -80,11 +80,11 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     body1 = build_table(table1, '近段时间内模型盈利报告')
     body2 = build_table(res, '目标持仓')
     body3 = build_table(positions, '目前持仓')
-    body4 = build_table(report, '上一交易日模型报告')
-    body5 = build_table(top_report, '上一交易日模型报告Top')
-    body6 = build_table(stock_list, '上一交易日模型交易清单')
+    #body4 = build_table(report, '上一交易日模型报告')
+    #body5 = build_table(top_report, '上一交易日模型报告Top')
+    #body6 = build_table(stock_list, '上一交易日模型交易清单')
 
-    msg = build_email(build_head(),msg1,body6,body4,body5,body1,body2,body3)
+    msg = build_email(build_head(),msg1,body1,body2,body3)
 
     send_email('交易报告:'+ trading_date, msg, 'date')
 
