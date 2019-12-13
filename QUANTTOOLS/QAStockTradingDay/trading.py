@@ -48,7 +48,7 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
 
     QA_util_log_info(
         '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
-    tar = model_predict(model_temp, str(trading_date[0:7])+"-01",trading_date,info_temp['cols'])
+    tar,tar1 = model_predict(model_temp, str(trading_date[0:7])+"-01",trading_date,info_temp['cols'])
 
     QA_util_log_info(
         '##JOB04 Now Current Holding ==== {}'.format(str(trading_date)), ui_log)
