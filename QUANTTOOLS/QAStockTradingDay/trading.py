@@ -76,7 +76,7 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
     res1 = res[res['tar']>0]
     res2 = res[res['tar']==0]
 
-    res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100
+    res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100-100
     res = pd.concat([res1,res2])
     res['real'] = res['cnt'] * res['ask1']
     res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
