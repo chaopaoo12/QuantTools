@@ -914,7 +914,7 @@ into stock_analysis_data
                                 from stock_market_day
                                WHERE order_date >=
                                      to_date('{deal_date}','yyyy-mm-dd') - 90
-                                     group by order_Date. code
+                                     group by order_date, code
                                  ) a
                         left join (select code,
                                      order_date,
