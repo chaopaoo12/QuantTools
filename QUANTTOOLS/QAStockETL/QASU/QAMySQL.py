@@ -131,7 +131,7 @@ def QA_etl_stock_info(ui_log= None):
 
 def QA_etl_stock_xdxr(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
-        '##JOB Now ETL STOCK XDXR ==== {}'.format(str(datetime.date.today())), ui_log)
+        '##JOB Now ETL STOCK XDXR ==== {}'.format(mark_day), ui_log)
     if type == "all":
         data = QA_fetch_stock_xdxr(list(QA_fetch_stock_list_adv()['code'])).reset_index(drop=True).fillna(0)
         QA_util_sql_store_mysql(data, "stock_xdxr",if_exists='replace')
@@ -145,7 +145,7 @@ def QA_etl_stock_xdxr(type = "day", mark_day = str(datetime.date.today()),ui_log
 
 def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
-        '##JOB Now ETL STOCK DAY ==== {}'.format(str(datetime.date.today())), ui_log)
+        '##JOB Now ETL STOCK DAY ==== {}'.format(mark_day), ui_log)
     codes = list(QA_fetch_stock_list_adv()['code'])
     if type == "all":
         data = ETL_stock_day(codes).reset_index()
@@ -159,7 +159,7 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log=
 
 def QA_etl_stock_financial(type = "crawl", start_date = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
-        '##JOB Now ETL STOCK FINANCIAL REPORT ==== {}'.format(str(datetime.date.today())), ui_log)
+        '##JOB Now ETL STOCK FINANCIAL REPORT ==== {}'.format(start_date), ui_log)
     if type == 'all':
         data = QA_fetch_financial_report_adv(list(QA_fetch_stock_list_adv()['code'])).data.reset_index(drop=True).fillna(0)
         QA_util_sql_store_mysql(data, "stock_financial",if_exists='replace')
@@ -174,7 +174,7 @@ def QA_etl_stock_financial(type = "crawl", start_date = str(datetime.date.today(
 
 def QA_etl_stock_calendar(type = "crawl", start = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
-        '##JOB Now ETL STOCK CALENDAR ==== {}'.format(str(datetime.date.today())), ui_log)
+        '##JOB Now ETL STOCK CALENDAR ==== {}'.format(start), ui_log)
     if type == "all":
         data = QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),start = "all", type = 'report').data.reset_index(drop=True)
         QA_util_sql_store_mysql(data, "stock_calendar",if_exists='replace')
@@ -194,7 +194,7 @@ def QA_etl_stock_block(ui_log= None):
 
 def QA_etl_stock_divyield(type = "crawl", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
-        '##JOB Now ETL STOCK divyield ==== {}'.format(str(datetime.date.today())), ui_log)
+        '##JOB Now ETL STOCK divyield ==== {}'.format(mark_day), ui_log)
     if type == "all":
         data = QA_fetch_stock_divyield_adv(list(QA_fetch_stock_list_adv()['code']),start = "all").data.reset_index()
         QA_util_sql_store_mysql(data, "stock_divyield",if_exists='replace')
@@ -208,7 +208,7 @@ def QA_etl_stock_divyield(type = "crawl", mark_day = str(datetime.date.today()),
 
 def QA_etl_process_financial_day(type = "day", deal_date = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
-        '##JOB Now ETL PROCESS FINANCIAL ==== {}'.format(str(datetime.date.today())), ui_log)
+        '##JOB Now ETL PROCESS FINANCIAL ==== {}'.format(deal_date), ui_log)
     if type == "day":
         print("Step One =================")
         QA_util_process_financial(deal_date=deal_date)
@@ -218,7 +218,7 @@ def QA_etl_process_financial_day(type = "day", deal_date = str(datetime.date.tod
 
 def QA_etl_stock_financial_wy(type = "crawl", start_date = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
-        '##JOB Now ETL STOCK FINANCIAL REPORT WY ==== {}'.format(str(datetime.date.today())), ui_log)
+        '##JOB Now ETL STOCK FINANCIAL REPORT WY ==== {}'.format(start_date), ui_log)
     if type == 'all':
         data = QA_fetch_financial_report_wy_adv(list(QA_fetch_stock_list_adv()['code'])).data.reset_index(drop=True).fillna(0)
         QA_util_sql_store_mysql(data, "stock_financial_wy",if_exists='replace')
@@ -232,7 +232,7 @@ def QA_etl_stock_financial_wy(type = "crawl", start_date = str(datetime.date.tod
 
 def QA_etl_stock_alpha_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
-        '##JOB Now ETL STOCK ALPHA ==== {}'.format(str(datetime.date.today())), ui_log)
+        '##JOB Now ETL STOCK ALPHA ==== {}'.format(mark_day), ui_log)
     if type == "all":
         data = QA_fetch_stock_alpha_adv(list(QA_fetch_stock_list_adv()['code'])).data.reset_index()
         QA_util_sql_store_mysql(data, "stock_alpha",if_exists='replace')
@@ -246,7 +246,7 @@ def QA_etl_stock_alpha_day(type = "day", mark_day = str(datetime.date.today()),u
 
 def QA_etl_stock_technical_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
-        '##JOB Now ETL STOCK TECHNICAL ==== {}'.format(str(datetime.date.today())), ui_log)
+        '##JOB Now ETL STOCK TECHNICAL ==== {}'.format(mark_day), ui_log)
     if type == "all":
         data = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code'])).data.reset_index()
         QA_util_sql_store_mysql(data, "stock_technical",if_exists='replace')
