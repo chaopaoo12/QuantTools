@@ -1,12 +1,13 @@
 import cx_Oracle
 import pandas as pd
 import datetime
-
+from QUANTAXIS.QAUtil import QA_util_log_info
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
                                QA_util_if_trade,QA_util_get_pre_trade_date)
 
-def QA_util_etl_stock_quant(deal_date = None):
-
+def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
+    QA_util_log_info(
+    '##JOB01 Now Etl Stock QuantData ==== {}'.format(QA_util_today_str()), ui_log)
     sql = '''select a.code,
        name,
        industry,

@@ -3,9 +3,11 @@ import pandas as pd
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
                                QA_util_get_trade_range,QA_util_get_last_day,
                                QA_util_if_trade)
+from QUANTAXIS.QAUtil import QA_util_log_info
 
-def QA_util_process_stock_financial():
-
+def QA_util_process_stock_financial(ui_log= None):
+    QA_util_log_info(
+        '##JOB01 Now Etl Stock Financial ==== {}'.format(QA_util_today_str()), ui_log)
     sql1 = '''create table stock_financial_TTM as
  with f as
  (select code,
@@ -1134,7 +1136,9 @@ SELECT A.CODE,
     conn.commit()
     conn.close()
 
-def QA_util_etl_financial_TTM():
+def QA_util_etl_financial_TTM(ui_log= None):
+    QA_util_log_info(
+        '##JOB01 Now Etl Stock Financial TTM ==== {}'.format(QA_util_today_str()), ui_log)
 
     sql = '''select CODE,
                 INDUSTRY,
