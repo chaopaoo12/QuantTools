@@ -102,7 +102,7 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
         #while len(e) > 0:
         #    e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='MARKET', priceType=4, client=client)
 
-    time.sleep(10)
+    time.sleep(30)
 
     for i in res[res['mark'] == 0].index:
         cnt = float(res.at[i, 'cnt'])
@@ -123,7 +123,7 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
                           volume=abs(mark)
                           )
 
-    time.sleep(10)
+    time.sleep(30)
 
     for i in res[res['mark'] > 0].index:
         cnt = float(res.at[i, 'cnt'])
