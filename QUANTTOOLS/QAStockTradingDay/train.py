@@ -29,7 +29,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
                         test_start=(datetime.strptime(date, "%Y-%m-%d")-delta3).strftime('%Y-%m-%d'),
                         test_end=date)
     model1.prepare_data()
-    model1.build_model(n_estimators=1000)
+    model1.build_model(n_estimators=500)
     QA_util_log_info(
         '##JOB05 Now Model Trainnig ==== {}'.format(str(date)), ui_log)
     model1.model_running()
