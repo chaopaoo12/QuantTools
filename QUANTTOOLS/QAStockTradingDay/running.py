@@ -48,7 +48,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
 
     QA_util_log_info(
         '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
-    stock_list,report,top_report = check_model(model_temp, QA_util_get_last_day(trading_date,2),QA_util_get_last_day(trading_date,2),info_temp['cols'], 0.42)
+    stock_list,report,top_report = check_model(model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),info_temp['cols'], 0.42)
     tar,b  = model_predict(model_temp, str(trading_date[0:7])+"-01",trading_date,info_temp['cols'])
 
     QA_util_log_info(
@@ -80,9 +80,9 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     body1 = build_table(table1, '近段时间内模型盈利报告')
     body2 = build_table(res, '目标持仓')
     body3 = build_table(positions, '目前持仓')
-    body4 = build_table(pd.DataFrame(report), '上一交易日模型报告{}'.format(str(QA_util_get_last_day(trading_date,2))))
-    body5 = build_table(pd.DataFrame(top_report), '上一交易日模型报告Top{}'.format(str(QA_util_get_last_day(trading_date,2))))
-    body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date,2))))
+    body4 = build_table(pd.DataFrame(report), '上一交易日模型报告{}'.format(str(QA_util_get_last_day(trading_date))))
+    body5 = build_table(pd.DataFrame(top_report), '上一交易日模型报告Top{}'.format(str(QA_util_get_last_day(trading_date))))
+    body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date))))
 
     msg = build_email(build_head(),msg1,body5,body4,body6,body1,body2,body3)
 
