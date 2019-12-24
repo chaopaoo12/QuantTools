@@ -145,7 +145,7 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
                                                                                     target=cnt,
                                                                                     tar=tar))
         e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='MARKET', priceType=4, client=client)
-        time.sleep(10)
+        time.sleep(15)
         #while len(e) > 0:
         #    e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='MARKET', priceType=4, client=client)
     return(res)
