@@ -9,6 +9,7 @@ from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.QAStockTradingDay.setting import working_dir, yun_ip, yun_port, easytrade_password
 from QUANTAXIS.QAUtil import QA_util_log_info
 import time
+import datetime
 from QUANTTOOLS.account_manage.trading_message import send_trading_message
 
 def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:client-1', working_dir= working_dir, ui_log= None):
@@ -83,6 +84,12 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
 
     QA_util_log_info(
         '##JOB06 Now Trading ==== {}'.format(str(trading_date)), ui_log)
+    h1 = int(datetime.datetime.now().strftime("%H"))
+    m1 = int(datetime.datetime.now().strftime("%M"))
+    while h1 == 15 and m1 >= 53 :
+        h1 = int(datetime.datetime.now().strftime("%H"))
+        m1 = int(datetime.datetime.now().strftime("%M"))
+        time.sleep(30)
 
     for i in res[res['mark'] < 0].index:
         cnt = float(res.at[i, 'cnt'])
@@ -123,7 +130,7 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
                           volume=abs(mark)
                           )
 
-    time.sleep(30)
+    time.sleep(10)
 
     for i in res[res['mark'] > 0].index:
         cnt = float(res.at[i, 'cnt'])
@@ -138,7 +145,7 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
                                                                                     target=cnt,
                                                                                     tar=tar))
         e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='MARKET', priceType=4, client=client)
-        time.sleep(5)
+        time.sleep(10)
         #while len(e) > 0:
         #    e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='MARKET', priceType=4, client=client)
     return(res)
