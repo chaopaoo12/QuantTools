@@ -674,8 +674,6 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
     end = QA_util_get_pre_trade_date(end_date,-5)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
-    print(start_date)
-    print(end)
     market = QA.QA_fetch_index_day(['000001'],start_date,end,format='pd')['close'].reset_index()
     market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
     res1 = data.to_qfq().data
