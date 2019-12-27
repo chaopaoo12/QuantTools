@@ -86,7 +86,7 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
         '##JOB06 Now Trading ==== {}'.format(str(trading_date)), ui_log)
     h1 = int(datetime.datetime.now().strftime("%H"))
     m1 = int(datetime.datetime.now().strftime("%M"))
-    while h1 == 14 and m1 <= 53 :
+    while h1 == 14 and m1 <= 52 :
         h1 = int(datetime.datetime.now().strftime("%H"))
         m1 = int(datetime.datetime.now().strftime("%M"))
         time.sleep(30)
