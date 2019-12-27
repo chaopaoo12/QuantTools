@@ -21,8 +21,8 @@ def send_email(mail_title, msg, date, smtpserver=smtpserver, smtpport=smtpport,m
     msg['Subject'] = Header(subject)
     msg["From"] = msg_from
     msg.attach(content_html)
+    s = smtplib.SMTP_SSL(smtpserver,smtpport)#邮件服务器及端口号
     try:
-        s = smtplib.SMTP_SSL(smtpserver,smtpport)#邮件服务器及端口号
         s.login(msg_from, passwd)
         s.sendmail(msg_from, msg_to, msg.as_string())
         print("发送成功")
