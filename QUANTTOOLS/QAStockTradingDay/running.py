@@ -76,16 +76,18 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
 
     QA_util_log_info(
         '##JOB07 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
-    msg1 = '模型训练日期:{model_date}'.format(model_date=info_temp['date'])
-    body1 = build_table(table1, '近段时间内模型盈利报告')
-    body2 = build_table(res, '目标持仓')
-    body3 = build_table(positions, '目前持仓')
-    body4 = build_table(pd.DataFrame(report), '上一交易日模型报告{}'.format(str(QA_util_get_last_day(trading_date))))
-    body5 = build_table(pd.DataFrame(top_report), '上一交易日模型报告Top{}'.format(str(QA_util_get_last_day(trading_date))))
-    body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date))))
+    try:
+        msg1 = '模型训练日期:{model_date}'.format(model_date=info_temp['date'])
+        body1 = build_table(table1, '近段时间内模型盈利报告')
+        body2 = build_table(res, '目标持仓')
+        body3 = build_table(positions, '目前持仓')
+        body4 = build_table(pd.DataFrame(report), '上一交易日模型报告{}'.format(str(QA_util_get_last_day(trading_date))))
+        body5 = build_table(pd.DataFrame(top_report), '上一交易日模型报告Top{}'.format(str(QA_util_get_last_day(trading_date))))
+        body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date))))
 
-    msg = build_email(build_head(),msg1,body5,body4,body6,body1,body2,body3)
-
+        msg = build_email(build_head(),msg1,body5,body4,body6,body1,body2,body3)
+    except:
+        send_email('交易报告:'+ trading_date, "消息构建失败", 'date')
     send_email('交易报告:'+ trading_date, msg, 'date')
 
 
