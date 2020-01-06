@@ -671,7 +671,9 @@ def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', c
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
 def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
+
     end = QA_util_get_pre_trade_date(end_date,-5)
+    print(start_date, end_date,end)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
     market = QA.QA_fetch_index_day(['000001'],start_date,end,format='pd')['close'].reset_index()
