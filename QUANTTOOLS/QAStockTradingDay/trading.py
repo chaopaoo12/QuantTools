@@ -61,8 +61,9 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
 
     QA_util_log_info(
         '##JOB05 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)
+    realtm = QA_fetch_get_stock_realtime('tdx', code=list(r1.index)).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
     res = pd.concat([r1,
-                     QA_fetch_get_stock_realtime('tdx', code=list(r1.index)).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']],
+                     realtm,
                      QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]],
                     axis=1)
 
