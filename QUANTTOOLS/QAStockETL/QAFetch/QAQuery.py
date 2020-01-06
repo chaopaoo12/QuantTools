@@ -587,6 +587,7 @@ def QA_fetch_stock_financial_percent(code, start, end=None, format='pd', collect
 
 @time_this_function
 def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', collections=DATABASE.stock_quant_data):
+    print(start, end)
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
