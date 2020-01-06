@@ -12,6 +12,7 @@ from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict, dict2
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import pct,index_pct,time_this_function
+from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_last_day,QA_util_get_next_datetime
 
 def QA_fetch_stock_industry(stock_code):
     '''
@@ -672,8 +673,7 @@ def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', c
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
 def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
-
-    end = QA_util_get_pre_trade_date(end_date,-5)
+    end = QA_util_get_next_datetime(end_date,5)
     print(start_date, end_date,end)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
