@@ -6,8 +6,8 @@ from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day,QA_util_if_
 
 def job111(trading_date):
     print(trading_date)
+    print(datetime.strptime(trading_date, "%Y-%m-%d").weekday())
     if QA_util_if_trade(trading_date):
-        print(datetime.strptime(trading_date, "%Y-%m-%d").weekday())
         if datetime.strptime(trading_date, "%Y-%m-%d").weekday() == 4:
             train(trading_date, working_dir=working_dir)
             predict(trading_date)
