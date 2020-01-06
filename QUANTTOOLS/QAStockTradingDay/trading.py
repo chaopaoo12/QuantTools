@@ -1,4 +1,4 @@
-from QUANTAXIS.QAFetch import QA_fetch_get_stock_realtime
+from QUANTAXIS.QAFetch import QA_fetch_get_stock_realtime,QA_fetch_stock_list
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockTradingDay.StrategyOne import load_model, model_predict
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
@@ -61,8 +61,8 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
 
     QA_util_log_info(
         '##JOB05 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)
-    print(list(r1.index))
-    realtm = QA_fetch_get_stock_realtime('tdx', code=list(r1.index)).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
+    [x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]
+    realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
     res = pd.concat([r1,
                      realtm,
                      QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]],
