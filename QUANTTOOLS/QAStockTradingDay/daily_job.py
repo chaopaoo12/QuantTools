@@ -8,8 +8,8 @@ def job111(date):
     print(datetime.strptime(date, "%Y-%m-%d").weekday())
     if datetime.strptime(date, "%Y-%m-%d").weekday() == 4:
         train(date, working_dir=working_dir)
-    elif datetime.strptime(date, "%Y-%m-%d").weekday() <= 4:
+    elif datetime.strptime(date, "%Y-%m-%d").weekday() == 5:
+        pass
+    else:
         #date = QA_util_get_last_day(date)
         predict(date)
-    else:
-        pass
