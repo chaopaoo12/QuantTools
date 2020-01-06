@@ -6,7 +6,7 @@ from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_last_day
 
 
 def job111(trading_date):
-    print(QA_util_get_last_day(trading_date))
+    print(QA_util_get_last_day(str(trading_date)))
 
 #def job111(trading_date):
 #    if QA_util_if_trade(trading_date):
