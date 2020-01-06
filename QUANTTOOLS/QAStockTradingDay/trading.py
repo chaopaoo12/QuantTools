@@ -1,4 +1,4 @@
-from QUANTAXIS.QAFetch import QA_fetch_get_stock_realtime,QA_fetch_stock_list
+from QUANTAXIS.QAFetch.QAQuery import QA_fetch_get_stock_realtime,QA_fetch_stock_list
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockTradingDay.StrategyOne import load_model, model_predict
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
