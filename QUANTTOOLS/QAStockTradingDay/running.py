@@ -10,7 +10,7 @@ from QUANTTOOLS.message_func import build_head, build_table, build_email, send_e
 from QUANTTOOLS.QAStockTradingDay.setting import working_dir, yun_ip, yun_port, easytrade_password
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
-from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day
+from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day
 
 def predict(trading_date, strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir, ui_log = None):
 
