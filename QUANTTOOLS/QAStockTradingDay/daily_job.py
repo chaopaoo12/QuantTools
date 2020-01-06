@@ -16,5 +16,4 @@ def job111(trading_date):
     else:
         print(trading_date)
         print(QA_util_get_last_day(trading_date))
-        date = QA_util_get_last_day(trading_date)
-        predict(date)
+        predict(QA_util_get_last_day(trading_date))
