@@ -52,6 +52,11 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
         '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
     tar,tar1 = model_predict(model_temp, str(trading_date[0:7])+"-01",trading_date,info_temp['cols'])
 
+    while h1 == 14 and m1 <= 50 :
+        h1 = int(datetime.datetime.now().strftime("%H"))
+        m1 = int(datetime.datetime.now().strftime("%M"))
+        time.sleep(30)
+
     QA_util_log_info(
         '##JOB04 Now Current Holding ==== {}'.format(str(trading_date)), ui_log)
     positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
@@ -89,10 +94,6 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
         '##JOB06 Now Trading ==== {}'.format(str(trading_date)), ui_log)
     h1 = int(datetime.datetime.now().strftime("%H"))
     m1 = int(datetime.datetime.now().strftime("%M"))
-    while h1 == 14 and m1 <= 52 :
-        h1 = int(datetime.datetime.now().strftime("%H"))
-        m1 = int(datetime.datetime.now().strftime("%M"))
-        time.sleep(30)
 
     for i in res[res['mark'] < 0].index:
         cnt = float(res.at[i, 'cnt'])
