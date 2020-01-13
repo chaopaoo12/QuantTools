@@ -84,6 +84,7 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
     res['cnt'] = (res['tar']/res['ask1']/100).apply(lambda x: round(x, 0)*100)
     res['real'] = res['cnt'] * res['ask1']
     res = res.sort_values(by='ask1', ascending= False)
+    res = res.fillna(0)
     res1 = res[res['tar']>0]
     res2 = res[res['tar']==0]
 
