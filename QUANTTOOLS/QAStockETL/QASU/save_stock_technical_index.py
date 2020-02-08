@@ -3,7 +3,7 @@ import pymongo
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_info, QA_util_add_months,
                               QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date,
                               QA_util_datetime_to_strdate)
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_indicator
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_indicator,QA_fetch_get_index_indicator
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv,QA_fetch_index_list_adv
 
 def QA_SU_save_stock_technical_index_day(START_DATE=None,END_DATE=None,client=DATABASE, ui_log = None, ui_progress = None):
@@ -339,7 +339,7 @@ def QA_SU_save_index_technical_index_day(START_DATE=None,END_DATE=None,client=DA
         START_DATE = QA_util_get_pre_trade_date(START_DATE,3)
         if END_DATE == None:
             END_DATE = QA_util_today_str()
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_index_list_adv()['code'])
 
     index_technical_index = client.index_technical_index
     index_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -349,7 +349,7 @@ def QA_SU_save_index_technical_index_day(START_DATE=None,END_DATE=None,client=DA
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving index_technical_index from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
-            data = QA_fetch_get_stock_indicator(code, START_DATE, END_DATE,'day').set_index(['date','code']).dropna(how='all').reset_index()
+            data = QA_fetch_get_index_indicator(code, START_DATE, END_DATE,'day').set_index(['date','code']).dropna(how='all').reset_index()
             index_technical_index.insert_many(QA_util_to_json_from_pandas(
                 data), ordered=False)
         except Exception as error0:
@@ -393,7 +393,7 @@ def QA_SU_save_index_technical_index_his(START_DATE=None,END_DATE=None,client=DA
         if END_DATE == None:
             END_DATE = QA_util_today_str()
 
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_index_list_adv()['code'])
 
     index_technical_index = client.index_technical_index
     index_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -403,7 +403,7 @@ def QA_SU_save_index_technical_index_his(START_DATE=None,END_DATE=None,client=DA
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving index_technical_index from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
-            data = QA_fetch_get_stock_indicator(code, START_DATE, END_DATE).set_index(['date','code']).dropna(how='all').reset_index()
+            data = QA_fetch_get_index_indicator(code, START_DATE, END_DATE).set_index(['date','code']).dropna(how='all').reset_index()
             index_technical_index.insert_many(QA_util_to_json_from_pandas(
                 data), ordered=False)
         except Exception as error0:
@@ -444,7 +444,7 @@ def QA_SU_save_index_technical_week_day(START_DATE=None,END_DATE=None,client=DAT
         START_DATE = QA_util_get_pre_trade_date(START_DATE,3)
         if END_DATE == None:
             END_DATE = QA_util_today_str()
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_index_list_adv()['code'])
 
     index_technical_week = client.index_technical_week
     index_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -454,7 +454,7 @@ def QA_SU_save_index_technical_week_day(START_DATE=None,END_DATE=None,client=DAT
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving index_technical_week from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
-            data = QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='week').set_index(['date','code']).dropna(how='all').reset_index()
+            data = QA_fetch_get_index_indicator(code, START_DATE, END_DATE, type='week').set_index(['date','code']).dropna(how='all').reset_index()
             index_technical_week.insert_many(QA_util_to_json_from_pandas(
                 data), ordered=False)
         except Exception as error0:
@@ -498,7 +498,7 @@ def QA_SU_save_index_technical_week_his(START_DATE=None,END_DATE=None,client=DAT
         if END_DATE == None:
             END_DATE = QA_util_today_str()
 
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_index_list_adv()['code'])
 
     index_technical_week = client.index_technical_week
     index_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -508,7 +508,7 @@ def QA_SU_save_index_technical_week_his(START_DATE=None,END_DATE=None,client=DAT
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving index_technical_week from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
-            data = QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='week').set_index(['date','code']).dropna(how='all').reset_index()
+            data = QA_fetch_get_index_indicator(code, START_DATE, END_DATE, type='week').set_index(['date','code']).dropna(how='all').reset_index()
             index_technical_week.insert_many(QA_util_to_json_from_pandas(
                 data), ordered=False)
         except Exception as error0:
@@ -549,7 +549,7 @@ def QA_SU_save_index_technical_month_day(START_DATE=None,END_DATE=None,client=DA
         START_DATE = QA_util_get_pre_trade_date(START_DATE,3)
         if END_DATE == None:
             END_DATE = QA_util_today_str()
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_index_list_adv()['code'])
 
     index_technical_month = client.index_technical_month
     index_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -559,7 +559,7 @@ def QA_SU_save_index_technical_month_day(START_DATE=None,END_DATE=None,client=DA
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving index_technical_month from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
-            data = QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='month').set_index(['date','code']).dropna(how='all').reset_index()
+            data = QA_fetch_get_index_indicator(code, START_DATE, END_DATE, type='month').set_index(['date','code']).dropna(how='all').reset_index()
             index_technical_month.insert_many(QA_util_to_json_from_pandas(
                 data), ordered=False)
         except Exception as error0:
@@ -603,7 +603,7 @@ def QA_SU_save_index_technical_month_his(START_DATE=None,END_DATE=None,client=DA
         if END_DATE == None:
             END_DATE = QA_util_today_str()
 
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_index_list_adv()['code'])
 
     index_technical_month = client.index_technical_month
     index_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -613,7 +613,7 @@ def QA_SU_save_index_technical_month_his(START_DATE=None,END_DATE=None,client=DA
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving index_technical_month from {START_DATE} to {END_DATE} ==== {code}'.format(code=str(code),START_DATE=START_DATE,END_DATE=END_DATE), ui_log)
-            data = QA_fetch_get_stock_indicator(code, START_DATE, END_DATE, type='month').set_index(['date','code']).dropna(how='all').reset_index()
+            data = QA_fetch_get_index_indicator(code, START_DATE, END_DATE, type='month').set_index(['date','code']).dropna(how='all').reset_index()
             index_technical_month.insert_many(QA_util_to_json_from_pandas(
                 data), ordered=False)
         except Exception as error0:
