@@ -9,20 +9,29 @@ from QUANTAXIS.QAUtil import (DATABASE,QA_util_getBetweenQuarter, QA_util_get_ne
                               QA_util_datetime_to_strdate,QA_util_get_trade_range,QA_util_get_last_day)
 import datetime
 
-def alpha(code, date=None):
+def stock_alpha(code, date=None):
     np.seterr(invalid='ignore')
     if date == None:
         date = QA_util_today_str()
-    return(Alpha_191(code, date).alpha())
+    end_date = QA_util_get_last_day(date, 250)
+    price = QA_fetch_stock_day_adv(code, end_date, date ).data.reset_index()
+    return(Alpha_191(code, date, price).alpha())
 
+def index_alpha(code, date=None):
+    np.seterr(invalid='ignore')
+    if date == None:
+        date = QA_util_today_str()
+    end_date = QA_util_get_last_day(date, 250)
+    price = QA_fetch_index_day_adv(code, end_date, date ).data.reset_index()
+    return(Alpha_191(code, date, price).alpha())
 
 class Alpha_191:
 
-    def __init__(self, code, date):
+    def __init__(self, code, date, price):
         ###security = get_index_stocks(index)
         self.date = date
         self.end_date = QA_util_get_last_day(self.date, 250)
-        price = QA_fetch_stock_day_adv(code, self.end_date, self.date ).data.reset_index()
+        #price = QA_fetch_stock_day_adv(code, self.end_date, self.date ).data.reset_index()
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
         price = price[price['date'] != self.end_date].set_index(['date','code']).to_panel()
