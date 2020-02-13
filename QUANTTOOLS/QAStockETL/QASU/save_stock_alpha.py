@@ -114,7 +114,7 @@ def QA_SU_save_index_alpha_day(client=DATABASE, ui_log = None, ui_progress = Non
     def __saving_work(date, code, index_alpha):
         try:
             QA_util_log_info(
-                '##JOB01 Now Saving Stock Alpha==== {}'.format(str(date)), ui_log)
+                '##JOB01 Now Saving Index Alpha==== {}'.format(str(date)), ui_log)
             index_alpha.insert_many(QA_util_to_json_from_pandas(
                 QA_fetch_get_stock_alpha(code, date)), ordered=False)
             gc.collect()
@@ -133,7 +133,7 @@ def QA_SU_save_index_alpha_day(client=DATABASE, ui_log = None, ui_progress = Non
             __saving_work( item, code, index_alpha)
 
     if len(err) < 1:
-        QA_util_log_info('SUCCESS save Stock Alpha ^_^',  ui_log)
+        QA_util_log_info('SUCCESS save Index Alpha ^_^',  ui_log)
     else:
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
@@ -161,7 +161,7 @@ def QA_SU_save_index_alpha_his(client=DATABASE, ui_log = None, ui_progress = Non
     def __saving_work(date, code, index_alpha):
         try:
             QA_util_log_info(
-                '##JOB01 Now Saving Stock Alpha==== {}'.format(str(date)), ui_log)
+                '##JOB01 Now Saving Index Alpha==== {}'.format(str(date)), ui_log)
             index_alpha.insert_many(QA_util_to_json_from_pandas(
                 QA_fetch_get_stock_alpha(code, date)), ordered=False)
         except Exception as error0:
@@ -180,7 +180,7 @@ def QA_SU_save_index_alpha_his(client=DATABASE, ui_log = None, ui_progress = Non
             __saving_work( item, code, index_alpha)
 
     if len(err) < 1:
-        QA_util_log_info('SUCCESS save Stock Alpha ^_^',  ui_log)
+        QA_util_log_info('SUCCESS save Index Alpha ^_^',  ui_log)
     else:
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
