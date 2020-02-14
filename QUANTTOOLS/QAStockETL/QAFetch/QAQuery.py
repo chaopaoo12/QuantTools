@@ -855,10 +855,7 @@ def QA_fetch_index_target(codes, start_date, end_date, type='close'):
     end = QA_util_get_next_datetime(end_date,5)
     print(start_date, end_date,end)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
-    data = QA.QA_fetch_index_day_adv(codes,start_date,end)
-    res1 = data.to_qfq().data
-    res1.columns = [x + '_qfq' for x in res1.columns]
-    data = data.data.join(res1).fillna(0).reset_index()
+    data = QA.QA_fetch_index_day_adv(codes,start_date,end).data.fillna(0).reset_index()
     res = data.groupby('code').apply(pct, type=type)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
                                                       'TARGET','TARGET3','TARGET4','TARGET5',
                                                       'TARGET10','AVG_TARGET']]
