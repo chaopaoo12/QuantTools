@@ -1,6 +1,6 @@
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pandas,QA_util_today_str,QA_util_get_trade_range, QA_util_if_trade,QA_util_code_tolist)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv,QA_fetch_index_list_adv
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_alpha
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_alpha,QA_fetch_get_index_alpha
 import pymongo
 import gc
 
@@ -116,7 +116,7 @@ def QA_SU_save_index_alpha_day(client=DATABASE, ui_log = None, ui_progress = Non
             QA_util_log_info(
                 '##JOB01 Now Saving Index Alpha==== {}'.format(str(date)), ui_log)
             index_alpha.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_stock_alpha(code, date)), ordered=False)
+                QA_fetch_get_index_alpha(code, date)), ordered=False)
             gc.collect()
         except Exception as error0:
             print(error0)
@@ -163,7 +163,7 @@ def QA_SU_save_index_alpha_his(client=DATABASE, ui_log = None, ui_progress = Non
             QA_util_log_info(
                 '##JOB01 Now Saving Index Alpha==== {}'.format(str(date)), ui_log)
             index_alpha.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_stock_alpha(code, date)), ordered=False)
+                QA_fetch_get_index_alpha(code, date)), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(date))
