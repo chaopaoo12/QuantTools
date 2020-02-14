@@ -851,17 +851,16 @@ def QA_fetch_index_technical_index(code, start, end=None, type='day', format='pd
         QA_util_log_info(
             'QA Error QA_fetch_index_technical_index data parameter start=%s end=%s is not right' % (start, end))
 
-def QA_fetch_index_target(codes, start_date, end_date, type='close'):
+def QA_fetch_index_target(codes, start_date, end_date):
     end = QA_util_get_next_datetime(end_date,5)
     print(start_date, end_date,end)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_index_day_adv(codes,start_date,end).data.fillna(0).reset_index()
-    res = data.groupby('code').apply(pct, type=type)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
-                                                      'TARGET','TARGET3','TARGET4','TARGET5',
-                                                      'TARGET10','AVG_TARGET']]
+    res = data.groupby('code').apply(index_pct)[['date','code',
+                                                      'INDEX_TARGET','INDEX_TARGET3',
+                                                      'INDEX_TARGET4','INDEX_TARGET5',
+                                                      'INDEX_TARGET10']]
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
-    res['next_date'] = res['date'].apply(lambda x: QA_util_get_pre_trade_date(x, -2))
-    res['PRE_DATE'] = res['PRE_DATE'].apply(lambda x: str(x)[0:10])
     res = res.set_index(['date','code']).loc[rng1]
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':
