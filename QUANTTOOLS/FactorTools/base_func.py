@@ -1,7 +1,7 @@
 import pandas as pd
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_quant_pre_adv
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_target,QA_fetch_get_quant_data
-from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_quant_pre_adv,QA_fetch_index_quant_pre_adv
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_target,QA_fetch_get_quant_data,QA_fetch_index_target,QA_fetch_index_quant_data
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv,QA_fetch_index_list_adv
 import keras
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
@@ -30,6 +30,16 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_bloc
     #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
     #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
     #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
+    return(res)
+
+def get_index_quant_data(start_date, end_date, type = 'crawl'):
+    codes = list(QA_fetch_index_list_adv()['code'])
+    if type == 'crawl':
+        res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date).data
+    if type == 'model':
+        res = QA_fetch_index_quant_data(codes, start_date, end_date).set_index(['date','code']).drop(['date_stamp'], axis=1)
+        target = QA_fetch_index_target(codes, start_date, end_date)
+        res = res.join(target)
     return(res)
 
 def precision(y_true, y_pred):

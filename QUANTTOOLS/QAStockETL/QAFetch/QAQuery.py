@@ -805,7 +805,6 @@ def QA_fetch_index_alpha(code, start, end=None, format='pd', collections=DATABAS
         QA_util_log_info(
             'QA Error QA_fetch_index_alpha data parameter start=%s end=%s is not right' % (start, end))
 
-
 def QA_fetch_index_technical_index(code, start, end=None, type='day', format='pd'):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
@@ -851,3 +850,113 @@ def QA_fetch_index_technical_index(code, start, end=None, type='day', format='pd
     else:
         QA_util_log_info(
             'QA Error QA_fetch_index_technical_index data parameter start=%s end=%s is not right' % (start, end))
+
+def QA_fetch_index_target(codes, start_date, end_date, type='close'):
+    end = QA_util_get_next_datetime(end_date,5)
+    print(start_date, end_date,end)
+    rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+    data = QA.QA_fetch_index_day_adv(codes,start_date,end)
+    res1 = data.to_qfq().data
+    res1.columns = [x + '_qfq' for x in res1.columns]
+    data = data.data.join(res1).fillna(0).reset_index()
+    res = data.groupby('code').apply(pct, type=type)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
+                                                      'TARGET','TARGET3','TARGET4','TARGET5',
+                                                      'TARGET10','AVG_TARGET']]
+    res['date'] = res['date'].apply(lambda x: str(x)[0:10])
+    res['next_date'] = res['date'].apply(lambda x: QA_util_get_pre_trade_date(x, -2))
+    res['PRE_DATE'] = res['PRE_DATE'].apply(lambda x: str(x)[0:10])
+    res = res.set_index(['date','code']).loc[rng1]
+    for columnname in res.columns:
+        if res[columnname].dtype == 'float64':
+            res[columnname]=res[columnname].astype('float16')
+        if res[columnname].dtype == 'int64':
+            res[columnname]=res[columnname].astype('int8')
+    return(res)
+
+@time_this_function
+def QA_fetch_index_quant_data(code, start, end=None, format='pd', collections=DATABASE.stock_quant_data):
+    print(start, end)
+    '获取股票日线'
+    #code= [code] if isinstance(code,str) else code
+    # code checking
+    code = QA_util_code_tolist(code)
+    index = DATABASE.index_quant_data_index
+    week = DATABASE.index_quant_data_week
+    alpha = DATABASE.index_quant_data_alpha
+
+    if QA_util_date_valid(end):
+
+        __data = []
+
+        cursor = index.find({
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+        index_res = pd.DataFrame([item for item in cursor])
+
+        cursor = week.find({
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+        week_res = pd.DataFrame([item for item in cursor])
+
+        cursor = alpha.find({
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+        alpha_res = pd.DataFrame([item for item in cursor])
+        try:
+            res = index_res.drop_duplicates(
+                    (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code']).join(
+                week_res.drop_duplicates(
+                    (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])).join(
+                alpha_res.drop_duplicates(
+                    (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code']))
+
+            for columnname in res.columns:
+                if res[columnname].dtype == 'float64':
+                    res[columnname]=res[columnname].astype('float16')
+                if res[columnname].dtype == 'float32':
+                    res[columnname]=res[columnname].astype('float16')
+                if res[columnname].dtype == 'int64':
+                    res[columnname]=res[columnname].astype('int8')
+                if res[columnname].dtype == 'int32':
+                    res[columnname]=res[columnname].astype('int8')
+                if res[columnname].dtype == 'int16':
+                    res[columnname]=res[columnname].astype('int8')
+
+        except:
+            res = None
+
+        if format in ['P', 'p', 'pandas', 'pd']:
+            return res
+        elif format in ['json', 'dict']:
+            return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+        elif format in ['n', 'N', 'numpy']:
+            return numpy.asarray(res)
+        elif format in ['list', 'l', 'L']:
+            return numpy.asarray(res).tolist()
+        else:
+            print("QA Error QA_fetch_index_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            return None
+    else:
+        QA_util_log_info(
+            'QA Error QA_fetch_index_quant_data date parameter start=%s end=%s is not right' % (start, end))
+
+def QA_fetch_index_quant_pre(code, start, end=None, format='pd'):
+    res = QA_fetch_index_quant_data(code, start, end)
+    target = QA_fetch_index_target(code, start, end)
+    res = res.join(target)
+    if format in ['P', 'p', 'pandas', 'pd']:
+        return res
+    elif format in ['json', 'dict']:
+        return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+    elif format in ['n', 'N', 'numpy']:
+        return numpy.asarray(res)
+    elif format in ['list', 'l', 'L']:
+        return numpy.asarray(res).tolist()
+    else:
+        print("QA Error QA_fetch_index_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+        return None
