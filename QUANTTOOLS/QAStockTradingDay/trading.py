@@ -43,7 +43,6 @@ def trading(trading_date, strategy_id= '机器学习1号', account1= 'name:clien
         client.cancel_all(account1)
         account_info = client.get_account(account1)
         print(account_info)
-        sub_accounts = client.get_positions(account1)['sub_accounts']
     except:
         send_email('错误报告', '云服务器错误,请检查', trading_date)
         send_actionnotice(strategy_id,
