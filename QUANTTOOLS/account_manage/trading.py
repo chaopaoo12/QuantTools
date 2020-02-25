@@ -114,6 +114,8 @@ def trade_roboot(tar, account, trading_date, strategy_id):
                                                                                             tar=tar))
                 e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='MARKET', priceType=4, client=client)
                 time.sleep(5)
+        sub_accounts = client.get_positions(account1)['sub_accounts']
+        positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
         res = build(tar, positions, sub_accounts, trading_date)
 
     return(res1)
