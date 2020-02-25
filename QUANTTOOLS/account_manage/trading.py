@@ -13,6 +13,12 @@ import time
 import datetime
 from QUANTTOOLS.account_manage.trading_message import send_trading_message
 
+def func1(x,y):
+    if x == 0:
+        return y
+    else:
+        return x
+
 def build(tar, positions, sub_accounts, trading_date):
     r1 = pd.concat([tar,
                     positions.set_index('证券代码')],axis=1)
@@ -25,15 +31,16 @@ def build(tar, positions, sub_accounts, trading_date):
     avg_account = sub_accounts['总 资 产']/tar.shape[0]
     res = res.assign(tar=avg_account[0])
     res.ix[res['RANK'].isnull(),'tar'] = 0
-    res['cnt'] = (res['tar']/res['ask1']/100).apply(lambda x: round(x, 0)*100)
-    res['real'] = res['cnt'] * res['ask1']
-    res = res.sort_values(by='ask1', ascending= False)
+    res['amt'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
+    res['cnt'] = (res['tar']/res['amt']/100).apply(lambda x: round(x, 0)*100)
+    res['real'] = res['cnt'] * res['amt']
+    res = res.sort_values(by='amt', ascending= False)
     res = res.fillna(0)
     res1 = res[res['tar']>0]
     res2 = res[res['tar']==0]
     res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100-100
     res = pd.concat([res1,res2])
-    res['real'] = res['cnt'] * res['ask1']
+    res['real'] = res['cnt'] * res['amt']
     res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     return(res)
 
