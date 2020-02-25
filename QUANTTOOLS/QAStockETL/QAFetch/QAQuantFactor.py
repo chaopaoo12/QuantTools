@@ -69,7 +69,7 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date):
                 continue
             col_tar.append(list(res.columns)[j])
     col_tar = list(set(col_tar))
-    res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(get_trans).join(res[col_tar])
+    res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(get_trans).join(res[col_tar]).reset_index()
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
 
