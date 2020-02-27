@@ -7,7 +7,7 @@ import pandas as pd
 import logging
 import strategyease_sdk
 from QUANTTOOLS.message_func import send_email
-from QUANTTOOLS.QAStockTradingDay.setting import working_dir, yun_ip, yun_port, easytrade_password
+from QUANTTOOLS.QAStockTradingDay.setting import working_dir, yun_ip, yun_port, easytrade_password,percent
 from QUANTAXIS.QAUtil import QA_util_log_info
 import time
 import datetime
@@ -19,7 +19,7 @@ def func1(x,y):
     else:
         return x
 
-def build(tar, positions, sub_accounts, trading_date):
+def build(tar, positions, sub_accounts, trading_date, percent):
     r1 = pd.concat([tar,
                     positions.set_index('证券代码')],axis=1)
     r1['可用余额'] = r1['可用余额'].fillna(0)
@@ -28,7 +28,7 @@ def build(tar, positions, sub_accounts, trading_date):
                      realtm,
                      QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]],
                     axis=1)
-    avg_account = sub_accounts['总 资 产']/tar.shape[0]
+    avg_account = (sub_accounts['总 资 产']*percent)/tar.shape[0]
     res = res.assign(tar=avg_account[0])
     res.ix[res['RANK'].isnull(),'tar'] = 0
     res['amt'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
@@ -44,7 +44,7 @@ def build(tar, positions, sub_accounts, trading_date):
     res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     return(res)
 
-def trade_roboot(tar, account, trading_date, strategy_id):
+def trade_roboot(tar, account, trading_date,percent, strategy_id):
     logging.basicConfig(level=logging.DEBUG)
     client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
     account1=account
@@ -53,7 +53,7 @@ def trade_roboot(tar, account, trading_date, strategy_id):
     sub_accounts = client.get_positions(account1)['sub_accounts']
     positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
 
-    res = build(tar, positions, sub_accounts, trading_date)
+    res = build(tar, positions, sub_accounts, trading_date, percent)
     res1 = res
     while res[res['mark']<0].shape[0] + res[res['mark']>0].shape[0] > 0:
 
@@ -116,6 +116,6 @@ def trade_roboot(tar, account, trading_date, strategy_id):
                 time.sleep(5)
         sub_accounts = client.get_positions(account1)['sub_accounts']
         positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
-        res = build(tar, positions, sub_accounts, trading_date)
+        res = build(tar, positions, sub_accounts, trading_date, percent)
 
     return(res1)
