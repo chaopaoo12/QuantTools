@@ -34,6 +34,9 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_bloc
 
 def get_index_quant_data(start_date, end_date, type = 'crawl'):
     codes = list(QA_fetch_index_list_adv()['code'])
+    codes = [i for i in codes if i.startswith('8800') == False]
+    codes = [i for i in codes if i.startswith('8807') == False]
+    codes = [i for i in codes if i.startswith('8808') == False]
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date).data
     if type == 'model':
