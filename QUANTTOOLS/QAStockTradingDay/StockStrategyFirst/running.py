@@ -3,10 +3,9 @@ from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyOne import load_model, mode
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
 import pandas as pd
-import logging
-import strategyease_sdk
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
-from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.setting import working_dir, yun_ip, yun_port, easytrade_password,percent
+from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.setting import working_dir, percent
+from QUANTTOOLS.account_manage import get_Client
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTAXIS.QAUtil import QA_util_get_last_day
@@ -16,8 +15,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     try:
         QA_util_log_info(
             '##JOB01 Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
-        logging.basicConfig(level=logging.DEBUG)
-        client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
+        client = get_Client()
         account1=account1
         account_info = client.get_account(account1)
         print(account_info)

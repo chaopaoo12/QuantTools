@@ -1,10 +1,8 @@
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyOne import load_model, model_predict
-import logging
-import strategyease_sdk
 from QUANTTOOLS.message_func import send_email
-from QUANTTOOLS.account_manage import trade_roboot
-from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.setting import working_dir, yun_ip, yun_port, easytrade_password,percent
+from QUANTTOOLS.account_manage import trade_roboot, get_Client
+from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.setting import working_dir, percent
 from QUANTAXIS.QAUtil import QA_util_log_info
 import time
 import datetime
@@ -33,8 +31,7 @@ def trading(trading_date,percent=percent, strategy_id= '机器学习1号', accou
     try:
         QA_util_log_info(
             '##JOB03 Now Chect Account Server ==== {}'.format(str(trading_date)), ui_log)
-        logging.basicConfig(level=logging.DEBUG)
-        client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
+        client = get_Client()
         account1=account1
         client.cancel_all(account1)
         account_info = client.get_account(account1)

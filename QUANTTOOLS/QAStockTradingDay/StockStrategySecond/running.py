@@ -6,18 +6,18 @@ import pandas as pd
 import logging
 import strategyease_sdk
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
-from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.setting import working_dir, yun_ip, yun_port, easytrade_password,percent
+from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.setting import working_dir, percent
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTAXIS.QAUtil import QA_util_get_last_day
+from QUANTTOOLS.account_manage import get_Client
 
 def predict(trading_date, strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir, ui_log = None):
 
     try:
         QA_util_log_info(
             '##JOB01 Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
-        logging.basicConfig(level=logging.DEBUG)
-        client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
+        client = get_Client()
         account1=account1
         account_info = client.get_account(account1)
         print(account_info)
@@ -34,7 +34,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     try:
         QA_util_log_info(
             '##JOB02 Now Load Model ==== {}'.format(str(trading_date)), ui_log)
-        model_temp,info_temp = load_model('stock',working_dir = working_dir)
+        model_temp,info_temp = load_model('index',working_dir = working_dir)
     except:
         send_email('错误报告', '无法正确加载模型,请检查', trading_date)
         send_actionnotice(strategy_id,

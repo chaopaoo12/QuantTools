@@ -26,10 +26,11 @@ class model():
         print(self.data.shape)
 
     def set_target(self, col, mark, type = 'value'):
+        self.target = col
         if type == 'value':
-            self.data['star'] = self.data[col].apply(lambda x : 1 if x > mark else 0)
+            self.data['star'] = self.data[self.target].apply(lambda x : 1 if x > mark else 0)
         elif type == 'percent':
-            self.data['star'] = self.data[col].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
+            self.data['star'] = self.data[self.target].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
         else:
             print("target type must be in ['value','percent']")
         self.cols = [i for i in self.data.columns if i not in ['moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
@@ -47,9 +48,9 @@ class model():
 
     def prepare_data(self, test_size = 0.2, dev_size = 0.2, random_state=0):
 
-        self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'].fillna(0), test_size = test_size, random_state=random_state)
+        self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG][self.target].fillna(0), test_size = test_size, random_state=random_state)
         self.X_test, self.X_dev, self.Y_test, self.Y_dev = train_test_split(self.X_test,self.Y_test, test_size=dev_size, random_state=random_state)
-        self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols].fillna(0),self.data.loc[self.TE_RNG]['star'].fillna(0)
+        self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols].fillna(0),self.data.loc[self.TE_RNG][self.target].fillna(0)
 
     def build_model(self, n_estimators=300, max_depth = 3, subsample = 0.95, seed=1):
         self.model = XGBClassifier(n_estimators = n_estimators, max_depth = max_depth, subsample= subsample,seed=seed)
