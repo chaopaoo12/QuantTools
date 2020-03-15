@@ -16,28 +16,40 @@ def func1(x,y):
         return x
 
 def build(tar, positions, sub_accounts, trading_date, percent):
-    r1 = pd.concat([tar,
-                    positions.set_index('证券代码')],axis=1)
-    r1['可用余额'] = r1['可用余额'].fillna(0)
-    realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
-    res = pd.concat([r1,
-                     realtm,
-                     QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]],
-                    axis=1)
-    avg_account = (sub_accounts['总 资 产']*percent)/tar.shape[0]
-    res = res.assign(tar=avg_account[0])
-    res.ix[res['RANK'].isnull(),'tar'] = 0
-    res['amt'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
-    res['cnt'] = (res['tar']/res['amt']/100).apply(lambda x: round(x, 0)*100)
-    res['real'] = res['cnt'] * res['amt']
-    res = res.sort_values(by='amt', ascending= False)
-    res = res.fillna(0)
-    res1 = res[res['tar']>0]
-    res2 = res[res['tar']==0]
-    res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100-100
-    res = pd.concat([res1,res2])
-    res['real'] = res['cnt'] * res['amt']
-    res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
+    if tar is None:
+        res = pd.concat([positions.set_index('证券代码'),
+                         QA_fetch_stock_fianacial_adv(list(positions.set_index('证券代码').index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]],
+                        axis=1)
+        avg_account = 0
+        res = res.assign(tar=avg_account[0])
+        #res.ix[res['RANK'].isnull(),'tar'] = 0
+        #res['amt'] = 0
+        res['cnt'] = 0
+        res['real'] = 0
+        res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
+    else:
+        r1 = pd.concat([tar,
+                        positions.set_index('证券代码')],axis=1)
+        r1['可用余额'] = r1['可用余额'].fillna(0)
+        realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
+        res = pd.concat([r1,
+                         realtm,
+                         QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]],
+                        axis=1)
+        avg_account = (sub_accounts['总 资 产']*percent)/tar.shape[0]
+        res = res.assign(tar=avg_account[0])
+        res.ix[res['RANK'].isnull(),'tar'] = 0
+        res['amt'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
+        res['cnt'] = (res['tar']/res['amt']/100).apply(lambda x: round(x, 0)*100)
+        res['real'] = res['cnt'] * res['amt']
+        res = res.sort_values(by='amt', ascending= False)
+        res = res.fillna(0)
+        res1 = res[res['tar']>0]
+        res2 = res[res['tar']==0]
+        res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100-100
+        res = pd.concat([res1,res2])
+        res['real'] = res['cnt'] * res['amt']
+        res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     return(res)
 
 def trade_roboot(tar, account, trading_date,percent, strategy_id):
@@ -48,6 +60,9 @@ def trade_roboot(tar, account, trading_date,percent, strategy_id):
     account_info = client.get_account(account1)
     sub_accounts = client.get_positions(account1)['sub_accounts']
     positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
+
+    if tar is None:
+        e = send_trading_message(account1, strategy_id, account_info, None, "触发清仓", None, None, direction = 'SELL', type='MARKET', priceType=4, client=client)
 
     res = build(tar, positions, sub_accounts, trading_date, percent)
     res1 = res
