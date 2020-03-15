@@ -37,7 +37,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info(
         '##JOB06 Now Save Model ==== {}'.format(str(date)), ui_log)
     important = model1.model_important()
-    model1.save_model(working_dir = working_dir)
+    model1.save_model('stock',working_dir = working_dir)
     QA_util_log_info(
         '##JOB06 Now Model Trainning Report ==== {}'.format(str(date)), ui_log)
     msg1 = '模型训练日期:{model_date}'.format(model_date=model1.info['date'])

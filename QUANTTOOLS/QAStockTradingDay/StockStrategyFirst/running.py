@@ -34,7 +34,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     try:
         QA_util_log_info(
             '##JOB02 Now Load Model ==== {}'.format(str(trading_date)), ui_log)
-        model_temp,info_temp = load_model('current', working_dir = working_dir)
+        model_temp,info_temp = load_model('stock', working_dir = working_dir)
     except:
         send_email('错误报告', '无法正确加载模型,请检查', trading_date)
         send_actionnotice(strategy_id,
@@ -61,8 +61,8 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
 
     QA_util_log_info(
         '##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
-    avg_account = sub_accounts['总 资 产']/tar1.shape[0]*percent
-    res = res.assign(tar=avg_account[0])
+    avg_account = sub_accounts['总 资 产']/tar1.shape[0]
+    res = res.assign(tar=avg_account[0]*percent)
     res['cnt'] = (res['tar']/res['close']/100).apply(lambda x:round(x,0)*100)
     res['real'] = res['cnt'] * res['close']
 

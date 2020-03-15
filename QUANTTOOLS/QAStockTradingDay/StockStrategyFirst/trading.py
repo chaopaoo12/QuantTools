@@ -15,7 +15,7 @@ def trading(trading_date,percent=percent, strategy_id= '机器学习1号', accou
     try:
         QA_util_log_info(
             '##JOB01 Now Load Model ==== {}'.format(str(trading_date)), ui_log)
-        model_temp,info_temp = load_model(working_dir = working_dir)
+        model_temp,info_temp = load_model('stock',working_dir = working_dir)
     except:
         send_email('错误报告', '无法正确加载模型,请检查', trading_date)
         send_actionnotice(strategy_id,
