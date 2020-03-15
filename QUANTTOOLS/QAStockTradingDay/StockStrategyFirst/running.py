@@ -1,16 +1,15 @@
 
-from QUANTTOOLS.QAStockTradingDay.StrategyOne import model, load_model, model_predict, check_model
+from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyOne import load_model, model_predict, check_model
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
-from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
 import pandas as pd
 import logging
 import strategyease_sdk
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
-from QUANTTOOLS.QAStockTradingDay.setting import working_dir, yun_ip, yun_port, easytrade_password,percent
+from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.setting import working_dir, yun_ip, yun_port, easytrade_password,percent
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
-from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day
+from QUANTAXIS.QAUtil import QA_util_get_last_day
 
 def predict(trading_date, strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir, ui_log = None):
 
@@ -35,7 +34,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     try:
         QA_util_log_info(
             '##JOB02 Now Load Model ==== {}'.format(str(trading_date)), ui_log)
-        model_temp,info_temp = load_model(working_dir = working_dir)
+        model_temp,info_temp = load_model('current', working_dir = working_dir)
     except:
         send_email('错误报告', '无法正确加载模型,请检查', trading_date)
         send_actionnotice(strategy_id,

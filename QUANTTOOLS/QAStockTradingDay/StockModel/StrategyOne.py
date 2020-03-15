@@ -57,10 +57,10 @@ class model():
 
     def model_running(self):
         self.model.fit(self.X_train,self.Y_train,
-                                      eval_metric=list(["auc",'error','map']),
-                                      eval_set=[(self.X_test,self.Y_test),
-                                                (self.X_dev,self.Y_dev)],
-                                      verbose=True)
+                       eval_metric=list(["auc",'error','map']),
+                       eval_set=[(self.X_test,self.Y_test),
+                                 (self.X_dev,self.Y_dev)],
+                       verbose=True)
         y_pred = self.model.predict(self.X_train)
         y_pred_test = self.model.predict(self.X_test)
         y_pred_dev = self.model.predict(self.X_dev)
@@ -124,11 +124,11 @@ class model():
             self.info['test_status']['status'] = True
 
 
-    def save_model(self, working_dir = 'D:\\model\\current'):
+    def save_model(self, name, working_dir = 'D:\\model\\current'):
         if mkdir(working_dir):
             try:
-                joblib.dump(self.model, working_dir+"\\current.joblib.dat")
-                joblib.dump(self.info, working_dir+"\\current_info.joblib.dat")
+                joblib.dump(self.model, working_dir+"\\{name}.joblib.dat".format(name=name))
+                joblib.dump(self.info, working_dir+"\\{name}_info.joblib.dat".format(name=name))
                 print("dump success")
                 return(True)
             except:
@@ -139,18 +139,18 @@ class model():
         importance = pd.DataFrame({'featur' :list(self.X_train.columns),'value':list(self.model.feature_importances_)}).sort_values(by='value',ascending=False)
         return(importance)
 
-def load_model(working_dir= 'D:\\model\\current'):
-    model = joblib.load(working_dir+"\\current.joblib.dat")
-    info = joblib.load(working_dir+"\\current_info.joblib.dat")
+def load_model(name, working_dir= 'D:\\model\\current'):
+    model = joblib.load(working_dir+"\\{name}.joblib.dat".format(name=name))
+    info = joblib.load(working_dir+"\\{name}_info.joblib.dat".format(name=name))
     return(model, info)
 
 def model_predict(model, start, end, cols, type='crawl', block = True, sub_block= True):
     data = get_quant_data(start, end, type= type,block = block, sub_block=sub_block)
     cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
-                                                  'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3',
-                                                  'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
-                                                  'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
-                                                  'INDEX_TARGET10','date_stamp','PRE_DATE','next_date']]
+                                                   'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3',
+                                                   'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
+                                                   'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
+                                                   'INDEX_TARGET10','date_stamp','PRE_DATE','next_date']]
     train = pd.DataFrame()
     n_cols = []
     for i in cols:

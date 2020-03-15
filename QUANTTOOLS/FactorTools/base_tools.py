@@ -5,6 +5,7 @@ import statsmodels.api as sml
 import numpy as np
 import math
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry
+import QUANTAXIS as QA
 
 def standardize_series(series): #原始值法
     std = series.std()
@@ -78,3 +79,61 @@ def halflife_ic(IC_data, halflife_weight,name, T):
         ic.append(data)
     return pd.DataFrame(ic, index=IC_data.index[T:], columns=[name])
 
+def find_stock(index_code):
+    stock = QA.QA_fetch_stock_block()
+    index_list = QA.QA_fetch_index_list_adv()
+    block = index_list.loc[index_code]['name']
+    if isinstance(index_code,list):
+        stock_code = []
+        for i in block:
+            stock_code.append(stock[stock['blockname'] == i]['code'])
+    else:
+        stock_code = list(stock[stock['blockname'] == block]['code'])
+    return(stock_code)
+
+def combine_model(index_d, stock_d, start, end):
+    res = pd.DataFrame()
+    for i in QA.QAUtil.QA_util_get_trade_range(start,end):
+        try:
+            a = index_d[index_d['y_pred']==1][index_d['RANK']<=5].loc[i].sort_values(by='O_PROB', ascending=False)
+            if a.shape[0] == 1:
+                num = 5
+            elif a.shape[0] == 2:
+                num = 2
+            elif a.shape[0] == 3:
+                num = 2
+            else:
+                num = 1
+            for j in list(a.index):
+                c = stock_d.loc[(i,find_stock(j)),:].sort_values(by='O_PROB', ascending=False).head(num)
+                #if c.shape[0] == 0:
+                #    c = stock_d[stock_d['RANK'] <= 5].loc[i]
+                res = res.reset_index().append(c.reset_index(),ignore_index=True).set_index(['date','code'])
+        except:
+            pass
+    return(res)
+
+def combine_model_new(index_d, stock_d, safe_d, start, end):
+    res = pd.DataFrame()
+    for i in QA.QAUtil.QA_util_get_trade_range(start,end):
+        try:
+            try:
+                a = index_d[index_d['y_pred']==1][index_d['RANK']<=5].loc[i].sort_values(by='O_PROB', ascending=False)
+            except:
+                c = safe_d[safe_d['y_pred']==1].loc[i]
+            if a.shape[0] == 1:
+                num = 5
+            elif a.shape[0] == 2:
+                num = 2
+            elif a.shape[0] == 3:
+                num = 2
+            else:
+                num = 1
+            for j in list(a.index):
+                c = stock_d.loc[(i,find_stock(j)),:].sort_values(by='O_PROB', ascending=False).head(num)
+                #if c.shape[0] == 0:
+                #    c = stock_d[stock_d['RANK'] <= 5].loc[i]
+                res = res.reset_index().append(c.reset_index(),ignore_index=True).set_index(['date','code'])
+        except:
+            pass
+    return(res)

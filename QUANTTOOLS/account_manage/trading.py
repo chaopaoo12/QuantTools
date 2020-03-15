@@ -1,16 +1,12 @@
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_list
 from QUANTAXIS.QAFetch import QA_fetch_get_stock_realtime
 from QUANTTOOLS.message_func.wechat import send_actionnotice
-from QUANTTOOLS.QAStockTradingDay.StrategyOne import load_model, model_predict
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
 import pandas as pd
 import logging
 import strategyease_sdk
-from QUANTTOOLS.message_func import send_email
-from QUANTTOOLS.QAStockTradingDay.setting import working_dir, yun_ip, yun_port, easytrade_password,percent
-from QUANTAXIS.QAUtil import QA_util_log_info
+from QUANTTOOLS.account_manage.setting import yun_ip, yun_port, easytrade_password
 import time
-import datetime
 from QUANTTOOLS.account_manage.trading_message import send_trading_message
 
 def func1(x,y):
