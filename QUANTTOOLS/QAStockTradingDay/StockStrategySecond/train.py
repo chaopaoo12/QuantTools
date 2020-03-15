@@ -44,6 +44,9 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     body2 = build_table(pd.DataFrame(stock_model.info['test_report']), '个股模型测试集情况')
     body3 = build_table(important.head(50), '个股模型特征重要性')
 
+    msg1 = '模型训练日期:{model_date}'.format(model_date=stock_model.info['date'])
+    del stock_model
+
     QA_util_log_info(
         '##JOB02 Now Prepare Date ==== {}'.format(str(date)), ui_log)
     index_model.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
@@ -87,9 +90,6 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
 
     QA_util_log_info(
         '##JOB06 Now Model Trainning Report ==== {}'.format(str(date)), ui_log)
-    msg1 = '模型训练日期:{model_date}'.format(model_date=stock_model.info['date'])
-
-
     msg = build_email(build_head(),msg1,body1,body2,body3,body4,body5,body6,body7,body8,body9)
 
     send_email('模型训练报告', msg, 'date')
