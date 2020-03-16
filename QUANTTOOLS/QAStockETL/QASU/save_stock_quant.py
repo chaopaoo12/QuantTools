@@ -5,6 +5,8 @@ from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_today_str,QA_util_log_info,
                               QA_util_get_trade_range,QA_util_if_trade,QA_util_get_pre_trade_date)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv,QA_fetch_index_list_adv
+from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_block
+import pandas as pd
 
 def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log = None, ui_progress = None):
     if start_date is None:
@@ -240,7 +242,11 @@ def QA_SU_save_index_quant_day(code=None, start_date=None,end_date=None, ui_log 
             if end_date < start_date:
                 print('end_date should large than start_date')
     if code is None:
-        code = list(QA_fetch_index_list_adv()['code'])
+        stock = QA_fetch_stock_block()
+        index_list = QA_fetch_index_list_adv()
+        res = pd.merge(index_list.reset_index(drop=True), stock.groupby('blockname').count().reset_index()[['blockname','source']],
+                       left_on = 'name', right_on = 'blockname', how = 'left')
+        code = list(res[res['source'].isna()==False]['code'])
         code = [i for i in code if i.startswith('880') == True]
         code = [i for i in code if i.startswith('8800') == False]
         code = [i for i in code if i.startswith('8807') == False]

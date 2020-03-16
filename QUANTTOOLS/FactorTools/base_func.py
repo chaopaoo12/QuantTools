@@ -33,7 +33,11 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_bloc
     return(res)
 
 def get_index_quant_data(start_date, end_date, type = 'crawl'):
-    codes = list(QA_fetch_index_list_adv()['code'])
+    stock = QA.QA_fetch_stock_block()
+    index_list = QA.QA_fetch_index_list_adv()
+    res = pd.merge(index_list.reset_index(drop=True), stock.groupby('blockname').count().reset_index()[['blockname','source']],
+                   left_on = 'name', right_on = 'blockname', how = 'left')
+    codes = list(res[res['source'].isna()==False]['code'])
     codes = [i for i in codes if i.startswith('880') == True]
     codes = [i for i in codes if i.startswith('8800') == False]
     codes = [i for i in codes if i.startswith('8807') == False]
