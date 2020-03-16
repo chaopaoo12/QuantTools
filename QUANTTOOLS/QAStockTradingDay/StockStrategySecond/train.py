@@ -74,10 +74,6 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     body6 = build_table(important.head(50), '指数模型特征重要性')
 
     index_model.set_target('INDEX_TARGET', mark = 0.3, type = 'percent')
-    index_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
-                              train_end=(datetime.strptime(date, "%Y-%m-%d")-delta4).strftime('%Y-%m-%d'),
-                              test_start=(datetime.strptime(date, "%Y-%m-%d")-delta3).strftime('%Y-%m-%d'),
-                              test_end=date)
     index_model.prepare_data()
     index_model.build_model(n_estimators=300)
     index_model.model_running()

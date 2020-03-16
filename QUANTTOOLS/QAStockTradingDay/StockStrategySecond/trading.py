@@ -43,7 +43,10 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
     stock_tar,stock_b  = Stock.model_predict(stock_model_temp, str(trading_date[0:7])+"-01",trading_date,stock_info_temp['cols'])
 
     tar = combine_model(index_b, stock_b, str(trading_date[0:7])+"-01",trading_date)
-    r_tar = tar.loc[trading_date][['Z_PROB','O_PROB','RANK']]
+    try:
+        r_tar = tar.loc[trading_date][['Z_PROB','O_PROB','RANK']]
+    except:
+        r_tar = None
     try:
         QA_util_log_info(
             '##JOB03 Now Chect Account Server ==== {}'.format(str(trading_date)), ui_log)
