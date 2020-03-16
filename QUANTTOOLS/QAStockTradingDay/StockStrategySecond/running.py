@@ -105,7 +105,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         except:
             send_email('交易报告:'+ trading_date, "消息构建失败", 'date')
         send_email('交易报告:'+ trading_date, msg, 'date')
-
+    return(tar)
 
 
 
