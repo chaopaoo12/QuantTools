@@ -33,13 +33,13 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
         '##JOB02 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
     #tar,tar1 = model_predict(model_temp, str(trading_date[0:7])+"-01",trading_date,info_temp['cols'])
 
-    index_list,index_report,index_top_report = Index.check_model(index_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),index_info_temp['cols'], 'INDEXT_TARGET5', 0.3)
+    #index_list,index_report,index_top_report = Index.check_model(index_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),index_info_temp['cols'], 'INDEXT_TARGET5', 0.3)
     index_tar,index_b  = Index.model_predict(index_model_temp, str(trading_date[0:7])+"-01",trading_date,index_info_temp['cols'])
 
-    safe_list,safe_report,safe_top_report = Index.check_model(safe_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),safe_info_temp['cols'], 'INDEXT_TARGET', 0.3)
+    #safe_list,safe_report,safe_top_report = Index.check_model(safe_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),safe_info_temp['cols'], 'INDEXT_TARGET', 0.3)
     safe_tar,safe_b  = Index.model_predict(safe_model_temp, str(trading_date[0:7])+"-01",trading_date,index_info_temp['cols'])
 
-    stock_list,report,top_report = Stock.check_model(stock_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),stock_info_temp['cols'], 0.42)
+    #stock_list,report,top_report = Stock.check_model(stock_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),stock_info_temp['cols'], 0.42)
     stock_tar,stock_b  = Stock.model_predict(stock_model_temp, str(trading_date[0:7])+"-01",trading_date,stock_info_temp['cols'])
 
     tar = combine_model(index_b, stock_b, str(trading_date[0:7])+"-01",trading_date)
