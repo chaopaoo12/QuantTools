@@ -91,49 +91,37 @@ def find_stock(index_code):
         stock_code = list(stock[stock['blockname'] == block]['code'])
     return(stock_code)
 
-def combine_model(index_d, stock_d, start, end):
+def combine_model(index_d, stock_d, safe_d, start, end):
     res = pd.DataFrame()
     for i in QA.QAUtil.QA_util_get_trade_range(start,end):
         try:
-            a = index_d[index_d['y_pred']==1][index_d['RANK']<=5].loc[i].sort_values(by='O_PROB', ascending=False)
-            if a.shape[0] == 1:
-                num = 5
-            elif a.shape[0] == 2:
-                num = 2
-            elif a.shape[0] == 3:
-                num = 2
-            else:
-                num = 1
-            for j in list(a.index):
-                c = stock_d.loc[(i,find_stock(j)),:].sort_values(by='O_PROB', ascending=False).head(num)
-                #if c.shape[0] == 0:
-                #    c = stock_d[stock_d['RANK'] <= 5].loc[i]
-                res = res.reset_index().append(c.reset_index(),ignore_index=True).set_index(['date','code'])
+            index_res = index_d[index_d['y_pred']==1][index_d['RANK']<=5].loc[i].sort_values(by='O_PROB', ascending=False)
         except:
-            pass
-    return(res)
+            index_res = None
+        try:
+            safe_res = safe_d[safe_d['y_pred']==1].loc[i]
+        except:
+            safe_res = None
 
-def combine_model_new(index_d, stock_d, safe_d, start, end):
-    res = pd.DataFrame()
-    for i in QA.QAUtil.QA_util_get_trade_range(start,end):
-        try:
-            try:
-                a = index_d[index_d['y_pred']==1][index_d['RANK']<=5].loc[i].sort_values(by='O_PROB', ascending=False)
-            except:
-                c = safe_d[safe_d['y_pred']==1].loc[i]
-            if a.shape[0] == 1:
-                num = 5
-            elif a.shape[0] == 2:
-                num = 2
-            elif a.shape[0] == 3:
-                num = 2
-            else:
-                num = 1
-            for j in list(a.index):
+        if index_res is None:
+            num = 5
+        elif index_res.shape[0] == 1:
+            num = 5
+        elif index_res.shape[0] == 2:
+            num = 2
+        elif index_res.shape[0] == 3:
+            num = 2
+        else:
+            num = 1
+
+        if index_res is not None:
+            for j in list(index_res.index):
                 c = stock_d.loc[(i,find_stock(j)),:].sort_values(by='O_PROB', ascending=False).head(num)
                 #if c.shape[0] == 0:
                 #    c = stock_d[stock_d['RANK'] <= 5].loc[i]
                 res = res.reset_index().append(c.reset_index(),ignore_index=True).set_index(['date','code'])
-        except:
+        elif safe_res is not None:
+            stock_d.loc[i].sort_values(by='O_PROB', ascending=False).head(num)
+        else:
             pass
     return(res)
