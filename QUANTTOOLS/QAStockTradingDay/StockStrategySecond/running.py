@@ -59,6 +59,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     stock_tar,stock_b  = Stock.model_predict(stock_model_temp, str(trading_date[0:7])+"-01",trading_date,stock_info_temp['cols'])
 
     tar = combine_model(index_b, stock_b, str(trading_date[0:7])+"-01",trading_date)
+    print(tar)
     QA_util_log_info(
         '##JOB03 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)
     tar1 = tar.loc[trading_date]
@@ -86,7 +87,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     QA_util_log_info(
         '##JOB07 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
     try:
-        msg1 = '模型训练日期:{model_date}'.format(model_date=info_temp['date'])
+        msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
         body1 = build_table(table1, '近段时间内模型盈利报告')
         body2 = build_table(res, '目标持仓')
         body3 = build_table(positions, '目前持仓')
