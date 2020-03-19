@@ -242,11 +242,7 @@ def QA_SU_save_index_quant_day(code=None, start_date=None,end_date=None, ui_log 
             if end_date < start_date:
                 print('end_date should large than start_date')
     if code is None:
-        stock = QA_fetch_stock_block()
-        index_list = QA_fetch_index_list_adv()
-        res = pd.merge(index_list.reset_index(drop=True), stock.groupby('blockname').count().reset_index()[['blockname','source']],
-                       left_on = 'name', right_on = 'blockname', how = 'left')
-        code = list(res[res['source'].isna()==False]['code'])
+        code = list(QA_fetch_index_list_adv()['code'])
         code = [i for i in code if i.startswith('880') == True]
         code = [i for i in code if i.startswith('8800') == False]
         code = [i for i in code if i.startswith('8807') == False]
