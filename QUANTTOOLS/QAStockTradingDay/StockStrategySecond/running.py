@@ -58,7 +58,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     stock_list,report,top_report = Stock.check_model(stock_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),stock_info_temp['cols'], 0.42)
     stock_tar,stock_b  = Stock.model_predict(stock_model_temp, str(trading_date[0:7])+"-01",trading_date,stock_info_temp['cols'])
 
-    tar = combine_model(index_b, stock_b,None, str(trading_date[0:7])+"-01",trading_date)
+    tar = combine_model(index_b, stock_b, safe_b, str(trading_date[0:7])+"-01",trading_date)
     print(tar)
     QA_util_log_info(
         '##JOB03 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)

@@ -42,7 +42,7 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
     #stock_list,report,top_report = Stock.check_model(stock_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),stock_info_temp['cols'], 0.42)
     stock_tar,stock_b  = Stock.model_predict(stock_model_temp, str(trading_date[0:7])+"-01",trading_date,stock_info_temp['cols'])
 
-    tar = combine_model(index_b, stock_b,None, str(trading_date[0:7])+"-01",trading_date)
+    tar = combine_model(index_b, stock_b, safe_b, str(trading_date[0:7])+"-01",trading_date)
     try:
         r_tar = tar.loc[trading_date][['Z_PROB','O_PROB','RANK']]
     except:
