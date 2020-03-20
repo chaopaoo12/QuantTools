@@ -49,7 +49,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_SU_save_index_technical_month_day,
                                    QA_SU_save_index_quant_data_day)
 from  QUANTAXIS.QAUtil import QA_util_today_str
-from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.daily_job import job111
+from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.daily_job import job111
 mark_day = QA_util_today_str()
 print("download day data ")
 QA_SU_save_stock_xdxr('tdx')
