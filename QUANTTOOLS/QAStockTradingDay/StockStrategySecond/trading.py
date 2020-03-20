@@ -47,34 +47,38 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
         r_tar = tar.loc[trading_date][['Z_PROB','O_PROB','RANK']]
     except:
         r_tar = None
-    try:
-        QA_util_log_info(
-            '##JOB03 Now Chect Account Server ==== {}'.format(str(trading_date)), ui_log)
-        client = get_Client()
-        account1=account1
-        client.cancel_all(account1)
-        account_info = client.get_account(account1)
-        print(account_info)
-    except:
-        send_email('错误报告', '云服务器错误,请检查', trading_date)
-        send_actionnotice(strategy_id,
-                          '错误报告:{}'.format(trading_date),
-                          '云服务器错误,请检查',
-                          direction = 'HOLD',
-                          offset='HOLD',
-                          volume=None
-                          )
 
-    h1 = int(datetime.datetime.now().strftime("%H"))
-    m1 = int(datetime.datetime.now().strftime("%M"))
-    while h1 == 14 and m1 <= 50 :
+    if r_tar is None:
+        send_email('交易报告:'+ trading_date, "空仓状态", 'date')
+    else:
+        try:
+            QA_util_log_info(
+                '##JOB03 Now Chect Account Server ==== {}'.format(str(trading_date)), ui_log)
+            client = get_Client()
+            account1=account1
+            client.cancel_all(account1)
+            account_info = client.get_account(account1)
+            print(account_info)
+        except:
+            send_email('错误报告', '云服务器错误,请检查', trading_date)
+            send_actionnotice(strategy_id,
+                              '错误报告:{}'.format(trading_date),
+                              '云服务器错误,请检查',
+                              direction = 'HOLD',
+                              offset='HOLD',
+                              volume=None
+                              )
+
         h1 = int(datetime.datetime.now().strftime("%H"))
         m1 = int(datetime.datetime.now().strftime("%M"))
-        time.sleep(30)
+        while h1 == 14 and m1 <= 50 :
+            h1 = int(datetime.datetime.now().strftime("%H"))
+            m1 = int(datetime.datetime.now().strftime("%M"))
+            time.sleep(30)
 
-    QA_util_log_info(
-        '##JOB04 Now Trading ==== {}'.format(str(trading_date)), ui_log)
-    res = trade_roboot(r_tar, account1, trading_date, percent, strategy_id)
-    return(res)
+        QA_util_log_info(
+            '##JOB04 Now Trading ==== {}'.format(str(trading_date)), ui_log)
+        res = trade_roboot(r_tar, account1, trading_date, percent, strategy_id)
+        return(res)
 
 
