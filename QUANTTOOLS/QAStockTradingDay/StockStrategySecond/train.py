@@ -31,7 +31,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
                         test_start=(datetime.strptime(date, "%Y-%m-%d")-delta3).strftime('%Y-%m-%d'),
                         test_end=date)
     stock_model.prepare_data()
-    stock_model.build_model(n_estimators=300)
+    stock_model.build_model(n_estimators=200)
     QA_util_log_info(
         '##JOB05 Now Model Trainnig ==== {}'.format(str(date)), ui_log)
     stock_model.model_running()
@@ -60,7 +60,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
                               test_start=(datetime.strptime(date, "%Y-%m-%d")-delta3).strftime('%Y-%m-%d'),
                               test_end=date)
     index_model.prepare_data()
-    index_model.build_model(n_estimators=300)
+    index_model.build_model(n_estimators=200)
     QA_util_log_info(
         '##JOB05 Now Model Trainnig ==== {}'.format(str(date)), ui_log)
     index_model.model_running()
@@ -75,7 +75,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
 
     index_model.set_target('INDEX_TARGET', mark = 0.3, type = 'percent')
     index_model.prepare_data()
-    index_model.build_model(n_estimators=300)
+    index_model.build_model(n_estimators=200)
     index_model.model_running()
     index_model.model_check()
     index_model.save_model('safe',working_dir = working_dir)
