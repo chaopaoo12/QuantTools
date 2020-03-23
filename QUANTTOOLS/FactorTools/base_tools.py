@@ -130,6 +130,6 @@ def combine_model(index_d, stock_d, safe_d, start, end):
                     c = stock_d.loc[i].sort_values(by='O_PROB', ascending=False).head(num)
                 res = res.reset_index().append(c.reset_index(),ignore_index=True).set_index(['date','code'])
         else:
-            res = None
+            pass
 
     return(res)
