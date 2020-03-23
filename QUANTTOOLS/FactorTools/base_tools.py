@@ -98,6 +98,7 @@ def combine_model(index_d, stock_d, safe_d, start, end):
             index_res = index_d[index_d['y_pred']==1][index_d['RANK']<=5].loc[i].sort_values(by='O_PROB', ascending=False)
         except:
             index_res = None
+
         try:
             safe_res = safe_d[safe_d['y_pred']==1].loc[i]
         except:
@@ -121,7 +122,14 @@ def combine_model(index_d, stock_d, safe_d, start, end):
                 #    c = stock_d[stock_d['RANK'] <= 5].loc[i]
                 res = res.reset_index().append(c.reset_index(),ignore_index=True).set_index(['date','code'])
         elif safe_res is not None:
-            stock_d.loc[i].sort_values(by='O_PROB', ascending=False).head(num)
+            for j in list(safe_res.index):
+                try:
+                    c = stock_d.loc[(i,find_stock(j)),:].sort_values(by='O_PROB', ascending=False).head(num)
+                except:
+                    c = stock_d.loc[i].sort_values(by='O_PROB', ascending=False).head(num)
+                #if c.shape[0] == 0:
+                #    c = stock_d[stock_d['RANK'] <= 5].loc[i]
+                res = res.reset_index().append(c.reset_index(),ignore_index=True).set_index(['date','code'])
         else:
             pass
     return(res)
