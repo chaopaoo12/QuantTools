@@ -125,10 +125,13 @@ def combine_model(index_d, stock_d, safe_d, start, end):
         if index_list is not None:
             for j in index_list:
                 try:
-                    c = stock_d.loc[(i,find_stock(j)),:].sort_values(by='O_PROB', ascending=False).head(num)
+                    c = stock_d.loc[(i,find_stock(j)),:].sort_values(by='O_PROB', ascending=False).head(num).reset_index()
                 except:
-                    c = stock_d.loc[i].sort_values(by='O_PROB', ascending=False).head(num)
-                res = res.reset_index().append(c.reset_index(),ignore_index=True).set_index(['date','code'])
+                    if safe_res is not None:
+                        c = stock_d.loc[i].sort_values(by='O_PROB', ascending=False).head(num).reset_index()
+                    else:
+                        c = pd.DataFrame()
+                res = res.reset_index().append(c,ignore_index=True).set_index(['date','code'])
         else:
             pass
 
