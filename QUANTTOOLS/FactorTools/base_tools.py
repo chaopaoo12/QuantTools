@@ -116,16 +116,20 @@ def combine_model(index_d, stock_d, safe_d, start, end):
             num = 1
 
         if index_res is not None:
-            for j in list(index_res.index):
-                c = stock_d.loc[(i,find_stock(j)),:].sort_values(by='O_PROB', ascending=False).head(num)
-                res = res.reset_index().append(c.reset_index(),ignore_index=True).set_index(['date','code'])
+            index_list = list(index_res.index)
         elif safe_res is not None:
-            for j in list(safe_res.index):
+            index_list = list(safe_res.index)
+        else:
+            index_list = None
+
+        if index_list is not None:
+            for j in index_list:
                 try:
                     c = stock_d.loc[(i,find_stock(j)),:].sort_values(by='O_PROB', ascending=False).head(num)
                 except:
                     c = stock_d.loc[i].sort_values(by='O_PROB', ascending=False).head(num)
                 res = res.reset_index().append(c.reset_index(),ignore_index=True).set_index(['date','code'])
         else:
-            pass
+            res = None
+
     return(res)
