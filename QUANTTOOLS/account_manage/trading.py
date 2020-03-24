@@ -130,6 +130,6 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, exceptions)
                 time.sleep(5)
         sub_accounts = client.get_positions(account1)['sub_accounts']
         positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
-        res = build(target, positions, sub_accounts, trading_date, percent)
+        res = build(target, positions, sub_accounts, trading_date, percent, exceptions)
 
     return(res1)
