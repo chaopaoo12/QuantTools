@@ -135,4 +135,4 @@ def combine_model(index_d, stock_d, safe_d, start, end):
         else:
             pass
 
-    return(res.drop_duplicates())
+    return(res)
