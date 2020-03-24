@@ -15,31 +15,24 @@ def func1(x,y):
     else:
         return x
 
-def build(target, positions, sub_accounts, trading_date, percent):
+def build(target, positions, sub_accounts, trading_date, percent, exceptions):
     if target is None:
         res = pd.concat([positions.set_index('证券代码'),
                          QA_fetch_stock_fianacial_adv(list(positions.set_index('证券代码').index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]],
                         axis=1)
+        exceptions_list = [i for i in list(res.index) if i not in exceptions]
+        res = res.loc[exceptions_list]
         avg_account = 0
         res = res.assign(tar=avg_account[0])
-        #res.ix[res['RANK'].isnull(),'tar'] = 0
-        #res['amt'] = 0
         res['cnt'] = 0
         res['real'] = 0
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     else:
-        print(target)
-        r1 = target.join(positions.set_index('证券代码'),how='outer')
-        #r1 = pd.concat([target,
-        #                positions.set_index('证券代码')],axis=1)
+        exceptions_list = [i for i in list(target.index) if i not in exceptions]
+        r1 = target.loc[exceptions_list].join(positions.set_index('证券代码'),how='outer')
         r1['可用余额'] = r1['可用余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
         res = r1.join(realtm,how='left').join(QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],how='left')
-
-        #res = pd.concat([r1,
-        #                 realtm,
-        #                QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]],
-        #                axis=1)
         avg_account = (sub_accounts['总 资 产']*percent)/target.shape[0]
         res = res.assign(tar=avg_account[0])
         res.ix[res['RANK'].isnull(),'tar'] = 0
@@ -56,21 +49,25 @@ def build(target, positions, sub_accounts, trading_date, percent):
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     return(res)
 
-def trade_roboot(target, account, trading_date,percent, strategy_id):
+def trade_roboot(target, account, trading_date,percent, strategy_id, exceptions):
     logging.basicConfig(level=logging.DEBUG)
     client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
     account1=account
     client.cancel_all(account1)
     account_info = client.get_account(account1)
     sub_accounts = client.get_positions(account1)['sub_accounts']
+    try:
+        frozen = float(client.get_positions(account1)['positions'].set_index('证券代码').loc[exceptions]['市值'].sum())
+    except:
+        frozen = 0
+    sub_accounts = sub_accounts - frozen
     positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
 
     if target is None:
         e = send_trading_message(account1, strategy_id, account_info, None, "触发清仓", None, None, direction = 'SELL', type='MARKET', priceType=4, client=client)
 
-    res = build(target, positions, sub_accounts, trading_date, percent)
+    res = build(target, positions, sub_accounts, trading_date, percent, exceptions)
     res1 = res
-    print(res)
     while res[res['mark']<0].shape[0] + res[res['mark']>0].shape[0] > 0:
 
         if res[res['mark']<0].shape[0] == 0:
