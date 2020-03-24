@@ -56,7 +56,7 @@ def build(target, positions, sub_accounts, trading_date, percent):
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     return(res)
 
-def trade_roboot(tar, account, trading_date,percent, strategy_id):
+def trade_roboot(target, account, trading_date,percent, strategy_id):
     logging.basicConfig(level=logging.DEBUG)
     client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
     account1=account
@@ -65,10 +65,10 @@ def trade_roboot(tar, account, trading_date,percent, strategy_id):
     sub_accounts = client.get_positions(account1)['sub_accounts']
     positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
 
-    if tar is None:
+    if target is None:
         e = send_trading_message(account1, strategy_id, account_info, None, "触发清仓", None, None, direction = 'SELL', type='MARKET', priceType=4, client=client)
 
-    res = build(tar, positions, sub_accounts, trading_date, percent)
+    res = build(target, positions, sub_accounts, trading_date, percent)
     res1 = res
     print(res)
     while res[res['mark']<0].shape[0] + res[res['mark']>0].shape[0] > 0:
@@ -132,6 +132,6 @@ def trade_roboot(tar, account, trading_date,percent, strategy_id):
                 time.sleep(5)
         sub_accounts = client.get_positions(account1)['sub_accounts']
         positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
-        res = build(tar, positions, sub_accounts, trading_date, percent)
+        res = build(target, positions, sub_accounts, trading_date, percent)
 
     return(res1)
