@@ -28,6 +28,7 @@ def build(tar, positions, sub_accounts, trading_date, percent):
         res['real'] = 0
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     else:
+        print(tar)
         r1 = tar.join(positions.set_index('证券代码'),how='outer')
         #r1 = pd.concat([tar,
         #                positions.set_index('证券代码')],axis=1)
