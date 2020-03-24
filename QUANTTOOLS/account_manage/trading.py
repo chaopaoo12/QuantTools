@@ -67,7 +67,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, exceptions 
     account1=account
     client.cancel_all(account1)
     account_info = client.get_account(account1)
-    sub_accounts = client.get_positions(account1)['sub_accounts']['总 资 产']
+    sub_accounts = client.get_positions(account1)['sub_accounts']['总 资 产'].values[0]
     try:
         frozen = float(client.get_positions(account1)['positions'].set_index('证券代码').loc[exceptions]['市值'].sum())
     except:
