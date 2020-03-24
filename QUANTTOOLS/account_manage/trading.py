@@ -31,23 +31,21 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         res['real'] = 0
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     else:
+        avg_account = (sub_accounts['总 资 产']*percent)/target.shape[0]
         tar1 = target.reset_index().groupby('code').max()
         tar1['double'] = target.reset_index().groupby('code')['RANK'].count()
         target = tar1
-        print(target)
         if exceptions is not None:
             exceptions_list = [i for i in list(target.index) if i not in exceptions]
             r1 = target.loc[exceptions_list].join(positions.set_index('证券代码'),how='outer')
         else:
             r1 = target.join(positions.set_index('证券代码'),how='outer')
-        print(r1)
         r1['可用余额'] = r1['可用余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
         res = r1.join(QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],how='left').join(realtm,how='left')
-        print(res)
-        avg_account = (sub_accounts['总 资 产']*percent)/target.shape[0]
         res = res.assign(tar=avg_account[0])
         res.ix[res['RANK'].isnull(),'tar'] = 0
+        res['tar'] = res['tar'] * res['double']
         res['amt'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
         res['cnt'] = (res['tar']/res['amt']/100).apply(lambda x: round(x, 0)*100)
         res['real'] = res['cnt'] * res['amt']
