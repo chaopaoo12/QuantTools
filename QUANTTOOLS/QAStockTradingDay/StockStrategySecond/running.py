@@ -12,7 +12,7 @@ from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTAXIS.QAUtil import QA_util_get_last_day
 from QUANTTOOLS.account_manage import get_Client
 
-def predict(trading_date, strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir, ui_log = None):
+def predict(trading_date, strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir, ui_log = None, exceptions=exceptions):
 
     try:
         QA_util_log_info(
@@ -22,6 +22,11 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         account_info = client.get_account(account1)
         print(account_info)
         sub_accounts = client.get_positions(account1)['sub_accounts']
+        try:
+            frozen = float(client.get_positions(account1)['positions'].set_index('证券代码').loc[exceptions]['市值'].sum())
+        except:
+            frozen = 0
+        sub_accounts = sub_accounts - frozen
     except:
         send_email('错误报告', '云服务器错误,请检查', trading_date)
         send_actionnotice(strategy_id,
@@ -84,6 +89,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         QA_util_log_info(
             '##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
         table1 = tar[tar['RANK']<=5].groupby('date').mean()
+        frozen_positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']].set_index('证券代码').loc[exceptions]
 
         QA_util_log_info(
             '##JOB06 Now Current Holding ==== {}'.format(str(trading_date)), ui_log)
@@ -99,8 +105,9 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
             body4 = build_table(pd.DataFrame(report), '上一交易日模型报告{}'.format(str(QA_util_get_last_day(trading_date))))
             body5 = build_table(pd.DataFrame(top_report), '上一交易日模型报告Top{}'.format(str(QA_util_get_last_day(trading_date))))
             body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date))))
+            body7 = build_table(frozen_positions, '目前锁定持仓')
 
-            msg = build_email(build_head(),msg1,body5,body4,body6,body1,body2,body3)
+            msg = build_email(build_head(),msg1,body5,body4,body6,body1,body2,body7,body3)
         except:
             send_email('交易报告:'+ trading_date, "消息构建失败", 'date')
         send_email('交易报告:'+ trading_date, msg, 'date')
