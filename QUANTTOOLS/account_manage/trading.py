@@ -69,6 +69,7 @@ def trade_roboot(tar, account, trading_date,percent, strategy_id):
 
     res = build(tar, positions, sub_accounts, trading_date, percent)
     res1 = res
+    print(res)
     while res[res['mark']<0].shape[0] + res[res['mark']>0].shape[0] > 0:
 
         if res[res['mark']<0].shape[0] == 0:

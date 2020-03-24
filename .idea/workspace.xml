@@ -1,65 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d7afb2b0-0a9c-40a8-bb48-185a26027412" name="Default Changelist" comment="add">
-      <change afterPath="$PROJECT_DIR$/QUANTTOOLS/account_manage/base_func.py" afterDir="false" />
+    <list default="true" id="8e52287c-8567-4065-bd89-ec042ab55270" name="Default Changelist" comment="ADD">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/mongoSettings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_func.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_DATA_SOURCES" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <option name="HIDDEN_KINDS">
-      <set />
-    </option>
-    <expand>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="quant_oracle" type="feb32156:DbDataSourceImpl" />
-      </path>
-    </expand>
-    <select />
-  </component>
-  <component name="DefaultGradleProjectSettings">
-    <option name="isMigrated" value="true" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="673" column="33" selection-start-line="673" selection-start-column="33" selection-end-line="673" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2786">
-              <caret line="145" column="47" lean-forward="true" selection-start-line="145" selection-start-column="47" selection-end-line="145" selection-end-column="47" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -68,1555 +26,426 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>headl</find>
-      <find>CDLMARUBOZU</find>
-      <find>MIKE</find>
-      <find>QA_fetch_index_day</find>
-      <find>QA_SU_save_usstock_list_day</find>
-      <find>QA_fetch_get_stock_report_wy</find>
-      <find>head</find>
-      <find>QA_fetch_stock_financial_calendar</find>
-      <find>start</find>
-      <find>interest_rate</find>
-      <find>QA_SU_save_interest_rate</find>
-      <find>QA_fetch_financial_code</find>
-      <find>list</find>
-      <find>182</find>
-      <find>QA_fetch_stock_block</find>
-      <find>QA_util_code_tolist</find>
-      <find>CDLHARAMI</find>
-      <find>QA_fetch_get_stock_indicator</find>
-      <find>QA_SU_save_stock_technical_index_day</find>
-      <find>precision</find>
-      <find>benchmark</find>
-      <find>075</find>
-      <find>QA_fetch_index_day_adv</find>
-      <find>dev</find>
-      <find>rng_status</find>
-      <find>train_test_split</find>
-      <find>train_rng</find>
-      <find>pct</find>
-      <find>yesterday</find>
-      <find>neutralization</find>
-    </findStrings>
-    <replaceStrings>
-      <replace />
-      <replace>data</replace>
-      <replace>90</replace>
-    </replaceStrings>
-    <dirStrings>
-      <dir>F:\workspace\QuantTools\QAStockETL\Crawl</dir>
-    </dirStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/__init__.py" />
-        <option value="$PROJECT_DIR$/config/update_x.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/base_func.py" />
-        <option value="$PROJECT_DIR$/config/update_c.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/message/email.py" />
-        <option value="$PROJECT_DIR$/config/daily_running.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/message_func/email.py" />
-        <option value="$PROJECT_DIR$/config/aotu_newstock.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/account_manage/base_func.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_func.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/QAMySQL.py" />
-        <option value="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py" />
-      </list>
-    </option>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
   </component>
-  <component name="IgnoredFileRootStore">
-    <option name="generatedRoots">
-      <set>
-        <option value="F:\workspace\QuantTools\.idea" />
-      </set>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1722" />
-    <option name="y" value="72" />
-    <option name="width" value="1938" />
-    <option name="height" value="1092" />
-  </component>
-  <component name="ProjectId" id="1PanqPGlLUfEfiDk0sfdFR2GbwA" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="quantspider" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="account_manage" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="FactorTools" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="message_func" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-              <item name="FuncTools" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-              <item name="QAFetch" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-              <item name="QASU" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockETL" type="462c0819:PsiDirectoryNode" />
-              <item name="QAUtil" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS" type="462c0819:PsiDirectoryNode" />
-              <item name="QAStockTradingDay" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QuantTools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuantTools" type="462c0819:PsiDirectoryNode" />
-              <item name="QUANTTOOLS.egg-info" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-    </panes>
+  <component name="ProjectId" id="1XG0k1kq2iaS9hR95IRdo8GxXPg" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DatabaseDriversLRU" value="oracle" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="ToolWindowAnt Build.ShowToolbar" value="false" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/config" />
-    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/QUANTTOOLS/QAIndexTradingDay/IndexStrategyFirst" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.4319853" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
-    <property name="vcs.patch.to.clipboard" value="true" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\workspace\QuantTools\config" />
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockETL\QASU" />
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockETL\QAFetch" />
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockETL\Crawly" />
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockETL\QAUtil" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexStrategyFirst" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexModel" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockStrategySecond" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\workspace\QuantTools" />
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS" />
-      <recent name="F:\workspace\QuantTools\config" />
-      <recent name="F:\workspace\QuantTools\QAStockETL" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexModel" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockModel" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockStrategySecond" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockStrategyFirst" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <module name="QuantTools" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d7afb2b0-0a9c-40a8-bb48-185a26027412" name="Default Changelist" comment="" />
-      <created>1552232267939</created>
+      <changelist id="8e52287c-8567-4065-bd89-ec042ab55270" name="Default Changelist" comment="" />
+      <created>1580657262944</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1552232267939</updated>
-      <workItem from="1552232271011" duration="8785000" />
-      <workItem from="1552265880174" duration="7224000" />
-      <workItem from="1552326159799" duration="1025000" />
-      <workItem from="1552327254811" duration="62000" />
-      <workItem from="1552328061816" duration="5025000" />
-      <workItem from="1552401511788" duration="2244000" />
-      <workItem from="1552404303883" duration="2223000" />
-      <workItem from="1552486814354" duration="703000" />
-      <workItem from="1552571712561" duration="1112000" />
-      <workItem from="1552573193349" duration="457000" />
-      <workItem from="1552573911440" duration="37000" />
-      <workItem from="1552575293947" duration="56000" />
-      <workItem from="1552579763470" duration="48000" />
-      <workItem from="1552580394512" duration="57000" />
-      <workItem from="1552580621224" duration="1846000" />
-      <workItem from="1552586595040" duration="25000" />
-      <workItem from="1552652438980" duration="56000" />
-      <workItem from="1552652880187" duration="492000" />
-      <workItem from="1552653436807" duration="654000" />
-      <workItem from="1552659100979" duration="7075000" />
-      <workItem from="1552807357517" duration="3667000" />
-      <workItem from="1552825604120" duration="2733000" />
-      <workItem from="1552836237942" duration="952000" />
-      <workItem from="1552837220153" duration="160000" />
-      <workItem from="1552837399845" duration="11242000" />
-      <workItem from="1552996396206" duration="22326000" />
-      <workItem from="1553136819840" duration="13350000" />
-      <workItem from="1553180422306" duration="17215000" />
-      <workItem from="1553241385570" duration="2491000" />
-      <workItem from="1553265569345" duration="639000" />
-      <workItem from="1553312962933" duration="620000" />
-      <workItem from="1553333425907" duration="913000" />
-      <workItem from="1553334459916" duration="128000" />
-      <workItem from="1553336342864" duration="1929000" />
-      <workItem from="1553350080746" duration="627000" />
-      <workItem from="1553532478085" duration="105000" />
-      <workItem from="1553532741128" duration="33000" />
-      <workItem from="1553532860910" duration="412000" />
-      <workItem from="1553603455056" duration="1570000" />
-      <workItem from="1553608538592" duration="1168000" />
-      <workItem from="1553616333468" duration="2521000" />
-      <workItem from="1553689571994" duration="43000" />
-      <workItem from="1553690486724" duration="565000" />
-      <workItem from="1553691074225" duration="187000" />
-      <workItem from="1553691381878" duration="411000" />
-      <workItem from="1553692090718" duration="3318000" />
-      <workItem from="1553704133136" duration="3209000" />
-      <workItem from="1554055268279" duration="95000" />
-      <workItem from="1554055686976" duration="140000" />
-      <workItem from="1554056154265" duration="94000" />
-      <workItem from="1554121032224" duration="2274000" />
-      <workItem from="1554127851931" duration="29000" />
-      <workItem from="1554129703577" duration="58000" />
-      <workItem from="1554134230773" duration="25000" />
-      <workItem from="1554134477019" duration="13000" />
-      <workItem from="1554134615202" duration="255000" />
-      <workItem from="1554134958276" duration="202000" />
-      <workItem from="1554135485273" duration="400000" />
-      <workItem from="1554305077391" duration="328000" />
-      <workItem from="1554307328071" duration="665000" />
-      <workItem from="1554308038316" duration="131000" />
-      <workItem from="1554535828040" duration="1986000" />
-      <workItem from="1554561614229" duration="590000" />
-      <workItem from="1554613826856" duration="60000" />
-      <workItem from="1554614269762" duration="1290000" />
-      <workItem from="1554615981787" duration="11465000" />
-      <workItem from="1554814933947" duration="155000" />
-      <workItem from="1554815113561" duration="1924000" />
-      <workItem from="1554826651172" duration="3859000" />
-      <workItem from="1555155136760" duration="4305000" />
-      <workItem from="1555177759577" duration="4042000" />
-      <workItem from="1555182182308" duration="2371000" />
-      <workItem from="1555235609175" duration="2069000" />
-      <workItem from="1555249374148" duration="205000" />
-      <workItem from="1555249598598" duration="417000" />
-      <workItem from="1555250122021" duration="3502000" />
-      <workItem from="1555257492062" duration="435000" />
-      <workItem from="1555258277960" duration="149000" />
-      <workItem from="1555260720176" duration="258000" />
-      <workItem from="1555260996333" duration="40000" />
-      <workItem from="1555261051235" duration="114000" />
-      <workItem from="1555261181945" duration="133000" />
-      <workItem from="1555261349573" duration="312000" />
-      <workItem from="1555262338497" duration="647000" />
-      <workItem from="1555263219342" duration="265000" />
-      <workItem from="1555263576797" duration="37000" />
-      <workItem from="1555263846670" duration="695000" />
-      <workItem from="1555289930616" duration="16000" />
-      <workItem from="1555337640587" duration="7000" />
-      <workItem from="1555338085548" duration="266000" />
-      <workItem from="1555338371804" duration="32000" />
-      <workItem from="1555338603621" duration="80000" />
-      <workItem from="1555344351438" duration="2126000" />
-      <workItem from="1555505182798" duration="21000" />
-      <workItem from="1555519087259" duration="694000" />
-      <workItem from="1555521377933" duration="8000" />
-      <workItem from="1555677613315" duration="142000" />
-      <workItem from="1555677863646" duration="5000" />
-      <workItem from="1555687553333" duration="3388000" />
-      <workItem from="1555698415891" duration="714000" />
-      <workItem from="1555699336420" duration="85000" />
-      <workItem from="1555737192061" duration="1075000" />
-      <workItem from="1555738308699" duration="373000" />
-      <workItem from="1555738757156" duration="953000" />
-      <workItem from="1555751271116" duration="611000" />
-      <workItem from="1555777551820" duration="177000" />
-      <workItem from="1555777993951" duration="258000" />
-      <workItem from="1555778415182" duration="254000" />
-      <workItem from="1555780479839" duration="7000" />
-      <workItem from="1555857378635" duration="107000" />
-      <workItem from="1555858676667" duration="18000" />
-      <workItem from="1556037125026" duration="113000" />
-      <workItem from="1556037253490" duration="465000" />
-      <workItem from="1556037845276" duration="10000" />
-      <workItem from="1556037995881" duration="64000" />
-      <workItem from="1556120759923" duration="78000" />
-      <workItem from="1556121262705" duration="210000" />
-      <workItem from="1556121813138" duration="33000" />
-      <workItem from="1556153995875" duration="16000" />
-      <workItem from="1556199968390" duration="6564000" />
-      <workItem from="1556348226704" duration="83000" />
-      <workItem from="1556348385037" duration="74000" />
-      <workItem from="1556349573162" duration="156000" />
-      <workItem from="1556349837176" duration="30000" />
-      <workItem from="1556349952783" duration="145000" />
-      <workItem from="1556350299404" duration="4910000" />
-      <workItem from="1556357613337" duration="213000" />
-      <workItem from="1556357940313" duration="151000" />
-      <workItem from="1556452526369" duration="976000" />
-      <workItem from="1556459077939" duration="1736000" />
-      <workItem from="1556462303573" duration="4790000" />
-      <workItem from="1556474218129" duration="4447000" />
-      <workItem from="1556625635771" duration="1307000" />
-      <workItem from="1556645249450" duration="114000" />
-      <workItem from="1556683268122" duration="29000" />
-      <workItem from="1556794395750" duration="1254000" />
-      <workItem from="1556797518489" duration="165000" />
-      <workItem from="1556812598800" duration="450000" />
-      <workItem from="1556813100723" duration="355000" />
-      <workItem from="1556870556342" duration="756000" />
-      <workItem from="1556894462715" duration="2046000" />
-      <workItem from="1556900357458" duration="3626000" />
-      <workItem from="1556904786022" duration="977000" />
-      <workItem from="1556905791063" duration="1326000" />
-      <workItem from="1556933432644" duration="104000" />
-      <workItem from="1556933604853" duration="687000" />
-      <workItem from="1556934357132" duration="126000" />
-      <workItem from="1556934613063" duration="300000" />
-      <workItem from="1556934957751" duration="139000" />
-      <workItem from="1556935143997" duration="2177000" />
-      <workItem from="1556950374492" duration="470000" />
-      <workItem from="1556950911496" duration="2035000" />
-      <workItem from="1556953780940" duration="2016000" />
-      <workItem from="1556967312125" duration="1267000" />
-      <workItem from="1556968708280" duration="6800000" />
-      <workItem from="1556984430396" duration="2272000" />
-      <workItem from="1556986790367" duration="472000" />
-      <workItem from="1556987556505" duration="19000" />
-      <workItem from="1556987622743" duration="797000" />
-      <workItem from="1556988456648" duration="688000" />
-      <workItem from="1556998665300" duration="437000" />
-      <workItem from="1557016772542" duration="788000" />
-      <workItem from="1557017623527" duration="202000" />
-      <workItem from="1557061569610" duration="1502000" />
-      <workItem from="1557075340322" duration="60000" />
-      <workItem from="1557148124879" duration="21000" />
-      <workItem from="1557190811393" duration="131000" />
-      <workItem from="1557237859319" duration="2307000" />
-      <workItem from="1557242984977" duration="205000" />
-      <workItem from="1557244997447" duration="829000" />
-      <workItem from="1557322331789" duration="855000" />
-      <workItem from="1557323301194" duration="367000" />
-      <workItem from="1557329493337" duration="13000" />
-      <workItem from="1557332666303" duration="1951000" />
-      <workItem from="1557334724958" duration="4033000" />
-      <workItem from="1557461619707" duration="38000" />
-      <workItem from="1557487070274" duration="1612000" />
-      <workItem from="1557491245084" duration="1507000" />
-      <workItem from="1557494024140" duration="73000" />
-      <workItem from="1557502043615" duration="1469000" />
-      <workItem from="1557506087075" duration="62000" />
-      <workItem from="1557506236146" duration="607000" />
-      <workItem from="1557517234556" duration="365000" />
-      <workItem from="1557517632393" duration="82000" />
-      <workItem from="1557558409784" duration="2355000" />
-      <workItem from="1557562390678" duration="232000" />
-      <workItem from="1557562658028" duration="667000" />
-      <workItem from="1557564327380" duration="2661000" />
-      <workItem from="1557571683334" duration="1003000" />
-      <workItem from="1557574111358" duration="25000" />
-      <workItem from="1557574160384" duration="601000" />
-      <workItem from="1557588940955" duration="684000" />
-      <workItem from="1557633586831" duration="8396000" />
-      <workItem from="1557658659438" duration="10399000" />
-      <workItem from="1557679066642" duration="369000" />
-      <workItem from="1557679464975" duration="23000" />
-      <workItem from="1557680055793" duration="197000" />
-      <workItem from="1557680550644" duration="17000" />
-      <workItem from="1557681904479" duration="23000" />
-      <workItem from="1557833422882" duration="2137000" />
-      <workItem from="1557924032489" duration="1580000" />
-      <workItem from="1558016300874" duration="18000" />
-      <workItem from="1558017581392" duration="13410000" />
-      <workItem from="1558161729941" duration="2895000" />
-      <workItem from="1558174931293" duration="3674000" />
-      <workItem from="1558255085150" duration="47000" />
-      <workItem from="1558260586632" duration="68000" />
-      <workItem from="1558272199546" duration="1949000" />
-      <workItem from="1558358345938" duration="848000" />
-      <workItem from="1558359540135" duration="621000" />
-      <workItem from="1558438359348" duration="1098000" />
-      <workItem from="1558442258134" duration="1089000" />
-      <workItem from="1558450686019" duration="5551000" />
-      <workItem from="1558632931321" duration="42000" />
-      <workItem from="1558636285400" duration="56000" />
-      <workItem from="1558668078858" duration="836000" />
-      <workItem from="1558678355182" duration="3759000" />
-      <workItem from="1558701318862" duration="3998000" />
-      <workItem from="1558709871604" duration="253000" />
-      <workItem from="1558712148804" duration="37000" />
-      <workItem from="1558764763487" duration="3339000" />
-      <workItem from="1558845062813" duration="600000" />
-      <workItem from="1558846454498" duration="1260000" />
-      <workItem from="1558875042239" duration="8000" />
-      <workItem from="1558884818822" duration="2290000" />
-      <workItem from="1558896126575" duration="119000" />
-      <workItem from="1558924991048" duration="855000" />
-      <workItem from="1558932409132" duration="9000" />
-      <workItem from="1558940073632" duration="5000" />
-      <workItem from="1558940453701" duration="4099000" />
-      <workItem from="1559018739761" duration="4000" />
-      <workItem from="1559021327878" duration="6533000" />
-      <workItem from="1559061088616" duration="1565000" />
-      <workItem from="1559136290397" duration="603000" />
-      <workItem from="1559145648296" duration="479000" />
-      <workItem from="1559146180775" duration="3346000" />
-      <workItem from="1559206601726" duration="126000" />
-      <workItem from="1559206807832" duration="311000" />
-      <workItem from="1559209699739" duration="679000" />
-      <workItem from="1559216939691" duration="19000" />
-      <workItem from="1559218515331" duration="43000" />
-      <workItem from="1559218924133" duration="778000" />
-      <workItem from="1559220738796" duration="505000" />
-      <workItem from="1559227762941" duration="159000" />
-      <workItem from="1559274197547" duration="2909000" />
-      <workItem from="1559292019219" duration="166000" />
-      <workItem from="1559292415107" duration="450000" />
-      <workItem from="1559294163879" duration="58000" />
-      <workItem from="1559299495340" duration="2579000" />
-      <workItem from="1559304311133" duration="4647000" />
-      <workItem from="1559310102754" duration="716000" />
-      <workItem from="1559378924596" duration="1251000" />
-      <workItem from="1559476021240" duration="33000" />
-      <workItem from="1559483741291" duration="57000" />
-      <workItem from="1559565182231" duration="8000" />
-      <workItem from="1559567041016" duration="4134000" />
-      <workItem from="1559627513536" duration="65000" />
-      <workItem from="1559629406440" duration="73000" />
-      <workItem from="1559630962999" duration="6000" />
-      <workItem from="1559633877063" duration="234000" />
-      <workItem from="1559649860080" duration="17000" />
-      <workItem from="1559650128376" duration="46000" />
-      <workItem from="1559697589000" duration="4965000" />
-      <workItem from="1559718635707" duration="6141000" />
-      <workItem from="1559744282833" duration="70000" />
-      <workItem from="1559744810331" duration="46000" />
-      <workItem from="1559746128472" duration="1233000" />
-      <workItem from="1559747971139" duration="104000" />
-      <workItem from="1559748133814" duration="887000" />
-      <workItem from="1559791705047" duration="85000" />
-      <workItem from="1559811553098" duration="224000" />
-      <workItem from="1559847990421" duration="1546000" />
-      <workItem from="1559849760918" duration="618000" />
-      <workItem from="1559905723272" duration="272000" />
-      <workItem from="1559906111158" duration="1199000" />
-      <workItem from="1560059409638" duration="3391000" />
-      <workItem from="1560099015948" duration="1429000" />
-      <workItem from="1560134967093" duration="64000" />
-      <workItem from="1560149749387" duration="723000" />
-      <workItem from="1560151069471" duration="825000" />
-      <workItem from="1560153235887" duration="1631000" />
-      <workItem from="1560155123788" duration="3959000" />
-      <workItem from="1560173132697" duration="609000" />
-      <workItem from="1560176172169" duration="49000" />
-      <workItem from="1560176242269" duration="4566000" />
-      <workItem from="1560188905967" duration="202000" />
-      <workItem from="1560190835881" duration="44000" />
-      <workItem from="1560227242381" duration="1393000" />
-      <workItem from="1560235399396" duration="2404000" />
-      <workItem from="1560251133248" duration="23000" />
-      <workItem from="1560255194239" duration="212000" />
-      <workItem from="1560261732458" duration="1530000" />
-      <workItem from="1560267955142" duration="142000" />
-      <workItem from="1560268335751" duration="77000" />
-      <workItem from="1560268442184" duration="29000" />
-      <workItem from="1560269328308" duration="1081000" />
-      <workItem from="1560299311229" duration="8968000" />
-      <workItem from="1560326686583" duration="730000" />
-      <workItem from="1560327545844" duration="39000" />
-      <workItem from="1560327616733" duration="2174000" />
-      <workItem from="1560330279240" duration="1441000" />
-      <workItem from="1560333242137" duration="1329000" />
-      <workItem from="1560335113433" duration="60000" />
-      <workItem from="1560340031599" duration="9654000" />
-      <workItem from="1560350807625" duration="325000" />
-      <workItem from="1560351226767" duration="546000" />
-      <workItem from="1560351936042" duration="2655000" />
-      <workItem from="1560356546815" duration="844000" />
-      <workItem from="1560357410578" duration="45000" />
-      <workItem from="1560359311223" duration="1510000" />
-      <workItem from="1560392058366" duration="2407000" />
-      <workItem from="1560402953376" duration="42000" />
-      <workItem from="1560406055100" duration="262000" />
-      <workItem from="1560406632589" duration="286000" />
-      <workItem from="1560414480218" duration="1490000" />
-      <workItem from="1560426621577" duration="100000" />
-      <workItem from="1560427014533" duration="128000" />
-      <workItem from="1560431399083" duration="33000" />
-      <workItem from="1560431450134" duration="442000" />
-      <workItem from="1560432576615" duration="24000" />
-      <workItem from="1560433796974" duration="130000" />
-      <workItem from="1560437211363" duration="17000" />
-      <workItem from="1560487247808" duration="25000" />
-      <workItem from="1560496907965" duration="4349000" />
-      <workItem from="1560525013903" duration="83000" />
-      <workItem from="1560525118947" duration="1266000" />
-      <workItem from="1560587363546" duration="5919000" />
-      <workItem from="1560598547437" duration="160000" />
-      <workItem from="1560672422885" duration="42000" />
-      <workItem from="1560689423025" duration="314000" />
-      <workItem from="1560699553966" duration="1286000" />
-      <workItem from="1560747614602" duration="1017000" />
-      <workItem from="1560768368314" duration="35000" />
-      <workItem from="1560784692472" duration="154000" />
-      <workItem from="1560785232196" duration="153000" />
-      <workItem from="1560785413367" duration="199000" />
-      <workItem from="1560875048381" duration="4000" />
-      <workItem from="1561015150549" duration="306000" />
-      <workItem from="1561015614652" duration="125000" />
-      <workItem from="1561041424148" duration="136000" />
-      <workItem from="1561041906470" duration="47000" />
-      <workItem from="1561042263883" duration="25000" />
-      <workItem from="1561284045261" duration="81000" />
-      <workItem from="1561294824162" duration="4346000" />
-      <workItem from="1561308436110" duration="1633000" />
-      <workItem from="1561343228678" duration="66000" />
-      <workItem from="1561353505452" duration="40000" />
-      <workItem from="1561354637239" duration="30000" />
-      <workItem from="1561354750105" duration="195000" />
-      <workItem from="1561355333783" duration="86000" />
-      <workItem from="1561356929959" duration="23000" />
-      <workItem from="1561375398287" duration="1691000" />
-      <workItem from="1561379274488" duration="5430000" />
-      <workItem from="1561467831191" duration="89000" />
-      <workItem from="1561481099720" duration="308000" />
-      <workItem from="1561481758216" duration="407000" />
-      <workItem from="1561487772176" duration="910000" />
-      <workItem from="1561493280536" duration="53000" />
-      <workItem from="1561523353196" duration="2581000" />
-      <workItem from="1561526034353" duration="9592000" />
-      <workItem from="1561562870940" duration="5893000" />
-      <workItem from="1561614551453" duration="321000" />
-      <workItem from="1561618651048" duration="48000" />
-      <workItem from="1561626798566" duration="28000" />
-      <workItem from="1561626898455" duration="610000" />
-      <workItem from="1561627554524" duration="5580000" />
-      <workItem from="1561635688215" duration="117000" />
-      <workItem from="1561636490987" duration="942000" />
-      <workItem from="1561637523295" duration="115000" />
-      <workItem from="1561637674164" duration="1030000" />
-      <workItem from="1561638760760" duration="360000" />
-      <workItem from="1561639537110" duration="529000" />
-      <workItem from="1561640340011" duration="890000" />
-      <workItem from="1561646471980" duration="1562000" />
-      <workItem from="1561652355627" duration="1938000" />
-      <workItem from="1561654490769" duration="240000" />
-      <workItem from="1561655044470" duration="964000" />
-      <workItem from="1561696895410" duration="1162000" />
-      <workItem from="1561706282375" duration="3058000" />
-      <workItem from="1561709377940" duration="262000" />
-      <workItem from="1561709808060" duration="2605000" />
-      <workItem from="1561714531142" duration="3953000" />
-      <workItem from="1561785456052" duration="826000" />
-      <workItem from="1561787400195" duration="11285000" />
-      <workItem from="1561832951977" duration="176000" />
-      <workItem from="1561834813279" duration="4083000" />
-      <workItem from="1561875597426" duration="114000" />
-      <workItem from="1561875731816" duration="4551000" />
-      <workItem from="1561885918309" duration="1878000" />
-      <workItem from="1561887932012" duration="100000" />
-      <workItem from="1561888201659" duration="4095000" />
-      <workItem from="1561900833158" duration="1913000" />
-      <workItem from="1561905603915" duration="59000" />
-      <workItem from="1561905693314" duration="1921000" />
-      <workItem from="1561907684975" duration="171000" />
-      <workItem from="1561907882294" duration="4697000" />
-      <workItem from="1561978358955" duration="219000" />
-      <workItem from="1561995075655" duration="42000" />
-      <workItem from="1561995136890" duration="15000" />
-      <workItem from="1561995215968" duration="209000" />
-      <workItem from="1561995469359" duration="482000" />
-      <workItem from="1562039767437" duration="45000" />
-      <workItem from="1562049809589" duration="131000" />
-      <workItem from="1562065130700" duration="433000" />
-      <workItem from="1562065773423" duration="1072000" />
-      <workItem from="1562078904491" duration="4264000" />
-      <workItem from="1562129014185" duration="2194000" />
-      <workItem from="1562174330296" duration="13420000" />
-      <workItem from="1562194621573" duration="283000" />
-      <workItem from="1562216100119" duration="109000" />
-      <workItem from="1562220191720" duration="734000" />
-      <workItem from="1562239223239" duration="3481000" />
-      <workItem from="1562243497243" duration="31000" />
-      <workItem from="1562268929486" duration="41000" />
-      <workItem from="1562304137967" duration="729000" />
-      <workItem from="1562311109449" duration="1911000" />
-      <workItem from="1562392840976" duration="624000" />
-      <workItem from="1562405647234" duration="816000" />
-      <workItem from="1562420977419" duration="258000" />
-      <workItem from="1562423339699" duration="739000" />
-      <workItem from="1562481078206" duration="540000" />
-      <workItem from="1562483545658" duration="143000" />
-      <workItem from="1562485433091" duration="745000" />
-      <workItem from="1562512942903" duration="9000" />
-      <workItem from="1562516795491" duration="12000" />
-      <workItem from="1562562163063" duration="725000" />
-      <workItem from="1562564566764" duration="11938000" />
-      <workItem from="1562594568296" duration="45000" />
-      <workItem from="1562596311700" duration="4155000" />
-      <workItem from="1562604301255" duration="13000" />
-      <workItem from="1562606907798" duration="2286000" />
-      <workItem from="1562611114468" duration="661000" />
-      <workItem from="1562616844105" duration="2217000" />
-      <workItem from="1562653310486" duration="43000" />
-      <workItem from="1562653385375" duration="148000" />
-      <workItem from="1562654241953" duration="911000" />
-      <workItem from="1562655193595" duration="83000" />
-      <workItem from="1562656199849" duration="800000" />
-      <workItem from="1562666966414" duration="467000" />
-      <workItem from="1562668291204" duration="22000" />
-      <workItem from="1562668345211" duration="18000" />
-      <workItem from="1562670116518" duration="150000" />
-      <workItem from="1562670627203" duration="827000" />
-      <workItem from="1562679736932" duration="11000" />
-      <workItem from="1562690366159" duration="1230000" />
-      <workItem from="1562694237696" duration="3009000" />
-      <workItem from="1562773466779" duration="51000" />
-      <workItem from="1562781438413" duration="56000" />
-      <workItem from="1562782353566" duration="28000" />
-      <workItem from="1562782981515" duration="413000" />
-      <workItem from="1562783849850" duration="6688000" />
-      <workItem from="1562793716419" duration="878000" />
-      <workItem from="1562817599888" duration="756000" />
-      <workItem from="1562821029127" duration="1884000" />
-      <workItem from="1562976720320" duration="1290000" />
-      <workItem from="1562999190342" duration="563000" />
-      <workItem from="1562999765321" duration="2846000" />
-      <workItem from="1563107155028" duration="464000" />
-      <workItem from="1563107648563" duration="648000" />
-      <workItem from="1563177696714" duration="311000" />
-      <workItem from="1563194241751" duration="964000" />
-      <workItem from="1563212477199" duration="1211000" />
-      <workItem from="1563283588794" duration="1831000" />
-      <workItem from="1563286750268" duration="1255000" />
-      <workItem from="1563293375998" duration="664000" />
-      <workItem from="1563294092254" duration="510000" />
-      <workItem from="1563295847060" duration="1240000" />
-      <workItem from="1563332362596" duration="2361000" />
-      <workItem from="1563364413743" duration="1086000" />
-      <workItem from="1563367830363" duration="22000" />
-      <workItem from="1563367909817" duration="640000" />
-      <workItem from="1563391771438" duration="700000" />
-      <workItem from="1563458007549" duration="155000" />
-      <workItem from="1563459299709" duration="89000" />
-      <workItem from="1563463023308" duration="615000" />
-      <workItem from="1563465919857" duration="92000" />
-      <workItem from="1563468831395" duration="21000" />
-      <workItem from="1563469084289" duration="30000" />
-      <workItem from="1563469504749" duration="311000" />
-      <workItem from="1563472676441" duration="614000" />
-      <workItem from="1563531829927" duration="158000" />
-      <workItem from="1563537117566" duration="46000" />
-      <workItem from="1563541730808" duration="532000" />
-      <workItem from="1563547977385" duration="89000" />
-      <workItem from="1563548704969" duration="28000" />
-      <workItem from="1563548758213" duration="617000" />
-      <workItem from="1563553978714" duration="546000" />
-      <workItem from="1563631084155" duration="680000" />
-      <workItem from="1563633143984" duration="1103000" />
-      <workItem from="1563636294991" duration="2540000" />
-      <workItem from="1563643938180" duration="81000" />
-      <workItem from="1563644178558" duration="752000" />
-      <workItem from="1563675929416" duration="110000" />
-      <workItem from="1563676239314" duration="1217000" />
-      <workItem from="1563721600760" duration="988000" />
-      <workItem from="1563767669789" duration="3972000" />
-      <workItem from="1563776283281" duration="306000" />
-      <workItem from="1563776752682" duration="70000" />
-      <workItem from="1563778622109" duration="636000" />
-      <workItem from="1563811459378" duration="6000" />
-      <workItem from="1563818599121" duration="243000" />
-      <workItem from="1563818981116" duration="143000" />
-      <workItem from="1563824733885" duration="163000" />
-      <workItem from="1563826675028" duration="2616000" />
-      <workItem from="1563860372786" duration="24000" />
-      <workItem from="1563992792126" duration="119000" />
-      <workItem from="1563997665226" duration="182000" />
-      <workItem from="1564078995836" duration="152000" />
-      <workItem from="1564174930572" duration="1436000" />
-      <workItem from="1564190947335" duration="2796000" />
-      <workItem from="1564198190467" duration="142000" />
-      <workItem from="1564280420215" duration="427000" />
-      <workItem from="1564281355361" duration="2741000" />
-      <workItem from="1564314910227" duration="55000" />
-      <workItem from="1564421243671" duration="1381000" />
-      <workItem from="1564423475422" duration="2157000" />
-      <workItem from="1564425836018" duration="254000" />
-      <workItem from="1564429905246" duration="14000" />
-      <workItem from="1564452697140" duration="1328000" />
-      <workItem from="1564459604963" duration="885000" />
-      <workItem from="1564532270332" duration="12000" />
-      <workItem from="1564533228959" duration="218000" />
-      <workItem from="1564536605287" duration="181000" />
-      <workItem from="1564537049233" duration="20000" />
-      <workItem from="1564546644760" duration="137000" />
-      <workItem from="1564586158328" duration="412000" />
-      <workItem from="1564588825588" duration="138000" />
-      <workItem from="1564621274683" duration="4278000" />
-      <workItem from="1564634845998" duration="1515000" />
-      <workItem from="1564639573067" duration="5000" />
-      <workItem from="1564639824488" duration="2081000" />
-      <workItem from="1564672354776" duration="202000" />
-      <workItem from="1564672594275" duration="1121000" />
-      <workItem from="1564692931158" duration="580000" />
-      <workItem from="1564767714497" duration="52000" />
-      <workItem from="1564803833756" duration="444000" />
-      <workItem from="1564804321213" duration="1004000" />
-      <workItem from="1564879430248" duration="786000" />
-      <workItem from="1564881099358" duration="601000" />
-      <workItem from="1564881774667" duration="54000" />
-      <workItem from="1564882400888" duration="114000" />
-      <workItem from="1564883172623" duration="2253000" />
-      <workItem from="1564896405050" duration="3217000" />
-      <workItem from="1564973302608" duration="249000" />
-      <workItem from="1564981667754" duration="72000" />
-      <workItem from="1564981801089" duration="54000" />
-      <workItem from="1564982883944" duration="78000" />
-      <workItem from="1564983072300" duration="844000" />
-      <workItem from="1565002752034" duration="1441000" />
-      <workItem from="1565046801393" duration="706000" />
-      <workItem from="1565051554978" duration="632000" />
-      <workItem from="1565105368394" duration="59000" />
-      <workItem from="1565111658642" duration="759000" />
-      <workItem from="1565113592032" duration="6000" />
-      <workItem from="1565114730969" duration="22000" />
-      <workItem from="1565114969800" duration="377000" />
-      <workItem from="1565151424511" duration="107000" />
-      <workItem from="1565168855771" duration="225000" />
-      <workItem from="1565169146314" duration="445000" />
-      <workItem from="1565238118533" duration="687000" />
-      <workItem from="1565239524784" duration="225000" />
-      <workItem from="1565239795745" duration="34000" />
-      <workItem from="1565240229860" duration="48000" />
-      <workItem from="1565250625948" duration="109000" />
-      <workItem from="1565250933481" duration="22000" />
-      <workItem from="1565264604125" duration="361000" />
-      <workItem from="1565265148565" duration="234000" />
-      <workItem from="1565266040753" duration="549000" />
-      <workItem from="1565267063044" duration="3497000" />
-      <workItem from="1565278261811" duration="101000" />
-      <workItem from="1565348671768" duration="633000" />
-      <workItem from="1565746311063" duration="1528000" />
-      <workItem from="1565749193936" duration="82000" />
-      <workItem from="1565752193498" duration="6755000" />
-      <workItem from="1565764997832" duration="60000" />
-      <workItem from="1565870537825" duration="189000" />
-      <workItem from="1566121015237" duration="186000" />
-      <workItem from="1566121271004" duration="783000" />
-      <workItem from="1566122072536" duration="639000" />
-      <workItem from="1566123866939" duration="1111000" />
-      <workItem from="1566181742609" duration="1262000" />
-      <workItem from="1566183642974" duration="61000" />
-      <workItem from="1566187907970" duration="99000" />
-      <workItem from="1566189061031" duration="1681000" />
-      <workItem from="1566299831122" duration="5138000" />
-      <workItem from="1566309119151" duration="126000" />
-      <workItem from="1566310432646" duration="71000" />
-      <workItem from="1566310550522" duration="1943000" />
-      <workItem from="1566320183181" duration="2431000" />
-      <workItem from="1566329197686" duration="38000" />
-      <workItem from="1566347413329" duration="1634000" />
-      <workItem from="1566351791081" duration="38000" />
-      <workItem from="1566357187340" duration="2032000" />
-      <workItem from="1566381119825" duration="2147000" />
-      <workItem from="1566389212738" duration="264000" />
-      <workItem from="1566389535895" duration="17000" />
-      <workItem from="1566389855447" duration="254000" />
-      <workItem from="1566410099571" duration="3956000" />
-      <workItem from="1566438239069" duration="1295000" />
-      <workItem from="1566445718545" duration="354000" />
-      <workItem from="1566479145443" duration="297000" />
-      <workItem from="1566500562506" duration="1925000" />
-      <workItem from="1566612763813" duration="603000" />
-      <workItem from="1566614140968" duration="3193000" />
-      <workItem from="1566660827707" duration="5000" />
-      <workItem from="1566697658309" duration="709000" />
-      <workItem from="1566698470365" duration="11000" />
-      <workItem from="1566698838011" duration="625000" />
-      <workItem from="1566708876165" duration="78000" />
-      <workItem from="1566742101873" duration="601000" />
-      <workItem from="1566751727729" duration="2934000" />
-      <workItem from="1566790058000" duration="2523000" />
-      <workItem from="1566793079889" duration="183000" />
-      <workItem from="1566797228345" duration="11000" />
-      <workItem from="1566844290360" duration="1185000" />
-      <workItem from="1566879106009" duration="210000" />
-      <workItem from="1566890486421" duration="13000" />
-      <workItem from="1566896810625" duration="235000" />
-      <workItem from="1567009693871" duration="3398000" />
-      <workItem from="1567186348466" duration="311000" />
-      <workItem from="1567186817487" duration="95000" />
-      <workItem from="1567491634153" duration="390000" />
-      <workItem from="1567765013282" duration="3994000" />
-      <workItem from="1567780734441" duration="237000" />
-      <workItem from="1567815542809" duration="152000" />
-      <workItem from="1567826971693" duration="1215000" />
-      <workItem from="1567832092903" duration="1446000" />
-      <workItem from="1567848627024" duration="31000" />
-      <workItem from="1567867787807" duration="1202000" />
-      <workItem from="1567910586004" duration="299000" />
-      <workItem from="1567924972939" duration="348000" />
-      <workItem from="1567934222966" duration="2836000" />
-      <workItem from="1567944807779" duration="1327000" />
-      <workItem from="1567956573990" duration="1758000" />
-      <workItem from="1568174888111" duration="7145000" />
-      <workItem from="1568280011010" duration="2739000" />
-      <workItem from="1568777469253" duration="59000" />
-      <workItem from="1568780206957" duration="557000" />
-      <workItem from="1568781129082" duration="2000000" />
-      <workItem from="1569835692370" duration="409000" />
-      <workItem from="1570507216470" duration="2054000" />
-      <workItem from="1571603181640" duration="297000" />
-      <workItem from="1571613632336" duration="5476000" />
+      <updated>1580657262944</updated>
     </task>
-    <task id="LOCAL-00705" summary="add">
-      <created>1566348803592</created>
-      <option name="number" value="00705" />
-      <option name="presentableId" value="LOCAL-00705" />
+    <task id="LOCAL-00017" summary="ADD">
+      <created>1582618444263</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
       <option name="project" value="LOCAL" />
-      <updated>1566348803592</updated>
+      <updated>1582618444263</updated>
     </task>
-    <task id="LOCAL-00706" summary="add">
-      <created>1566387621342</created>
-      <option name="number" value="00706" />
-      <option name="presentableId" value="LOCAL-00706" />
+    <task id="LOCAL-00018" summary="ADD">
+      <created>1582626383920</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
       <option name="project" value="LOCAL" />
-      <updated>1566387621343</updated>
+      <updated>1582626383920</updated>
     </task>
-    <task id="LOCAL-00707" summary="add">
-      <created>1566389238523</created>
-      <option name="number" value="00707" />
-      <option name="presentableId" value="LOCAL-00707" />
+    <task id="LOCAL-00019" summary="ADD">
+      <created>1582825177411</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
       <option name="project" value="LOCAL" />
-      <updated>1566389238525</updated>
+      <updated>1582825177411</updated>
     </task>
-    <task id="LOCAL-00708" summary="add">
-      <created>1566390093231</created>
-      <option name="number" value="00708" />
-      <option name="presentableId" value="LOCAL-00708" />
+    <task id="LOCAL-00020" summary="ADD">
+      <created>1582965205353</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
-      <updated>1566390093232</updated>
+      <updated>1582965205353</updated>
     </task>
-    <task id="LOCAL-00709" summary="add">
-      <created>1566410261991</created>
-      <option name="number" value="00709" />
-      <option name="presentableId" value="LOCAL-00709" />
+    <task id="LOCAL-00021" summary="ADD">
+      <created>1583044249976</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
       <option name="project" value="LOCAL" />
-      <updated>1566410261992</updated>
+      <updated>1583044249976</updated>
     </task>
-    <task id="LOCAL-00710" summary="add">
-      <created>1566437851400</created>
-      <option name="number" value="00710" />
-      <option name="presentableId" value="LOCAL-00710" />
+    <task id="LOCAL-00022" summary="ADD">
+      <created>1583150310170</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
       <option name="project" value="LOCAL" />
-      <updated>1566437851400</updated>
+      <updated>1583150310170</updated>
     </task>
-    <task id="LOCAL-00711" summary="add">
-      <created>1566438341360</created>
-      <option name="number" value="00711" />
-      <option name="presentableId" value="LOCAL-00711" />
+    <task id="LOCAL-00023" summary="ADD">
+      <created>1583732540988</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
       <option name="project" value="LOCAL" />
-      <updated>1566438341362</updated>
+      <updated>1583732540988</updated>
     </task>
-    <task id="LOCAL-00712" summary="add">
-      <created>1566438577241</created>
-      <option name="number" value="00712" />
-      <option name="presentableId" value="LOCAL-00712" />
+    <task id="LOCAL-00024" summary="ADD">
+      <created>1583735162967</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
       <option name="project" value="LOCAL" />
-      <updated>1566438577241</updated>
+      <updated>1583735162967</updated>
     </task>
-    <task id="LOCAL-00713" summary="add">
-      <created>1566446054157</created>
-      <option name="number" value="00713" />
-      <option name="presentableId" value="LOCAL-00713" />
+    <task id="LOCAL-00025" summary="ADD">
+      <created>1583735248498</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
       <option name="project" value="LOCAL" />
-      <updated>1566446054158</updated>
+      <updated>1583735248498</updated>
     </task>
-    <task id="LOCAL-00714" summary="add">
-      <created>1566479428148</created>
-      <option name="number" value="00714" />
-      <option name="presentableId" value="LOCAL-00714" />
+    <task id="LOCAL-00026" summary="ADD">
+      <created>1583816967031</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
       <option name="project" value="LOCAL" />
-      <updated>1566479428149</updated>
+      <updated>1583816967031</updated>
     </task>
-    <task id="LOCAL-00715" summary="add">
-      <created>1566525546599</created>
-      <option name="number" value="00715" />
-      <option name="presentableId" value="LOCAL-00715" />
+    <task id="LOCAL-00027" summary="ADD">
+      <created>1584237751463</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
       <option name="project" value="LOCAL" />
-      <updated>1566525546599</updated>
+      <updated>1584237751463</updated>
     </task>
-    <task id="LOCAL-00716" summary="add">
-      <created>1566614295775</created>
-      <option name="number" value="00716" />
-      <option name="presentableId" value="LOCAL-00716" />
+    <task id="LOCAL-00028" summary="ADD">
+      <created>1584239595177</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
       <option name="project" value="LOCAL" />
-      <updated>1566614295776</updated>
+      <updated>1584239595177</updated>
     </task>
-    <task id="LOCAL-00717" summary="add">
-      <created>1566615234949</created>
-      <option name="number" value="00717" />
-      <option name="presentableId" value="LOCAL-00717" />
+    <task id="LOCAL-00029" summary="ADD">
+      <created>1584240556800</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
       <option name="project" value="LOCAL" />
-      <updated>1566615234949</updated>
+      <updated>1584240556800</updated>
     </task>
-    <task id="LOCAL-00718" summary="add">
-      <created>1566616009350</created>
-      <option name="number" value="00718" />
-      <option name="presentableId" value="LOCAL-00718" />
+    <task id="LOCAL-00030" summary="ADD">
+      <created>1584240945435</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
       <option name="project" value="LOCAL" />
-      <updated>1566616009350</updated>
+      <updated>1584240945435</updated>
     </task>
-    <task id="LOCAL-00719" summary="add">
-      <created>1566617685571</created>
-      <option name="number" value="00719" />
-      <option name="presentableId" value="LOCAL-00719" />
+    <task id="LOCAL-00031" summary="ADD">
+      <created>1584273806410</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
       <option name="project" value="LOCAL" />
-      <updated>1566617685571</updated>
+      <updated>1584273806410</updated>
     </task>
-    <task id="LOCAL-00720" summary="add">
-      <created>1566697992543</created>
-      <option name="number" value="00720" />
-      <option name="presentableId" value="LOCAL-00720" />
+    <task id="LOCAL-00032" summary="ADD">
+      <created>1584274698233</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
       <option name="project" value="LOCAL" />
-      <updated>1566697992543</updated>
+      <updated>1584274698233</updated>
     </task>
-    <task id="LOCAL-00721" summary="add">
-      <created>1566698239792</created>
-      <option name="number" value="00721" />
-      <option name="presentableId" value="LOCAL-00721" />
+    <task id="LOCAL-00033" summary="ADD">
+      <created>1584275439526</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
       <option name="project" value="LOCAL" />
-      <updated>1566698239792</updated>
+      <updated>1584275439526</updated>
     </task>
-    <task id="LOCAL-00722" summary="add">
-      <created>1566752510158</created>
-      <option name="number" value="00722" />
-      <option name="presentableId" value="LOCAL-00722" />
+    <task id="LOCAL-00034" summary="ADD">
+      <created>1584284612861</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
       <option name="project" value="LOCAL" />
-      <updated>1566752510158</updated>
+      <updated>1584284612861</updated>
     </task>
-    <task id="LOCAL-00723" summary="add">
-      <created>1566752627627</created>
-      <option name="number" value="00723" />
-      <option name="presentableId" value="LOCAL-00723" />
+    <task id="LOCAL-00035" summary="ADD">
+      <created>1584284801826</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
       <option name="project" value="LOCAL" />
-      <updated>1566752627627</updated>
+      <updated>1584284801826</updated>
     </task>
-    <task id="LOCAL-00724" summary="add">
-      <created>1566755011828</created>
-      <option name="number" value="00724" />
-      <option name="presentableId" value="LOCAL-00724" />
+    <task id="LOCAL-00036" summary="ADD">
+      <created>1584287033413</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
       <option name="project" value="LOCAL" />
-      <updated>1566755011828</updated>
+      <updated>1584287033413</updated>
     </task>
-    <task id="LOCAL-00725" summary="add">
-      <created>1566791222626</created>
-      <option name="number" value="00725" />
-      <option name="presentableId" value="LOCAL-00725" />
+    <task id="LOCAL-00037" summary="ADD">
+      <created>1584321292570</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
       <option name="project" value="LOCAL" />
-      <updated>1566791222626</updated>
+      <updated>1584321292570</updated>
     </task>
-    <task id="LOCAL-00726" summary="add">
-      <created>1566791566612</created>
-      <option name="number" value="00726" />
-      <option name="presentableId" value="LOCAL-00726" />
+    <task id="LOCAL-00038" summary="ADD">
+      <created>1584321380153</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
       <option name="project" value="LOCAL" />
-      <updated>1566791566612</updated>
+      <updated>1584321380153</updated>
     </task>
-    <task id="LOCAL-00727" summary="add">
-      <created>1566792872584</created>
-      <option name="number" value="00727" />
-      <option name="presentableId" value="LOCAL-00727" />
+    <task id="LOCAL-00039" summary="ADD">
+      <created>1584321428322</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
       <option name="project" value="LOCAL" />
-      <updated>1566792872584</updated>
+      <updated>1584321428322</updated>
     </task>
-    <task id="LOCAL-00728" summary="add">
-      <created>1566793289382</created>
-      <option name="number" value="00728" />
-      <option name="presentableId" value="LOCAL-00728" />
+    <task id="LOCAL-00040" summary="ADD">
+      <created>1584321554629</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
       <option name="project" value="LOCAL" />
-      <updated>1566793289383</updated>
+      <updated>1584321554629</updated>
     </task>
-    <task id="LOCAL-00729" summary="add">
-      <created>1566844569013</created>
-      <option name="number" value="00729" />
-      <option name="presentableId" value="LOCAL-00729" />
+    <task id="LOCAL-00041" summary="ADD">
+      <created>1584321779541</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
       <option name="project" value="LOCAL" />
-      <updated>1566844569014</updated>
+      <updated>1584321779541</updated>
     </task>
-    <task id="LOCAL-00730" summary="add">
-      <created>1566879221432</created>
-      <option name="number" value="00730" />
-      <option name="presentableId" value="LOCAL-00730" />
+    <task id="LOCAL-00042" summary="ADD">
+      <created>1584321821511</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
       <option name="project" value="LOCAL" />
-      <updated>1566879221432</updated>
+      <updated>1584321821511</updated>
     </task>
-    <task id="LOCAL-00731" summary="add">
-      <created>1566879249515</created>
-      <option name="number" value="00731" />
-      <option name="presentableId" value="LOCAL-00731" />
+    <task id="LOCAL-00043" summary="ADD">
+      <created>1584321938098</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
       <option name="project" value="LOCAL" />
-      <updated>1566879249515</updated>
+      <updated>1584321938098</updated>
     </task>
-    <task id="LOCAL-00732" summary="add">
-      <created>1567186110235</created>
-      <option name="number" value="00732" />
-      <option name="presentableId" value="LOCAL-00732" />
+    <task id="LOCAL-00044" summary="ADD">
+      <created>1584322019824</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
       <option name="project" value="LOCAL" />
-      <updated>1567186110236</updated>
+      <updated>1584322019824</updated>
     </task>
-    <task id="LOCAL-00733" summary="add">
-      <created>1567186123175</created>
-      <option name="number" value="00733" />
-      <option name="presentableId" value="LOCAL-00733" />
+    <task id="LOCAL-00045" summary="ADD">
+      <created>1584322978184</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
       <option name="project" value="LOCAL" />
-      <updated>1567186123175</updated>
+      <updated>1584322978184</updated>
     </task>
-    <task id="LOCAL-00734" summary="add">
-      <created>1567186617264</created>
-      <option name="number" value="00734" />
-      <option name="presentableId" value="LOCAL-00734" />
+    <task id="LOCAL-00046" summary="ADD">
+      <created>1584323019870</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
       <option name="project" value="LOCAL" />
-      <updated>1567186617265</updated>
+      <updated>1584323019870</updated>
     </task>
-    <task id="LOCAL-00735" summary="add">
-      <created>1567186893390</created>
-      <option name="number" value="00735" />
-      <option name="presentableId" value="LOCAL-00735" />
+    <task id="LOCAL-00047" summary="ADD">
+      <created>1584326337141</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
       <option name="project" value="LOCAL" />
-      <updated>1567186893391</updated>
+      <updated>1584326337141</updated>
     </task>
-    <task id="LOCAL-00736" summary="add">
-      <created>1567491851745</created>
-      <option name="number" value="00736" />
-      <option name="presentableId" value="LOCAL-00736" />
+    <task id="LOCAL-00048" summary="ADD">
+      <created>1584326370335</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
       <option name="project" value="LOCAL" />
-      <updated>1567491851746</updated>
+      <updated>1584326370335</updated>
     </task>
-    <task id="LOCAL-00737" summary="add">
-      <created>1567780696309</created>
-      <option name="number" value="00737" />
-      <option name="presentableId" value="LOCAL-00737" />
+    <task id="LOCAL-00049" summary="ADD">
+      <created>1584326799498</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
       <option name="project" value="LOCAL" />
-      <updated>1567780696310</updated>
+      <updated>1584326799498</updated>
     </task>
-    <task id="LOCAL-00738" summary="add">
-      <created>1567780946717</created>
-      <option name="number" value="00738" />
-      <option name="presentableId" value="LOCAL-00738" />
+    <task id="LOCAL-00050" summary="ADD">
+      <created>1584583552054</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
       <option name="project" value="LOCAL" />
-      <updated>1567780946718</updated>
+      <updated>1584583552054</updated>
     </task>
-    <task id="LOCAL-00739" summary="add">
-      <created>1567815639905</created>
-      <option name="number" value="00739" />
-      <option name="presentableId" value="LOCAL-00739" />
+    <task id="LOCAL-00051" summary="ADD">
+      <created>1584715364575</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
       <option name="project" value="LOCAL" />
-      <updated>1567815639906</updated>
+      <updated>1584715364575</updated>
     </task>
-    <task id="LOCAL-00740" summary="add">
-      <created>1567827558562</created>
-      <option name="number" value="00740" />
-      <option name="presentableId" value="LOCAL-00740" />
+    <task id="LOCAL-00052" summary="ADD">
+      <created>1584715403892</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
       <option name="project" value="LOCAL" />
-      <updated>1567827558563</updated>
+      <updated>1584715403892</updated>
     </task>
-    <task id="LOCAL-00741" summary="add">
-      <created>1567838488103</created>
-      <option name="number" value="00741" />
-      <option name="presentableId" value="LOCAL-00741" />
+    <task id="LOCAL-00053" summary="ADD">
+      <created>1584715503560</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
       <option name="project" value="LOCAL" />
-      <updated>1567838488106</updated>
+      <updated>1584715503560</updated>
     </task>
-    <task id="LOCAL-00742" summary="add">
-      <created>1567838525510</created>
-      <option name="number" value="00742" />
-      <option name="presentableId" value="LOCAL-00742" />
+    <task id="LOCAL-00054" summary="ADD">
+      <created>1584832132735</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
       <option name="project" value="LOCAL" />
-      <updated>1567838525510</updated>
+      <updated>1584832132736</updated>
     </task>
-    <task id="LOCAL-00743" summary="add">
-      <created>1567848496464</created>
-      <option name="number" value="00743" />
-      <option name="presentableId" value="LOCAL-00743" />
+    <task id="LOCAL-00055" summary="ADD">
+      <created>1584946385242</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
       <option name="project" value="LOCAL" />
-      <updated>1567848496464</updated>
+      <updated>1584946385242</updated>
     </task>
-    <task id="LOCAL-00744" summary="add">
-      <created>1567891430043</created>
-      <option name="number" value="00744" />
-      <option name="presentableId" value="LOCAL-00744" />
+    <task id="LOCAL-00056" summary="ADD">
+      <created>1584961549899</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
       <option name="project" value="LOCAL" />
-      <updated>1567891430043</updated>
+      <updated>1584961549900</updated>
     </task>
-    <task id="LOCAL-00745" summary="add">
-      <created>1567910869954</created>
-      <option name="number" value="00745" />
-      <option name="presentableId" value="LOCAL-00745" />
+    <task id="LOCAL-00057" summary="ADD">
+      <created>1584961609289</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
       <option name="project" value="LOCAL" />
-      <updated>1567910869955</updated>
+      <updated>1584961609289</updated>
     </task>
-    <task id="LOCAL-00746" summary="add">
-      <created>1567935737681</created>
-      <option name="number" value="00746" />
-      <option name="presentableId" value="LOCAL-00746" />
+    <task id="LOCAL-00058" summary="ADD">
+      <created>1584966854378</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
       <option name="project" value="LOCAL" />
-      <updated>1567935737683</updated>
+      <updated>1584966854378</updated>
     </task>
-    <task id="LOCAL-00747" summary="add">
-      <created>1567951893415</created>
-      <option name="number" value="00747" />
-      <option name="presentableId" value="LOCAL-00747" />
+    <task id="LOCAL-00059" summary="ADD">
+      <created>1584966900771</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
       <option name="project" value="LOCAL" />
-      <updated>1567951893415</updated>
+      <updated>1584966900771</updated>
     </task>
-    <task id="LOCAL-00748" summary="add">
-      <created>1567953657566</created>
-      <option name="number" value="00748" />
-      <option name="presentableId" value="LOCAL-00748" />
+    <task id="LOCAL-00060" summary="ADD">
+      <created>1584975020248</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
       <option name="project" value="LOCAL" />
-      <updated>1567953657566</updated>
+      <updated>1584975020249</updated>
     </task>
-    <task id="LOCAL-00749" summary="add">
-      <created>1567962710093</created>
-      <option name="number" value="00749" />
-      <option name="presentableId" value="LOCAL-00749" />
+    <task id="LOCAL-00061" summary="ADD">
+      <created>1585010465589</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
       <option name="project" value="LOCAL" />
-      <updated>1567962710094</updated>
+      <updated>1585010465590</updated>
     </task>
-    <task id="LOCAL-00750" summary="add">
-      <created>1568179652100</created>
-      <option name="number" value="00750" />
-      <option name="presentableId" value="LOCAL-00750" />
+    <task id="LOCAL-00062" summary="ADD">
+      <created>1585010503236</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
       <option name="project" value="LOCAL" />
-      <updated>1568179652101</updated>
+      <updated>1585010503236</updated>
     </task>
-    <task id="LOCAL-00751" summary="add">
-      <created>1568179660829</created>
-      <option name="number" value="00751" />
-      <option name="presentableId" value="LOCAL-00751" />
+    <task id="LOCAL-00063" summary="ADD">
+      <created>1585010967184</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
       <option name="project" value="LOCAL" />
-      <updated>1568179660829</updated>
+      <updated>1585010967184</updated>
     </task>
-    <task id="LOCAL-00752" summary="add">
-      <created>1568188174559</created>
-      <option name="number" value="00752" />
-      <option name="presentableId" value="LOCAL-00752" />
+    <task id="LOCAL-00064" summary="ADD">
+      <created>1585011312253</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
       <option name="project" value="LOCAL" />
-      <updated>1568188174559</updated>
+      <updated>1585011312253</updated>
     </task>
-    <task id="LOCAL-00753" summary="add">
-      <created>1571603413505</created>
-      <option name="number" value="00753" />
-      <option name="presentableId" value="LOCAL-00753" />
+    <task id="LOCAL-00065" summary="ADD">
+      <created>1585042630393</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
       <option name="project" value="LOCAL" />
-      <updated>1571603413505</updated>
+      <updated>1585042630393</updated>
     </task>
-    <option name="localTasksCounter" value="754" />
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="78535000" />
-  </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-1929" y="-9" width="1938" height="1098" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Designer" order="2" />
-      <window_info id="Learn" order="3" />
-      <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.3290461" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.3290461" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.3290461" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Maven" order="3" />
-      <window_info anchor="right" id="Mongo Explorer" order="4" />
-      <window_info anchor="right" id="Palette&#9;" order="5" />
-      <window_info anchor="right" id="SciView" order="6" />
-      <window_info anchor="right" id="Database" order="7" />
-      <window_info anchor="right" x="0" y="0" width="434" height="898" id="Documentation" order="8" side_tool="true" weight="0.3299356" />
-    </layout>
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
-  </component>
-  <component name="Vcs.Log.History.Properties">
-    <option name="COLUMN_ORDER">
-      <list>
-        <option value="0" />
-        <option value="2" />
-        <option value="3" />
-        <option value="1" />
-      </list>
-    </option>
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER" />
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="Branch">
-          <value>
-            <list />
-          </value>
-        </entry>
-        <entry key="User">
-          <value>
-            <list />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add" />
-    <option name="LAST_COMMIT_MESSAGE" value="add" />
+    <MESSAGE value="ADD" />
+    <option name="LAST_COMMIT_MESSAGE" value="ADD" />
   </component>
-  <component name="antWorkspaceConfiguration">
-    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
-    <option name="FILTER_TARGETS" value="false" />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="4" column="105" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="105" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/save_stock_technical_index.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="2" selection-start-line="2" selection-end-line="4" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAAlpha.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="12" column="34" selection-start-line="12" selection-start-column="34" selection-end-line="12" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/aotu_newstock.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/message_func/email.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="137" column="14" selection-start-line="137" selection-start-column="4" selection-end-line="137" selection-end-column="14" />
-          <folding>
-            <element signature="e#14#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/account_manage/base_func.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="2" column="23" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/FactorTools/base_func.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="17" column="76" selection-start-line="17" selection-start-column="76" selection-end-line="17" selection-end-column="76" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QADate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="22" column="7" selection-start-line="22" selection-start-column="7" selection-end-line="22" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAAlpha.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1380">
-          <caret line="69" column="20" selection-start-line="69" selection-start-column="20" selection-end-line="69" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/update_x.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/database_settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuantFactor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="59" column="52" selection-start-line="59" selection-start-column="52" selection-end-line="59" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/FuncTools/base_func.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
-          <caret line="69" column="14" selection-start-line="69" selection-start-column="14" selection-end-line="69" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/daily_running.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" column="83" selection-start-line="3" selection-start-column="67" selection-end-line="3" selection-end-column="83" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/update_a.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-560" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/update_ab.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-399" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/update_ac.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="52" column="29" lean-forward="true" selection-start-line="52" selection-start-column="29" selection-end-line="52" selection-end-column="29" />
-          <folding>
-            <element signature="e#1190#1732#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="87" column="57" lean-forward="true" selection-start-line="87" selection-start-column="57" selection-end-line="87" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/update_c.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="62" column="20" lean-forward="true" selection-start-line="62" selection-start-column="20" selection-end-line="62" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAUtil/QAEtl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="880" column="31" selection-start-line="880" selection-start-column="31" selection-end-line="880" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QASU/QAMySQL.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="193" lean-forward="true" selection-start-line="193" selection-end-line="193" />
-          <folding>
-            <element signature="e#2#170#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockETL/QAFetch/QAQuery.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="673" column="33" selection-start-line="673" selection-start-column="33" selection-end-line="673" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StrategyOne.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2786">
-          <caret line="145" column="47" lean-forward="true" selection-start-line="145" selection-start-column="47" selection-end-line="145" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+  <component name="WindowStateProjectService">
+    <state x="636" y="236" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1582965237896">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="636" y="236" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1582965237896" />
+    <state x="274" y="74" key="CommitChangelistDialog2" timestamp="1585042629182">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="274" y="74" key="CommitChangelistDialog2/0.0.1920.1032@0.0.1920.1032" timestamp="1585042629182" />
+    <state x="686" y="209" key="FileChooserDialogImpl" timestamp="1584237403322">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="686" y="209" key="FileChooserDialogImpl/0.0.1920.1032@0.0.1920.1032" timestamp="1584237403321" />
+    <state x="311" y="0" key="SettingsEditor" timestamp="1584237484805">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="311" y="0" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1584237484805" />
+    <state x="566" y="294" width="801" height="442" key="com.intellij.ide.util.TipDialog" timestamp="1585041770136">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="566" y="294" width="801" height="442" key="com.intellij.ide.util.TipDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1585041770136" />
+    <state x="539" y="-1" width="840" height="1034" key="search.everywhere.popup" timestamp="1581503683535">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="539" y="-1" width="840" height="1034" key="search.everywhere.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1581503683535" />
   </component>
 </project>
