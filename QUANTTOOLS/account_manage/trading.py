@@ -31,7 +31,6 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         res['real'] = 0
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     else:
-        avg_account = (sub_accounts['总 资 产']*percent)/target.shape[0]
         tar1 = target.reset_index().groupby('code').max()
         tar1['double'] = target.reset_index().groupby('code')['RANK'].count()
         target = tar1
@@ -43,6 +42,7 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         r1['可用余额'] = r1['可用余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
         res = r1.join(QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],how='left').join(realtm,how='left')
+        avg_account = (sub_accounts['总 资 产']*percent)/target['double'].sum()
         res = res.assign(tar=avg_account[0])
         res.ix[res['RANK'].isnull(),'tar'] = 0
         res['tar'] = res['tar'] * res['double']
@@ -142,6 +142,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, exceptions 
                 time.sleep(5)
         sub_accounts = client.get_positions(account1)['sub_accounts']
         positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
+        print(exceptions)
         res = build(target, positions, sub_accounts, trading_date, percent, exceptions)
 
     return(res1)

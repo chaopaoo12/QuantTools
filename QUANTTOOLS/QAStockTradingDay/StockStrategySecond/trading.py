@@ -11,7 +11,7 @@ import time
 import datetime
 from QUANTAXIS.QAUtil import QA_util_get_last_day
 
-def trading(trading_date, percent=percent, strategy_id= '机器学习1号', account1= 'name:client-1', working_dir= working_dir, ui_log= None):
+def trading(trading_date, percent=percent, strategy_id= '机器学习1号', account1= 'name:client-1', working_dir= working_dir, ui_log= None, exceptions= exceptions):
 
     try:
         QA_util_log_info(
