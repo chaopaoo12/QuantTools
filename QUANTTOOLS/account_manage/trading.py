@@ -54,6 +54,7 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         res = res.fillna(0)
         res1 = res[res['tar']>0]
         res2 = res[res['tar']==0]
+        print(res1)
         res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100-100
         res = pd.concat([res1,res2])
         res['real'] = res['cnt'] * res['amt']
