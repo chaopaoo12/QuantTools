@@ -27,7 +27,7 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         else:
             pass
         avg_account = 0
-        res = res.assign(tar=avg_account[0])
+        res = res.assign(tar=avg_account)
         res['cnt'] = 0
         res['real'] = 0
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
@@ -44,7 +44,7 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
         res = r1.join(QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],how='left').join(realtm,how='left')
         avg_account = (sub_accounts * percent)/target['double'].sum()
-        res = res.assign(tar=avg_account[0])
+        res = res.assign(tar=avg_account)
         res.ix[res['RANK'].isnull(),'tar'] = 0
         res['tar'] = res['tar'] * res['double']
         res['amt'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
