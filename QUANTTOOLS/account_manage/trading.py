@@ -75,20 +75,23 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, exceptions)
             pass
         else:
             for i in res[res['mark'] < 0].index:
-                cnt = float(res.at[i, 'cnt'])
-                tar = float(res.at[i, 'real'])
-                NAME = res.at[i, 'NAME']
-                INDUSTRY = res.at[i, 'INDUSTRY']
-                mark = abs(float(res.at[i, 'mark']))
+                if i not in exceptions:
+                    cnt = float(res.at[i, 'cnt'])
+                    tar = float(res.at[i, 'real'])
+                    NAME = res.at[i, 'NAME']
+                    INDUSTRY = res.at[i, 'INDUSTRY']
+                    mark = abs(float(res.at[i, 'mark']))
 
-                print('卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
-                                                                                            NAME= NAME,
-                                                                                            INDUSTRY= INDUSTRY,
-                                                                                            cnt=abs(mark),
-                                                                                            target=cnt,
-                                                                                            tar=tar))
-                e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='MARKET', priceType=4, client=client)
-                time.sleep(5)
+                    print('卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
+                                                                                                NAME= NAME,
+                                                                                                INDUSTRY= INDUSTRY,
+                                                                                                cnt=abs(mark),
+                                                                                                target=cnt,
+                                                                                                tar=tar))
+                    e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='MARKET', priceType=4, client=client)
+                    time.sleep(5)
+                else:
+                    pass
         time.sleep(30)
 
         for i in res[res['mark'] == 0].index:
