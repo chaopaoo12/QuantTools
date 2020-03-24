@@ -15,8 +15,8 @@ def func1(x,y):
     else:
         return x
 
-def build(tar, positions, sub_accounts, trading_date, percent):
-    if tar is None:
+def build(target, positions, sub_accounts, trading_date, percent):
+    if target is None:
         res = pd.concat([positions.set_index('证券代码'),
                          QA_fetch_stock_fianacial_adv(list(positions.set_index('证券代码').index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]],
                         axis=1)
@@ -28,9 +28,9 @@ def build(tar, positions, sub_accounts, trading_date, percent):
         res['real'] = 0
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     else:
-        print(tar)
-        r1 = tar.join(positions.set_index('证券代码'),how='outer')
-        #r1 = pd.concat([tar,
+        print(target)
+        r1 = target.join(positions.set_index('证券代码'),how='outer')
+        #r1 = pd.concat([target,
         #                positions.set_index('证券代码')],axis=1)
         r1['可用余额'] = r1['可用余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
