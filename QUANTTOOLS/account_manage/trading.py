@@ -123,11 +123,11 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, exceptions 
             pass
         else:
             for i in res[res['mark'] > 0].index:
-                cnt = float(res.at[i, 'cnt'])
-                tar = float(res.at[i, 'real'])
-                NAME = res.at[i, 'NAME']
-                INDUSTRY = res.at[i, 'INDUSTRY']
-                mark = abs(float(res.at[i, 'mark']))
+                cnt = float(res.at[i, 'cnt'].sum())
+                tar = float(res.at[i, 'real'].sum())
+                NAME = res.at[i, 'NAME'][0]
+                INDUSTRY = res.at[i, 'INDUSTRY'][0]
+                mark = abs(float(res.at[i, 'mark'].sum()))
                 print('买入 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
                                                                                             NAME= NAME,
                                                                                             INDUSTRY=INDUSTRY,
