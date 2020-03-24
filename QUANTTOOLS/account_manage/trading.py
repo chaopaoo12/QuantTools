@@ -73,6 +73,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, exceptions 
     except:
         frozen = 0
     sub_accounts = sub_accounts - frozen
+    print(sub_accounts)
     positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
 
     if target is None:
