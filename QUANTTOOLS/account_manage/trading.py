@@ -53,7 +53,6 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         res = res.fillna(0)
         res1 = res[res['tar']>0]
         res2 = res[res['tar']==0]
-        print(res1)
         res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100-100
         res = pd.concat([res1,res2])
         res['real'] = res['cnt'] * res['amt']
@@ -87,7 +86,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, exceptions 
             for i in res[res['mark'] < 0].index:
                 if i not in exceptions:
                     cnt = float(res.at[i, 'cnt'])
-                    tar = float(res.at[i, 'real'])
+                    tar = float(res.at[i, '股票余额'])
                     NAME = res.at[i, 'NAME']
                     INDUSTRY = res.at[i, 'INDUSTRY']
                     mark = abs(float(res.at[i, 'mark']))
