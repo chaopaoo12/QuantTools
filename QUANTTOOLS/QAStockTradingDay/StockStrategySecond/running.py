@@ -73,6 +73,9 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         print(trading_date)
         close = QA_fetch_stock_day_adv(list(tar1.index),trading_date,trading_date).data.loc[trading_date].reset_index('date')['close']
         info = QA_fetch_stock_fianacial_adv(list(tar1.index),trading_date,trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
+        print(tar2)
+        print(close)
+        print(info)
         res = pd.concat([tar2,close,info],axis=1)
 
         QA_util_log_info(
