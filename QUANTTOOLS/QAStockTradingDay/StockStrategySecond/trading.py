@@ -47,7 +47,6 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
         r_tar = tar.loc[trading_date][['Z_PROB','O_PROB','RANK']]
     except:
         r_tar = None
-    print(tar)
     if r_tar is None:
         send_email('交易报告:'+ trading_date, "空仓状态", 'date')
     else:

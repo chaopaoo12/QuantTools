@@ -61,6 +61,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     tar = combine_model(index_b, stock_b, safe_b, str(trading_date[0:7])+"-01",trading_date)
     QA_util_log_info(
         '##JOB03 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)
+    print(tar)
     try:
         tar1 = tar.loc[trading_date]
     except:
