@@ -40,7 +40,7 @@ def build(target, positions, sub_accounts, trading_date, percent):
         #                 realtm,
         #                QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]],
         #                axis=1)
-        avg_account = (sub_accounts['总 资 产']*percent)/tar.shape[0]
+        avg_account = (sub_accounts['总 资 产']*percent)/target.shape[0]
         res = res.assign(tar=avg_account[0])
         res.ix[res['RANK'].isnull(),'tar'] = 0
         res['amt'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
