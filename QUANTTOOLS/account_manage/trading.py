@@ -31,6 +31,9 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         res['real'] = 0
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     else:
+        tar1 = target.reset_index().groupby('code').max()
+        tar1['double'] = target.reset_index().groupby('code')['RANK'].count()
+        target = tar1
         print(target)
         if exceptions is not None:
             exceptions_list = [i for i in list(target.index) if i not in exceptions]
@@ -126,11 +129,11 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, exceptions 
             pass
         else:
             for i in res[res['mark'] > 0].index:
-                cnt = float(res.at[i, 'cnt'].sum())
-                tar = float(res.at[i, 'real'].sum())
-                NAME = res.at[i, 'NAME'][0]
-                INDUSTRY = res.at[i, 'INDUSTRY'][0]
-                mark = abs(float(res.at[i, 'mark'].sum()))
+                cnt = float(res.at[i, 'cnt'])
+                tar = float(res.at[i, 'real'])
+                NAME = res.at[i, 'NAME']
+                INDUSTRY = res.at[i, 'INDUSTRY']
+                mark = abs(float(res.at[i, 'mark']))
                 print('买入 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
                                                                                             NAME= NAME,
                                                                                             INDUSTRY=INDUSTRY,
