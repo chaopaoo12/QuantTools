@@ -43,7 +43,7 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         r1['可用余额'] = r1['可用余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
         res = r1.join(QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],how='left').join(realtm,how='left')
-        avg_account = (sub_accounts['总 资 产']*percent)/target['double'].sum()
+        avg_account = (sub_accounts * percent)/target['double'].sum()
         res = res.assign(tar=avg_account[0])
         res.ix[res['RANK'].isnull(),'tar'] = 0
         res['tar'] = res['tar'] * res['double']
@@ -66,7 +66,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, exceptions 
     account1=account
     client.cancel_all(account1)
     account_info = client.get_account(account1)
-    sub_accounts = client.get_positions(account1)['sub_accounts']
+    sub_accounts = client.get_positions(account1)['sub_accounts']['总 资 产']
     try:
         frozen = float(client.get_positions(account1)['positions'].set_index('证券代码').loc[exceptions]['市值'].sum())
     except:
