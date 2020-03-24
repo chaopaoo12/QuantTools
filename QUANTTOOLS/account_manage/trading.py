@@ -29,6 +29,7 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     else:
         exceptions_list = [i for i in list(target.index) if i not in exceptions]
+        print(exceptions_list)
         r1 = target.loc[exceptions_list].join(positions.set_index('证券代码'),how='outer')
         r1['可用余额'] = r1['可用余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
