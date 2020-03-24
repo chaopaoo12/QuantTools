@@ -33,7 +33,7 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         r1 = target.loc[exceptions_list].join(positions.set_index('证券代码'),how='outer')
         r1['可用余额'] = r1['可用余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
-        res = r1.join(realtm,how='left').join(QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],how='left')
+        res = r1.join(QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],how='left').join(realtm,how='left')
         avg_account = (sub_accounts['总 资 产']*percent)/target.shape[0]
         res = res.assign(tar=avg_account[0])
         res.ix[res['RANK'].isnull(),'tar'] = 0
