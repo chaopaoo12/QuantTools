@@ -69,14 +69,14 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
 
     h1 = int(datetime.datetime.now().strftime("%H"))
     m1 = int(datetime.datetime.now().strftime("%M"))
-    while h1 == 14 and m1 <= 50 :
+    while h1 == 9 and m1 <= 25 :
         h1 = int(datetime.datetime.now().strftime("%H"))
         m1 = int(datetime.datetime.now().strftime("%M"))
         time.sleep(30)
 
     QA_util_log_info(
         '##JOB04 Now Trading ==== {}'.format(str(trading_date)), ui_log)
-    res = trade_roboot(r_tar, account1, trading_date, percent, strategy_id, type='end', exceptions = exceptions)
+    res = trade_roboot(r_tar, account1, trading_date, percent, strategy_id, type='morning', exceptions = exceptions)
     return(res)
 
 

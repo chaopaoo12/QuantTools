@@ -2,6 +2,7 @@ from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_list
 from QUANTAXIS.QAFetch import QA_fetch_get_stock_realtime
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
 import pandas as pd
 import logging
 import strategyease_sdk
@@ -18,7 +19,8 @@ def func1(x,y):
 def build(target, positions, sub_accounts, trading_date, percent, exceptions):
     if target is None:
         res = pd.concat([positions.set_index('证券代码'),
-                         QA_fetch_stock_fianacial_adv(list(positions.set_index('证券代码').index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]],
+                         QA_fetch_stock_fianacial_adv(list(positions.set_index('证券代码').index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],
+                         QA_fetch_stock_day_adv(list(positions.set_index('证券代码').index),trading_date,trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close_qfq']],
                         axis=1)
         if exceptions is not None:
             exceptions_list = [i for i in list(res.index) if i not in exceptions]
@@ -41,7 +43,8 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
             r1 = target.join(positions.set_index('证券代码'),how='outer')
         r1['可用余额'] = r1['可用余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
-        res = r1.join(QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],how='left').join(realtm,how='left')
+        close = QA_fetch_stock_day_adv(list(positions.set_index('证券代码').index),trading_date,trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close_qfq']
+        res = r1.join(QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],how='left').join(realtm,how='left').join(close,how='left')
         avg_account = (sub_accounts * percent)/target['double'].sum()
         res = res.assign(tar=avg_account)
         res.ix[res['RANK'].isnull(),'tar'] = 0
@@ -59,7 +62,133 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
     return(res)
 
-def trade_roboot(target, account, trading_date,percent, strategy_id, exceptions = None):
+def trade_roboot(target, account, trading_date,percent, strategy_id, type='end', exceptions = None):
+    logging.basicConfig(level=logging.DEBUG)
+    client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
+    account1=account
+    client.cancel_all(account1)
+    account_info = client.get_account(account1)
+    sub_accounts = client.get_positions(account1)['sub_accounts']['总 资 产'].values[0]
+    try:
+        frozen = float(client.get_positions(account1)['positions'].set_index('证券代码').loc[exceptions]['市值'].sum())
+    except:
+        frozen = 0
+    sub_accounts = sub_accounts - frozen
+    positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
+
+    if target is None:
+        e = send_trading_message(account1, strategy_id, account_info, None, "触发清仓", None, None, direction = 'SELL', type='MARKET', priceType=4, client=client)
+
+    res = build(target, positions, sub_accounts, trading_date, percent, exceptions)
+    res1 = res
+    while res[res['mark']<0].shape[0] + res[res['mark']>0].shape[0] > 0:
+
+        if res[res['mark']<0].shape[0] == 0:
+            pass
+        else:
+            for i in res[res['mark'] < 0].index:
+                if i not in exceptions:
+                    if type == 'end':
+                        cnt = float(res.at[i, 'cnt'])
+                        tar = float(res.at[i, '股票余额'])
+                        NAME = res.at[i, 'NAME']
+                        INDUSTRY = res.at[i, 'INDUSTRY']
+                        mark = abs(float(res.at[i, 'mark']))
+
+                        print('卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
+                                                                                                    NAME= NAME,
+                                                                                                    INDUSTRY= INDUSTRY,
+                                                                                                    cnt=abs(mark),
+                                                                                                    target=cnt,
+                                                                                                    tar=tar))
+                        e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='MARKET', priceType=4, client=client)
+                    if type == 'morning':
+                        cnt = float(res.at[i, 'cnt'])
+                        tar = float(res.at[i, '股票余额'])
+                        NAME = res.at[i, 'NAME']
+                        INDUSTRY = res.at[i, 'INDUSTRY']
+                        mark = abs(float(res.at[i, 'mark']))
+                        price = round(float(res.at[i, 'close_qfq']*1.0985),2)
+                        print('早盘挂单卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},单价:{price},总金额:{tar}'.format(code=i,
+                                                                                                    NAME= NAME,
+                                                                                                    INDUSTRY= INDUSTRY,
+                                                                                                    cnt=abs(mark),
+                                                                                                    target=cnt,
+                                                                                                    tar=tar,
+                                                                                                    price=price))
+                        e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='LIMIT', price=price, client=client)
+                    time.sleep(5)
+                else:
+                    pass
+        time.sleep(30)
+
+        for i in res[res['mark'] == 0].index:
+            cnt = float(res.at[i, 'cnt'])
+            tar = float(res.at[i, 'real'])
+            NAME = res.at[i, 'NAME']
+            INDUSTRY = res.at[i, 'INDUSTRY']
+            mark = abs(float(res.at[i, 'mark']))
+            print('继续持有 {code}({NAME},{INDUSTRY}), 目标持仓:{target},总金额:{tar}'.format(code=i,
+                                                                                   NAME= NAME,
+                                                                                   INDUSTRY=INDUSTRY,
+                                                                                   target=cnt,
+                                                                                   tar=tar))
+            send_actionnotice(strategy_id,
+                              account_info,
+                              '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= NAME, INDUSTRY=INDUSTRY),
+                              direction = 'HOLD',
+                              offset='HOLD',
+                              volume=abs(mark)
+                              )
+
+        time.sleep(10)
+        if res[res['mark'] > 0].shape[0] == 0:
+            pass
+        else:
+            for i in res[res['mark'] > 0].index:
+                if type == 'end':
+                    cnt = float(res.at[i, 'cnt'])
+                    tar = float(res.at[i, 'real'])
+                    NAME = res.at[i, 'NAME']
+                    INDUSTRY = res.at[i, 'INDUSTRY']
+                    mark = abs(float(res.at[i, 'mark']))
+                    print('买入 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
+                                                                                                NAME= NAME,
+                                                                                                INDUSTRY=INDUSTRY,
+                                                                                                cnt=abs(mark),
+                                                                                                target=cnt,
+                                                                                                tar=tar))
+                    e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='MARKET', priceType=4, client=client)
+                elif type == 'morning':
+                    cnt = float(res.at[i, 'cnt'])
+                    tar = float(res.at[i, 'real'])
+                    NAME = res.at[i, 'NAME']
+                    INDUSTRY = res.at[i, 'INDUSTRY']
+                    mark = abs(float(res.at[i, 'mark']))
+                    price = round(float(res.at[i, 'close_qfq']*(1-0.0985)),2)
+                    print('早盘挂单买入 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},单价:{price},总金额:{tar}'.format(code=i,
+                                                                                                NAME= NAME,
+                                                                                                INDUSTRY=INDUSTRY,
+                                                                                                cnt=abs(mark),
+                                                                                                target=cnt,
+                                                                                                tar=tar,
+                                                                                                price=price))
+                    e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='LIMIT', price=price, client=client)
+                else:
+                    pass
+                time.sleep(5)
+        if type == 'end':
+            sub_accounts = client.get_positions(account1)['sub_accounts']['总 资 产'].values[0] - frozen
+            positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
+            res = build(target, positions, sub_accounts, trading_date, percent, exceptions)
+        elif type == 'morning':
+            pass
+        else:
+            pass
+
+    return(res1)
+
+def trade_morning(target, account, trading_date,percent, strategy_id, exceptions = None):
     logging.basicConfig(level=logging.DEBUG)
     client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
     account1=account

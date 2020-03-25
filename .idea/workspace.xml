@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8e52287c-8567-4065-bd89-ec042ab55270" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StockStrategySecond/trading_morning.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StockStrategySecond/running.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StockStrategySecond/running.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StockStrategySecond/trading.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StockStrategySecond/trading.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/account_manage/trading.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/account_manage/trading.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/account_manage/trading_message.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/account_manage/trading_message.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,24 +39,24 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/QUANTTOOLS/QAIndexTradingDay/IndexStrategyFirst" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StockStrategySecond" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexStrategyFirst" />
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexModel" />
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockStrategySecond" />
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexModel" />
       <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockModel" />
       <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockStrategySecond" />
       <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockStrategyFirst" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockStrategySecond" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexStrategyFirst" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexModel" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -64,69 +69,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1580657262944</updated>
-    </task>
-    <task id="LOCAL-00047" summary="ADD">
-      <created>1584326337141</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1584326337141</updated>
-    </task>
-    <task id="LOCAL-00048" summary="ADD">
-      <created>1584326370335</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1584326370335</updated>
-    </task>
-    <task id="LOCAL-00049" summary="ADD">
-      <created>1584326799498</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1584326799498</updated>
-    </task>
-    <task id="LOCAL-00050" summary="ADD">
-      <created>1584583552054</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1584583552054</updated>
-    </task>
-    <task id="LOCAL-00051" summary="ADD">
-      <created>1584715364575</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1584715364575</updated>
-    </task>
-    <task id="LOCAL-00052" summary="ADD">
-      <created>1584715403892</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1584715403892</updated>
-    </task>
-    <task id="LOCAL-00053" summary="ADD">
-      <created>1584715503560</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1584715503560</updated>
-    </task>
-    <task id="LOCAL-00054" summary="ADD">
-      <created>1584832132735</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1584832132736</updated>
-    </task>
-    <task id="LOCAL-00055" summary="ADD">
-      <created>1584946385242</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1584946385242</updated>
     </task>
     <task id="LOCAL-00056" summary="ADD">
       <created>1584961549899</created>
@@ -408,7 +350,70 @@
       <option name="project" value="LOCAL" />
       <updated>1585072473413</updated>
     </task>
-    <option name="localTasksCounter" value="96" />
+    <task id="LOCAL-00096" summary="ADD">
+      <created>1585072909570</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1585072909570</updated>
+    </task>
+    <task id="LOCAL-00097" summary="ADD">
+      <created>1585073281164</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1585073281164</updated>
+    </task>
+    <task id="LOCAL-00098" summary="ADD">
+      <created>1585074043597</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1585074043598</updated>
+    </task>
+    <task id="LOCAL-00099" summary="ADD">
+      <created>1585074341798</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1585074341799</updated>
+    </task>
+    <task id="LOCAL-00100" summary="ADD">
+      <created>1585074403345</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1585074403345</updated>
+    </task>
+    <task id="LOCAL-00101" summary="ADD">
+      <created>1585075395703</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1585075395703</updated>
+    </task>
+    <task id="LOCAL-00102" summary="ADD">
+      <created>1585075898965</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1585075898965</updated>
+    </task>
+    <task id="LOCAL-00103" summary="ADD">
+      <created>1585076142647</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1585076142647</updated>
+    </task>
+    <task id="LOCAL-00104" summary="ADD">
+      <created>1585076565006</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1585076565006</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -420,10 +425,10 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="636" y="236" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1582965237896" />
-    <state x="274" y="74" key="CommitChangelistDialog2" timestamp="1585072472480">
+    <state x="274" y="74" key="CommitChangelistDialog2" timestamp="1585076564081">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="274" y="74" key="CommitChangelistDialog2/0.0.1920.1032@0.0.1920.1032" timestamp="1585072472480" />
+    <state x="274" y="74" key="CommitChangelistDialog2/0.0.1920.1032@0.0.1920.1032" timestamp="1585076564081" />
     <state x="686" y="209" key="FileChooserDialogImpl" timestamp="1584237403322">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
