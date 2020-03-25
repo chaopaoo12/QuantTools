@@ -20,7 +20,7 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
     if target is None:
         res = pd.concat([positions.set_index('证券代码'),
                          QA_fetch_stock_fianacial_adv(list(positions.set_index('证券代码').index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],
-                         QA_fetch_stock_day_adv(list(positions.set_index('证券代码').index),trading_date,trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close_qfq']],
+                         QA_fetch_stock_day_adv(list(positions.set_index('证券代码').index),trading_date,trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']],
                         axis=1)
         if exceptions is not None:
             exceptions_list = [i for i in list(res.index) if i not in exceptions]
