@@ -77,7 +77,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
     positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
 
     if target is None:
-        e = send_trading_message(account1, strategy_id, account_info, None, "触发清仓", None, None, direction = 'SELL', type='MARKET', priceType=4, client=client)
+        e = send_trading_message(account1, strategy_id, account_info, None, "触发清仓", None, None, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
 
     res = build(target, positions, sub_accounts, trading_date, percent, exceptions)
     res1 = res
