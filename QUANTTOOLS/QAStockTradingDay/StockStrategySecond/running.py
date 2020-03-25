@@ -100,18 +100,19 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     try:
         msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
         body1 = build_table(table1, '近段时间内模型盈利报告')
-        if res is not None:
-            body2 = build_table(res, '目标持仓')
-        else:
-            body2 = None
         body3 = build_table(positions, '目前持仓')
         body4 = build_table(pd.DataFrame(report), '上一交易日模型报告{}'.format(str(QA_util_get_last_day(trading_date))))
         body5 = build_table(pd.DataFrame(top_report), '上一交易日模型报告Top{}'.format(str(QA_util_get_last_day(trading_date))))
         body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date))))
         body7 = build_table(frozen_positions, '目前锁定持仓')
-
-        msg = build_email(build_head(),msg1,body5,body4,body6,body1,body2,body7,body3)
-        send_email('交易报告:'+ trading_date, msg, 'date')
+        if res is not None:
+            body2 = build_table(res, '目标持仓')
+            msg = build_email(build_head(),msg1,body5,body4,body6,body1,body2,body7,body3)
+            title = '交易报告'
+        else:
+            msg = build_email(build_head(),msg1,body5,body4,body6,body1,body7,body3)
+            title = '空仓交易报告'
+        send_email(title+ trading_date, msg, 'date')
     except:
         send_email('交易报告:'+ trading_date, "消息构建失败", 'date')
     return(tar)
