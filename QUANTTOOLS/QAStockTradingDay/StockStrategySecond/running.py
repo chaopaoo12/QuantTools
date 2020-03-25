@@ -74,7 +74,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         send_email('交易报告:'+ trading_date, "空仓状态", 'date')
     else:
         tar2 = tar1[['Z_PROB','O_PROB','RANK']]
-        close = QA_fetch_stock_day_adv(list(tar1.index),trading_date,trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close_qfq']
+        close = QA_fetch_stock_day_adv(list(tar1.index),trading_date,trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
         info = QA_fetch_stock_fianacial_adv(list(tar1.index),trading_date,trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
         res = tar2.join(close).join(info)
         #res = pd.concat([tar2,close,info],axis=1)
@@ -83,8 +83,8 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
             '##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
         avg_account = sub_accounts['总 资 产']/tar1.shape[0]
         res = res.assign(tar=avg_account[0]*percent)
-        res['cnt'] = (res['tar']/res['close_qfq']/100).apply(lambda x:round(x,0)*100)
-        res['real'] = res['cnt'] * res['close_qfq']
+        res['cnt'] = (res['tar']/res['close']/100).apply(lambda x:round(x,0)*100)
+        res['real'] = res['cnt'] * res['close']
 
         QA_util_log_info(
             '##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
