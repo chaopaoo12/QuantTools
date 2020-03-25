@@ -111,9 +111,9 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         body7 = build_table(frozen_positions, '目前锁定持仓')
 
         msg = build_email(build_head(),msg1,body5,body4,body6,body1,body2,body7,body3)
+        send_email('交易报告:'+ trading_date, msg, 'date')
     except:
         send_email('交易报告:'+ trading_date, "消息构建失败", 'date')
-    send_email('交易报告:'+ trading_date, msg, 'date')
     return(tar)
 
 
