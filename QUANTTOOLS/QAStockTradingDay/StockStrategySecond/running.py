@@ -70,47 +70,50 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         tar1 = tar.loc[trading_date]
     except:
         tar1 = None
+
+    QA_util_log_info(
+        '##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
     if tar1 is None:
-        send_email('交易报告:'+ trading_date, "空仓状态", 'date')
+        res = None
     else:
         tar2 = tar1[['Z_PROB','O_PROB','RANK']]
         close = QA_fetch_stock_day_adv(list(tar1.index),trading_date,trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
         info = QA_fetch_stock_fianacial_adv(list(tar1.index),trading_date,trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
         res = tar2.join(close).join(info)
         #res = pd.concat([tar2,close,info],axis=1)
-
-        QA_util_log_info(
-            '##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
         avg_account = sub_accounts['总 资 产']/tar1.shape[0]
         res = res.assign(tar=avg_account[0]*percent)
         res['cnt'] = (res['tar']/res['close']/100).apply(lambda x:round(x,0)*100)
         res['real'] = res['cnt'] * res['close']
 
-        QA_util_log_info(
-            '##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
-        table1 = tar[tar['RANK']<=5].groupby('date').mean()
-        frozen_positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']].set_index('证券代码').loc[exceptions]
+    QA_util_log_info(
+        '##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
+    table1 = tar[tar['RANK']<=5].groupby('date').mean()
+    frozen_positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']].set_index('证券代码').loc[exceptions]
 
-        QA_util_log_info(
-            '##JOB06 Now Current Holding ==== {}'.format(str(trading_date)), ui_log)
-        positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
+    QA_util_log_info(
+        '##JOB06 Now Current Holding ==== {}'.format(str(trading_date)), ui_log)
+    positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
 
-        QA_util_log_info(
-            '##JOB07 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
-        try:
-            msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
-            body1 = build_table(table1, '近段时间内模型盈利报告')
+    QA_util_log_info(
+        '##JOB07 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
+    try:
+        msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
+        body1 = build_table(table1, '近段时间内模型盈利报告')
+        if res is not None:
             body2 = build_table(res, '目标持仓')
-            body3 = build_table(positions, '目前持仓')
-            body4 = build_table(pd.DataFrame(report), '上一交易日模型报告{}'.format(str(QA_util_get_last_day(trading_date))))
-            body5 = build_table(pd.DataFrame(top_report), '上一交易日模型报告Top{}'.format(str(QA_util_get_last_day(trading_date))))
-            body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date))))
-            body7 = build_table(frozen_positions, '目前锁定持仓')
+        else:
+            body2 = None
+        body3 = build_table(positions, '目前持仓')
+        body4 = build_table(pd.DataFrame(report), '上一交易日模型报告{}'.format(str(QA_util_get_last_day(trading_date))))
+        body5 = build_table(pd.DataFrame(top_report), '上一交易日模型报告Top{}'.format(str(QA_util_get_last_day(trading_date))))
+        body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date))))
+        body7 = build_table(frozen_positions, '目前锁定持仓')
 
-            msg = build_email(build_head(),msg1,body5,body4,body6,body1,body2,body7,body3)
-        except:
-            send_email('交易报告:'+ trading_date, "消息构建失败", 'date')
-        send_email('交易报告:'+ trading_date, msg, 'date')
+        msg = build_email(build_head(),msg1,body5,body4,body6,body1,body2,body7,body3)
+    except:
+        send_email('交易报告:'+ trading_date, "消息构建失败", 'date')
+    send_email('交易报告:'+ trading_date, msg, 'date')
     return(tar)
 
 
