@@ -102,7 +102,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                                                                                                     target=cnt,
                                                                                                     tar=tar))
                         e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='MARKET', priceType=4, price=None, client=client)
-                    if type == 'morning':
+                    elif type == 'morning':
                         cnt = float(res.at[i, 'cnt'])
                         tar = float(res.at[i, '股票余额'])
                         NAME = res.at[i, 'NAME']
@@ -117,6 +117,8 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                                                                                                     tar=tar,
                                                                                                     price=price))
                         e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
+                    else:
+                        pass
                     time.sleep(5)
                 else:
                     pass
@@ -140,8 +142,8 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                               offset='HOLD',
                               volume=abs(mark)
                               )
-
         time.sleep(10)
+
         if res[res['mark'] > 0].shape[0] == 0:
             pass
         else:
@@ -171,8 +173,8 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                                                                                                 INDUSTRY=INDUSTRY,
                                                                                                 cnt=abs(mark),
                                                                                                 target=cnt,
-                                                                                                tar=tar,
-                                                                                                price=price))
+                                                                                                price=price,
+                                                                                                tar=tar))
                     e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='LIMIT', priceType=None, price=price, client=client)
                 else:
                     pass
@@ -182,8 +184,8 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
             positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
             res = build(target, positions, sub_accounts, trading_date, percent, exceptions)
         elif type == 'morning':
-            pass
+            break
         else:
-            pass
+            break
 
     return(res1)
