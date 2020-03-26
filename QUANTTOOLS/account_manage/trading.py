@@ -88,41 +88,38 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
             pass
         else:
             for i in res[res['mark'] < 0].index:
-                if i not in exceptions or exceptions is None:
-                    if type == 'end':
-                        cnt = float(res.at[i, 'cnt'])
-                        tar = float(res.at[i, '股票余额'])
-                        NAME = res.at[i, 'NAME']
-                        INDUSTRY = res.at[i, 'INDUSTRY']
-                        mark = abs(float(res.at[i, 'mark']))
+                if type == 'end':
+                    cnt = float(res.at[i, 'cnt'])
+                    tar = float(res.at[i, '股票余额'])
+                    NAME = res.at[i, 'NAME']
+                    INDUSTRY = res.at[i, 'INDUSTRY']
+                    mark = abs(float(res.at[i, 'mark']))
 
-                        print('卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
-                                                                                                    NAME= NAME,
-                                                                                                    INDUSTRY= INDUSTRY,
-                                                                                                    cnt=abs(mark),
-                                                                                                    target=cnt,
-                                                                                                    tar=tar))
-                        e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='MARKET', priceType=4, price=None, client=client)
-                    elif type == 'morning':
-                        cnt = float(res.at[i, 'cnt'])
-                        tar = float(res.at[i, '股票余额'])
-                        NAME = res.at[i, 'NAME']
-                        INDUSTRY = res.at[i, 'INDUSTRY']
-                        mark = abs(float(res.at[i, 'mark']))
-                        price = round(float(res.at[i, 'close']*1.0985),2)
-                        print('早盘挂单卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},单价:{price},总金额:{tar}'.format(code=i,
-                                                                                                    NAME= NAME,
-                                                                                                    INDUSTRY= INDUSTRY,
-                                                                                                    cnt=abs(mark),
-                                                                                                    target=cnt,
-                                                                                                    tar=tar,
-                                                                                                    price=price))
-                        e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
-                    else:
-                        pass
-                    time.sleep(5)
+                    print('卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},总金额:{tar}'.format(code=i,
+                                                                                                NAME= NAME,
+                                                                                                INDUSTRY= INDUSTRY,
+                                                                                                cnt=abs(mark),
+                                                                                                target=cnt,
+                                                                                                tar=tar))
+                    e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='MARKET', priceType=4, price=None, client=client)
+                elif type == 'morning':
+                    cnt = float(res.at[i, 'cnt'])
+                    tar = float(res.at[i, '股票余额'])
+                    NAME = res.at[i, 'NAME']
+                    INDUSTRY = res.at[i, 'INDUSTRY']
+                    mark = abs(float(res.at[i, 'mark']))
+                    price = round(float(res.at[i, 'close']*1.0985),2)
+                    print('早盘挂单卖出 {code}({NAME},{INDUSTRY}) {cnt}股, 目标持仓:{target},单价:{price},总金额:{tar}'.format(code=i,
+                                                                                                NAME= NAME,
+                                                                                                INDUSTRY= INDUSTRY,
+                                                                                                cnt=abs(mark),
+                                                                                                target=cnt,
+                                                                                                tar=tar,
+                                                                                                price=price))
+                    e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
                 else:
                     pass
+                time.sleep(5)
         time.sleep(30)
 
         for i in res[res['mark'] == 0].index:
