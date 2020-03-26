@@ -88,7 +88,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
             pass
         else:
             for i in res[res['mark'] < 0].index:
-                if i not in exceptions:
+                if i not in exceptions or exceptions is None:
                     if type == 'end':
                         cnt = float(res.at[i, 'cnt'])
                         tar = float(res.at[i, '股票余额'])
