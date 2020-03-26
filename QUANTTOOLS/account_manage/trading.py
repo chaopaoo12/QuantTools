@@ -63,6 +63,7 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
     return(res)
 
 def trade_roboot(target, account, trading_date,percent, strategy_id, type='end', exceptions = None):
+    print(type)
     logging.basicConfig(level=logging.DEBUG)
     client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
     account1=account
