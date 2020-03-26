@@ -41,17 +41,18 @@
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\workspace\QuantTools\config" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockStrategySecond" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexStrategyFirst" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexModel" />
+      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexModel" />
       <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockModel" />
       <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockStrategySecond" />
       <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockStrategyFirst" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay\StockStrategySecond" />
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexStrategyFirst" />
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAIndexTradingDay\IndexModel" />
-      <recent name="F:\workspace\QuantTools\QUANTTOOLS\QAStockTradingDay" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -64,34 +65,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1580657262944</updated>
-    </task>
-    <task id="LOCAL-00066" summary="ADD">
-      <created>1585043102188</created>
-      <option name="number" value="00066" />
-      <option name="presentableId" value="LOCAL-00066" />
-      <option name="project" value="LOCAL" />
-      <updated>1585043102188</updated>
-    </task>
-    <task id="LOCAL-00067" summary="ADD">
-      <created>1585043555228</created>
-      <option name="number" value="00067" />
-      <option name="presentableId" value="LOCAL-00067" />
-      <option name="project" value="LOCAL" />
-      <updated>1585043555228</updated>
-    </task>
-    <task id="LOCAL-00068" summary="ADD">
-      <created>1585044383789</created>
-      <option name="number" value="00068" />
-      <option name="presentableId" value="LOCAL-00068" />
-      <option name="project" value="LOCAL" />
-      <updated>1585044383789</updated>
-    </task>
-    <task id="LOCAL-00069" summary="ADD">
-      <created>1585044778918</created>
-      <option name="number" value="00069" />
-      <option name="presentableId" value="LOCAL-00069" />
-      <option name="project" value="LOCAL" />
-      <updated>1585044778919</updated>
     </task>
     <task id="LOCAL-00070" summary="ADD">
       <created>1585046829133</created>
@@ -408,7 +381,35 @@
       <option name="project" value="LOCAL" />
       <updated>1585135198421</updated>
     </task>
-    <option name="localTasksCounter" value="115" />
+    <task id="LOCAL-00115" summary="ADD">
+      <created>1585183119277</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1585183119277</updated>
+    </task>
+    <task id="LOCAL-00116" summary="ADD">
+      <created>1585188073631</created>
+      <option name="number" value="00116" />
+      <option name="presentableId" value="LOCAL-00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1585188073632</updated>
+    </task>
+    <task id="LOCAL-00117" summary="ADD">
+      <created>1585188993730</created>
+      <option name="number" value="00117" />
+      <option name="presentableId" value="LOCAL-00117" />
+      <option name="project" value="LOCAL" />
+      <updated>1585188993730</updated>
+    </task>
+    <task id="LOCAL-00118" summary="ADD">
+      <created>1585190896140</created>
+      <option name="number" value="00118" />
+      <option name="presentableId" value="LOCAL-00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1585190896140</updated>
+    </task>
+    <option name="localTasksCounter" value="119" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -424,10 +425,10 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="636" y="236" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1582965237896" />
-    <state x="274" y="74" key="CommitChangelistDialog2" timestamp="1585135196773">
+    <state x="274" y="74" key="CommitChangelistDialog2" timestamp="1585190894980">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="274" y="74" key="CommitChangelistDialog2/0.0.1920.1032@0.0.1920.1032" timestamp="1585135196773" />
+    <state x="274" y="74" key="CommitChangelistDialog2/0.0.1920.1032@0.0.1920.1032" timestamp="1585190894980" />
     <state x="686" y="209" key="FileChooserDialogImpl" timestamp="1584237403322">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
@@ -436,10 +437,10 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="311" y="0" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1584237484805" />
-    <state x="566" y="294" width="801" height="442" key="com.intellij.ide.util.TipDialog" timestamp="1585183012670">
+    <state x="566" y="294" width="801" height="442" key="com.intellij.ide.util.TipDialog" timestamp="1585199836380">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="566" y="294" width="801" height="442" key="com.intellij.ide.util.TipDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1585183012670" />
+    <state x="566" y="294" width="801" height="442" key="com.intellij.ide.util.TipDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1585199836380" />
     <state x="531" y="227" key="run.anything.popup" timestamp="1585059646630">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
