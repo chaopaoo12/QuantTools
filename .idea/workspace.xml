@@ -67,20 +67,6 @@
       <option name="presentableId" value="Default" />
       <updated>1580657262944</updated>
     </task>
-    <task id="LOCAL-00077" summary="ADD">
-      <created>1585053357577</created>
-      <option name="number" value="00077" />
-      <option name="presentableId" value="LOCAL-00077" />
-      <option name="project" value="LOCAL" />
-      <updated>1585053357577</updated>
-    </task>
-    <task id="LOCAL-00078" summary="ADD">
-      <created>1585053498985</created>
-      <option name="number" value="00078" />
-      <option name="presentableId" value="LOCAL-00078" />
-      <option name="project" value="LOCAL" />
-      <updated>1585053498985</updated>
-    </task>
     <task id="LOCAL-00079" summary="ADD">
       <created>1585053535147</created>
       <option name="number" value="00079" />
@@ -410,7 +396,21 @@
       <option name="project" value="LOCAL" />
       <updated>1585248411731</updated>
     </task>
-    <option name="localTasksCounter" value="126" />
+    <task id="LOCAL-00126" summary="ADD">
+      <created>1585271410483</created>
+      <option name="number" value="00126" />
+      <option name="presentableId" value="LOCAL-00126" />
+      <option name="project" value="LOCAL" />
+      <updated>1585271410483</updated>
+    </task>
+    <task id="LOCAL-00127" summary="ADD">
+      <created>1585271542605</created>
+      <option name="number" value="00127" />
+      <option name="presentableId" value="LOCAL-00127" />
+      <option name="project" value="LOCAL" />
+      <updated>1585271542605</updated>
+    </task>
+    <option name="localTasksCounter" value="128" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -426,10 +426,10 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="636" y="236" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1582965237896" />
-    <state x="274" y="74" key="CommitChangelistDialog2" timestamp="1585271408918">
+    <state x="274" y="74" key="CommitChangelistDialog2" timestamp="1585271540708">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="274" y="74" key="CommitChangelistDialog2/0.0.1920.1032@0.0.1920.1032" timestamp="1585271408918" />
+    <state x="274" y="74" key="CommitChangelistDialog2/0.0.1920.1032@0.0.1920.1032" timestamp="1585271540708" />
     <state x="686" y="209" key="FileChooserDialogImpl" timestamp="1584237403322">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
@@ -438,10 +438,10 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="311" y="0" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1584237484805" />
-    <state x="566" y="294" width="801" height="442" key="com.intellij.ide.util.TipDialog" timestamp="1585248333745">
+    <state x="566" y="294" width="801" height="442" key="com.intellij.ide.util.TipDialog" timestamp="1585708703088">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="566" y="294" width="801" height="442" key="com.intellij.ide.util.TipDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1585248333745" />
+    <state x="566" y="294" width="801" height="442" key="com.intellij.ide.util.TipDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1585708703088" />
     <state x="531" y="227" key="run.anything.popup" timestamp="1585059646630">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
