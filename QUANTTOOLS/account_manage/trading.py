@@ -17,7 +17,7 @@ def func1(x,y):
     else:
         return x
 
-def build(target, positions, sub_accounts, trading_date, percent, exceptions):
+def build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
     if target is None:
         res = pd.concat([positions.set_index('证券代码'),
                          QA_fetch_stock_fianacial_adv(list(positions.set_index('证券代码').index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],
@@ -57,7 +57,7 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions):
         res = res.fillna(0)
         res1 = res[res['tar']>0]
         res2 = res[res['tar']==0]
-        res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100-100
+        res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100-k
         res = pd.concat([res1,res2])
         res['real'] = res['cnt'] * res['amt']
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
@@ -81,7 +81,11 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
     if target is None:
         e = send_trading_message(account1, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
 
-    res = build(target, positions, sub_accounts, trading_date, percent, exceptions)
+    res = build(target, positions, sub_accounts, trading_date, percent, exceptions,100)
+    k = 200
+    while res['tar'].sum() < res['real'].sum():
+        res = build(target, positions, sub_accounts, trading_date, percent, exceptions,k)
+        k = k+100
     res1 = res
     while (res[res['mark']<0].shape[0] + res[res['mark']>0].shape[0]) > 0:
 

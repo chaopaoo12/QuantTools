@@ -84,9 +84,7 @@ def find_stock(index_code):
     index_list = QA.QA_fetch_index_list_adv()
     block = index_list.loc[index_code]['name']
     if isinstance(index_code,list):
-        stock_code = []
-        for i in block:
-            stock_code.append(stock[stock['blockname'] == i]['code'])
+        stock_code = stock[stock['blockname'].isin(block)]['code']
     else:
         stock_code = list(stock[stock['blockname'] == block]['code'])
     return(stock_code)
