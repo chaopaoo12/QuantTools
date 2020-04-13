@@ -17,7 +17,7 @@ def func1(x,y):
     else:
         return x
 
-def build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
+def re_build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
     if target is None:
         res = pd.concat([positions.set_index('证券代码'),
                          QA_fetch_stock_fianacial_adv(list(positions.set_index('证券代码').index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],
@@ -61,6 +61,11 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions, k=
         res = pd.concat([res1,res2])
         res['real'] = res['cnt'] * res['amt']
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
+
+def build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
+    while res['tar'].sum() < res['real'].sum():
+        res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,k=k)
+        k = k+100
     return(res)
 
 def trade_roboot(target, account, trading_date,percent, strategy_id, type='end', exceptions = None):
@@ -82,11 +87,8 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
         e = send_trading_message(account1, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
 
     res = build(target, positions, sub_accounts, trading_date, percent, exceptions,100)
-    k = 200
-    while res['tar'].sum() < res['real'].sum():
-        res = build(target, positions, sub_accounts, trading_date, percent, exceptions,k)
-        k = k+100
     res1 = res
+
     while (res[res['mark']<0].shape[0] + res[res['mark']>0].shape[0]) > 0:
 
         if res[res['mark']<0].shape[0] == 0:
@@ -186,7 +188,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
         if type == 'end':
             sub_accounts = client.get_positions(account1)['sub_accounts']['总 资 产'].values[0] - frozen
             positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
-            res = build(target, positions, sub_accounts, trading_date, percent, exceptions)
+            res = build(target, positions, sub_accounts, trading_date, percent, exceptions,100)
         elif type == 'morning':
             break
         else:
