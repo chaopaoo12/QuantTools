@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8e52287c-8567-4065-bd89-ec042ab55270" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/account_manage/trading.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/account_manage/trading.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,13 +66,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1580657262944</updated>
-    </task>
-    <task id="LOCAL-00084" summary="ADD">
-      <created>1585062367011</created>
-      <option name="number" value="00084" />
-      <option name="presentableId" value="LOCAL-00084" />
-      <option name="project" value="LOCAL" />
-      <updated>1585062367011</updated>
     </task>
     <task id="LOCAL-00085" summary="ADD">
       <created>1585063590599</created>
@@ -409,7 +403,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586836272739</updated>
     </task>
-    <option name="localTasksCounter" value="133" />
+    <task id="LOCAL-00133" summary="ADD">
+      <created>1586849074057</created>
+      <option name="number" value="00133" />
+      <option name="presentableId" value="LOCAL-00133" />
+      <option name="project" value="LOCAL" />
+      <updated>1586849074058</updated>
+    </task>
+    <option name="localTasksCounter" value="134" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -425,11 +426,11 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="636" y="236" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1582965237896" />
-    <state x="2016" y="77" key="CommitChangelistDialog2" timestamp="1586836270954">
+    <state x="2016" y="77" key="CommitChangelistDialog2" timestamp="1586849071569">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="96" y="74" key="CommitChangelistDialog2/0.0.1920.1032/1920.0.1920.1080@0.0.1920.1032" timestamp="1586761399400" />
-    <state x="2016" y="77" key="CommitChangelistDialog2/0.0.1920.1032/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586836270954" />
+    <state x="2016" y="77" key="CommitChangelistDialog2/0.0.1920.1032/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586849071569" />
     <state x="274" y="74" key="CommitChangelistDialog2/0.0.1920.1032@0.0.1920.1032" timestamp="1586426191674" />
     <state x="686" y="209" key="FileChooserDialogImpl" timestamp="1584237403322">
       <screen x="0" y="0" width="1920" height="1032" />
