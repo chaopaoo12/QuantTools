@@ -64,9 +64,10 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
 
 def build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
+    res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,k=k)
     while res['tar'].sum() < res['real'].sum():
-        res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,k=k)
         k = k+100
+        res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,k=k)
     return(res)
 
 def trade_roboot(target, account, trading_date,percent, strategy_id, type='end', exceptions = None):
