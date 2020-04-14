@@ -107,12 +107,7 @@ def ETL_stock_day(codes, start=None, end=None):
     data = data.data.join(res1).fillna(0).reset_index()
     res = data.groupby('code').apply(pct)
     res = res.reset_index(level = 0,drop = True).reset_index().set_index(['date','code']).loc[rng]
-    res = res.where((pd.notnull(res)), None)
-    if res is None:
-        pass
-    else:
-        res = res.replace(-np.inf,0,inplace=True).replace(np.inf,0,inplace=True).fillna(0)
-
+    res = res.where((pd.notnull(res)), None).fillna(0)
     return(res)
 
 def QA_etl_stock_list(ui_log= None):
