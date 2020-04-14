@@ -18,6 +18,7 @@ def func1(x,y):
         return x
 
 def re_build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
+    positions = positions[positions['股票余额'] > 0]
     if target is None:
         res = pd.concat([positions.set_index('证券代码'),
                          QA_fetch_stock_fianacial_adv(list(positions.set_index('证券代码').index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],
