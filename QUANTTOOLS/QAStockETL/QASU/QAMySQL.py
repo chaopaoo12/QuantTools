@@ -107,7 +107,7 @@ def ETL_stock_day(codes, start=None, end=None):
     data = data.data.join(res1).fillna(0).reset_index()
     res = data.groupby('code').apply(pct)
     res = res.reset_index(level = 0,drop = True).reset_index().set_index(['date','code']).loc[rng]
-    res = res.where((pd.notnull(res)), None).replace(-np.inf,0,inplace=True).replace(np.inf,0,inplace=True).fillna(0)
+    res = res.where((pd.notnull(res)), None)
 
     return(res)
 
@@ -148,10 +148,10 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log=
         '##JOB Now ETL STOCK DAY ==== {}'.format(mark_day), ui_log)
     codes = list(QA_fetch_stock_list_adv()['code'])
     if type == "all":
-        data = ETL_stock_day(codes).reset_index()
+        data = ETL_stock_day(codes).reset_index().replace(-np.inf,0,inplace=True).replace(np.inf,0,inplace=True).fillna(0)
         QA_util_sql_store_mysql(data, "stock_market_day",if_exists='replace')
     elif type == "day":
-        data = ETL_stock_day(codes, mark_day, mark_day).reset_index()
+        data = ETL_stock_day(codes, mark_day, mark_day).reset_index().replace(-np.inf,0,inplace=True).replace(np.inf,0,inplace=True).fillna(0)
         if data is None:
             print("We have no MARKET data for the day {}".format(mark_day))
         else:
