@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8e52287c-8567-4065-bd89-ec042ab55270" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StockStrategySecond/trading_morning.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/QAStockTradingDay/StockStrategySecond/trading_morning.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUANTTOOLS/account_manage/trading.py" beforeDir="false" afterPath="$PROJECT_DIR$/QUANTTOOLS/account_manage/trading.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,41 +67,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1580657262944</updated>
-    </task>
-    <task id="LOCAL-00091" summary="ADD">
-      <created>1585070406373</created>
-      <option name="number" value="00091" />
-      <option name="presentableId" value="LOCAL-00091" />
-      <option name="project" value="LOCAL" />
-      <updated>1585070406373</updated>
-    </task>
-    <task id="LOCAL-00092" summary="ADD">
-      <created>1585071049703</created>
-      <option name="number" value="00092" />
-      <option name="presentableId" value="LOCAL-00092" />
-      <option name="project" value="LOCAL" />
-      <updated>1585071049704</updated>
-    </task>
-    <task id="LOCAL-00093" summary="ADD">
-      <created>1585071626406</created>
-      <option name="number" value="00093" />
-      <option name="presentableId" value="LOCAL-00093" />
-      <option name="project" value="LOCAL" />
-      <updated>1585071626406</updated>
-    </task>
-    <task id="LOCAL-00094" summary="ADD">
-      <created>1585071932733</created>
-      <option name="number" value="00094" />
-      <option name="presentableId" value="LOCAL-00094" />
-      <option name="project" value="LOCAL" />
-      <updated>1585071932734</updated>
-    </task>
-    <task id="LOCAL-00095" summary="ADD">
-      <created>1585072473413</created>
-      <option name="number" value="00095" />
-      <option name="presentableId" value="LOCAL-00095" />
-      <option name="project" value="LOCAL" />
-      <updated>1585072473413</updated>
     </task>
     <task id="LOCAL-00096" summary="ADD">
       <created>1585072909570</created>
@@ -409,7 +376,42 @@
       <option name="project" value="LOCAL" />
       <updated>1586880727651</updated>
     </task>
-    <option name="localTasksCounter" value="140" />
+    <task id="LOCAL-00140" summary="ADD">
+      <created>1586932717376</created>
+      <option name="number" value="00140" />
+      <option name="presentableId" value="LOCAL-00140" />
+      <option name="project" value="LOCAL" />
+      <updated>1586932717376</updated>
+    </task>
+    <task id="LOCAL-00141" summary="ADD">
+      <created>1587003748777</created>
+      <option name="number" value="00141" />
+      <option name="presentableId" value="LOCAL-00141" />
+      <option name="project" value="LOCAL" />
+      <updated>1587003748777</updated>
+    </task>
+    <task id="LOCAL-00142" summary="ADD">
+      <created>1587003799850</created>
+      <option name="number" value="00142" />
+      <option name="presentableId" value="LOCAL-00142" />
+      <option name="project" value="LOCAL" />
+      <updated>1587003799851</updated>
+    </task>
+    <task id="LOCAL-00143" summary="ADD">
+      <created>1587005957103</created>
+      <option name="number" value="00143" />
+      <option name="presentableId" value="LOCAL-00143" />
+      <option name="project" value="LOCAL" />
+      <updated>1587005957103</updated>
+    </task>
+    <task id="LOCAL-00144" summary="ADD">
+      <created>1587006198894</created>
+      <option name="number" value="00144" />
+      <option name="presentableId" value="LOCAL-00144" />
+      <option name="project" value="LOCAL" />
+      <updated>1587006198894</updated>
+    </task>
+    <option name="localTasksCounter" value="145" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -425,11 +427,11 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="636" y="236" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1582965237896" />
-    <state x="2016" y="77" key="CommitChangelistDialog2" timestamp="1586880725337">
+    <state x="2016" y="77" key="CommitChangelistDialog2" timestamp="1587006194711">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="96" y="74" key="CommitChangelistDialog2/0.0.1920.1032/1920.0.1920.1080@0.0.1920.1032" timestamp="1586761399400" />
-    <state x="2016" y="77" key="CommitChangelistDialog2/0.0.1920.1032/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586880725337" />
+    <state x="2016" y="77" key="CommitChangelistDialog2/0.0.1920.1032/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587006194711" />
     <state x="274" y="74" key="CommitChangelistDialog2/0.0.1920.1032@0.0.1920.1032" timestamp="1586426191674" />
     <state x="686" y="209" key="FileChooserDialogImpl" timestamp="1584237403322">
       <screen x="0" y="0" width="1920" height="1032" />
@@ -439,11 +441,11 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="311" y="0" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1584237484805" />
-    <state x="2486" y="308" width="801" height="442" key="com.intellij.ide.util.TipDialog" timestamp="1586928653644">
+    <state x="2486" y="308" width="801" height="442" key="com.intellij.ide.util.TipDialog" timestamp="1587003718910">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="566" y="294" key="com.intellij.ide.util.TipDialog/0.0.1920.1032/1920.0.1920.1080@0.0.1920.1032" timestamp="1586757013510" />
-    <state x="2486" y="308" key="com.intellij.ide.util.TipDialog/0.0.1920.1032/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586928653644" />
+    <state x="2486" y="308" key="com.intellij.ide.util.TipDialog/0.0.1920.1032/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587003718910" />
     <state x="566" y="294" width="801" height="442" key="com.intellij.ide.util.TipDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1586425295978" />
     <state x="531" y="227" key="run.anything.popup" timestamp="1585059646630">
       <screen x="0" y="0" width="1920" height="1032" />

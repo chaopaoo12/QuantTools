@@ -1,15 +1,27 @@
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_list
 from QUANTAXIS.QAFetch import QA_fetch_get_stock_realtime
 from QUANTTOOLS.message_func.wechat import send_actionnotice
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_quant_data_adv
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
 import pandas as pd
 import logging
 import strategyease_sdk
 from QUANTTOOLS.account_manage.setting import yun_ip, yun_port, easytrade_password
 import time
+import datetime
 from QUANTTOOLS.account_manage.trading_message import send_trading_message
 from QUANTAXIS.QAUtil import QA_util_get_last_day
+from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
+from QUANTAXIS.QAUtil import QA_util_today_str
+
+def date_func(date):
+    if date is None or date == 'None':
+        d2 = datetime.datetime.strptime(QA_util_today_str(),"%Y-%m-%d")
+    else:
+        d2=datetime.datetime.strptime(date,"%Y%m%d")
+    d1 = datetime.datetime.strptime(QA_util_today_str(),"%Y-%m-%d")
+    diff_days=d1-d2
+    return(diff_days.days)
 
 def func1(x,y):
     if x == 0:
@@ -19,9 +31,11 @@ def func1(x,y):
 
 def re_build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
     positions = positions[positions['股票余额'].astype(float) > 0]
+    positions['上市时间'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_stock_to_market_date(x))))
+    exceptions.extend(list(positions[positions['上市时间'] <= 15].set_index('证券代码').index))
     if target is None:
         res = pd.concat([positions.set_index('证券代码'),
-                         QA_fetch_stock_quant_data_adv(list(positions.set_index('证券代码').index), trading_date, trading_date).data.reset_index('date')[['name','industry','days']],
+                         QA_fetch_stock_fianacial_adv(list(positions.set_index('证券代码').index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],
                          QA_fetch_stock_day_adv(list(positions.set_index('证券代码').index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']],
                         axis=1)
         if exceptions is not None:
@@ -46,7 +60,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         r1['可用余额'] = r1['可用余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
         close = QA_fetch_stock_day_adv(list(r1.index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
-        res = r1.join(QA_fetch_stock_quant_data_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['name','industry','days']],how='left').join(realtm,how='left').join(close,how='left')
+        res = r1.join(QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],how='left').join(realtm,how='left').join(close,how='left')
         avg_account = (sub_accounts * percent)/target['double'].sum()
         res = res.assign(tar=avg_account)
         res.ix[res['RANK'].isnull(),'tar'] = 0

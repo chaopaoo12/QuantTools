@@ -53,7 +53,6 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
         QA_util_log_info(
             '##JOB03 Now Chect Account Server ==== {}'.format(str(trading_date)), ui_log)
         client = get_Client()
-        account1=account1
         client.cancel_all(account1)
         account_info = client.get_account(account1)
         print(account_info)
