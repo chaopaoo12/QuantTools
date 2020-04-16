@@ -62,17 +62,16 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         res = pd.concat([res1,res2])
         res['real'] = res['cnt'] * res['amt']
         res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
+    return(res)
 
 def build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
     res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,k=k)
-    print(res)
     while res['tar'].sum() < res['real'].sum():
         k = k+100
         res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,k=k)
     return(res)
 
 def trade_roboot(target, account, trading_date,percent, strategy_id, type='end', exceptions = None):
-    print(type)
     logging.basicConfig(level=logging.DEBUG)
     client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
     account1=account
