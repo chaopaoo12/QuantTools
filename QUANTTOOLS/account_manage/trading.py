@@ -57,6 +57,9 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         tar1 = target.reset_index().groupby('code').max()
         tar1['double'] = target.reset_index().groupby('code')['RANK'].count()
         target = tar1
+        print(tar1)
+
+        print(positions)
         if exceptions is not None:
             exceptions_list = [i for i in list(target.index) if i not in exceptions]
             r1 = target.loc[exceptions_list].join(positions.set_index('证券代码').loc[exceptions_list],how='outer')
