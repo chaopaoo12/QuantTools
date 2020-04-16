@@ -65,6 +65,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
 
 def build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
     res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,k=k)
+    print(res)
     while res['tar'].sum() < res['real'].sum():
         k = k+100
         res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,k=k)
