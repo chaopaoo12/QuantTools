@@ -32,7 +32,12 @@ def func1(x,y):
 def re_build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
     positions = positions[positions['股票余额'].astype(float) > 0]
     positions['上市时间'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_stock_to_market_date(x))))
-    exceptions.extend(list(positions[positions['上市时间'] <= 15].set_index('证券代码').index))
+
+    if exceptions is not None:
+        exceptions.extend(list(positions[positions['上市时间'] <= 15].set_index('证券代码').index))
+    else:
+        exceptions = list(positions[positions['上市时间'] <= 15].set_index('证券代码').index)
+
     if target is None:
         res = pd.concat([positions.set_index('证券代码'),
                          QA_fetch_stock_fianacial_adv(list(positions.set_index('证券代码').index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],
