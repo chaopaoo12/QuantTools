@@ -34,7 +34,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
     positions['上市时间'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_stock_to_market_date(x))))
 
     if exceptions is not None:
-        exceptions.extend(list(positions[positions['上市时间'] <= 15].set_index('证券代码').index))
+        exceptions = exceptions.extend(list(positions[positions['上市时间'] <= 15].set_index('证券代码').index))
     else:
         exceptions = list(positions[positions['上市时间'] <= 15].set_index('证券代码').index)
 
@@ -57,11 +57,14 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         tar1 = target.reset_index().groupby('code').max()
         tar1['double'] = target.reset_index().groupby('code')['RANK'].count()
         target = tar1
+        print(exceptions)
+        print(target)
         if exceptions is not None:
             exceptions_list = [i for i in list(target.index) if i not in exceptions]
             r1 = target.loc[exceptions_list].join(positions.set_index('证券代码'),how='outer')
         else:
             r1 = target.join(positions.set_index('证券代码'),how='outer')
+        print(r1)
         r1['可用余额'] = r1['可用余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
         close = QA_fetch_stock_day_adv(list(r1.index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
