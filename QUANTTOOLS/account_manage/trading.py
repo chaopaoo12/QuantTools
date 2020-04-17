@@ -59,7 +59,8 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         target = tar1
         if exceptions is not None:
             exceptions_list = [i for i in list(target.index) if i not in exceptions]
-            r1 = target.loc[exceptions_list].join(positions.set_index('证券代码').loc[exceptions_list],how='outer')
+            exceptions_listb = [i for i in list(positions.set_index('证券代码').index) if i not in exceptions]
+            r1 = target.loc[exceptions_list].join(positions.set_index('证券代码').loc[exceptions_listb],how='outer')
         else:
             r1 = target.join(positions.set_index('证券代码'),how='outer')
         r1['可用余额'] = r1['可用余额'].fillna(0)
