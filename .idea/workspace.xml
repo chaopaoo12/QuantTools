@@ -67,27 +67,6 @@
       <option name="presentableId" value="Default" />
       <updated>1580657262944</updated>
     </task>
-    <task id="LOCAL-00111" summary="ADD">
-      <created>1585133744728</created>
-      <option name="number" value="00111" />
-      <option name="presentableId" value="LOCAL-00111" />
-      <option name="project" value="LOCAL" />
-      <updated>1585133744728</updated>
-    </task>
-    <task id="LOCAL-00112" summary="ADD">
-      <created>1585134685140</created>
-      <option name="number" value="00112" />
-      <option name="presentableId" value="LOCAL-00112" />
-      <option name="project" value="LOCAL" />
-      <updated>1585134685140</updated>
-    </task>
-    <task id="LOCAL-00113" summary="ADD">
-      <created>1585135064901</created>
-      <option name="number" value="00113" />
-      <option name="presentableId" value="LOCAL-00113" />
-      <option name="project" value="LOCAL" />
-      <updated>1585135064901</updated>
-    </task>
     <task id="LOCAL-00114" summary="ADD">
       <created>1585135198421</created>
       <option name="number" value="00114" />
@@ -410,7 +389,28 @@
       <option name="project" value="LOCAL" />
       <updated>1587229245426</updated>
     </task>
-    <option name="localTasksCounter" value="160" />
+    <task id="LOCAL-00160" summary="ADD">
+      <created>1587229342307</created>
+      <option name="number" value="00160" />
+      <option name="presentableId" value="LOCAL-00160" />
+      <option name="project" value="LOCAL" />
+      <updated>1587229342307</updated>
+    </task>
+    <task id="LOCAL-00161" summary="ADD">
+      <created>1587229459641</created>
+      <option name="number" value="00161" />
+      <option name="presentableId" value="LOCAL-00161" />
+      <option name="project" value="LOCAL" />
+      <updated>1587229459641</updated>
+    </task>
+    <task id="LOCAL-00162" summary="ADD">
+      <created>1587229530014</created>
+      <option name="number" value="00162" />
+      <option name="presentableId" value="LOCAL-00162" />
+      <option name="project" value="LOCAL" />
+      <updated>1587229530014</updated>
+    </task>
+    <option name="localTasksCounter" value="163" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -426,11 +426,11 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="636" y="236" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1582965237896" />
-    <state x="2016" y="77" key="CommitChangelistDialog2" timestamp="1587229458785">
+    <state x="2016" y="77" key="CommitChangelistDialog2" timestamp="1587229699177">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="96" y="74" key="CommitChangelistDialog2/0.0.1920.1032/1920.0.1920.1080@0.0.1920.1032" timestamp="1586761399400" />
-    <state x="2016" y="77" key="CommitChangelistDialog2/0.0.1920.1032/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587229458785" />
+    <state x="2016" y="77" key="CommitChangelistDialog2/0.0.1920.1032/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587229699177" />
     <state x="274" y="74" key="CommitChangelistDialog2/0.0.1920.1032@0.0.1920.1032" timestamp="1586426191674" />
     <state x="686" y="209" key="FileChooserDialogImpl" timestamp="1584237403322">
       <screen x="0" y="0" width="1920" height="1032" />
