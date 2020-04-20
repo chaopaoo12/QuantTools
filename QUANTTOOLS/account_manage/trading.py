@@ -52,7 +52,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         res = res.assign(tar=avg_account)
         res['cnt'] = 0
         res['real'] = 0
-        res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
+        res['mark'] = res['cnt'] - res['股票余额'].apply(lambda x:float(x))
     else:
         tar1 = target.reset_index().groupby('code').max()
         tar1['double'] = target.reset_index().groupby('code')['RANK'].count()
@@ -63,7 +63,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
             r1 = target.loc[exceptions_list].join(positions.set_index('证券代码').loc[exceptions_listb],how='outer')
         else:
             r1 = target.join(positions.set_index('证券代码'),how='outer')
-        r1['可用余额'] = r1['可用余额'].fillna(0)
+        r1['股票余额'] = r1['股票余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
         close = QA_fetch_stock_day_adv(list(r1.index),QA_util_get_last_day(trading_date,60),trading_date).data.loc[trading_date].reset_index('date')['close']
         res = r1.join(QA_fetch_stock_fianacial_adv(list(r1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']],how='left').join(realtm,how='left').join(close,how='left')
@@ -81,7 +81,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100-k
         res = pd.concat([res1,res2])
         res['real'] = res['cnt'] * res['amt']
-        res['mark'] = res['cnt'] - res['可用余额'].apply(lambda x:float(x))
+        res['mark'] = res['cnt'] - res['股票余额'].apply(lambda x:float(x))
     return(res)
 
 def build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
