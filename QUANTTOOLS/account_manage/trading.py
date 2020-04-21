@@ -15,7 +15,7 @@ from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
 from QUANTAXIS.QAUtil import QA_util_today_str
 
 def date_func(date):
-    if date is None or date == 'None' or date == 0:
+    if (date is None) or date in ['None', 0, '0']:
         d2 = datetime.datetime.strptime(QA_util_today_str(),"%Y-%m-%d")
     else:
         d2=datetime.datetime.strptime(date,"%Y%m%d")
