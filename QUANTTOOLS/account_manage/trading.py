@@ -149,6 +149,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                 else:
                     pass
                 time.sleep(5)
+
         time.sleep(30)
 
         for i in res[res['mark'] == 0].index:
