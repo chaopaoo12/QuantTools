@@ -106,8 +106,8 @@ def ETL_stock_day(codes, start=None, end=None):
     res1.columns = [x + '_qfq' for x in res1.columns]
     data = data.data.join(res1).fillna(0).reset_index()
     res = data.groupby('code').apply(pct)
-    res = res.reset_index(level = 0,drop = True).reset_index().set_index(['date','code']).loc[rng]
-    res = res.where((pd.notnull(res)), None).fillna(0).replace([np.inf, -np.inf], 0)
+    res = res.reset_index(level = 0,drop = True).reset_index().set_index(['date','code']).loc[rng].replace([np.inf, -np.inf], 0)
+    res = res.where((pd.notnull(res)), None)
     return(res)
 
 def QA_etl_stock_list(ui_log= None):
