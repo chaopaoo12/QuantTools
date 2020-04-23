@@ -13,6 +13,7 @@ from QUANTTOOLS.account_manage.trading_message import send_trading_message
 from QUANTAXIS.QAUtil import QA_util_get_last_day
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
 from QUANTAXIS.QAUtil import QA_util_today_str
+import math
 
 def date_func(date):
     if (date is None) or date in ['None', 0, '0']:
@@ -30,6 +31,7 @@ def func1(x,y):
         return x
 
 def re_build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
+    positions = positions[positions['股票余额'].astype(float) > 0]
     positions = positions[positions['股票余额'].astype(float) > 0]
     positions['上市时间'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_stock_to_market_date(x))))
 
@@ -52,7 +54,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         res = res.assign(tar=avg_account)
         res['cnt'] = 0
         res['real'] = 0
-        res['mark'] = res['cnt'] - res['股票余额'].apply(lambda x:float(x))
+        res['mark'] = (res['cnt'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
     else:
         tar1 = target.reset_index().groupby('code').max()
         tar1['double'] = target.reset_index().groupby('code')['RANK'].count()
@@ -81,7 +83,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100-k
         res = pd.concat([res1,res2])
         res['real'] = res['cnt'] * res['amt']
-        res['mark'] = res['cnt'] - res['股票余额'].apply(lambda x:float(x))
+        res['mark'] = (res['cnt'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
     return(res)
 
 def build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
