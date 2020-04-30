@@ -99,6 +99,8 @@ def build_head():
 
 def build_table(data, title, sub_tile = None):
     pd.set_option('display.max_colwidth', -1)
+    if data is None:
+        data = pd.DataFrame()
     df_html = data.to_html(escape=False)
     body = \
         """
