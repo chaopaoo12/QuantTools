@@ -12,7 +12,7 @@ from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict, dict2
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import pct,index_pct,time_this_function
-from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_last_day,QA_util_get_next_datetime
+from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_last_day,QA_util_get_next_datetime,QA_util_get_real_date
 
 def QA_fetch_stock_industry(stock_code):
     '''
@@ -588,7 +588,6 @@ def QA_fetch_stock_financial_percent(code, start, end=None, format='pd', collect
 
 @time_this_function
 def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', collections=DATABASE.stock_quant_data):
-    print(start, end)
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
@@ -673,8 +672,11 @@ def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', c
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
 def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
+    if QA_util_if_trade(end_date):
+        end_date = QA_util_get_real_date(end_date)
+    else:
+        pass
     end = QA_util_get_next_datetime(end_date,5)
-    print(start_date, end_date,end)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
     market = QA.QA_fetch_index_day(['000001'],start_date,end,format='pd')['close'].reset_index()
