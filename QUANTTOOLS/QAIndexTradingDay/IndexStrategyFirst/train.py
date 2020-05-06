@@ -7,12 +7,14 @@ import pandas as pd
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from datetime import datetime,timedelta
+from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date
 delta = timedelta(days=6)
 delta1 = timedelta(days=1)
 delta3 = timedelta(days=7)
 delta4 = timedelta(days=8)
 
 def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log = None):
+    date=QA_util_get_real_date(date)
     QA_util_log_info(
         '##JOB01 Now Model Init ==== {}'.format(str(date)), ui_log)
     model1 = model()
@@ -21,7 +23,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     model1.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
     QA_util_log_info(
         '##JOB03 Now Set Target ==== {}'.format(str(date)), ui_log)
-    model1.set_target(mark =0.3, type = 'percent')
+    model1.set_target(mark = 0.3, type = 'percent')
     QA_util_log_info(
         '##JOB04 Now Set Train time range ==== {}'.format(str(date)), ui_log)
     model1.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",

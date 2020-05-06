@@ -1,14 +1,8 @@
 import pandas as pd
 from xgboost import XGBClassifier
-from sklearn.metrics import (accuracy_score,confusion_matrix,
-                             classification_report,roc_curve,roc_auc_score,
-                             auc,precision_score,recall_score,f1_score)
-
-from sklearn.model_selection import train_test_split
+from sklearn.metrics import (accuracy_score,classification_report,precision_score)
 from QUANTTOOLS.FactorTools.base_func import get_index_quant_data
-from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_info, QA_util_add_months,
-                              QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date,
-                              QA_util_datetime_to_strdate)
+from QUANTAXIS.QAUtil import QA_util_today_str
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
 
@@ -39,8 +33,9 @@ class model():
                                                                'INDEX_TARGET10','date_stamp','PRE_DATE','next_date']]
         self.info['cols'] = self.cols
 
-    def set_train_rng(self, train_start, train_end):
+    def set_train_rng(self, train_start, train_end, test_start, test_end):
         self.TR_RNG = pd.Series(pd.date_range(train_start, train_end, freq='D')).apply(lambda x: str(x)[0:10])
+        self.TE_RNG = pd.Series(pd.date_range(test_start, test_end, freq='D')).apply(lambda x: str(x)[0:10])
         self.info['train_rng'] = [train_start,train_end]
 
     def prepare_data(self):
