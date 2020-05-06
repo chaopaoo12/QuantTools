@@ -21,15 +21,17 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     model1.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
     QA_util_log_info(
         '##JOB03 Now Set Target ==== {}'.format(str(date)), ui_log)
-    model1.set_target(mark =0.42, type = 'percent')
+    model1.set_target(mark =0.3, type = 'percent')
     QA_util_log_info(
         '##JOB04 Now Set Train time range ==== {}'.format(str(date)), ui_log)
     model1.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
                         train_end=(datetime.strptime(date, "%Y-%m-%d")-delta4).strftime('%Y-%m-%d'),
                         test_start=(datetime.strptime(date, "%Y-%m-%d")-delta3).strftime('%Y-%m-%d'),
-                        test_end=date)
+                        test_end=(datetime.strptime(date, "%Y-%m-%d")-delta1).strftime('%Y-%m-%d'))
     model1.prepare_data()
-    model1.build_model(n_estimators=200)
+    other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 5, 'min_child_weight': 1, 'seed': 0,
+                    'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
+    model1.build_model(other_params)
     QA_util_log_info(
         '##JOB05 Now Model Trainnig ==== {}'.format(str(date)), ui_log)
     model1.model_running()
@@ -42,7 +44,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
         '##JOB06 Now Model Trainning Report ==== {}'.format(str(date)), ui_log)
     msg1 = '模型训练日期:{model_date}'.format(model_date=model1.info['date'])
     body1 = build_table(pd.DataFrame(model1.info['train_report']), '训练集情况')
-    body2 = build_table(pd.DataFrame(model1.info['test_report']), '测试集情况')
+    body2 = build_table(pd.DataFrame(model1.info['rng_report']), '测试集情况')
     body3 = build_table(important.head(50), '特征重要性')
 
     msg = build_email(build_head(),msg1,body1,body2,body3)
