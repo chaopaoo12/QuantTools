@@ -31,6 +31,7 @@ def func1(x,y):
         return x
 
 def re_build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
+    sub_accounts= sub_accounts -10000
     positions = positions[positions['股票余额'].astype(float) > 0]
     positions = positions[positions['股票余额'].astype(float) > 0]
     positions['上市时间'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_stock_to_market_date(x))))
