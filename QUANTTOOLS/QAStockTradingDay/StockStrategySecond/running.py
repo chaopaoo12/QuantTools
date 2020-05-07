@@ -104,16 +104,17 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
         body1 = build_table(table1, 'safe模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
         body3 = build_table(positions, '目前持仓')
-        body4 = build_table(pd.DataFrame(report), '指数模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
-        body5 = build_table(pd.DataFrame(top_report), '选股模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+        body4 = build_table(index_tar, '指数模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+        body5 = build_table(stock_tar, '选股模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+        body9 = build_table(safe_tar, 'Safe模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
         #body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date))))
         body7 = build_table(frozen_positions, '目前锁定持仓')
         if res is not None:
             body2 = build_table(res, '目标持仓')
-            msg = build_email(build_head(),msg1,body1,body3,body5,body4,body2,body7)
+            msg = build_email(build_head(),msg1,body1,body3,body9,body5,body4,body2,body7)
             title = '交易报告'
         else:
-            msg = build_email(build_head(),msg1,body1,body3,body5,body4,body1,body7)
+            msg = build_email(build_head(),msg1,body1,body3,body9,body5,body4,body1,body7)
             title = '空仓交易报告'
         send_email(title+ trading_date, msg, 'date')
     except:
