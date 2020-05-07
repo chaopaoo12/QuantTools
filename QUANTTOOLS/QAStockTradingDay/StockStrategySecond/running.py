@@ -108,13 +108,15 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         body5 = build_table(stock_tar, '选股模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
         #body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date))))
         body7 = build_table(frozen_positions, '目前锁定持仓')
+
         if res is not None:
             body2 = build_table(res, '目标持仓')
-            msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7)
             title = '交易报告'
         else:
-            msg = build_email(build_head(),msg1,body1,body4,body5,body3,body1,body7)
+            body2 = pd.DataFrame()
             title = '空仓交易报告'
+
+        msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7)
         send_email(title+ trading_date, msg, 'date')
     except:
         send_email('交易报告:'+ trading_date, "消息构建失败", 'date')
