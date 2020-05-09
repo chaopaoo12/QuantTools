@@ -114,27 +114,6 @@ class model():
             self.info['rng_status']['status'] = True
 
 
-        if abs(self.info['rng_report']['1']['precision'] - self.info['rng_report']['1']['precision']) > 0.1:
-            print("过拟合:精确率差异过大")
-            self.info['rng_report']['precision'] = False
-        elif abs(self.info['train_report']['1']['recall'] - self.info['rng_report']['1']['recall']) > 0.05:
-            print("过拟合:召回差异过大")
-            self.info['rng_report']['recall'] = False
-        else:
-            self.info['rng_report']['precision'] = True
-            self.info['rng_report']['recall'] = True
-
-        if self.info['train_status']['precision'] == False or self.info['train_status']['recall'] == False:
-            self.info['train_status']['status'] = False
-        else:
-            self.info['train_status']['status'] = True
-
-        if self.info['rng_report']['precision'] == False or self.info['rng_report']['recall'] == False:
-            self.info['rng_report']['status'] = False
-        else:
-            self.info['rng_report']['status'] = True
-
-
     def save_model(self, name, working_dir = 'D:\\model\\current'):
         if mkdir(working_dir):
             try:
