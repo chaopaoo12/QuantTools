@@ -43,7 +43,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     important = stock_model.model_important()
     stock_model.save_model('stock',working_dir = working_dir)
     body1 = build_table(pd.DataFrame(stock_model.info['train_report']), '个股模型训练集情况')
-    body2 = build_table(pd.DataFrame(stock_model.info['test_report']), '个股模型测试集情况')
+    body2 = build_table(pd.DataFrame(stock_model.info['rng_report']), '个股模型测试集情况')
     body3 = build_table(important.head(50), '个股模型特征重要性')
 
     msg1 = '模型训练日期:{model_date}'.format(model_date=stock_model.info['date'])
@@ -74,7 +74,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     important = index_model.model_important()
     index_model.save_model('index',working_dir = working_dir)
     body4 = build_table(pd.DataFrame(index_model.info['train_report']), '指数模型训练集情况')
-    body5 = build_table(pd.DataFrame(index_model.info['test_report']), '指数模型测试集情况')
+    body5 = build_table(pd.DataFrame(index_model.info['rng_report']), '指数模型测试集情况')
     body6 = build_table(important.head(50), '指数模型特征重要性')
 
     index_model.set_target('INDEX_TARGET', mark = 0.3, type = 'percent')
@@ -87,7 +87,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     index_model.save_model('safe',working_dir = working_dir)
 
     body7 = build_table(pd.DataFrame(index_model.info['train_report']), '安全模型训练集情况')
-    body8 = build_table(pd.DataFrame(index_model.info['test_report']), '安全模型测试集情况')
+    body8 = build_table(pd.DataFrame(index_model.info['rng_report']), '安全模型测试集情况')
     body9 = build_table(important.head(50), '安全模型特征重要性')
 
     QA_util_log_info(
