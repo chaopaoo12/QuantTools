@@ -76,31 +76,37 @@ class model():
         if self.info['rng_report']['1']['precision'] <0.75:
             print("精确率不足,模型需要优化")
             self.info['rng_status']['precision'] = False
-        elif self.info['rng_report']['1']['recall'] < 0.3:
+        else:
+            self.info['rng_status']['precision'] = True
+
+        if self.info['rng_report']['1']['recall'] < 0.3:
             print("召回率不足,模型需要优化")
             self.info['rng_status']['recall'] = False
         else:
-            self.info['rng_status']['precision'] = True
             self.info['rng_status']['recall'] = True
 
         if self.info['train_report']['1']['precision'] <0.75:
             print("精确率不足,模型需要优化")
             self.info['train_status']['precision'] = False
-        elif self.info['train_report']['1']['recall'] < 0.3:
+        else:
+            self.info['train_status']['precision'] = True
+
+        if self.info['train_report']['1']['recall'] < 0.3:
             print("召回率不足,模型需要优化")
             self.info['train_status']['recall'] = False
         else:
-            self.info['train_status']['precision'] = True
             self.info['train_status']['recall'] = True
 
         if abs(self.info['rng_report']['1']['precision'] - self.info['rng_report']['1']['precision']) > 0.1:
             print("过拟合:精确率差异过大")
             self.info['rng_status']['precision'] = False
-        elif abs(self.info['train_report']['1']['recall'] - self.info['rng_report']['1']['recall']) > 0.05:
+        else:
+            self.info['rng_status']['precision'] = True
+
+        if abs(self.info['train_report']['1']['recall'] - self.info['rng_report']['1']['recall']) > 0.05:
             print("过拟合:召回差异过大")
             self.info['rng_status']['recall'] = False
         else:
-            self.info['rng_status']['precision'] = True
             self.info['rng_status']['recall'] = True
 
         if self.info['train_status']['precision'] == False or self.info['train_status']['recall'] == False:
