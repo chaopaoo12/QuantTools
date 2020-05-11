@@ -11,6 +11,10 @@ from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTAXIS.QAUtil import QA_util_get_last_day
 from QUANTTOOLS.account_manage import get_Client
+from datetime import datetime,timedelta
+from dateutil.relativedelta import relativedelta
+from dateutil.rrule import *
+delta3 = timedelta(days=7)
 
 def predict(trading_date, strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir, ui_log = None, exceptions=exceptions):
 
@@ -51,23 +55,25 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
                           offset='HOLD',
                           volume=None
                           )
-
+    start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-1))).strftime('%Y-%m-%d')
+    end = QA_util_get_last_day(trading_date)
+    rng = pd.Series(pd.date_range(start, end, freq='D')).apply(lambda x: str(x)[0:10])
     QA_util_log_info(
         '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
     #index_list,index_report,index_top_report = Index.check_model(index_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),index_info_temp['cols'], 'INDEXT_TARGET5', 0.3)
-    index_tar,index_b  = Index.model_predict(index_model_temp, str(trading_date[0:7])+"-01",trading_date,index_info_temp['cols'])
+    index_tar,index_b  = Index.model_predict(index_model_temp, start, end,index_info_temp['cols'])
 
     #safe_list,safe_report,safe_top_report = Index.check_model(safe_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),safe_info_temp['cols'], 'INDEXT_TARGET', 0.3)
-    safe_tar,safe_b  = Index.model_predict(safe_model_temp, str(trading_date[0:7])+"-01",trading_date,index_info_temp['cols'])
+    safe_tar,safe_b  = Index.model_predict(safe_model_temp, start, end, index_info_temp['cols'])
 
-    stock_list,report,top_report = Stock.check_model(stock_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),stock_info_temp['cols'], 0.42)
-    stock_tar,stock_b  = Stock.model_predict(stock_model_temp, str(trading_date[0:7])+"-01",trading_date,stock_info_temp['cols'])
+    #stock_list,report,top_report = Stock.check_model(stock_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),stock_info_temp['cols'], 0.42)
+    stock_tar,stock_b  = Stock.model_predict(stock_model_temp, start, end,stock_info_temp['cols'])
 
-    tar = combine_model(index_b, stock_b, safe_b, str(trading_date[0:7])+"-01",trading_date)
+    tar = combine_model(index_b, stock_b, safe_b, start,trading_date)
     QA_util_log_info(
         '##JOB03 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)
     try:
-        tar1 = tar.loc[trading_date]
+        tar1 = tar.loc[rng]
     except:
         tar1 = None
 
@@ -76,9 +82,9 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     if tar1 is None:
         res = None
     else:
-        tar2 = tar1[['Z_PROB','O_PROB','RANK']]
+        tar2 = tar1.loc[trading_date][['Z_PROB','O_PROB','RANK']]
         close = QA_fetch_stock_day_adv(list(tar1.index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
-        info = QA_fetch_stock_fianacial_adv(list(tar1.index),trading_date,trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
+        info = QA_fetch_stock_fianacial_adv(list(tar1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
         res = tar2.join(close).join(info)
         #res = pd.concat([tar2,close,info],axis=1)
         avg_account = sub_accounts['总 资 产']/tar1.shape[0]
