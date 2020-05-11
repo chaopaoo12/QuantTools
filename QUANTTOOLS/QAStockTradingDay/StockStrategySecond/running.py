@@ -109,16 +109,27 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
 
     QA_util_log_info(
         '##JOB07 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
-    print(safe_tar.loc[trading_date])
-    print(index_tar.loc[trading_date])
-    print(stock_tar.loc[trading_date])
+    try:
+        safe_res = safe_tar.loc[trading_date]
+    except:
+        safe_res = None
+
+    try:
+        index_res = index_tar.loc[trading_date]
+    except:
+        index_res = None
+
+    try:
+        stock_res = stock_tar.loc[trading_date]
+    except:
+        stock_res = None
 
     try:
         msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
-        body1 = build_table(safe_tar.loc[trading_date], 'safe模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+        body1 = build_table(safe_res, 'safe模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
         body3 = build_table(positions, '目前持仓')
-        body4 = build_table(index_tar.loc[trading_date], '指数模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
-        body5 = build_table(stock_tar.loc[trading_date], '选股模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+        body4 = build_table(index_res, '指数模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+        body5 = build_table(stock_res, '选股模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
         #body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date))))
         body7 = build_table(frozen_positions, '目前锁定持仓')
         body8 = build_table(tar, '模型周期内选股记录_from:{a}_to:{b}'.format(a=start, b=end))
