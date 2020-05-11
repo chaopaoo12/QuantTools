@@ -80,7 +80,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     QA_util_log_info(
         '##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
     if tar1 is None:
-        res = pd.DataFrame()
+        res = None
     else:
         tar2 = tar1[['Z_PROB','O_PROB','RANK']]
         close = QA_fetch_stock_day_adv(list(tar2.index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
@@ -150,19 +150,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         title = '空仓交易报告'
 
     try:
-        msg = build_email(build_head(),msg1,body1,body4,body5,body3)
-        send_email(title + trading_date, msg, trading_date)
-    except:
-        send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
-
-    try:
-        msg = build_email(build_head(),msg1,body2)
-        send_email(title + trading_date, msg, trading_date)
-    except:
-        send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
-
-    try:
-        msg = build_email(build_head(),msg1,body7,body8,body9,body10, body11)
+        msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7,body8,body9,body10, body11)
         send_email(title + trading_date, msg, trading_date)
     except:
         send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
