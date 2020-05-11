@@ -123,7 +123,8 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         stock_res = stock_tar[stock_tar['RANK']<=5].loc[trading_date]
     except:
         stock_res = None
-
+    index_d = index_tar.groupby('date').mean()
+    stock_d = stock_tar.groupby('date').mean()
     try:
         msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
         body1 = build_table(safe_res, 'safe模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
@@ -134,8 +135,8 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         body7 = build_table(frozen_positions, '目前锁定持仓')
         body8 = build_table(tar, '模型周期内选股记录_from:{a}_to:{b}'.format(a=start, b=end))
         body9 = build_table(table1, '模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
-        body10 = build_table(index_tar.groupby('date').mean(), '指数模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
-        body11 = build_table(stock_tar.groupby('date').mean(), '选股模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
+        body10 = build_table(index_d, '指数模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
+        body11 = build_table(stock_d, '选股模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
 
         if res is not None:
             body2 = build_table(res, '目标持仓')
