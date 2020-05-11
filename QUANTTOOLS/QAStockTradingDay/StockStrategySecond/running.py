@@ -1,7 +1,7 @@
 
 import QUANTTOOLS.QAStockTradingDay.StockModel.StrategyOne as Stock
 import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexStrategyOne as Index
-from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv,QA_fetch_index_list_adv
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
 import pandas as pd
 from QUANTTOOLS.FactorTools.base_tools import combine_model
@@ -111,16 +111,22 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         '##JOB07 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
     try:
         safe_res = safe_tar.loc[trading_date]
+        info1 = QA_fetch_index_list_adv().loc[list(set(safe_res.index))][['name']]
+        safe_res = safe_res.join(info1).sort_index()
     except:
         safe_res = pd.DataFrame()
 
     try:
         index_res = index_tar.loc[trading_date]
+        info1 = QA_fetch_index_list_adv().loc[list(set(index_res.index))][['name']]
+        index_res = index_res.join(info1).sort_index()
     except:
         index_res = pd.DataFrame()
 
     try:
         stock_res = stock_tar[stock_tar['RANK']<=5].loc[trading_date]
+        info1 = QA_fetch_stock_fianacial_adv(list(set(stock_res.index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
+        stock_res = stock_res.join(info1).sort_index()
     except:
         stock_res = pd.DataFrame()
 
