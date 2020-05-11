@@ -10,7 +10,7 @@ from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTAXIS.QAUtil import QA_util_get_last_day
 from QUANTTOOLS.account_manage import get_Client
 
-def predict(trading_date, strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir, ui_log = None):
+def predict(trading_date, type='report', strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir, ui_log = None):
 
     try:
         QA_util_log_info(
@@ -42,10 +42,11 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
                           offset='HOLD',
                           volume=None
                           )
-
+    start = QA_util_get_last_day(trading_date)
+    end = QA_util_get_last_day(trading_date)
     QA_util_log_info(
         '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
-    stock_list,report,top_report = check_model(model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),info_temp['cols'], 0.42)
+    stock_list,report,top_report = check_model(model_temp, start, end,info_temp['cols'], 0.42)
     tar,b  = model_predict(model_temp, str(trading_date[0:7])+"-01",trading_date,info_temp['cols'])
 
     QA_util_log_info(
