@@ -137,13 +137,12 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         body7 = build_table(frozen_positions, '目前锁定持仓')
         body8 = build_table(tar, '模型周期内选股记录_from:{a}_to:{b}'.format(a=start, b=end))
         body9 = build_table(table1, '模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
-        print('a'
-        )
+        print('a')
         body10 = build_table(index_d, '指数模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
         print('b')
         body11 = build_table(stock_d, '选股模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
     except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败")
+        send_email('交易报告:'+ trading_date, "消息组件运算失败", trading_date)
 
     if res is not None:
         body2 = build_table(res, '目标持仓')
@@ -156,7 +155,8 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7,body8,body9,body10,body11)
         send_email(title+ trading_date, msg, 'date')
     except:
-        send_email('交易报告:'+ trading_date, "消息构建失败")
+        send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
+
     return(tar)
 
 
