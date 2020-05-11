@@ -62,8 +62,8 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
                               test_start=(datetime.strptime(date, "%Y-%m-%d")-delta3).strftime('%Y-%m-%d'),
                               test_end=date)
     index_model.prepare_data()
-    other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 5, 'min_child_weight': 1, 'seed': 0,
-                'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
+    other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 3, 'min_child_weight': 3, 'seed': 0,
+                    'subsample': 0.75, 'colsample_bytree': 0.65, 'gamma': 0.1, 'reg_alpha': 0.05, 'reg_lambda': 1}
     index_model.build_model(other_params)
     QA_util_log_info(
         '##JOB05 Now Model Trainnig ==== {}'.format(str(date)), ui_log)
