@@ -142,6 +142,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         print('b')
         body11 = build_table(stock_d, '选股模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
     except:
+        print('c')
         send_email('交易报告:'+ trading_date, "消息组件运算失败", trading_date)
 
     if res is not None:
