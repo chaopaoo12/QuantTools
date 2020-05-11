@@ -57,7 +57,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
                           )
     start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-1))).strftime('%Y-%m-%d')
     end = QA_util_get_last_day(trading_date)
-    rng = pd.Series(pd.date_range(start, end, freq='D')).apply(lambda x: str(x)[0:10])
+    rng = pd.Series(pd.date_range(start, trading_date, freq='D')).apply(lambda x: str(x)[0:10])
     QA_util_log_info(
         '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
     #index_list,index_report,index_top_report = Index.check_model(index_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),index_info_temp['cols'], 'INDEXT_TARGET5', 0.3)
