@@ -94,7 +94,10 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
 
     QA_util_log_info(
         '##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
-    table1 = tar[tar['RANK']<=5].groupby('date').mean()
+    #table1 = tar[tar['RANK']<=5].groupby('date').mean()
+    table1 = tar.groupby('date').mean()
+    info1 = QA_fetch_stock_fianacial_adv(list(tar1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
+    tar = tar.join(info1)
     if exceptions is not None:
         frozen_positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']].set_index('证券代码').loc[exceptions]
     else:
@@ -108,12 +111,14 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         '##JOB07 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
     try:
         msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
-        body1 = build_table(table1, 'safe模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+        body1 = build_table(safe_tar.loc[trading_date], 'safe模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
         body3 = build_table(positions, '目前持仓')
-        body4 = build_table(index_tar, '指数模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
-        body5 = build_table(stock_tar, '选股模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+        body4 = build_table(index_tar.loc[trading_date], '指数模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+        body5 = build_table(stock_tar.loc[trading_date], '选股模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
         #body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date))))
         body7 = build_table(frozen_positions, '目前锁定持仓')
+        body8 = build_table(tar, '模型周期内选股记录_from:{a}_to:{b}'.format(a=start, b=end))
+        body9 = build_table(table1, '模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
 
         if res is not None:
             body2 = build_table(res, '目标持仓')
@@ -122,7 +127,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
             body2 = pd.DataFrame()
             title = '空仓交易报告'
 
-        msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7)
+        msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7,body8,body9)
         send_email(title+ trading_date, msg, 'date')
     except:
         send_email('交易报告:'+ trading_date, "消息构建失败", 'date')
