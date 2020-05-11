@@ -82,7 +82,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     if tar1 is None:
         res = None
     else:
-        tar2 = tar1.loc[trading_date][['Z_PROB','O_PROB','RANK']]
+        tar2 = tar.loc[trading_date][['Z_PROB','O_PROB','RANK']]
         close = QA_fetch_stock_day_adv(list(tar1.index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
         info = QA_fetch_stock_fianacial_adv(list(tar1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
         res = tar2.join(close).join(info)
