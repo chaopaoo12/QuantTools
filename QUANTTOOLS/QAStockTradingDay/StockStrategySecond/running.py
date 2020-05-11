@@ -109,6 +109,10 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
 
     QA_util_log_info(
         '##JOB07 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
+    print(safe_tar.loc[trading_date])
+    print(index_tar.loc[trading_date])
+    print(stock_tar.loc[trading_date])
+
     try:
         msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
         body1 = build_table(safe_tar.loc[trading_date], 'safe模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
