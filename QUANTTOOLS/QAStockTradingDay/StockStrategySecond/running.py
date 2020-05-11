@@ -80,7 +80,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     QA_util_log_info(
         '##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
     if tar1 is None:
-        res = None
+        res = pd.DataFrame()
     else:
         tar2 = tar1[['Z_PROB','O_PROB','RANK']]
         close = QA_fetch_stock_day_adv(list(tar2.index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
