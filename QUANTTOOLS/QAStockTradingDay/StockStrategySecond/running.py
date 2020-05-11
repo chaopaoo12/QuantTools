@@ -147,7 +147,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         title = '交易报告'
         msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7,body8,body9,body10, body11)
     else:
-        body2 = pd.DataFrame()
+        body2 = build_table(None, '目标持仓')
         title = '空仓交易报告'
         msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7,body8,body9,body10, body11)
 
