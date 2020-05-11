@@ -150,13 +150,19 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         title = '空仓交易报告'
 
     try:
-        msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7,body8,body9)
+        msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7)
         send_email(title + trading_date, msg, trading_date)
     except:
         send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
 
     try:
-        msg = build_email(build_head(),body10,body11)
+        msg = build_email(build_head(),msg1,body8,body9)
+        send_email(title + trading_date, msg, trading_date)
+    except:
+        send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
+
+    try:
+        msg = build_email(build_head(),body10, body11)
         send_email(title + trading_date, msg, trading_date)
     except:
         send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
