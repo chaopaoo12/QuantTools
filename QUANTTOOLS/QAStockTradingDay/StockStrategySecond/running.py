@@ -143,6 +143,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         send_email('交易报告:'+ trading_date, "消息组件运算失败", trading_date)
 
     if res is not None:
+        print(res)
         body2 = build_table(res, '目标持仓')
         title = '交易报告'
     else:
