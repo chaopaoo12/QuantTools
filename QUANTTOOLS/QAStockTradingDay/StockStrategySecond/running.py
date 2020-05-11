@@ -73,7 +73,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     QA_util_log_info(
         '##JOB03 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)
     try:
-        tar1 = tar.loc[rng]
+        tar1 = tar.loc[trading_date]
     except:
         tar1 = None
 
@@ -82,8 +82,8 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     if tar1 is None:
         res = None
     else:
-        tar2 = tar.loc[trading_date][['Z_PROB','O_PROB','RANK']]
-        close = QA_fetch_stock_day_adv(list(tar1.index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
+        tar2 = tar1[['Z_PROB','O_PROB','RANK']]
+        close = QA_fetch_stock_day_adv(list(tar2.index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
         info = QA_fetch_stock_fianacial_adv(list(tar1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
         res = tar2.join(close).join(info)
         #res = pd.concat([tar2,close,info],axis=1)
@@ -96,8 +96,8 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         '##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
     #table1 = tar[tar['RANK']<=5].groupby('date').mean()
     table1 = tar.groupby('date').mean()
-    info1 = QA_fetch_stock_fianacial_adv(list(tar1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
-    tar = tar.join(info1)
+    info1 = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
+    tar = tar.reset_index('date').join(info1).set_index(['date','code'])
     if exceptions is not None:
         frozen_positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']].set_index('证券代码').loc[exceptions]
     else:
