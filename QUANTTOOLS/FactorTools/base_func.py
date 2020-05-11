@@ -38,9 +38,9 @@ def get_index_quant_data(start_date, end_date, type = 'crawl'):
     #res = pd.merge(index_list.reset_index(drop=True), stock.groupby('blockname').count().reset_index()[['blockname','source']],
     #               left_on = 'name', right_on = 'blockname', how = 'left')
     codes = list(QA.QA_fetch_index_list_adv()['code'])
-    codes = [i for i in codes if i.startswith('8802') == True]
-    codes = [i for i in codes if i.startswith('8803') == True]
-    codes = [i for i in codes if i.startswith('8804') == True]
+    codes = [i for i in codes if i.startswith('8802') == True] + \
+            [i for i in codes if i.startswith('8803') == True] + \
+            [i for i in codes if i.startswith('8804') == True]
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date).data
     if type == 'model':
