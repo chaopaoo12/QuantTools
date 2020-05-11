@@ -145,16 +145,21 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     if res is not None:
         body2 = build_table(res, '目标持仓')
         title = '交易报告'
+        msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7,body8,body9,body10, body11)
     else:
         body2 = pd.DataFrame()
         title = '空仓交易报告'
-
-    try:
-        print(title)
         msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7,body8,body9,body10, body11)
+    try:
         send_email(title + trading_date, msg, trading_date)
     except:
         send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
+    #try:
+    #    print(title)
+    #    msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7,body8,body9,body10, body11)
+    #    send_email(title + trading_date, msg, trading_date)
+    #except:
+    #    send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
 
     return(tar)
 
