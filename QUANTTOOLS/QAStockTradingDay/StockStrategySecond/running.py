@@ -112,17 +112,17 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     try:
         safe_res = safe_tar.loc[trading_date]
     except:
-        safe_res = None
+        safe_res = pd.DataFrame()
 
     try:
         index_res = index_tar.loc[trading_date]
     except:
-        index_res = None
+        index_res = pd.DataFrame()
 
     try:
         stock_res = stock_tar[stock_tar['RANK']<=5].loc[trading_date]
     except:
-        stock_res = None
+        stock_res = pd.DataFrame()
 
     index_d = index_tar.groupby('date').mean()
     stock_d = stock_tar.groupby('date').mean()
