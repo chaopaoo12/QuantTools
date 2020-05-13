@@ -133,8 +133,15 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     except:
         stock_res = pd.DataFrame()
 
-    index_d = index_tar.groupby('date').mean()
-    stock_d = stock_tar.groupby('date').mean()
+
+
+    if len(rng) == 1:
+        index_d = index_tar.mean()
+        stock_d = stock_tar.mean()
+    else:
+        index_d = index_tar.groupby('date').mean()
+        stock_d = stock_tar.groupby('date').mean()
+
 
     try:
         msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
