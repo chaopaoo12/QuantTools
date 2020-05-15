@@ -58,18 +58,19 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-1))).strftime('%Y-%m-%d')
     end = trading_date
     rng = pd.Series(pd.date_range(start, end, freq='D')).apply(lambda x: str(x)[0:10])
+    print(start, end)
     QA_util_log_info(
         '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
     #index_list,index_report,index_top_report = Index.check_model(index_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),index_info_temp['cols'], 'INDEXT_TARGET5', 0.3)
-    index_tar,index_b  = Index.model_predict(index_model_temp, start, end,index_info_temp['cols'])
+    index_tar,index_b  = Index.model_predict(index_model_temp, start, end, index_info_temp['cols'])
 
     #safe_list,safe_report,safe_top_report = Index.check_model(safe_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),safe_info_temp['cols'], 'INDEXT_TARGET', 0.3)
     safe_tar,safe_b  = Index.model_predict(safe_model_temp, start, end, index_info_temp['cols'])
 
     #stock_list,report,top_report = Stock.check_model(stock_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),stock_info_temp['cols'], 0.42)
-    stock_tar,stock_b  = Stock.model_predict(stock_model_temp, start, end,stock_info_temp['cols'])
+    stock_tar,stock_b  = Stock.model_predict(stock_model_temp, start, end, stock_info_temp['cols'])
 
-    tar = combine_model(index_b, stock_b, safe_b, start,trading_date)
+    tar = combine_model(index_b, stock_b, safe_b, start, trading_date)
     QA_util_log_info(
         '##JOB03 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)
     try:
@@ -85,7 +86,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         tar2 = tar1[['Z_PROB','O_PROB','RANK']]
         close = QA_fetch_stock_day_adv(list(tar2.index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
         info = QA_fetch_stock_fianacial_adv(list(tar1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
-        res = tar2.join(close).join(info)
+        res = tar2.join(close, how = 'left').join(info, how = 'left')
         #res = pd.concat([tar2,close,info],axis=1)
         avg_account = sub_accounts['总 资 产']/tar1.shape[0]
         res = res.assign(tar=avg_account[0]*percent)
@@ -95,12 +96,9 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     QA_util_log_info(
         '##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
     #table1 = tar[tar['RANK']<=5].groupby('date').mean()
-    if len(rng) == 1:
-        table1 = tar.mean()
-    else:
-        table1 = tar.groupby('date').mean()
+
     info1 = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
-    tar = tar.reset_index('date').join(info1).reset_index().set_index(['date','code']).sort_index()
+    tar = tar.reset_index('date').join(info1, how = 'left').reset_index().set_index(['date','code']).sort_index()
     if exceptions is not None:
         frozen_positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']].set_index('证券代码').loc[exceptions]
     else:
@@ -115,33 +113,32 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     try:
         safe_res = safe_tar.loc[trading_date]
         info1 = QA_fetch_index_list_adv().loc[list(set(safe_res.index))][['name']]
-        safe_res = safe_res.join(info1).sort_index()
+        safe_res = safe_res.join(info1, how = 'left').sort_index()
     except:
         safe_res = pd.DataFrame()
 
     try:
         index_res = index_tar.loc[trading_date]
         info1 = QA_fetch_index_list_adv().loc[list(set(index_res.index))][['name']]
-        index_res = index_res.join(info1).sort_index()
+        index_res = index_res.join(info1, how = 'left').sort_index()
     except:
         index_res = pd.DataFrame()
 
     try:
         stock_res = stock_tar[stock_tar['RANK']<=5].loc[trading_date]
         info1 = QA_fetch_stock_fianacial_adv(list(set(stock_res.index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
-        stock_res = stock_res.join(info1).sort_index()
+        stock_res = stock_res.join(info1, how = 'left').sort_index()
     except:
         stock_res = pd.DataFrame()
 
-
-
     if len(rng) == 1:
+        table1 = tar.mean()
         index_d = index_tar.mean()
         stock_d = stock_tar.mean()
     else:
+        table1 = tar.groupby('date').mean()
         index_d = index_tar.groupby('date').mean()
         stock_d = stock_tar.groupby('date').mean()
-
 
     try:
         msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
