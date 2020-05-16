@@ -79,8 +79,8 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
 
     index_model.set_target('INDEX_TARGET', mark = 0.3, type = 'percent')
     index_model.prepare_data()
-    other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 3, 'min_child_weight': 7, 'seed': 0,
-                    'subsample': 0.75, 'colsample_bytree': 0.65, 'gamma': 1.5, 'reg_alpha': 7, 'reg_lambda': 7}
+    other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 5, 'min_child_weight': 1, 'seed': 0,
+                    'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
     index_model.build_model(other_params)
     index_model.model_running()
     index_model.model_check()
