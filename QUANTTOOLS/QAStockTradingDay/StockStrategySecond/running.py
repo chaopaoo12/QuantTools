@@ -96,10 +96,17 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     QA_util_log_info(
         '##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
     #table1 = tar[tar['RANK']<=5].groupby('date').mean()
-    print(res)
-    print(tar)
-    info1 = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
-    tar = tar.reset_index('date').join(info1, how = 'left').reset_index().set_index(['date','code']).sort_index()
+    if tar is None:
+        info1 = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
+        tar = tar.reset_index('date').join(info1, how = 'left').reset_index().set_index(['date','code']).sort_index()
+        if len(rng) == 1:
+            table1 = tar.mean()
+        else:
+            table1 = tar.groupby('date').mean()
+    else:
+        table1 = pd.DataFrame()
+        tar = pd.DataFrame()
+
     if exceptions is not None:
         frozen_positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']].set_index('证券代码').loc[exceptions]
     else:
@@ -133,11 +140,9 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         stock_res = pd.DataFrame()
 
     if len(rng) == 1:
-        table1 = tar.mean()
         index_d = index_tar.mean()
         stock_d = stock_tar.mean()
     else:
-        table1 = tar.groupby('date').mean()
         index_d = index_tar.groupby('date').mean()
         stock_d = stock_tar.groupby('date').mean()
 
