@@ -148,19 +148,58 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
 
     try:
         msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
+    except:
+        send_email('交易报告:'+ trading_date, "模型训练日期获取运算失败", trading_date)
+
+    try:
         body1 = build_table(safe_res, 'safe模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:Safe模型结果", trading_date)
+
+    try:
         body3 = build_table(positions, '目前持仓')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:目前持仓", trading_date)
+
+    try:
         body4 = build_table(index_res, '指数模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:指数模型结果", trading_date)
+
+    try:
         body5 = build_table(stock_res, '选股模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
-        #body6 = build_table(stock_list, '上一交易日模型交易清单{}'.format(str(QA_util_get_last_day(trading_date))))
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:选股模型结果", trading_date)
+
+    try:
         body7 = build_table(frozen_positions, '目前锁定持仓')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:目前锁定持仓", trading_date)
+
+    try:
         body8 = build_table(tar, '模型周期内选股记录_from:{a}_to:{b}'.format(a=start, b=end))
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内选股记录", trading_date)
+
+    try:
         body9 = build_table(table1, '模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内交易成绩", trading_date)
+
+    try:
         body10 = build_table(index_d, '指数模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:指数模型周期内交易成绩", trading_date)
+
+    try:
         body11 = build_table(stock_d, '选股模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:选股模型周期内交易成绩", trading_date)
+
+    try:
         body2 = build_table(res, '目标持仓')
     except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败", trading_date)
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:目标持仓", trading_date)
 
     if res is not None:
         title = '交易报告'
