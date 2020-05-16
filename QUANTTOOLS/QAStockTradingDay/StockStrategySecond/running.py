@@ -58,7 +58,6 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-1))).strftime('%Y-%m-%d')
     end = trading_date
     rng = pd.Series(pd.date_range(start, end, freq='D')).apply(lambda x: str(x)[0:10])
-    print(start, end)
     QA_util_log_info(
         '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
     #index_list,index_report,index_top_report = Index.check_model(index_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),index_info_temp['cols'], 'INDEXT_TARGET5', 0.3)
@@ -96,7 +95,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     QA_util_log_info(
         '##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
     #table1 = tar[tar['RANK']<=5].groupby('date').mean()
-    if tar is None:
+    if tar is not None:
         info1 = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
         tar = tar.reset_index('date').join(info1, how = 'left').reset_index().set_index(['date','code']).sort_index()
         table1 = tar.groupby('date').mean()
