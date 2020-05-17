@@ -33,7 +33,7 @@ class model():
                                                                'INDEX_TARGET10','date_stamp','PRE_DATE','next_date']]
         self.info['cols'] = self.cols
 
-    def set_train_rng(self, train_start, train_end, test_start, test_end):
+    def set_train_rng(self, train_start, train_end):
         self.TR_RNG = pd.Series(pd.date_range(train_start, train_end, freq='D')).apply(lambda x: str(x)[0:10])
         self.info['train_rng'] = [train_start,train_end]
 
