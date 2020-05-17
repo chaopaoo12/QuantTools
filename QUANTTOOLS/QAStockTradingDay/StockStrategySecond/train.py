@@ -8,12 +8,18 @@ import pandas as pd
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from datetime import datetime,timedelta
+from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date,QA_util_get_last_day
 delta = timedelta(days=6)
 delta1 = timedelta(days=1)
 delta3 = timedelta(days=7)
 delta4 = timedelta(days=8)
 
 def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log = None):
+    if QA_util_if_trade(date):
+        date = QA_util_get_last_day(date)
+    else:
+        date = QA_util_get_last_day(date, 2)
+
     QA_util_log_info(
         '##JOB01 Now Model Init ==== {}'.format(str(date)), ui_log)
     stock_model = StockModel()
@@ -27,8 +33,8 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info(
         '##JOB04 Now Set Train time range ==== {}'.format(str(date)), ui_log)
     stock_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
-                        train_end=(datetime.strptime(date, "%Y-%m-%d")-delta4).strftime('%Y-%m-%d'),
-                        test_start=(datetime.strptime(date, "%Y-%m-%d")-delta3).strftime('%Y-%m-%d'),
+                        train_end=(datetime.strptime(date, "%Y-%m-%d")-delta1).strftime('%Y-%m-%d'),
+                        test_start=date,
                         test_end=date)
     stock_model.prepare_data()
     other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 5, 'min_child_weight': 5, 'seed': 0,
@@ -37,7 +43,6 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info(
         '##JOB05 Now Model Trainnig ==== {}'.format(str(date)), ui_log)
     stock_model.model_running()
-    stock_model.model_check()
     QA_util_log_info(
         '##JOB06 Now Save Model ==== {}'.format(str(date)), ui_log)
     important = stock_model.model_important()
@@ -68,7 +73,6 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info(
         '##JOB05 Now Model Trainnig ==== {}'.format(str(date)), ui_log)
     index_model.model_running()
-    index_model.model_check()
     QA_util_log_info(
         '##JOB06 Now Save Model ==== {}'.format(str(date)), ui_log)
     important = index_model.model_important()
@@ -83,7 +87,6 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
     index_model.build_model(other_params)
     index_model.model_running()
-    index_model.model_check()
     index_model.save_model('safe',working_dir = working_dir)
 
     body7 = build_table(pd.DataFrame(index_model.info['train_report']), '安全模型训练集情况')
