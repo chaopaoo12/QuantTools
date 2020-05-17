@@ -95,8 +95,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     QA_util_log_info(
         '##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
     #table1 = tar[tar['RANK']<=5].groupby('date').mean()
-    if tar is not None:
-        print(tar)
+    if tar is not None or tar.shape[0] > 0:
         info1 = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
         tar = tar.reset_index('date').join(info1, how = 'left').reset_index().set_index(['date','code']).sort_index()
         table1 = tar.groupby('date').mean()
