@@ -35,13 +35,11 @@ class model():
 
     def set_train_rng(self, train_start, train_end, test_start, test_end):
         self.TR_RNG = pd.Series(pd.date_range(train_start, train_end, freq='D')).apply(lambda x: str(x)[0:10])
-        self.TE_RNG = pd.Series(pd.date_range(test_start, test_end, freq='D')).apply(lambda x: str(x)[0:10])
         self.info['train_rng'] = [train_start,train_end]
 
     def prepare_data(self):
 
         self.X_train, self.Y_train = self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'].fillna(0)
-        self.X_RNG, self.Y_RNG = self.data.loc[self.TE_RNG][self.cols].fillna(0),self.data.loc[self.TE_RNG]['star'].fillna(0)
 
     def build_model(self, other_params):
         #self.model = XGBClassifier(n_estimators = n_estimators, max_depth = max_depth, subsample= subsample,seed=seed)
@@ -51,33 +49,15 @@ class model():
     def model_running(self):
         self.model.fit(self.X_train,self.Y_train)
         y_pred = self.model.predict(self.X_train)
-        y_pred_rng = self.model.predict(self.X_RNG)
 
         accuracy_train = accuracy_score(self.Y_train,y_pred)
-        accuracy_rng = accuracy_score(self.Y_RNG,y_pred_rng)
 
         print("accuracy_train:"+str(accuracy_train)+"; precision_score On Train:"+str(precision_score(self.Y_train,y_pred)))
         self.train_report = classification_report(self.Y_train,y_pred, output_dict=True)
         print(self.train_report)
-
-        print("accuracy_rng:"+str(accuracy_rng)+"; precision_score On rng:"+str(precision_score(self.Y_RNG,y_pred_rng)))
-        self.rng_report = classification_report(self.Y_RNG,y_pred_rng, output_dict=True)
-        print(self.rng_report)
         self.info['train_report'] = self.train_report
-        self.info['rng_report'] = self.rng_report
 
     def model_check(self):
-        if self.info['rng_report']['1']['precision'] <0.75:
-            print("精确率不足,模型需要优化")
-            self.info['rng_status']['precision'] = False
-        else:
-            self.info['rng_status']['precision'] = True
-
-        if self.info['rng_report']['1']['recall'] < 0.3:
-            print("召回率不足,模型需要优化")
-            self.info['rng_status']['recall'] = False
-        else:
-            self.info['rng_status']['recall'] = True
 
         if self.info['train_report']['1']['precision'] <0.75:
             print("精确率不足,模型需要优化")
@@ -91,27 +71,10 @@ class model():
         else:
             self.info['train_status']['recall'] = True
 
-        if abs(self.info['rng_report']['1']['precision'] - self.info['rng_report']['1']['precision']) > 0.1:
-            print("过拟合:精确率差异过大")
-            self.info['rng_status']['precision'] = False
-        else:
-            self.info['rng_status']['precision'] = True
-
-        if abs(self.info['train_report']['1']['recall'] - self.info['rng_report']['1']['recall']) > 0.05:
-            print("过拟合:召回差异过大")
-            self.info['rng_status']['recall'] = False
-        else:
-            self.info['rng_status']['recall'] = True
-
         if self.info['train_status']['precision'] == False or self.info['train_status']['recall'] == False:
             self.info['train_status']['status'] = False
         else:
             self.info['train_status']['status'] = True
-
-        if self.info['rng_status']['precision'] == False or self.info['rng_status']['recall'] == False:
-            self.info['rng_status']['status'] = False
-        else:
-            self.info['rng_status']['status'] = True
 
 
     def save_model(self, name, working_dir = 'D:\\model\\current'):
