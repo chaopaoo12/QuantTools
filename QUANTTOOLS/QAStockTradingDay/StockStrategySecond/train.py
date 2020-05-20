@@ -14,18 +14,14 @@ delta3 = timedelta(days=7)
 delta4 = timedelta(days=8)
 
 def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log = None):
-    QA_util_log_info(
-        '##JOB01 Now Model Init ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB01 Now Model Init ==== {}'.format(str(date)), ui_log)
     stock_model = StockModel()
     index_model = IndexModel()
-    QA_util_log_info(
-        '##JOB02 Now Prepare Date ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB02 Now Prepare Date ==== {}'.format(str(date)), ui_log)
     stock_model.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
-    QA_util_log_info(
-        '##JOB03 Now Set Target ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB03 Now Set Target ==== {}'.format(str(date)), ui_log)
     stock_model.set_target(mark =0.42, type = 'percent')
-    QA_util_log_info(
-        '##JOB04 Now Set Train time range ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB04 Now Set Train time range ==== {}'.format(str(date)), ui_log)
     stock_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
                         train_end=(datetime.strptime(date, "%Y-%m-%d")-delta1).strftime('%Y-%m-%d'))
     stock_model.prepare_data()
@@ -45,25 +41,20 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     msg1 = '模型训练日期:{model_date}'.format(model_date=stock_model.info['date'])
     del stock_model
 
-    QA_util_log_info(
-        '##JOB02 Now Prepare Date ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB02 Now Prepare Date ==== {}'.format(str(date)), ui_log)
     index_model.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
-    QA_util_log_info(
-        '##JOB03 Now Set Target ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB03 Now Set Target ==== {}'.format(str(date)), ui_log)
     index_model.set_target('INDEX_TARGET5', mark = 0.3, type = 'percent')
-    QA_util_log_info(
-        '##JOB04 Now Set Train time range ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB04 Now Set Train time range ==== {}'.format(str(date)), ui_log)
     index_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
                               train_end=(datetime.strptime(date, "%Y-%m-%d")-delta1).strftime('%Y-%m-%d'))
     index_model.prepare_data()
     other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 3, 'min_child_weight': 7, 'seed': 0,
                     'subsample': 0.75, 'colsample_bytree': 0.65, 'gamma': 1.5, 'reg_alpha': 7, 'reg_lambda': 7}
     index_model.build_model(other_params)
-    QA_util_log_info(
-        '##JOB05 Now Model Trainnig ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB05 Now Model Trainnig ==== {}'.format(str(date)), ui_log)
     index_model.model_running()
-    QA_util_log_info(
-        '##JOB06 Now Save Model ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB06 Now Save Model ==== {}'.format(str(date)), ui_log)
     important = index_model.model_important()
     index_model.save_model('index',working_dir = working_dir)
     body4 = build_table(pd.DataFrame(index_model.info['train_report']), '指数模型训练集情况')
@@ -80,8 +71,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     body7 = build_table(pd.DataFrame(index_model.info['train_report']), '安全模型训练集情况')
     body9 = build_table(important.head(50), '安全模型特征重要性')
 
-    QA_util_log_info(
-        '##JOB06 Now Model Trainning Report ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB06 Now Model Trainning Report ==== {}'.format(str(date)), ui_log)
     msg = build_email(build_head(),msg1,body1,body3,body4,body6,body7,body9)
 
     send_email('模型训练报告', msg, 'date')
