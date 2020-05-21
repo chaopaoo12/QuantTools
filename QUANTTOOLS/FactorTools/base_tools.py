@@ -129,7 +129,9 @@ def combine_model(index_d, stock_d, safe_d, start, end):
                         c = stock_d.loc[i].sort_values(by='O_PROB', ascending=False).head(num).reset_index()
                     else:
                         c = pd.DataFrame()
-                res = res.reset_index().append(c,ignore_index=True).set_index(['date','code'])
+
+                if c is not None and c.shape[0] > 0:
+                    res = res.reset_index().append(c,ignore_index=True).set_index(['date','code'])
         else:
             pass
 
