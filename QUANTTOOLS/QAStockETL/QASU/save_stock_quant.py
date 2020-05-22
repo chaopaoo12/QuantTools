@@ -243,9 +243,10 @@ def QA_SU_save_index_quant_day(code=None, start_date=None,end_date=None, ui_log 
                 print('end_date should large than start_date')
     if code is None:
         code = list(QA_fetch_index_list_adv()['code'])
-        code = [i for i in code if i.startswith('8802') == True] + \
-               [i for i in code if i.startswith('8803') == True] + \
-               [i for i in code if i.startswith('8804') == True]
+        code = [i for i in code if i.startswith('880') == True]
+        code = [i for i in code if i.startswith('8800') == False]
+        code = [i for i in code if i.startswith('8807') == False]
+        code = [i for i in code if i.startswith('8808') == False]
 
     index = DATABASE.index_quant_data_index
     index.create_index(
