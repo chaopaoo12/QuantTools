@@ -30,6 +30,17 @@ def func1(x,y):
     else:
         return x
 
+def floor_round(x):
+    if isinstance(x, int):
+        y = math.floor(x/100)*100
+    else:
+        y = x
+
+    if y > x:
+        return(x)
+    else:
+        return(y)
+
 def re_build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
     sub_accounts= sub_accounts -10000
     positions = positions[positions['股票余额'].astype(float) > 0]
@@ -55,7 +66,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         res = res.assign(tar=avg_account)
         res['cnt'] = 0
         res['real'] = 0
-        res['mark'] = (res['cnt'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
+        res['mark'] = (res['cnt'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:floor_round(x))
     else:
         tar1 = target.reset_index().groupby('code').max()
         tar1['double'] = target.reset_index().groupby('code')['RANK'].count()
