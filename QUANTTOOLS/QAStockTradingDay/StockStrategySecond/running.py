@@ -144,7 +144,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         send_email('交易报告:'+ trading_date, "模型训练日期获取运算失败", trading_date)
 
     try:
-        body1 = build_table(safe_res, 'safe模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+        body1 = build_table(safe_res, 'safe模型结果_{}'.format(str(trading_date)))
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:Safe模型结果", trading_date)
 
@@ -154,12 +154,12 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         send_email('交易报告:'+ trading_date, "消息组件运算失败:目前持仓", trading_date)
 
     try:
-        body4 = build_table(index_res, '指数模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+        body4 = build_table(index_res, '指数模型结果_{}'.format(str(trading_date)))
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:指数模型结果", trading_date)
 
     try:
-        body5 = build_table(stock_res, '选股模型结果_{}'.format(str(QA_util_get_last_day(trading_date))))
+        body5 = build_table(stock_res, '选股模型结果_{}'.format(str(trading_date)))
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:选股模型结果", trading_date)
 
