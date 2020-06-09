@@ -132,6 +132,7 @@ def combine_model(index_d, stock_d, safe_d, start, end):
 
         elif safe_res is not None and safe_res.shape[0] > 0:
             c = stock_d.loc[i].sort_values(by='O_PROB', ascending=False).head(num).reset_index()
+            c = c.assign(date = i)
 
             if c is not None and c.shape[0] > 0:
                 res = res.reset_index().append(c,ignore_index=True).set_index(['date','code'])
