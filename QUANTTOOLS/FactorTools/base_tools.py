@@ -98,34 +98,34 @@ def combine_model(index_d, stock_d, safe_d, start, end):
             index_res = None
 
         try:
-            safe_res = safe_d[safe_d['y_pred']==1].loc[i]
+            safe_res = safe_d[safe_d['y_pred']==1][safe_d['RANK']<=5].loc[i]
         except:
             safe_res = None
 
-        if index_res is None:
+        if index_res is not None:
+            index_list = list(index_res.index)
+        #elif safe_res is not None:
+        #   index_list = list(safe_res.index)
+        else:
+            index_list = None
+
+        if index_list is None:
             num = 5
-        elif index_res.shape[0] == 1:
+        elif len(index_list) == 1:
             num = 5
-        elif index_res.shape[0] == 2:
-            num = 2
-        elif index_res.shape[0] == 3:
+        elif len(index_list) == 2:
+            num = 3
+        elif len(index_list) == 3:
             num = 2
         else:
             num = 1
-
-        if index_res is not None:
-            index_list = list(index_res.index)
-        elif safe_res is not None:
-            index_list = list(safe_res.index)
-        else:
-            index_list = None
 
         if index_list is not None:
             for j in index_list:
                 try:
                     c = stock_d.loc[(i,find_stock(j)),:].sort_values(by='O_PROB', ascending=False).head(num).reset_index()
                 except:
-                    if safe_res is not None:
+                    if safe_res is not None and safe_res.shape[0] > 0:
                         c = stock_d.loc[i].sort_values(by='O_PROB', ascending=False).head(num).reset_index()
                     else:
                         c = pd.DataFrame()
