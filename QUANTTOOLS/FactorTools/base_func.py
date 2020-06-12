@@ -12,6 +12,7 @@ import tensorflow as tf
 #from tensorflow.keras.metrics import top_k_categorical_accuracy
 import numpy as np
 import QUANTAXIS as QA
+from QUANTTOOLS.FactorTools.base_tools import find_stock
 
 def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_block= True):
     if block is True:
@@ -44,6 +45,19 @@ def get_index_quant_data(start_date, end_date, type = 'crawl'):
     codes = [i for i in codes if i.startswith('8808') == False]
     codes = [i for i in codes if i.startswith('88098') == False]
     codes = [i for i in codes if i.startswith('88099') == False]
+
+    d = {}
+    for i in codes:
+        d[i] = find_stock(i)
+
+    k = list()
+    for (k, v) in d.items():
+        if len(v) == 0:
+            k.append(k)
+
+    codes = [i for i in codes if i not in k]
+
+
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date).data
     if type == 'model':
