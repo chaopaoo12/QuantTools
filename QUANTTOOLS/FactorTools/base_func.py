@@ -50,12 +50,12 @@ def get_index_quant_data(start_date, end_date, type = 'crawl'):
     for i in codes:
         d[i] = find_stock(i)
 
-    k = list()
+    k1 = list()
     for (k, v) in d.items():
         if len(v) == 0:
-            k.append(k)
+            k1.append(k)
 
-    codes = [i for i in codes if i not in k]
+    codes = [i for i in codes if i not in k1]
 
 
     if type == 'crawl':
