@@ -81,12 +81,38 @@ def halflife_ic(IC_data, halflife_weight,name, T):
 
 def find_stock(index_code):
     stock = QA.QA_fetch_stock_block()
+    info = pd.DataFrame(QA.QAFetch.QAQuery.QA_fetch_stock_basic_info_tushare())
     index_list = QA.QA_fetch_index_list_adv()
+
     block = index_list.loc[index_code]['name']
-    if isinstance(index_code,list):
-        stock_code = stock[stock['blockname'].isin(block)]['code']
+    if isinstance(block,list):
+        block = block.apply(lambda x:x.replace('板块', ''))
+    elif isinstance(block,str):
+        block = block.replace('板块', '')
     else:
-        stock_code = list(stock[stock['blockname'] == block]['code'])
+        pass
+
+    if isinstance(index_code,list):
+        stock_code1 = info[info['area'].isin(block)]['code']
+    else:
+        stock_code1 = list(info[info['area'] == block]['code'])
+
+    #行业
+    if isinstance(index_code,list):
+        stock_code2 = info[info['industry'].isin(block)]['code']
+    else:
+        stock_code2 = list(info[info['industry'] == block]['code'])
+
+    if isinstance(index_code,list):
+        stock_code3 = stock[stock['blockname'].isin(block)]['code']
+    else:
+        stock_code3 = list(stock[stock['blockname'] == block]['code'])
+    stock_code = []
+
+    stock_code.extend(stock_code1)
+    stock_code.extend(stock_code2)
+    stock_code.extend(stock_code3)
+
     return(stock_code)
 
 def combine_model(index_d, stock_d, safe_d, start, end):
