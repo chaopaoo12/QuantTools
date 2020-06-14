@@ -64,18 +64,21 @@ def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype=
     CH_columns = [item[3:] for item in list(financial_dict.keys())]
     EN_columns = list(financial_dict.values())
 
+    end = int(end.replace('-',''))
+    start = int(start.replace('-',''))
+
     try:
         if type == 'report':
             cursor = collection.find({
                 'code': {'$in': code}, "report_date": {
-                    "$lte": QA_util_date_stamp(end),
-                    "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+                    "$lte": end,
+                    "$gte": start}}, {"_id": 0}, batch_size=10000)
             data = pd.DataFrame([item for item in cursor])
         elif type == 'crawl':
             cursor = collection.find({
                 'code': {'$in': code}, "crawl_date": {
-                    "$lte": QA_util_date_stamp(end),
-                    "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+                    "$lte": end,
+                    "$gte": start}}, {"_id": 0}, batch_size=10000)
             data = pd.DataFrame([item for item in cursor])
         else:
             print("type must be one of [report, crawl]")
@@ -112,8 +115,9 @@ def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype=
                 endict['crawl_date']='crawl_date'
                 res_pd.columns = res_pd.columns.map(lambda x: endict[x])
 
-            res_pd['crawl_date'] = res_pd['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
-            res_pd['report_date'] = res_pd['report_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            #res_pd['crawl_date'] = res_pd['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            #res_pd['report_date'] = res_pd['report_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
+            res_pd['report_date'] = res_pd['report_date'].apply(lambda x: str(x)[0:4]+'-'+str(x)[4:6]+'-'+str(x)[6:8])
             return res_pd.replace(-4.039810335e+34, numpy.nan).set_index(['report_date', 'code'], drop=False)
         else:
             return None
