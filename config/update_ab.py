@@ -49,10 +49,10 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_util_process_stock_financial,QA_etl_stock_financial_wy,QA_SU_save_usstock_list_day)
 
 
-print("write shares data into sqldatabase")
-QA_SU_save_stock_shares_sina_day()
-QA_etl_stock_shares()
-print("done")
+
 
 if __name__ == '__main__':
-    pass
+    print("write shares data into sqldatabase")
+    QA_SU_save_stock_shares_sina_day()
+    QA_etl_stock_shares()
+    print("done")

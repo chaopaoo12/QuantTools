@@ -48,19 +48,19 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_etl_process_financial_day,QA_etl_stock_shares,
                                    QA_util_process_stock_financial,QA_etl_stock_financial_wy,QA_SU_save_usstock_list_day)
 
-print("write tdx financial data into sqldatabase")
-QA_SU_save_financialfiles()
-QA_etl_stock_financial('all')
-print("done")
-print("write wy financial data into sqldatabase")
-QA_SU_save_stock_financial_wy_day()
-QA_etl_stock_financial_wy('all')
-print("done")
-print("run financial data into sqldatabase")
-QA_util_process_stock_financial()
-QA_SU_save_fianacialTTM_momgo()
-print("done")
+
 
 
 if __name__ == '__main__':
-    pass
+    print("write tdx financial data into sqldatabase")
+    QA_SU_save_financialfiles()
+    QA_etl_stock_financial('all')
+    print("done")
+    print("write wy financial data into sqldatabase")
+    QA_SU_save_stock_financial_wy_day()
+    QA_etl_stock_financial_wy('all')
+    print("done")
+    print("run financial data into sqldatabase")
+    QA_util_process_stock_financial()
+    QA_SU_save_fianacialTTM_momgo()
+    print("done")

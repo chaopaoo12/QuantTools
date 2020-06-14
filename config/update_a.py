@@ -50,16 +50,16 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
 
 
 
-print("write divyield data into sqldatabase")
-QA_SU_save_usstock_list_day()
-QA_SU_save_interest_rate()
-QA_SU_save_stock_divyield_day()
-QA_etl_stock_divyield()
-print("done")
-print("write calendar data into sqldatabase")
-QA_SU_save_report_calendar_day()
-QA_etl_stock_calendar()
-print("done")
+
 
 if __name__ == '__main__':
-    pass
+    print("write divyield data into sqldatabase")
+    QA_SU_save_usstock_list_day()
+    QA_SU_save_interest_rate()
+    QA_SU_save_stock_divyield_day()
+    QA_etl_stock_divyield()
+    print("done")
+    print("write calendar data into sqldatabase")
+    QA_SU_save_report_calendar_day()
+    QA_etl_stock_calendar()
+    print("done")
