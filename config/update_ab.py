@@ -53,3 +53,6 @@ print("write shares data into sqldatabase")
 QA_SU_save_stock_shares_sina_day()
 QA_etl_stock_shares()
 print("done")
+
+if __name__ == '__main__':
+    pass

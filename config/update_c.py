@@ -103,3 +103,6 @@ QA_SU_save_stock_min('tdx')
 QA_SU_save_index_min('tdx')
 QA_SU_save_etf_min('tdx')
 print("done")
+
+if __name__ == '__main__':
+    pass

@@ -60,3 +60,6 @@ print("write calendar data into sqldatabase")
 QA_SU_save_report_calendar_day()
 QA_etl_stock_calendar()
 print("done")
+
+if __name__ == '__main__':
+    pass

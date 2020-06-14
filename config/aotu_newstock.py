@@ -36,3 +36,7 @@ except:
     print('打新失败')
     send_email('错误报告', '打新失败', 'date')
 
+
+if __name__ == '__main__':
+    pass
+

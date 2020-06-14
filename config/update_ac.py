@@ -60,3 +60,7 @@ print("run financial data into sqldatabase")
 QA_util_process_stock_financial()
 QA_SU_save_fianacialTTM_momgo()
 print("done")
+
+
+if __name__ == '__main__':
+    pass

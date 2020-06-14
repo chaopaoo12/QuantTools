@@ -74,3 +74,7 @@ QA_etl_process_financial_day('all')
 print("write data into mongodb")
 QA_SU_save_fianacialTTM_momgo()
 QA_SU_save_stock_fianacial_momgo_his()
+
+
+if __name__ == '__main__':
+    pass
