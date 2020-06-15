@@ -79,4 +79,5 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
     res = trade_roboot(r_tar, account1, trading_date, percent, strategy_id, type='end', exceptions = exceptions)
     return(res)
 
-
+if __name__ == '__main__':
+    pass
