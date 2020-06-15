@@ -327,7 +327,7 @@ financial_dict = {
     '285业绩预告-本期净利润同比增幅下限%': 'PF_theLowerLimitoftheYearonyearGrowthofNetProfitForThePeriod',
     #[注：指标285至294展示未来一个报告期的数据。例，3月31日至6月29日这段时间内展示的是中报的数据；如果最新的财务报告后面有多个报告期的业绩预告/快报，只能展示最新的财务报告后面的一个报告期的业绩预告/快报]
     '286业绩预告-本期净利润同比增幅上限%': 'PF_theHigherLimitoftheYearonyearGrowthofNetProfitForThePeriod',
-    '287业绩快报-归母净利润': 'PE_returningtotheMothersNetProfit',
+    '287业绩快报-归母净利润': 'PE_RETTOTHEMOTHERSNETPROFIT',
     '288业绩快报-扣非净利润': 'PE_Non-netProfit',
     '289业绩快报-总资产': 'PE_TotalAssets',
     '290业绩快报-净资产': 'PE_NetAssets',

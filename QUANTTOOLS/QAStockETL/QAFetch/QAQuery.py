@@ -93,6 +93,12 @@ def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype=
                     cndict['284'] = '284'
                     cndict['285'] = '285'
                     cndict['286'] = '286'
+                    cndict['287'] = '287'
+                    cndict['295'] = '295'
+                    cndict['296'] = '296'
+                    cndict['302'] = '302'
+                    cndict['303'] = '303'
+                    cndict['307'] = '307'
                 except:
                     pass
                 cndict['_id']='_id'
@@ -107,6 +113,12 @@ def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype=
                     endict['284'] = '284'
                     endict['285'] = '285'
                     endict['286'] = '286'
+                    endict['287'] = '287'
+                    endict['295'] = '295'
+                    endict['296'] = '296'
+                    endict['302'] = '302'
+                    endict['303'] = '303'
+                    endict['307'] = '307'
                 except:
                     pass
                 endict['_id']='_id'
