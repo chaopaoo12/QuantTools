@@ -128,7 +128,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
     while (res[res['mark']<0].shape[0] + res[res['mark']>0].shape[0]) > 0:
 
         h1 = int(datetime.datetime.now().strftime("%H"))
-        if h1 >= 15 :
+        if h1 >= 15 or h1 <= 9:
             break
 
         if res[res['mark']<0].shape[0] == 0:
