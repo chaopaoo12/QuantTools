@@ -69,8 +69,6 @@ if __name__ == '__main__':
     QA_etl_stock_xdxr(type == "all")
     QA_etl_stock_day('day',mark_day)
     QA_etl_stock_block()
-    QA_SU_save_financialfiles()
-    QA_etl_stock_financial('all')
     #QA_etl_stock_alpha_day("day")
     #QA_etl_stock_technical_day("day")
     print("done")
