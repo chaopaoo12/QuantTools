@@ -237,3 +237,6 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
             break
 
     return(res1)
+
+if __name__ == '__main__':
+    pass
