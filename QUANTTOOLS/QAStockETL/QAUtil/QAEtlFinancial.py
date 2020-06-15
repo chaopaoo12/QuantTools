@@ -64,7 +64,7 @@ def QA_util_process_stock_financial(ui_log= None):
        interCompanyReceivables,
        explorationCosts
   from (select code,
-               to_date(report_date, 'yyyy-mm-dd') as report_date,
+               report_date,
                max(totalAssets) as totalAssets,
                max(intangibleAssets) as intangibleAssets,
                max(goodwill) as goodwill,
@@ -108,7 +108,7 @@ def QA_util_process_stock_financial(ui_log= None):
                max(interCompanyReceivables) as interCompanyReceivables,
                max(explorationCosts) as explorationCosts
           from (select code,
-                       report_date,
+                       to_date(report_date, 'yyyy-mm-dd') as report_date,
                        totalAssets,
                        intangibleAssets,
                        goodwill,
