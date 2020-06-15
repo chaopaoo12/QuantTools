@@ -67,6 +67,13 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
                           volume=None
                           )
 
+    send_actionnotice(strategy_id,
+                      '交易报告:{}'.format(trading_date),
+                      '交易准备已完成',
+                      direction = 'HOLD',
+                      offset='HOLD',
+                      volume=None
+                      )
     h1 = int(datetime.datetime.now().strftime("%H"))
     m1 = int(datetime.datetime.now().strftime("%M"))
     while h1 == 14 and m1 <= 50 :
