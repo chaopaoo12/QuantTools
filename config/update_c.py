@@ -30,13 +30,13 @@
 from QUANTAXIS.QASU.main import (QA_SU_save_etf_day, QA_SU_save_etf_min,
                                  QA_SU_save_index_day, QA_SU_save_index_min,
                                  QA_SU_save_stock_block, QA_SU_save_stock_day,
-                                 QA_SU_save_stock_info,
+                                 QA_SU_save_stock_info,QA_SU_save_financialfiles,
                                  QA_SU_save_stock_info_tushare,
                                  QA_SU_save_stock_list, QA_SU_save_stock_min,
                                  QA_SU_save_stock_xdxr,QA_SU_save_index_list)
 from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_etl_stock_xdxr, QA_etl_stock_day,
-                                   QA_etl_stock_block,
+                                   QA_etl_stock_block,QA_etl_stock_financial,
                                    QA_etl_process_financial_day,QA_SU_save_stock_alpha_day,
                                    QA_SU_save_stock_technical_index_day,
                                    QA_SU_save_stock_fianacial_percent_day,QA_util_process_stock_financial,
@@ -69,6 +69,8 @@ if __name__ == '__main__':
     QA_etl_stock_xdxr(type == "all")
     QA_etl_stock_day('day',mark_day)
     QA_etl_stock_block()
+    QA_SU_save_financialfiles()
+    QA_etl_stock_financial('all')
     #QA_etl_stock_alpha_day("day")
     #QA_etl_stock_technical_day("day")
     print("done")
