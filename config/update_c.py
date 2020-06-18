@@ -88,14 +88,16 @@ if __name__ == '__main__':
     QA_SU_save_stock_technical_index_day(START_DATE=mark_day, END_DATE = mark_day)
     QA_SU_save_stock_technical_week_day(START_DATE=mark_day, END_DATE = mark_day)
     QA_SU_save_stock_quant_data_day(start_date = mark_day, end_date = mark_day)
-    QA_SU_save_stock_technical_month_day(START_DATE = mark_day, END_DATE = mark_day)
+
     QA_SU_save_index_alpha_day(date = mark_day)
     QA_SU_save_index_technical_index_day(START_DATE = mark_day, END_DATE = mark_day)
     QA_SU_save_index_technical_week_day(START_DATE = mark_day, END_DATE = mark_day)
     QA_SU_save_index_quant_data_day(start_date = mark_day, end_date = mark_day)
-    QA_SU_save_index_technical_month_day(START_DATE = mark_day, END_DATE = mark_day)
+
     print("done")
     job111(mark_day)
+    QA_SU_save_stock_technical_month_day(START_DATE = mark_day, END_DATE = mark_day)
+    QA_SU_save_index_technical_month_day(START_DATE = mark_day, END_DATE = mark_day)
     print("data mining done")
     print("download index & etf data ")
     QA_SU_save_etf_day('tdx')
