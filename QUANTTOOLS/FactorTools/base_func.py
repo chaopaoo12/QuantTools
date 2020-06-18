@@ -43,8 +43,8 @@ def get_index_quant_data(start_date, end_date, type = 'crawl'):
     codes = [i for i in codes if i.startswith('8800') == False]
     codes = [i for i in codes if i.startswith('8807') == False]
     codes = [i for i in codes if i.startswith('8808') == False]
-    codes = [i for i in codes if i.startswith('88098') == False]
-    codes = [i for i in codes if i.startswith('88099') == False]
+    #codes = [i for i in codes if i.startswith('88098') == False]
+    #codes = [i for i in codes if i.startswith('88099') == False]
 
     d = {}
     for i in codes:
