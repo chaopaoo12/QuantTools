@@ -119,12 +119,12 @@ def combine_model(index_d, stock_d, safe_d, start, end):
     res = pd.DataFrame()
     for i in QA.QAUtil.QA_util_get_trade_range(start,end):
         try:
-            index_res = index_d[index_d['y_pred']==1][index_d['RANK']<=5].loc[i].sort_values(by='O_PROB', ascending=False)
+            index_res = index_d[(index_d.y_pred==1) & (index_d.RANK<=5)].loc[i].sort_values(by='O_PROB', ascending=False)
         except:
             index_res = None
 
         try:
-            safe_res = safe_d[safe_d['y_pred']==1][safe_d['RANK']<=5].loc[i]
+            safe_res = safe_d[(safe_d.y_pred==1) & (safe_d.RANK<=5)].loc[i]
         except:
             safe_res = None
 
