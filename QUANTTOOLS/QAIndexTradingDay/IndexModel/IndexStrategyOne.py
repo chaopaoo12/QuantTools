@@ -119,7 +119,7 @@ def model_predict(model, start, end, cols, type='crawl'):
     bina = pd.DataFrame(model.predict_proba(train[cols].fillna(0)))[[0,1]]
     bina.index = b.index
     b[['Z_PROB','O_PROB']] = bina
-    b['RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
+    b.loc[:,'RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
     return(b[b['y_pred']==1], b)
 
 def check_model(model, start, end, cols, col, target, type = 'value'):
