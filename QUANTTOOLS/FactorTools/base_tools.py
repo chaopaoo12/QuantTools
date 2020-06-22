@@ -153,19 +153,21 @@ def combine_model(index_d, stock_d, safe_d, start, end):
             for j in index_list:
                 try:
                     c = stock_d.loc[(i,find_stock(j)),:].sort_values(by='O_PROB', ascending=False).head(num).reset_index()
-                    c = c.assign(model_type = model_type)
                 except:
-                    c = pd.DataFrame()
+                    c = None
 
                 if c is not None and c.shape[0] > 0:
-                    res = res.reset_index().append(c,ignore_index=True).set_index(['date','code'])
+                    c = c.assign(model_type = 1)
+                    c = c.set_index(['date','code'])
+                    res = res.append(c)
 
         elif safe_res is not None and safe_res.shape[0] > 0:
             c = stock_d.loc[i].sort_values(by='O_PROB', ascending=False).head(num).reset_index()
-            c = c.assign(date = i)
-            c = c.assign(model_type = model_type)
 
             if c is not None and c.shape[0] > 0:
-                res = res.reset_index().append(c,ignore_index=True).set_index(['date','code'])
+                c = c.assign(date = i)
+                c = c.assign(model_type = 2)
+
+                res = res.append(c.set_index(['date','code']))
 
     return(res.drop_duplicates())
