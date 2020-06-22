@@ -92,7 +92,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         res = res.fillna(0)
         res1 = res[res['tar']>0]
         res2 = res[res['tar']==0]
-        res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100-k
+        res1.ix[-1, 'cnt'] = round((res1['real'][-1]-(res1['real'].sum()-res1['tar'].sum()))/res1['ask1'][-1]/100,0)*100 - k
         res = pd.concat([res1,res2])
         res['real'] = res['cnt'] * res['amt']
         res['mark'] = (res['cnt'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
@@ -101,7 +101,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
 def build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
     res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,k=k)
     while res['tar'].sum() < res['real'].sum():
-        k = k+100
+        k = k + 100
         res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,k=k)
     return(res)
 
@@ -122,7 +122,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
     if target is None:
         e = send_trading_message(account1, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
 
-    res = build(target, positions, sub_accounts, trading_date, percent, exceptions,100)
+    res = build(target, positions, sub_accounts, trading_date, percent, exceptions, 100)
     res1 = res
 
     while (res[res['mark']<0].shape[0] + res[res['mark']>0].shape[0]) > 0:
@@ -166,9 +166,9 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                     e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
                 else:
                     pass
-                time.sleep(5)
+                time.sleep(3)
 
-        time.sleep(30)
+        time.sleep(15)
 
         for i in res[res['mark'] == 0].index:
             cnt = float(res.at[i, 'cnt'])
@@ -188,7 +188,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                               offset='HOLD',
                               volume=abs(mark)
                               )
-        time.sleep(10)
+        time.sleep(5)
 
         if res[res['mark'] > 0].shape[0] == 0:
             pass
@@ -224,9 +224,9 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                     e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='LIMIT', priceType=None, price=price, client=client)
                 else:
                     pass
-                time.sleep(5)
+                time.sleep(3)
 
-        time.sleep(30)
+        time.sleep(15)
         if type == 'end':
             sub_accounts = client.get_positions(account1)['sub_accounts']['总 资 产'].values[0] - frozen
             positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
