@@ -228,7 +228,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
 
         time.sleep(15)
         if type == 'end':
-            sub_accounts = client.get_positions(account1)['sub_accounts']['总 资 产'].values[0] - frozen
+            #sub_accounts = client.get_positions(account1)['sub_accounts']['总 资 产'].values[0] - frozen
             positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
             res = build(target, positions, sub_accounts, trading_date, percent, exceptions,100)
         elif type == 'morning':
