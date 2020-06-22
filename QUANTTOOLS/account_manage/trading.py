@@ -168,27 +168,30 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                     pass
                 time.sleep(3)
 
-        time.sleep(15)
+            time.sleep(15)
 
-        for i in res[res['mark'] == 0].index:
-            cnt = float(res.at[i, 'cnt'])
-            tar = float(res.at[i, 'real'])
-            NAME = res.at[i, 'NAME']
-            INDUSTRY = res.at[i, 'INDUSTRY']
-            mark = abs(float(res.at[i, 'mark']))
-            print('继续持有 {code}({NAME},{INDUSTRY}), 目标持仓:{target},总金额:{tar}'.format(code=i,
-                                                                                   NAME= NAME,
-                                                                                   INDUSTRY=INDUSTRY,
-                                                                                   target=cnt,
-                                                                                   tar=tar))
-            send_actionnotice(strategy_id,
-                              account_info,
-                              '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= NAME, INDUSTRY=INDUSTRY),
-                              direction = 'HOLD',
-                              offset='HOLD',
-                              volume=abs(mark)
-                              )
-        time.sleep(5)
+        if res[res['mark'] == 0].shape[0] == 0:
+            pass
+        else:
+            for i in res[res['mark'] == 0].index:
+                cnt = float(res.at[i, 'cnt'])
+                tar = float(res.at[i, 'real'])
+                NAME = res.at[i, 'NAME']
+                INDUSTRY = res.at[i, 'INDUSTRY']
+                mark = abs(float(res.at[i, 'mark']))
+                print('继续持有 {code}({NAME},{INDUSTRY}), 目标持仓:{target},总金额:{tar}'.format(code=i,
+                                                                                       NAME= NAME,
+                                                                                       INDUSTRY=INDUSTRY,
+                                                                                       target=cnt,
+                                                                                       tar=tar))
+                send_actionnotice(strategy_id,
+                                  account_info,
+                                  '{code}({NAME},{INDUSTRY})'.format(code=i,NAME= NAME, INDUSTRY=INDUSTRY),
+                                  direction = 'HOLD',
+                                  offset='HOLD',
+                                  volume=abs(mark)
+                                  )
+                time.sleep(5)
 
         if res[res['mark'] > 0].shape[0] == 0:
             pass
@@ -226,7 +229,8 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                     pass
                 time.sleep(3)
 
-        time.sleep(15)
+            time.sleep(15)
+
         if type == 'end':
             #sub_accounts = client.get_positions(account1)['sub_accounts']['总 资 产'].values[0] - frozen
             positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
