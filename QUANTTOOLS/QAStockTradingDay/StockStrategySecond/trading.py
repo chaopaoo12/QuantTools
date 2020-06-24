@@ -79,7 +79,7 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
     while h1 == 14 and m1 <= 50 :
         h1 = int(datetime.datetime.now().strftime("%H"))
         m1 = int(datetime.datetime.now().strftime("%M"))
-        time.sleep(30)
+        time.sleep(15)
 
     QA_util_log_info(
         '##JOB04 Now Trading ==== {}'.format(str(trading_date)), ui_log)
