@@ -115,7 +115,7 @@ def model_predict(model, start, end, cols, type='crawl'):
     train.index = data.index
     print(n_cols)
     b = data[['INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
-    b['y_pred'] = model.predict(train[cols].fillna(0))
+    b = b.assign(y_pred = model.predict(train[cols].fillna(0)))
     bina = pd.DataFrame(model.predict_proba(train[cols].fillna(0)))[[0,1]]
     bina.index = b.index
     b[['Z_PROB','O_PROB']] = bina
