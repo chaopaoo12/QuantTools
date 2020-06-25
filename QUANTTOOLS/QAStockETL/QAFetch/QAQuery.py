@@ -603,7 +603,7 @@ def QA_fetch_stock_financial_percent(code, start, end=None, format='pd', collect
             'QA Error QA_fetch_stock_financial_percent data parameter start=%s end=%s is not right' % (start, end))
 
 @time_this_function
-def QA_fetch_stock_quant_data(code, start, end=None,block = True, format='pd', collections=DATABASE.stock_quant_data):
+def QA_fetch_stock_quant_data(code, start, end=None, block = True, format='pd', collections=DATABASE.stock_quant_data):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
