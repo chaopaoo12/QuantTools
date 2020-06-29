@@ -21,6 +21,9 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_bloc
         #codes = [i for i in codes if i.startswith('300') == False]
     else:
         codes = list(QA_fetch_stock_list_adv()['code'])
+        codes = [i for i in codes if i.startswith('688') == True]
+        codes = [i for i in codes if i.startswith('787') == False]
+        codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block).data
     if type == 'model':
