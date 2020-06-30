@@ -77,6 +77,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info('##JOB05 Now Safe Model Trainnig ==== {}'.format(str(date)), ui_log)
     safe_model.model_running()
     QA_util_log_info('##JOB06 Now Save Index Model ==== {}'.format(str(date)), ui_log)
+    important = safe_model.model_important()
     safe_model.save_model('safe',working_dir = working_dir)
 
     safe_train_report = build_table(pd.DataFrame(safe_model.info['train_report']), '安全模型训练集情况')
