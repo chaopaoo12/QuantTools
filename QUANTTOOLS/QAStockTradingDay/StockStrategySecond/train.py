@@ -64,11 +64,11 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     del index_model
 
     QA_util_log_info('##JOB02 Now Prepare Safe Date ==== {}'.format(str(date)), ui_log)
-    index_model.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
+    safe_model.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
     QA_util_log_info('##JOB03 Now Set Safe Target ==== {}'.format(str(date)), ui_log)
     safe_model.set_target('INDEX_TARGET', mark = 0.3, type = 'percent')
     QA_util_log_info('##JOB04 Now Set Safe Train time range ==== {}'.format(str(date)), ui_log)
-    index_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
+    safe_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
                               train_end=(datetime.strptime(date, "%Y-%m-%d")-delta1).strftime('%Y-%m-%d'))
     safe_model.prepare_data()
     other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 5, 'min_child_weight': 1, 'seed': 0,
