@@ -102,7 +102,7 @@ def load_model(name, working_dir= 'D:\\model\\current'):
     info = joblib.load(working_dir+"\\{name}_info.joblib.dat".format(name=name))
     return(model, info)
 
-def model_predict(model, start, end, cols, type='crawl', block = True, sub_block= True):
+def model_predict(model, start, end, cols, block = True, sub_block= True, type='crawl'):
     data = get_quant_data(start, end, type= type,block = block, sub_block=sub_block)
     cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
                                                    'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3',
