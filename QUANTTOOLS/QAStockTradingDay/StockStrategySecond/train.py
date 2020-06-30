@@ -57,10 +57,10 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info('##JOB05 Now Index Model Trainnig ==== {}'.format(str(date)), ui_log)
     index_model.model_running()
     QA_util_log_info('##JOB06 Now Save Index Model ==== {}'.format(str(date)), ui_log)
-    important = index_model.model_important()
+    index_important = index_model.model_important()
     index_model.save_model('index',working_dir = working_dir)
     index_train_report = build_table(pd.DataFrame(index_model.info['train_report']), '指数模型训练集情况')
-    index_ft_importance = build_table(important.head(50), '指数模型特征重要性')
+    index_ft_importance = build_table(index_important.head(50), '指数模型特征重要性')
     del index_model
 
     QA_util_log_info('##JOB02 Now Prepare Safe Model Data ==== {}'.format(str(date)), ui_log)
@@ -77,11 +77,11 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info('##JOB05 Now Safe Model Trainnig ==== {}'.format(str(date)), ui_log)
     safe_model.model_running()
     QA_util_log_info('##JOB06 Now Save Index Model ==== {}'.format(str(date)), ui_log)
-    important = safe_model.model_important()
+    safe_important = safe_model.model_important()
     safe_model.save_model('safe',working_dir = working_dir)
 
     safe_train_report = build_table(pd.DataFrame(safe_model.info['train_report']), '安全模型训练集情况')
-    safe_ft_importance = build_table(important.head(50), '安全模型特征重要性')
+    safe_ft_importance = build_table(safe_important.head(50), '安全模型特征重要性')
     del safe_model
 
     QA_util_log_info('##JOB06 Now Model Trainning Report ==== {}'.format(str(date)), ui_log)
