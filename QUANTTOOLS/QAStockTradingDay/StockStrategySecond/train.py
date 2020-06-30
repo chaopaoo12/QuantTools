@@ -61,7 +61,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     index_model.save_model('index',working_dir = working_dir)
     index_train_report = build_table(pd.DataFrame(index_model.info['train_report']), '指数模型训练集情况')
     index_ft_importance = build_table(important.head(50), '指数模型特征重要性')
-    del stock_model
+    del index_model
 
     QA_util_log_info('##JOB02 Now Prepare Safe Date ==== {}'.format(str(date)), ui_log)
     index_model.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
@@ -81,6 +81,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
 
     safe_train_report = build_table(pd.DataFrame(safe_model.info['train_report']), '安全模型训练集情况')
     safe_ft_importance = build_table(important.head(50), '安全模型特征重要性')
+    del safe_model
 
     QA_util_log_info('##JOB06 Now Model Trainning Report ==== {}'.format(str(date)), ui_log)
     msg = build_email(build_head(),msg1,
