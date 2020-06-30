@@ -19,11 +19,11 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     index_model = IndexModel()
     safe_model = IndexModel()
 
-    QA_util_log_info('##JOB02 Now Stock Prepare Date ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB02 Now Stock Prepare Model Data ==== {}'.format(str(date)), ui_log)
     stock_model.get_data(start=str(int(date[0:4])-2)+"-01-01", end=date, block=True, sub_block=True)
-    QA_util_log_info('##JOB03 Now Stock Set Target ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB03 Now Set Stock Model Target ==== {}'.format(str(date)), ui_log)
     stock_model.set_target(mark =0.42, type = 'percent')
-    QA_util_log_info('##JOB04 Now Set Stock Train time range ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(date)), ui_log)
     stock_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
                         train_end=(datetime.strptime(date, "%Y-%m-%d")-delta1).strftime('%Y-%m-%d'))
     stock_model.prepare_data()
@@ -43,11 +43,11 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     msg1 = '模型训练日期:{model_date}'.format(model_date=stock_model.info['date'])
     del stock_model
 
-    QA_util_log_info('##JOB02 Now Prepare Index Date ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB02 Now Prepare Index Model Data ==== {}'.format(str(date)), ui_log)
     index_model.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
-    QA_util_log_info('##JOB03 Now Set Index Target ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB03 Now Set Index Model Target ==== {}'.format(str(date)), ui_log)
     index_model.set_target('INDEX_TARGET5', mark = 0.3, type = 'percent')
-    QA_util_log_info('##JOB04 Now Set Index Train time range ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB04 Now Set Index Model Train time range ==== {}'.format(str(date)), ui_log)
     index_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
                               train_end=(datetime.strptime(date, "%Y-%m-%d")-delta1).strftime('%Y-%m-%d'))
     index_model.prepare_data()
@@ -63,11 +63,11 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     index_ft_importance = build_table(important.head(50), '指数模型特征重要性')
     del index_model
 
-    QA_util_log_info('##JOB02 Now Prepare Safe Date ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB02 Now Prepare Safe Model Data ==== {}'.format(str(date)), ui_log)
     safe_model.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date)
-    QA_util_log_info('##JOB03 Now Set Safe Target ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB03 Now Set Safe Model Target ==== {}'.format(str(date)), ui_log)
     safe_model.set_target('INDEX_TARGET', mark = 0.3, type = 'percent')
-    QA_util_log_info('##JOB04 Now Set Safe Train time range ==== {}'.format(str(date)), ui_log)
+    QA_util_log_info('##JOB04 Now Set Safe Model Train time range ==== {}'.format(str(date)), ui_log)
     safe_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
                               train_end=(datetime.strptime(date, "%Y-%m-%d")-delta1).strftime('%Y-%m-%d'))
     safe_model.prepare_data()
