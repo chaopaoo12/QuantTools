@@ -22,7 +22,6 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         print(account_info)
         res = client.get_positions(account)
         sub_accounts = res['sub_accounts']
-        print(sub_accounts)
         positions = res['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
 
         if exceptions is not None:
