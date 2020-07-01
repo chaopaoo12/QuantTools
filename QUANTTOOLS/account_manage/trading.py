@@ -43,6 +43,7 @@ def floor_round(x):
         return(y)
 
 def re_build(target, positions, sub_accounts, trading_date, percent, exceptions, k=100):
+    print(sub_accounts)
     sub_accounts= sub_accounts['总资产'] -10000
     positions = positions[positions['股票余额'].astype(float) > 0]
     positions = positions[positions['股票余额'].astype(float) > 0]
