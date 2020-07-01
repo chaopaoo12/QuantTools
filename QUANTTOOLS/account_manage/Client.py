@@ -22,7 +22,7 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         print(account_info)
         res = client.get_positions(account)
         sub_accounts = res['sub_accounts']
-        positions = res['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
+        positions = res['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','成本价','市价','市值','盈亏比例(%)']]
 
         if exceptions is not None:
             frozen_positions = client.get_positions(account)['positions'][['证券代码','证券名称','股票余额','可用余额','市值','冻结数量','参考盈亏','盈亏比例(%)']].set_index('证券代码').loc[exceptions]
