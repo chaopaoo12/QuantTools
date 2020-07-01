@@ -108,7 +108,7 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions, k=
 
 def trade_roboot(target, account, trading_date, percent, strategy_id, type='end', exceptions = None):
     client = get_Client()
-    sub_accounts, frozen, positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
+    sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
     account_info = client.get_account(account)
 
     if target is None:
