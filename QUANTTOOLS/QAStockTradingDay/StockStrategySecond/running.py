@@ -5,7 +5,6 @@ import pandas as pd
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import working_dir, percent, exceptions
 from QUANTAXIS.QAUtil import (QA_util_log_info)
-from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTAXIS.QAUtil import QA_util_get_last_day
 from QUANTTOOLS.account_manage import get_Client,check_Client
 from datetime import timedelta
