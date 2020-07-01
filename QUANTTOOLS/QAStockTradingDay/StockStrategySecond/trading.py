@@ -3,12 +3,12 @@ from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.account_manage import trade_roboot
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import working_dir, percent, exceptions
 from QUANTAXIS.QAUtil import QA_util_log_info
-from QUANTTOOLS.account_manage import get_Client
+from QUANTTOOLS.account_manage import get_Client,check_Client
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.concat_predict import concat_predict,load_prediction,check_prediction
 import time
 import datetime
 
-def trading(trading_date, percent=percent, strategy_id= '机器学习1号', account1= 'name:client-1', working_dir= working_dir, ui_log= None, exceptions= exceptions):
+def trading(trading_date, percent=percent, strategy_id= '机器学习1号', account1= 'name:client-1', working_dir= working_dir, exceptions= exceptions, ui_log= None):
 
     QA_util_log_info('##JOB01 Now Predict ==== {}'.format(str(trading_date)), ui_log)
     try:
@@ -24,23 +24,10 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
         r_tar = None
         send_email('交易报告:'+ trading_date, "空仓状态", 'date')
 
-    try:
-        QA_util_log_info(
-            '##JOB03 Now Chect Account Server ==== {}'.format(str(trading_date)), ui_log)
-        client = get_Client()
-        account1=account1
-        client.cancel_all(account1)
-        account_info = client.get_account(account1)
-        print(account_info)
-    except:
-        send_email('错误报告', '云服务器错误,请检查', trading_date)
-        send_actionnotice(strategy_id,
-                          '错误报告:{}'.format(trading_date),
-                          '云服务器错误,请检查',
-                          direction = 'HOLD',
-                          offset='HOLD',
-                          volume=None
-                          )
+    QA_util_log_info(
+        '##JOB03 Now Chect Account Server ==== {}'.format(str(trading_date)), ui_log)
+    client = get_Client()
+    check_Client(client, account1, strategy_id, trading_date, exceptions=exceptions)
 
     send_actionnotice(strategy_id,
                       '交易报告:{}'.format(trading_date),

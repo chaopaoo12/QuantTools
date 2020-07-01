@@ -7,34 +7,17 @@ from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import working_dir
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTAXIS.QAUtil import QA_util_get_last_day
-from QUANTTOOLS.account_manage import get_Client
+from QUANTTOOLS.account_manage import get_Client,check_Client
 from datetime import timedelta
 delta3 = timedelta(days=7)
 
-def predict(trading_date, strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir, ui_log = None, exceptions=exceptions):
+def predict(trading_date, strategy_id='机器学习1号', account='name:client-1', working_dir=working_dir, ui_log = None, exceptions=exceptions):
 
-    try:
-        QA_util_log_info(
-            '##JOB01 Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
-        client = get_Client()
-        account1=account1
-        account_info = client.get_account(account1)
-        print(account_info)
-        sub_accounts = client.get_positions(account1)['sub_accounts']
-        try:
-            frozen = float(client.get_positions(account1)['positions'].set_index('证券代码').loc[exceptions]['市值'].sum())
-        except:
-            frozen = 0
-        sub_accounts = sub_accounts - frozen
-    except:
-        send_email('错误报告', '云服务器错误,请检查', trading_date)
-        send_actionnotice(strategy_id,
-                          '错误报告:{}'.format(trading_date),
-                          '云服务器错误,请检查',
-                          direction = 'HOLD',
-                          offset='HOLD',
-                          volume=None
-                          )
+    QA_util_log_info(
+        '##JOB01 Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
+    client = get_Client()
+    sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
+
     QA_util_log_info('##JOB02 Now Predict ==== {}'.format(str(trading_date)), ui_log)
     tar,index_tar,safe_tar,stock_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
     save_prediction({'date': trading_date, 'tar':tar}, 'prediction', working_dir)
@@ -70,17 +53,8 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         table1 = pd.DataFrame()
         tar = pd.DataFrame()
 
-    if exceptions is not None:
-        frozen_positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']].set_index('证券代码').loc[exceptions]
-    else:
-        frozen_positions = pd.DataFrame()
-
     QA_util_log_info(
-        '##JOB06 Now Current Holding ==== {}'.format(str(trading_date)), ui_log)
-    positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
-
-    QA_util_log_info(
-        '##JOB07 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
+        '##JOB06 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
     try:
         safe_res = safe_tar.loc[trading_date]
         info1 = QA_fetch_index_list_adv().loc[list(set(safe_res.index))][['name']]
