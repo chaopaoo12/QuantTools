@@ -47,6 +47,7 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
 
     QA_util_log_info(
         '##JOB04 Now Trading ==== {}'.format(str(trading_date)), ui_log)
+    print(r_tar)
     res = trade_roboot(r_tar, account, trading_date, percent, strategy_id, type='end', exceptions = exceptions)
     return(res)
 
