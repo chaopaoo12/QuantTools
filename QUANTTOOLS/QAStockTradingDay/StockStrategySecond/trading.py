@@ -8,7 +8,7 @@ from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.concat_predict import conc
 import time
 import datetime
 
-def trading(trading_date, percent=percent, strategy_id= '机器学习1号', account1= 'name:client-1', working_dir= working_dir, exceptions= exceptions, ui_log= None):
+def trading(trading_date, percent=percent, strategy_id= '机器学习1号', account= 'name:client-1', working_dir= working_dir, exceptions= exceptions, ui_log= None):
 
     QA_util_log_info('##JOB01 Now Predict ==== {}'.format(str(trading_date)), ui_log)
     try:
@@ -27,7 +27,7 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
     QA_util_log_info(
         '##JOB03 Now Chect Account Server ==== {}'.format(str(trading_date)), ui_log)
     client = get_Client()
-    check_Client(client, account1, strategy_id, trading_date, exceptions=exceptions)
+    check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
     send_actionnotice(strategy_id,
                       '交易报告:{}'.format(trading_date),
@@ -47,7 +47,7 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
 
     QA_util_log_info(
         '##JOB04 Now Trading ==== {}'.format(str(trading_date)), ui_log)
-    res = trade_roboot(r_tar, account1, trading_date, percent, strategy_id, type='end', exceptions = exceptions)
+    res = trade_roboot(r_tar, account, trading_date, percent, strategy_id, type='end', exceptions = exceptions)
     return(res)
 
 if __name__ == '__main__':
