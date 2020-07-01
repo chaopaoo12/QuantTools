@@ -24,7 +24,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info('##JOB03 Now Set Stock Model Target ==== {}'.format(str(date)), ui_log)
     stock_model.set_target(mark =0.42, type = 'percent')
     QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(date)), ui_log)
-    stock_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
+    stock_model.set_train_rng(train_start=str(int(date[0:4])-2)+"-01-01",
                         train_end=(datetime.strptime(date, "%Y-%m-%d")-delta1).strftime('%Y-%m-%d'))
     stock_model.prepare_data()
     other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 5, 'min_child_weight': 5, 'seed': 0,
