@@ -17,7 +17,7 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
     logging.basicConfig(level=logging.DEBUG)
     try:
         QA_util_log_info(
-            '##JOB Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
+            '##JOB Now Check Account Server ==== {}'.format(str(trading_date)), ui_log)
         account_info = client.get_account(account)
         print(account_info)
         res = client.get_positions(account)
