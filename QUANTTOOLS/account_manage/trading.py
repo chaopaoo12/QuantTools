@@ -14,6 +14,7 @@ from QUANTAXIS.QAUtil import QA_util_get_last_day
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
 from QUANTAXIS.QAUtil import QA_util_today_str
 import math
+from QUANTTOOLS.account_manage.Client import get_Client,check_Client
 
 def date_func(date):
     if (date is None) or date in ['None', 0, '0']:
@@ -105,26 +106,18 @@ def build(target, positions, sub_accounts, trading_date, percent, exceptions, k=
         res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,k=k)
     return(res)
 
-def trade_roboot(target, account, trading_date,percent, strategy_id, type='end', exceptions = None):
-    logging.basicConfig(level=logging.DEBUG)
-    client = strategyease_sdk.Client(host=yun_ip, port=yun_port, key=easytrade_password)
-    account1=account
-    client.cancel_all(account1)
-    account_info = client.get_account(account1)
-    sub_accounts = client.get_positions(account1)['sub_accounts']['总 资 产'].values[0]
-    try:
-        frozen = float(client.get_positions(account1)['positions'].set_index('证券代码').loc[exceptions]['市值'].sum())
-    except:
-        frozen = 0
-    sub_accounts = sub_accounts - frozen
-    positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
+def trade_roboot(target, account, trading_date, percent, strategy_id, type='end', exceptions = None):
+    client = get_Client()
+    sub_accounts, frozen, positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
+    account_info = client.get_account(account)
 
     if target is None:
-        e = send_trading_message(account1, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
+        e = send_trading_message(account, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
 
     res = build(target, positions, sub_accounts, trading_date, percent, exceptions, 100)
     res1 = res
 
+    client.cancel_all(account)
     while (res[res['mark']<0].shape[0] + res[res['mark']>0].shape[0]) > 0:
 
         h1 = int(datetime.datetime.now().strftime("%H"))
@@ -148,7 +141,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                                                                                                 cnt=abs(mark),
                                                                                                 target=cnt,
                                                                                                 tar=tar))
-                    e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='MARKET', priceType=4, price=None, client=client)
+                    e = send_trading_message(account, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='MARKET', priceType=4, price=None, client=client)
                 elif type == 'morning':
                     cnt = float(res.at[i, 'cnt'])
                     tar = float(res.at[i, '股票余额'])
@@ -163,7 +156,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                                                                                                 target=cnt,
                                                                                                 tar=tar,
                                                                                                 price=price))
-                    e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
+                    e = send_trading_message(account, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
                 else:
                     pass
                 time.sleep(3)
@@ -209,7 +202,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                                                                                                 cnt=abs(mark),
                                                                                                 target=cnt,
                                                                                                 tar=tar))
-                    e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='MARKET', priceType=4, price = None, client=client)
+                    e = send_trading_message(account, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='MARKET', priceType=4, price = None, client=client)
                 elif type == 'morning':
                     cnt = float(res.at[i, 'cnt'])
                     tar = float(res.at[i, 'real'])
@@ -224,7 +217,7 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
                                                                                                 target=cnt,
                                                                                                 price=price,
                                                                                                 tar=tar))
-                    e = send_trading_message(account1, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='LIMIT', priceType=None, price=price, client=client)
+                    e = send_trading_message(account, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='LIMIT', priceType=None, price=price, client=client)
                 else:
                     pass
                 time.sleep(3)
@@ -232,8 +225,8 @@ def trade_roboot(target, account, trading_date,percent, strategy_id, type='end',
             time.sleep(15)
 
         if type == 'end':
-            #sub_accounts = client.get_positions(account1)['sub_accounts']['总 资 产'].values[0] - frozen
-            positions = client.get_positions(account1)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
+            #sub_accounts = client.get_positions(account)['sub_accounts']['总 资 产'].values[0] - frozen
+            positions = client.get_positions(account)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
             res = build(target, positions, sub_accounts, trading_date, percent, exceptions,100)
         elif type == 'morning':
             break
