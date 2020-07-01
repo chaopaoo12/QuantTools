@@ -114,7 +114,7 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
 
     if target is None:
         e = send_trading_message(account, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
-
+    print(sub_accounts)
     res = build(target, positions, sub_accounts, trading_date, percent, exceptions, 100)
     res1 = res
 
