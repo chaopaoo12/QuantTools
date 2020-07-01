@@ -1,19 +1,14 @@
-
-import QUANTTOOLS.QAStockTradingDay.StockModel.StrategyOne as Stock
-import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexStrategyOne as Index
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv,QA_fetch_index_list_adv
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
+from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.concat_predict import concat_predict,save_prediction
 import pandas as pd
-from QUANTTOOLS.FactorTools.base_tools import combine_model
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import working_dir, percent, exceptions
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTAXIS.QAUtil import QA_util_get_last_day
 from QUANTTOOLS.account_manage import get_Client
-from datetime import datetime,timedelta
-from dateutil.relativedelta import relativedelta
-from dateutil.rrule import *
+from datetime import timedelta
 delta3 = timedelta(days=7)
 
 def predict(trading_date, strategy_id='机器学习1号', account1='name:client-1', working_dir=working_dir, ui_log = None, exceptions=exceptions):
@@ -40,53 +35,27 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
                           offset='HOLD',
                           volume=None
                           )
-    try:
-        QA_util_log_info(
-            '##JOB02 Now Load Model ==== {}'.format(str(trading_date)), ui_log)
-        stock_model_temp,stock_info_temp = Stock.load_model('stock',working_dir = working_dir)
-        index_model_temp,index_info_temp = Index.load_model('index',working_dir = working_dir)
-        safe_model_temp,safe_info_temp = Index.load_model('safe',working_dir = working_dir)
-    except:
-        send_email('错误报告', '无法正确加载模型,请检查', trading_date)
-        send_actionnotice(strategy_id,
-                          '错误报告:{}'.format(trading_date),
-                          '无法正确加载模型,请检查',
-                          direction = 'HOLD',
-                          offset='HOLD',
-                          volume=None
-                          )
-    start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-1))).strftime('%Y-%m-%d')
-    end = trading_date
-    rng = pd.Series(pd.date_range(start, end, freq='D')).apply(lambda x: str(x)[0:10])
+    QA_util_log_info('##JOB02 Now Predict ==== {}'.format(str(trading_date)), ui_log)
+    tar,index_tar,safe_tar,stock_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
+    save_prediction({'date': trading_date, 'tar':tar}, 'prediction', working_dir)
+
+    QA_util_log_info('##JOB03 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)
+    info = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
+    tar = tar.reset_index('date').join(info, how = 'left').reset_index().set_index(['date','code']).sort_index()
+
     QA_util_log_info(
-        '##JOB03 Now Model Predict ==== {}'.format(str(trading_date)), ui_log)
-    #index_list,index_report,index_top_report = Index.check_model(index_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),index_info_temp['cols'], 'INDEXT_TARGET5', 0.3)
-    index_tar,index_b  = Index.model_predict(index_model_temp, start, end, index_info_temp['cols'])
-
-    #safe_list,safe_report,safe_top_report = Index.check_model(safe_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),safe_info_temp['cols'], 'INDEXT_TARGET', 0.3)
-    safe_tar,safe_b  = Index.model_predict(safe_model_temp, start, end, index_info_temp['cols'])
-
-    #stock_list,report,top_report = Stock.check_model(stock_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),stock_info_temp['cols'], 0.42)
-    stock_tar,stock_b  = Stock.model_predict(stock_model_temp, start, end, stock_info_temp['cols'])
-
-    tar = combine_model(index_b, stock_b, safe_b, start, trading_date)
-    QA_util_log_info(
-        '##JOB03 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)
+        '##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
     try:
         tar1 = tar.loc[trading_date]
     except:
         tar1 = None
 
-    QA_util_log_info(
-        '##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
     if tar1 is None:
         res = None
     else:
         tar2 = tar1[['Z_PROB','O_PROB','RANK']]
-        close = QA_fetch_stock_day_adv(list(tar2.index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
-        info = QA_fetch_stock_fianacial_adv(list(tar1.index), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
-        res = tar2.join(close, how = 'left').join(info, how = 'left')
-        #res = pd.concat([tar2,close,info],axis=1)
+        close = QA_fetch_stock_day_adv(list(tar1.index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
+        res = tar2.join(close, how = 'left')
         avg_account = sub_accounts['总 资 产']/tar1.shape[0]
         res = res.assign(tar=avg_account[0]*percent)
         res['cnt'] = (res['tar']/res['close']/100).apply(lambda x:round(x,0)*100)
@@ -96,8 +65,6 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
         '##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
     #table1 = tar[tar['RANK']<=5].groupby('date').mean()
     if tar is not None and tar.shape[0] > 0:
-        info1 = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
-        tar = tar.reset_index('date').join(info1, how = 'left').reset_index().set_index(['date','code']).sort_index()
         table1 = tar.groupby('date').mean()
     else:
         table1 = pd.DataFrame()
@@ -139,7 +106,7 @@ def predict(trading_date, strategy_id='机器学习1号', account1='name:client-
     stock_d = stock_tar.groupby('date').mean()
 
     try:
-        msg1 = '模型训练日期:{model_date}'.format(model_date=stock_info_temp['date'])
+        msg1 = '模型训练日期:{model_date}'.format(model_date=model_date)
     except:
         send_email('交易报告:'+ trading_date, "模型训练日期获取运算失败", trading_date)
 
