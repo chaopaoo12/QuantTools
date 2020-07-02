@@ -3,6 +3,7 @@ from QUANTTOOLS.FactorTools.base_func import mkdir
 import QUANTTOOLS.QAStockTradingDay.StockModel.StrategyOne as Stock
 import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexStrategyOne as Index
 import pandas as pd
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
 from QUANTTOOLS.FactorTools.base_tools import combine_model
 from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import working_dir
@@ -12,6 +13,7 @@ from datetime import datetime,timedelta
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import *
 delta3 = timedelta(days=7)
+
 
 def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=working_dir, ui_log = None):
 
@@ -45,6 +47,10 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
     stock_tar, stock_b  = Stock.model_predict(stock_model_temp, start, end, stock_info_temp['cols'])
 
     tar = combine_model(index_b, stock_b, safe_b, start, trading_date)
+
+    info = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
+
+    tar = tar.reset_index('date').join(info, how = 'left').reset_index().set_index(['date','code']).sort_index()
 
     return(tar,index_tar,safe_tar,stock_tar,start,end,stock_info_temp['date'])
 

@@ -19,11 +19,10 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
 
     QA_util_log_info('##JOB02 Now Predict ==== {}'.format(str(trading_date)), ui_log)
     tar,index_tar,safe_tar,stock_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
-    save_prediction({'date': trading_date, 'tar':tar}, 'prediction', working_dir)
 
-    QA_util_log_info('##JOB03 Now Concat Result ==== {}'.format(str(trading_date)), ui_log)
-    info = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
-    tar = tar.reset_index('date').join(info, how = 'left').reset_index().set_index(['date','code']).sort_index()
+    QA_util_log_info('##JOB03 Now Saving Result ==== {}'.format(str(trading_date)), ui_log)
+    print(tar)
+    save_prediction({'date': trading_date, 'tar':tar}, 'prediction', working_dir)
 
     QA_util_log_info(
         '##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
