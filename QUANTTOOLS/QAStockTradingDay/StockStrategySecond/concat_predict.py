@@ -48,9 +48,9 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
 
     tar = combine_model(index_b, stock_b, safe_b, start, trading_date)
 
-    info = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
+    info = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), start, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
 
-    tar = tar.reset_index('date').join(info, how = 'left').reset_index().set_index(['date','code']).sort_index()
+    tar = tar.reset_index('date').join(info[~info.index.duplicated()], how = 'left').reset_index().set_index(['date','code']).sort_index()
 
     return(tar,index_tar,safe_tar,stock_tar,start,end,stock_info_temp['date'])
 
