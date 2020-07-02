@@ -127,7 +127,7 @@ def model_predict(model, start, end, cols, block = False, sub_block= False, type
     b.loc[:,'RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
     return(b[b['y_pred']==1], b)
 
-def check_model(model, start, end, cols, target, type = 'value',block=True, sub_block=True):
+def check_model(model, start, end, cols, target, type = 'value',block=False, sub_block=False):
     tar,b = model_predict(model, start,end, cols, block = block, sub_block= sub_block)
     if type == 'value':
         b['star'] = b['TARGET5'].apply(lambda x : 1 if x >= target else 0)
