@@ -86,7 +86,6 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         r1['股票余额'] = r1['股票余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
         close = QA_fetch_stock_day_adv(list(r1.index),QA_util_get_last_day(trading_date,60),trading_date).data.loc[trading_date].reset_index('date')['close']
-        sell_code = [i for i in list(positions.set_index('证券代码').index) if i not in list(target.index)]
 
         res = r1.join(realtm,how='left').join(close,how='left')
         avg_account = (sub_accounts * percent)/target['double'].sum()
