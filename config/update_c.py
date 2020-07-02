@@ -54,10 +54,10 @@ from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.daily_job import job111
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
     print("download day data ")
+    QA_SU_save_stock_day('tdx')
+    QA_SU_save_index_day('tdx')
     QA_SU_save_index_list('tdx')
     QA_SU_save_stock_list('tdx')
-    QA_SU_save_index_day('tdx')
-    QA_SU_save_stock_day('tdx')
     QA_SU_save_stock_block('tdx')
     QA_SU_save_stock_info('tdx')
     QA_SU_save_stock_info_tushare()
