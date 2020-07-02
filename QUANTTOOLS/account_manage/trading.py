@@ -22,7 +22,7 @@ def date_func(date):
     diff_days=d1-d2
     return(diff_days.days)
 
-def func1(x,y):
+def func1(x, y):
     if x == 0:
         return y
     else:
@@ -66,6 +66,14 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         res['real'] = 0
         res['mark'] = (res['cnt'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:floor_round(x))
     else:
+        sell_code = [i for i in list(positions.set_index('证券代码').index) if i not in list(target.index)]
+
+        if sell_code is not None:
+            info = QA_fetch_stock_fianacial_adv(sell_code, QA_util_get_last_day(trading_date,7), trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
+            target = target.append(info)
+        else:
+            pass
+
         tar1 = target.reset_index().groupby('code').max()
         tar1['double'] = target.reset_index().groupby('code')['RANK'].count()
         target = tar1
@@ -78,7 +86,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         r1['股票余额'] = r1['股票余额'].fillna(0)
         realtm = QA_fetch_get_stock_realtime('tdx', code=[x for x in list(r1.index) if x in list(QA_fetch_stock_list().index)]).reset_index('datetime')[['ask1','ask_vol1','bid1','bid_vol1']]
         close = QA_fetch_stock_day_adv(list(r1.index),QA_util_get_last_day(trading_date,60),trading_date).data.loc[trading_date].reset_index('date')['close']
-        #info = QA_fetch_stock_fianacial_adv(list(r1.index), QA_util_get_last_day(trading_date,7), trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
+        sell_code = [i for i in list(positions.set_index('证券代码').index) if i not in list(target.index)]
 
         res = r1.join(realtm,how='left').join(close,how='left')
         avg_account = (sub_accounts * percent)/target['double'].sum()
