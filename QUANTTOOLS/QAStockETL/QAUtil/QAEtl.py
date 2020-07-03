@@ -36,7 +36,8 @@ into stock_analysis_data
           0,
           0,
           i_netProAftExtrGainLoss_TTM / (i_avgTotalAssets - i_avgGoodwill)) as i_ROA_total,
-   avg(PE) over(partition by order_date, industry) as i_PE,
+   avg(PE_TTM) over(partition by order_date, industry) as i_PE,
+   avg(PEEGL_TTM) over(partition by order_date, industry) as i_PEEGL,
    avg(PB) over(partition by order_date, industry) as i_PB,
    avg(grossMargin) over(partition by order_date, industry) as i_grossMargin,
    avg(ROE) over(partition by order_date, industry) as i_ROE,
@@ -65,17 +66,18 @@ into stock_analysis_data
           0,
           all_netProAftExtrGainLoss_TTM /
           (all_avgTotalAssets - all_avgGoodwill)) as all_ROA_total,
-   avg(PE) over(partition by order_date) as all_PE,
+   avg(PE_TTM) over(partition by order_date) as all_PE,
+   avg(PEEGL_TTM) over(partition by order_date) as all_PEEGL,
    avg(PB) over(partition by order_date) as all_PB,
    avg(grossMargin) over(partition by order_date) as all_grossMargin,
    avg(ROE) over(partition by order_date) as all_ROE,
    avg(ROA) over(partition by order_date) as all_ROA,
    AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 4 PRECEDING AND CURRENT ROW) AS AVG5_AMOUNT,
-   AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 9 PRECEDING AND CURRENT ROW) AS AVG5_AMOUNT,
+   AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 9 PRECEDING AND CURRENT ROW) AS AVG10_AMOUNT,
    AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 19 PRECEDING AND CURRENT ROW) AS AVG20_AMOUNT,
    AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 29 PRECEDING AND CURRENT ROW) AS AVG30_AMOUNT,
    AVG(all_AMOUNT) OVER(PARTITION BY CODE ORDER BY ORDER_DATE ASC RANGE BETWEEN 59 PRECEDING AND CURRENT ROW) AS AVG60_AMOUNT,
-   percent_rank() over(partition by order_date order by pe) as pe_rank,
+   percent_rank() over(partition by order_date order by PE_TTM) as pe_rank,
    percent_rank() over(partition by order_date order by pb) as pb_rank
     from (select h.*,
                  sum(total_market) over(partition by order_date, industry) as i_total_market,
@@ -369,13 +371,19 @@ into stock_analysis_data
                          round(a.low * b.shares_after * 10000, 2) AS low_market,
                          round(a.close * b.tra_ashares_after * 10000, 2) AS tra_total_market,
                          case
-                           when (netProfit_TTM <= 0 or
-                                netProAftExtrGainLoss_TTM <= 0) then
+                           when netProfit_TTM = 0 then
                             0
                            else
                             round(a.close * b.shares_after * 10000, 2) /
-                            LEAST(netProfit_TTM, netProAftExtrGainLoss_TTM)
-                         end as PE,
+                            netProfit_TTM
+                         end as PE_TTM,
+                         case
+                           when netProAftExtrGainLoss_TTM = 0 then
+                            0
+                           else
+                            round(a.close * b.shares_after * 10000, 2) /
+                            netProAftExtrGainLoss_TTM
+                         end as PEEGL_TTM,
                          case
                            when totalAssets - goodwill - totalLiabilities <= 0 then
                             0
