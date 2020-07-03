@@ -164,7 +164,7 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log=
         else:
             QA_util_sql_store_mysql(data, "stock_market_day",if_exists='append')
             QA_util_log_info(
-                '##JOB ETL STOCK DAY HAS BEEN SAVED ==== {}'.format(str(datetime.date.today())), ui_log)
+                '##JOB ETL STOCK DAY HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
 
 def QA_etl_stock_financial(type = "crawl", start_date = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
