@@ -127,14 +127,6 @@ def pct(data, type = 'close'):
 
 def index_pct(market):
     market = market.sort_values('date',ascending=True)
-    market['PRE_MARKET']= market['close'].shift(-1)
-    market['PRE2_MARKET']= market['close'].shift(-2)
-    market['PRE3_MARKET']= market['close'].shift(-3)
-    market['PRE5_MARKET']= market['close'].shift(-5)
-    market['INDEX_TARGET'] = (market['PRE2_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
-    market['INDEX_TARGET3'] = (market['PRE3_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
-    market['INDEX_TARGET5'] = (market['PRE5_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
-
     market['PRE_MARKET']= market.shift(-1)['close']
     market['PRE2_MARKET']= market.shift(-2)['close']
     market['PRE3_MARKET']= market.shift(-3)['close']
