@@ -1,15 +1,9 @@
-import pandas as pd
+
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_quant_pre_adv,QA_fetch_index_quant_pre_adv
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_target,QA_fetch_get_quant_data,QA_fetch_index_target,QA_fetch_index_quant_data
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv,QA_fetch_index_list_adv
-import keras
-from keras.models import Sequential
-from keras.layers.core import Dense, Dropout, Activation
-from keras.layers import LSTM
 from keras import backend as K
-from keras.metrics import top_k_categorical_accuracy
 import tensorflow as tf
-#from tensorflow.keras.metrics import top_k_categorical_accuracy
 import numpy as np
 import QUANTAXIS as QA
 from QUANTTOOLS.FactorTools.base_tools import find_stock
