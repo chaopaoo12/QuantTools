@@ -46,7 +46,7 @@ def rolling_calc1(data,N):
                                                           'PS':[ rolling_median,rolling_down,rolling_up, rolling_rank]}).reset_index(level=0,drop=True)
     return(data[['PE_PCT','PE_VAL','PE_DN','PE_UP',
                  'PEEGL_PCT','PEEGL_VAL','PEEGL_DN','PEEGL_UP',
-                 'PB_VAL','PB_PCT','PB_DN','PB_UP',
+                 'PB_PCT','PB_VAL','PB_DN','PB_UP',
                  'PEG_PCT','PEG_VAL','PEG_DN','PEG_UP',
                  'PS_PCT','PS_VAL','PS_DN','PS_UP']])
 
