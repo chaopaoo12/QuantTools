@@ -242,13 +242,13 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
        round(AVG30_TOR * 100, 2) as AVG30_TOR,
        round(AVG60_TOR * 100, 2) as AVG60_TOR,
        RNG,
-       RNG_L,
-       RNG_5,
-       RNG_10,
-       RNG_20,
-       RNG_30,
-       RNG_60,
-       RNG_90,
+       to_number(RNG_L) as RNG_L,
+       to_number(RNG_5) as RNG_5,
+       to_number(RNG_10) as RNG_10,
+       to_number(RNG_20) as RNG_20,
+       to_number(RNG_30) as RNG_30,
+       to_number(RNG_60) as RNG_60,
+       to_number(RNG_90) as RNG_90,
        AVG5_RNG,
        AVG10_RNG,
        AVG20_RNG,
@@ -371,12 +371,12 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
        AVG30_TR,
        AVG60_TR,
        AVG90_TR,
-       avg5_c_market,
-       avg10_c_market,
-       avg20_c_market,
-       avg30_c_market,
-       avg60_c_market,
-       avg90_c_market,
+       to_number(avg5_c_market) as avg5_c_market,
+       to_number(avg10_c_market) as avg10_c_market,
+       to_number(avg20_c_market) as avg20_c_market,
+       to_number(avg30_c_market) as avg30_c_market,
+       to_number(avg60_c_market) as avg60_c_market,
+       to_number(avg90_c_market) as avg90_c_market,
        pe_rank,
        pb_rank
   from stock_analysis_data a
@@ -398,5 +398,6 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
             print("No data For {start_date}".format(start_date=deal_date))
             return None
         else:
+
             data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
             return(data.drop_duplicates((['CODE', 'date_stamp'])))
