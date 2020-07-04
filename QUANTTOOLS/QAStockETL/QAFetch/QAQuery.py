@@ -878,9 +878,9 @@ def QA_fetch_index_target(codes, start_date, end_date):
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_index_day_adv(codes,start_date,end).data.fillna(0).reset_index()
     res = data.groupby('code').apply(index_pct)[['date','code',
-                                                      'INDEX_TARGET','INDEX_TARGET3',
-                                                      'INDEX_TARGET4','INDEX_TARGET5',
-                                                      'INDEX_TARGET10']]
+                                                  'INDEX_TARGET','INDEX_TARGET3',
+                                                  'INDEX_TARGET4','INDEX_TARGET5',
+                                                  'INDEX_TARGET10']]
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
     res = res.set_index(['date','code']).loc[rng1]
     for columnname in res.columns:
