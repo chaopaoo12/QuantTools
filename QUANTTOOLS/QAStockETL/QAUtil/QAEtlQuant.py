@@ -217,7 +217,7 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
                when NETPROFIT_TTM_LY <= 0 or NETPROFIT_TTM = NETPROFIT_TTM_LY then
                 0
                else
-                pe / (NETPROFIT_TTM / NETPROFIT_TTM_LY - 1) / 100
+                pe_ttm / (NETPROFIT_TTM / NETPROFIT_TTM_LY - 1) / 100
              end * 100,
              2) as PEG,
        round(case
@@ -225,14 +225,14 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
                     OPERATINGREVENUE_TTM = OPERATINGREVENUE_TTM_LY then
                 0
                else
-                PE / (OPERATINGREVENUE_TTM / OPERATINGREVENUE_TTM_LY - 1) / 100
+                pe_ttm / (OPERATINGREVENUE_TTM / OPERATINGREVENUE_TTM_LY - 1) / 100
              end * 100,
              2) as PSG,
        round(case
                when totalassets_LY = 0 or totalassets = totalassets_LY then
                 0
                else
-                PE / (totalassets / totalassets_LY - 1) / 100
+                pe_ttm / (totalassets / totalassets_LY - 1) / 100
              end * 100,
              2) as PBG,
        round(LAG_TOR * 100, 2) as LAG_TOR,
