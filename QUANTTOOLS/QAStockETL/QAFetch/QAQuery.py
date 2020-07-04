@@ -692,7 +692,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
         pass
     else:
         end_date = QA_util_get_real_date(end_date)
-    end = QA_util_get_next_datetime(end_date,5)
+    end = QA_util_get_next_datetime(end_date,10)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
     market = QA.QA_fetch_index_day(['000001'],start_date,end,format='pd')['close'].reset_index()
