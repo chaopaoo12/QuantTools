@@ -69,6 +69,7 @@ def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,
         sell_code = [i for i in list(positions.set_index('证券代码').index) if i not in list(target.index)]
 
         if sell_code is not None:
+            print(sell_code)
             info = QA_fetch_stock_fianacial_adv(sell_code, QA_util_get_last_day(trading_date,7), trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
             target = target.append(info)
         else:
