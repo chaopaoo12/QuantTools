@@ -53,6 +53,5 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv, QA_fet
                                            QA_fetch_stock_target,QA_fetch_stock_target_adv,QA_fetch_stock_industry,
                                            QA_fetch_financial_code)
 
-from QUANTTOOLS.QAStockETL.FuncTools import (Oracle_Database,Oracle_User,Oracle_Password,
-                                             Oralce_Server,MongoDB_Server,MongoDB_Database,financial_dict,
-                                             check_index_day,check_stock_day,check_stock_fianacial,check_stock_adj)
+from QUANTTOOLS.QAStockETL.FuncTools import (Oracle_Database,Oracle_User,Oracle_Password,Oralce_Server,MongoDB_Server,MongoDB_Database,financial_dict,
+                                             check_index_day,check_stock_day,check_stock_fianacial,check_stock_adj,check_stock_quant,check_index_quant)
