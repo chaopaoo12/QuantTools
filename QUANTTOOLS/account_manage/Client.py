@@ -25,7 +25,10 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         positions = res['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','成本价','市价','市值','盈亏比例(%)']]
 
         if exceptions is not None:
-            frozen_positions = client.get_positions(account)['positions'][['证券代码','证券名称','股票余额','可用余额','市值','冻结数量','参考盈亏','盈亏比例(%)']].set_index('证券代码').loc[exceptions]
+            try:
+                frozen_positions = positions.set_index('证券代码').loc[exceptions]
+            except:
+                frozen_positions = pd.DataFrame()
         else:
             frozen_positions = pd.DataFrame()
 
@@ -33,7 +36,9 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
             frozen = float(frozen_positions['市值'].sum())
         except:
             frozen = 0
+
         sub_accounts = sub_accounts - frozen
+
     except:
         send_email('错误报告', '云服务器错误,请检查', trading_date)
         send_actionnotice(strategy_id,
