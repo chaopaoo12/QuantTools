@@ -104,12 +104,3 @@ if __name__ == '__main__':
     QA_SU_save_stock_technical_month_day(START_DATE = mark_day, END_DATE = mark_day)
     QA_SU_save_index_technical_month_day(START_DATE = mark_day, END_DATE = mark_day)
     print("data mining done")
-    print("download index & etf data ")
-    QA_SU_save_etf_day('tdx')
-    print("done")
-    print("download min data ")
-    QA_SU_save_stock_min('tdx')
-    QA_SU_save_index_min('tdx')
-    QA_SU_save_etf_min('tdx')
-    print("done")
-
