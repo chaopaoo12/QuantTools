@@ -53,4 +53,4 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv, QA_fet
                                            QA_fetch_stock_target,QA_fetch_stock_target_adv,QA_fetch_stock_industry,
                                            QA_fetch_financial_code)
 
-from QUANTTOOLS.QAStockETL.FuncTools import (check_index_day,check_stock_day,check_stock_fianacial,check_stock_adj,check_stock_quant,check_index_quant)
+#from QUANTTOOLS.QAStockETL.FuncTools import (check_index_day,check_stock_day,check_stock_fianacial,check_stock_adj,check_stock_quant,check_index_quant)

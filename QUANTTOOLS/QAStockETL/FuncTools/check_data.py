@@ -2,7 +2,8 @@ from QUANTAXIS import QA_fetch_stock_adj,QA_fetch_stock_day_adv,QA_fetch_stock_l
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day,QA_util_get_real_date,QA_util_if_trade
 from QUANTTOOLS.message_func.email import send_email
 from QUANTTOOLS.message_func.wechat import send_actionnotice
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_fianacial_adv,QA_fetch_stock_quant_data_adv,QA_fetch_index_quant_data_adv
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,
+                                                           QA_fetch_stock_quant_data_adv,QA_fetch_index_quant_data_adv)
 
 def check_index_day(mark_day = None, type = 'day'):
     index_list = list(QA_fetch_index_list_adv()['code'])
