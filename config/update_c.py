@@ -48,7 +48,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_SU_save_index_technical_week_day,
                                    QA_SU_save_index_technical_month_day,
                                    QA_SU_save_index_quant_data_day)
-from QUANTTOOLS.QAStockETL import (check_index_day,check_stock_day,check_stock_fianacial,check_stock_adj)
+from QUANTTOOLS.QAStockETL import (check_index_day,check_stock_day,check_stock_fianacial,check_stock_adj,check_index_quant,check_stock_quant)
 from  QUANTAXIS.QAUtil import QA_util_today_str
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.daily_job import job111
 
@@ -93,12 +93,12 @@ if __name__ == '__main__':
     QA_SU_save_stock_technical_index_day(START_DATE=mark_day, END_DATE = mark_day)
     QA_SU_save_stock_technical_week_day(START_DATE=mark_day, END_DATE = mark_day)
     QA_SU_save_stock_quant_data_day(start_date = mark_day, end_date = mark_day)
-
+    check_stock_quant(mark_day)
     QA_SU_save_index_alpha_day(date = mark_day)
     QA_SU_save_index_technical_index_day(START_DATE = mark_day, END_DATE = mark_day)
     QA_SU_save_index_technical_week_day(START_DATE = mark_day, END_DATE = mark_day)
     QA_SU_save_index_quant_data_day(start_date = mark_day, end_date = mark_day)
-
+    check_index_quant(mark_day)
     print("done")
     job111(mark_day)
     QA_SU_save_stock_technical_month_day(START_DATE = mark_day, END_DATE = mark_day)
