@@ -48,6 +48,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_SU_save_index_technical_week_day,
                                    QA_SU_save_index_technical_month_day,
                                    QA_SU_save_index_quant_data_day)
+from QUANTTOOLS.QAStockETL import (check_index_day,check_stock_day,check_stock_fianacial,check_stock_adj)
 from  QUANTAXIS.QAUtil import QA_util_today_str
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.daily_job import job111
 
@@ -55,13 +56,16 @@ if __name__ == '__main__':
     mark_day = QA_util_today_str()
     print("download day data")
     QA_SU_save_stock_day('tdx')
+    check_stock_day(mark_day)
     QA_SU_save_index_day('tdx')
+    check_index_day(mark_day)
     QA_SU_save_index_list('tdx')
     QA_SU_save_stock_list('tdx')
     QA_SU_save_stock_block('tdx')
     QA_SU_save_stock_info('tdx')
     QA_SU_save_stock_info_tushare()
     QA_SU_save_stock_xdxr('tdx')
+    check_stock_adj(mark_day)
     print("done")
     print("write data into sqldatabase")
     QA_etl_stock_list()
@@ -82,6 +86,7 @@ if __name__ == '__main__':
     print("write quant data into mongodb")
     QA_SU_save_stock_fianacial_momgo(mark_day,mark_day)
     print("save quant indicator")
+    check_stock_fianacial(mark_day)
     QA_SU_save_stock_fianacial_percent_day(start_date = mark_day, end_date = mark_day)
 
     QA_SU_save_stock_alpha_day(date = mark_day)
