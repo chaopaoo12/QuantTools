@@ -21,6 +21,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_interest_rate,
                                                    QA_fetch_index_alpha,
                                                    QA_fetch_index_technical_index,
+                                                   QA_fetch_index_quant_data,
                                                    QA_fetch_index_quant_pre)
 from QUANTAXIS.QAUtil.QADate import month_data
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,
@@ -290,6 +291,23 @@ def QA_fetch_index_technical_index_adv(code, start="all", end=None, type='day', 
         return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_index_technical_index(code, start, end, type)
+        return QA_DataStruct_Stock_day(data)
+
+def QA_fetch_index_quant_data_adv(code, start="all", end=None, block=True, format='pd', collections=DATABASE.stock_quant_data):
+    '获取股票量化机器学习最终指标V1'
+    #code= [code] if isinstance(code,str) else code
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2008-01-01'
+        end = QA_util_today_str()
+        data = QA_fetch_index_quant_data(code, start, end, block)
+        return QA_DataStruct_Stock_day(data)
+    else:
+        data = QA_fetch_index_quant_data(code, start, end, block)
         return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_index_quant_pre_adv(code, start="all", end=None, format='pd'):
