@@ -130,9 +130,7 @@ def combine_model(index_d, stock_d, safe_d, start, end):
 
         if index_res is not None:
             index_list = list(index_res.index)
-            model_type = 1
         elif safe_res is not None:
-            model_type = 2
             index_list = None
         #   index_list = list(safe_res.index)
         else:
