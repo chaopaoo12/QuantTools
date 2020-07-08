@@ -138,19 +138,29 @@ def check_stock_quant(mark_day = None, type = 'day'):
             to_date = QA_util_get_last_day(mark_day)
         #check
         try:
-            data1 = QA_fetch_stock_quant_data_adv(code, mark_day, mark_day).data
-            data2 = QA_fetch_stock_quant_data_adv(code, to_date, to_date).data
+            data1 = QA_fetch_index_quant_data_adv(code, mark_day, mark_day).data
         #report
         except:
             data1 = None
+
+        try:
+            data2 = QA_fetch_index_quant_data_adv(code, to_date, to_date).data
+        #report
+        except:
             data2 = None
 
         if data1 is None:
+            data1 = 0
+
+        if data2 is None:
+            data2 = 0
+
+        if data1 == 0:
             send_actionnotice('个股量化数据检查错误报告',
                               '个股量化数据缺失:{}'.format(mark_day),
                               'WARNING',
-                              direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = 0),
-                              offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = 0),
+                              direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = data1),
+                              offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = data2),
                               volume= '缺失全部数据'
                               )
         elif data1.shape[0] < data2.shape[0]:
@@ -178,18 +188,28 @@ def check_index_quant(mark_day = None, type = 'day'):
         #check
         try:
             data1 = QA_fetch_index_quant_data_adv(code, mark_day, mark_day).data
-            data2 = QA_fetch_index_quant_data_adv(code, to_date, to_date).data
         #report
         except:
             data1 = None
+
+        try:
+            data2 = QA_fetch_index_quant_data_adv(code, to_date, to_date).data
+        #report
+        except:
             data2 = None
 
         if data1 is None:
+            data1 = 0
+
+        if data2 is None:
+            data2 = 0
+
+        if data1 == 0:
             send_actionnotice('指数量化数据检查错误报告',
                               '指数量化数据缺失:{}'.format(mark_day),
                               'WARNING',
-                              direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = 0),
-                              offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = data2.shape[0]),
+                              direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = data1),
+                              offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = data2),
                               volume= '缺失全部数据'
                               )
         elif data1.shape[0] < data2.shape[0]:
