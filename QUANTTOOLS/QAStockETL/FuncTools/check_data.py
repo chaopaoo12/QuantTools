@@ -189,7 +189,7 @@ def check_index_quant(mark_day = None, type = 'day'):
                               '指数量化数据缺失:{}'.format(mark_day),
                               'WARNING',
                               direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = 0),
-                              offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = 0),
+                              offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = data2.shape[0]),
                               volume= '缺失全部数据'
                               )
         elif data1.shape[0] < data2.shape[0]:
