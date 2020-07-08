@@ -892,7 +892,6 @@ def QA_fetch_index_target(codes, start_date, end_date):
 
 @time_this_function
 def QA_fetch_index_quant_data(code, start, end = None, format='pd'):
-    print(start, end)
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
