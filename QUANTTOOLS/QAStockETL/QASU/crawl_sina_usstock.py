@@ -1,5 +1,5 @@
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pandas,QA_util_today_str,QA_util_datetime_to_strdate)
-from QUANTTOOLS.QAStockETL.QAFetch.QAhkstock import QA_fetch_get_usstock_list_sina
+from QUANTTOOLS.QAStockETL.QAFetch.QAusstock import QA_fetch_get_usstock_list_sina
 import pymongo
 import gc
 
