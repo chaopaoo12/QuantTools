@@ -667,7 +667,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, format='pd', 
                 block.columns = ['S_' + i for i  in  list(block.columns)]
                 res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
             else:
-                print('a')
+                pass
         except:
             res = None
 
