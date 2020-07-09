@@ -126,7 +126,7 @@ def check_stock_fianacial(mark_day = None, type = 'day', ui_log = None):
 
     if data1 == 0:
         QA_util_log_info(
-            '##JOB Now Check Financial day data Failed ============== {deal_date} to {to_date}} '.format(deal_date=mark_day,
+            '##JOB Now Check Financial day data Failed ============== {deal_date} to {to_date} '.format(deal_date=mark_day,
                                                                                                              to_date=to_date), ui_log)
         send_actionnotice('财分数据检查错误报告',
                           '复权数据缺失:{}'.format(mark_day),
@@ -181,7 +181,7 @@ def check_stock_quant(mark_day = None, type = 'day', ui_log = None):
 
     if data1 == 0:
         QA_util_log_info(
-            '##JOB Now Check Stock Quant day data Failed ============== {deal_date} to {to_date}} '.format(deal_date=mark_day,
+            '##JOB Now Check Stock Quant day data Failed ============== {deal_date} to {to_date} '.format(deal_date=mark_day,
                                                                                                          to_date=to_date), ui_log)
         send_actionnotice('个股量化数据检查错误报告',
                           '个股量化数据缺失:{}'.format(mark_day),
@@ -236,7 +236,7 @@ def check_index_quant(mark_day = None, type = 'day', ui_log = None):
 
     if data1 == 0:
         QA_util_log_info(
-            '##JOB Now Check Index Quant day data Failed ============== {deal_date} to {to_date}} '.format(deal_date=mark_day,
+            '##JOB Now Check Index Quant day data Failed ============== {deal_date} to {to_date} '.format(deal_date=mark_day,
                                                                                                            to_date=to_date), ui_log)
         send_actionnotice('指数量化数据检查错误报告',
                           '指数量化数据缺失:{}'.format(mark_day),
