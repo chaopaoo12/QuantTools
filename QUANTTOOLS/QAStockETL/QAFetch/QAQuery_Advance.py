@@ -39,7 +39,7 @@ def QA_fetch_financial_report_adv(code=None, start=None, end=None, type='report'
     return QA_DataStruct_Financial(QA_fetch_financial_report(code, start, end, type=type, ltype=ltype))
 
 
-def QA_fetch_stock_financial_calendar_adv(code, start="all", end=None, type='day', format='pd', collections=DATABASE.report_calendar):
+def QA_fetch_stock_financial_calendar_adv(code, start="all", end=None, type='day', collections=DATABASE.report_calendar):
     '获取股票财报日历'
     #code= [code] if isinstance(code,str) else code
     # code checking
@@ -53,10 +53,10 @@ def QA_fetch_stock_financial_calendar_adv(code, start="all", end=None, type='day
     start = str(start)[0:10]
     end = str(end)[0:10]
 
-    return QA_DataStruct_Financial(QA_fetch_stock_financial_calendar(code, start, end, type=type))
+    return QA_DataStruct_Financial(QA_fetch_stock_financial_calendar(code, start, end, type=type, format='pd'))
 
 
-def QA_fetch_stock_divyield_adv(code, start="all", end=None, format='pd',type='crawl', collections=DATABASE.stock_divyield):
+def QA_fetch_stock_divyield_adv(code, start="all", end=None,type='crawl', collections=DATABASE.stock_divyield):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -69,9 +69,9 @@ def QA_fetch_stock_divyield_adv(code, start="all", end=None, format='pd',type='c
         end = QA_util_today_str()
     if end is None:
         end = QA_util_today_str()
-    return QA_DataStruct_Financial(QA_fetch_stock_divyield(code, start, end, type =type))
+    return QA_DataStruct_Financial(QA_fetch_stock_divyield(code, start, end, type =type, format='pd'))
 
-def QA_fetch_financial_TTM_adv(code, start="all", end=None, format='pd', collections=DATABASE.financial_TTM):
+def QA_fetch_financial_TTM_adv(code, start="all", end=None, collections=DATABASE.financial_TTM):
     '获取财报TTM'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -84,12 +84,12 @@ def QA_fetch_financial_TTM_adv(code, start="all", end=None, format='pd', collect
         end = QA_util_today_str()
 
     if end is None:
-        return QA_DataStruct_Financial(QA_fetch_financial_TTM(code, start, str(datetime.date.today())))
+        return QA_DataStruct_Financial(QA_fetch_financial_TTM(code, start, str(datetime.date.today()), format='pd'))
     else:
         series = pd.Series(
             data=month_data, index=pd.to_datetime(month_data), name='date')
         timerange = series.loc[start:end].tolist()
-        return QA_DataStruct_Financial(QA_fetch_financial_TTM(code, start, end))
+        return QA_DataStruct_Financial(QA_fetch_financial_TTM(code, start, end, format='pd'))
 
 def QA_fetch_stock_fianacial_adv(code,
                                  start='all', end=None,
@@ -118,7 +118,7 @@ def QA_fetch_stock_fianacial_adv(code,
         return QA_DataStruct_Stock_day(res_reset_index)
 
 
-def QA_fetch_stock_alpha_adv(code, start="all", end=None, format='pd', collections=DATABASE.stock_alpha):
+def QA_fetch_stock_alpha_adv(code, start="all", end=None, collections=DATABASE.stock_alpha):
     '获取股票财报日历'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -129,13 +129,13 @@ def QA_fetch_stock_alpha_adv(code, start="all", end=None, format='pd', collectio
     if start == 'all' or start == None:
         start = '2005-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_alpha(code, start, end)
+        data = QA_fetch_stock_alpha(code, start, end, format='pd')
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_stock_alpha(code, start, end)
+        data = QA_fetch_stock_alpha(code, start, end, format='pd')
         return QA_DataStruct_Stock_day(data)
 
-def QA_fetch_stock_shares_adv(code, start="all", end=None, format='pd',type='crawl', collections=DATABASE.stock_shares):
+def QA_fetch_stock_shares_adv(code, start="all", end=None,type='crawl', collections=DATABASE.stock_shares):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -148,7 +148,7 @@ def QA_fetch_stock_shares_adv(code, start="all", end=None, format='pd',type='cra
         end = QA_util_today_str()
     if end is None:
         end = QA_util_today_str()
-    return QA_DataStruct_Financial(QA_fetch_stock_shares(code, start, end, type =type))
+    return QA_DataStruct_Financial(QA_fetch_stock_shares(code, start, end, type =type, format='pd'))
 
 def QA_fetch_financial_report_wy_adv(code=None, start=None, end=None, type='report', ltype='EN'):
     """高级财务查询接口
@@ -160,7 +160,7 @@ def QA_fetch_financial_report_wy_adv(code=None, start=None, end=None, type='repo
     """
     return QA_DataStruct_Financial(QA_fetch_financial_report_wy(code, start, end, type=type, ltype=ltype))
 
-def QA_fetch_stock_technical_index_adv(code, start="all", end=None, type='day', format='pd', collections=DATABASE.stock_technical_index):
+def QA_fetch_stock_technical_index_adv(code, start="all", end=None, type='day', collections=DATABASE.stock_technical_index):
     '获取股票财报日历'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -171,13 +171,13 @@ def QA_fetch_stock_technical_index_adv(code, start="all", end=None, type='day', 
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_technical_index(code, start, end, type)
+        data = QA_fetch_stock_technical_index(code, start, end, type, format='pd')
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_stock_technical_index(code, start, end, type)
+        data = QA_fetch_stock_technical_index(code, start, end, type, format='pd')
         return QA_DataStruct_Stock_day(data)
 
-def QA_fetch_stock_financial_percent_adv(code, start="all", end=None, format='pd', collections=DATABASE.stock_financial_percent):
+def QA_fetch_stock_financial_percent_adv(code, start="all", end=None, collections=DATABASE.stock_financial_percent):
     '获取股票财报日历'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -188,13 +188,13 @@ def QA_fetch_stock_financial_percent_adv(code, start="all", end=None, format='pd
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_financial_percent(code, start, end)
+        data = QA_fetch_stock_financial_percent(code, start, end, format='pd')
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_stock_financial_percent(code, start, end)
+        data = QA_fetch_stock_financial_percent(code, start, end, format='pd')
         return QA_DataStruct_Stock_day(data)
 
-def QA_fetch_stock_quant_data_adv(code, start="all", end=None, block=True, format='pd', collections=DATABASE.stock_quant_data):
+def QA_fetch_stock_quant_data_adv(code, start="all", end=None, block=True, collections=DATABASE.stock_quant_data):
     '获取股票量化机器学习最终指标V1'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -205,13 +205,13 @@ def QA_fetch_stock_quant_data_adv(code, start="all", end=None, block=True, forma
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_quant_data(code, start, end, block)
+        data = QA_fetch_stock_quant_data(code, start, end, block, format='pd')
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_stock_quant_data(code, start, end, block)
+        data = QA_fetch_stock_quant_data(code, start, end, block, format='pd')
         return QA_DataStruct_Stock_day(data)
 
-def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, block=True, format='pd'):
+def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, block=True):
     '获取股票量化机器学习数据查询接口'
     end = start if end is None else end
     start = str(start)[0:10]
@@ -221,13 +221,13 @@ def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, block=True, format
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_quant_pre(code, start, end, block)
+        data = QA_fetch_stock_quant_pre(code, start, end, block, format='pd')
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_stock_quant_pre(code, start, end, block)
+        data = QA_fetch_stock_quant_pre(code, start, end, block, format='pd')
         return QA_DataStruct_Stock_day(data)
 
-def QA_fetch_stock_target_adv(code, start="all", end=None, type='close', format='pd'):
+def QA_fetch_stock_target_adv(code, start="all", end=None, type='close'):
     '获取股票量化机器学习数据查询接口'
     end = start if end is None else end
     start = str(start)[0:10]
@@ -237,13 +237,13 @@ def QA_fetch_stock_target_adv(code, start="all", end=None, type='close', format=
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_target(code, start, end, type=type)
+        data = QA_fetch_stock_target(code, start, end, type=type, format='pd')
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_stock_target(code, start, end, type=type)
+        data = QA_fetch_stock_target(code, start, end, type=type, format='pd')
         return QA_DataStruct_Stock_day(data)
 
-def QA_fetch_interest_rate_adv(start="all", end=None, format='pd'):
+def QA_fetch_interest_rate_adv(start="all", end=None):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -256,9 +256,9 @@ def QA_fetch_interest_rate_adv(start="all", end=None, format='pd'):
         end = QA_util_today_str()
     if end is None:
         end = QA_util_today_str()
-    return QA_fetch_interest_rate(start, end)
+    return QA_fetch_interest_rate(start, end, format='pd')
 
-def QA_fetch_index_alpha_adv(code, start="all", end=None, format='pd', collections=DATABASE.index_alpha):
+def QA_fetch_index_alpha_adv(code, start="all", end=None, collections=DATABASE.index_alpha):
     '获取股票财报日历'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -269,14 +269,14 @@ def QA_fetch_index_alpha_adv(code, start="all", end=None, format='pd', collectio
     if start == 'all' or start == None:
         start = '2005-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_index_alpha(code, start, end)
+        data = QA_fetch_index_alpha(code, start, end, format='pd')
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_index_alpha(code, start, end)
+        data = QA_fetch_index_alpha(code, start, end, format='pd')
         return QA_DataStruct_Stock_day(data)
 
 
-def QA_fetch_index_technical_index_adv(code, start="all", end=None, type='day', format='pd', collections=DATABASE.index_technical_index):
+def QA_fetch_index_technical_index_adv(code, start="all", end=None, type='day', collections=DATABASE.index_technical_index):
     '获取股票财报日历'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -287,13 +287,13 @@ def QA_fetch_index_technical_index_adv(code, start="all", end=None, type='day', 
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_index_technical_index(code, start, end, type)
+        data = QA_fetch_index_technical_index(code, start, end, type, format='pd')
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_index_technical_index(code, start, end, type)
+        data = QA_fetch_index_technical_index(code, start, end, type, format='pd')
         return QA_DataStruct_Stock_day(data)
 
-def QA_fetch_index_quant_data_adv(code, start="all", end=None, block=True, format='pd', collections=DATABASE.stock_quant_data):
+def QA_fetch_index_quant_data_adv(code, start="all", end=None, block=True, collections=DATABASE.stock_quant_data):
     '获取股票量化机器学习最终指标V1'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -304,13 +304,13 @@ def QA_fetch_index_quant_data_adv(code, start="all", end=None, block=True, forma
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_index_quant_data(code, start, end, block, format=format)
+        data = QA_fetch_index_quant_data(code, start, end, block, format='pd')
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_index_quant_data(code, start, end, block, format=format)
+        data = QA_fetch_index_quant_data(code, start, end, block, format='pd')
         return QA_DataStruct_Stock_day(data)
 
-def QA_fetch_index_quant_pre_adv(code, start="all", end=None, format='pd'):
+def QA_fetch_index_quant_pre_adv(code, start="all", end=None):
     '获取股票量化机器学习数据查询接口'
     end = start if end is None else end
     start = str(start)[0:10]
@@ -320,8 +320,8 @@ def QA_fetch_index_quant_pre_adv(code, start="all", end=None, format='pd'):
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_index_quant_pre(code, start, end)
+        data = QA_fetch_index_quant_pre(code, start, end, format='pd')
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_index_quant_pre(code, start, end)
+        data = QA_fetch_index_quant_pre(code, start, end, format='pd')
         return QA_DataStruct_Stock_day(data)
