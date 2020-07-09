@@ -304,10 +304,10 @@ def QA_fetch_index_quant_data_adv(code, start="all", end=None, block=True, forma
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_index_quant_data(code, start, end, block)
+        data = QA_fetch_index_quant_data(code, start, end, block, format=format)
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_index_quant_data(code, start, end, block)
+        data = QA_fetch_index_quant_data(code, start, end, block, format=format)
         return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_index_quant_pre_adv(code, start="all", end=None, format='pd'):
