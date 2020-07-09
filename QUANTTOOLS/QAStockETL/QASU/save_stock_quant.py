@@ -216,12 +216,15 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
                         index.insert_many(index_res, ordered=True)
                     elif isinstance(e, pymongo.bulk.BulkWriteError):
                         pass
+
+                QA_util_log_info(
+                    '##JOB04 Now stock quant data index all saved ============== {deal_date} '.format(deal_date=deal_date), ui_log)
             else:
                 QA_util_log_info(
-                    '##JOB01 No Data stock_quant_datat ============== {deal_date} '.format(deal_date=deal_date), ui_log)
+                    '##JOB01 No Data stock_quant_data ============== {deal_date} '.format(deal_date=deal_date), ui_log)
 
 
-def QA_SU_save_index_quant_day(code=None, start_date=None,end_date=None, ui_log = None, ui_progress = None):
+def QA_SU_save_index_quant_day(code=None, start_date=None, end_date=None, ui_log = None, ui_progress = None):
     if start_date is None:
         if end_date is None:
             start_date = QA_util_get_pre_trade_date(QA_util_today_str(),1)
@@ -397,6 +400,9 @@ def QA_SU_save_index_quant_day(code=None, start_date=None,end_date=None, ui_log 
                         index.insert_many(index_res, ordered=True)
                     elif isinstance(e, pymongo.bulk.BulkWriteError):
                         pass
+
+                QA_util_log_info(
+                    '##JOB04 Now index quant data all saved ============== {deal_date} '.format(deal_date=deal_date), ui_log)
             else:
                 QA_util_log_info(
-                    '##JOB01 No Data index_quant_datat ============== {deal_date} '.format(deal_date=deal_date), ui_log)
+                    '##JOB01 No Data index_quant_data ============== {deal_date} '.format(deal_date=deal_date), ui_log)
