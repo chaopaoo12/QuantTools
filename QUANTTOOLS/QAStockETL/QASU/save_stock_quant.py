@@ -47,7 +47,7 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
     if deal_date_list is None:
         print('not a trading day')
     elif data1 is None:
-        print('not a trading day')
+        print('no data for ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date))
     else:
         for deal_date in deal_date_list:
             if QA_util_if_trade(deal_date):
