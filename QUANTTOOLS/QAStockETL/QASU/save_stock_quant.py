@@ -36,14 +36,15 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
     alpha = DATABASE.stock_quant_data_alpha
     alpha.create_index(
         [("code", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
-    try:
-        data1 = QA_fetch_get_quant_data(code, start_date, end_date)
-    except:
-        data1 = None
-    else:
-        QA_util_log_info(
-            '##JOB got Data stock quant data ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
+    #try:
+    data1 = QA_fetch_get_quant_data(code, start_date, end_date)
+    #except:
+    #    data1 = None
+
+    QA_util_log_info(
+        '##JOB got Data stock quant data ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
     deal_date_list = QA_util_get_trade_range(start_date, end_date)
+
     if deal_date_list is None:
         print('not a trading day')
     elif data1 is None:
@@ -258,9 +259,9 @@ def QA_SU_save_index_quant_day(code=None, start_date=None, end_date=None, ui_log
         data1 = QA_fetch_get_index_quant_data(code, start_date, end_date)
     except:
         data1 = None
-    else:
-        QA_util_log_info(
-            '##JOB got Data index quant data ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
+
+    QA_util_log_info(
+        '##JOB got Data index quant data ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
     deal_date_list = QA_util_get_trade_range(start_date, end_date)
     if deal_date_list is None:
         print('not a trading day')
