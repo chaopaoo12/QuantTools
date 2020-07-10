@@ -36,10 +36,10 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
     alpha = DATABASE.stock_quant_data_alpha
     alpha.create_index(
         [("code", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
-    #try:
-    data1 = QA_fetch_get_quant_data(code, start_date, end_date)
-    #except:
-    #    data1 = None
+    try:
+        data1 = QA_fetch_get_quant_data(code, start_date, end_date)
+    except:
+        data1 = None
 
     QA_util_log_info(
         '##JOB got Data stock quant data ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
