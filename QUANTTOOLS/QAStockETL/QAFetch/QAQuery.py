@@ -11,7 +11,7 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 from QUANTTOOLS.QAStockETL.FuncTools.financial_mean import financial_dict, dict2
-from QUANTTOOLS.QAStockETL.FuncTools.base_func import pct,index_pct,time_this_function
+from QUANTTOOLS.QAStockETL.FuncTools.base_func import pct,index_pct,time_this_function,index_pct_log,pct_log
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_last_day,QA_util_get_next_datetime,QA_util_get_real_date
 
 def QA_fetch_stock_industry(stock_code):
@@ -696,13 +696,26 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close', method = 'v
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
     market = QA.QA_fetch_index_day(['000001'],start_date,end,format='pd')['close'].reset_index()
-    market = index_pct(market, method=method)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+    if method == 'value':
+        market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+    elif method == 'log':
+        market = index_pct_log(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+    else:
+        market = None
     res1 = data.to_qfq().data
     res1.columns = [x + '_qfq' for x in res1.columns]
     data = data.data.join(res1).fillna(0).reset_index()
-    res = data.groupby('code').apply(pct, type=type, method= method)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
-                                                    'TARGET','TARGET3','TARGET4','TARGET5',
-                                                      'TARGET10','AVG_TARGET']]
+    if method == 'value':
+        res = data.groupby('code').apply(pct, type=type)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
+                                                                          'TARGET','TARGET3','TARGET4','TARGET5',
+                                                                          'TARGET10','AVG_TARGET']]
+    elif method == 'log':
+        res = data.groupby('code').apply(pct_log, type=type)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
+                                                                          'TARGET','TARGET3','TARGET4','TARGET5',
+                                                                          'TARGET10','AVG_TARGET']]
+    else:
+        res = None
+
     res = pd.merge(res,market,on='date')
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
     res['next_date'] = res['date'].apply(lambda x: QA_util_get_pre_trade_date(x, -2))
@@ -720,9 +733,9 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close', method = 'v
             res[columnname]=res[columnname].astype('int8')
     return(res)
 
-def QA_fetch_stock_quant_pre(code, start, end=None, block = True, format='pd'):
+def QA_fetch_stock_quant_pre(code, start, end=None, block = True, type='close', method='value', format='pd'):
     res = QA_fetch_stock_quant_data(code, start, end, block)
-    target = QA_fetch_stock_target(code, start, end)
+    target = QA_fetch_stock_target(code, start, end, type=type, method=method)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
         return res
@@ -877,10 +890,18 @@ def QA_fetch_index_target(codes, start_date, end_date, method = 'value'):
     end = QA_util_get_next_datetime(end_date,10)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_index_day_adv(codes,start_date,end).data.fillna(0).reset_index()
-    res = data.groupby('code').apply(index_pct, method=method)[['date','code',
-                                                  'INDEX_TARGET','INDEX_TARGET3',
-                                                  'INDEX_TARGET4','INDEX_TARGET5',
-                                                  'INDEX_TARGET10']]
+    if method == 'value':
+        res = data.groupby('code').apply(index_pct)[['date','code',
+                                                    'INDEX_TARGET','INDEX_TARGET3',
+                                                    'INDEX_TARGET4','INDEX_TARGET5',
+                                                    'INDEX_TARGET10']]
+    elif method == 'log':
+        res = data.groupby('code').apply(index_pct_log)[['date','code',
+                                                        'INDEX_TARGET','INDEX_TARGET3',
+                                                        'INDEX_TARGET4','INDEX_TARGET5',
+                                                        'INDEX_TARGET10']]
+    else:
+        res = None
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
     res = res.set_index(['date','code']).loc[rng1]
     for columnname in res.columns:
@@ -960,9 +981,9 @@ def QA_fetch_index_quant_data(code, start, end = None, format='pd'):
         QA_util_log_info(
             'QA Error QA_fetch_index_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
-def QA_fetch_index_quant_pre(code, start, end=None, format='pd'):
+def QA_fetch_index_quant_pre(code, start, end=None, method='value', format='pd'):
     res = QA_fetch_index_quant_data(code, start, end)
-    target = QA_fetch_index_target(code, start, end)
+    target = QA_fetch_index_target(code, start, end, method=method)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
         return res

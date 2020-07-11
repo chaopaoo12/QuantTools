@@ -211,7 +211,7 @@ def QA_fetch_stock_quant_data_adv(code, start="all", end=None, block=True, colle
         data = QA_fetch_stock_quant_data(code, start, end, block, format='pd')
         return QA_DataStruct_Stock_day(data)
 
-def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, block=True):
+def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, block=True, type='close', method= 'value'):
     '获取股票量化机器学习数据查询接口'
     end = start if end is None else end
     start = str(start)[0:10]
@@ -221,10 +221,10 @@ def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, block=True):
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_quant_pre(code, start, end, block, format='pd')
+        data = QA_fetch_stock_quant_pre(code, start, end, block, type=type, method=method, format='pd')
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_stock_quant_pre(code, start, end, block, format='pd')
+        data = QA_fetch_stock_quant_pre(code, start, end, block, type=type, method=method, format='pd')
         return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_stock_target_adv(code, start="all", end=None, type='close', method= 'value'):
@@ -310,7 +310,7 @@ def QA_fetch_index_quant_data_adv(code, start="all", end=None, collections=DATAB
         data = QA_fetch_index_quant_data(code, start, end, format='pd')
         return QA_DataStruct_Stock_day(data)
 
-def QA_fetch_index_quant_pre_adv(code, start="all", end=None):
+def QA_fetch_index_quant_pre_adv(code, start="all", end=None, method='value'):
     '获取股票量化机器学习数据查询接口'
     end = start if end is None else end
     start = str(start)[0:10]
@@ -320,8 +320,8 @@ def QA_fetch_index_quant_pre_adv(code, start="all", end=None):
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_index_quant_pre(code, start, end, format='pd')
+        data = QA_fetch_index_quant_pre(code, start, end, method=method, format='pd')
         return QA_DataStruct_Stock_day(data)
     else:
-        data = QA_fetch_index_quant_pre(code, start, end, format='pd')
+        data = QA_fetch_index_quant_pre(code, start, end, method=method, format='pd')
         return QA_DataStruct_Stock_day(data)
