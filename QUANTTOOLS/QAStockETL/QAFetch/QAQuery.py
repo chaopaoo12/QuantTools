@@ -687,7 +687,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, format='pd', 
         QA_util_log_info(
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
-def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
+def QA_fetch_stock_target(codes, start_date, end_date, type='close', method = 'value'):
     if QA_util_if_trade(end_date):
         pass
     else:
@@ -696,11 +696,11 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close'):
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
     market = QA.QA_fetch_index_day(['000001'],start_date,end,format='pd')['close'].reset_index()
-    market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+    market = index_pct(market, method=method)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
     res1 = data.to_qfq().data
     res1.columns = [x + '_qfq' for x in res1.columns]
     data = data.data.join(res1).fillna(0).reset_index()
-    res = data.groupby('code').apply(pct, type=type)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
+    res = data.groupby('code').apply(pct, type=type, method= method)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
                                                     'TARGET','TARGET3','TARGET4','TARGET5',
                                                       'TARGET10','AVG_TARGET']]
     res = pd.merge(res,market,on='date')
@@ -869,7 +869,7 @@ def QA_fetch_index_technical_index(code, start, end=None, type='day', format='pd
         QA_util_log_info(
             'QA Error QA_fetch_index_technical_index data parameter start=%s end=%s is not right' % (start, end))
 
-def QA_fetch_index_target(codes, start_date, end_date):
+def QA_fetch_index_target(codes, start_date, end_date, method = 'value'):
     if QA_util_if_trade(end_date):
         pass
     else:
@@ -877,7 +877,7 @@ def QA_fetch_index_target(codes, start_date, end_date):
     end = QA_util_get_next_datetime(end_date,10)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_index_day_adv(codes,start_date,end).data.fillna(0).reset_index()
-    res = data.groupby('code').apply(index_pct)[['date','code',
+    res = data.groupby('code').apply(index_pct, method=method)[['date','code',
                                                   'INDEX_TARGET','INDEX_TARGET3',
                                                   'INDEX_TARGET4','INDEX_TARGET5',
                                                   'INDEX_TARGET10']]
