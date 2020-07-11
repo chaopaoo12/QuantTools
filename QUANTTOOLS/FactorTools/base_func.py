@@ -19,7 +19,7 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_bloc
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
-        res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block).data
+        res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method).data
     if type == 'model':
         res = QA_fetch_get_quant_data(codes, start_date, end_date, block = sub_block).set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
@@ -56,7 +56,7 @@ def get_index_quant_data(start_date, end_date, type = 'crawl', method = 'value')
 
 
     if type == 'crawl':
-        res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date).data
+        res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date, method=method).data
     if type == 'model':
         res = QA_fetch_index_quant_data(codes, start_date, end_date).set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_index_target(codes, start_date, end_date, method=method)
