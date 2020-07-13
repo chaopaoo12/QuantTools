@@ -18,11 +18,31 @@ def check_index_day(mark_day = None, type = 'day', ui_log = None):
             to_date = QA_util_get_last_day(mark_day)
 
     #check
-    data1 = QA_fetch_index_day_adv(index_list, mark_day, mark_day).data
-    data2 = QA_fetch_index_day_adv(index_list, to_date, to_date).data
+    try:
+        data1 = QA_fetch_index_day_adv(index_list, mark_day, mark_day).data
+    #report
+    except:
+        data1 = None
+
+    try:
+        data2 = QA_fetch_index_day_adv(index_list, to_date, to_date).data
+    #report
+    except:
+        data2 = None
 
     #report
-    if data1.shape[0] < data2.shape[0]:
+    if data1 is None:
+        QA_util_log_info(
+            '##JOB Now Check Index day data Failed ============== {deal_date} to {to_date} '.format(deal_date=mark_day,
+                                                                                                          to_date=to_date), ui_log)
+        send_actionnotice('指数日线数据检查错误报告',
+                          '指数日线数据缺失:{}'.format(mark_day),
+                          'WARNING',
+                          direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = 0),
+                          offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = 0),
+                          volume= '缺失全部数据'
+                          )
+    elif data1.shape[0] < data2.shape[0]:
         QA_util_log_info(
             '##JOB Now Check Index day data ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day,num1=data1.shape[0],
                                                                                                               to_date=to_date,num2=data2.shape[0]), ui_log)
@@ -47,11 +67,33 @@ def check_stock_day(mark_day = None, type = 'day', ui_log = None):
             to_date = QA_util_get_real_date(mark_day)
         else:
             to_date = QA_util_get_last_day(mark_day)
+
     #check
-    data1 = QA_fetch_stock_day_adv(code, mark_day, mark_day).data
-    data2 = QA_fetch_stock_day_adv(code, to_date, to_date).data
+    try:
+        data1 = QA_fetch_stock_day_adv(code, mark_day, mark_day).data
     #report
-    if data1.shape[0] < data2.shape[0]:
+    except:
+        data1 = None
+
+    try:
+        data2 = QA_fetch_stock_day_adv(code, to_date, to_date).data
+    #report
+    except:
+        data2 = None
+
+    #report
+    if data1 is None:
+        QA_util_log_info(
+            '##JOB Now Check Stock day data Failed ============== {deal_date} to {to_date} '.format(deal_date=mark_day,
+                                                                                                          to_date=to_date), ui_log)
+        send_actionnotice('个股日线数据检查错误报告',
+                          '个股日线数据缺失:{}'.format(mark_day),
+                          'WARNING',
+                          direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = 0),
+                          offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = 0),
+                          volume= '缺失全部数据'
+                          )
+    elif data1.shape[0] < data2.shape[0]:
         QA_util_log_info(
             '##JOB Now Check Stock day data ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day,num1=data1.shape[0],
                                                                                                              to_date=to_date,num2=data2.shape[0]), ui_log)
@@ -76,11 +118,33 @@ def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
             to_date = QA_util_get_real_date(mark_day)
         else:
             to_date = QA_util_get_last_day(mark_day)
+
     #check
-    data1 = QA_fetch_stock_adj(code, mark_day, mark_day)
-    data2 = QA_fetch_stock_adj(code, to_date, to_date)
+    try:
+        data1 = QA_fetch_stock_adj(code, mark_day, mark_day).data
     #report
-    if data1.shape[0] < data2.shape[0]:
+    except:
+        data1 = None
+
+    try:
+        data2 = QA_fetch_stock_adj(code, to_date, to_date).data
+    #report
+    except:
+        data2 = None
+
+    #report
+    if data1 is None:
+        QA_util_log_info(
+            '##JOB Now Check Stock adj day data Failed ============== {deal_date} to {to_date} '.format(deal_date=mark_day,
+                                                                                                    to_date=to_date), ui_log)
+        send_actionnotice('复权数据检查错误报告',
+                          '复权数据缺失:{}'.format(mark_day),
+                          'WARNING',
+                          direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = 0),
+                          offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = 0),
+                          volume= '缺失全部数据'
+                          )
+    elif data1.shape[0] < data2.shape[0]:
         QA_util_log_info(
             '##JOB Now Check Stock adj day data ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day,num1=data1.shape[0],
                                                                                                              to_date=to_date,num2=data2.shape[0]), ui_log)
