@@ -16,6 +16,9 @@ def check_index_day(mark_day = None, type = 'day', ui_log = None):
             to_date = QA_util_get_real_date(mark_day)
         else:
             to_date = QA_util_get_last_day(mark_day)
+    else:
+        mark_day = QA_util_get_real_date(mark_day)
+        to_date = QA_util_get_last_day(mark_day)
 
     #check
     try:
@@ -67,6 +70,9 @@ def check_stock_day(mark_day = None, type = 'day', ui_log = None):
             to_date = QA_util_get_real_date(mark_day)
         else:
             to_date = QA_util_get_last_day(mark_day)
+    else:
+        mark_day = QA_util_get_real_date(mark_day)
+        to_date = QA_util_get_last_day(mark_day)
 
     #check
     try:
@@ -118,6 +124,9 @@ def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
             to_date = QA_util_get_real_date(mark_day)
         else:
             to_date = QA_util_get_last_day(mark_day)
+    else:
+        mark_day = QA_util_get_real_date(mark_day)
+        to_date = QA_util_get_last_day(mark_day)
 
     #check
     try:
@@ -169,6 +178,10 @@ def check_stock_fianacial(mark_day = None, type = 'day', ui_log = None):
             to_date = QA_util_get_real_date(mark_day)
         else:
             to_date = QA_util_get_last_day(mark_day)
+    else:
+        mark_day = QA_util_get_real_date(mark_day)
+        to_date = QA_util_get_last_day(mark_day)
+
     #check
     try:
         data1 = QA_fetch_stock_fianacial_adv(code, mark_day, mark_day).data
@@ -216,6 +229,10 @@ def check_stock_quant(mark_day = None, type = 'day', ui_log = None):
             to_date = QA_util_get_real_date(mark_day)
         else:
             to_date = QA_util_get_last_day(mark_day)
+    else:
+        mark_day = QA_util_get_real_date(mark_day)
+        to_date = QA_util_get_last_day(mark_day)
+
     #check
     try:
         data1 = QA_fetch_stock_quant_data_adv(code, mark_day, mark_day).data
@@ -265,6 +282,10 @@ def check_index_quant(mark_day = None, type = 'day', ui_log = None):
             to_date = QA_util_get_real_date(mark_day)
         else:
             to_date = QA_util_get_last_day(mark_day)
+    else:
+        mark_day = QA_util_get_real_date(mark_day)
+        to_date = QA_util_get_last_day(mark_day)
+
     #check
     try:
         data1 = QA_fetch_index_quant_data_adv(code, mark_day, mark_day).data
