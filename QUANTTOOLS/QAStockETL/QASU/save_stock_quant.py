@@ -5,8 +5,6 @@ from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_today_str,QA_util_log_info,
                               QA_util_get_trade_range,QA_util_if_trade,QA_util_get_pre_trade_date)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv,QA_fetch_index_list_adv
-from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_block
-import pandas as pd
 
 def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log = None, ui_progress = None):
     if start_date is None:
@@ -257,16 +255,18 @@ def QA_SU_save_index_quant_day(code=None, start_date=None, end_date=None, ui_log
         [("code", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
     try:
         data1 = QA_fetch_get_index_quant_data(code, start_date, end_date)
+        QA_util_log_info(
+            '##JOB got Data index quant data ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
     except:
         data1 = None
+        QA_util_log_info(
+            '##JOB got Data index quant data failed ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
 
-    QA_util_log_info(
-        '##JOB got Data index quant data ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
     deal_date_list = QA_util_get_trade_range(start_date, end_date)
     if deal_date_list is None:
         print('not a trading day')
     elif data1 is None:
-        print('not a trading day')
+        print('No Data!!!')
     else:
         for deal_date in deal_date_list:
             if QA_util_if_trade(deal_date):
