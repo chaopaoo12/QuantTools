@@ -130,13 +130,13 @@ def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
 
     #check
     try:
-        data1 = QA_fetch_stock_adj(code, mark_day, mark_day).data
+        data1 = QA_fetch_stock_adj(code, mark_day, mark_day)
     #report
     except:
         data1 = None
 
     try:
-        data2 = QA_fetch_stock_adj(code, to_date, to_date).data
+        data2 = QA_fetch_stock_adj(code, to_date, to_date)
     #report
     except:
         data2 = None
