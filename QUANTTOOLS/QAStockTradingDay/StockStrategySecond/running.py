@@ -7,6 +7,7 @@ from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import working_dir
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTAXIS.QAUtil import QA_util_get_last_day
 from QUANTTOOLS.account_manage import get_Client,check_Client
+from QUANTTOOLS.message_func.wechat import send_actionnotice
 from datetime import timedelta
 delta3 = timedelta(days=7)
 
@@ -138,9 +139,23 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
 
     try:
         msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7,body8,body9,body10, body11)
+        send_actionnotice(strategy_id,
+                          '交易报告:{}'.format(trading_date),
+                          '模型运行完毕',
+                          direction = 'HOLD',
+                          offset='HOLD',
+                          volume=None
+                          )
         send_email(title + trading_date, msg, trading_date)
     except:
         send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
+        send_actionnotice(strategy_id,
+                          '交易报告:{}'.format(trading_date),
+                          '模型运行完毕 Email过程失败',
+                          direction = 'HOLD',
+                          offset='HOLD',
+                          volume=None
+                          )
 
     return(tar)
 
