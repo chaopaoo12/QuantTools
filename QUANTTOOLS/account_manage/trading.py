@@ -207,7 +207,7 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
             for i in res[res['mark'] > 0].index:
                 if type == 'end':
                     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
-                    if float(res.at[i, 'real']) > sub_accounts['可用金额']:
+                    if float(res.at[i, 'real']) >= sub_accounts['可用金额']:
                         pass
                     else:
                         time.sleep(5)
