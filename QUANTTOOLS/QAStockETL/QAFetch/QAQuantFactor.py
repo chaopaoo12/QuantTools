@@ -1,17 +1,21 @@
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv,QA_fetch_stock_financial_percent_adv,
                                                            QA_fetch_index_alpha_adv,QA_fetch_index_technical_index_adv)
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
+from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,QA_util_log_info,
                                QA_util_if_trade,QA_util_get_pre_trade_date)
 import QUANTAXIS as QA
 import math
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import get_trans,series_to_supervised,time_this_function
 
 @time_this_function
-def QA_fetch_get_index_quant_data(codes, start_date, end_date):
+def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):
     '获取股票量化机器学习最终指标V1'
     start = QA_util_get_pre_trade_date(start_date,15)
+    QA_util_log_info(
+        '##JOB got index quant data date range ============== from {from_} to {to_} '.format(from_=start,to_=end_date), ui_log)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+    QA_util_log_info(
+        '##JOB got Data index alpha data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     alpha = QA_fetch_index_alpha_adv(codes,start,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                  'alpha_009', 'alpha_010', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
                                                                  'alpha_018', 'alpha_019', 'alpha_020', 'alpha_021', 'alpha_022', 'alpha_023', 'alpha_024', 'alpha_025', 'alpha_026',
@@ -35,7 +39,11 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date):
             alpha[columnname]=alpha[columnname].astype('float16')
         if alpha[columnname].dtype == 'int64':
             alpha[columnname]=alpha[columnname].astype('int8')
+    QA_util_log_info(
+        '##JOB got Data index tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     technical = QA_fetch_index_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
+    QA_util_log_info(
+        '##JOB got Data index tech week data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     tech_week = QA_fetch_index_technical_index_adv(codes,start,end_date, 'week').data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
     tech_week.columns = [x + '_WK' for x in tech_week.columns]
     technical = technical.join(tech_week)
@@ -44,6 +52,8 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date):
             technical[columnname]=technical[columnname].astype('float16')
         if technical[columnname].dtype == 'int64':
             technical[columnname]=technical[columnname].astype('int8')
+    QA_util_log_info(
+        '##JOB index quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     res = technical.join(alpha)
     cols = ['AVG5_CR','AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR','AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR'
         ,'ADTM_CROSS1','ADTM_CROSS2','ADX_CROSS1','ADX_CROSS2','BBI_CROSS1','BBI_CROSS2','BIAS_CROSS1','BIAS_CROSS2'
@@ -69,15 +79,22 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date):
                 continue
             col_tar.append(list(res.columns)[j])
     col_tar = list(set(col_tar))
+    QA_util_log_info(
+        '##JOB index quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(get_trans).join(res[col_tar]).reset_index()
+
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
 
 @time_this_function
-def QA_fetch_get_quant_data(codes, start_date, end_date):
+def QA_fetch_get_quant_data(codes, start_date, end_date, ui_log = None):
     '获取股票量化机器学习最终指标V1'
     start = QA_util_get_pre_trade_date(start_date,15)
+    QA_util_log_info(
+        '##JOB got stock quant data date range ============== from {from_} to {to_} '.format(from_=start,to_=end_date), ui_log)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+    QA_util_log_info(
+        '##JOB got Data stock fianacial data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     fianacial = QA_fetch_stock_fianacial_adv(codes,start,end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE', 'DAYS',
                                                                           'AVG5','AVG10','AVG20','AVG30','AVG60',
                                                                           'LAG','LAG5','LAG10','LAG20','LAG30','LAG60',
@@ -95,8 +112,12 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
                                                                           'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
                                                                           'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR',
                                                                           'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY']]
+    QA_util_log_info(
+        '##JOB got Data stock perank data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     perank = QA_fetch_stock_financial_percent_adv(codes,start,end_date).data
     fianacial = fianacial.join(perank)
+    QA_util_log_info(
+        '##JOB got Data stock alpha data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     alpha = QA_fetch_stock_alpha_adv(codes,start,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                  'alpha_009', 'alpha_010', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
                                                                  'alpha_018', 'alpha_019', 'alpha_020', 'alpha_021', 'alpha_022', 'alpha_023', 'alpha_024', 'alpha_025', 'alpha_026',
@@ -120,7 +141,11 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
             alpha[columnname]=alpha[columnname].astype('float16')
         if alpha[columnname].dtype == 'int64':
             alpha[columnname]=alpha[columnname].astype('int8')
+    QA_util_log_info(
+        '##JOB got Data stock tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
+    QA_util_log_info(
+        '##JOB got Data stock tech week data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     tech_week = QA_fetch_stock_technical_index_adv(codes,start,end_date, 'week').data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
     tech_week.columns = [x + '_WK' for x in tech_week.columns]
     technical = technical.join(tech_week)
@@ -142,6 +167,8 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
             fianacial[columnname]=fianacial[columnname].astype('float16')
         if fianacial[columnname].dtype == 'int64':
             fianacial[columnname]=fianacial[columnname].astype('int8')
+    QA_util_log_info(
+        '##JOB stock quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     res = fianacial.join(technical).join(alpha)
     cols = ['AVG5_CR','AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR','AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR'
         ,'ADTM_CROSS1','ADTM_CROSS2','ADX_CROSS1','ADX_CROSS2','BBI_CROSS1','BBI_CROSS2','BIAS_CROSS1','BIAS_CROSS2'
@@ -167,7 +194,11 @@ def QA_fetch_get_quant_data(codes, start_date, end_date):
                 continue
             col_tar.append(list(res.columns)[j])
     col_tar = list(set(col_tar))
+    QA_util_log_info(
+        '##JOB stock quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(get_trans).join(res[col_tar])
+    QA_util_log_info(
+        '##JOB got Data stock industry info ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     res = pd.concat([res,INDUSTRY,TOR],axis=1).reset_index()
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
