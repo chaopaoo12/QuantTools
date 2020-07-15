@@ -206,10 +206,9 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
         else:
             for i in res[res['mark'] > 0].index:
                 if type == 'end':
-                    sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
-                    if float(res.at[i, 'real']) >= sub_accounts['可用金额']:
-                        pass
-                    else:
+
+                    ####check account capital
+                    while float(res.at[i, 'real']) > sub_accounts['可用金额']:
                         send_actionnotice(strategy_id,
                                           '交易报告:{}'.format(trading_date),
                                           '资金不足',
@@ -218,6 +217,8 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
                                           volume=float(float(res.at[i, 'real']) - sub_accounts['可用金额'])
                                           )
                         time.sleep(5)
+                        sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
+
                     cnt = float(res.at[i, 'cnt'])
                     tar = float(res.at[i, 'real'])
                     NAME = res.at[i, 'NAME']
