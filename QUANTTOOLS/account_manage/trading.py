@@ -210,6 +210,13 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
                     if float(res.at[i, 'real']) >= sub_accounts['可用金额']:
                         pass
                     else:
+                        send_actionnotice(strategy_id,
+                                          '交易报告:{}'.format(trading_date),
+                                          '资金不足',
+                                          direction = 'HOLD',
+                                          offset='HOLD',
+                                          volume=float(float(res.at[i, 'real']) - sub_accounts['可用金额'])
+                                          )
                         time.sleep(5)
                     cnt = float(res.at[i, 'cnt'])
                     tar = float(res.at[i, 'real'])
