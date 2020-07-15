@@ -129,15 +129,15 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
     while (res[res['mark']<0].shape[0] + res[res['mark']>0].shape[0]) > 0:
 
         h1 = int(datetime.datetime.now().strftime("%H"))
-        if h1 >= 15 or h1 <= 9:
-            send_actionnotice(strategy_id,
-                              '交易报告:{}'.format(trading_date),
-                              '已过交易时段',
-                              direction = 'HOLD',
-                              offset='HOLD',
-                              volume=None
-                              )
-            break
+        #if h1 >= 15 or h1 <= 9:
+        #    send_actionnotice(strategy_id,
+        #                      '交易报告:{}'.format(trading_date),
+        #                      '已过交易时段',
+        #                      direction = 'HOLD',
+        #                      offset='HOLD',
+        #                      volume=None
+        #                      )
+        #    break
 
         if res[res['mark']<0].shape[0] == 0:
             pass
@@ -247,6 +247,14 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
             break
         else:
             break
+
+    send_actionnotice(strategy_id,
+                      '交易报告:{}'.format(trading_date),
+                      '交易完成',
+                      direction = 'HOLD',
+                      offset='HOLD',
+                      volume=None
+                      )
 
     return(res1)
 
