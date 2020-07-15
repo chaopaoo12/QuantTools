@@ -176,7 +176,7 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
                     pass
                 time.sleep(3)
 
-            time.sleep(15)
+            time.sleep(10)
 
         if res[res['mark'] == 0].shape[0] == 0:
             pass
@@ -199,13 +199,18 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
                                   offset='HOLD',
                                   volume=abs(mark)
                                   )
-                time.sleep(5)
+                time.sleep(3)
 
         if res[res['mark'] > 0].shape[0] == 0:
             pass
         else:
             for i in res[res['mark'] > 0].index:
                 if type == 'end':
+                    sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
+                    if float(res.at[i, 'real']) > sub_accounts['可用金额']:
+                        pass
+                    else:
+                        time.sleep(5)
                     cnt = float(res.at[i, 'cnt'])
                     tar = float(res.at[i, 'real'])
                     NAME = res.at[i, 'NAME']
@@ -237,7 +242,7 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
                     pass
                 time.sleep(3)
 
-            time.sleep(15)
+            time.sleep(10)
 
         if type == 'end':
             #sub_accounts = client.get_positions(account)['sub_accounts']['总 资 产'].values[0] - frozen
