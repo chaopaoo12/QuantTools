@@ -3,14 +3,13 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_index_alpha_adv,QA_fetch_index_technical_index_adv)
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,QA_util_log_info,
                                QA_util_if_trade,QA_util_get_pre_trade_date)
-import QUANTAXIS as QA
 import math
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import get_trans,series_to_supervised,time_this_function
 
 @time_this_function
 def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):
     '获取股票量化机器学习最终指标V1'
-    start = QA_util_get_pre_trade_date(start_date,15)
+    start = QA_util_get_pre_trade_date(start_date,0)
     QA_util_log_info(
         '##JOB got index quant data date range ============== from {from_} to {to_} '.format(from_=start,to_=end_date), ui_log)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
@@ -89,7 +88,7 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):
 @time_this_function
 def QA_fetch_get_quant_data(codes, start_date, end_date, ui_log = None):
     '获取股票量化机器学习最终指标V1'
-    start = QA_util_get_pre_trade_date(start_date,15)
+    start = QA_util_get_pre_trade_date(start_date,0)
     QA_util_log_info(
         '##JOB got stock quant data date range ============== from {from_} to {to_} '.format(from_=start,to_=end_date), ui_log)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
