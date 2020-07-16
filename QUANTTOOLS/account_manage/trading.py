@@ -205,10 +205,10 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
             pass
         else:
             for i in res[res['mark'] > 0].index:
-                if type == 'end':
 
+                if type == 'end':
                     ####check account capital
-                    while float(res.at[i, 'real']) > sub_accounts['可用金额']:
+                    while float(res.at[i, 'real']) > float(sub_accounts['可用金额'].values):
                         send_actionnotice(strategy_id,
                                           '交易报告:{}'.format(trading_date),
                                           '资金不足',
