@@ -872,7 +872,7 @@ def get_alpha(df):
     df['alpha101']=stock.alpha101()
     df = df.reset_index()
 
-    df = df.assign(date=df['date'].apply(lambda x: str(x)[0:10]))
+    df = df.assign(date=df['date'].apply(lambda x: str(x)[0:10])).set_index(['date','code'])
     return df[['alpha001','alpha002','alpha003','alpha004',
                'alpha005','alpha006','alpha007','alpha008','alpha009','alpha010',
                'alpha011','alpha012','alpha013','alpha014','alpha015','alpha016',
