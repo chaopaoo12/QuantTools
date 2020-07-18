@@ -209,8 +209,8 @@ def QA_SU_save_stock_alpha101_day(code = None, start_date = None, end_date = Non
 
     if start_date is None:
         start_date = '2009-01-01'
-
-    if code is None:
+    codes = code
+    if codes is None:
         codes = list(QA_fetch_stock_list_adv()['code'])
 
     stock_alpha = client.stock_alpha101
