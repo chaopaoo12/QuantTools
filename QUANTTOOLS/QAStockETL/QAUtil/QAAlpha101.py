@@ -904,7 +904,7 @@ def stock_alpha101(code, start=None, end = None):
     pctchange = price.close_pct_change()
     price = price.data
     price['pctchange'] = pctchange
-    return(get_alpha(price).loc[deal_date_list].reset_index())
+    return(get_alpha(price).set_index(['date','code']).loc[deal_date_list].reset_index())
 
 def index_alpha101(code, start=None, end = None):
     np.seterr(invalid='ignore')
@@ -925,4 +925,4 @@ def index_alpha101(code, start=None, end = None):
     pctchange = price.close_pct_change()
     price = price.data
     price['pctchange'] = pctchange
-    return(get_alpha(price).loc[deal_date_list].reset_index())
+    return(get_alpha(price).set_index(['date','code']).loc[deal_date_list].reset_index())
