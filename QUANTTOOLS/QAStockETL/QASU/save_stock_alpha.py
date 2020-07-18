@@ -243,11 +243,12 @@ def QA_SU_save_stock_alpha101_day(code = None, start_date = None, end_date = Non
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
 
-def QA_SU_save_index_alpha101_day(codes = None, start_date = None, end_date = None, client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_index_alpha101_day(code = None, start_date = None, end_date = None, client=DATABASE, ui_log = None, ui_progress = None):
     '''
      save index_day
     :return:
     '''
+    codes = code
     if codes is None:
         codes = list(QA_fetch_index_list_adv()['code'])
 
