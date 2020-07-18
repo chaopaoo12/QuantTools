@@ -1862,7 +1862,7 @@ class Alpha_191:
         rank2 = log1.rank(axis=1, pct=True).rank(axis=1, pct=True)
         cond_min = rank2 > 5
         rank2[cond_min] = 5
-        tsrank1 = ((-((self.close/self.prev_close)-1)).shift(6)).rolling(5).apply(self.func_rank)
+        tsrank1 = ((-((self.close/self.prev_close)-1)).shift(6)).rolling(5).apply(self.func_rank,raw=True)
         alpha = (rank2+tsrank1).iloc[-1,:]
         alpha=alpha.dropna()
         return alpha
