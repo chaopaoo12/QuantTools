@@ -116,7 +116,7 @@ def QA_SU_save_index_alpha_day(code = None, start_date = None, end_date = None, 
 
     if start_date is None:
         start_date = '2009-01-01'
-    print(code)
+
     deal_date_list = QA_util_get_trade_range(start_date, end_date)
 
     index_alpha = client.index_alpha
