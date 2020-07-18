@@ -1695,7 +1695,7 @@ class Alpha_191:
         '''
         alpha = min(rank1, rank2)   NaN如何比较？
         '''
-        return alpha
+        return 0
 
     def alpha_141(self):
         #### (RANK(CORR(RANK(HIGH), RANK(MEAN(VOLUME, 15)), 9))* -1)
