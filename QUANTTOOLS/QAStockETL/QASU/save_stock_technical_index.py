@@ -29,7 +29,7 @@ def QA_SU_save_stock_technical_index_day(start_date=None,end_date=None,client=DA
     stock_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start_date,end_date, stock_technical_index):
+    def __saving_work(code,start_date,end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving stock_technical_index from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
@@ -49,7 +49,7 @@ def QA_SU_save_stock_technical_index_day(start_date=None,end_date=None,client=DA
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date, stock_technical_index)
+        __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_index ^_^',  ui_log)
@@ -83,7 +83,7 @@ def QA_SU_save_stock_technical_index_his(start_date=None,end_date=None,client=DA
     stock_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start_date,end_date, stock_technical_index):
+    def __saving_work(code,start_date,end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving stock_technical_index from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
@@ -103,7 +103,7 @@ def QA_SU_save_stock_technical_index_his(start_date=None,end_date=None,client=DA
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date, stock_technical_index)
+        __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_index ^_^',  ui_log)
@@ -134,7 +134,7 @@ def QA_SU_save_stock_technical_week_day(start_date=None,end_date=None,client=DAT
     stock_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start_date,end_date, stock_technical_week):
+    def __saving_work(code,start_date,end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving stock_technical_week from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
@@ -154,7 +154,7 @@ def QA_SU_save_stock_technical_week_day(start_date=None,end_date=None,client=DAT
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date, stock_technical_week)
+        __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_week ^_^',  ui_log)
@@ -188,7 +188,7 @@ def QA_SU_save_stock_technical_week_his(start_date=None,end_date=None,client=DAT
     stock_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start_date,end_date, stock_technical_week):
+    def __saving_work(code,start_date,end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving stock_technical_week from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
@@ -208,7 +208,7 @@ def QA_SU_save_stock_technical_week_his(start_date=None,end_date=None,client=DAT
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date, stock_technical_week)
+        __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_week ^_^',  ui_log)
@@ -239,7 +239,7 @@ def QA_SU_save_stock_technical_month_day(start_date=None,end_date=None,client=DA
     stock_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start_date,end_date, stock_technical_month):
+    def __saving_work(code,start_date,end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving stock_technical_month from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
@@ -259,7 +259,7 @@ def QA_SU_save_stock_technical_month_day(start_date=None,end_date=None,client=DA
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date, stock_technical_month)
+        __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_month ^_^',  ui_log)
@@ -293,7 +293,7 @@ def QA_SU_save_stock_technical_month_his(start_date=None,end_date=None,client=DA
     stock_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start_date,end_date, stock_technical_month):
+    def __saving_work(code,start_date,end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving stock_technical_month from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
@@ -313,7 +313,7 @@ def QA_SU_save_stock_technical_month_his(start_date=None,end_date=None,client=DA
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date, stock_technical_month)
+        __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_month ^_^',  ui_log)
@@ -345,7 +345,7 @@ def QA_SU_save_index_technical_index_day(start_date=None,end_date=None,client=DA
     index_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start_date,end_date, index_technical_index):
+    def __saving_work(code,start_date,end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving index_technical_index from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
@@ -365,7 +365,7 @@ def QA_SU_save_index_technical_index_day(start_date=None,end_date=None,client=DA
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date, index_technical_index)
+        __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save index_technical_index ^_^',  ui_log)
@@ -399,7 +399,7 @@ def QA_SU_save_index_technical_index_his(start_date=None,end_date=None,client=DA
     index_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start_date,end_date, index_technical_index):
+    def __saving_work(code,start_date,end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving index_technical_index from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
@@ -419,7 +419,7 @@ def QA_SU_save_index_technical_index_his(start_date=None,end_date=None,client=DA
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date, index_technical_index)
+        __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save index_technical_index ^_^',  ui_log)
@@ -450,7 +450,7 @@ def QA_SU_save_index_technical_week_day(start_date=None,end_date=None,client=DAT
     index_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start_date,end_date, index_technical_week):
+    def __saving_work(code,start_date,end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving index_technical_week from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
@@ -470,7 +470,7 @@ def QA_SU_save_index_technical_week_day(start_date=None,end_date=None,client=DAT
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date, index_technical_week)
+        __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save index_technical_week ^_^',  ui_log)
@@ -504,7 +504,7 @@ def QA_SU_save_index_technical_week_his(start_date=None,end_date=None,client=DAT
     index_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start_date,end_date, index_technical_week):
+    def __saving_work(code,start_date,end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving index_technical_week from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
@@ -524,7 +524,7 @@ def QA_SU_save_index_technical_week_his(start_date=None,end_date=None,client=DAT
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date, index_technical_week)
+        __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save index_technical_week ^_^',  ui_log)
@@ -555,7 +555,7 @@ def QA_SU_save_index_technical_month_day(start_date=None,end_date=None,client=DA
     index_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start_date,end_date, index_technical_month):
+    def __saving_work(code,start_date,end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving index_technical_month from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
@@ -575,7 +575,7 @@ def QA_SU_save_index_technical_month_day(start_date=None,end_date=None,client=DA
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date, index_technical_month)
+        __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save index_technical_month ^_^',  ui_log)
@@ -609,7 +609,7 @@ def QA_SU_save_index_technical_month_his(start_date=None,end_date=None,client=DA
     index_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start_date,end_date, index_technical_month):
+    def __saving_work(code,start_date,end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving index_technical_month from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
@@ -629,7 +629,7 @@ def QA_SU_save_index_technical_month_his(start_date=None,end_date=None,client=DA
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date, index_technical_month)
+        __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save index_technical_month ^_^',  ui_log)
