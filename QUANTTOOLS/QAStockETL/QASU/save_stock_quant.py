@@ -37,6 +37,7 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
     alpha101 = DATABASE.stock_quant_data_alpha101
     alpha101.create_index(
         [("code", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
+
     try:
         data1 = QA_fetch_get_quant_data(code, start_date, end_date)
     except:
