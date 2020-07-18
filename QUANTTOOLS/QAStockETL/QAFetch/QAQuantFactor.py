@@ -1,6 +1,6 @@
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv,QA_fetch_stock_financial_percent_adv,
-                                                           QA_fetch_index_alpha_adv,QA_fetch_index_technical_index_adv)
+                                                           QA_fetch_index_alpha_adv,QA_fetch_index_technical_index_adv,QA_fetch_stock_alpha101_adv,QA_fetch_index_alpha101_adv)
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,QA_util_log_info,
                                QA_util_if_trade,QA_util_get_pre_trade_date)
 import math
@@ -38,6 +38,13 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):
             alpha[columnname]=alpha[columnname].astype('float16')
         if alpha[columnname].dtype == 'int64':
             alpha[columnname]=alpha[columnname].astype('int8')
+    alpha101 = QA_fetch_index_alpha101_adv(codes,start,end_date).data.loc[rng1]
+    for columnname in alpha.columns:
+        if alpha101[columnname].dtype == 'float64':
+            alpha101[columnname]=alpha101[columnname].astype('float16')
+        if alpha101[columnname].dtype == 'int64':
+            alpha101[columnname]=alpha101[columnname].astype('int8')
+    alphas = alpha.join(alpha101)
     QA_util_log_info(
         '##JOB got Data index tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     technical = QA_fetch_index_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
@@ -53,7 +60,7 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):
             technical[columnname]=technical[columnname].astype('int8')
     QA_util_log_info(
         '##JOB index quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    res = technical.join(alpha)
+    res = technical.join(alphas)
     cols = ['AVG5_CR','AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR','AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR'
         ,'ADTM_CROSS1','ADTM_CROSS2','ADX_CROSS1','ADX_CROSS2','BBI_CROSS1','BBI_CROSS2','BIAS_CROSS1','BIAS_CROSS2'
         ,'CCI_CROSS1','CCI_CROSS2','CCI_CROSS3','CCI_CROSS4','CDL2CROWS','CDL3BLACKCROWS','CDL3INSIDE','CDL3LINESTRIKE'
@@ -140,6 +147,13 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, ui_log = None):
             alpha[columnname]=alpha[columnname].astype('float16')
         if alpha[columnname].dtype == 'int64':
             alpha[columnname]=alpha[columnname].astype('int8')
+    alpha101 = QA_fetch_stock_alpha101_adv(codes,start,end_date).data.loc[rng1]
+    for columnname in alpha.columns:
+        if alpha101[columnname].dtype == 'float64':
+            alpha101[columnname]=alpha101[columnname].astype('float16')
+        if alpha101[columnname].dtype == 'int64':
+            alpha101[columnname]=alpha101[columnname].astype('int8')
+    alphas = alpha.join(alpha101)
     QA_util_log_info(
         '##JOB got Data stock tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
@@ -168,7 +182,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, ui_log = None):
             fianacial[columnname]=fianacial[columnname].astype('int8')
     QA_util_log_info(
         '##JOB stock quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    res = fianacial.join(technical).join(alpha)
+    res = fianacial.join(technical).join(alphas)
     cols = ['AVG5_CR','AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR','AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR'
         ,'ADTM_CROSS1','ADTM_CROSS2','ADX_CROSS1','ADX_CROSS2','BBI_CROSS1','BBI_CROSS2','BIAS_CROSS1','BIAS_CROSS2'
         ,'CCI_CROSS1','CCI_CROSS2','CCI_CROSS3','CCI_CROSS4','CDL2CROWS','CDL3BLACKCROWS','CDL3INSIDE','CDL3LINESTRIKE'
