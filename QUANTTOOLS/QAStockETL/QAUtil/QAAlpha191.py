@@ -2,49 +2,50 @@ from scipy.stats import rankdata
 import scipy as sp
 import numpy as np
 import pandas as pd
-from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_stock_list,QA_fetch_index_day_adv
-from QUANTAXIS.QAUtil import (DATABASE,QA_util_getBetweenQuarter, QA_util_get_next_day,
-                              QA_util_get_real_date, QA_util_log_info,QA_util_add_months,
-                              QA_util_to_json_from_pandas, trade_date_sse,QA_util_today_str,
-                              QA_util_datetime_to_strdate,QA_util_get_trade_range,QA_util_get_last_day)
-import datetime
+from numpy import abs
+
+from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_index_day_adv
+from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date)
 
 def stock_alpha(code, date=None):
     np.seterr(invalid='ignore')
     if date == None:
-        date = QA_util_today_str()
-    end_date = QA_util_get_last_day(date, 250)
-    price = QA_fetch_stock_day_adv(code, end_date, date ).data.reset_index()
-    return(Alpha_191(code, date, price).alpha())
+        end_date = QA_util_today_str()
+    else:
+        end_date = date
+    start_date = QA_util_get_pre_trade_date(date, 250)
+    price = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data.reset_index()
+    return(Alpha_191(price, date).alpha())
 
 def index_alpha(code, date=None):
     np.seterr(invalid='ignore')
     if date == None:
-        date = QA_util_today_str()
-    end_date = QA_util_get_last_day(date, 250)
-    price = QA_fetch_index_day_adv(code, end_date, date ).data.reset_index()
-    return(Alpha_191(code, date, price).alpha())
+        end_date = QA_util_today_str()
+    else:
+        end_date = date
+    start_date = QA_util_get_pre_trade_date(date, 250)
+    price = QA_fetch_index_day_adv(code, start_date, end_date ).data.reset_index()
+    return(Alpha_191(price, date).alpha())
 
 class Alpha_191:
 
-    def __init__(self, code, date, price):
+    def __init__(self,  price, date):
         ###security = get_index_stocks(index)
-        self.date = date
-        self.end_date = QA_util_get_last_day(self.date, 250)
         #price = QA_fetch_stock_day_adv(code, self.end_date, self.date ).data.reset_index()
+        self.date = date
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
-        price = price[price['date'] != self.end_date].set_index(['date','code']).to_panel()
+        #price = price.set_index(['date','code']).to_panel()
         #benchmark_price = QA_fetch_index_day_adv('000300', self.end_date, self.date).data.reset_index()[['date','code','open','close','low','high','amount','volume']].set_index(['date','code']).to_panel()
         ###分别取开盘价，收盘价，最高价，最低价，最低价，均价，成交量#######
-        self.open_price = price.loc['open',:,:].fillna(method = 'ffill')
-        self.close      = price.loc['close',:,:].fillna(method = 'ffill')
-        self.low        = price.loc['low',:,:].fillna(method = 'ffill')
-        self.high       = price.loc['high',:,:].fillna(method = 'ffill')
-        self.avg_price  = price.loc['avg_price',:,:].fillna(method = 'ffill')
-        self.prev_close = price.loc['prev_close',:,:].fillna(method = 'ffill')
-        self.volume     = price.loc['volume',:,:].fillna(method = 'ffill')
-        self.amount     = price.loc['amount',:,:].fillna(method = 'ffill')
+        self.open_price = price.pivot_table(columns='code',index='date',values='open').fillna(method = 'ffill')
+        self.close      = price.pivot_table(columns='code',index='date',values='close').fillna(method = 'ffill')
+        self.low        = price.pivot_table(columns='code',index='date',values='low').fillna(method = 'ffill')
+        self.high       = price.pivot_table(columns='code',index='date',values='high').fillna(method = 'ffill')
+        self.avg_price  = price.pivot_table(columns='code',index='date',values='avg_price').fillna(method = 'ffill')
+        self.prev_close = price.pivot_table(columns='code',index='date',values='prev_close', dropna=False).fillna(method = 'ffill')
+        self.volume     = price.pivot_table(columns='code',index='date',values='volume').fillna(method = 'ffill')
+        self.amount     = price.pivot_table(columns='code',index='date',values='amount').fillna(method = 'ffill')
         #self.benchmark_open_price = benchmark_price.loc[:, 'open']
         #self.benchmark_close_price = benchmark_price.loc[:, 'close']
         #########################################################################
@@ -75,7 +76,7 @@ class Alpha_191:
         data1 = self.volume.diff(1).rank(axis=1,pct=True)
         data2 = ((self.close - self.open_price)/self.open_price).rank(axis=1,pct=True)
         alpha = -data1.iloc[-6:,:].corrwith(data2.iloc[-6:,:]).dropna()
-        alpha=alpha.dropna()
+        alpha = alpha.dropna()
         return alpha
 
 
@@ -1181,8 +1182,8 @@ class Alpha_191:
     # @author: fuzhongjie
     def alpha_094(self):
         # SUM((CLOSE>DELAY(CLOSE,1)?VOLUME:(CLOSE<DELAY(CLOSE,1)?-VOLUME:0)),30)
-        cond1 = self.close>self.prev_close
-        cond2 = self.close<self.prev_close
+        cond1 = self.close > self.prev_close
+        cond2 = self.close < self.prev_close
         value = -self.volume
         value[~cond2] = 0
         value[cond1] = self.volume[cond1]
@@ -2715,7 +2716,7 @@ class Alpha_191:
             "alpha_189":alpha_189,
             #"alpha_190":alpha_190,
             "alpha_191":alpha_191,
-            "date":self.date
+            'date':self.date
         })
         return(res)
 
