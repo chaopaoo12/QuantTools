@@ -906,6 +906,7 @@ def stock_alpha101(code, start=None, end = None):
     pctchange = price.close_pct_change()
     price = price.data
     price['pctchange'] = pctchange
+    print(get_alpha(price))
     return(get_alpha(price).loc[deal_date_list].reset_index())
 
 def index_alpha101(code, start=None, end = None):
