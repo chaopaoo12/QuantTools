@@ -34,6 +34,9 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
     alpha = DATABASE.stock_quant_data_alpha
     alpha.create_index(
         [("code", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
+    alpha101 = DATABASE.stock_quant_data_alpha101
+    alpha101.create_index(
+        [("code", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
     try:
         data1 = QA_fetch_get_quant_data(code, start_date, end_date)
     except:
@@ -98,6 +101,20 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
                                    'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                    'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_184', 'alpha_185', 'alpha_186',
                                    'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']]
+                alpha101_data = data[['code','date','date_stamp','alpha001','alpha002','alpha003','alpha004',
+                                      'alpha005','alpha006','alpha007','alpha008','alpha009','alpha010',
+                                      'alpha011','alpha012','alpha013','alpha014','alpha015','alpha016',
+                                      'alpha017','alpha018','alpha019','alpha020','alpha021','alpha022',
+                                      'alpha023','alpha024','alpha025','alpha026','alpha027','alpha028',
+                                      'alpha029','alpha030','alpha031','alpha032','alpha033','alpha034',
+                                      'alpha035','alpha036','alpha037','alpha038','alpha039','alpha040',
+                                      'alpha041','alpha042','alpha043','alpha044','alpha045','alpha046',
+                                      'alpha047','alpha049','alpha050','alpha051','alpha052','alpha053',
+                                      'alpha054','alpha055','alpha057','alpha060','alpha061','alpha062',
+                                      'alpha064','alpha065','alpha066','alpha068','alpha071','alpha072',
+                                      'alpha073','alpha074','alpha075','alpha077','alpha078','alpha081',
+                                      'alpha083','alpha084','alpha085','alpha086','alpha088','alpha092',
+                                      'alpha094','alpha095','alpha096','alpha098','alpha099','alpha101']]
                 index_data = data[['code','date','date_stamp','AD','ADDI','ADDI_C','ADTM','ADX','ADXR','ADX_C','AD_C',
                                    'AMA','ASI','ASIT','ATR','ATRR','BBI','BIAS1','BIAS2',
                                    'BIAS3','BODY','BODY_ABS','BOLL','CCI','CHO','DDD','DDI',
@@ -173,6 +190,7 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
                     '##JOB01 Pre Data stock quant data ============== {deal_date} '.format(deal_date=deal_date), ui_log)
                 financial_res = QA_util_to_json_from_pandas(financial_data)
                 alpha_res = QA_util_to_json_from_pandas(alpha_data)
+                alpha101_res = QA_util_to_json_from_pandas(alpha101_data)
                 index_res = QA_util_to_json_from_pandas(index_data)
                 week_res = QA_util_to_json_from_pandas(week_data)
                 QA_util_log_info(
@@ -190,10 +208,20 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
                 try:
                     alpha.insert_many(alpha_res, ordered=False)
                     QA_util_log_info(
-                        '##JOB03 Now stock quant data alpha saved ============== {deal_date} '.format(deal_date=deal_date), ui_log)
+                        '##JOB03 Now stock quant data alpha191 saved ============== {deal_date} '.format(deal_date=deal_date), ui_log)
                 except Exception as e:
                     if isinstance(e, MemoryError):
                         alpha.insert_many(alpha_res, ordered=True)
+                    elif isinstance(e, pymongo.bulk.BulkWriteError):
+                        pass
+
+                try:
+                    alpha101.insert_many(alpha101_res, ordered=False)
+                    QA_util_log_info(
+                        '##JOB03 Now stock quant data alpha101 saved ============== {deal_date} '.format(deal_date=deal_date), ui_log)
+                except Exception as e:
+                    if isinstance(e, MemoryError):
+                        alpha101.insert_many(alpha101_res, ordered=True)
                     elif isinstance(e, pymongo.bulk.BulkWriteError):
                         pass
 
@@ -253,6 +281,9 @@ def QA_SU_save_index_quant_day(code=None, start_date=None, end_date=None, ui_log
     alpha = DATABASE.index_quant_data_alpha
     alpha.create_index(
         [("code", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
+    alpha101 = DATABASE.index_quant_data_alpha101
+    alpha101.create_index(
+        [("code", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
     try:
         data1 = QA_fetch_get_index_quant_data(code, start_date, end_date)
         QA_util_log_info(
@@ -294,6 +325,20 @@ def QA_SU_save_index_quant_day(code=None, start_date=None, end_date=None, ui_log
                                    'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                    'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_184', 'alpha_185', 'alpha_186',
                                    'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']]
+                alpha101_data = data[['code','date','date_stamp','alpha001','alpha002','alpha003','alpha004',
+                                      'alpha005','alpha006','alpha007','alpha008','alpha009','alpha010',
+                                      'alpha011','alpha012','alpha013','alpha014','alpha015','alpha016',
+                                      'alpha017','alpha018','alpha019','alpha020','alpha021','alpha022',
+                                      'alpha023','alpha024','alpha025','alpha026','alpha027','alpha028',
+                                      'alpha029','alpha030','alpha031','alpha032','alpha033','alpha034',
+                                      'alpha035','alpha036','alpha037','alpha038','alpha039','alpha040',
+                                      'alpha041','alpha042','alpha043','alpha044','alpha045','alpha046',
+                                      'alpha047','alpha049','alpha050','alpha051','alpha052','alpha053',
+                                      'alpha054','alpha055','alpha057','alpha060','alpha061','alpha062',
+                                      'alpha064','alpha065','alpha066','alpha068','alpha071','alpha072',
+                                      'alpha073','alpha074','alpha075','alpha077','alpha078','alpha081',
+                                      'alpha083','alpha084','alpha085','alpha086','alpha088','alpha092',
+                                      'alpha094','alpha095','alpha096','alpha098','alpha099','alpha101']]
                 index_data = data[['code','date','date_stamp','AD','ADDI','ADDI_C','ADTM','ADX','ADXR','ADX_C','AD_C',
                                    'AMA','ASI','ASIT','ATR','ATRR','BBI','BIAS1','BIAS2',
                                    'BIAS3','BODY','BODY_ABS','BOLL','CCI','CHO','DDD','DDI',
@@ -368,6 +413,7 @@ def QA_SU_save_index_quant_day(code=None, start_date=None, end_date=None, ui_log
                 QA_util_log_info(
                     '##JOB01 Pre Data index quant data ============== {deal_date} '.format(deal_date=deal_date), ui_log)
                 alpha_res = QA_util_to_json_from_pandas(alpha_data)
+                alpha101_res = QA_util_to_json_from_pandas(alpha101_data)
                 index_res = QA_util_to_json_from_pandas(index_data)
                 week_res = QA_util_to_json_from_pandas(week_data)
                 QA_util_log_info(
@@ -376,10 +422,20 @@ def QA_SU_save_index_quant_day(code=None, start_date=None, end_date=None, ui_log
                 try:
                     alpha.insert_many(alpha_res, ordered=False)
                     QA_util_log_info(
-                        '##JOB03 Now index quant data alpha saved ============== {deal_date} '.format(deal_date=deal_date), ui_log)
+                        '##JOB03 Now index quant data alpha191 saved ============== {deal_date} '.format(deal_date=deal_date), ui_log)
                 except Exception as e:
                     if isinstance(e, MemoryError):
                         alpha.insert_many(alpha_res, ordered=True)
+                    elif isinstance(e, pymongo.bulk.BulkWriteError):
+                        pass
+
+                try:
+                    alpha101.insert_many(alpha101_res, ordered=False)
+                    QA_util_log_info(
+                        '##JOB03 Now index quant data alpha101 saved ============== {deal_date} '.format(deal_date=deal_date), ui_log)
+                except Exception as e:
+                    if isinstance(e, MemoryError):
+                        alpha101.insert_many(alpha101_res, ordered=True)
                     elif isinstance(e, pymongo.bulk.BulkWriteError):
                         pass
 
