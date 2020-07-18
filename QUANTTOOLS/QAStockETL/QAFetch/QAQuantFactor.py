@@ -33,18 +33,14 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):
                                                                  'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                  'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_184', 'alpha_185', 'alpha_186',
                                                                  'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].loc[rng1]
-    for columnname in alpha.columns:
-        if alpha[columnname].dtype == 'float64':
-            alpha[columnname]=alpha[columnname].astype('float16')
-        if alpha[columnname].dtype == 'int64':
-            alpha[columnname]=alpha[columnname].astype('int8')
+
     alpha101 = QA_fetch_index_alpha101_adv(codes,start,end_date).data.loc[rng1]
-    for columnname in alpha.columns:
-        if alpha101[columnname].dtype == 'float64':
-            alpha101[columnname]=alpha101[columnname].astype('float16')
-        if alpha101[columnname].dtype == 'int64':
-            alpha101[columnname]=alpha101[columnname].astype('int8')
     alphas = alpha.join(alpha101)
+    for columnname in alphas.columns:
+        if alphas[columnname].dtype == 'float64':
+            alphas[columnname]=alphas[columnname].astype('float16')
+        if alphas[columnname].dtype == 'int64':
+            alphas[columnname]=alphas[columnname].astype('int8')
     QA_util_log_info(
         '##JOB got Data index tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     technical = QA_fetch_index_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
@@ -142,18 +138,14 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, ui_log = None):
                                                                  'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                  'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_184', 'alpha_185', 'alpha_186',
                                                                  'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].loc[rng1]
-    for columnname in alpha.columns:
-        if alpha[columnname].dtype == 'float64':
-            alpha[columnname]=alpha[columnname].astype('float16')
-        if alpha[columnname].dtype == 'int64':
-            alpha[columnname]=alpha[columnname].astype('int8')
+
     alpha101 = QA_fetch_stock_alpha101_adv(codes,start,end_date).data.loc[rng1]
-    for columnname in alpha.columns:
-        if alpha101[columnname].dtype == 'float64':
-            alpha101[columnname]=alpha101[columnname].astype('float16')
-        if alpha101[columnname].dtype == 'int64':
-            alpha101[columnname]=alpha101[columnname].astype('int8')
     alphas = alpha.join(alpha101)
+    for columnname in alphas.columns:
+        if alphas[columnname].dtype == 'float64':
+            alphas[columnname]=alphas[columnname].astype('float16')
+        if alphas[columnname].dtype == 'int64':
+            alphas[columnname]=alphas[columnname].astype('int8')
     QA_util_log_info(
         '##JOB got Data stock tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
