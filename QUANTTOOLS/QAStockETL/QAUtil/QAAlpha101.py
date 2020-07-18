@@ -870,6 +870,8 @@ def get_alpha(df):
     df['alpha098']=stock.alpha098()
     df['alpha099']=stock.alpha099()
     df['alpha101']=stock.alpha101()
+    df = df.reset_index()
+    df = df.assign(date = str(df['date'])[0:10]).set_index(['date','code'])
     return df[['alpha001','alpha002','alpha003','alpha004',
                'alpha005','alpha006','alpha007','alpha008','alpha009','alpha010',
                'alpha011','alpha012','alpha013','alpha014','alpha015','alpha016',
@@ -904,8 +906,7 @@ def stock_alpha101(code, start=None, end = None):
     pctchange = price.close_pct_change()
     price = price.data
     price['pctchange'] = pctchange
-    print(get_alpha(price))
-    return(get_alpha(price).set_index(['date','code']).loc[deal_date_list].reset_index())
+    return(get_alpha(price).loc[deal_date_list].reset_index())
 
 def index_alpha101(code, start=None, end = None):
     np.seterr(invalid='ignore')
@@ -926,4 +927,4 @@ def index_alpha101(code, start=None, end = None):
     pctchange = price.close_pct_change()
     price = price.data
     price['pctchange'] = pctchange
-    return(get_alpha(price).set_index(['date','code']).loc[deal_date_list].reset_index())
+    return(get_alpha(price).loc[deal_date_list].reset_index())
