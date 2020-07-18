@@ -14,7 +14,7 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):
         '##JOB got index quant data date range ============== from {from_} to {to_} '.format(from_=start,to_=end_date), ui_log)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     QA_util_log_info(
-        '##JOB got Data index alpha data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+        '##JOB got Data index alpha191 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     alpha = QA_fetch_index_alpha_adv(codes,start,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                                                  'alpha_009', 'alpha_010', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
                                                                  'alpha_018', 'alpha_019', 'alpha_020', 'alpha_021', 'alpha_022', 'alpha_023', 'alpha_024', 'alpha_025', 'alpha_026',
@@ -33,7 +33,8 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):
                                                                  'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                  'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_184', 'alpha_185', 'alpha_186',
                                                                  'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].loc[rng1]
-
+    QA_util_log_info(
+        '##JOB got Data index alpha101 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     alpha101 = QA_fetch_index_alpha101_adv(codes,start,end_date).data.loc[rng1]
     alphas = alpha.join(alpha101)
     for columnname in alphas.columns:
