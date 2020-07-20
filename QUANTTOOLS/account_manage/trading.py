@@ -212,7 +212,7 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
                         send_actionnotice(strategy_id,
                                           '交易报告:{}'.format(trading_date),
                                           '资金不足',
-                                          direction = 'HOLD',
+                                          direction = '缺少资金',
                                           offset='HOLD',
                                           volume=float(float(res.at[i, 'real']) - get_Capital(client, account))
                                           )
