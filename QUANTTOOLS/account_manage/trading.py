@@ -11,7 +11,7 @@ from QUANTAXIS.QAUtil import QA_util_get_last_day
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
 from QUANTAXIS.QAUtil import QA_util_today_str
 import math
-from QUANTTOOLS.account_manage.Client import get_Client,check_Client
+from QUANTTOOLS.account_manage.Client import get_Client,check_Client,get_Capital
 
 def date_func(date):
     if (date is None) or date in ['None', 0, '0']:
@@ -208,16 +208,15 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
 
                 if type == 'end':
                     ####check account capital
-                    while float(res.at[i, 'real']) > float(sub_accounts['可用金额'].values):
+                    while float(res.at[i, 'real']) > get_Capital(client, account):
                         send_actionnotice(strategy_id,
                                           '交易报告:{}'.format(trading_date),
                                           '资金不足',
                                           direction = 'HOLD',
                                           offset='HOLD',
-                                          volume=float(float(res.at[i, 'real']) - sub_accounts['可用金额'])
+                                          volume=float(float(res.at[i, 'real']) - get_Capital(client, account))
                                           )
                         time.sleep(5)
-                        sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
                     cnt = float(res.at[i, 'cnt'])
                     tar = float(res.at[i, 'real'])
@@ -231,6 +230,8 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
                                                                                                 target=cnt,
                                                                                                 tar=tar))
                     e = send_trading_message(account, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='MARKET', priceType=4, price = None, client=client)
+                    time.sleep(5)
+
                 elif type == 'morning':
                     cnt = float(res.at[i, 'cnt'])
                     tar = float(res.at[i, 'real'])
@@ -246,6 +247,8 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
                                                                                                 price=price,
                                                                                                 tar=tar))
                     e = send_trading_message(account, strategy_id, account_info, i, NAME, INDUSTRY, mark, direction = 'BUY', type='LIMIT', priceType=None, price=price, client=client)
+
+                    time.sleep(5)
                 else:
                     pass
                 time.sleep(3)

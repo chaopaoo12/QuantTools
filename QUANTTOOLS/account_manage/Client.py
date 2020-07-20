@@ -13,6 +13,11 @@ def get_Client(host=yun_ip, port=yun_port, key=easytrade_password):
     client = strategyease_sdk.Client(host=host, port=port, key=key)
     return(client)
 
+def get_Capital(client, account):
+    res = client.get_positions(account)
+    capital = float(res['sub_accounts']['可用金额'])
+    return(capital)
+
 def check_Client(client, account, strategy_id, trading_date, exceptions=exceptions, ui_log= None):
     logging.basicConfig(level=logging.DEBUG)
     try:
