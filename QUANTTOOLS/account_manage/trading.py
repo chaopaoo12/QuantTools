@@ -206,7 +206,7 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
             for i in res[res['mark'] > 0].index:
 
                 if type == 'end':
-                    ####check account capital
+                    ####check account usefull capital
                     while float(res.at[i, 'real']) > get_UseCapital(client, account):
                         send_actionnotice(strategy_id,
                                           '交易报告:{}'.format(trading_date),
