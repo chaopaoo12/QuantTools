@@ -1,3 +1,3 @@
 working_dir = 'D:\\model\\current'
 percent = 1
-exceptions = None
+exceptions = ['600812','000858']
