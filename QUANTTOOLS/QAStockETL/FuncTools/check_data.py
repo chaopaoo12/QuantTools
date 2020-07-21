@@ -68,6 +68,9 @@ def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
                           )
         return((data2.shape[0] - data1.shape[0]))
     else:
+        QA_util_log_info(
+            '##JOB Now Check Stock adj day data Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day,num1=data1.shape[0],
+                                                                                                                 to_date=to_date,num2=data2.shape[0]), ui_log)
         return(0)
 
 def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
@@ -125,6 +128,12 @@ def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
                           volume= '缺失数据量:{num}'.format(num =(data2.shape[0] - data1.shape[0])))
         return((data2.shape[0] - data1.shape[0]))
     else:
+        QA_util_log_info(
+            '##JOB Now Check {title} Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(title = title,
+                                                                                                      deal_date=mark_day,
+                                                                                                      num1=data1.shape[0],
+                                                                                                      to_date=to_date,
+                                                                                                      num2=data2.shape[0]), ui_log)
         return(0)
 
 def check_index_data(func = None, mark_day = None, title = None, ui_log = None):
@@ -182,6 +191,12 @@ def check_index_data(func = None, mark_day = None, title = None, ui_log = None):
                           volume= '缺失数据量:{num}'.format(num =(data2.shape[0] - data1.shape[0])))
         return((data2.shape[0] - data1.shape[0]))
     else:
+        QA_util_log_info(
+            '##JOB Now Check {title} Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(title = title,
+                                                                                                      deal_date=mark_day,
+                                                                                                      num1=data1.shape[0],
+                                                                                                      to_date=to_date,
+                                                                                                      num2=data2.shape[0]), ui_log)
         return(0)
 
 
