@@ -1,10 +1,10 @@
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv,QA_fetch_stock_financial_percent_adv,
                                                            QA_fetch_index_alpha_adv,QA_fetch_index_technical_index_adv,QA_fetch_stock_alpha101_adv,QA_fetch_index_alpha101_adv)
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,QA_util_log_info,
-                               QA_util_if_trade,QA_util_get_pre_trade_date)
+from  QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,
+                               QA_util_get_pre_trade_date)
 import math
-from QUANTTOOLS.QAStockETL.FuncTools.base_func import get_trans,series_to_supervised,time_this_function
+from QUANTTOOLS.QAStockETL.QAUtil.base_func import get_trans, time_this_function
 
 @time_this_function
 def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):

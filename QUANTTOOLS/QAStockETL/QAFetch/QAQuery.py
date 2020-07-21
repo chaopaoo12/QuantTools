@@ -11,7 +11,7 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 from QUANTTOOLS.QAStockETL.QAData.financial_mean import financial_dict, dict2
-from QUANTTOOLS.QAStockETL.FuncTools.base_func import pct,index_pct,time_this_function,index_pct_log,pct_log
+from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,time_this_function,index_pct_log,pct_log
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade, QA_util_get_next_datetime,QA_util_get_real_date
 
 def QA_fetch_stock_industry(stock_code):
