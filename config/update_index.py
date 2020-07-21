@@ -32,12 +32,16 @@ from QUANTTOOLS.QAStockETL import (QA_SU_save_index_alpha_day,
                                    QA_SU_save_index_technical_week_day,
                                    QA_SU_save_index_technical_month_day,
                                    QA_SU_save_index_alpha101_day)
+from QUANTAXIS.QASU.main import (QA_SU_save_index_day,QA_SU_save_index_list)
 from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_index_day)
 from  QUANTAXIS.QAUtil import QA_util_today_str
 import time
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
+
+    QA_SU_save_index_list('tdx')
+    QA_SU_save_index_day('tdx')
 
     while check_index_day(mark_day) is None or check_index_day(mark_day)  > 10:
         time.sleep(180)
