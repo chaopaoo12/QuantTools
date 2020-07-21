@@ -42,7 +42,6 @@ def floor_round(x):
 def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,Zbreak, k=100):
     sub_accounts= float(sub_accounts['总 资 产'].values) -10000
     positions = positions[positions['股票余额'].astype(float) > 0]
-    positions = positions[positions['股票余额'].astype(float) > 0]
     positions['上市时间'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_stock_to_market_date(x))))
 
     if exceptions is not None:
@@ -256,8 +255,8 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
             time.sleep(10)
 
         if type == 'end':
-            #sub_accounts = client.get_positions(account)['sub_accounts']['总 资 产'].values[0] - frozen
             positions = client.get_positions(account)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
+            sub_accounts = get_Capital(client, account) - frozen
             res = build(target, positions, sub_accounts, trading_date, percent, exceptions, True, 100)
         elif type == 'morning':
             break
