@@ -24,9 +24,14 @@ def get_Client(host=yun_ip, port=yun_port, key=easytrade_password):
     client = strategyease_sdk.Client(host=host, port=port, key=key)
     return(client)
 
-def get_Capital(client, account):
+def get_UseCapital(client, account):
     res = client.get_positions(account)
     capital = float(res['sub_accounts']['可用金额'])
+    return(capital)
+
+def get_AllCapital(client, account):
+    res = client.get_positions(account)
+    capital = float(res['sub_accounts']['总 资 产'])
     return(capital)
 
 def get_Position(client, account):
@@ -43,7 +48,7 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         account_info = client.get_account(account)
         print(account_info)
         res = client.get_positions(account)
-        sub_accounts = res['sub_accounts']
+        sub_accounts = float(res['sub_accounts']['总 资 产'])
         positions = res['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','成本价','市价','市值','盈亏比例(%)']]
 
         if exceptions is not None:
@@ -59,7 +64,7 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         except:
             frozen = 0
 
-        sub_accounts = sub_accounts - frozen
+        #sub_accounts = sub_accounts - frozen
 
     except:
         send_email('错误报告', '云服务器错误,请检查', trading_date)

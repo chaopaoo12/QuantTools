@@ -11,7 +11,7 @@ from QUANTAXIS.QAUtil import QA_util_get_last_day
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
 from QUANTAXIS.QAUtil import QA_util_today_str
 import math
-from QUANTTOOLS.account_manage.Client import get_Client,check_Client,get_Capital
+from QUANTTOOLS.account_manage.Client import get_Client,check_Client,get_UseCapital,get_AllCapital
 
 def date_func(date):
     if (date is None) or date in ['None', 0, '0']:
@@ -39,8 +39,8 @@ def floor_round(x):
     else:
         return(y)
 
-def re_build(target, positions, sub_accounts, trading_date, percent, exceptions,Zbreak, k=100):
-    sub_accounts= float(sub_accounts['总 资 产'].values) -10000
+def re_build(target, positions, sub_accounts, trading_date, percent, exceptions, Zbreak, k=100):
+    sub_accounts= float(sub_accounts) - 10000
     positions = positions[positions['股票余额'].astype(float) > 0]
     positions['上市时间'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_stock_to_market_date(x))))
 
@@ -207,13 +207,13 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
 
                 if type == 'end':
                     ####check account capital
-                    while float(res.at[i, 'real']) > get_Capital(client, account):
+                    while float(res.at[i, 'real']) > get_UseCapital(client, account):
                         send_actionnotice(strategy_id,
                                           '交易报告:{}'.format(trading_date),
                                           '资金不足',
                                           direction = '缺少资金',
                                           offset='HOLD',
-                                          volume=float(float(res.at[i, 'real']) - get_Capital(client, account))
+                                          volume=float(float(res.at[i, 'real']) - get_UseCapital(client, account))
                                           )
                         time.sleep(5)
 
@@ -255,8 +255,8 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
             time.sleep(10)
 
         if type == 'end':
-            positions = client.get_positions(account)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
-            sub_accounts = get_Capital(client, account) - frozen
+            sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
+            sub_accounts = sub_accounts - frozen
             res = build(target, positions, sub_accounts, trading_date, percent, exceptions, True, 100)
         elif type == 'morning':
             break
