@@ -46,7 +46,6 @@ if __name__ == '__main__':
     while check_index_day(mark_day) is None or check_index_day(mark_day)  > 10:
         time.sleep(180)
 
-    time.sleep(600)
     QA_SU_save_index_alpha_day(start_date = mark_day, end_date = mark_day)
     QA_SU_save_index_alpha101_day(start_date = mark_day, end_date = mark_day)
     QA_SU_save_index_technical_index_day(start_date = mark_day, end_date = mark_day)
