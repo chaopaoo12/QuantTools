@@ -27,10 +27,8 @@
 
 """对应于save x
 """
-from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_alpha_day,
-                                   QA_SU_save_stock_technical_index_day,
-                                   QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_month_day,
-                                   QA_SU_save_stock_alpha101_day)
+from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_technical_index_day,
+                                   QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_month_day)
 from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_day)
 from  QUANTAXIS.QAUtil import QA_util_today_str
 import time
