@@ -58,7 +58,7 @@ def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
         QA_util_log_info(
             '##JOB Now Check Stock adj day data ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day,num1=data1.shape[0],
                                                                                                              to_date=to_date,num2=data2.shape[0]), ui_log)
-        send_email('错误报告', '数据检查错误,复权数据', mark_day)
+        #send_email('错误报告', '数据检查错误,复权数据', mark_day)
         send_actionnotice('复权数据检查错误报告',
                           '复权数据缺失:{}'.format(mark_day),
                           'WARNING',
@@ -119,7 +119,7 @@ def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
                                                                                                       num1=data1.shape[0],
                                                                                                       to_date=to_date,
                                                                                                       num2=data2.shape[0]), ui_log)
-        send_email('错误报告', '数据检查错误,{title}数据'.format(title = title), mark_day)
+        #send_email('错误报告', '数据检查错误,{title}数据'.format(title = title), mark_day)
         send_actionnotice('{title}检查错误报告'.format(title = title),
                           '{title}据缺失:{mark_day}'.format(title = title,mark_day = mark_day),
                           'WARNING',
@@ -182,7 +182,7 @@ def check_index_data(func = None, mark_day = None, title = None, ui_log = None):
                                                                                                       num1=data1.shape[0],
                                                                                                       to_date=to_date,
                                                                                                       num2=data2.shape[0]), ui_log)
-        send_email('错误报告', '数据检查错误,{title}数据'.format(title = title),mark_day)
+        #send_email('错误报告', '数据检查错误,{title}数据'.format(title = title),mark_day)
         send_actionnotice('{title}检查错误报告'.format(title = title),
                           '{title}据缺失:{mark_day}'.format(title = title,mark_day = mark_day),
                           'WARNING',
