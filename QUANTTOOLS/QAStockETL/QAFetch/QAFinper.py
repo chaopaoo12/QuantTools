@@ -1,7 +1,6 @@
 import pandas as pd
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv)
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
-                               QA_util_if_trade,QA_util_get_pre_trade_date)
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_fianacial_adv
+from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_get_pre_trade_date)
 
 def rolling_rank(data):
     return(data.rank(pct=True).iloc[-1])
