@@ -14,12 +14,6 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_index_technical_index_adv
                                                            )
 
-def check_index_day(mark_day = None, type = 'day', ui_log = None):
-    pass
-
-def check_stock_day(mark_day = None, type = 'day', ui_log = None):
-    pass
-
 def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
     code = list(QA_fetch_stock_list_adv()['code'])
     if type == 'day' and mark_day is None:
@@ -59,6 +53,7 @@ def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
                           offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = 0),
                           volume= '缺失全部数据'
                           )
+        return(None)
     elif data1.shape[0] < data2.shape[0]:
         QA_util_log_info(
             '##JOB Now Check Stock adj day data ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day,num1=data1.shape[0],
@@ -71,8 +66,9 @@ def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
                           offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = data2.shape[0]),
                           volume= '缺失数据量:{num}'.format(num =(data2.shape[0] - data1.shape[0]))
                           )
+        return((data2.shape[0] - data1.shape[0]))
     else:
-        pass
+        return(0)
 
 def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
     code = list(QA_fetch_stock_list_adv()['code'])
@@ -106,12 +102,13 @@ def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
             '##JOB Now Check {title} Failed ============== {deal_date} to {to_date} '.format(title = title,
                                                                                              deal_date=mark_day,
                                                                                              to_date=to_date), ui_log)
-        send_actionnotice('{title}检查错误报告',
+        send_actionnotice('{title}检查错误报告'.format(title = title),
                           '{title}数据缺失:{deal_date}'.format(title = title, deal_date=mark_day),
                           'WARNING',
                           direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = 0),
                           offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = 0),
                           volume= '缺失全部数据')
+        return(None)
     elif data1.shape[0] < data2.shape[0]:
         QA_util_log_info(
             '##JOB Now Check {title} ============== {deal_date}: {num1} to {to_date}: {num2} '.format(title = title,
@@ -120,14 +117,15 @@ def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
                                                                                                       to_date=to_date,
                                                                                                       num2=data2.shape[0]), ui_log)
         send_email('错误报告', '数据检查错误,{title}数据'.format(title = title), mark_day)
-        send_actionnotice('{title}检查错误报告',
+        send_actionnotice('{title}检查错误报告'.format(title = title),
                           '{title}据缺失:{mark_day}'.format(title = title,mark_day = mark_day),
                           'WARNING',
                           direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = data1.shape[0]),
                           offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = data2.shape[0]),
                           volume= '缺失数据量:{num}'.format(num =(data2.shape[0] - data1.shape[0])))
+        return((data2.shape[0] - data1.shape[0]))
     else:
-        print('OK')
+        return(0)
 
 def check_index_data(func = None, mark_day = None, title = None, ui_log = None):
     code = list(QA_fetch_index_list_adv()['code'])
@@ -161,12 +159,13 @@ def check_index_data(func = None, mark_day = None, title = None, ui_log = None):
             '##JOB Now Check {title} Failed ============== {deal_date} to {to_date} '.format(title = title,
                                                                                              deal_date=mark_day,
                                                                                              to_date=to_date), ui_log)
-        send_actionnotice('{title}检查错误报告',
+        send_actionnotice('{title}检查错误报告'.format(title = title),
                           '{title}数据缺失:{deal_date}'.format(title = title, deal_date=mark_day),
                           'WARNING',
                           direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = 0),
                           offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = 0),
                           volume= '缺失全部数据')
+        return(None)
     elif data1.shape[0] < data2.shape[0]:
         QA_util_log_info(
             '##JOB Now Check {title} ============== {deal_date}: {num1} to {to_date}: {num2} '.format(title = title,
@@ -175,14 +174,20 @@ def check_index_data(func = None, mark_day = None, title = None, ui_log = None):
                                                                                                       to_date=to_date,
                                                                                                       num2=data2.shape[0]), ui_log)
         send_email('错误报告', '数据检查错误,{title}数据'.format(title = title),mark_day)
-        send_actionnotice('{title}检查错误报告',
+        send_actionnotice('{title}检查错误报告'.format(title = title),
                           '{title}据缺失:{mark_day}'.format(title = title,mark_day = mark_day),
                           'WARNING',
                           direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = data1.shape[0]),
                           offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = data2.shape[0]),
                           volume= '缺失数据量:{num}'.format(num =(data2.shape[0] - data1.shape[0])))
+        return((data2.shape[0] - data1.shape[0]))
     else:
-        print('OK')
+        return(0)
+
+
+
+def check_stock_day(mark_day = None, ui_log = None):
+    check_stock_data(func = QA_fetch_stock_day_adv, mark_day = mark_day, title = 'Stock Day', ui_log = ui_log)
 
 def check_stock_fianacial(mark_day = None, ui_log = None):
     check_stock_data(func = QA_fetch_stock_fianacial_adv, mark_day = mark_day, title = 'Stock Finance', ui_log = ui_log)
@@ -210,6 +215,10 @@ def check_stock_techweek(mark_day = None, ui_log = None):
 
 def check_stock_quant(mark_day = None, ui_log = None):
     check_stock_data(func = QA_fetch_stock_quant_data_adv, mark_day = mark_day, title = 'Stock Quant', ui_log = ui_log)
+
+
+def check_index_day(mark_day = None, ui_log = None):
+    check_index_data(func = QA_fetch_index_day_adv, mark_day = mark_day, title = 'Index Day', ui_log = ui_log)
 
 def check_index_alpha191(mark_day = None, ui_log = None):
     check_index_data(func = QA_fetch_index_alpha_adv, mark_day = mark_day, title = 'Index Alpha191', ui_log = ui_log)
