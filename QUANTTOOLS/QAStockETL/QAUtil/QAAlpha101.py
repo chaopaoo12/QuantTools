@@ -330,7 +330,7 @@ class Alphas(object):
     def alpha023(self):
         cond = sma(self.high, 20) < self.high
         alpha = pd.DataFrame(np.zeros_like(self.close),index=self.close.index,columns=['close'])
-        alpha.at[cond,'close'] = -1 * delta(self.high, 2).fillna(value=0)
+        alpha.at[cond,'close'] = -1 * delta(self.high, 2)[cond].fillna(value=0)
         return alpha
 
     # Alpha#24	 ((((delta((sum(close, 100) / 100), 100) / delay(close, 100)) < 0.05) ||((delta((sum(close, 100) / 100), 100) / delay(close, 100)) == 0.05)) ? (-1 * (close - ts_min(close,100))) : (-1 * delta(close, 3)))
