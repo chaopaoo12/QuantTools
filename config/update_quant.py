@@ -73,6 +73,7 @@ if __name__ == '__main__':
     while check_index_techweek(mark_day) is None or check_index_techweek(mark_day)  > 10:
         time.sleep(180)
 
+    time.sleep(600)
     QA_SU_save_stock_quant_data_day(start_date = mark_day, end_date = mark_day)
     QA_SU_save_index_quant_data_day(start_date = mark_day, end_date = mark_day)
 
