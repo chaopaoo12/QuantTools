@@ -28,7 +28,7 @@ def floor_round(x):
     else:
         return(y)
 
-def re_build(target, positions, sub_accounts, percent, Zbreak, k=100):
+def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     sub_accounts= float(sub_accounts) - 10000
 
     if target is None:
@@ -92,14 +92,6 @@ def re_build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res = res[(res.deal> 0) & (res.deal < 0)]
     return(res)
 
-def build(target, positions, sub_accounts, percent, Zbreak=False, k=100):
-    res = re_build(target, positions, sub_accounts, percent, Zbreak,k=k)
-    while res['target'].sum() < res['测算持股金额'].sum():
-        k = k + 100
-        res = re_build(target, positions, sub_accounts, percent, k=k)
-    return(res)
-
-
 def trade_roboot(target, account, trading_date, percent, strategy_id, type='end', exceptions = None):
     client = get_Client()
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
@@ -117,13 +109,7 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
         h1 = int(datetime.datetime.now().strftime("%H"))
         if h1 >= 15 or h1 <= 9:
             QA_util_log_info('已过交易时段 ==================== {}'.format(trading_date), ui_log=None)
-            send_actionnotice(strategy_id,
-                              '交易报告:{}'.format(trading_date),
-                              '已过交易时段',
-                              direction = 'HOLD',
-                              offset='HOLD',
-                              volume=None
-                              )
+            send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'已过交易时段',direction = 'HOLD',offset='HOLD',volume=None)
             break
 
         if res[res['deal']<0].shape[0] == 0:
@@ -183,13 +169,7 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
         else:
             break
     QA_util_log_info('交易完成 ==================== {}'.format(trading_date), ui_log=None)
-    send_actionnotice(strategy_id,
-                      '交易报告:{}'.format(trading_date),
-                      '交易完成',
-                      direction = 'HOLD',
-                      offset='HOLD',
-                      volume=None
-                      )
+    send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'交易完成',direction = 'HOLD',offset='HOLD',volume=None)
 
     return(res1)
 
