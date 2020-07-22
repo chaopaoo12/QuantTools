@@ -9,7 +9,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_financial_re
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report, QA_fetch_stock_financial_calendar, QA_fetch_stock_divyield,
                                                    QA_fetch_financial_TTM, QA_fetch_stock_fianacial,QA_fetch_stock_alpha,QA_fetch_stock_shares,
                                                    QA_fetch_financial_report_wy,QA_fetch_stock_technical_index,QA_fetch_stock_financial_percent,
-                                                   QA_fetch_stock_quant_data,QA_fetch_stock_quant_pre,QA_fetch_stock_target,QA_fetch_stock_industry,
+                                                   QA_fetch_stock_quant_data,QA_fetch_stock_quant_pre,QA_fetch_stock_target,
+                                                   QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name,
                                                    QA_fetch_financial_code,QA_fetch_interest_rate,QA_fetch_index_alpha,QA_fetch_index_technical_index,
                                                    QA_fetch_index_target,QA_fetch_index_quant_data,QA_fetch_index_quant_data,
                                                    QA_fetch_index_quant_pre,QA_fetch_stock_alpha101,QA_fetch_index_alpha101)
@@ -33,3 +34,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAFinper import QA_fetch_get_stock_financial_
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_quant_data,QA_fetch_get_index_quant_data
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAusstock import QA_fetch_get_usstock_list_sina
+
+from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_stock_close,
+                                                 QA_fetch_get_stock_realtm_ask,QA_fetch_get_stock_realtm_askvol,
+                                                 QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_realtm_bidvol)

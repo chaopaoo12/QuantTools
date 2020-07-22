@@ -8,7 +8,7 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
                               QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_int2str,
                               QA_util_to_json_from_pandas, QA_util_today_str, QA_util_get_pre_trade_date,
                               QA_util_add_months)
-from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv,QA_fetch_index_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
 from QUANTTOOLS.QAStockETL.QAData.financial_mean import financial_dict, dict2
 from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,time_this_function,index_pct_log,pct_log
@@ -16,7 +16,7 @@ from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade, QA_util_get_next_dat
 
 def QA_fetch_stock_industry(stock_code):
     '''
-    根据tushare 的数据库查找上市的日期
+    根据tushare 的数据库查找股票行业
     :param stock_code: '600001'
     :return: string 上市日期 eg： '2018-05-15'
     '''
@@ -24,6 +24,28 @@ def QA_fetch_stock_industry(stock_code):
     for row in items:
         if row['code'] == stock_code:
             return row['industry']
+
+def QA_fetch_stock_name(stock_code):
+    '''
+    根据tushare 的数据库查找股票名称
+    :param stock_code: '600001'
+    :return: string 上市日期 eg： '民生银行'
+    '''
+    items = QA_fetch_stock_basic_info_tushare()
+    for row in items:
+        if row['code'] == stock_code:
+            return row['name']
+
+def QA_fetch_index_name(stock_code):
+    '''
+    获取指数名称
+    :param stock_code: '600001'
+    :return: string 指数名称 eg： '上证指数'
+    '''
+    items = QA_fetch_index_list_adv().loc[stock_code]
+    for row in items:
+        if row['code'] == stock_code:
+            return row['name']
 
 def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype='EN', db=DATABASE):
     """获取专业财务报表
