@@ -7,6 +7,8 @@ from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import exceptions
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_get_stock_close
+
 import pandas as pd
 import datetime
 
@@ -35,9 +37,11 @@ def get_AllCapital(client, account):
     return(capital)
 
 def get_Position(client, account):
-    positions = client.get_positions(account)['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
+    positions = client.get_positions(account)['positions'][['证券代码','证券名称','市值','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
     positions = positions[positions['股票余额'].astype(float) > 0]
     positions['上市时间'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_stock_to_market_date(x))))
+    positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industry(x))
+    positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
     return(positions)
 
 def check_Client(client, account, strategy_id, trading_date, exceptions=exceptions, ui_log= None):
@@ -49,7 +53,17 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         print(account_info)
         res = client.get_positions(account)
         sub_accounts = float(res['sub_accounts']['总 资 产'])
-        positions = res['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','成本价','市价','市值','盈亏比例(%)']]
+        positions = res['positions'][['证券代码','证券名称','股票余额','市值','可用余额','冻结数量','参考盈亏','成本价','市价','市值','盈亏比例(%)']]
+        positions = positions[positions['股票余额'].astype(float) > 0]
+        positions['上市时间'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_stock_to_market_date(x))))
+        positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industry(x))
+        positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
+        positions['close'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_get_stock_close(x))))
+
+        if exceptions is not None:
+            exceptions = exceptions.extend(list(positions[positions['上市时间'] <= 15].set_index('证券代码').index))
+        else:
+            exceptions = list(positions[positions['上市时间'] <= 15].set_index('证券代码').index)
 
         if exceptions is not None:
             try:
@@ -63,8 +77,6 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
             frozen = float(frozen_positions['市值'].sum())
         except:
             frozen = 0
-
-        #sub_accounts = sub_accounts - frozen
 
     except:
         send_email('错误报告', '云服务器错误,请检查', trading_date)
