@@ -42,10 +42,8 @@ def QA_fetch_index_name(stock_code):
     :param stock_code: '600001'
     :return: string 指数名称 eg： '上证指数'
     '''
-    items = QA_fetch_index_list_adv().loc[stock_code]
-    for row in items:
-        if row['code'] == stock_code:
-            return row['name']
+    items = QA_fetch_index_list_adv().loc[str(stock_code)]
+    return items['name']
 
 def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype='EN', db=DATABASE):
     """获取专业财务报表
