@@ -58,7 +58,6 @@ def re_build(target, positions, sub_accounts, percent, Zbreak, k=100):
             hold_table = pd.DataFrame()
 
         res = pd.concat([sell_table, buy_table, hold_table], axis=0)
-        print(res)
 
         res['股票余额'] = res['股票余额'].fillna(0)
         res['市值'] = res['市值'].fillna(0)
