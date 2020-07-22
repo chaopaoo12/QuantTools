@@ -75,7 +75,7 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
         positions['close'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_get_stock_close(x))))
     except:
-        QA_util_log_info('##JOB Now Check Account Server Failed ==== {}'.format(str(trading_date)), ui_log)
+        QA_util_log_info('##JOB Now Get Positions Failed ==== {}'.format(str(trading_date)), ui_log)
 
     try:
         QA_util_log_info(
