@@ -36,28 +36,28 @@ def re_build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res['real'] = 0
     else:
         tar1 = target.reset_index().groupby('code').max()
-        tar1['double'] = target.reset_index().groupby('code')['RANK'].count()
+        tar1['double'] = tar1.reset_index().groupby('code')['RANK'].count()
 
-        sell_code = [i for i in list(positions.set_index('证券代码').index) if i not in list(target.index)]
-        buy_code = [i for i in list(target.index) if i not in list(positions.set_index('证券代码').index)]
-        hold_code = [i for i in list(target.index) if i in list(positions.set_index('证券代码').index)]
+        sell_code = [i for i in list(positions.set_index('证券代码').index) if i not in list(tar1.index)]
+        buy_code = [i for i in list(tar1.index) if i not in list(positions.set_index('证券代码').index)]
+        hold_code = [i for i in list(tar1.index) if i in list(positions.set_index('证券代码').index)]
 
         if sell_code is not None and len(sell_code) > 0:
-            sell_table = positions.loc[sell_code]
+            sell_table = positions.loc[sell_code].join(tar1[[i for i in list(positions.columns) if i not in ['NAME', 'INDUSTRY']]])
         else:
             sell_table = pd.DataFrame()
 
         if buy_code is not None and len(buy_code) > 0:
-            buy_table = target.loc[buy_code]
+            buy_table = tar1.loc[buy_code].join(positions[[i for i in list(positions.columns) if i not in ['NAME', 'INDUSTRY']]].set_index('证券代码'))
         else:
             buy_table = pd.DataFrame()
 
         if hold_code is not None and len(hold_code) > 0:
-            hold_table = target.loc[hold_code].join(positions[[i for i in list(positions.columns) if i not in ['NAME', 'INDUSTRY']]])
+            hold_table = tar1.loc[hold_code].join(positions[[i for i in list(positions.columns) if i not in ['NAME', 'INDUSTRY']]].set_index('证券代码'))
         else:
             hold_table = pd.DataFrame()
 
-        res = pd.concat([sell_table, buy_table, hold_table], axis=1)
+        res = pd.concat([sell_table, buy_table, hold_table], axis=0)
         print(res)
 
         res['股票余额'] = res['股票余额'].fillna(0)
