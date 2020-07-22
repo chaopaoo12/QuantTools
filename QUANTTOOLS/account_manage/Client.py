@@ -36,6 +36,14 @@ def get_AllCapital(client, account):
     capital = float(res['sub_accounts']['总 资 产'])
     return(capital)
 
+def get_StockPos(code, client, account):
+    positions = get_Position(client, account).set_index('证券代码')
+    try:
+        res = float(positions.loc[code]['股票余额'])
+    except:
+        res = 0
+    return(res)
+
 def get_Position(client, account):
     positions = client.get_positions(account)['positions'][['证券代码','证券名称','市值','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
     positions = positions[positions['股票余额'].astype(float) > 0]
