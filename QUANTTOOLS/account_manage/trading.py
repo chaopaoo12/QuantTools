@@ -92,15 +92,15 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res = res[(res.deal> 0) & (res.deal < 0)]
     return(res)
 
-def trade_roboot(target, account, trading_date, percent, strategy_id, type='end', exceptions = None):
+def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='end', exceptions = None):
     client = get_Client()
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
     account_info = client.get_account(account)
 
-    if target is None:
+    if target_tar is None:
         QA_util_log_info('触发清仓 ==================== {}'.format(trading_date), ui_log=None)
         e = send_trading_message(account, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
-    res = build(target, positions, sub_accounts, percent)
+    res = build(target_tar, positions, sub_accounts, percent)
     res1 = res
 
     client.cancel_all(account)
@@ -163,7 +163,7 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
         if type == 'end':
             sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
             sub_accounts = sub_accounts - frozen
-            res = build(target, positions, sub_accounts, percent, True)
+            res = build(target_tar, positions, sub_accounts, percent, True)
         elif type == 'morning':
             break
         else:
