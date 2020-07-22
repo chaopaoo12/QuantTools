@@ -1,11 +1,9 @@
-from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv,QA_fetch_index_list_adv
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_close
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.concat_predict import concat_predict,save_prediction
 import pandas as pd
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import working_dir, percent, exceptions
 from QUANTAXIS.QAUtil import (QA_util_log_info)
-from QUANTAXIS.QAUtil import QA_util_get_last_day
 from QUANTTOOLS.account_manage import get_Client,check_Client
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from datetime import timedelta
@@ -13,8 +11,7 @@ delta3 = timedelta(days=7)
 
 def predict(trading_date, strategy_id='机器学习1号', account='name:client-1', working_dir=working_dir, ui_log = None, exceptions=exceptions):
 
-    QA_util_log_info(
-        '##JOB01 Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
+    QA_util_log_info('##JOB01 Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
     client = get_Client()
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
@@ -24,8 +21,7 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     QA_util_log_info('##JOB03 Now Saving Result ==== {}'.format(str(trading_date)), ui_log)
     save_prediction({'date': trading_date, 'tar':tar}, 'prediction', working_dir)
 
-    QA_util_log_info(
-        '##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
+    QA_util_log_info('##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
     try:
         tar1 = tar.loc[trading_date]
     except:
@@ -35,15 +31,16 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
         res = None
     else:
         tar2 = tar1[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
-        close = QA_fetch_stock_day_adv(list(tar1.index),QA_util_get_last_day(trading_date,60),trading_date).to_qfq().data.loc[trading_date].reset_index('date')['close']
-        res = tar2.join(close, how = 'left')
+
+        tar2['close'] = tar2.reset_index()['code'].apply(lambda x:QA_fetch_get_stock_close(x))
+        res = tar2.reset_index('code')
+
         avg_account = (sub_accounts - frozen)/tar1.shape[0]
         res = res.assign(tar=avg_account*percent)
         res['cnt'] = (res['tar']/res['close']/100).apply(lambda x:round(x,0)*100)
         res['real'] = res['cnt'] * res['close']
 
-    QA_util_log_info(
-        '##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
+    QA_util_log_info('##JOB05 Now Current Report ==== {}'.format(str(trading_date)), ui_log)
     #table1 = tar[tar['RANK']<=5].groupby('date').mean()
     if tar is not None and tar.shape[0] > 0:
         table1 = tar.groupby('date').mean()
@@ -51,26 +48,19 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
         table1 = pd.DataFrame()
         tar = pd.DataFrame()
 
-    QA_util_log_info(
-        '##JOB06 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
+    QA_util_log_info('##JOB06 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
     try:
         safe_res = safe_tar.loc[trading_date]
-        info1 = QA_fetch_index_list_adv().loc[list(set(safe_res.index))][['name']]
-        safe_res = safe_res.join(info1, how = 'left').sort_index()
     except:
         safe_res = pd.DataFrame()
 
     try:
         index_res = index_tar.loc[trading_date]
-        info1 = QA_fetch_index_list_adv().loc[list(set(index_res.index))][['name']]
-        index_res = index_res.join(info1, how = 'left').sort_index()
     except:
         index_res = pd.DataFrame()
 
     try:
         stock_res = stock_tar[stock_tar['RANK']<=5].loc[trading_date]
-        info1 = QA_fetch_stock_fianacial_adv(list(set(stock_res.index)), trading_date, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
-        stock_res = stock_res.join(info1, how = 'left').sort_index()
     except:
         stock_res = pd.DataFrame()
 

@@ -3,7 +3,7 @@ from QUANTTOOLS.FactorTools.base_func import mkdir
 import QUANTTOOLS.QAStockTradingDay.StockModel.StrategyOne as Stock
 import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexStrategyOne as Index
 import pandas as pd
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name
 from QUANTTOOLS.FactorTools.base_tools import combine_model
 from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import working_dir
@@ -48,9 +48,23 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
 
     tar = combine_model(index_b, stock_b, safe_b, start, trading_date)
 
-    info = QA_fetch_stock_fianacial_adv(list(set(tar.reset_index('date').index)), start, trading_date).data.reset_index('date')[['NAME','INDUSTRY']]
+    tar = tar.reset_index()
+    tar['NAME'] = tar['code'].apply(lambda x:QA_fetch_stock_name(x))
+    tar['INDUSTRY'] = tar['code'].apply(lambda x:QA_fetch_stock_industry(x))
+    tar = tar.set_index(['date','code']).sort_index()
 
-    tar = tar.reset_index('date').join(info[~info.index.duplicated()], how = 'left').reset_index().set_index(['date','code']).sort_index()
+    index_tar = index_tar.reset_index()
+    index_tar['NAME'] = index_tar['code'].apply(lambda x:QA_fetch_index_name(x))
+    index_tar = index_tar.set_index(['date','code']).sort_index()
+
+    safe_tar = safe_tar.reset_index()
+    safe_tar['NAME'] = safe_tar['code'].apply(lambda x:QA_fetch_index_name(x))
+    safe_tar = safe_tar.set_index(['date','code']).sort_index()
+
+    stock_tar = stock_tar.reset_index()
+    stock_tar['NAME'] = stock_tar['code'].apply(lambda x:QA_fetch_stock_name(x))
+    stock_tar['INDUSTRY'] = stock_tar['code'].apply(lambda x:QA_fetch_stock_industry(x))
+    stock_tar = stock_tar.set_index(['date','code']).sort_index()
 
     return(tar,index_tar,safe_tar,stock_tar,start,end,stock_info_temp['date'])
 
