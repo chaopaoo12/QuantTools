@@ -53,7 +53,7 @@ def re_build(target, positions, sub_accounts, percent, Zbreak, k=100):
             buy_table = pd.DataFrame()
 
         if hold_code is not None and len(hold_code) > 0:
-            hold_table = target.loc[hold_code].join(positions)
+            hold_table = target.loc[hold_code].join(positions[[i for i in list(positions.columns) if i not in ['NAME', 'INDUSTRY']]])
         else:
             hold_table = pd.DataFrame()
 
@@ -89,11 +89,11 @@ def re_build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res = res[(res.mark > 0) & (res.mark < 0)]
     return(res)
 
-def build(target, positions, sub_accounts, trading_date, percent, exceptions, Zbreak=False, k=100):
-    res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,Zbreak,k=k)
+def build(target, positions, sub_accounts, percent, Zbreak=False, k=100):
+    res = re_build(target, positions, sub_accounts, percent, Zbreak,k=k)
     while res['tar'].sum() < res['real'].sum():
         k = k + 100
-        res = re_build(target, positions, sub_accounts, trading_date, percent, exceptions,k=k)
+        res = re_build(target, positions, sub_accounts, percent, k=k)
     return(res)
 
 def trade_roboot(target, account, trading_date, percent, strategy_id, type='end', exceptions = None):
