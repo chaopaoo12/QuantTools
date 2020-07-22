@@ -50,20 +50,34 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         QA_util_log_info(
             '##JOB Now Check Account Server ==== {}'.format(str(trading_date)), ui_log)
         account_info = client.get_account(account)
+    except:
+        send_email('错误报告', '云服务器错误,请检查', trading_date)
+        send_actionnotice(strategy_id,
+                          '错误报告:{}'.format(trading_date),
+                          '云服务器错误,请检查',
+                          direction = 'HOLD',
+                          offset='HOLD',
+                          volume=None
+                          )
+    try:
+        QA_util_log_info('##JOB Now Get Sub_Accounts ==== {}'.format(str(trading_date)), ui_log)
         res = client.get_positions(account)
-        print(res['sub_accounts'])
-        print(float(res['sub_accounts']['总 资 产']))
-        QA_util_log_info(
-            '##JOB Now Get Sub_Accounts ==== {}'.format(str(trading_date)), ui_log)
         sub_accounts = float(res['sub_accounts']['总 资 产'])
-        QA_util_log_info(
-            '##JOB Now Check Account Server ==== {}'.format(str(trading_date)), ui_log)
+    except:
+        QA_util_log_info('##JOB Now Get Sub_Accounts Failed ==== {}'.format(str(trading_date)), ui_log)
+
+    try:
+        QA_util_log_info('##JOB Now Get Positions ==== {}'.format(str(trading_date)), ui_log)
         positions = res['positions'][['证券代码','证券名称','股票余额','市值','可用余额','冻结数量','参考盈亏','成本价','市价','市值','盈亏比例(%)']]
         positions = positions[positions['股票余额'].astype(float) > 0]
         positions['上市时间'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_stock_to_market_date(x))))
         positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industry(x))
         positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
         positions['close'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_get_stock_close(x))))
+    except:
+        QA_util_log_info('##JOB Now Check Account Server Failed ==== {}'.format(str(trading_date)), ui_log)
+
+    try:
         QA_util_log_info(
             '##JOB Now Get Frozen_Positions ==== {}'.format(str(trading_date)), ui_log)
         if exceptions is not None:
@@ -78,20 +92,14 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
                 frozen_positions = pd.DataFrame()
         else:
             frozen_positions = pd.DataFrame()
-        QA_util_log_info(
-            '##JOB Now Get Frozen ==== {}'.format(str(trading_date)), ui_log)
-        try:
-            frozen = float(frozen_positions['市值'].sum())
-        except:
-            frozen = 0
-
     except:
-        send_email('错误报告', '云服务器错误,请检查', trading_date)
-        send_actionnotice(strategy_id,
-                          '错误报告:{}'.format(trading_date),
-                          '云服务器错误,请检查',
-                          direction = 'HOLD',
-                          offset='HOLD',
-                          volume=None
-                          )
+        QA_util_log_info(
+            '##JOB Now Get Frozen_Positions Failed ==== {}'.format(str(trading_date)), ui_log)
+
+    try:
+        QA_util_log_info('##JOB Now Get Frozen ==== {}'.format(str(trading_date)), ui_log)
+        frozen = float(frozen_positions['市值'].sum())
+    except:
+        frozen = 0
+
     return(sub_accounts, frozen, positions, frozen_positions)
