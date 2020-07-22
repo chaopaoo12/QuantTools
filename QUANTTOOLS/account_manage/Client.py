@@ -50,8 +50,9 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         QA_util_log_info(
             '##JOB Now Check Account Server ==== {}'.format(str(trading_date)), ui_log)
         account_info = client.get_account(account)
-        print(account_info)
         res = client.get_positions(account)
+        print(res['sub_accounts'])
+        print(float(res['sub_accounts']['总 资 产']))
         QA_util_log_info(
             '##JOB Now Get Sub_Accounts ==== {}'.format(str(trading_date)), ui_log)
         sub_accounts = float(res['sub_accounts']['总 资 产'])
