@@ -127,7 +127,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
 
                 time.sleep(3)
 
-            time.sleep(10)
+            time.sleep(15)
 
         if res[res['deal'] == 0].shape[0] == 0:
             QA_util_log_info('无持续持仓动作 ==================== {}'.format(trading_date), ui_log=None)
@@ -141,7 +141,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
 
                 HOLD(strategy_id, account_info,trading_date, code, name, industry, target_pos, target)
 
-                time.sleep(3)
+                time.sleep(1)
 
         if res[res['deal'] > 0].shape[0] == 0:
             QA_util_log_info('无买入动作 ==================== {}'.format(trading_date), ui_log=None)
@@ -158,7 +158,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
 
                 time.sleep(3)
 
-            time.sleep(15)
+            time.sleep(10)
 
         if type == 'end':
             sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
