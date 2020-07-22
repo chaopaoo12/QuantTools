@@ -71,10 +71,10 @@ def re_build(target, positions, sub_accounts, percent, Zbreak, k=100):
         ##实时修正
         res.ix[res['ask1']==0,'position'] = 0
         avg_account = (sub_accounts * percent)/res['position'].sum()
-        res = res.assign(tar=avg_account)
-        res['目标持仓金额'] = res['目标持仓金额'] * res['position']
+        res = res.assign(target=avg_account)
+        res['target'] = res['target'] * res['position']
 
-        res['目标持股数'] = (res['tar']/res['买卖价']/100).apply(lambda x: round(x, 0)*100)
+        res['目标持股数'] = (res['target']/res['买卖价']/100).apply(lambda x: round(x, 0)*100)
         res['测算持股金额'] = res['目标持股数'] * res['买卖价']
 
         while res['测算持股金额'].sum() > sub_accounts:
