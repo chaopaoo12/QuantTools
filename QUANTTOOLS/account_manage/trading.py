@@ -1,6 +1,3 @@
-from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_list
-from QUANTAXIS.QAFetch import QA_fetch_get_stock_realtime
-from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
 from QUANTAXIS.QAUtil import QA_util_get_last_day, QA_util_today_str, QA_util_log_info
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask,QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_close
