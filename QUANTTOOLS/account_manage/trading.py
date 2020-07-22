@@ -163,7 +163,7 @@ def trade_roboot(target, account, trading_date, percent, strategy_id, type='end'
         if type == 'end':
             sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
             sub_accounts = sub_accounts - frozen
-            res = build(target, positions, sub_accounts, percent, True, 100)
+            res = build(target, positions, sub_accounts, percent, True)
         elif type == 'morning':
             break
         else:
