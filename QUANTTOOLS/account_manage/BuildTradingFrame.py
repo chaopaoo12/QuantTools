@@ -85,10 +85,12 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         while res['测算持股金额'].sum() > sub_accounts:
             QA_util_log_info('##JOB Budget Larger than Capital', ui_log = None)
             res['trim'] = list(res['sort'].apply(lambda x:k if x == 1 else 0))
+            print('目标持股数',res[res.sort == 1]['目标持股数'])
             res['目标持股数'] = res['目标持股数'] - res['trim']
+            print('k',res[res.sort == 1]['目标持股数'])
             #res.loc[list(res[res['sort'] == 1].index)]['目标持股数'] = res.loc[list(res[res['sort'] == 1].index)]['目标持股数'] - k
             res['测算持股金额'] = res['目标持股数'] * res['买卖价']
-            print('k',k)
+
             k = k + 100
 
         #res['mark'] = res['tar'] - res['市值']
@@ -98,4 +100,5 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     if Zbreak == True:
         QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
         res = res[(res.deal> 0) & (res.deal < 0)]
+        print(res.shape)
     return(res)
