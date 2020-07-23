@@ -22,15 +22,67 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
        round(pb, 2) AS pb,
        round(i_PB, 2) AS i_pb,
        round(roe * 100, 2) AS roe,
+       round(case
+               when i_PE = 0 then
+                0
+               else
+                PE_TTM / i_PE
+             end,
+             2) as pe_rate,
        
-       decode(i_PE, 0, 0, round(PE_TTM / i_PE, 2)) as pe_rate,
-       decode(peegl_ttm, 0, 0, round(peegl_ttm / i_PE, 2)) as peegl_rate,
-       decode(i_PB, 0, 0, round(pb / i_PB, 2)) as pb_rate,
-       decode(i_ROE, 0, 0, round(roe / i_ROE, 2)) as roe_rate,
-       decode(i_ROE_total, 0, 0, round(roe / i_ROE_total, 2)) as roe_ratet,
-       decode(i_ROa, 0, 0, round(roa / i_ROa, 2)) as roa_rate,
-       decode(i_ROA_total, 0, 0, round(roa / i_ROA_total, 2)) as roa_ratet,
-       decode(i_grossMargin, 0, 0, round(grossMargin / i_grossMargin, 2)) as gross_rate,
+       round(case
+               when i_PE = 0 then
+                0
+               else
+                peegl_ttm / i_PE
+             end,
+             2) as peegl_rate,
+       
+       round(case
+               when i_PB = 0 then
+                0
+               else
+                pb / i_PB
+             end,
+             2) as pb_rate,
+       
+       round(case
+               when i_ROE = 0 then
+                0
+               else
+                roe / i_ROE
+             end,
+             2) as roe_rate,
+       round(case
+               when i_ROE_total = 0 then
+                0
+               else
+                roe / i_ROE_total
+             end,
+             2) as roe_ratet,
+       
+       round(case
+               when i_ROA = 0 then
+                0
+               else
+                roa / i_ROA
+             end,
+             2) as roa_rate,
+       round(case
+               when i_ROA_total = 0 then
+                0
+               else
+                roa / i_ROA_total
+             end,
+             2) as roa_ratet,
+       
+       round(case
+               when i_grossMargin = 0 then
+                0
+               else
+                grossMargin / i_grossMargin
+             end,
+             2) as gross_rate,
        round((roe_ly + roe_l2y + roe_l3y + roe_l4y) / 5, 2) as roe_avg5,
        round((roa_ly + roa_l2y + roa_l3y + roa_l4y) / 5, 2) as roa_avg5,
        round((grossMargin_ly + grossMargin_l2y + grossMargin_l3y +
@@ -41,10 +93,10 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
        round(least(grossMargin_ly + grossMargin_l2y + grossMargin_l3y +
                    grossMargin_l4y),
              2) as gross_min,
-       round(roe / (roe_ly + roe_l2y + roe_l3y + roe_l4y) / 5, 2) as roe_ch,
-       round(roa / (roa_ly + roa_l2y + roa_l3y + roa_l4y) / 5, 2) as roa_ch,
+       round(roe / (roe_ly + roe_l2y + roe_l3y + roe_l4y), 2) as roe_ch,
+       round(roa / (roa_ly + roa_l2y + roa_l3y + roa_l4y), 2) as roa_ch,
        round(grossMargin / (grossMargin_ly + grossMargin_l2y +
-             grossMargin_l3y + grossMargin_l4y) / 5,
+             grossMargin_l3y + grossMargin_l4y),
              2) as gross_ch,
        
        round(i_ROE_total * 100, 2) AS i_roe_total,
@@ -420,8 +472,8 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
         print('Must Have A DATE ')
     else:
         if QA_util_if_trade(deal_date) == True:
-            print(deal_date)
             sql = sql.format(start_date=deal_date)
+            print(sql)
             conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
             data = pd.read_sql(sql=sql, con=conn)
             conn.close()
