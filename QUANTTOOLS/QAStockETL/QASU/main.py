@@ -50,7 +50,7 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
     return save_stock_financial.QA_SU_save_stock_fianacial_momgo(start_date, end_date)
 
 def QA_SU_save_stock_fianacial_momgo_his(start_date=None,end_date=QA_util_today_str()):
-    return save_stock_financial.QA_SU_save_stock_fianacial_momgo(start_date, end_date)
+    return save_stock_financial.QA_SU_save_stock_fianacial_momgo_his(start_date, end_date)
 
 def QA_SU_save_stock_financial_ths_day():
     return save_stock_financial_ths.QA_SU_save_financial_report_day()
