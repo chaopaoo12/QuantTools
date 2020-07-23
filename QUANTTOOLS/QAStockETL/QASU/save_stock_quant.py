@@ -5,9 +5,6 @@ from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_today_str,QA_util_log_info,
                               QA_util_get_trade_range,QA_util_if_trade,QA_util_get_pre_trade_date)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv,QA_fetch_index_list_adv
-from QUANTTOOLS.QAStockETL.QAUtil import QA_util_get_days_to_today
-from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
-import pandas as pd
 
 def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log = None, ui_progress = None):
     if start_date is None:
@@ -23,9 +20,7 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
             if end_date < start_date:
                 QA_util_log_info('end_date should large than start_date start {_from} end {_to} '.format(_from=start_date, _to=end_date), ui_log)
     if code is None:
-        timeToMarket = pd.DataFrame(QA_fetch_stock_basic_info_tushare()).set_index('code')[['name', 'timeToMarket']]
-        timeToMarket = timeToMarket.assign(days=timeToMarket.timeToMarket.apply(lambda x:QA_util_get_days_to_today(str(x))))
-        code = list(timeToMarket[timeToMarket.days >= 90].index)
+        code = list(QA_fetch_stock_list_adv()['code'])
 
     financial = DATABASE.stock_quant_data_financial
     financial.create_index(
