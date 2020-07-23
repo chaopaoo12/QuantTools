@@ -45,7 +45,7 @@ def Tracking(trading_date, percent=percent, strategy_id= '机器学习1号', acc
         time.sleep(60)
 
     QA_util_log_info(
-        '##JOB04 Now Trading ===== {}'.format(str(trading_date)), ui_log)
+        '##JOB04 Now Tracking ===== {}'.format(str(trading_date)), ui_log)
     res = track_roboot(r_tar, account, trading_date, percent, strategy_id, exceptions = exceptions)
     return(res)
 
