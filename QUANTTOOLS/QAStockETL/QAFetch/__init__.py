@@ -37,4 +37,5 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAusstock import QA_fetch_get_usstock_list_si
 
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_stock_close,
                                                  QA_fetch_get_stock_realtm_ask,QA_fetch_get_stock_realtm_askvol,
-                                                 QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_realtm_bidvol)
+                                                 QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_realtm_bidvol,
+                                                 QA_fetch_get_stock_realtm_askvol5,QA_fetch_get_stock_realtm_bidvol5)
