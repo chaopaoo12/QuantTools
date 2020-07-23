@@ -26,7 +26,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
     QA_util_log_info('##JOB Now Cancel Orders ===== {}'.format(str(trading_date)), ui_log = None)
     client.cancel_all(account)
 
-    while (res[res['deal']<0].shape[0] + res[res['deal']>0].shape[0]) > 0:
+    while res.deal.sum() > 0:
 
         QA_util_log_info('##JOB Now Start Trading ===== {}'.format(str(trading_date)), ui_log = None)
 
