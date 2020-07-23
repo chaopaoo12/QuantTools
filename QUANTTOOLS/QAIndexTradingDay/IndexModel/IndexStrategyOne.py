@@ -1,7 +1,7 @@
 import pandas as pd
 from xgboost import XGBClassifier
 from sklearn.metrics import (accuracy_score,classification_report,precision_score)
-from QUANTTOOLS.FactorTools.base_func import get_index_quant_data
+from QUANTTOOLS.FactorTools.QuantMk import get_index_quant_data
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_log_info
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
