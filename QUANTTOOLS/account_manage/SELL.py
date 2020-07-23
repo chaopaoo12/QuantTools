@@ -23,8 +23,8 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
                                                                                                                               price=price,
                                                                                                                               trading_date=trading_date),
                          ui_log=None)
-        e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='MARKET', priceType=4, price=None, client=client)
-        #e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
+        #e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='MARKET', priceType=4, price=None, client=client)
+        e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
 
     elif type == 'morning':
         QA_util_log_info('##JOB Get Up Price Before {code} Selling ===== {date}'.format(code = code, date=trading_date), ui_log = None)
