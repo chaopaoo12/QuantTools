@@ -110,7 +110,7 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
                 grossMargin / (grossMargin_ly + grossMargin_l2y + grossMargin_l3y +
                 grossMargin_l4y)
              end,
-             2) as roa_ch,
+             2) as gross_ch,
        round(i_ROE_total * 100, 2) AS i_roe_total,
        round(i_ROE * 100, 2) AS i_roe,
        round(roe_ly * 100, 2) AS roe_ly,
