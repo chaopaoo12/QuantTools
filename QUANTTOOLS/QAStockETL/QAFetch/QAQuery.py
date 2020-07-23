@@ -347,7 +347,7 @@ def QA_fetch_stock_fianacial(code, start, end = None, format='pd', collections=D
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            QA_util_log_info("QA Error QA_fetch_financial_TTM format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_stock_fianacial format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
