@@ -23,10 +23,10 @@ def standardize_series(series): #原始值法
         return(round((series-mean)/std,4))
 
 def normalization_series(series): #原始值法
-    if series.max() ==1 and series.min == 0:
+    if series.max() ==1 and series.min() == 0:
         return(series)
     else:
-        return((series-series.min)/(series.max-series.min))
+        return((series-series.min())/(series.max()-series.min()))
 
 def filter_extreme_3sigma(array,n=3): #3 sigma
     array1 = array.replace([np.inf, -np.inf], np.nan).astype(float)
