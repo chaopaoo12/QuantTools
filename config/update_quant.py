@@ -47,7 +47,7 @@ if __name__ == '__main__':
         time.sleep(300)
 
     while check_stock_finper(mark_day) is None or check_stock_finper(mark_day)  > 20:
-        time.sleep(600)
+        time.sleep(3600)
 
     while check_stock_techindex(mark_day) is None or check_stock_techindex(mark_day)  > 20:
         time.sleep(300)
