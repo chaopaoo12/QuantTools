@@ -32,14 +32,14 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
 
         QA_util_log_info('##JOB Now Check Timing ===== {}'.format(str(trading_date)), ui_log = None)
 
-        #tm = int(datetime.datetime.now().strftime("%H%M%S"))
-        #target_ea = int(time.strftime("%H%M%S", time.strptime("09:25:00", "%H:%M:%S")))
-        #target_af = int(time.strftime("%H%M%S", time.strptime("15:00:00", "%H:%M:%S")))
-        #
-        #if tm < target_ea or tm >= target_af:
-        #    QA_util_log_info('不在交易时段 {hour} ==================== {date}'.format(hour = tm, date = trading_date), ui_log=None)
-        #    send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'已过交易时段',direction = 'HOLD',offset='HOLD',volume=None)
-        #    break
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
+        target_ea = int(time.strftime("%H%M%S", time.strptime("09:25:00", "%H:%M:%S")))
+        target_af = int(time.strftime("%H%M%S", time.strptime("15:00:00", "%H:%M:%S")))
+
+        if tm < target_ea or tm >= target_af:
+            QA_util_log_info('不在交易时段 {hour} ==================== {date}'.format(hour = tm, date = trading_date), ui_log=None)
+            send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'已过交易时段',direction = 'HOLD',offset='HOLD',volume=None)
+            break
 
         QA_util_log_info('##JOB Now Start Selling ===== {}'.format(str(trading_date)), ui_log = None)
         if res[res['deal']<0].shape[0] == 0:
