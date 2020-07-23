@@ -257,7 +257,7 @@ def QA_etl_stock_financial_wy(type = "crawl", start_date = str(datetime.date.tod
             data = data.reset_index(drop=True).fillna(0)
             QA_util_sql_store_mysql(data, "stock_financial_wy",if_exists='append')
             QA_util_log_info(
-                '##JOB ETL STOCK FINANCIAL REPORT WY HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+                '##JOB ETL STOCK FINANCIAL REPORT WY HAS BEEN SAVED ==== {}'.format(start_date), ui_log)
 
 def QA_etl_stock_alpha_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
