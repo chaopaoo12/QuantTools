@@ -38,11 +38,10 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
                       )
 
     '##JOB04 Now Timing Control ==== {}'
-    h1 = int(datetime.datetime.now().strftime("%H"))
-    m1 = int(datetime.datetime.now().strftime("%M"))
-    while h1 == 14 and m1 <= 50 :
-        h1 = int(datetime.datetime.now().strftime("%H"))
-        m1 = int(datetime.datetime.now().strftime("%M"))
+    tm = int(datetime.datetime.now().strftime("%H%M%S"))
+    target_tm = int(time.strftime("%H%M%S", time.strptime("15:50:00", "%H:%M:%S")))
+    while tm <= target_tm:
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
         time.sleep(15)
 
     QA_util_log_info(
