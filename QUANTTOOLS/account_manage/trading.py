@@ -25,8 +25,8 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
 
     QA_util_log_info('##JOB Now Cancel Orders ===== {}'.format(str(trading_date)), ui_log = None)
     client.cancel_all(account)
-
-    while res.deal.sum() > 0:
+    print(res.deal.apply(abs).sum())
+    while res.deal.apply(abs).sum() > 0:
 
         QA_util_log_info('##JOB Now Start Trading ===== {}'.format(str(trading_date)), ui_log = None)
 
@@ -106,6 +106,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
 
             QA_util_log_info('##JOB Now ReBuild Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
             res = build(target_tar, positions, sub_accounts, percent, True)
+            print(res.deal.apply(abs).sum())
         elif type == 'morning':
             QA_util_log_info('##JOB Now Morning Trading Success ==== {}'.format(str(trading_date)), ui_log = None)
             break
