@@ -97,7 +97,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
 
                 time.sleep(3)
 
-            time.sleep(10)
+            time.sleep(30)
 
         if type == 'end':
             QA_util_log_info('##JOB Now Refresh Account Info ==== {}'.format(str(trading_date)), ui_log = None)
