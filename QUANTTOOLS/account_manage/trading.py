@@ -91,6 +91,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
 
         QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
         while res['测算持股金额'].sum() > sub_accounts:
+            print(res['测算持股金额'].sum())
+            print(sub_accounts)
             QA_util_log_info('##JOB Budget Larger than Capital', ui_log = None)
             res.loc[list(res[res['sort'] == 1].index)]['目标持股数'] = res.loc[list(res[res['sort'] == 1].index)]['目标持股数'] - k
             res['测算持股金额'] = res['目标持股数'] * res['买卖价']
