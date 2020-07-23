@@ -60,7 +60,7 @@ def QA_SU_save_usstock_list(client=DATABASE, ui_log=None, ui_progress=None):
         )
     except Exception as e:
         QA_util_log_info(e, ui_log=ui_log)
-        print(" Error save_tdx.QA_SU_save_usstock_list exception!")
+        QA_util_log_info(" Error save_tdx.QA_SU_save_usstock_list exception!")
         pass
 
 def QA_SU_save_usstock_day(client=DATABASE, ui_log=None, ui_progress=None):
@@ -255,7 +255,7 @@ def QA_SU_save_usstock_cik(client=DATABASE, ui_log=None, ui_progress=None):
         )
     except Exception as e:
         QA_util_log_info(e, ui_log=ui_log)
-        print(" Error save_tdx.QA_SU_save_usstock_cik exception!")
+        QA_util_log_info(" Error save_tdx.QA_SU_save_usstock_cik exception!")
         pass
 
 def QA_SU_save_usstock_financial_files():

@@ -26,7 +26,7 @@ def QA_SU_save_stock_fianacial_percent(code = None, start_date=None,end_date=Non
             end_date = QA_util_today_str()
         elif end_date is not None:
             if end_date < start_date:
-                print('end_date should large than start_date')
+                QA_util_log_info('end_date should large than start_date start {_from} end {_to} '.format(_from=start_date, _to=end_date), ui_log)
 
     stock_financial_percent = DATABASE.stock_financial_percent
     stock_financial_percent.create_index(
@@ -86,7 +86,7 @@ def QA_SU_save_stock_fianacial_percent_his(code = None, start_date=None,end_date
             end_date = QA_util_today_str()
         elif end_date is not None:
             if end_date < start_date:
-                print('end_date should large than start_date')
+                QA_util_log_info('end_date should large than start_date start {_from} end {_to} '.format(_from=start_date, _to=end_date), ui_log)
 
     stock_financial_percent = DATABASE.stock_financial_percent
     stock_financial_percent.create_index(

@@ -18,14 +18,14 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None, ui_log = Non
             end_date = QA_util_today_str()
         elif end_date is not None:
             if end_date < start_date:
-                print('end_date should large than start_date')
+                QA_util_log_info('end_date should large than start_date start {_from} end {_to} '.format(_from=start_date, _to=end_date), ui_log)
     col = DATABASE.stock_financial_analysis
     col.create_index(
         [("CODE", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
 
     deal_date_list = list(pd.date_range(start_date, end_date).map(lambda t:str(t.date())))
     if deal_date_list is None:
-        print('not a trading day')
+        QA_util_log_info('##JOB Nono Trading Day ============== from {_from} to {_to} '.format(_from=start_date, _to=end_date), ui_log)
     else:
         for deal_date in deal_date_list:
             data = QA_util_etl_stock_quant(deal_date)
@@ -35,7 +35,7 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None, ui_log = Non
                 QA_util_log_info(
                     '##JOB01 Pre Data stock financial data ============== {deal_date} '.format(deal_date=deal_date), ui_log)
                 data = QA_util_to_json_from_pandas(data)
-                print("got stock financial data ============== {deal_date}".format(deal_date=deal_date))
+                QA_util_log_info("got stock financial data ============== {deal_date}".format(deal_date=deal_date), ui_log)
                 QA_util_log_info(
                     '##JOB02 Got Data stock financial data ============== {deal_date}'.format(deal_date=deal_date), ui_log)
                 try:
@@ -64,14 +64,14 @@ def QA_SU_save_stock_fianacial_momgo_his(start_date=None,end_date=None, ui_log =
             end_date = QA_util_today_str()
         elif end_date is not None:
             if end_date < start_date:
-                print('end_date should large than start_date')
+                QA_util_log_info('end_date should large than start_date start {_from} end {_to} '.format(_from=start_date, _to=end_date), ui_log)
     col = DATABASE.stock_financial_analysis
     col.create_index(
         [("CODE", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
 
     deal_date_list = list(pd.date_range(start_date, end_date).map(lambda t:str(t.date())))
     if deal_date_list is None:
-        print('not a trading day')
+        QA_util_log_info('##JOB Nono Trading Day ============== from {_from} to {_to} '.format(_from=start_date, _to=end_date), ui_log)
     else:
         for deal_date in deal_date_list:
             data = QA_util_etl_stock_quant(deal_date)
@@ -81,7 +81,7 @@ def QA_SU_save_stock_fianacial_momgo_his(start_date=None,end_date=None, ui_log =
                 QA_util_log_info(
                     '##JOB01 Pre Data stock financial data ============== {deal_date} '.format(deal_date=deal_date), ui_log)
                 data = QA_util_to_json_from_pandas(data)
-                print("got stock financial data ============== {deal_date}".format(deal_date=deal_date))
+                QA_util_log_info("got stock financial data ============== {deal_date}".format(deal_date=deal_date), ui_log)
                 QA_util_log_info(
                     '##JOB02 Got Data stock financial data ============== {deal_date}'.format(deal_date=deal_date), ui_log)
                 try:

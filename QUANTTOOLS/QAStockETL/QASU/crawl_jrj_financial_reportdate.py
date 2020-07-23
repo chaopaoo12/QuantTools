@@ -70,7 +70,7 @@ def QA_SU_save_report_calendar_his(client=DATABASE, ui_log = None, ui_progress =
             report_calendar.insert_many(QA_util_to_json_from_pandas(
                 QA_fetch_get_financial_calendar(report_date)), ordered=False)
         except Exception as error0:
-            print("{error} On {report_date}".format(error=error0,report_date = report_date))
+            QA_util_log_info("{error} On {report_date}".format(error=error0,report_date = report_date))
             err.append(str(report_date))
 
     for item in date_list:

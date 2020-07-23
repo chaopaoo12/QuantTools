@@ -18,7 +18,7 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
             end_date = QA_util_today_str()
         elif end_date is not None:
             if end_date < start_date:
-                print('end_date should large than start_date')
+                QA_util_log_info('end_date should large than start_date start {_from} end {_to} '.format(_from=start_date, _to=end_date), ui_log)
     if code is None:
         code = list(QA_fetch_stock_list_adv()['code'])
 
@@ -48,9 +48,9 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
     deal_date_list = QA_util_get_trade_range(start_date, end_date)
 
     if deal_date_list is None:
-        print('not a trading day')
+        QA_util_log_info('##JOB Nono Trading Day ============== from {_from} to {_to} '.format(_from=start_date, _to=end_date), ui_log)
     elif data1 is None:
-        print('no data for ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date))
+        QA_util_log_info('##JOB No Data for ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
     else:
         for deal_date in deal_date_list:
             if QA_util_if_trade(deal_date):
@@ -75,6 +75,9 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
                                        'AVG5_RNG','AVG10_RNG','AVG20_RNG','AVG30_RNG','AVG60_RNG',
                                        'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                                        'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
+                                       'PE_RATE','PEEGL_RATE','PB_RATE','ROE_RATE','ROE_RATET','ROA_RATE','ROA_RATET',
+                                       'GROSS_RATE','ROA_AVG5','ROE_AVG5','GROSS_AVG5','ROE_MIN','ROA_MIN','GROSS_MIN',
+                                       'ROE_CH','ROA_CH','GROSS_CH',
                                        'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
                                        'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR',
                                        'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY',
@@ -265,7 +268,7 @@ def QA_SU_save_index_quant_day(code=None, start_date=None, end_date=None, ui_log
             end_date = QA_util_today_str()
         elif end_date is not None:
             if end_date < start_date:
-                print('end_date should large than start_date')
+                QA_util_log_info('end_date should large than start_date start {_from} end {_to} '.format(_from=start_date, _to=end_date), ui_log)
     if code is None:
         code = list(QA_fetch_index_list_adv()['code'])
         code = [i for i in code if i.startswith('880') == True]
@@ -296,9 +299,9 @@ def QA_SU_save_index_quant_day(code=None, start_date=None, end_date=None, ui_log
 
     deal_date_list = QA_util_get_trade_range(start_date, end_date)
     if deal_date_list is None:
-        print('not a trading day')
+        QA_util_log_info('##JOB Nono Trading Day ============== from {_from} to {_to} '.format(_from=start_date, _to=end_date), ui_log)
     elif data1 is None:
-        print('No Data!!!')
+        QA_util_log_info('##JOB No Data for ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
     else:
         for deal_date in deal_date_list:
             if QA_util_if_trade(deal_date):
