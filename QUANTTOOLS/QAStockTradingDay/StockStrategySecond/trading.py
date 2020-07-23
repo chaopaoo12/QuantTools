@@ -39,7 +39,9 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
     print('B')
     '##JOB04 Now Timing Control ==== {}'
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
+    print(tm)
     target_tm = int(time.strftime("%H%M%S", time.strptime("15:50:00", "%H:%M:%S")))
+    print(target_tm)
     while tm <= target_tm:
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
         time.sleep(15)
