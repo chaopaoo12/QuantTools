@@ -13,14 +13,11 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id, except
     QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
     client = get_Client()
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
-    account_info = client.get_account(account)
 
-    if target_tar is None:
-        QA_util_log_info('JOB None Tracking Target ==================== {}'.format(trading_date), ui_log=None)
-        e = send_trading_message(account, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'Tracking', type='MARKET', priceType=4,price=None, client=client)
+    QA_util_log_info('##JOB Now Build Tracking Frame ==== {}'.format(str(trading_date)), ui_log = None)
+    res = build(target_tar, positions, sub_accounts, percent, False)
 
-        QA_util_log_info('##JOB Now Build Tracking Frame ==== {}'.format(str(trading_date)), ui_log = None)
-        res = build(target_tar, positions, sub_accounts, percent, False)
+    if res is not None:
 
         QA_util_log_info('##JOB Now Check Timing ==== {}'.format(str(trading_date)), ui_log = None)
 
@@ -69,6 +66,9 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id, except
 
         QA_util_log_info('##JOB Tracking Finished ==================== {}'.format(trading_date), ui_log=None)
         send_actionnotice(strategy_id,'Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)
+    else:
+        QA_util_log_info('JOB None Tracking Target ==================== {}'.format(trading_date), ui_log=None)
+        send_actionnotice(strategy_id,'None Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)
 
 if __name__ == '__main__':
     pass
