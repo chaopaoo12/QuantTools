@@ -79,7 +79,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
         res['目标持股数'] = (res['target']/res['买卖价']/100).apply(lambda x: round(x, 0)*100)
         res['测算持股金额'] = res['目标持股数'] * res['买卖价']
-        print('res',res[['NAME','INDUSTRY','目标持股数','测算持股金额']])
+
         QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
         while res['测算持股金额'].sum() > sub_accounts:
             QA_util_log_info('##JOB Budget Larger than Capital', ui_log = None)
@@ -89,8 +89,9 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
             k = k + 100
 
     QA_util_log_info('##JOB Caculate Deal Position', ui_log = None)
+    print('res',res[['NAME','INDUSTRY','目标持股数','测算持股金额']])
     res['deal'] = (res['目标持股数'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
-
+    print('res',res[['NAME','INDUSTRY','目标持股数','测算持股金额','deal']])
     if Zbreak == True:
         QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
         res = res[(res.deal> 0) & (res.deal < 0)]
