@@ -213,11 +213,11 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
     QA_util_log_info(
         '##JOB stock quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     if type == 'standardize':
-        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar]).reset_index()
+        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
     elif type == 'normalization':
-        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar]).reset_index()
+        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
     else:
-        res = res[[x for x in list(res.columns) if x not in col_tar]].join(res[col_tar]).reset_index()
+        res = res[[x for x in list(res.columns) if x not in col_tar]].join(res[col_tar])
         QA_util_log_info('##JOB type must be in [standardize, normalization]', ui_log)
 
     QA_util_log_info(
