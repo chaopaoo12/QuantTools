@@ -1,5 +1,15 @@
 import datetime
 from dateutil.relativedelta import relativedelta
+from QUANTAXIS.QAUtil import QA_util_today_str
+
+def QA_util_get_days_to_today(date):
+    if (date is None) or date in ['None', 0, '0']:
+        d2 = datetime.datetime.strptime(QA_util_today_str(),"%Y-%m-%d")
+    else:
+        d2=datetime.datetime.strptime(date,"%Y%m%d")
+    d1 = datetime.datetime.strptime(QA_util_today_str(),"%Y-%m-%d")
+    diff_days=d1-d2
+    return(diff_days.days)
 
 def QA_util_add_days(dt, days):
     """

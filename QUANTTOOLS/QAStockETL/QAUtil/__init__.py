@@ -9,6 +9,6 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASql import (QA_util_sql_store_mysql,ASCENDIN
 
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha191 import stock_alpha, index_alpha
 
-from QUANTTOOLS.QAStockETL.QAUtil.QADate import QA_util_add_days, QA_util_add_years, QA_util_getBetweenYear
+from QUANTTOOLS.QAStockETL.QAUtil.QADate import QA_util_add_days, QA_util_add_years, QA_util_getBetweenYear, QA_util_get_days_to_today
 
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha101 import stock_alpha101, index_alpha101
