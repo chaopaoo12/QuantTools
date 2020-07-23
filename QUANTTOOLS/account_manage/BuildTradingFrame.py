@@ -89,6 +89,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
             res['trim'] = list(res['sort'].apply(lambda x:k if x == 1 else 0))
             #res.loc[list(res[res['sort'] == 1].index)]['目标持股数'] = res.loc[list(res[res['sort'] == 1].index)]['目标持股数'] - k
             res['测算持股金额'] = res['目标持股数'] * res['买卖价'] - res['trim']
+            print(res['目标持股数'].sum())
             k = k + 100
 
         #res['mark'] = res['tar'] - res['市值']
