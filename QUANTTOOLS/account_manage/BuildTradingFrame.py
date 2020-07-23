@@ -93,5 +93,5 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
 
     if Zbreak == True:
         QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
-        res = res[(res.deal> 0) & (res.deal < 0)]
+        res = res[(res.deal> 0) | (res.deal < 0)]
     return(res)
