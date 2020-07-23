@@ -65,7 +65,7 @@ def QA_SU_save_stock_fianacial_momgo_his(start_date=None,end_date=None, ui_log =
         elif end_date is not None:
             if end_date < start_date:
                 print('end_date should large than start_date')
-    col = DATABASE.stock_financial_analysis1
+    col = DATABASE.stock_financial_analysis
     col.create_index(
         [("CODE", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
 
