@@ -1,4 +1,4 @@
 from QUANTTOOLS.FactorTools.SingelePeriodFactorTest import SingelePeriodFactorTest
 from QUANTTOOLS.FactorTools.MultiPeriodFactorTest import MultiPeriodFactorTest
 
-from QUANTTOOLS.FactorTools.base_func import get_quant_data
+from QUANTTOOLS.FactorTools.QuantMk import get_quant_data, get_index_quant_data, get_index_quant_data_norm
