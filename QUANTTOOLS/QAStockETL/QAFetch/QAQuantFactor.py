@@ -7,7 +7,7 @@ import math
 from QUANTTOOLS.QAStockETL.QAUtil.base_func import normalization, standardize, time_this_function
 
 @time_this_function
-def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):
+def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize', ui_log = None):
     '获取股票量化机器学习最终指标V1'
     start = QA_util_get_pre_trade_date(start_date,15)
     QA_util_log_info(
@@ -84,13 +84,17 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):
     col_tar = list(set(col_tar))
     QA_util_log_info(
         '##JOB index quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar]).reset_index()
-
+    if type == 'standardize':
+        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar]).reset_index()
+    elif type == 'normalization':
+        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar]).reset_index()
+    else:
+        QA_util_log_info('##JOB type must be in [standardize, normalization]', ui_log)
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
 
 @time_this_function
-def QA_fetch_get_quant_data(codes, start_date, end_date, ui_log = None):
+def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_log = None):
     '获取股票量化机器学习最终指标V1'
     start = QA_util_get_pre_trade_date(start_date,0)
     QA_util_log_info(
@@ -207,7 +211,13 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, ui_log = None):
     col_tar = list(set(col_tar))
     QA_util_log_info(
         '##JOB stock quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
+    if type == 'standardize':
+        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
+    elif type == 'normalization':
+        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
+    else:
+        QA_util_log_info('##JOB type must be in [standardize, normalization]', ui_log)
+
     QA_util_log_info(
         '##JOB got Data stock industry info ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     res = pd.concat([res,INDUSTRY,TOR],axis=1).reset_index()
