@@ -28,7 +28,6 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
         '##JOB03 Now Chect Account Server ==== {}'.format(str(trading_date)), ui_log)
     client = get_Client()
     check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
-    print('OK')
     send_actionnotice(strategy_id,
                       '交易报告:{}'.format(trading_date),
                       '交易准备已完成',
@@ -36,13 +35,10 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
                       offset='HOLD',
                       volume=None
                       )
-    print('B')
     '##JOB04 Now Timing Control ==== {}'
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    print(tm)
     target_tm = int(time.strftime("%H%M%S", time.strptime("15:50:00", "%H:%M:%S")))
-    print(target_tm)
-    while tm <= target_tm:
+    while tm >= target_tm:
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
         time.sleep(15)
 

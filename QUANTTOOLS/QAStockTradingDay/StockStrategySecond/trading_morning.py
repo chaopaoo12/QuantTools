@@ -30,7 +30,7 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
 
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
     target_tm = int(time.strftime("%H%M%S", time.strptime("09:20:00", "%H:%M:%S")))
-    while tm < target_tm:
+    while tm >= target_tm:
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
         time.sleep(30)
 
