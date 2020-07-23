@@ -1,6 +1,6 @@
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_fianacial_adv
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_get_pre_trade_date)
+from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info)
 
 def rolling_rank(data):
     return(data.rank(pct=True).iloc[-1])
@@ -71,5 +71,5 @@ def QA_fetch_get_stock_financial_percent(code,start_date,end_date):
         fianacial['date_stamp'] = fianacial['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10]))
         return(fianacial)
     except:
-        print('No Data')
+        QA_util_log_info('JOB No Data for {code} ====== from {_from} to {_to}'.format(code=code, _from=start_date, _to=end_date))
 

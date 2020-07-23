@@ -101,7 +101,7 @@ def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype=
                     "$gte": start}}, {"_id": 0}, batch_size=10000)
             data = pd.DataFrame([item for item in cursor])
         else:
-            print("type must be one of [report, crawl]")
+            QA_util_log_info("type must be one of [report, crawl]")
 
         if len(data) > 0:
             res_pd = pd.DataFrame(data)
@@ -194,7 +194,7 @@ def QA_fetch_stock_financial_calendar(code, start, end=None, format='pd',type = 
                     "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
             res = pd.DataFrame([item for item in cursor])
         else:
-            print("type must be one of [report, day, crawl]")
+            QA_util_log_info("type must be one of [report, day, crawl]")
 
 
         try:
@@ -217,7 +217,7 @@ def QA_fetch_stock_financial_calendar(code, start, end=None, format='pd',type = 
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_stock_financial_calendar format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_stock_financial_calendar format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -252,7 +252,7 @@ def QA_fetch_stock_divyield(code, start, end=None, format='pd',type = 'day', col
                     "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
             res = pd.DataFrame([item for item in cursor])
         else:
-            print("type must be one of [report, day, crawl]")
+            QA_util_log_info("type must be one of [report, day, crawl]")
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
         try:
@@ -276,7 +276,7 @@ def QA_fetch_stock_divyield(code, start, end=None, format='pd',type = 'day', col
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_stock_divyield format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_stock_divyield format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -312,7 +312,7 @@ def QA_fetch_financial_TTM(code, start, end = None, format='pd', collections=DAT
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_financial_TTM format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_financial_TTM format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -347,7 +347,7 @@ def QA_fetch_stock_fianacial(code, start, end = None, format='pd', collections=D
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_financial_TTM format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_financial_TTM format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -384,7 +384,7 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_stock_alpha format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_stock_alpha format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -412,7 +412,7 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
                     "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
             res = pd.DataFrame([item for item in cursor])
         else:
-            print("type must be one of [day, crawl]")
+            QA_util_log_info("type must be one of [day, crawl]")
 
         try:
             res = res.ix[:, ['begin_date','code','crawl_date','exe_shares',
@@ -432,7 +432,7 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_stock_shares format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_stock_shares format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -492,7 +492,7 @@ def QA_fetch_financial_report_wy(code, start_date = None, end_date = None, type 
                     "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
             data = pd.DataFrame([item for item in cursor])
         else:
-            print("type must be one of [report, crawl]")
+            QA_util_log_info("type must be one of [report, crawl]")
 
         if len(data) > 0:
             res_pd = pd.DataFrame(data)
@@ -550,7 +550,7 @@ def QA_fetch_stock_technical_index(code, start, end=None, type='day', format='pd
     elif type == 'month':
         collections=DATABASE.stock_technical_month
     else:
-        print("type should be in ['day', 'week', 'month']")
+        QA_util_log_info("type should be in ['day', 'week', 'month']")
     code = QA_util_code_tolist(code)
     if QA_util_date_valid(end):
 
@@ -579,7 +579,7 @@ def QA_fetch_stock_technical_index(code, start, end=None, type='day', format='pd
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_stock_technical_index format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_stock_technical_index format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -616,7 +616,7 @@ def QA_fetch_stock_financial_percent(code, start, end=None, format='pd', collect
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_stock_financial_percent format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_stock_financial_percent format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -710,7 +710,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, format='pd', 
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_stock_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_stock_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -776,7 +776,7 @@ def QA_fetch_stock_quant_pre(code, start, end=None, block = True, type='close', 
     elif format in ['list', 'l', 'L']:
         return numpy.asarray(res).tolist()
     else:
-        print("QA Error QA_fetch_stock_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+        QA_util_log_info("QA Error QA_fetch_stock_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
         return None
 
 def QA_fetch_financial_code(ndays=10):
@@ -821,7 +821,7 @@ def QA_fetch_interest_rate(start, end=None, format='pd', collections=DATABASE.in
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error Interest Rate format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error Interest Rate format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -859,7 +859,7 @@ def QA_fetch_index_alpha(code, start, end=None, format='pd', collections=DATABAS
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_index_alpha format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_index_alpha format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -876,7 +876,7 @@ def QA_fetch_index_technical_index(code, start, end=None, type='day', format='pd
     elif type == 'month':
         collections=DATABASE.index_technical_month
     else:
-        print("type should be in ['day', 'week', 'month']")
+        QA_util_log_info("type should be in ['day', 'week', 'month']")
     code = QA_util_code_tolist(code)
     if QA_util_date_valid(end):
 
@@ -905,7 +905,7 @@ def QA_fetch_index_technical_index(code, start, end=None, type='day', format='pd
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_index_technical_index format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_index_technical_index format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -1014,7 +1014,7 @@ def QA_fetch_index_quant_data(code, start, end = None, format='pd'):
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_index_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_index_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -1034,7 +1034,7 @@ def QA_fetch_index_quant_pre(code, start, end=None, method='value', format='pd')
     elif format in ['list', 'l', 'L']:
         return numpy.asarray(res).tolist()
     else:
-        print("QA Error QA_fetch_index_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+        QA_util_log_info("QA Error QA_fetch_index_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
         return None
 
 def QA_fetch_stock_alpha101(code, start, end=None, format='pd', collections=DATABASE.stock_alpha101):
@@ -1068,7 +1068,7 @@ def QA_fetch_stock_alpha101(code, start, end=None, format='pd', collections=DATA
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_stock_alpha101 format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_stock_alpha101 format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -1105,7 +1105,7 @@ def QA_fetch_index_alpha101(code, start, end=None, format='pd', collections=DATA
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_index_alpha101 format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            QA_util_log_info("QA Error QA_fetch_index_alpha101 format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
             return None
     else:
         QA_util_log_info(
@@ -1211,7 +1211,7 @@ def QA_fetch_usstock_day(
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print(
+            QA_util_log_info(
                 "QA Error QA_fetch_usstock_day format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
                 % format
             )
@@ -1299,7 +1299,7 @@ def QA_fetch_hkstock_day(
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print(
+            QA_util_log_info(
                 "QA Error QA_fetch_hkstock_day format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
                 % format
             )

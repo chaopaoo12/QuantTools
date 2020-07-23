@@ -4,7 +4,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,
                                QA_util_get_pre_trade_date)
 import math
-from QUANTTOOLS.QAStockETL.QAUtil.base_func import get_trans, time_this_function
+from QUANTTOOLS.QAStockETL.QAUtil.base_func import normalization, standardize, time_this_function
 
 @time_this_function
 def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):
@@ -84,7 +84,7 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, ui_log = None):
     col_tar = list(set(col_tar))
     QA_util_log_info(
         '##JOB index quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(get_trans).join(res[col_tar]).reset_index()
+    res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar]).reset_index()
 
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
@@ -108,6 +108,9 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, ui_log = None):
                                                                           'OPERATINGRINRATE', 'OPERATINGRINRATE_L2Y', 'OPERATINGRINRATE_L3Y', 'OPERATINGRINRATE_LY',
                                                                           'PB', 'PBG', 'PC', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PM', 'PS','PSG','PT',
                                                                           'I_PB','I_PE','I_PEEGL','I_ROE','I_ROE_TOTAL','I_ROA','I_ROA_TOTAL','I_GROSSMARGIN',
+                                                                          'PE_RATE','PEEGL_RATE','PB_RATE','ROE_RATE','ROE_RATET','ROA_RATE','ROA_RATET',
+                                                                          'GROSS_RATE','ROA_AVG5','ROE_AVG5','GROSS_AVG5','ROE_MIN','ROA_MIN','GROSS_MIN',
+                                                                          'ROE_CH','ROA_CH','GROSS_CH',
                                                                           'RNG','RNG_L','RNG_5','RNG_10','RNG_20', 'RNG_30', 'RNG_60',
                                                                           'AVG5_RNG','AVG10_RNG','AVG20_RNG','AVG30_RNG','AVG60_RNG',
                                                                           'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
@@ -203,7 +206,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, ui_log = None):
     col_tar = list(set(col_tar))
     QA_util_log_info(
         '##JOB stock quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(get_trans).join(res[col_tar])
+    res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
     QA_util_log_info(
         '##JOB got Data stock industry info ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     res = pd.concat([res,INDUSTRY,TOR],axis=1).reset_index()

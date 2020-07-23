@@ -10,7 +10,6 @@ def QA_fetch_get_stock_alpha(code, date, ui_log = None):
         data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
     else:
-        print("Not a Trading Day")
         QA_util_log_info(
             '##JOB Non Data Stock Alpha191 for ============== {date}'.format(date), ui_log)
 
@@ -23,7 +22,6 @@ def QA_fetch_get_index_alpha(code, date, ui_log = None):
         data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
     else:
-        print("Not a Trading Day")
         QA_util_log_info(
             '##JOB Non Data Index Alpha191 for ============== {date}'.format(date), ui_log)
 
@@ -35,7 +33,6 @@ def QA_fetch_get_stock_alpha101(code, start, end, ui_log = None):
         data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
     else:
-        print("Not a Trading Day")
         QA_util_log_info(
             '##JOB Non Data Stock Alpha101 ============== from {_from} to {_to}'.format(start, end), ui_log)
 
@@ -46,6 +43,5 @@ def QA_fetch_get_index_alpha101(code, start, end, ui_log = None):
         data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
     else:
-        print("Not a Trading Day")
         QA_util_log_info(
             '##JOB Non Data Index Alpha101 ============== from {_from} to {_to}'.format(start, end), ui_log)

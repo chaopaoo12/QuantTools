@@ -26,7 +26,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_index_quant_data,
                                                    QA_fetch_index_quant_pre)
 from QUANTAXIS.QAUtil.QADate import month_data
-from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,
+from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,QA_util_log_info,
                               QA_util_datetime_to_strdate, QA_util_add_months,
                               QA_util_today_str)
 
@@ -109,7 +109,7 @@ def QA_fetch_stock_fianacial_adv(code,
     res = QA_fetch_stock_fianacial(code, start, end, format='pd')
     if res is None:
         #  todo 报告是代码不合法，还是日期不合法
-        print("QA Error QA_fetch_stock_fianacial_adv parameter code=%s , start=%s, end=%s call QA_fetch_stock_fianacial_adv return None" % (
+        QA_util_log_info("QA Error QA_fetch_stock_fianacial_adv parameter code=%s , start=%s, end=%s call QA_fetch_stock_fianacial_adv return None" % (
             code, start, end))
         return None
     else:
