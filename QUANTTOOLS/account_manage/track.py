@@ -46,7 +46,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id, except
                     industry = res.loc[code]['INDUSTRY']
                     close = float(res.loc[code]['close'])
 
-                    QA_util_log_info('##JOB Now Start Selling {code} ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
+                    QA_util_log_info('##JOB Now Start Tracking Selling {code} ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
                     SellTrack(strategy_id, trading_date, code, name, industry, close)
 
             QA_util_log_info('##JOB Now Tracking Buying ==== {}'.format(str(trading_date)), ui_log = None)
@@ -58,7 +58,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id, except
                     industry = res.loc[code]['INDUSTRY']
                     close = float(res.loc[code]['close'])
 
-                    QA_util_log_info('##JOB Now Start Buying {code} ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
+                    QA_util_log_info('##JOB Now Start Tracking Buying {code} ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
                     BuyTrack(strategy_id, trading_date, code, name, industry, close)
 
             time.sleep(300)
