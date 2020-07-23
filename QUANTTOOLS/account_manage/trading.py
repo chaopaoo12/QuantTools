@@ -1,4 +1,4 @@
-from QUANTAXIS.QAUtil import QA_util_get_last_day, QA_util_today_str, QA_util_log_info
+from QUANTAXIS.QAUtil import  QA_util_log_info
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask,QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_close
 from QUANTTOOLS.account_manage.trading_message import send_trading_message
