@@ -3,7 +3,7 @@ from xgboost import XGBClassifier
 from sklearn.metrics import (accuracy_score,confusion_matrix,
                              classification_report,roc_curve,roc_auc_score,
                              auc,precision_score,recall_score,f1_score)
-from QUANTTOOLS.FactorTools.base_func import get_quant_data
+from QUANTTOOLS.FactorTools.QuantMk import get_quant_data
 from QUANTAXIS.QAUtil import (QA_util_log_info, QA_util_today_str)
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
