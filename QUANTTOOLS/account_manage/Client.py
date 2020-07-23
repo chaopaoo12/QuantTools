@@ -109,5 +109,7 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         frozen = float(frozen_positions['市值'].sum())
     except:
         frozen = 0
+    QA_util_log_info(
+        '##JOB Now Check Account Finished ==== {}'.format(str(trading_date)), ui_log)
 
     return(sub_accounts, frozen, positions, frozen_positions)
