@@ -163,11 +163,12 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
         else:
             for code in res[res['deal'] == 0].index:
                 QA_util_log_info('##JOB Now Prepare Holding {code} Info ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
-                target_pos = float(res.at[code, '目标持股数'])
-                target = float(res.at[code, '市值'])
-                name = res.at[code, 'NAME']
-                industry = res.at[code, 'INDUSTRY']
-                close = float(res.at[code, 'close'])
+                target_pos = float(res.loc[code]['目标持股数'])
+                target = float(res.loc[code]['股票余额'])
+                name = res.loc[code]['NAME']
+                industry = res.loc[code]['INDUSTRY']
+                deal_pos = abs(float(res.loc[code]['deal']))
+                close = float(res.loc[code]['close'])
 
                 QA_util_log_info('##JOB Now Start Holding {code} ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
                 HOLD(strategy_id, account_info,trading_date, code, name, industry, target_pos, target)
@@ -180,11 +181,12 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
         else:
             for code in res[res['deal'] > 0].index:
                 QA_util_log_info('##JOB Now Prepare Buying {code} Info ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
-                target_pos = float(res.at[code, '目标持股数'])
-                target = float(res.at[code, '测算持股金额'])
-                name = res.at[code, 'NAME']
-                industry = res.at[code, 'INDUSTRY']
-                deal_pos = abs(float(res.at[code, 'deal']))
+                target_pos = float(res.loc[code]['目标持股数'])
+                target = float(res.loc[code]['股票余额'])
+                name = res.loc[code]['NAME']
+                industry = res.loc[code]['INDUSTRY']
+                deal_pos = abs(float(res.loc[code]['deal']))
+                close = float(res.loc[code]['close'])
 
                 QA_util_log_info('##JOB Now Start Buying {code} ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
                 BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target, close, type)
