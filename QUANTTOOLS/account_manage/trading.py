@@ -130,9 +130,10 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
         QA_util_log_info('##JOB Now Start Trading ==== {}'.format(str(trading_date)), ui_log = None)
 
         QA_util_log_info('##JOB Now Check Timing ==== {}'.format(str(trading_date)), ui_log = None)
+
         h1 = int(datetime.datetime.now().strftime("%H"))
         if h1 >= 15 or h1 <= 9:
-            QA_util_log_info('已过交易时段 ==================== {}'.format(trading_date), ui_log=None)
+            QA_util_log_info('已过交易时段 {hour} ==================== {data}'.format(hour = h1, date = trading_date), ui_log=None)
             send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'已过交易时段',direction = 'HOLD',offset='HOLD',volume=None)
             break
 
