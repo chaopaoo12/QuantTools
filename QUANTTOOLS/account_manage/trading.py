@@ -100,7 +100,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
     if target_tar is None:
         QA_util_log_info('触发清仓 ==================== {}'.format(trading_date), ui_log=None)
         e = send_trading_message(account, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
-    res = build(target_tar, positions, sub_accounts, percent)
+    res = build(target_tar, positions, sub_accounts, percent, False)
     res1 = res
 
     client.cancel_all(account)
