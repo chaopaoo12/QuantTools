@@ -22,6 +22,31 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
        round(pb, 2) AS pb,
        round(i_PB, 2) AS i_pb,
        round(roe * 100, 2) AS roe,
+       
+       round(PE_TTM / i_PE, 2) as pe_rate,
+       round(peegl_ttm / i_PE, 2) as peegl_rate,
+       round(pb / i_PB, 2) as pb_rate,
+       round(roe / i_ROE, 2) as roe_rate,
+       round(roe / i_ROE_total, 2) as roe_ratet,
+       round(roa / i_ROa, 2) as roa_rate,
+       round(roa / i_ROA_total, 2) as roa_ratet,
+       round(grossMargin / i_grossMargin, 2) as gross_rate,
+       round((roe_ly + roe_l2y + roe_l3y + roe_l4y) / 5, 2) as roe_avg5,
+       round((roa_ly + roa_l2y + roa_l3y + roa_l4y) / 5, 2) as roa_avg5,
+       round((grossMargin_ly + grossMargin_l2y + grossMargin_l3y +
+             grossMargin_l4y) / 5,
+             2) as gross_avg5,
+       round(least(roe_ly + roe_l2y + roe_l3y + roe_l4y), 2) as roe_min,
+       round(least(roa_ly + roa_l2y + roa_l3y + roa_l4y), 2) as roa_min,
+       round(least(grossMargin_ly + grossMargin_l2y + grossMargin_l3y +
+                   grossMargin_l4y),
+             2) as gross_min,
+       round(roe / (roe_ly + roe_l2y + roe_l3y + roe_l4y) / 5, 2) as roe_ch,
+       round(roa / (roa_ly + roa_l2y + roa_l3y + roa_l4y) / 5, 2) as roa_ch,
+       round(grossMargin / (grossMargin_ly + grossMargin_l2y +
+             grossMargin_l3y + grossMargin_l4y) / 5,
+             2) as gross_ch,
+       
        round(i_ROE_total * 100, 2) AS i_roe_total,
        round(i_ROE * 100, 2) AS i_roe,
        round(roe_ly * 100, 2) AS roe_ly,
@@ -324,7 +349,7 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
                else
                 CLOSE_QFQ / LAG90_MARKET - 1
              end) * 100,
-             2) as lag90,      
+             2) as lag90,
        round((case
                when AVG5_A_MARKET = 0 or AVG5_A_MARKET is null then
                 0
@@ -366,7 +391,7 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
                else
                 CLOSE_QFQ / AVG90_A_MARKET - 1
              end) * 100,
-             2) as avg90,      
+             2) as avg90,
        AVG5_CR,
        AVG10_CR,
        AVG20_CR,
