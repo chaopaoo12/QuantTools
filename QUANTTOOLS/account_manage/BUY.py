@@ -51,7 +51,7 @@ def BUY(client, account, strategy_id, account_info,trading_date, code, name, ind
         QA_util_log_info('早盘挂单买入 {code}({NAME},{INDUSTRY}) {deal_pos}股, 目标持仓:{target_pos},单价:{price},总金额:{target}'.format(code=code,
                                                                                                                           NAME= name,
                                                                                                                           INDUSTRY=industry,
-                                                                                                                          cnt=abs(deal_pos),
+                                                                                                                          deal_pos=abs(deal_pos),
                                                                                                                           target_pos=target_pos,
                                                                                                                           price=price,
                                                                                                                           target=target), ui_log=None)

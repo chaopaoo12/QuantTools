@@ -3,7 +3,7 @@ from QUANTTOOLS.account_manage.trading_message import send_trading_message
 from QUANTTOOLS.account_manage.Client import get_StockPos
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask
 
-def SELL(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target, close, type = 'end'):
+def SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target, close, type = 'end'):
     real_pos = get_StockPos(code, client, account)
 
     if target_pos < real_pos:
@@ -14,7 +14,7 @@ def SELL(client, account, strategy_id, account_info,trading_date, code, name, in
         QA_util_log_info('卖出 {code}({NAME},{INDUSTRY}) {deal_pos}股, 目标持仓:{target_pos},单价:{price},总金额:{target}====={trading_date}'.format(code=code,
                                                                                                                               NAME= name,
                                                                                                                               INDUSTRY= industry,
-                                                                                                                              deal=abs(deal_pos),
+                                                                                                                              deal_pos=abs(deal_pos),
                                                                                                                               target_pos=target_pos,
                                                                                                                               target=target,
                                                                                                                               price=price,
@@ -28,7 +28,7 @@ def SELL(client, account, strategy_id, account_info,trading_date, code, name, in
         QA_util_log_info('早盘挂单卖出 {code}({NAME},{INDUSTRY}) {deal_pos}股, 目标持仓:{target_pos},单价:{price},总金额:{target}====={trading_date}'.format(code=code,
                                                                                                                                              NAME= name,
                                                                                                                                              INDUSTRY= industry,
-                                                                                                                                             cnt=abs(deal_pos),
+                                                                                                                                             deal_pos=abs(deal_pos),
                                                                                                                                              target_pos=target_pos,
                                                                                                                                              target=target,
                                                                                                                                              price=price,
