@@ -6,20 +6,10 @@ from QUANTAXIS.QAUtil import QA_util_log_info,QA_util_today_str
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import exceptions
+from QUANTTOOLS.QAStockETL.QAUtil import QA_util_get_days_to_today
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_get_stock_close
-
 import pandas as pd
-import datetime
-
-def date_func(date):
-    if (date is None) or date in ['None', 0, '0']:
-        d2 = datetime.datetime.strptime(QA_util_today_str(),"%Y-%m-%d")
-    else:
-        d2=datetime.datetime.strptime(date,"%Y%m%d")
-    d1 = datetime.datetime.strptime(QA_util_today_str(),"%Y-%m-%d")
-    diff_days=d1-d2
-    return(diff_days.days)
 
 def get_Client(host=yun_ip, port=yun_port, key=easytrade_password):
     logging.basicConfig(level=logging.DEBUG)
@@ -47,7 +37,7 @@ def get_StockPos(code, client, account):
 def get_Position(client, account):
     positions = client.get_positions(account)['positions'][['证券代码','证券名称','市值','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
     positions = positions[positions['股票余额'].astype(float) > 0]
-    positions['上市时间'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_stock_to_market_date(x))))
+    positions['上市时间'] = positions['证券代码'].apply(lambda x:QA_util_get_days_to_today(str(QA_fetch_stock_to_market_date(x))))
     positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industry(x))
     positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
     return(positions)
@@ -78,10 +68,10 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         QA_util_log_info('##JOB Now Get Positions ==== {}'.format(str(trading_date)), ui_log)
         positions = res['positions'][['证券代码','证券名称','股票余额','市值','可用余额','冻结数量','参考盈亏','成本价','市价','市值','盈亏比例(%)']]
         positions = positions[positions['股票余额'].astype(float) > 0]
-        positions['上市时间'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_stock_to_market_date(x))))
+        positions['上市时间'] = positions['证券代码'].apply(lambda x:QA_util_get_days_to_today(str(QA_fetch_stock_to_market_date(x))))
         positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industry(x))
         positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
-        positions['close'] = positions['证券代码'].apply(lambda x:date_func(str(QA_fetch_get_stock_close(x))))
+        positions['close'] = positions['证券代码'].apply(lambda x:QA_fetch_get_stock_close(x))
     except:
         QA_util_log_info('##JOB Now Get Positions Failed ==== {}'.format(str(trading_date)), ui_log)
 
