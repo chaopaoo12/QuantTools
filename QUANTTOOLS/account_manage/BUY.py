@@ -58,7 +58,7 @@ def BUY(client, account, strategy_id, account_info,trading_date, code, name, ind
                                                                                                                           deal_pos=abs(deal_pos),
                                                                                                                           target_pos=target_pos,
                                                                                                                           price=price,
-                                                                                                                          target=target), ui_log=None)
+                                                                                                                          target=abs(deal_pos)*price), ui_log=None)
         e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'BUY', type='LIMIT', priceType=None, price=price, client=client)
 
         time.sleep(5)

@@ -19,7 +19,7 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
                                                                                                                               INDUSTRY= industry,
                                                                                                                               deal_pos=abs(deal_pos),
                                                                                                                               target_pos=target_pos,
-                                                                                                                              target=target,
+                                                                                                                              target=abs(deal_pos)*price,
                                                                                                                               price=price,
                                                                                                                               trading_date=trading_date),
                          ui_log=None)
@@ -34,7 +34,7 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
                                                                                                                                              INDUSTRY= industry,
                                                                                                                                              deal_pos=abs(deal_pos),
                                                                                                                                              target_pos=target_pos,
-                                                                                                                                             target=target,
+                                                                                                                                             target=abs(deal_pos)*price,
                                                                                                                                              price=price,
                                                                                                                                              trading_date=trading_date),
                          ui_log=None)
