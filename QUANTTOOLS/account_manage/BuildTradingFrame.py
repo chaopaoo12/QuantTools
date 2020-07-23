@@ -83,13 +83,13 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
 
         QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
         while res['测算持股金额'].sum() > sub_accounts:
-            print(res['测算持股金额'].sum())
-            print(sub_accounts)
+            print('测算持股金额',res['测算持股金额'].sum())
+            print('sub_accounts',sub_accounts)
             QA_util_log_info('##JOB Budget Larger than Capital', ui_log = None)
             res['trim'] = list(res['sort'].apply(lambda x:k if x == 1 else 0))
             #res.loc[list(res[res['sort'] == 1].index)]['目标持股数'] = res.loc[list(res[res['sort'] == 1].index)]['目标持股数'] - k
             res['测算持股金额'] = res['目标持股数'] * res['买卖价'] - res['trim']
-            print(k)
+            print('k',k)
             print(res[res.sort == 1]['目标持股数'])
             k = k + 100
 
