@@ -55,7 +55,11 @@ def neutralization(factor, mkt_cap=None, industry = None):
     result = sml.OLS(y.astype(float),x.astype(float)).fit()
     return result.resid
 
-def get_trans(data):
+def normalization(data):
+    res1 = data[[i for i in list(data.columns) if i != 'INDUSTRY']].apply(lambda x:normalization_series(filter_extreme_3sigma(x)))
+    return(res1)
+
+def standardize(data):
     res1 = data[[i for i in list(data.columns) if i != 'INDUSTRY']].apply(lambda x:standardize_series(filter_extreme_3sigma(x)))
     return(res1)
 

@@ -28,6 +28,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from sqlalchemy import types, create_engine
 import asyncio
 import cx_Oracle
+from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Oracle_User, Oracle_Password, Oralce_Server, MongoDB_Server, MongoDB_Database)
 
 ORACLE_PATH1 = 'oracle+cx_oracle://{user}:{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
@@ -104,7 +105,7 @@ def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", pas
         data[:0].to_sql(table_name, engine,
                         if_exists=if_exists, dtype=dtyp)
     except Exception as e:
-        print("Table '%s' already exists." % (table_name))
+        QA_util_log_info("Table '%s' already exists." % (table_name))
         print(e)
 
     #sql_start = "insert into {} ({}) values(%s,%s,%s)".format(table_name, columns)
@@ -121,11 +122,11 @@ def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", pas
     try:
         for i in chunks([tuple(x) for x in data.where((pd.notnull(data)), None).values], break_num):
             cursor.executemany(sql, i)
-        print("{} has been stored into Table {} Mysql DataBase ".format(
+        QA_util_log_info("{} has been stored into Table {} Mysql DataBase ".format(
             table_name, table_name))
     except Exception as e:
         conn.rollback()
-        print("执行MySQL: %s 时出错：%s" % (sql, e))
+        QA_util_log_info("执行MySQL: %s 时出错：%s" % (sql, e))
     finally:
         cursor.close()
         conn.commit()

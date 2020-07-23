@@ -1,5 +1,5 @@
 import cx_Oracle
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
+from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,QA_util_log_info,
                                QA_util_get_trade_range,QA_util_get_last_day,
                                QA_util_if_trade)
 
@@ -8,7 +8,7 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
     if type == 'day' and deal_date == None:
         deal_date = QA_util_today_str()
     elif type == 'all':
-        print("Run This JOB in DataBase")
+        QA_util_log_info("Run This JOB in DataBase")
     if QA_util_if_trade(deal_date) == True:
         sql3="""insert /*+ append parallel(b, 16) nologging */
 into stock_analysis_data
@@ -969,11 +969,11 @@ into stock_analysis_data
         conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
         cursor = conn.cursor()
         if type == 'all' and deal_date == None:
-            print("please run this job in database")
+            QA_util_log_info("please run this job in database")
         elif type == 'day' or deal_date != None:
             cursor.execute(sql3)
             conn.commit()
-            print('analysis data for {deal_date} has been stored'.format(deal_date=deal_date))
+            QA_util_log_info('analysis data for {deal_date} has been stored'.format(deal_date=deal_date))
         cursor.close()
         conn.commit()
         conn.close()

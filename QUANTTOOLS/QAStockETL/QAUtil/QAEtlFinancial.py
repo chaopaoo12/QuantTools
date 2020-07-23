@@ -1131,7 +1131,7 @@ SELECT A.CODE,
         pass
     cursor.execute(sql2)
     conn.commit()
-    print("financial TTM report has been stored")
+    QA_util_log_info("financial TTM report has been stored")
     cursor.close()
     conn.commit()
     conn.close()

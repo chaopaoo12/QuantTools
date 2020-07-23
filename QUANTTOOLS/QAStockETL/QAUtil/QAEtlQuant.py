@@ -481,7 +481,7 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
  and (turnoverRatio * 1000 >= 10 or order_Date - market_day >= 15)
 '''
     if deal_date is None:
-        print('Must Have A DATE ')
+        QA_util_log_info('Must Have A DATE')
     else:
         if QA_util_if_trade(deal_date) == True:
             sql = sql.format(start_date=deal_date)
@@ -491,7 +491,7 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
         else:
             data = None
         if data is None:
-            print("No data For {start_date}".format(start_date=deal_date))
+            QA_util_log_info("No data For {start_date}".format(start_date=deal_date))
             return None
         else:
 
