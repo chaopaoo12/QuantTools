@@ -65,9 +65,9 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         print('buy_table',buy_table.shape)
         print('hold_table',hold_table.shape)
 
-        print([i for i in list(buy_table.columns) if i in list(sell_table.columns)])
-        print([i for i in list(sell_table.columns) if i not in list(buy_table.columns)])
-        print([i for i in list(buy_table.columns) if i not in list(sell_table.columns)])
+        QA_util_log_info([i for i in list(buy_table.columns) if i in list(sell_table.columns)])
+        QA_util_log_info([i for i in list(sell_table.columns) if i not in list(buy_table.columns)])
+        QA_util_log_info([i for i in list(buy_table.columns) if i not in list(sell_table.columns)])
 
         QA_util_log_info('##JOB Concat Sell Buy Hold Frame', ui_log = None)
         res = pd.concat([sell_table, buy_table, hold_table], axis=0)
