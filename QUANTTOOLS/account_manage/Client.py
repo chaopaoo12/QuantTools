@@ -68,19 +68,12 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
     try:
         QA_util_log_info('##JOB Now Get Positions ==== {}'.format(str(trading_date)), ui_log)
         positions = res['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','成本价','市价','市值','盈亏比例(%)']]
-        print(1)
         positions = positions[positions['股票余额'].astype(float) > 0]
-        print(2)
         positions['上市时间'] = positions['证券代码'].apply(lambda x:QA_util_get_days_to_today(str(QA_fetch_stock_to_market_date(x))))
-        print(3)
         positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industry(x))
-        print(4)
         positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
-        print(5)
         positions['close'] = positions['证券代码'].apply(lambda x:QA_fetch_get_stock_close(x))
-        print(6)
         positions =positions.rename(columns={'证券代码': 'code'})
-        print(7)
     except:
         QA_util_log_info('##JOB Now Get Positions Failed ==== {}'.format(str(trading_date)), ui_log)
 
