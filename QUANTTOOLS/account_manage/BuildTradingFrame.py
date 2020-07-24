@@ -25,7 +25,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     sub_accounts= float(sub_accounts) - 10000
     if target is None:
         QA_util_log_info('##JOB Target is None', ui_log = None)
-        res = positions.set_index('证券代码')
+        res = positions.set_index('code')
         avg_account = 0
         res = res.assign(target=avg_account)
         res['目标持股数'] = 0
@@ -34,7 +34,6 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         QA_util_log_info('##JOB Target is not None', ui_log = None)
         tar1 = target.reset_index().groupby('code').max()
         tar1['position'] = tar1.reset_index().groupby('code')['RANK'].count()
-        positions =positions.rename(columns={'证券代码': 'code'})
         positions = positions.set_index('code')
 
         QA_util_log_info('##JOB Separate Sell Buy Hold code', ui_log = None)

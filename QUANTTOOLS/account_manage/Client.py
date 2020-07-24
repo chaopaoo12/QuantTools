@@ -27,7 +27,7 @@ def get_AllCapital(client, account):
     return(capital)
 
 def get_StockPos(code, client, account):
-    positions = get_Position(client, account).set_index('证券代码')
+    positions = get_Position(client, account).set_index('code')
     try:
         res = float(positions.loc[code]['股票余额'])
     except:
@@ -40,6 +40,7 @@ def get_Position(client, account):
     positions['上市时间'] = positions['证券代码'].apply(lambda x:QA_util_get_days_to_today(str(QA_fetch_stock_to_market_date(x))))
     positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industry(x))
     positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
+    positions =positions.rename(columns={'证券代码': 'code'})
     return(positions)
 
 def check_Client(client, account, strategy_id, trading_date, exceptions=exceptions, ui_log= None):
@@ -72,6 +73,7 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industry(x))
         positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
         positions['close'] = positions['证券代码'].apply(lambda x:QA_fetch_get_stock_close(x))
+        positions =positions.rename(columns={'证券代码': 'code'})
     except:
         QA_util_log_info('##JOB Now Get Positions Failed ==== {}'.format(str(trading_date)), ui_log)
 
@@ -79,13 +81,13 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         QA_util_log_info(
             '##JOB Now Get Frozen_Positions ==== {}'.format(str(trading_date)), ui_log)
         if exceptions is not None:
-            exceptions = exceptions.extend(list(positions[positions['上市时间'] <= 15].set_index('证券代码').index))
+            exceptions = exceptions.extend(list(positions[positions['上市时间'] <= 15].set_index('code').index))
         else:
-            exceptions = list(positions[positions['上市时间'] <= 15].set_index('证券代码').index)
+            exceptions = list(positions[positions['上市时间'] <= 15].set_index('code').index)
 
         if exceptions is not None:
             try:
-                frozen_positions = positions.set_index('证券代码').loc[exceptions]
+                frozen_positions = positions.set_index('code').loc[exceptions]
             except:
                 frozen_positions = pd.DataFrame()
         else:
