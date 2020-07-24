@@ -38,6 +38,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
 
         print([i for i in list(tar1.columns) if i not in list(positions.columns)])
         print([i for i in list(positions.columns) if i not in list(tar1.columns)])
+        print([i for i in list(positions.columns) if i in list(tar1.columns)])
 
         QA_util_log_info('##JOB Separate Sell Buy Hold code', ui_log = None)
         sell_code = [i for i in list(positions.index) if i not in list(tar1.index)]
@@ -64,6 +65,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         print('buy_table',buy_table.shape)
         print('hold_table',hold_table.shape)
 
+        print([i for i in list(buy_table.columns) if i in list(sell_table.columns)])
         print([i for i in list(sell_table.columns) if i not in list(buy_table.columns)])
         print([i for i in list(buy_table.columns) if i not in list(sell_table.columns)])
 
