@@ -36,10 +36,6 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         tar1['position'] = tar1.reset_index().groupby('code')['RANK'].count()
         positions = positions.set_index('证券代码')
 
-        QA_util_log_info([i for i in list(tar1.columns) if i not in list(positions.columns)])
-        QA_util_log_info([i for i in list(positions.columns) if i not in list(tar1.columns)])
-        QA_util_log_info([i for i in list(positions.columns) if i in list(tar1.columns)])
-
         QA_util_log_info('##JOB Separate Sell Buy Hold code', ui_log = None)
         sell_code = [i for i in list(positions.index) if i not in list(tar1.index)]
         buy_code = [i for i in list(tar1.index) if i not in list(positions.index)]
@@ -61,16 +57,11 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         else:
             hold_table = pd.DataFrame()
 
-        QA_util_log_info(sell_table)
-        QA_util_log_info(buy_table)
-        QA_util_log_info(hold_table)
-
-        QA_util_log_info([i for i in list(buy_table.columns) if i in list(sell_table.columns)])
-        QA_util_log_info([i for i in list(sell_table.columns) if i not in list(buy_table.columns)])
-        QA_util_log_info([i for i in list(buy_table.columns) if i not in list(sell_table.columns)])
-
         QA_util_log_info('##JOB Concat Sell Buy Hold Frame', ui_log = None)
-        res = pd.concat([sell_table, buy_table, hold_table], axis=0)
+        res = pd.concat([sell_table.reset_index().set_index('code'),
+                         buy_table.reset_index().set_index('code'),
+                         hold_table.reset_index().set_index('code')], axis=0)
+        print(res.shape)
 
         QA_util_log_info('##JOB Add Info to Result Frame', ui_log = None)
         res['股票余额'] = res['股票余额'].fillna(0)
