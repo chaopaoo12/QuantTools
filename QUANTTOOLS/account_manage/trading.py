@@ -23,6 +23,8 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
     res = build(target_tar, positions, sub_accounts, percent, False)
     res1 = res
 
+    send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'开始交易',direction = 'HOLD',offset='HOLD',volume=None)
+
     QA_util_log_info('##JOB Now Cancel Orders ===== {}'.format(str(trading_date)), ui_log = None)
     client.cancel_all(account)
 
