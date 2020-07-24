@@ -31,7 +31,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id, except
             send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'已过交易时段',direction = 'HOLD',offset='HOLD',volume=None)
 
         QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
-        while tm >= target_ea  or tm <= target_af:
+        while tm >= target_ea  and  tm <= target_af:
 
             if tm > target_bk1 and tm < target_bk2:
                 time.sleep(120)
