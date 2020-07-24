@@ -34,7 +34,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         QA_util_log_info('##JOB Target is not None', ui_log = None)
         tar1 = target.reset_index().groupby('code').max()
         tar1['position'] = tar1.reset_index().groupby('code')['RANK'].count()
-        positions = positions.set_index('证券代码')
+        positions =positions.rename(columns={'证券代码': 'code'})
+        positions = positions.set_index('code')
 
         QA_util_log_info('##JOB Separate Sell Buy Hold code', ui_log = None)
         sell_code = [i for i in list(positions.index) if i not in list(tar1.index)]
