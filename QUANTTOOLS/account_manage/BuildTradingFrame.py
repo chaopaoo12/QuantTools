@@ -42,7 +42,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
 
         QA_util_log_info('##JOB Caculate Sell Buy Hold Frame', ui_log = None)
         if sell_code is not None and len(sell_code) > 0:
-            sell_table = positions.loc[sell_code].join(tar1[[i for i in list(positions.columns) if i not in ['NAME', 'INDUSTRY']]])
+            sell_table = positions.set_index('证券代码').loc[sell_code].join(tar1[[i for i in list(positions.columns) if i not in ['NAME', 'INDUSTRY']]])
         else:
             sell_table = pd.DataFrame()
 
