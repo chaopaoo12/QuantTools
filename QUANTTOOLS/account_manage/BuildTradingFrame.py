@@ -34,30 +34,38 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         QA_util_log_info('##JOB Target is not None', ui_log = None)
         tar1 = target.reset_index().groupby('code').max()
         tar1['position'] = tar1.reset_index().groupby('code')['RANK'].count()
+        positions = positions.set_index('证券代码')
+
+        print([i for i in list(tar1.columns) if i not in list(positions.columns)])
+        print([i for i in list(positions.columns) if i not in list(tar1.columns)])
 
         QA_util_log_info('##JOB Separate Sell Buy Hold code', ui_log = None)
-        sell_code = [i for i in list(positions.set_index('证券代码').index) if i not in list(tar1.index)]
-        buy_code = [i for i in list(tar1.index) if i not in list(positions.set_index('证券代码').index)]
-        hold_code = [i for i in list(tar1.index) if i in list(positions.set_index('证券代码').index)]
+        sell_code = [i for i in list(positions.index) if i not in list(tar1.index)]
+        buy_code = [i for i in list(tar1.index) if i not in list(positions.index)]
+        hold_code = [i for i in list(tar1.index) if i in list(positions.index)]
 
         QA_util_log_info('##JOB Caculate Sell Buy Hold Frame', ui_log = None)
         if sell_code is not None and len(sell_code) > 0:
-            sell_table = positions.set_index('证券代码').loc[sell_code].join(tar1[[i for i in list(tar1.columns) if i not in ['NAME', 'INDUSTRY']]],how='left')
+            sell_table = positions.loc[sell_code].join(tar1[[i for i in list(tar1.columns) if i not in ['NAME', 'INDUSTRY']]],how='left')
         else:
             sell_table = pd.DataFrame()
 
         if buy_code is not None and len(buy_code) > 0:
-            buy_table = tar1.loc[buy_code].join(positions[[i for i in list(positions.columns) if i not in ['NAME', 'INDUSTRY']]].set_index('证券代码'),how='left')
+            buy_table = tar1.loc[buy_code].join(positions[[i for i in list(positions.columns) if i not in ['NAME', 'INDUSTRY']]],how='left')
         else:
             buy_table = pd.DataFrame()
 
         if hold_code is not None and len(hold_code) > 0:
-            hold_table = tar1.loc[hold_code].join(positions[[i for i in list(positions.columns) if i not in ['NAME', 'INDUSTRY']]].set_index('证券代码'),how='left')
+            hold_table = tar1.loc[hold_code].join(positions[[i for i in list(positions.columns) if i not in ['NAME', 'INDUSTRY']]],how='left')
         else:
             hold_table = pd.DataFrame()
+
         print('sell_table',list(sell_table.columns))
         print('buy_table',list(buy_table.columns))
         print('hold_table',list(hold_table.columns))
+
+        print([i for i in list(sell_table.columns) if i not in list(buy_table.columns)])
+        print([i for i in list(buy_table.columns) if i not in list(sell_table.columns)])
         QA_util_log_info('##JOB Concat Sell Buy Hold Frame', ui_log = None)
         res = pd.concat([sell_table, buy_table, hold_table], axis=0)
 
