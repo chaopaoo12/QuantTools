@@ -37,6 +37,7 @@ def BUY(client, account, strategy_id, account_info,trading_date, code, name, ind
                               offset='缺少资金',
                               volume=(price * deal_pos) - UseCapital)
             time.sleep(5)
+            UseCapital = get_UseCapital(client, account)
 
         QA_util_log_info('买入 {code}({name},{industry}) {deal_pos}股, 目标持仓:{target_pos},单价:{price},总金额:{target}'.format(code=code,
                                                                                                                       name= name,
