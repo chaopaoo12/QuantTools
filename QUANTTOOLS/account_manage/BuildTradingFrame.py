@@ -59,10 +59,9 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
             hold_table = pd.DataFrame()
 
         QA_util_log_info('##JOB Concat Sell Buy Hold Frame', ui_log = None)
-        res = pd.concat([sell_table.reset_index().set_index('code'),
-                         buy_table.reset_index().set_index('code'),
-                         hold_table.reset_index().set_index('code')], axis=0)
-        print(res.shape)
+        res = pd.concat([sell_table,
+                         buy_table,
+                         hold_table], axis=0)
 
         QA_util_log_info('##JOB Add Info to Result Frame', ui_log = None)
         res['股票余额'] = res['股票余额'].fillna(0)
