@@ -48,7 +48,7 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
     try:
         QA_util_log_info(
             '##JOB Now Check Account Server ==== {}'.format(str(trading_date)), ui_log)
-        account_info = client.get_account(account)
+        res = client.get_positions(account)
     except:
         send_email('错误报告', '云服务器错误,请检查', trading_date)
         send_actionnotice(strategy_id,
@@ -60,7 +60,6 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
                           )
     try:
         QA_util_log_info('##JOB Now Get Sub_Accounts ==== {}'.format(str(trading_date)), ui_log)
-        res = client.get_positions(account)
         sub_accounts = float(res['sub_accounts']['总 资 产'])
     except:
         QA_util_log_info('##JOB Now Get Sub_Accounts Failed ==== {}'.format(str(trading_date)), ui_log)
