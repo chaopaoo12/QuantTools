@@ -32,8 +32,8 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     else:
         tar2 = tar1[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
 
-        tar2['close'] = tar2.reset_index()['code'].apply(lambda x:QA_fetch_get_stock_close(str(x)))
-        res = tar2.reset_index('code')
+        tar2 = tar2.assign(close= tar2.reset_index()['code'].apply(lambda x:QA_fetch_get_stock_close(str(x))))
+        res = tar2
 
         avg_account = (sub_accounts - frozen)/tar1.shape[0]
         res = res.assign(tar=avg_account*percent)
