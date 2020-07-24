@@ -35,6 +35,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id, except
 
             if tm > target_bk1 and tm < target_bk2:
                 time.sleep(120)
+                tm = int(datetime.datetime.now().strftime("%H%M%S"))
                 continue
 
             QA_util_log_info('##JOB Now Tracking Selling ==== {}'.format(str(trading_date)), ui_log = None)
