@@ -55,9 +55,9 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
             hold_table = tar1.loc[hold_code].join(positions[[i for i in list(positions.columns) if i not in ['NAME', 'INDUSTRY']]].set_index('证券代码'),how='left')
         else:
             hold_table = pd.DataFrame()
-        print('sell_table',sell_table)
-        print('buy_table',buy_table)
-        print('hold_table',hold_table)
+        print('sell_table',sell_table.shape)
+        print('buy_table',buy_table.shape)
+        print('hold_table',hold_table.shape)
         QA_util_log_info('##JOB Concat Sell Buy Hold Frame', ui_log = None)
         res = pd.concat([sell_table, buy_table, hold_table], axis=0)
 
