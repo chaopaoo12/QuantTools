@@ -68,7 +68,10 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res['position'] = res['position'].fillna(0)
         res['ask1'] = list(res.reset_index()['code'].apply(lambda x:QA_fetch_get_stock_realtm_ask(x)))
         res['bid1'] = list(res.reset_index()['code'].apply(lambda x:QA_fetch_get_stock_realtm_bid(x)))
-        res['close'] = list(res.reset_index()['code'].apply(lambda x:QA_fetch_get_stock_close(x)))
+        try:
+            res['close'] = list(res.reset_index()['code'].apply(lambda x:QA_fetch_get_stock_close(x)))
+        except:
+            QA_util_log_info('##JOB Now Get Close Price Failed.')
         res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
         res['sort'] = res['买卖价'].rank(ascending=False)
 
