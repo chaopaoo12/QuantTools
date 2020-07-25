@@ -36,48 +36,50 @@ from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_fianacial,ch
                                                         check_index_alpha101,check_index_alpha191,
                                                         check_index_techindex,check_index_techweek,
                                                         check_index_quant)
-from  QUANTAXIS.QAUtil import QA_util_today_str
+from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.daily_job import job111
 import time
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
 
-    while check_stock_fianacial(mark_day) is None or check_stock_fianacial(mark_day)  > 20:
-        time.sleep(300)
+    if QA_util_if_trade(mark_day):
 
-    while check_stock_finper(mark_day) is None or check_stock_finper(mark_day)  > 20:
-        time.sleep(300)
+        while check_stock_fianacial(mark_day) is None or check_stock_fianacial(mark_day)  > 20:
+            time.sleep(300)
 
-    while check_stock_techindex(mark_day) is None or check_stock_techindex(mark_day)  > 20:
-        time.sleep(300)
+        while check_stock_finper(mark_day) is None or check_stock_finper(mark_day)  > 20:
+            time.sleep(300)
 
-    while check_stock_techweek(mark_day) is None or check_stock_techweek(mark_day)  > 20:
-        time.sleep(300)
+        while check_stock_techindex(mark_day) is None or check_stock_techindex(mark_day)  > 20:
+            time.sleep(300)
 
-    while check_stock_alpha101(mark_day) is None or check_stock_alpha101(mark_day)  > 20:
-        time.sleep(300)
+        while check_stock_techweek(mark_day) is None or check_stock_techweek(mark_day)  > 20:
+            time.sleep(300)
 
-    while check_stock_alpha191(mark_day) is None or check_stock_alpha191(mark_day)  > 20:
-        time.sleep(300)
+        while check_stock_alpha101(mark_day) is None or check_stock_alpha101(mark_day)  > 20:
+            time.sleep(300)
 
-    while check_index_alpha101(mark_day) is None or check_index_alpha101(mark_day)  > 10:
-        time.sleep(180)
+        while check_stock_alpha191(mark_day) is None or check_stock_alpha191(mark_day)  > 20:
+            time.sleep(300)
 
-    while check_index_alpha191(mark_day) is None or check_index_alpha191(mark_day)  > 10:
-        time.sleep(180)
+        while check_index_alpha101(mark_day) is None or check_index_alpha101(mark_day)  > 10:
+            time.sleep(180)
 
-    while check_index_techindex(mark_day) is None or check_index_techindex(mark_day)  > 10:
-        time.sleep(180)
+        while check_index_alpha191(mark_day) is None or check_index_alpha191(mark_day)  > 10:
+            time.sleep(180)
 
-    while check_index_techweek(mark_day) is None or check_index_techweek(mark_day)  > 10:
-        time.sleep(180)
+        while check_index_techindex(mark_day) is None or check_index_techindex(mark_day)  > 10:
+            time.sleep(180)
 
-    time.sleep(600)
-    QA_SU_save_stock_quant_data_day(start_date = mark_day, end_date = mark_day)
-    QA_SU_save_index_quant_data_day(start_date = mark_day, end_date = mark_day)
+        while check_index_techweek(mark_day) is None or check_index_techweek(mark_day)  > 10:
+            time.sleep(180)
 
-    check_stock_quant(mark_day)
-    check_index_quant(mark_day)
+        time.sleep(600)
+        QA_SU_save_stock_quant_data_day(start_date = mark_day, end_date = mark_day)
+        QA_SU_save_index_quant_data_day(start_date = mark_day, end_date = mark_day)
+
+        check_stock_quant(mark_day)
+        check_index_quant(mark_day)
 
     job111(mark_day)

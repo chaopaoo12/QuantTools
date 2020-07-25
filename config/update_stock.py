@@ -30,16 +30,16 @@
 from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_technical_index_day,
                                    QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_month_day)
 from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_day)
-from  QUANTAXIS.QAUtil import QA_util_today_str
+from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 import time
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
+    if QA_util_if_trade(mark_day):
+        while check_stock_day(mark_day) is None or check_stock_day(mark_day)  > 20:
+            time.sleep(180)
 
-    while check_stock_day(mark_day) is None or check_stock_day(mark_day)  > 20:
-        time.sleep(180)
-
-    time.sleep(600)
-    QA_SU_save_stock_technical_index_day(start_date=mark_day, end_date = mark_day)
-    QA_SU_save_stock_technical_week_day(start_date=mark_day, end_date = mark_day)
-    QA_SU_save_stock_technical_month_day(start_date = mark_day, end_date = mark_day)
+        time.sleep(600)
+        QA_SU_save_stock_technical_index_day(start_date=mark_day, end_date = mark_day)
+        QA_SU_save_stock_technical_week_day(start_date=mark_day, end_date = mark_day)
+        QA_SU_save_stock_technical_month_day(start_date = mark_day, end_date = mark_day)
