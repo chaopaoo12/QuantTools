@@ -17,7 +17,7 @@ class model():
         self.info['rng_status']=dict()
 
     def get_data(self, start, end, block=True, sub_block=True, type ='crawl'):
-        QA_util_log_info('##JOB Got Data by {type}, block: {}, sub_block: {} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
+        QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
         self.data = get_quant_data(start, end, type = type, block = block, sub_block = sub_block)
         self.data = self.data[(self.data.DAYSO>= 90)&(self.data.next_date == self.data.PRE_DATE)]
         print(self.data.shape)
@@ -116,7 +116,7 @@ def load_model(name, working_dir= 'D:\\model\\current'):
     return(model, info)
 
 def model_predict(model, start, end, cols, block = False, sub_block= False, type='crawl'):
-    QA_util_log_info('##JOB Now Got Prediction Data ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
+    QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
     data = get_quant_data(start, end, type= type,block = block, sub_block=sub_block)
 
     QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
@@ -135,7 +135,7 @@ def model_predict(model, start, end, cols, block = False, sub_block= False, type
             n_cols.append(i)
     train.index = data.index
     QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
-    print(n_cols)
+    QA_util_log_info(n_cols)
 
     QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
     b = data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
