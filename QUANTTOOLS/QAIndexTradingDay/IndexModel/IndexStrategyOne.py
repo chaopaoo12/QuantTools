@@ -135,7 +135,7 @@ def model_predict(model, start, end, cols, type='crawl'):
             n_cols.append(i)
     train.index = data.index
     QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
-    print(n_cols)
+    QA_util_log_info(n_cols)
 
     QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
     b = data[['INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
