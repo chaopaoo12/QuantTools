@@ -637,11 +637,17 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, format='pd', 
     if QA_util_date_valid(end):
 
         __data = []
+        QA_util_log_info(
+            'JOB Get Stock Financial data start=%s end=%s' % (start, end))
+
         cursor = financial.find({
             'code': {'$in': code}, "date_stamp": {
                 "$lte": QA_util_date_stamp(end),
                 "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
         financial_res = pd.DataFrame([item for item in cursor])
+
+        QA_util_log_info(
+            'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
 
         cursor = index.find({
             'code': {'$in': code}, "date_stamp": {
@@ -649,18 +655,25 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, format='pd', 
                 "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
         index_res = pd.DataFrame([item for item in cursor])
 
+        QA_util_log_info(
+            'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
+
         cursor = week.find({
             'code': {'$in': code}, "date_stamp": {
                 "$lte": QA_util_date_stamp(end),
                 "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
         week_res = pd.DataFrame([item for item in cursor])
 
+        QA_util_log_info(
+            'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
         cursor = alpha.find({
             'code': {'$in': code}, "date_stamp": {
                 "$lte": QA_util_date_stamp(end),
                 "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
         alpha_res = pd.DataFrame([item for item in cursor])
 
+        QA_util_log_info(
+            'JOB Get Stock Alpha101 data start=%s end=%s' % (start, end))
         cursor = alpha101.find({
             'code': {'$in': code}, "date_stamp": {
                 "$lte": QA_util_date_stamp(end),
@@ -763,7 +776,11 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close', method = 'v
     return(res)
 
 def QA_fetch_stock_quant_pre(code, start, end=None, block = True, type='close', method='value', format='pd'):
+    QA_util_log_info(
+        'JOB Get Stock Quant data start=%s end=%s' % (start, end))
     res = QA_fetch_stock_quant_data(code, start, end, block)
+    QA_util_log_info(
+        'JOB Get Stock Target data start=%s end=%s' % (start, end))
     target = QA_fetch_stock_target(code, start, end, type=type, method=method)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
@@ -955,24 +972,32 @@ def QA_fetch_index_quant_data(code, start, end = None, format='pd'):
 
         __data = []
 
+        QA_util_log_info(
+            'JOB Get Index Tech Index data start=%s end=%s' % (start, end))
         cursor = index.find({
             'code': {'$in': code}, "date_stamp": {
                 "$lte": QA_util_date_stamp(end),
                 "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
         index_res = pd.DataFrame([item for item in cursor])
 
+        QA_util_log_info(
+            'JOB Get Index Tech Week data start=%s end=%s' % (start, end))
         cursor = week.find({
             'code': {'$in': code}, "date_stamp": {
                 "$lte": QA_util_date_stamp(end),
                 "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
         week_res = pd.DataFrame([item for item in cursor])
 
+        QA_util_log_info(
+            'JOB Get Index Alpha191 data start=%s end=%s' % (start, end))
         cursor = alpha.find({
             'code': {'$in': code}, "date_stamp": {
                 "$lte": QA_util_date_stamp(end),
                 "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
         alpha_res = pd.DataFrame([item for item in cursor])
 
+        QA_util_log_info(
+            'JOB Get Index Alpha101 data start=%s end=%s' % (start, end))
         cursor = alpha101.find({
             'code': {'$in': code}, "date_stamp": {
                 "$lte": QA_util_date_stamp(end),
@@ -1021,7 +1046,11 @@ def QA_fetch_index_quant_data(code, start, end = None, format='pd'):
             'QA Error QA_fetch_index_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
 def QA_fetch_index_quant_pre(code, start, end=None, method='value', format='pd'):
+    QA_util_log_info(
+        'JOB Get Index Quant data start=%s end=%s' % (start, end))
     res = QA_fetch_index_quant_data(code, start, end)
+    QA_util_log_info(
+        'JOB Get Index Target data start=%s end=%s' % (start, end))
     target = QA_fetch_index_target(code, start, end, method=method)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
