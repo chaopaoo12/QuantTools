@@ -147,10 +147,11 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
        round(tangibleAssetDebtRatio_l4y * 100, 2) AS tangibleAssetDebtRatio_l4y,
        
        round(turnoverRatioOfTotalAssets * 100, 2) AS turnoverRatioOfTotalAssets,
-       round(turnoverRatioOfTotalAssets_ly * 100, 2) AS turnoverRatioOfTotalAssets_ly,
-       round(turnoverRatioOfTotalAssets_l2y * 100, 2) AS turnoverRatioOfTotalAssets_l2y,
-       round(turnoverRatioOfTotalAssets_l3y * 100, 2) AS turnoverRatioOfTotalAssets_l3y,
-       round(turnoverRatioOfTotalAssets_l4y * 100, 2) AS turnoverRatioOfTotalAssets_l4y,
+       round((turnoverRatioOfTotalAssets_ly +
+             turnoverRatioOfTotalAssets_l2y +
+             turnoverRatioOfTotalAssets_l3y +
+             turnoverRatioOfTotalAssets_l4y) / 4 * 100,
+             2) AS turnoverRatioOfTotalAssets_avg,
        
        round(turnoverRatioOfReceivable * 100, 2) AS turnoverRatioOfReceivable,
        round(turnoverRatioOfReceivable_ly * 100, 2) AS turnoverRatioOfReceivable_ly,
@@ -495,7 +496,6 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
             return None
         else:
             data = data.assign(NETCASHOPERATINRATE_AVG3 = (data.NETCASHOPERATINRATE_LY + data.NETCASHOPERATINRATE_L2Y + data.NETCASHOPERATINRATE_L3Y)/3)
-            data = data.assign(turnoverRatioOfTotalAssets_AVG3 = (data.turnoverRatioOfTotalAssets_ly + data.turnoverRatioOfTotalAssets_l2y + data.turnoverRatioOfTotalAssets_l3y)/3)
             data = data.assign(NETPRTAX_RATE = data.netProfit_inrate / data.totalProfitinrate)
             data = data.assign(OPINRATE_AVG3 = (data.operatingRinrate_ly + data.operatingRinrate_l2y + data.operatingRinrate_l3y)/3)
             data = data.assign(NETPINRATE_AVG3 = (data.netProfit_inrate_ly + data.netProfit_inrate_l2y + data.netProfit_inrate_l3y)/3)
