@@ -107,10 +107,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
                                                                           'AVG5','AVG10','AVG20','AVG30','AVG60',
                                                                           'LAG','LAG5','LAG10','LAG20','LAG30','LAG60',
                                                                           'LAG_TOR','AVG5_TOR', 'AVG20_TOR','AVG30_TOR','AVG60_TOR',
-                                                                          'GROSSMARGIN', 'GROSSMARGIN_L2Y','GROSSMARGIN_L3Y', 'GROSSMARGIN_L4Y', 'GROSSMARGIN_LY',
-                                                                          'NETCASHOPERATINRATE', 'NETCASHOPERATINRATE_L2Y', 'NETCASHOPERATINRATE_L3Y', 'NETCASHOPERATINRATE_LY',
-                                                                          'NETPROFIT_INRATE', 'NETPROFIT_INRATE_L2Y', 'NETPROFIT_INRATE_L3Y', 'NETPROFIT_INRATE_LY',
-                                                                          'OPERATINGRINRATE', 'OPERATINGRINRATE_L2Y', 'OPERATINGRINRATE_L3Y', 'OPERATINGRINRATE_LY',
+                                                                          'GROSSMARGIN','NETPROFIT_INRATE','OPERATINGRINRATE','NETCASHOPERATINRATE',
                                                                           'PB', 'PBG', 'PC', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PM', 'PS','PSG','PT',
                                                                           'I_PB','I_PE','I_PEEGL','I_ROE','I_ROE_TOTAL','I_ROA','I_ROA_TOTAL','I_GROSSMARGIN',
                                                                           'PE_RATE','PEEGL_RATE','PB_RATE','ROE_RATE','ROE_RATET','ROA_RATE','ROA_RATET',
@@ -121,8 +118,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
                                                                           'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                                                                           'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                           'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
-                                                                          'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR',
-                                                                          'TOTALPROFITINRATE', 'TOTALPROFITINRATE_L2Y', 'TOTALPROFITINRATE_L3Y', 'TOTALPROFITINRATE_LY']]
+                                                                          'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR','TOTALPROFITINRATE']]
     fianacial = fianacial[fianacial.DAYS >= 90]
     QA_util_log_info(
         '##JOB got Data stock perank data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
