@@ -27,7 +27,7 @@ def SellTrack(strategy_id, trading_date, code, name, industry, close):
         send_actionnotice(strategy_id,
                           '卖出跟踪报告:{}'.format(trading_date),
                           '{name}({code})--{industry}上涨'.format(name=name,code=code,industry=industry),
-                          direction = 'BUY',
+                          direction = 'SELL',
                           offset=ask_price,
                           volume=ask_pct)
 
