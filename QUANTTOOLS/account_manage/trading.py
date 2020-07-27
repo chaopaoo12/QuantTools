@@ -59,7 +59,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
                 close = float(res.loc[code]['close'])
 
                 QA_util_log_info('##JOB Now Start Selling {code} ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
-                SELL(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target, close, type = type)
+                #SELL(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target, close, type = type)
 
                 time.sleep(3)
 
@@ -97,7 +97,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
                 close = float(res.loc[code]['close'])
 
                 QA_util_log_info('##JOB Now Start Buying {code} ===== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
-                BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target, close, type)
+                #BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target, close, type)
 
                 time.sleep(3)
 
