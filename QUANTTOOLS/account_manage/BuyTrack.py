@@ -19,10 +19,10 @@ def BuyTrack(strategy_id, trading_date, code, name, industry, close):
         bid_mark = False
 
     if bid_mark:
-        QA_util_log_info('##JOB Buying Tracking {name}({code}){INDUSTRY} 卖价{bid_price} 下跌:{bid_pct}===={date}'.format(date=trading_date,
+        QA_util_log_info('##JOB Buying Tracking {name}({code}){industry} 卖价{bid_price} 下跌:{bid_pct}===={date}'.format(date=trading_date,
                                                                                                                       code=code,
-                                                                                                                      NAME= name,
-                                                                                                                      INDUSTRY=industry,
+                                                                                                                      name= name,
+                                                                                                                      industry=industry,
                                                                                                                       bid_price=bid_price,
                                                                                                                       bid_pct=bid_pct), ui_log=None)
         send_actionnotice(strategy_id,
