@@ -39,7 +39,7 @@ def Tracking(trading_date, percent=percent, strategy_id= '机器学习1号', acc
 
     '##JOB04 Now Timing Control ===== {}'
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    target_tm = int(time.strftime("%H%M%S", time.strptime("09:20:00", "%H:%M:%S")))
+    target_tm = int(time.strftime("%H%M%S", time.strptime("09:25:00", "%H:%M:%S")))
     while tm < target_tm:
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
         time.sleep(60)
