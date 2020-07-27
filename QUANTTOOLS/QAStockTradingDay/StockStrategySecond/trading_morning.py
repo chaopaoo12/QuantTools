@@ -29,7 +29,7 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
     check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    target_tm = int(time.strftime("%H%M%S", time.strptime("09:20:00", "%H:%M:%S")))
+    target_tm = int(time.strftime("%H%M%S", time.strptime("09:25:00", "%H:%M:%S")))
     while tm < target_tm:
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
         time.sleep(30)
