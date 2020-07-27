@@ -18,7 +18,7 @@ def SellTrack(strategy_id, trading_date, code, name, industry, close):
         ask_mark = False
 
     if ask_mark:
-        QA_util_log_info('##JOB Buying Tracking {name}({code}){industry} 卖价{ask_price} 上涨:{ask_pct}===={date}'.format(date=trading_date,
+        QA_util_log_info('##JOB Selling Tracking {name}({code}){industry} 卖价{ask_price} 上涨:{ask_pct}===={date}'.format(date=trading_date,
                                                                                                                       code=code,
                                                                                                                       name= name,
                                                                                                                       industry=industry,
