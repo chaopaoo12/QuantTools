@@ -22,7 +22,7 @@ def BUY(client, account, strategy_id, account_info,trading_date, code, name, ind
         ####check account usefull capital
         QA_util_log_info('##JOB Check Account Usefull Capital Before {code} Buying ===== {date}'.format(code = code, date=trading_date), ui_log = None)
         UseCapital = get_UseCapital(client, account)
-        while (price * deal_pos) > UseCapital:
+        if (price * deal_pos) > UseCapital:
             QA_util_log_info('##JOB {name}({code}){industry} 交易资金不足 目标买入{deal_pos}股 预估资金{target} 实际资金{capital}===={date}'.format(date=trading_date,
                                                                                                                                  code=code,
                                                                                                                                  name= name,
@@ -36,8 +36,7 @@ def BUY(client, account, strategy_id, account_info,trading_date, code, name, ind
                               direction = 'BUY',
                               offset='缺少资金',
                               volume=(price * deal_pos) - UseCapital)
-            time.sleep(5)
-            UseCapital = get_UseCapital(client, account)
+            deal_pos = math.floor((UseCapital / price)/100) * 100
 
         QA_util_log_info('买入 {code}({name},{industry}) {deal_pos}股, 目标持仓:{target_pos},单价:{price},总金额:{target}'.format(code=code,
                                                                                                                       name= name,
