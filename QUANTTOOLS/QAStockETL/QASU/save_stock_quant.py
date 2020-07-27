@@ -82,7 +82,7 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
                                        'PE_30PCT','PE_30VAL','PE_30DN','PE_30UP','PEEGL_30PCT','PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP','PB_30PCT','PB_30VAL','PB_30DN','PB_30UP','PEG_30PCT','PEG_30VAL','PEG_30DN','PEG_30UP','PS_30PCT','PS_30VAL','PS_30DN','PS_30UP',
                                        'PE_60PCT','PE_60VAL','PE_60DN','PE_60UP','PEEGL_60PCT','PEEGL_60VAL','PEEGL_60DN','PEEGL_60UP','PB_60PCT','PB_60VAL','PB_60DN','PB_60UP','PEG_60PCT','PEG_60VAL','PEG_60DN','PEG_60UP','PS_60PCT','PS_60VAL','PS_60DN','PS_60UP',
                                        'PE_90PCT','PE_90VAL','PE_90DN','PE_90UP','PEEGL_90PCT','PEEGL_90VAL','PEEGL_90DN','PEEGL_90UP','PB_90PCT','PB_90VAL','PB_90DN','PB_90UP','PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP','PS_90PCT','PS_90VAL','PS_90DN','PS_90UP',
-                                       'FINA_VAL','RNG60_RES','RNG20_RES', 'RNG_LO','LAG_TORO','DAYSO']]
+                                       'FINA_VAL','RNG60_RES','RNG20_RES', 'RNG_LO','DAYSO']]
                 alpha_data = data[['code','date','date_stamp','alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
                                    'alpha_009', 'alpha_010', 'alpha_012', 'alpha_013', 'alpha_014', 'alpha_015', 'alpha_016', 'alpha_017',
                                    'alpha_018', 'alpha_019', 'alpha_020', 'alpha_021', 'alpha_022', 'alpha_023', 'alpha_024', 'alpha_025', 'alpha_026',
