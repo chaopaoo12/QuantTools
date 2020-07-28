@@ -37,7 +37,7 @@ from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_fianacial,ch
                                                         check_index_techindex,check_index_techweek,
                                                         check_index_quant)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
-from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.daily_job import job111
+from QUANTTOOLS.StockMarket.StockStrategySecond.daily_job import job111
 import time
 
 if __name__ == '__main__':
