@@ -41,10 +41,10 @@ from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
     if QA_util_if_trade(mark_day):
+        QA_SU_save_stock_list('tdx')
         print("download day data")
         QA_SU_save_stock_day('tdx')
         check_stock_day(mark_day)
-        QA_SU_save_stock_list('tdx')
         QA_SU_save_stock_block('tdx')
         QA_SU_save_stock_info('tdx')
         QA_SU_save_stock_info_tushare()
