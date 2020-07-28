@@ -2,7 +2,7 @@ from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyOne import load_model, model_predict
 from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.account_manage import trade_roboot, get_Client
-from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.setting import working_dir, percent
+from QUANTTOOLS.StockMarket.StockStrategyFirst.setting import working_dir, percent
 from QUANTAXIS.QAUtil import QA_util_log_info
 import time
 import datetime

@@ -4,7 +4,7 @@ from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
 import pandas as pd
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
-from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.setting import working_dir, percent
+from QUANTTOOLS.StockMarket.StockStrategyFirst.setting import working_dir, percent
 from QUANTTOOLS.account_manage import get_Client
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice

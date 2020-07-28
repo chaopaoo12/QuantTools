@@ -1,6 +1,6 @@
 #coding=utf-8
 
-from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.setting import working_dir
+from QUANTTOOLS.StockMarket.StockStrategyFirst.setting import working_dir
 from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyOne import model
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 import pandas as pd

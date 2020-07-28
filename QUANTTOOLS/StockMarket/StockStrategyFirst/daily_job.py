@@ -1,7 +1,7 @@
 from datetime import datetime
-from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.train import train
-from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.running import predict
-from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.setting import working_dir
+from QUANTTOOLS.StockMarket.StockStrategyFirst import train
+from QUANTTOOLS.StockMarket.StockStrategyFirst.running import predict
+from QUANTTOOLS.StockMarket.StockStrategyFirst.setting import working_dir
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date
 
 def job111(trading_date):
