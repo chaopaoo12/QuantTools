@@ -1,11 +1,11 @@
 from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.account_manage import trade_roboot
-from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import working_dir, percent, exceptions
+from QUANTTOOLS.StockMarket.StockStrategySecond.setting import working_dir, percent, exceptions
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.account_manage import get_Client,check_Client
 import time
 import datetime
-from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.concat_predict import concat_predict,load_prediction,check_prediction
+from QUANTTOOLS.StockMarket.StockStrategySecond.concat_predict import concat_predict,load_prediction,check_prediction
 
 def trading(trading_date, percent=percent, strategy_id= '机器学习1号', account= 'name:client-1', working_dir= working_dir, ui_log= None, exceptions= exceptions):
 

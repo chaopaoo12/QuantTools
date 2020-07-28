@@ -1,6 +1,6 @@
 #coding=utf-8
 
-from QUANTTOOLS.QAStockTradingDay.StockStrategyFirst.setting import working_dir
+from QUANTTOOLS.StockMarket.StockStrategySecond.setting import working_dir
 from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyOne import model as StockModel
 from QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexStrategyOne import model as IndexModel
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email

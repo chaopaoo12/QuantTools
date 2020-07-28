@@ -6,7 +6,7 @@ import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name
 from QUANTTOOLS.FactorTools.base_tools import combine_model
 from QUANTTOOLS.message_func import send_email
-from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import working_dir
+from QUANTTOOLS.StockMarket.StockStrategySecond.setting import working_dir
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from datetime import datetime,timedelta
