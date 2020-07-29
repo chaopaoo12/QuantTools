@@ -22,7 +22,7 @@ def floor_round(x):
 
 def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     QA_util_log_info('##JOB Now Check Sub Accounts', ui_log = None)
-    sub_accounts= float(sub_accounts) - 10000
+    sub_accounts = float(sub_accounts) - 10000
     if target is None:
         QA_util_log_info('##JOB Target is None', ui_log = None)
         res = positions.set_index('code')
@@ -98,6 +98,10 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res['deal'] = (res['目标持股数'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
 
     if Zbreak == True:
-        QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
-        res = res[(res.deal> 0) | (res.deal < 0)]
+        if abs(res.loc[sell_code]['市值'].sum() - res.loc[sell_code]['target'].sum()) <= 5000 \
+                and abs(res.loc[buy_code]['市值'].sum() - res.loc[buy_code]['target'].sum()) <= 5000:
+            res = None
+        else:
+            QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
+            res = res[(res.deal> 0) | (res.deal < 0)]
     return(res)
