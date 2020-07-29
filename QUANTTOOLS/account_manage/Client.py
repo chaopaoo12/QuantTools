@@ -2,10 +2,10 @@
 import logging
 import strategyease_sdk
 from QUANTTOOLS.account_manage.setting import yun_ip, yun_port, easytrade_password
-from QUANTAXIS.QAUtil import QA_util_log_info,QA_util_today_str
+from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.message_func import send_email
-from QUANTTOOLS.QAStockTradingDay.StockStrategySecond.setting import exceptions
+from QUANTTOOLS.StockMarket.StockStrategySecond.setting import exceptions
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_get_days_to_today
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_get_stock_close
