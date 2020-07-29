@@ -98,8 +98,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res['deal'] = (res['目标持股数'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
 
     if Zbreak == True:
-        if abs(res.loc[sell_code]['市值'].sum() - res.loc[sell_code]['target'].sum()) <= 5000 \
-                and abs(res.loc[buy_code]['市值'].sum() - res.loc[buy_code]['target'].sum()) <= 5000:
+        if res.loc[sell_code]['市值'].sum() == 0 \
+                and abs(res.loc[list(tar1.index)]['市值'].sum() - res.loc[list(tar1.index)]['target'].sum()) <= 5000:
             res = None
         else:
             QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
