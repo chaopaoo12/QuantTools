@@ -6,10 +6,16 @@ from QUANTTOOLS.account_manage.BUY import BUY
 from QUANTTOOLS.account_manage.SELL import SELL
 from QUANTTOOLS.account_manage.HOLD import HOLD
 from QUANTTOOLS.account_manage.BuildTradingFrame import build
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_close
 import time
 import datetime
 
 def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='end', exceptions = None):
+    try:
+        QA_util_log_info('##JOB Now Connecting to TDX Server ==== {}'.format(str(trading_date)), ui_log = None)
+        QA_fetch_get_stock_close('000001')
+    except:
+        QA_util_log_info('##JOB Can Not Connect to TDX Server ==== {}'.format(str(trading_date)), ui_log = None)
     QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
     client = get_Client()
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
