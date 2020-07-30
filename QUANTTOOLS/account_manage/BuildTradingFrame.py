@@ -73,7 +73,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         except:
             QA_util_log_info('##JOB Now Get Close Price Failed.')
         res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
-        res['sort'] = res['买卖价'].rank(ascending=False)
+        res['sort'] = res['买卖价'].rank(ascending=True)
 
         QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
         ##实时修正
