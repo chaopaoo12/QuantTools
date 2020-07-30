@@ -81,7 +81,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         avg_account = (sub_accounts * percent)/res['position'].sum()
         res = res.assign(target=avg_account)
         res['target'] = res['target'] * res['position']
-        print(list(res.columns))
+
         QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
         res['目标持股数'] = (res['target']/res['买卖价']/100).apply(lambda x: round(x, 0)*100)
         res['测算持股金额'] = res['目标持股数'] * res['买卖价']
@@ -100,8 +100,6 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     QA_util_log_info('##JOB Caculate Deal Position', ui_log = None)
     res['deal'] = (res['目标持股数'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
 
-    print(res.target.sum())
-    print(res['市值'].sum())
     if Zbreak == True:
         QA_util_log_info('##JOB Stop Confirm', ui_log = None)
         if res.loc[sell_code]['市值'].sum() == 0 and abs(res.loc[list(tar1.index)]['市值'].sum() - res.loc[list(tar1.index)]['target'].sum()) <= 5000:
