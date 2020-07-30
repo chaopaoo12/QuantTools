@@ -95,7 +95,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
             k = k + 100
 
         while (res['测算持股金额'].sum() - sub_accounts) <= 10000:
-            QA_util_log_info('##JOB Budget Larger than Capital', ui_log = None)
+            QA_util_log_info('##JOB Budget Less than Capital', ui_log = None)
             res['trim'] = list(res['sort'].apply(lambda x:k if x == 1 else 0))
             res['目标持股数'] = res.apply(lambda x: x['目标持股数'] + x['trim'], axis=1)
             res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
