@@ -99,15 +99,15 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
 
     print(res.target.sum())
     print(res.deal)
+    print(res['市值'].sum())
     if Zbreak == True:
         QA_util_log_info('##JOB Stop Confirm', ui_log = None)
         print(res.loc[sell_code]['市值'].sum())
-        print(res.loc[list(tar1.index)]['市值'].sum())
+        print(res.loc[list(set(tar1.index))]['市值'].sum())
         print(res.loc[list(tar1.index)]['target'].sum())
         if res.loc[sell_code]['市值'].sum() == 0 and abs(res.loc[list(tar1.index)]['市值'].sum() - res.loc[list(tar1.index)]['target'].sum()) <= 5000:
             res = None
         else:
             QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
             res = res[(res.deal> 0) | (res.deal < 0)]
-    print(res)
     return(res)
