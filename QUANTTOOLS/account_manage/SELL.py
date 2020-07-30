@@ -13,7 +13,7 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
 
     if type == 'end':
         QA_util_log_info('##JOB Get Real Time Price Before {code} Selling ===== {date}'.format(code = code, date=trading_date), ui_log = None)
-        price = QA_fetch_get_stock_realtm_ask(code)-0.01
+        price = round(QA_fetch_get_stock_realtm_ask(code),2)-0.01
         QA_util_log_info('卖出 {code}({NAME},{INDUSTRY}) {deal_pos}股, 目标持仓:{target_pos},单价:{price},总金额:{target}====={trading_date}'.format(code=code,
                                                                                                                               NAME= name,
                                                                                                                               INDUSTRY= industry,

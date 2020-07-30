@@ -18,7 +18,7 @@ def BUY(client, account, strategy_id, account_info,trading_date, code, name, ind
 
     if type == 'end':
         QA_util_log_info('##JOB Get Real Time Price Before {code} Buying ===== {date}'.format(code = code, date=trading_date), ui_log = None)
-        price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
+        price = round(QA_fetch_get_stock_realtm_bid(code),2)+0.01
         ####check account usefull capital
         QA_util_log_info('##JOB Check Account Usefull Capital Before {code} Buying ===== {date}'.format(code = code, date=trading_date), ui_log = None)
         UseCapital = get_UseCapital(client, account)
