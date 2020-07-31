@@ -4,7 +4,7 @@ from matplotlib.pylab import *
 import statsmodels.api as sml
 import numpy as np
 import math
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_index_info,QA_fetch_stock_industryinfo
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_index_info,QA_fetch_stock_industryinfo,QA_fetch_stock_all
 import QUANTAXIS as QA
 
 def standardize_series(series): #原始值法
@@ -86,7 +86,7 @@ def find_stock(index_code):
         HY = index_info.HY.values[0]
         index_name = index_info.index_name.values[0]
 
-        stock_industry =QA_fetch_stock_industryinfo(list(QA.QA_fetch_stock_list().code))
+        stock_industry =QA_fetch_stock_industryinfo(list(QA_fetch_stock_all().code))
         block_name = QA.QA_fetch_stock_block()
         gn = block_name[(block_name.type == 'gn') & (block_name.source == 'tdx')]
         info = pd.DataFrame(QA.QAFetch.QAQuery.QA_fetch_stock_basic_info_tushare())
