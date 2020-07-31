@@ -32,139 +32,142 @@ from QUANTTOOLS.QAStockETL.QASU import crawl_jrj_financial_reportdate as save_fi
 from QUANTAXIS.QAUtil import QA_util_today_str
 
 def QA_SU_save_report_calendar_day():
-    return save_financial_calendar.QA_SU_save_report_calendar_day()
+    save_financial_calendar.QA_SU_save_report_calendar_day()
 
 def QA_SU_save_report_calendar_his():
-    return save_financial_calendar.QA_SU_save_report_calendar_his()
+    save_financial_calendar.QA_SU_save_report_calendar_his()
 
 def QA_SU_save_stock_divyield_day():
-    return save_stock_divyield.QA_SU_save_stock_divyield_day()
+    save_stock_divyield.QA_SU_save_stock_divyield_day()
 
 def QA_SU_save_stock_divyield_his():
-    return save_stock_divyield.QA_SU_save_stock_divyield_his()
+    save_stock_divyield.QA_SU_save_stock_divyield_his()
 
 def QA_SU_save_fianacialTTM_momgo():
-    return save_financial_TTM.QA_SU_save_fianacialTTM_momgo()
+    save_financial_TTM.QA_SU_save_fianacialTTM_momgo()
 
 def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None):
-    return save_stock_financial.QA_SU_save_stock_fianacial_momgo(start_date, end_date)
+    save_stock_financial.QA_SU_save_stock_fianacial_momgo(start_date, end_date)
 
 def QA_SU_save_stock_fianacial_momgo_his(start_date=None,end_date=QA_util_today_str()):
-    return save_stock_financial.QA_SU_save_stock_fianacial_momgo_his(start_date, end_date)
+    save_stock_financial.QA_SU_save_stock_fianacial_momgo_his(start_date, end_date)
 
 def QA_SU_save_stock_financial_ths_day():
-    return save_stock_financial_ths.QA_SU_save_financial_report_day()
+    save_stock_financial_ths.QA_SU_save_financial_report_day()
 
 def QA_SU_save_stock_financial_ths_his():
-    return save_stock_financial_ths.QA_SU_save_financial_report_his()
+    save_stock_financial_ths.QA_SU_save_financial_report_his()
 
 def QA_SU_save_stock_financial_wy_day(code=None):
-    return save_stock_financial_wy.QA_SU_save_financial_report_day(code=code)
+    save_stock_financial_wy.QA_SU_save_financial_report_day(code=code)
 
 def QA_SU_save_stock_financial_wy_his():
-    return save_stock_financial_wy.QA_SU_save_financial_report_his()
+    save_stock_financial_wy.QA_SU_save_financial_report_his()
 
 def QA_SU_save_stock_financial_sina_day():
-    return save_stock_financial_sina.QA_SU_save_financial_report_day()
+    save_stock_financial_sina.QA_SU_save_financial_report_day()
 
 def QA_SU_save_stock_financial_sina_his():
-    return save_stock_financial_sina.QA_SU_save_financial_report_his()
+    save_stock_financial_sina.QA_SU_save_financial_report_his()
 
 def QA_SU_save_stock_shares_sina_day():
-    return save_stock_shares_sina.QA_SU_save_stock_shares_day()
+    save_stock_shares_sina.QA_SU_save_stock_shares_day()
 
 def QA_SU_save_stock_shares_sina_his():
-    return save_stock_shares_sina.QA_SU_save_stock_shares_his()
+    save_stock_shares_sina.QA_SU_save_stock_shares_his()
 
 def QA_SU_save_stock_technical_index_day(start_date=None,end_date=None):
-    return save_stock_technical_index.QA_SU_save_stock_technical_index_day(start_date=start_date,end_date=end_date)
+    save_stock_technical_index.QA_SU_save_stock_technical_index_day(start_date=start_date,end_date=end_date)
 
 def QA_SU_save_stock_technical_index_his(start_date=None,end_date=None):
-    return save_stock_technical_index.QA_SU_save_stock_technical_index_his(start_date=start_date,end_date=end_date)
+    save_stock_technical_index.QA_SU_save_stock_technical_index_his(start_date=start_date,end_date=end_date)
 
 def QA_SU_save_stock_alpha_day(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
-    return save_stock_alpha.QA_SU_save_stock_alpha_day(code = code, start_date = start_date, end_date = end_date)
+    save_stock_alpha.QA_SU_save_stock_alpha_day(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_stock_alpha_his(code = None, start_date = None, end_date = None):
-    return save_stock_alpha.QA_SU_save_stock_alpha_his(code = code, start_date = start_date, end_date = end_date)
+    save_stock_alpha.QA_SU_save_stock_alpha_his(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_financialfiles():
-    return save_financialfiles.QA_SU_save_financial_files()
+    save_financialfiles.QA_SU_save_financial_files()
 
 def QA_SU_save_interest_rate():
-    return crawl_interest_rate.QA_SU_save_interest_rate()
+    crawl_interest_rate.QA_SU_save_interest_rate()
 
 def QA_SU_save_stock_fianacial_percent_day(code = None, start_date = None, end_date = None):
-    return save_stock_finper.QA_SU_save_stock_fianacial_percent(code = code, start_date = start_date ,end_date = end_date)
+    save_stock_finper.QA_SU_save_stock_fianacial_percent(code = code, start_date = start_date ,end_date = end_date)
 
 def QA_SU_save_stock_fianacial_percent_his(code = None, start_date = '2008-01-01', end_date = None):
-    return save_stock_finper.QA_SU_save_stock_fianacial_percent_his(code = code, start_date = start_date ,end_date = end_date)
+    save_stock_finper.QA_SU_save_stock_fianacial_percent_his(code = code, start_date = start_date ,end_date = end_date)
 
 def QA_SU_save_stock_quant_data_day(code = None, start_date = None, end_date = None):
-    return save_stock_quant.QA_SU_save_stock_quant_day(code = code, start_date = start_date ,end_date = end_date)
+    save_stock_quant.QA_SU_save_stock_quant_day(code = code, start_date = start_date ,end_date = end_date)
 
 def QA_SU_save_stock_quant_data_his(code = None, start_date = '2008-01-01', end_date = QA_util_today_str()):
-    return save_stock_quant.QA_SU_save_stock_quant_day(code = code, start_date = start_date ,end_date = end_date)
+    save_stock_quant.QA_SU_save_stock_quant_day(code = code, start_date = start_date ,end_date = end_date)
 
 def QA_SU_save_stock_technical_week_day(start_date=None,end_date=None):
-    return save_stock_technical_index.QA_SU_save_stock_technical_week_day(start_date=start_date,end_date=end_date)
+    save_stock_technical_index.QA_SU_save_stock_technical_week_day(start_date=start_date,end_date=end_date)
 
 def QA_SU_save_stock_technical_week_his(start_date=None,end_date=None):
-    return save_stock_technical_index.QA_SU_save_stock_technical_week_his(start_date=start_date,end_date=end_date)
+    save_stock_technical_index.QA_SU_save_stock_technical_week_his(start_date=start_date,end_date=end_date)
 
 def QA_SU_save_stock_technical_month_day(start_date=None,end_date=None):
-    return save_stock_technical_index.QA_SU_save_stock_technical_month_day(start_date=start_date,end_date=end_date)
+    save_stock_technical_index.QA_SU_save_stock_technical_month_day(start_date=start_date,end_date=end_date)
 
 def QA_SU_save_stock_technical_month_his(start_date=None,end_date=None):
-    return save_stock_technical_index.QA_SU_save_stock_technical_month_his(start_date=start_date,end_date=end_date)
+    save_stock_technical_index.QA_SU_save_stock_technical_month_his(start_date=start_date,end_date=end_date)
 
 def QA_SU_save_usstock_list_day():
-    return crawl_sina_hkstock.QA_SU_save_usstock_list_day()
+    crawl_sina_hkstock.QA_SU_save_usstock_list_day()
 
 def QA_SU_save_index_alpha_day(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
-    return save_stock_alpha.QA_SU_save_index_alpha_day(code = code, start_date = start_date, end_date = end_date)
+    save_stock_alpha.QA_SU_save_index_alpha_day(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_index_alpha_his(code = None, start_date = None, end_date = None):
-    return save_stock_alpha.QA_SU_save_index_alpha_his(code = code, start_date = start_date, end_date = end_date)
+    save_stock_alpha.QA_SU_save_index_alpha_his(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_index_technical_index_day(start_date=None,end_date=None):
-    return save_stock_technical_index.QA_SU_save_index_technical_index_day(start_date=start_date,end_date=end_date)
+    save_stock_technical_index.QA_SU_save_index_technical_index_day(start_date=start_date,end_date=end_date)
 
 def QA_SU_save_index_technical_index_his(start_date=None,end_date=None):
-    return save_stock_technical_index.QA_SU_save_index_technical_index_his(start_date=start_date,end_date=end_date)
+    save_stock_technical_index.QA_SU_save_index_technical_index_his(start_date=start_date,end_date=end_date)
 
 def QA_SU_save_index_technical_week_day(start_date=None,end_date=None):
-    return save_stock_technical_index.QA_SU_save_index_technical_week_day(start_date=start_date,end_date=end_date)
+    save_stock_technical_index.QA_SU_save_index_technical_week_day(start_date=start_date,end_date=end_date)
 
 def QA_SU_save_index_technical_week_his(start_date=None,end_date=None):
-    return save_stock_technical_index.QA_SU_save_index_technical_week_his(start_date=start_date,end_date=end_date)
+    save_stock_technical_index.QA_SU_save_index_technical_week_his(start_date=start_date,end_date=end_date)
 
 def QA_SU_save_index_technical_month_day(start_date=None,end_date=None):
-    return save_stock_technical_index.QA_SU_save_index_technical_month_day(start_date=start_date,end_date=end_date)
+    save_stock_technical_index.QA_SU_save_index_technical_month_day(start_date=start_date,end_date=end_date)
 
 def QA_SU_save_index_technical_month_his(start_date=None,end_date=None):
-    return save_stock_technical_index.QA_SU_save_index_technical_month_his(start_date=start_date,end_date=end_date)
+    save_stock_technical_index.QA_SU_save_index_technical_month_his(start_date=start_date,end_date=end_date)
 
 def QA_SU_save_index_quant_data_day(code = None, start_date = None, end_date = None):
-    return save_stock_quant.QA_SU_save_index_quant_day(code = code, start_date = start_date ,end_date = end_date)
+    save_stock_quant.QA_SU_save_index_quant_day(code = code, start_date = start_date ,end_date = end_date)
 
 def QA_SU_save_index_quant_data_his(code = None, start_date = '2008-01-01', end_date = QA_util_today_str()):
-    return save_stock_quant.QA_SU_save_index_quant_day(code = code, start_date = start_date ,end_date = end_date)
+    save_stock_quant.QA_SU_save_index_quant_day(code = code, start_date = start_date ,end_date = end_date)
 
 def QA_SU_save_index_alpha101_day(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
-    return save_stock_alpha.QA_SU_save_index_alpha101_day(code = code, start_date = start_date, end_date = end_date)
+    save_stock_alpha.QA_SU_save_index_alpha101_day(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_stock_alpha101_day(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
-    return save_stock_alpha.QA_SU_save_stock_alpha101_day(code = code, start_date = start_date, end_date = end_date)
+    save_stock_alpha.QA_SU_save_stock_alpha101_day(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_index_alpha101_his(code = None, start_date = '2008-01-01', end_date = QA_util_today_str()):
-    return save_stock_alpha.QA_SU_save_index_alpha101_day(code = code, start_date = start_date, end_date = end_date)
+    save_stock_alpha.QA_SU_save_index_alpha101_day(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_stock_alpha101_his(code = None, start_date = '2008-01-01', end_date = QA_util_today_str()):
-    return save_stock_alpha.QA_SU_save_stock_alpha101_day(code = code, start_date = start_date, end_date = end_date)
+    save_stock_alpha.QA_SU_save_stock_alpha101_day(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_index_info():
-    return save_tdx.QA_SU_save_index_info()
+    save_tdx.QA_SU_save_index_info()
 
 def QA_SU_save_stock_industryinfo():
-    return save_tdx.QA_SU_save_stock_industryinfo()
+    save_tdx.QA_SU_save_stock_industryinfo()
+
+def QA_SU_save_stock_delist():
+    save_tdx.QA_SU_save_stock_delist()

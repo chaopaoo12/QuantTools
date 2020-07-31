@@ -9,10 +9,11 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
                               QA_util_to_json_from_pandas, QA_util_today_str, QA_util_get_pre_trade_date,
                               QA_util_add_months)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv,QA_fetch_index_list_adv
-from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare
+from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare,QA_fetch_stock_list
 from QUANTTOOLS.QAStockETL.QAData.financial_mean import financial_dict, dict2
 from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,time_this_function,index_pct_log,pct_log
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade, QA_util_get_next_datetime,QA_util_get_real_date
+from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_delist
 
 def QA_fetch_stock_industry(stock_code):
     '''
@@ -1434,3 +1435,21 @@ def QA_fetch_index_info(code, format='pd', collections=DATABASE.index_info):
     except Exception as e:
         QA_util_log_info(e)
         return None
+
+def QA_fetch_stock_delist(collections=DATABASE.stock_delist):
+    '获取股票列表'
+
+    return pd.DataFrame([item for item in collections.find()]).drop(
+        '_id',
+        axis=1,
+        inplace=False
+    ).set_index(
+        'code',
+        drop=False
+    )
+
+def QA_fetch_stock_all():
+    stock_delist = QA_fetch_stock_delist()[['code','name','sse']]
+    code_list = QA_fetch_stock_list()[['code','name','sse']]
+    code_list = code_list.append(stock_delist)
+    return(code_list)

@@ -23,7 +23,8 @@ from QUANTAXIS.QAUtil import (
 )
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_usstock_adj,QA_fetch_get_usstock_day,QA_fetch_get_usstock_cik,
                                                  QA_fetch_get_usstock_financial, QA_fetch_get_usstock_financial_calendar,
-                                                 QA_fetch_get_stock_industryinfo,QA_fetch_get_index_info)
+                                                 QA_fetch_get_stock_industryinfo,QA_fetch_get_index_info,
+                                                 QA_fetch_get_stock_delist)
 
 
 def now_time():
@@ -319,4 +320,27 @@ def QA_SU_save_index_info(client=DATABASE, ui_log=None, ui_progress=None):
     except Exception as e:
         QA_util_log_info(e, ui_log=ui_log)
         print(" Error save_tdx.QA_SU_save_index_info exception!")
+        pass
+
+
+def QA_SU_save_stock_delist(client=DATABASE, ui_log=None, ui_progress=None):
+    client.drop_collection('stock_delist')
+    coll = client.stock_delist
+    coll.create_index('code')
+    err = []
+
+    try:
+        QA_util_log_info(
+            '##JOB09 Now Saving STOCK_DELIST ====',
+            ui_log=ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=5000
+        )
+        coll.insert_many(
+            QA_util_to_json_from_pandas(QA_fetch_get_stock_delist())
+        )
+
+    except Exception as e:
+        QA_util_log_info(e, ui_log=ui_log)
+        print(" Error save_tdx.QA_SU_save_stock_delist exception!")
         pass
