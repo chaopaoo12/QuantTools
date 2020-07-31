@@ -93,7 +93,7 @@ def find_stock(index_code):
 
         if cate == '2':
             ##TDX行业
-            stock_code = list(stock_industry[stock_industry['TDXHY'] == HY]['code'])
+            stock_code = list(stock_industry[stock_industry['TDXHY'].str[0:len(HY)] == HY]['code'])
         elif cate == '3':
             ##地域
             index_name = index_name.replace('板块', '')
@@ -101,8 +101,10 @@ def find_stock(index_code):
         elif cate == '4':
             ##概念
             stock_code = list(gn[gn['blockname'] == index_name]['code'])
-        elif cate == '8':
+        elif cate == '8' and HY[4:6] == '00':
             ##申万行业
+            stock_code = list(stock_industry[stock_industry['SWHY'].str[0:4] == HY[0:4]]['code'])
+        elif cate == '8':
             stock_code = list(stock_industry[stock_industry['SWHY'] == HY]['code'])
         else:
             stock_code = []
