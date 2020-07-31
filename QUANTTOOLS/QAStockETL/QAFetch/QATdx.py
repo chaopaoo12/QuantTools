@@ -1,4 +1,6 @@
 from QUANTAXIS import QA_fetch_get_future_day,QA_fetch_get_stock_realtime
+from QUANTTOOLS.QAStockETL.QAData.database_settings import tdx_dir
+import pandas as pd
 
 QA_fetch_get_usstock_day = QA_fetch_get_future_day
 
@@ -44,3 +46,19 @@ def QA_fetch_get_usstock_financial():
 
 def QA_fetch_get_usstock_financial_calendar():
     pass
+
+def QA_fetch_get_stock_industryinfo(file_name='tdxhy.cfg'):
+    return(pd.read_csv(tdx_dir+file_name,
+                       header=None,
+                       sep='|',
+                       dtype=str,
+                       names=['market','code','TDXHY','SWHY','HHY'],
+                       encoding='gb18030'))
+
+def QA_fetch_get_index_info(file_name='tdxzs.cfg'):
+    return(pd.read_csv(tdx_dir+file_name,
+                       header=None,
+                       sep='|',
+                       dtype=str,
+                       names=['index_name','code','cate','unknown1','unknown2','HY'],
+                       encoding='gb18030'))

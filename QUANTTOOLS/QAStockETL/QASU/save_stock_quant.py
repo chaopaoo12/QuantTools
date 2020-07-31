@@ -1,6 +1,6 @@
 
 import pymongo
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_quant_data,QA_fetch_get_index_quant_data
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_quant_data,QA_fetch_get_index_quant_data,QA_fetch_index_info
 from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_today_str,QA_util_log_info,
                               QA_util_get_trade_range,QA_util_if_trade,QA_util_get_pre_trade_date)
@@ -266,11 +266,9 @@ def QA_SU_save_index_quant_day(code=None, start_date=None, end_date=None, ui_log
             if end_date < start_date:
                 QA_util_log_info('end_date should large than start_date start {_from} end {_to} '.format(_from=start_date, _to=end_date), ui_log)
     if code is None:
-        code = list(QA_fetch_index_list_adv()['code'])
-        code = [i for i in code if i.startswith('880') == True]
-        code = [i for i in code if i.startswith('8800') == False]
-        code = [i for i in code if i.startswith('8807') == False]
-        code = [i for i in code if i.startswith('8808') == False]
+        code = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
+        code = list(code[code.cate != '5'].code)
+        code.expend(['000001','399001','399006'])
 
     index = DATABASE.index_quant_data_index
     index.create_index(

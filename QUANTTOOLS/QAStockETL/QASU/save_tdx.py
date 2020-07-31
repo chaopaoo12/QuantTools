@@ -22,7 +22,8 @@ from QUANTAXIS.QAUtil import (
     trade_date_sse
 )
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_usstock_adj,QA_fetch_get_usstock_day,QA_fetch_get_usstock_cik,
-                                                 QA_fetch_get_usstock_financial, QA_fetch_get_usstock_financial_calendar)
+                                                 QA_fetch_get_usstock_financial, QA_fetch_get_usstock_financial_calendar,
+                                                 QA_fetch_get_stock_industryinfo,QA_fetch_get_index_info)
 
 
 def now_time():
@@ -258,8 +259,64 @@ def QA_SU_save_usstock_cik(client=DATABASE, ui_log=None, ui_progress=None):
         QA_util_log_info(" Error save_tdx.QA_SU_save_usstock_cik exception!")
         pass
 
-def QA_SU_save_usstock_financial_files():
+def QA_SU_save_usstock_financial_files(client=DATABASE, ui_log=None, ui_progress=None):
     pass
 
-def QA_SU_save_usstock_report_calendar_day():
+def QA_SU_save_usstock_report_calendar_day(client=DATABASE, ui_log=None, ui_progress=None):
     pass
+
+def QA_SU_save_stock_industryinfo(client=DATABASE, ui_log=None, ui_progress=None):
+
+    client.drop_collection('stock_industryinfo')
+    coll = client.stock_industryinfo
+    coll.create_index('code')
+    err = []
+
+    """save stock_block
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+
+    client.drop_collection('stock_industryinfo')
+    coll = client.stock_industryinfo
+    coll.create_index('code')
+
+    try:
+        QA_util_log_info(
+            '##JOB09 Now Saving STOCK_INDUSTRY_INFO ====',
+            ui_log=ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=5000
+        )
+        coll.insert_many(
+            QA_util_to_json_from_pandas(QA_fetch_get_stock_industryinfo())
+        )
+
+    except Exception as e:
+        QA_util_log_info(e, ui_log=ui_log)
+        print(" Error save_tdx.QA_SU_save_stock_industryinfo exception!")
+        pass
+
+
+def QA_SU_save_index_info(client=DATABASE, ui_log=None, ui_progress=None):
+    client.drop_collection('index_info')
+    coll = client.index_info
+    coll.create_index('code')
+    err = []
+
+    try:
+        QA_util_log_info(
+            '##JOB09 Now Saving INDEX_INFO ====',
+            ui_log=ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=5000
+        )
+        coll.insert_many(
+            QA_util_to_json_from_pandas(QA_fetch_get_index_info())
+        )
+
+    except Exception as e:
+        QA_util_log_info(e, ui_log=ui_log)
+        print(" Error save_tdx.QA_SU_save_index_info exception!")
+        pass
