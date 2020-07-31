@@ -7,4 +7,4 @@ Oralce_Server = '192.168.3.56'
 MongoDB_Server = '192.168.3.56'
 MongoDB_Database = 'quantaxis'
 
-tdx_dir='E:\\Program Files\\new_tdx\\T0002\\hq_cache\\'
+tdx_dir='D:\\new_tdx\\T0002\\hq_cache\\'
