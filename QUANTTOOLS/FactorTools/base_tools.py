@@ -4,7 +4,7 @@ from matplotlib.pylab import *
 import statsmodels.api as sml
 import numpy as np
 import math
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_index_info,QA_fetch_stock_industryinfo
 import QUANTAXIS as QA
 
 def standardize_series(series): #原始值法
@@ -80,39 +80,34 @@ def halflife_ic(IC_data, halflife_weight,name, T):
     return pd.DataFrame(ic, index=IC_data.index[T:], columns=[name])
 
 def find_stock(index_code):
-    stock = QA.QA_fetch_stock_block()
-    info = pd.DataFrame(QA.QAFetch.QAQuery.QA_fetch_stock_basic_info_tushare())
-    index_list = QA.QA_fetch_index_list_adv()
+    try:
+        index_info = QA_fetch_index_info(index_code)
+        cate = index_info.cate.values[0]
+        HY = index_info.HY.values[0]
+        index_name = index_info.index_name.values[0]
 
-    block = index_list.loc[index_code]['name']
-    if isinstance(block,list):
-        block = block.apply(lambda x:x.replace('板块', ''))
-    elif isinstance(block,str):
-        block = block.replace('板块', '')
-    else:
-        pass
+        stock_industry =QA_fetch_stock_industryinfo(list(QA.QA_fetch_stock_list().code))
+        block_name = QA.QA_fetch_stock_block()
+        gn = block_name[(block_name.type == 'gn') & (block_name.source == 'tdx')]
+        info = pd.DataFrame(QA.QAFetch.QAQuery.QA_fetch_stock_basic_info_tushare())
 
-    if isinstance(index_code,list):
-        stock_code1 = info[info['area'].isin(block)]['code']
-    else:
-        stock_code1 = list(info[info['area'] == block]['code'])
-
-    #行业
-    if isinstance(index_code,list):
-        stock_code2 = info[info['industry'].isin(block)]['code']
-    else:
-        stock_code2 = list(info[info['industry'] == block]['code'])
-
-    if isinstance(index_code,list):
-        stock_code3 = stock[stock['blockname'].isin(block)]['code']
-    else:
-        stock_code3 = list(stock[stock['blockname'] == block]['code'])
-    stock_code = []
-
-    stock_code.extend(stock_code1)
-    stock_code.extend(stock_code2)
-    stock_code.extend(stock_code3)
-
+        if cate == '2':
+            ##TDX行业
+            stock_code = list(stock_industry[stock_industry['TDXHY'] == HY]['code'])
+        elif cate == '3':
+            ##地域
+            index_name = index_name.replace('板块', '')
+            stock_code = list(info[info['area'] == index_name]['code'])
+        elif cate == '4':
+            ##概念
+            stock_code = list(gn[gn['blockname'] == index_name]['code'])
+        elif cate == '8':
+            ##申万行业
+            stock_code = list(stock_industry[stock_industry['SWHY'] == HY]['code'])
+        else:
+            stock_code = []
+    except:
+        stock_code = []
     return(stock_code)
 
 def combine_model(index_d, stock_d, safe_d, start, end):

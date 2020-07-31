@@ -1,6 +1,7 @@
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_get_quant_data,QA_fetch_index_target,
                                            QA_fetch_index_quant_data,QA_fetch_get_index_quant_data,
-                                           QA_fetch_stock_quant_pre_adv,QA_fetch_index_quant_pre_adv)
+                                           QA_fetch_stock_quant_pre_adv,QA_fetch_index_quant_pre_adv,
+                                           QA_fetch_index_info)
 import QUANTAXIS as QA
 from QUANTTOOLS.FactorTools.base_tools import find_stock
 import pandas as pd
@@ -29,17 +30,13 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_bloc
 
 def get_index_quant_data(start_date, end_date, type = 'crawl', method = 'value'):
 
-    codes = list(QA.QA_fetch_index_list_adv()['code'])
-    codes = [i for i in codes if i.startswith('880') == True]
-    codes = [i for i in codes if i.startswith('8800') == False]
-    codes = [i for i in codes if i.startswith('8807') == False]
-    codes = [i for i in codes if i.startswith('8808') == False]
-    #codes = [i for i in codes if i.startswith('88098') == False]
-    #codes = [i for i in codes if i.startswith('88099') == False]
-    a = pd.DataFrame()
-    a['code'] = codes
-    a = a.assign(lens = a.code.apply(lambda x:len(find_stock(x))))
-    codes = list(a[a.lens > 0].code)
+    codes = QA_fetch_index_info(list(QA.QA_fetch_index_list_adv().code))
+    codes = list(codes[codes.cate != '5'].code)
+
+    #a = pd.DataFrame()
+    #a['code'] = codes
+    #a = a.assign(lens = a.code.apply(lambda x:len(find_stock(x))))
+    #codes = list(a[a.lens > 0].code)
 
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date, method=method).data
@@ -51,17 +48,13 @@ def get_index_quant_data(start_date, end_date, type = 'crawl', method = 'value')
 
 def get_index_quant_data_norm(start_date, end_date, type = 'crawl', method = 'value'):
 
-    codes = list(QA.QA_fetch_index_list_adv()['code'])
-    codes = [i for i in codes if i.startswith('880') == True]
-    codes = [i for i in codes if i.startswith('8800') == False]
-    codes = [i for i in codes if i.startswith('8807') == False]
-    codes = [i for i in codes if i.startswith('8808') == False]
-    #codes = [i for i in codes if i.startswith('88098') == False]
-    #codes = [i for i in codes if i.startswith('88099') == False]
-    a = pd.DataFrame()
-    a['code'] = codes
-    a = a.assign(lens = a.code.apply(lambda x:len(find_stock(x))))
-    codes = list(a[a.lens > 0].code)
+    codes = QA_fetch_index_info(list(QA.QA_fetch_index_list_adv().code))
+    codes = list(codes[codes.cate != '5'].code)
+
+    #a = pd.DataFrame()
+    #a['code'] = codes
+    #a = a.assign(lens = a.code.apply(lambda x:len(find_stock(x))))
+    #codes = list(a[a.lens > 0].code)
 
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date, method=method).data
