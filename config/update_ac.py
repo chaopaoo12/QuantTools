@@ -27,6 +27,7 @@
 
 """对应于save x
 """
+from QUANTAXIS.QASU.main import (QA_SU_save_financialfiles_fromtdx)
 from QUANTAXIS.QASU.main import (QA_SU_save_etf_day, QA_SU_save_etf_min,
                                  QA_SU_save_financialfiles,
                                  QA_SU_save_index_day, QA_SU_save_index_min,
@@ -53,7 +54,8 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
 
 if __name__ == '__main__':
     print("write tdx financial data into sqldatabase")
-    QA_SU_save_financialfiles()
+
+    QA_SU_save_financialfiles_fromtdx()
     QA_etl_stock_financial('all')
     print("done")
     print("write wy financial data into sqldatabase")
