@@ -12,7 +12,7 @@ from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv,QA_fetch_
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare,QA_fetch_stock_list
 from QUANTTOOLS.QAStockETL.QAData.financial_mean import financial_dict, dict2
 from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,time_this_function,index_pct_log,pct_log
-from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade, QA_util_get_next_datetime,QA_util_get_real_date
+from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade, QA_util_get_next_datetime,QA_util_get_real_date,QA_util_get_trade_range
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_delist
 
 def QA_fetch_stock_industry(stock_code):
@@ -736,7 +736,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close', method = 'v
     else:
         end_date = QA_util_get_real_date(end_date)
     end = QA_util_get_next_datetime(end_date,10)
-    rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+    rng1 = QA_util_get_trade_range(start_date, end_date)
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
     market = QA.QA_fetch_index_day(['000001'],start_date,end,format='pd')['close'].reset_index()
     if method == 'value':
@@ -935,8 +935,7 @@ def QA_fetch_index_target(codes, start_date, end_date, method = 'value'):
     else:
         end_date = QA_util_get_real_date(end_date)
     end = QA_util_get_next_datetime(end_date,10)
-    print(start_date)
-    rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+    rng1 = QA_util_get_trade_range(start_date, end_date)
     data = QA.QA_fetch_index_day_adv(codes,start_date,end).data.fillna(0).reset_index()
     if method == 'value':
         res = data.groupby('code').apply(index_pct)[['date','code',
@@ -950,9 +949,7 @@ def QA_fetch_index_target(codes, start_date, end_date, method = 'value'):
                                                         'INDEX_TARGET10']]
     else:
         res = None
-    print(rng1)
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
-    print(list(set(res['date'])))
     res = res.set_index(['date','code']).loc[rng1]
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':
