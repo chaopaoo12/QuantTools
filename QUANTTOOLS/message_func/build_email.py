@@ -1,7 +1,6 @@
 import pandas as pd
 
 def build_head():
-    pd.set_option('display.max_colwidth', -1)
     head = \
         """
         <head>
@@ -98,7 +97,6 @@ def build_head():
     return(head)
 
 def build_table(data, title, sub_tile = None):
-    pd.set_option('display.max_colwidth', -1)
     if data is None:
         data = pd.DataFrame()
     df_html = data.to_html(escape=False)
@@ -135,7 +133,6 @@ def build_table(data, title, sub_tile = None):
 
 
 def build_email(head, body, *args):
-    pd.set_option('display.max_colwidth', -1)
     html_msg = "<html>" + head + body
     for i in args:
         html_msg += i
