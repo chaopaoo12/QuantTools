@@ -506,8 +506,7 @@ def QA_SU_save_index_month(client=DATABASE, ui_log=None, ui_progress=None):
                                 str(code),
                                 start_date,
                                 end_date,
-                                '00',
-                                frequence='month'
+                                level='month'
                             )
                         )
                     )
@@ -583,8 +582,7 @@ def QA_SU_save_index_year(client=DATABASE, ui_log=None, ui_progress=None):
                                 str(code),
                                 QA_util_get_next_day(start_date),
                                 end_date,
-                                '00',
-                                frequence='year'
+                                level='year'
                             )
                         )
                     )
@@ -604,8 +602,7 @@ def QA_SU_save_index_year(client=DATABASE, ui_log=None, ui_progress=None):
                                 str(code),
                                 start_date,
                                 end_date,
-                                '00',
-                                frequence='year'
+                                level='year'
                             )
                         )
                     )
