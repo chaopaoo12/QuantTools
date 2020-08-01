@@ -950,6 +950,8 @@ def QA_fetch_index_target(codes, start_date, end_date, method = 'value'):
                                                         'INDEX_TARGET10']]
     else:
         res = None
+    print(rng1)
+    print(list(set(res['date'])))
     res['date'] = res['date'].apply(lambda x: str(x)[0:10])
     res = res.set_index(['date','code']).loc[rng1]
     for columnname in res.columns:
