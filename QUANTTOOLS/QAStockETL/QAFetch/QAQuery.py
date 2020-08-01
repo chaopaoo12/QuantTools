@@ -935,6 +935,7 @@ def QA_fetch_index_target(codes, start_date, end_date, method = 'value'):
     else:
         end_date = QA_util_get_real_date(end_date)
     end = QA_util_get_next_datetime(end_date,10)
+    print(end)
     rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
     data = QA.QA_fetch_index_day_adv(codes,start_date,end).data.fillna(0).reset_index()
     if method == 'value':
