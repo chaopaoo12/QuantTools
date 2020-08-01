@@ -39,7 +39,8 @@ from QUANTTOOLS.QAStockETL.QASU import (QA_SU_save_report_calendar_day, QA_SU_sa
                                         QA_SU_save_index_quant_data_day,QA_SU_save_index_quant_data_his,
                                         QA_SU_save_index_alpha101_day,QA_SU_save_index_alpha101_his,
                                         QA_SU_save_stock_alpha101_day,QA_SU_save_stock_alpha101_his,
-                                        QA_SU_save_index_info,QA_SU_save_stock_industryinfo,QA_SU_save_stock_delist)
+                                        QA_SU_save_index_info,QA_SU_save_stock_industryinfo,QA_SU_save_stock_delist,
+                                        QA_SU_save_index_week,QA_SU_save_index_month,QA_SU_save_index_year)
 
 from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_process_financial,QA_util_etl_financial_TTM,
                                           QA_util_etl_stock_quant,QA_util_sql_store_mysql,QA_util_process_stock_financial)
@@ -55,6 +56,9 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv, QA_fet
                                            QA_fetch_stock_quant_pre,QA_fetch_stock_quant_pre_adv,
                                            QA_fetch_stock_target,QA_fetch_stock_target_adv,QA_fetch_stock_industry,
                                            QA_fetch_financial_code,QA_fetch_index_info,QA_fetch_stock_industryinfo,
-                                           QA_fetch_stock_all,QA_fetch_stock_delist)
+                                           QA_fetch_stock_all,QA_fetch_stock_delist,QA_fetch_stock_week_adv,QA_fetch_stock_month_adv,
+                                           QA_fetch_stock_year_adv,QA_fetch_index_week_adv,QA_fetch_index_month_adv,
+                                           QA_fetch_index_year_adv,QA_fetch_stock_week,QA_fetch_stock_month,
+                                           QA_fetch_stock_year,QA_fetch_index_week,QA_fetch_index_month,QA_fetch_index_year)
 
 #from QUANTTOOLS.QAStockETL.FuncTools import (check_index_day,check_stock_day,check_stock_fianacial,check_stock_adj,check_stock_quant,check_index_quant)

@@ -171,3 +171,12 @@ def QA_SU_save_stock_industryinfo():
 
 def QA_SU_save_stock_delist():
     save_tdx.QA_SU_save_stock_delist()
+
+def QA_SU_save_index_week():
+    save_tdx.QA_SU_save_index_week()
+
+def QA_SU_save_index_month():
+    save_tdx.QA_SU_save_index_month()
+
+def QA_SU_save_index_year():
+    save_tdx.QA_SU_save_index_year()

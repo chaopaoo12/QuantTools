@@ -32,5 +32,5 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_report_calendar_day, QA_
                                              QA_SU_save_index_quant_data_day,QA_SU_save_index_quant_data_his,
                                              QA_SU_save_index_alpha101_day,QA_SU_save_index_alpha101_his,
                                              QA_SU_save_stock_alpha101_day,QA_SU_save_stock_alpha101_his,
-                                             QA_SU_save_index_info,QA_SU_save_stock_industryinfo,
-                                             QA_SU_save_stock_delist)
+                                             QA_SU_save_index_info,QA_SU_save_stock_industryinfo,QA_SU_save_stock_delist,
+                                             QA_SU_save_index_week,QA_SU_save_index_month,QA_SU_save_index_year)
