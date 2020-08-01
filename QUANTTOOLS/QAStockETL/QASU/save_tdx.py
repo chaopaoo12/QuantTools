@@ -352,7 +352,7 @@ def QA_SU_save_index_week(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
 
-    stock_list = QA_fetch_get_index_list().code.unique().tolist()
+    stock_list = QA_fetch_get_index_list('tdx').code.unique().tolist()
     coll_index_week = client.index_week
     coll_index_week.create_index(
         [("code",
@@ -390,8 +390,7 @@ def QA_SU_save_index_week(client=DATABASE, ui_log=None, ui_progress=None):
                                 str(code),
                                 QA_util_get_next_day(start_date),
                                 end_date,
-                                '00',
-                                frequence='week'
+                                level='week'
                             )
                         )
                     )
@@ -411,8 +410,7 @@ def QA_SU_save_index_week(client=DATABASE, ui_log=None, ui_progress=None):
                                 str(code),
                                 start_date,
                                 end_date,
-                                '00',
-                                frequence='week'
+                                level='week'
                             )
                         )
                     )
@@ -450,7 +448,7 @@ def QA_SU_save_index_month(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
 
-    stock_list = QA_fetch_get_index_list().code.unique().tolist()
+    stock_list = QA_fetch_get_index_list('tdx').code.unique().tolist()
     coll_index_month = client.index_month
     coll_index_month.create_index(
         [("code",
@@ -488,8 +486,7 @@ def QA_SU_save_index_month(client=DATABASE, ui_log=None, ui_progress=None):
                                 str(code),
                                 QA_util_get_next_day(start_date),
                                 end_date,
-                                '00',
-                                frequence='month'
+                                level='month'
                             )
                         )
                     )
@@ -548,7 +545,7 @@ def QA_SU_save_index_year(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
 
-    stock_list = QA_fetch_get_index_list().code.unique().tolist()
+    stock_list = QA_fetch_get_index_list('tdx').code.unique().tolist()
     coll_index_year = client.index_year
     coll_index_year.create_index(
         [("code",
