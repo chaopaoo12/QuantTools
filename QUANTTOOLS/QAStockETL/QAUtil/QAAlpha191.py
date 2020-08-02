@@ -279,9 +279,11 @@ class Alpha_191:
     def alpha_021(self):
         A=self.close.rolling(6).mean().iloc[-6:,:]
         B=np.arange(1,7)   #等差Sequence 1:6
-        temp=A.apply(lambda x:sp.stats.linregress(x,B) ,axis=0)  #linear regression
+        temp=A.apply(lambda x:sp.stats.linregress(x,B) ,axis=0).T  #linear regression
         print(temp)
         print([i for i in range(len(temp))])
+        temp.columns = ['slope','intercept','rvalue','pvalue','stderr']
+
         drop_list=[i for i in range(len(temp)) if temp[i][3]>0.05]   #去除p_value大于0.05的
         temp.drop(temp.index[drop_list],inplace=True)
         beta_list=[temp[i].slope for i in range(len(temp))]
@@ -2354,7 +2356,7 @@ class Alpha_191:
         alpha_018=self.alpha_018()
         alpha_019=self.alpha_019()
         alpha_020=self.alpha_020()
-        alpha_021=self.alpha_021()
+        #alpha_021=self.alpha_021()
         alpha_022=self.alpha_022()
         alpha_023=self.alpha_023()
         alpha_024=self.alpha_024()
@@ -2547,7 +2549,7 @@ class Alpha_191:
             "alpha_018":alpha_018,
             "alpha_019":alpha_019,
             "alpha_020":alpha_020,
-            "alpha_021":alpha_021,
+            #"alpha_021":alpha_021,
             "alpha_022":alpha_022,
             "alpha_023":alpha_023,
             "alpha_024":alpha_024,
