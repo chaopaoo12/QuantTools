@@ -280,6 +280,7 @@ class Alpha_191:
         A=self.close.rolling(6).mean().iloc[-6:,:]
         B=np.arange(1,7)   #等差Sequence 1:6
         temp=A.apply(lambda x:sp.stats.linregress(x,B) ,axis=0)  #linear regression
+        print(temp)
         drop_list=[i for i in range(len(temp)) if temp[i][3]>0.05]   #去除p_value大于0.05的
         temp.drop(temp.index[drop_list],inplace=True)
         beta_list=[temp[i].slope for i in range(len(temp))]
