@@ -94,7 +94,7 @@ def QA_SU_save_stock_alpha_his(code = None, start_date = None, end_date = None, 
         intProgressToLog = int(float((deal_date_list.index(item) + 1)/ len(deal_date_list) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
         if QA_util_if_trade(item) == True:
-            __saving_work(code,item)
+            __saving_work(code, item)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save Stock Alpha191 ^_^',  ui_log)
