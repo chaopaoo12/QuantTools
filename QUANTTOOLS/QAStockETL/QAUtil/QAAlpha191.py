@@ -284,7 +284,7 @@ class Alpha_191:
         A=self.close.rolling(6).mean().iloc[-6:,:]
         B=np.arange(1,7)   #等差Sequence 1:6
         temp=A.apply(lambda x:linreg(x,B) ,axis=0)  #linear regression
-        print(temp)
+        print(type(temp))
         for i in temp:
             print(i)
             print(i[0])
