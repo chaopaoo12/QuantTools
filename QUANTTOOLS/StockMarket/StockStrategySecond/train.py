@@ -25,7 +25,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     stock_model.set_target(mark =0.42, type = 'percent')
     QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(date)), ui_log)
     stock_model.set_train_rng(train_start=str(int(date[0:4])-1)+"-01-01",
-                        train_end=(datetime.strptime(date, "%Y-%m-%d")-delta1).strftime('%Y-%m-%d'))
+                        train_end=(datetime.strptime(date, "%Y-%m-%d")-delta).strftime('%Y-%m-%d'))
     stock_model.prepare_data()
     other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 5, 'min_child_weight': 5, 'seed': 0,
                     'subsample': 0.9, 'colsample_bytree': 0.6, 'gamma': 0, 'reg_alpha': 0.05, 'reg_lambda': 3}
@@ -49,7 +49,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     index_model.set_target('INDEX_TARGET5', mark = 0.3, type = 'percent')
     QA_util_log_info('##JOB04 Now Set Index Model Train time range ==== {}'.format(str(date)), ui_log)
     index_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
-                              train_end=(datetime.strptime(date, "%Y-%m-%d")-delta1).strftime('%Y-%m-%d'))
+                              train_end=(datetime.strptime(date, "%Y-%m-%d")-delta).strftime('%Y-%m-%d'))
     index_model.prepare_data()
     #other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 3, 'min_child_weight': 3, 'seed': 0,
     #                'subsample': 0.75, 'colsample_bytree': 0.65, 'gamma': 0.1, 'reg_alpha': 0.05, 'reg_lambda': 1}
@@ -71,7 +71,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     safe_model.set_target('INDEX_TARGET', mark = 0.3, type = 'percent')
     QA_util_log_info('##JOB04 Now Set Safe Model Train time range ==== {}'.format(str(date)), ui_log)
     safe_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
-                              train_end=(datetime.strptime(date, "%Y-%m-%d")-delta1).strftime('%Y-%m-%d'))
+                              train_end=(datetime.strptime(date, "%Y-%m-%d")-delta).strftime('%Y-%m-%d'))
     safe_model.prepare_data()
     other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 5, 'min_child_weight': 1, 'seed': 0,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
