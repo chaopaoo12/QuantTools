@@ -4,7 +4,7 @@ from sklearn.metrics import (accuracy_score,confusion_matrix,
                              classification_report,roc_curve,roc_auc_score,
                              auc,precision_score,recall_score,f1_score)
 from QUANTTOOLS.FactorTools.QuantMk import get_quant_data
-from QUANTAXIS.QAUtil import (QA_util_log_info, QA_util_today_str)
+from QUANTAXIS.QAUtil import (QA_util_log_info, QA_util_today_str,QA_util_get_trade_range)
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
 
@@ -43,7 +43,7 @@ class model():
 
     def set_train_rng(self, train_start, train_end):
         QA_util_log_info('##JOB Set Train Range from {_from} to {_to} ===== {date}'.format(_from=train_start,_to=train_end, date=self.info['date']), ui_log = None)
-        self.TR_RNG = pd.Series(pd.date_range(train_start, train_end, freq='D')).apply(lambda x: str(x)[0:10])
+        self.TR_RNG = QA_util_get_trade_range(train_start, train_end)
         self.info['train_rng'] = [train_start,train_end]
 
     def prepare_data(self):
