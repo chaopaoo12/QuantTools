@@ -289,7 +289,7 @@ class Alpha_191:
         #alpha=pd.Series(beta_list,index=temp.index)
         alpha=pd.DataFrame(temp)
         print(alpha)
-        alpha=alpha.assign(slope=alpha.apply(lambda x:np.nan if x.pvalue>0.05 else x.slope,axis=0))
+        alpha=alpha.assign(slope=alpha.apply(lambda x:np.nan if x.pvalue>0.05 else x.slope,axis=1))
         print(alpha.slope)
         return alpha.slope
 
