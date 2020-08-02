@@ -15,6 +15,7 @@ def job111(trading_date):
 
         predict(QA_util_get_last_day(trading_date))
         train(trading_date, working_dir=working_dir)
+        predict(QA_util_get_last_day(trading_date))
     else:
         pass
 
