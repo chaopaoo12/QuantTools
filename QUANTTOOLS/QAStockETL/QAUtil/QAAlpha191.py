@@ -7,6 +7,10 @@ from numpy import abs
 from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_index_day_adv
 from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date)
 
+def linreg(x,B):
+    slope, intercept, rvalue, pvalue, stderr = sp.stats.linregress(x,B)
+    return([slope, intercept, rvalue, pvalue, stderr])
+
 def stock_alpha(code, date=None):
     np.seterr(invalid='ignore')
     if date == None:
@@ -279,12 +283,12 @@ class Alpha_191:
     def alpha_021(self):
         A=self.close.rolling(6).mean().iloc[-6:,:]
         B=np.arange(1,7)   #等差Sequence 1:6
-        temp=A.apply(lambda x:(sp.stats.linregress(x,B)) ,axis=0).T  #linear regression
-        for i in temp.itertuples():
+        temp=A.apply(lambda x:linreg(x,B) ,axis=0)  #linear regression
+        for i in temp:
             print(i)
             print(i[0])
             print(i[3])
-        alpha = pd.Series([np.nan if i[3] > 0.05 else i[0] for i in temp.itertuples()],index=temp.index)
+        alpha = pd.Series([np.nan if i[3] > 0.05 else i[0] for i in temp],index=temp.index)
         print(alpha)
         return alpha
 
