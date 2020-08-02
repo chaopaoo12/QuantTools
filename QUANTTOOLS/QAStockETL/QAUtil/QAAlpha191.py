@@ -280,10 +280,8 @@ class Alpha_191:
         A=self.close.rolling(6).mean().iloc[-6:,:]
         B=np.arange(1,7)   #等差Sequence 1:6
         temp=A.apply(lambda x:sp.stats.linregress(x,B) ,axis=0).T  #linear regression
-        temp.columns = ['slope','intercept','rvalue','pvalue','stderr']
-        alpha=pd.DataFrame(temp)
-        alpha=alpha.assign(slope=alpha.apply(lambda x:np.nan if x.pvalue>0.05 else x.slope,axis=1))
-        return alpha.slope
+        alpha = pd.Series([np.nan if i[3] > 0.05 else i[0] for i in temp],index=temp.index)
+        return alpha
 
     ##################################################################
     def alpha_022(self):
