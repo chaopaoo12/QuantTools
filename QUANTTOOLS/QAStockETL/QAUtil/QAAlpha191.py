@@ -280,17 +280,9 @@ class Alpha_191:
         A=self.close.rolling(6).mean().iloc[-6:,:]
         B=np.arange(1,7)   #等差Sequence 1:6
         temp=A.apply(lambda x:sp.stats.linregress(x,B) ,axis=0).T  #linear regression
-        #print(temp.slope)
-        #print([i for i in range(len(temp))])
         temp.columns = ['slope','intercept','rvalue','pvalue','stderr']
-        #drop_list=[i for i in range(len(temp)) if temp[i][3]>0.05]   #去除p_value大于0.05的
-        #temp.drop(temp.index[drop_list],inplace=True)
-        #beta_list=[temp[i].slope for i in range(len(temp))]
-        #alpha=pd.Series(beta_list,index=temp.index)
         alpha=pd.DataFrame(temp)
-        print(alpha)
         alpha=alpha.assign(slope=alpha.apply(lambda x:np.nan if x.pvalue>0.05 else x.slope,axis=1))
-        print(alpha.slope)
         return alpha.slope
 
     ##################################################################
