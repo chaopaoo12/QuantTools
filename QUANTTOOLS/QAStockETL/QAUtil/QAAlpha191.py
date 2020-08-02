@@ -286,9 +286,9 @@ class Alpha_191:
         temp=A.apply(lambda x:linreg(x,B) ,axis=0)  #linear regression
         for i in temp.items():
             print(i)
-            print(i[0])
-            print(i[3])
-        alpha = pd.Series([np.nan if i[3] > 0.05 else i[0] for i in temp],index=temp.index)
+            print(i[1][0])
+            print(i[1][3])
+        alpha = pd.Series([np.nan if i[1][3] > 0.05 else i[1][0] for i in temp],index=temp.index)
         print(alpha)
         return alpha
 
