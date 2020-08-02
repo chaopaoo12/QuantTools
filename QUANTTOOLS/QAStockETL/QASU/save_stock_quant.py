@@ -268,7 +268,7 @@ def QA_SU_save_index_quant_day(code=None, start_date=None, end_date=None, ui_log
     if code is None:
         code = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
         code = list(code[code.cate != '5'].code)
-        code.expend(['000001','399001','399006'])
+        #code.expend(['000001','399001','399006'])
 
     index = DATABASE.index_quant_data_index
     index.create_index(
