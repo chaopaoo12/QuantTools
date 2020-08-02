@@ -280,7 +280,7 @@ class Alpha_191:
         A=self.close.rolling(6).mean().iloc[-6:,:]
         B=np.arange(1,7)   #等差Sequence 1:6
         temp=A.apply(lambda x:sp.stats.linregress(x,B) ,axis=0).T  #linear regression
-        #print(temp)
+        print(temp)
         #print(temp.slope)
         #print([i for i in range(len(temp))])
         temp.columns = ['slope','intercept','rvalue','pvalue','stderr']
