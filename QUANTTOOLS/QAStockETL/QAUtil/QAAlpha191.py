@@ -280,10 +280,9 @@ class Alpha_191:
         A=self.close.rolling(6).mean().iloc[-6:,:]
         B=np.arange(1,7)   #等差Sequence 1:6
         temp=A.apply(lambda x:(sp.stats.linregress(x,B)) ,axis=0)  #linear regression
-        for i in temp:
+        for i in temp.iterrows():
             print(i)
-        print(temp[0])
-        alpha = pd.Series([np.nan if i[3] > 0.05 else i[0] for i in temp],index=temp.index)
+        alpha = pd.Series([np.nan if i[3] > 0.05 else i[0] for i in temp.iterrows()],index=temp.index)
         print(alpha)
         return alpha
 
