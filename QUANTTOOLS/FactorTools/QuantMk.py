@@ -33,11 +33,6 @@ def get_index_quant_data(start_date, end_date, type = 'crawl', method = 'value')
     codes = QA_fetch_index_info(list(QA.QA_fetch_index_list_adv().code))
     codes = list(codes[codes.cate != '5'].code)
 
-    #a = pd.DataFrame()
-    #a['code'] = codes
-    #a = a.assign(lens = a.code.apply(lambda x:len(find_stock(x))))
-    #codes = list(a[a.lens > 0].code)
-
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date, method=method).data
     if type == 'model':
@@ -50,11 +45,6 @@ def get_index_quant_data_norm(start_date, end_date, type = 'crawl', method = 'va
 
     codes = QA_fetch_index_info(list(QA.QA_fetch_index_list_adv().code))
     codes = list(codes[codes.cate != '5'].code)
-
-    #a = pd.DataFrame()
-    #a['code'] = codes
-    #a = a.assign(lens = a.code.apply(lambda x:len(find_stock(x))))
-    #codes = list(a[a.lens > 0].code)
 
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date, method=method).data
