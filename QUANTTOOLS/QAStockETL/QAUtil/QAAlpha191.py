@@ -288,8 +288,8 @@ class Alpha_191:
         #beta_list=[temp[i].slope for i in range(len(temp))]
         #alpha=pd.Series(beta_list,index=temp.index)
         alpha=pd.DataFrame(temp)
-        print(temp)
-        alpha=alpha.assign(slope=alpha.apply(lambda x:np.nan if x.pvalue>0.05 else x.slope))
+        print(alpha)
+        alpha=alpha.assign(slope=alpha.apply(lambda x:np.nan if x.pvalue>0.05 else x.slope,axis=0))
         print(alpha.slope)
         return alpha.slope
 
