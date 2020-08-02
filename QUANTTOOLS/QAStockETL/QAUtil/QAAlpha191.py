@@ -282,8 +282,9 @@ class Alpha_191:
         temp=A.apply(lambda x:(sp.stats.linregress(x,B)) ,axis=0).T  #linear regression
         for i in temp.iterrows():
             print(i)
-        print(temp.index)
-        alpha = pd.Series([np.nan if i[3] > 0.05 else i[0] for i in temp.iterrows()])
+            print(i[0])
+            print(i[3])
+        alpha = pd.Series([np.nan if i[3] > 0.05 else i[0] for i in temp.iterrows()],index=temp.index)
         print(alpha)
         return alpha
 
