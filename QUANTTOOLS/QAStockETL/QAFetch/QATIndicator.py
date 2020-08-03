@@ -68,7 +68,7 @@ def function(a, b):
     else:
         return 0
 
-def get_indicator(data, rng1):
+def get_indicator(data):
     try:
         # todo
         #A.低价区域：70~40——为可买进区域
@@ -584,9 +584,6 @@ def get_indicator(data, rng1):
     res = res.reset_index()
     res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
     res = res.set_index(['date','code'])
-    res = res[[x for x in list(res.columns) if x not in ['MARK','a','b']]].loc[rng1]
-    res = res.reset_index()
-    res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
 
 def ohlc(data,N=7):
@@ -626,10 +623,14 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
             data = QA_DataStruct_Stock_day(data.data.groupby('code',sort=True).apply(ohlc,30))
         except:
             QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
+
     if data == None:
         return None
     else:
-        data = get_indicator(data,rng1)
+        data = get_indicator(data)
+        data = data.reset_index()
+        data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]].loc[rng1]
+        data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
 
 def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
@@ -658,8 +659,12 @@ def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
             data = QA_DataStruct_Stock_day(data.groupby('code',sort=True).apply(ohlc,30))
         except:
             QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
+
     if data == None:
         return None
     else:
-        data = get_indicator(data,rng1)
+        data = get_indicator(data)
+        data = data.reset_index()
+        data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]].loc[rng1]
+        data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
