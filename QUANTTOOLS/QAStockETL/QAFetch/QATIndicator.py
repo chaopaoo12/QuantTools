@@ -1,7 +1,7 @@
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv,QA_fetch_stock_day_adv
 import QUANTAXIS as QA
 import pandas as pd
-from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info
+from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range
 import numpy as np
 from QUANTAXIS.QAData import QA_DataStruct_Stock_day
 from QUANTAXIS.QAIndicator.base import *
@@ -598,7 +598,7 @@ def ohlc(data,N=7):
 def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
     if type == 'day':
         start = QA_util_get_pre_trade_date(start_date,200)
-        rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+        rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA_fetch_stock_day_adv(code,start,end_date)
             data = data.to_qfq()
@@ -606,7 +606,7 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
             QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'week':
         start = QA_util_get_pre_trade_date(start_date,200)
-        rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+        rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA_fetch_stock_day_adv(code,start,end_date)
             data = data.to_qfq()
@@ -616,7 +616,7 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
 
     elif type == 'month':
         start = QA_util_get_pre_trade_date(start_date,220)
-        rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+        rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA_fetch_stock_day_adv(code,start,end_date)
             data = data.to_qfq()
@@ -632,7 +632,7 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
 def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
     if type == 'day':
         start = QA_util_get_pre_trade_date(start_date,180)
-        rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+        rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA.QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])
             data = QA_DataStruct_Stock_day(data)
@@ -640,7 +640,7 @@ def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
             QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'week':
         start = QA_util_get_pre_trade_date(start_date,187)
-        rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+        rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA.QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])
             data = QA_DataStruct_Stock_day(data.groupby('code',sort=True).apply(ohlc,7))
@@ -649,7 +649,7 @@ def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
 
     elif type == 'month':
         start = QA_util_get_pre_trade_date(start_date,210)
-        rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+        rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA.QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])
             data = QA_DataStruct_Stock_day(data.groupby('code',sort=True).apply(ohlc,30))
