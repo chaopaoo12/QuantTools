@@ -158,3 +158,6 @@ def check_model(model, start, end, cols, target, type = 'value',block=False, sub
     c = b[b['RANK']<=5]
     top_report = classification_report(c['star'],c['y_pred'], output_dict=True)
     return(c, report, top_report)
+
+if __name__ == 'main':
+    pass
