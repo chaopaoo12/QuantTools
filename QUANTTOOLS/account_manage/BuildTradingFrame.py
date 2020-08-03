@@ -81,7 +81,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res.loc[sell_code,'sort_gp']=0
         res['sort'] = res.groupby('sort_gp').apply(lambda x: x['买卖价'].rank(ascending=True))
         res.loc[res.sort_gp == 0, 'sort']=0
-        QA_util_log_info(res)
+        QA_util_log_info(res[['NAME','sort_gp','sort','买卖价']])
 
         QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
         ##实时修正
