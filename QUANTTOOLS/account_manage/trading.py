@@ -6,7 +6,6 @@ from QUANTTOOLS.account_manage.BUY import BUY
 from QUANTTOOLS.account_manage.SELL import SELL
 from QUANTTOOLS.account_manage.HOLD import HOLD
 from QUANTTOOLS.account_manage.BuildTradingFrame import build
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_close
 import time
 import datetime
 
@@ -110,6 +109,9 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
             QA_util_log_info('##JOB Now Refresh Account Info ==== {}'.format(str(trading_date)), ui_log = None)
             sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
             sub_accounts = sub_accounts - frozen
+
+            QA_util_log_info('##JOB Now Cancel Orders ===== {}'.format(str(trading_date)), ui_log = None)
+            client.cancel_all(account)
 
             QA_util_log_info('##JOB Now ReBuild Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
             res = build(target_tar, positions, sub_accounts, percent, True)
