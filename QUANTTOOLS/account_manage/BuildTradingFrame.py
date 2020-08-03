@@ -78,6 +78,10 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
             QA_util_log_info('##JOB Now Get Close Price Failed.')
         res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
         res['sort'] = res['买卖价'].rank(ascending=True)
+        if sell_code is None:
+            pass
+        else:
+            res['sort'] = res['sort'] - len(sell_code)
 
         QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
         ##实时修正
