@@ -67,6 +67,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         QA_util_log_info('##JOB Add Info to Result Frame', ui_log = None)
         res['股票余额'] = res['股票余额'].fillna(0)
         res['市值'] = res['市值'].fillna(0)
+        res['可用余额'] = res['可用余额'].fillna(0)
         res['position'] = res['position'].fillna(0)
         res['ask1'] = list(res.reset_index()['code'].apply(lambda x:QA_fetch_get_stock_realtm_ask(x)))
         res['bid1'] = list(res.reset_index()['code'].apply(lambda x:QA_fetch_get_stock_realtm_bid(x)))
@@ -102,11 +103,10 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
             res['目标持股数'] = res.apply(lambda x: x['目标持股数'] - x['trim'], axis=1)
             res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
             k = k + 100
-    print(res[['NAME','target','测算持股金额','目标持股数','可用余额']])
     QA_util_log_info('##JOB Caculate Deal Position', ui_log = None)
     res['deal'] = (res['目标持股数'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
     print(res[['NAME','target','测算持股金额','目标持股数','可用余额','deal']])
-    res['deal'] = res.apply(lambda x: x['deal'] if abs(x['deal']) < x['可用余额'] else x['可用余额'], axis=1)
+    res['deal'] = res.apply(lambda x: x['deal'] if abs(x['deal']) < x['可用余额'] else x['可用余额'], axis = 1)
 
     if Zbreak == True:
         QA_util_log_info('##JOB Stop Confirm', ui_log = None)
