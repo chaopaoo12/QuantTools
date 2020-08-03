@@ -109,8 +109,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     #res.loc[abs(res.deal) >= res['可用余额'],'deal'] = res['可用余额']
     res.apply(lambda x:print(x['deal']), axis = 1)
     res.apply(lambda x:print(x['可用余额']), axis = 1)
-    res.apply(lambda x:print(abs(x['deal']) < x['可用余额']), axis = 1)
-    res['deal'] = res.apply(lambda x: x['deal'] if abs(x['deal']) < x['可用余额'] else x['可用余额'], axis = 1)
+    res.apply(lambda x:print(abs(x['deal']) <= x['可用余额']), axis = 1)
+    res['deal'] = res.apply(lambda x: x['deal'] if abs(x['deal']) <= x['可用余额'] else x['可用余额'], axis = 1)
 
     if Zbreak == True:
         QA_util_log_info('##JOB Stop Confirm', ui_log = None)
