@@ -88,7 +88,6 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         avg_account = (sub_accounts * percent)/res['position'].sum()
         res = res.assign(target=avg_account)
         res['target'] = res['target'] * res['position']
-        QA_util_log_info(res[['NAME','target','买卖价','position','sort']], ui_log = None)
 
         QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
         res['目标持股数'] = res.apply(lambda x: math.floor(x['target'] / x['买卖价'] / 100)*100, axis=1)
