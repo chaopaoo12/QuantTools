@@ -66,3 +66,6 @@ def BUY(client, account, strategy_id, account_info,trading_date, code, name, ind
     else:
         QA_util_log_info('type 参数错误 {type} 必须为 [morning, end]'.format(type=type), ui_log=None)
 
+if __name__ == 'main':
+    pass
+

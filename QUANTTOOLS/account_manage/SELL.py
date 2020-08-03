@@ -41,3 +41,6 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
         e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
     else:
         QA_util_log_info('type 参数错误 {type} 必须为 [morning, end]====={trading_date}'.format(type=type,trading_date=trading_date), ui_log=None)
+
+if __name__ == 'main':
+    pass

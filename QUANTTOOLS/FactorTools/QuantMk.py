@@ -75,3 +75,6 @@ def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub
     #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
     #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
+
+if __name__ == 'main':
+    pass
