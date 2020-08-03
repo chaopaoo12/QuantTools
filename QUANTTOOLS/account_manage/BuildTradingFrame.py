@@ -30,6 +30,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res = res.assign(target=avg_account)
         res['目标持股数'] = 0
         res['测算持股金额'] = 0
+        tar1 = target
+        sell_code = list(res.index)
     else:
         QA_util_log_info('##JOB Target is not None', ui_log = None)
         tar1 = target.reset_index().groupby('code').max()
