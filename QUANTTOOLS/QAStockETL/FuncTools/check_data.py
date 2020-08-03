@@ -255,3 +255,6 @@ def check_index_techweek(mark_day = None, ui_log = None):
 
 def check_index_quant(mark_day = None, ui_log = None):
     return(check_index_data(func = QA_fetch_index_quant_data_adv, mark_day = mark_day, title = 'Index Quant', ui_log = ui_log))
+
+if __name__ == 'main':
+    pass
