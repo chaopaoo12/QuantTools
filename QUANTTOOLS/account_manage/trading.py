@@ -13,15 +13,15 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
 
     QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
     client = get_Client()
+    QA_util_log_info('##JOB Now Cancel Orders ===== {}'.format(str(trading_date)), ui_log = None)
+    client.cancel_all(account)
+
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
     account_info = client.get_account(account)
 
     if target_tar is None:
         QA_util_log_info('触发清仓 ==================== {}'.format(trading_date), ui_log=None)
         e = send_trading_message(account, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
-
-    QA_util_log_info('##JOB Now Cancel Orders ===== {}'.format(str(trading_date)), ui_log = None)
-    client.cancel_all(account)
 
     QA_util_log_info('##JOB Now Build Trading Frame ===== {}'.format(str(trading_date)), ui_log = None)
     res = build(target_tar, positions, sub_accounts, percent, False)
