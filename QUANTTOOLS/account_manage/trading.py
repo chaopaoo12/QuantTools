@@ -106,12 +106,12 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
             time.sleep(30)
 
         if type == 'end':
+            QA_util_log_info('##JOB Now Cancel Orders ===== {}'.format(str(trading_date)), ui_log = None)
+            client.cancel_all(account)
+
             QA_util_log_info('##JOB Now Refresh Account Info ==== {}'.format(str(trading_date)), ui_log = None)
             sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
             sub_accounts = sub_accounts - frozen
-
-            QA_util_log_info('##JOB Now Cancel Orders ===== {}'.format(str(trading_date)), ui_log = None)
-            client.cancel_all(account)
 
             QA_util_log_info('##JOB Now ReBuild Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
             res = build(target_tar, positions, sub_accounts, percent, True)
