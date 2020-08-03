@@ -24,7 +24,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
     QA_util_log_info('##JOB Now Build Trading Frame ===== {}'.format(str(trading_date)), ui_log = None)
     res = build(target_tar, positions, sub_accounts, percent, False)
     res1 = res
-    print(res[['NAME','target','目标持股数','测算持股金额','deal']])
+    print(res[['NAME','target','测算持股金额','目标持股数','可用余额','deal']])
 
     send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'开始交易',direction = 'HOLD',offset='HOLD',volume=None)
 
