@@ -15,7 +15,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
     client = get_Client()
     QA_util_log_info('##JOB Now Cancel Orders ===== {}'.format(str(trading_date)), ui_log = None)
     client.cancel_all(account)
-
+    QA_util_log_info(target_tar, ui_log = None)
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
     account_info = client.get_account(account)
 
