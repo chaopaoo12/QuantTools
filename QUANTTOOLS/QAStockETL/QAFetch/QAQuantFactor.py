@@ -1,7 +1,7 @@
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv,QA_fetch_stock_financial_percent_adv,
                                                            QA_fetch_index_alpha_adv,QA_fetch_index_technical_index_adv,QA_fetch_stock_alpha101_adv,QA_fetch_index_alpha101_adv)
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,
+from  QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,QA_util_get_trade_range,
                                QA_util_get_pre_trade_date)
 import math
 from QUANTTOOLS.QAStockETL.QAUtil.base_func import normalization, standardize, time_this_function
@@ -12,7 +12,7 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
     start = QA_util_get_pre_trade_date(start_date,15)
     QA_util_log_info(
         '##JOB got index quant data date range ============== from {from_} to {to_} '.format(from_=start,to_=end_date), ui_log)
-    rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+    rng1 = QA_util_get_trade_range(start_date, end_date)
     QA_util_log_info(
         '##JOB got Data index alpha191 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     alpha = QA_fetch_index_alpha_adv(codes,start,end_date).data[['alpha_001', 'alpha_002', 'alpha_003', 'alpha_004', 'alpha_005', 'alpha_006', 'alpha_007', 'alpha_008',
@@ -100,7 +100,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
     start = QA_util_get_pre_trade_date(start_date,0)
     QA_util_log_info(
         '##JOB got stock quant data date range ============== from {from_} to {to_} '.format(from_=start,to_=end_date), ui_log)
-    rng1 = pd.Series(pd.date_range(start_date, end_date, freq='D')).apply(lambda x: str(x)[0:10])
+    rng1 = QA_util_get_trade_range(start_date, end_date)
     QA_util_log_info(
         '##JOB got Data stock fianacial data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     fianacial = QA_fetch_stock_fianacial_adv(codes,start,end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE', 'DAYS',
