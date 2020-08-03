@@ -77,8 +77,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
 
         QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
         ##实时修正
-        res['position'] = res[['ask1','position']].apply(lambda x:0 if x.ask1 == 0 else x.position)
-        #res = res.assign(position=res.apply(lambda x:0 if x.ask1 == 0 else x.position))
+        res.loc[res.ask1 == 0,'position'] = 0
         avg_account = (sub_accounts * percent)/res['position'].sum()
         res = res.assign(target=avg_account)
         res['target'] = res['target'] * res['position']
