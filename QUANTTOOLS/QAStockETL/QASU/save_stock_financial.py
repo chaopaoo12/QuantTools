@@ -23,7 +23,7 @@ def QA_SU_save_stock_fianacial_momgo(start_date=None,end_date=None, ui_log = Non
     col.create_index(
         [("CODE", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
 
-    deal_date_list = list(pd.date_range(start_date, end_date).map(lambda t:str(t.date())))
+    deal_date_list = QA_util_get_trade_range(start_date, end_date)
     if deal_date_list is None:
         QA_util_log_info('##JOB Nono Trading Day ============== from {_from} to {_to} '.format(_from=start_date, _to=end_date), ui_log)
     else:
@@ -69,7 +69,7 @@ def QA_SU_save_stock_fianacial_momgo_his(start_date=None,end_date=None, ui_log =
     col.create_index(
         [("CODE", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
 
-    deal_date_list = list(pd.date_range(start_date, end_date).map(lambda t:str(t.date())))
+    deal_date_list = QA_util_get_trade_range(start_date, end_date)
     if deal_date_list is None:
         QA_util_log_info('##JOB Nono Trading Day ============== from {_from} to {_to} '.format(_from=start_date, _to=end_date), ui_log)
     else:
