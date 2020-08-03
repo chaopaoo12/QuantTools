@@ -2,7 +2,7 @@
 
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch_stock_block_adv,
                                                QA_fetch_stock_day_adv)
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
+from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,QA_util_get_trade_range,
                                QA_util_if_trade,QA_util_get_pre_trade_date)
 
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,
@@ -96,7 +96,7 @@ def ETL_stock_day(codes, start=None, end=None):
         end = QA_util_today_str()
 
     if start != end:
-        rng = pd.Series(pd.date_range(start, end, freq='D')).apply(lambda x: str(x)[0:10])
+        rng = QA_util_get_trade_range(start, end)
     else:
         rng = str(start)[0:10]
 
