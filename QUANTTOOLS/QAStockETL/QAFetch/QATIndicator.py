@@ -68,7 +68,7 @@ def function(a, b):
     else:
         return 0
 
-def get_indicator(data,rng1):
+def get_indicator(data, rng1):
     try:
         # todo
         #A.低价区域：70~40——为可买进区域
@@ -581,6 +581,7 @@ def get_indicator(data,rng1):
     res['MA60'] = data['close']/res['MA60']-1
     res['MA120'] = data['close']/res['MA120']-1
     res['MA180'] = data['close']/res['MA180']-1
+    print(res)
     res = res[[x for x in list(res.columns) if x not in ['MARK','a','b']]].loc[rng1].reset_index()
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
