@@ -583,7 +583,9 @@ def get_indicator(data, rng1):
     res['MA180'] = data['close']/res['MA180']-1
     res = res.reset_index()
     res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
+    res = res.set_index(['date','code'])
     res = res[[x for x in list(res.columns) if x not in ['MARK','a','b']]].loc[rng1]
+    res = res.reset_index()
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
 
