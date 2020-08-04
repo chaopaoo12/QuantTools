@@ -92,7 +92,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
         res['目标持股数'] = res.apply(lambda x: math.floor(x['target'] / x['买卖价'] / 100)*100, axis=1)
         res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
-        QA_util_log_info(res[['NAME','target','position','股票余额','sort_gp','买卖价','sort','trim','目标持股数','测算持股金额']])
+        QA_util_log_info(res[['NAME','target','position','股票余额','sort_gp','买卖价','sort','目标持股数','测算持股金额']])
 
         QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
         while (res['测算持股金额'].sum() - sub_accounts) <= 10000:
