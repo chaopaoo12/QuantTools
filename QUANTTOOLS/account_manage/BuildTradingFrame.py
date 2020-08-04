@@ -81,7 +81,6 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res.loc[sell_code,'sort_gp']=0
         res['sort'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
         res.loc[res.sort_gp == 0, 'sort']=0
-        QA_util_log_info(res[['NAME','target','position','股票余额','sort_gp','买卖价','sort']])
 
         QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
         ##实时修正
@@ -89,6 +88,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         avg_account = (sub_accounts * percent)/res['position'].sum()
         res = res.assign(target=avg_account)
         res['target'] = res['target'] * res['position']
+        QA_util_log_info(res[['NAME','target','position','股票余额','sort_gp','买卖价','sort']])
 
         QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
         res['目标持股数'] = res.apply(lambda x: math.floor(x['target'] / x['买卖价'] / 100)*100, axis=1)
