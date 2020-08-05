@@ -69,9 +69,9 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     except:
         stock_res = pd.DataFrame()
 
-    index_d = index_tar.groupby('date').mean()[['NAME','Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
-    stock_d = stock_tar.groupby('date').mean()[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
-    combine_d = tar_index.groupby('date').mean()[['NAME','Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    index_d = index_tar.groupby('date').mean()[['Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    stock_d = stock_tar.groupby('date').mean()[['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
+    combine_d = tar_index.groupby('date').mean()[['Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
 
     try:
         err_msg = '模型训练日期:{model_date}'.format(model_date=model_date)
