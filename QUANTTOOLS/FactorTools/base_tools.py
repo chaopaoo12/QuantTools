@@ -166,3 +166,39 @@ def combine_model(index_d, stock_d, safe_d, start, end):
                 res = res.append(c.set_index(['date','code']))
 
     return(res.drop_duplicates())
+
+def combine_index(index_d, safe_d, start, end):
+    res = pd.DataFrame()
+    rngr = QA.QAUtil.QA_util_get_trade_range(start,end)
+    if rngr is not None:
+
+        for i in rngr:
+            try:
+                index_res = index_d[(index_d.y_pred==1) & (index_d.RANK<=5)].loc[i].sort_values(by='O_PROB', ascending=False)
+            except:
+                index_res = None
+
+            try:
+                safe_res = safe_d[(safe_d.y_pred==1) & (safe_d.RANK<=5)].loc[i]
+            except:
+                safe_res = None
+
+            if index_res is not None:
+                c = index_res
+                model_type = 1
+            elif index_res is None and safe_res is not None:
+                c = safe_res
+                model_type = 2
+            else:
+                c = None
+
+            if c is not None and c.shape[0] > 0:
+                c = c.assign(date = i)
+                c = c.assign(model_type = model_type)
+                c = c.reset_index()
+
+                res = res.append(c.set_index(['date','code']))
+
+        return(res.drop_duplicates())
+    else:
+        return(None)
