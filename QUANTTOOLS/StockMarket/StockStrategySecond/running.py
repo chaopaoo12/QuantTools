@@ -23,7 +23,7 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
 
     QA_util_log_info('##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
     try:
-        index1 = tar_index.loc[trading_date]
+        index1 = tar_index.loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
     except:
         index1 = None
 
@@ -55,17 +55,17 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
 
     QA_util_log_info('##JOB06 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
     try:
-        safe_res = safe_tar.loc[trading_date]
+        safe_res = safe_tar.loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
     except:
         safe_res = pd.DataFrame()
 
     try:
-        index_res = index_tar.loc[trading_date]
+        index_res = index_tar.loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
     except:
         index_res = pd.DataFrame()
 
     try:
-        stock_res = stock_tar[stock_tar['RANK']<=5].loc[trading_date]
+        stock_res = stock_tar[stock_tar['RANK']<=5].loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
     except:
         stock_res = pd.DataFrame()
 
