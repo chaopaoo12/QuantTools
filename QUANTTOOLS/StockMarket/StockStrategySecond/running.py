@@ -55,12 +55,12 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
 
     QA_util_log_info('##JOB06 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
     try:
-        safe_res = safe_tar.loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
+        safe_res = safe_tar.loc[trading_date][['NAME','Z_PROB','O_PROB','RANK']]
     except:
         safe_res = pd.DataFrame()
 
     try:
-        index_res = index_tar.loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
+        index_res = index_tar.loc[trading_date][['NAME','Z_PROB','O_PROB','RANK']]
     except:
         index_res = pd.DataFrame()
 
@@ -69,9 +69,9 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     except:
         stock_res = pd.DataFrame()
 
-    index_d = index_tar.groupby('date').mean()
-    stock_d = stock_tar.groupby('date').mean()
-    combine_d = tar_index.groupby('date').mean()
+    index_d = index_tar.groupby('date').mean()[['NAME','Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    stock_d = stock_tar.groupby('date').mean()[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
+    combine_d = tar_index.groupby('date').mean()[['NAME','Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
 
     try:
         err_msg = '模型训练日期:{model_date}'.format(model_date=model_date)
@@ -141,12 +141,12 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     #########
 
     try:
-        modelhis_body = build_table(tar, '模型周期内选股记录_from:{a}_to:{b}'.format(a=start, b=end))
+        modelhis_body = build_table(tar[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']], '模型周期内选股记录_from:{a}_to:{b}'.format(a=start, b=end))
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内选股记录", trading_date)
 
     try:
-        indexhis_body = build_table(tar_index, '模型周期内指数合成记录_from:{a}_to:{b}'.format(a=start, b=end))
+        indexhis_body = build_table(tar_index[['NAME','Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']], '模型周期内指数合成记录_from:{a}_to:{b}'.format(a=start, b=end))
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内指数合成记录", trading_date)
 
