@@ -4,7 +4,7 @@ import QUANTTOOLS.QAStockTradingDay.StockModel.StrategyOne as Stock
 import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexStrategyOne as Index
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name
-from QUANTTOOLS.FactorTools.base_tools import combine_model
+from QUANTTOOLS.FactorTools.base_tools import combine_model,combine_index
 from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.StockMarket.StockStrategySecond.setting import working_dir
 from QUANTAXIS.QAUtil import (QA_util_log_info)
@@ -51,6 +51,7 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
     QA_util_log_info(
         '##JOB Now Combine Predictions ==== {}'.format(str(trading_date)), ui_log)
 
+    tar_index = combine_index(index_b, safe_b, start, trading_date)
     tar = combine_model(index_b, stock_b, safe_b, start, trading_date)
 
     QA_util_log_info(
@@ -60,6 +61,10 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
     tar['NAME'] = tar['code'].apply(lambda x:QA_fetch_stock_name(x))
     tar['INDUSTRY'] = tar['code'].apply(lambda x:QA_fetch_stock_industry(x))
     tar = tar.set_index(['date','code']).sort_index()
+
+    tar_index = tar_index.reset_index()
+    tar_index['NAME'] = tar_index['code'].apply(lambda x:QA_fetch_index_name(x))
+    tar_index = tar_index.set_index(['date','code']).sort_index()
 
     index_tar = index_tar.reset_index()
     index_tar['NAME'] = index_tar['code'].apply(lambda x:QA_fetch_index_name(x))
@@ -74,7 +79,7 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
     stock_tar['INDUSTRY'] = stock_tar['code'].apply(lambda x:QA_fetch_stock_industry(x))
     stock_tar = stock_tar.set_index(['date','code']).sort_index()
 
-    return(tar,index_tar,safe_tar,stock_tar,start,end,stock_info_temp['date'])
+    return(tar,tar_index,index_tar,safe_tar,stock_tar,start,end,stock_info_temp['date'])
 
 def save_prediction(predict_info, name, working_dir = working_dir):
     if mkdir(working_dir):

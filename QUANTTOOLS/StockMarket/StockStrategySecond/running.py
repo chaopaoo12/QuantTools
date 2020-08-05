@@ -16,12 +16,17 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
     QA_util_log_info('##JOB02 Now Predict ==== {}'.format(str(trading_date)), ui_log)
-    tar,index_tar,safe_tar,stock_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
+    tar,tar_index,index_tar,safe_tar,stock_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
 
     QA_util_log_info('##JOB03 Now Saving Result ==== {}'.format(str(trading_date)), ui_log)
     save_prediction({'date': trading_date, 'tar':tar}, 'prediction', working_dir)
 
     QA_util_log_info('##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
+    try:
+        index1 = tar_index.loc[trading_date]
+    except:
+        index1 = None
+
     try:
         tar1 = tar.loc[trading_date]
     except:
@@ -66,61 +71,85 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
 
     index_d = index_tar.groupby('date').mean()
     stock_d = stock_tar.groupby('date').mean()
+    combine_d = tar_index.groupby('date').mean()
 
     try:
-        msg1 = '模型训练日期:{model_date}'.format(model_date=model_date)
+        err_msg = '模型训练日期:{model_date}'.format(model_date=model_date)
     except:
         send_email('交易报告:'+ trading_date, "模型训练日期获取运算失败", trading_date)
 
+    ########
+
     try:
-        body1 = build_table(safe_res, 'safe模型结果_{}'.format(str(trading_date)))
+        safe_body = build_table(safe_res, 'safe模型结果_{}'.format(str(trading_date)))
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:Safe模型结果", trading_date)
 
     try:
-        body3 = build_table(positions, '目前持仓')
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:目前持仓", trading_date)
-
-    try:
-        body4 = build_table(index_res, '指数模型结果_{}'.format(str(trading_date)))
+        index_body = build_table(index_res, '指数模型结果_{}'.format(str(trading_date)))
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:指数模型结果", trading_date)
 
     try:
-        body5 = build_table(stock_res, '选股模型结果_{}'.format(str(trading_date)))
+        stock_body = build_table(stock_res, '选股模型结果_{}'.format(str(trading_date)))
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:选股模型结果", trading_date)
 
     try:
-        body7 = build_table(frozen_positions, '目前锁定持仓')
+        combine_body = build_table(index1, '合成指数模型结果_from:{a}_to:{b}'.format(a=start, b=end))
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:合成指数模型结果", trading_date)
+
+    #########
+
+    try:
+        target_body = build_table(res, '目标持仓')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:目标持仓", trading_date)
+
+    try:
+        hold_body = build_table(positions, '目前持仓')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:目前持仓", trading_date)
+
+    try:
+        fronzen_body = build_table(frozen_positions, '目前锁定持仓')
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:目前锁定持仓", trading_date)
 
+    #########
     try:
-        body8 = build_table(tar, '模型周期内选股记录_from:{a}_to:{b}'.format(a=start, b=end))
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内选股记录", trading_date)
-
-    try:
-        body9 = build_table(table1, '模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
+        model_score = build_table(table1, '模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内交易成绩", trading_date)
 
     try:
-        body10 = build_table(index_d, '指数模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
+        combine_score = build_table(combine_d, '合成指数模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
     except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:指数模型周期内交易成绩", trading_date)
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:合成指数模型模型周期内交易成绩", trading_date)
 
     try:
-        body11 = build_table(stock_d, '选股模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
+        index_score = build_table(index_d, '基础指数模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:基础指数模型周期内交易成绩", trading_date)
+
+    try:
+        stock_socre = build_table(stock_d, '选股模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:选股模型周期内交易成绩", trading_date)
 
+    #########
+
     try:
-        body2 = build_table(res, '目标持仓')
+        modelhis_body = build_table(tar, '模型周期内选股记录_from:{a}_to:{b}'.format(a=start, b=end))
     except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:目标持仓", trading_date)
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内选股记录", trading_date)
+
+    try:
+        indexhis_body = build_table(tar_index, '模型周期内指数合成记录_from:{a}_to:{b}'.format(a=start, b=end))
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内指数合成记录", trading_date)
+
 
     if res is not None:
         title = '交易报告'
@@ -128,7 +157,10 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
         title = '空仓交易报告'
 
     try:
-        msg = build_email(build_head(),msg1,body1,body4,body5,body3,body2,body7,body8,body9,body10, body11)
+        msg = build_email(build_head(),err_msg,safe_body,index_body,stock_body,combine_body,
+                          target_body,hold_body,fronzen_body,
+                          model_score, combine_score, index_score, stock_socre,
+                          modelhis_body, indexhis_body)
         send_actionnotice(strategy_id,
                           '交易报告:{}'.format(trading_date),
                           '模型运行完毕',

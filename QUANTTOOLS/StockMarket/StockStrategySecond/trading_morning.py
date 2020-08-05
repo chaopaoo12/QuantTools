@@ -15,7 +15,7 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
         check_prediction(prediction, trading_date)
         tar = prediction['tar']
     except:
-        tar,index_tar,safe_tar,stock_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
+        tar,tar_index,index_tar,safe_tar,stock_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
 
     try:
         r_tar = tar.loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
