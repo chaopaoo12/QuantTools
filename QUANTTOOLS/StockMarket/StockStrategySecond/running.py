@@ -23,7 +23,7 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
 
     QA_util_log_info('##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
     try:
-        index1 = tar_index.loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
+        index1 = tar_index.loc[trading_date][['NAME','Z_PROB','O_PROB','RANK','model_type']]
     except:
         index1 = None
 
