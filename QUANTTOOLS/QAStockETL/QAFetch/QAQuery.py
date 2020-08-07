@@ -359,9 +359,9 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
     #code= [code] if isinstance(code,str) else code
     # code checking
     code = QA_util_code_tolist(code)
-
+    print(end)
+    print(start)
     if QA_util_date_valid(end):
-        print(len(code))
         print(QA_util_date_stamp(end))
         print(QA_util_date_stamp(start))
         __data = []
