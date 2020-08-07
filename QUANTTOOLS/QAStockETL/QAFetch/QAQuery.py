@@ -359,11 +359,9 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
     #code= [code] if isinstance(code,str) else code
     # code checking
     code = QA_util_code_tolist(code)
-    print(end)
-    print(start)
+
     if QA_util_date_valid(end):
-        print(QA_util_date_stamp(end))
-        print(QA_util_date_stamp(start))
+
         __data = []
         cursor = collections.find({
             'code': {'$in': code}, "date_stamp": {
@@ -372,7 +370,6 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
         res = pd.DataFrame([item for item in cursor])
-        print(res.shape)
         try:
             res = res.drop_duplicates(
                 (['code', 'date'])).set_index(['date','code'])

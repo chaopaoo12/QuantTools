@@ -132,8 +132,7 @@ def QA_fetch_stock_alpha_adv(code, start="all", end=None, collections=DATABASE.s
     end = start if end is None else end
     start = str(start)[0:10]
     end = str(end)[0:10]
-    print(end)
-    print(start)
+
     # code checking
     if start == 'all' or start == None:
         start = '2005-01-01'
