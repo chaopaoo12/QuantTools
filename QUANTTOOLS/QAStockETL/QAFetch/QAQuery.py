@@ -370,6 +370,7 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
         res = pd.DataFrame([item for item in cursor])
+        print(res.shape)
         try:
             res = res.drop_duplicates(
                 (['code', 'date'])).set_index(['date','code'])
