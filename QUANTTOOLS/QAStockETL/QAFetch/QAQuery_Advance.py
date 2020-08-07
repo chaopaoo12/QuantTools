@@ -3,6 +3,7 @@ import datetime
 import pandas as pd
 
 from QUANTAXIS.QAData import (QA_DataStruct_Financial,
+                              QA_DataStruct_Stock_day,
                               QA_DataStruct_Index_day)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
@@ -123,7 +124,7 @@ def QA_fetch_stock_fianacial_adv(code,
         # if res_reset_index is None:
         #     print("QA Error QA_fetch_stock_fianacial_adv set index 'datetime, code' return None")
         #     return
-        return QA_DataStruct_Financial(res_reset_index)
+        return QA_DataStruct_Stock_day(res_reset_index)
 
 def QA_fetch_stock_alpha_adv(code, start="all", end=None, collections=DATABASE.stock_alpha):
     '获取股票财报日历'
@@ -137,10 +138,10 @@ def QA_fetch_stock_alpha_adv(code, start="all", end=None, collections=DATABASE.s
         start = '2005-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_alpha(code, start, end, format='pd')
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_alpha(code, start, end, format='pd')
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_stock_shares_adv(code, start="all", end=None,type='crawl', collections=DATABASE.stock_shares):
     '获取股票日线'
@@ -179,10 +180,10 @@ def QA_fetch_stock_technical_index_adv(code, start="all", end=None, type='day', 
         start = '2008-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_technical_index(code, start, end, type, format='pd')
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_technical_index(code, start, end, type, format='pd')
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_stock_financial_percent_adv(code, start="all", end=None, collections=DATABASE.stock_financial_percent):
     '获取股票财报日历'
@@ -196,10 +197,10 @@ def QA_fetch_stock_financial_percent_adv(code, start="all", end=None, collection
         start = '2008-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_financial_percent(code, start, end, format='pd')
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_financial_percent(code, start, end, format='pd')
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_stock_quant_data_adv(code, start="all", end=None, block=True, collections=DATABASE.stock_quant_data):
     '获取股票量化机器学习最终指标V1'
@@ -213,10 +214,10 @@ def QA_fetch_stock_quant_data_adv(code, start="all", end=None, block=True, colle
         start = '2008-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_quant_data(code, start, end, block, format='pd')
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_quant_data(code, start, end, block, format='pd')
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, block=True, type='close', method= 'value'):
     '获取股票量化机器学习数据查询接口'
@@ -229,10 +230,10 @@ def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, block=True, type='
         start = '2008-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_quant_pre(code, start, end, block, type=type, method=method, format='pd')
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_quant_pre(code, start, end, block, type=type, method=method, format='pd')
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_stock_target_adv(code, start="all", end=None, type='close', method= 'value'):
     '获取股票量化机器学习数据查询接口'
@@ -245,10 +246,10 @@ def QA_fetch_stock_target_adv(code, start="all", end=None, type='close', method=
         start = '2008-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_target(code, start, end, type=type, method=method)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_target(code, start, end, type=type, method=method)
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_interest_rate_adv(start="all", end=None):
     '获取股票日线'
@@ -345,10 +346,10 @@ def QA_fetch_stock_alpha101_adv(code, start="all", end=None, collections=DATABAS
         start = '2005-01-01'
         end = QA_util_today_str()
         data = QA_fetch_stock_alpha101(code, start, end, format='pd')
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
     else:
         data = QA_fetch_stock_alpha101(code, start, end, format='pd')
-        return QA_DataStruct_Financial(data)
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_index_alpha101_adv(code, start="all", end=None, collections=DATABASE.index_alpha):
     '获取股票财报日历'
@@ -382,7 +383,7 @@ def QA_fetch_stock_week_adv(
     :param end:   结束日期
     :param if_drop_index:
     :param collections: 默认数据库
-    :return: 如果股票代码不存 或者开始结束日期不存在 在返回 None ，合法返回 QA_DataStruct_Financial 数据
+    :return: 如果股票代码不存 或者开始结束日期不存在 在返回 None ，合法返回 QA_DataStruct_Stock_day 数据
     '''
     '获取股票日线'
     end = start if end is None else end
@@ -408,7 +409,7 @@ def QA_fetch_stock_week_adv(
         # if res_reset_index is None:
         #     print("QA Error QA_fetch_stock_week_adv set index 'datetime, code' return None")
         #     return None
-        return QA_DataStruct_Financial(res_reset_index)
+        return QA_DataStruct_Stock_day(res_reset_index)
 
 def QA_fetch_stock_week_adv(
         code,
@@ -425,7 +426,7 @@ def QA_fetch_stock_week_adv(
     :param end:   结束日期
     :param if_drop_index:
     :param collections: 默认数据库
-    :return: 如果股票代码不存 或者开始结束日期不存在 在返回 None ，合法返回 QA_DataStruct_Financial 数据
+    :return: 如果股票代码不存 或者开始结束日期不存在 在返回 None ，合法返回 QA_DataStruct_Stock_day 数据
     '''
     '获取股票日线'
     end = start if end is None else end
@@ -451,7 +452,7 @@ def QA_fetch_stock_week_adv(
         # if res_reset_index is None:
         #     print("QA Error QA_fetch_stock_week_adv set index 'datetime, code' return None")
         #     return None
-        return QA_DataStruct_Financial(res_reset_index)
+        return QA_DataStruct_Stock_day(res_reset_index)
 
 def QA_fetch_stock_month_adv(
         code,
@@ -468,7 +469,7 @@ def QA_fetch_stock_month_adv(
     :param end:   结束日期
     :param if_drop_index:
     :param collections: 默认数据库
-    :return: 如果股票代码不存 或者开始结束日期不存在 在返回 None ，合法返回 QA_DataStruct_Financial 数据
+    :return: 如果股票代码不存 或者开始结束日期不存在 在返回 None ，合法返回 QA_DataStruct_Stock_day 数据
     '''
     '获取股票日线'
     end = start if end is None else end
@@ -494,7 +495,7 @@ def QA_fetch_stock_month_adv(
         # if res_reset_index is None:
         #     print("QA Error QA_fetch_stock_month_adv set index 'datetime, code' return None")
         #     return None
-        return QA_DataStruct_Financial(res_reset_index)
+        return QA_DataStruct_Stock_day(res_reset_index)
 
 def QA_fetch_stock_year_adv(
         code,
@@ -511,7 +512,7 @@ def QA_fetch_stock_year_adv(
     :param end:   结束日期
     :param if_drop_index:
     :param collections: 默认数据库
-    :return: 如果股票代码不存 或者开始结束日期不存在 在返回 None ，合法返回 QA_DataStruct_Financial 数据
+    :return: 如果股票代码不存 或者开始结束日期不存在 在返回 None ，合法返回 QA_DataStruct_Stock_day 数据
     '''
     '获取股票日线'
     end = start if end is None else end
@@ -537,7 +538,7 @@ def QA_fetch_stock_year_adv(
         # if res_reset_index is None:
         #     print("QA Error QA_fetch_stock_year_adv set index 'datetime, code' return None")
         #     return None
-        return QA_DataStruct_Financial(res_reset_index)
+        return QA_DataStruct_Stock_day(res_reset_index)
 
 def QA_fetch_index_week_adv(
         code,
