@@ -71,7 +71,7 @@ def QA_SU_save_stock_alpha_his(code = None, start_date = None, end_date = None, 
 
     deal_date_list = QA_util_get_trade_range(start_date, end_date)
 
-    stock_alpha = client.stock_alpha1
+    stock_alpha = client.stock_alpha
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
