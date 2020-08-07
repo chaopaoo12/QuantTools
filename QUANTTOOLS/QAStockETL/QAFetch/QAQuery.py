@@ -361,7 +361,9 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
     code = QA_util_code_tolist(code)
 
     if QA_util_date_valid(end):
-
+        print(len(code))
+        print(QA_util_date_stamp(end))
+        print(QA_util_date_stamp(start))
         __data = []
         cursor = collections.find({
             'code': {'$in': code}, "date_stamp": {
