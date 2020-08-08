@@ -121,7 +121,7 @@ def model_predict(model, start, end, cols, type='crawl'):
 
     QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
     cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
-                                                  'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3',
+                                                  'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3','cate',
                                                   'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
                                                   'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
                                                   'INDEX_TARGET10','date_stamp','PRE_DATE','next_date']]
