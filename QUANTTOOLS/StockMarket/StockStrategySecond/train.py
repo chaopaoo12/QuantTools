@@ -23,7 +23,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     stock_model.set_train_rng(train_start=str(int(date[0:4])-2)+"-01-01",
                               train_end=QA_util_get_last_day(QA_util_get_real_date(date), 5))
     stock_model.prepare_data()
-    other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 5, 'seed': 0,
+    other_params = {'learning_rate': 0.1, 'n_estimators': 100, 'max_depth': 5, 'min_child_weight': 5, 'seed': 0,
                     'subsample': 0.9, 'colsample_bytree': 0.6, 'gamma': 0, 'reg_alpha': 0.05, 'reg_lambda': 3}
     stock_model.build_model(other_params)
     QA_util_log_info(
