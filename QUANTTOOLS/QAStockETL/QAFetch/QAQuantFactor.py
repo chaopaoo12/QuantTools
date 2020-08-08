@@ -83,6 +83,7 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
                 continue
             col_tar.append(list(res.columns)[j])
     col_tar = list(set(col_tar))
+    print(res)
     QA_util_log_info(
         '##JOB index quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     if type == 'standardize':
