@@ -1431,9 +1431,12 @@ def QA_fetch_index_info(code, format='pd', collections=DATABASE.index_info):
             ]
         )
         #data['date'] = pd.to_datetime(data['date'])
-        return data.set_index('code', drop=False)
     except Exception as e:
         QA_util_log_info(code, e)
+
+    if data.shape[0] > 0:
+        return data.set_index('code', drop=False)
+    else:
         return None
 
 def QA_fetch_stock_delist(collections=DATABASE.stock_delist):
