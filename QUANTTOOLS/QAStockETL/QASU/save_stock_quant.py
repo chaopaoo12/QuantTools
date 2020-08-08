@@ -39,7 +39,7 @@ def QA_SU_save_stock_quant_day(code=None, start_date=None,end_date=None, ui_log 
         [("code", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
 
     try:
-        data1 = QA_fetch_get_quant_data(code, start_date, end_date)
+        data1 = QA_fetch_get_quant_data(code, start_date, end_date, type='normalization')
     except:
         data1 = None
 
