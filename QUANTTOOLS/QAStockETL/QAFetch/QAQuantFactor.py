@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.base_func import normalization, standardize, t
 
 def QA_fetch_index_cate(data, stock_code):
     try:
-        return data.loc[stock_code]['cate'].values[0][0]
+        return data.loc[stock_code]['cate']
     except:
         return None
 
