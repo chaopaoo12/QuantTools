@@ -283,7 +283,7 @@ def QA_SU_save_index_quant_day(code=None, start_date=None, end_date=None, ui_log
     alpha101.create_index(
         [("code", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
     try:
-        data1 = QA_fetch_get_index_quant_data(code, start_date, end_date)
+        data1 = QA_fetch_get_index_quant_data(code, start_date, end_date, type='normalization')
         QA_util_log_info(
             '##JOB got Data index quant data ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
     except:
