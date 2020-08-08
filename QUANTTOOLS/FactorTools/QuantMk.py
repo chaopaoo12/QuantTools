@@ -3,8 +3,6 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_get_qu
                                            QA_fetch_stock_quant_pre_adv,QA_fetch_index_quant_pre_adv,
                                            QA_fetch_index_info)
 import QUANTAXIS as QA
-from QUANTTOOLS.FactorTools.base_tools import find_stock
-import pandas as pd
 
 def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value'):
     if block is True:
