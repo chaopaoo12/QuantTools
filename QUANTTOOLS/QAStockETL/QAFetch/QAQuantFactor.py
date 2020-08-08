@@ -75,7 +75,7 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
         ,'KDJ_CROSS2','MACD_TR','MIKE_TR','MIKE_BOLL','MIKE_WRJC','MIKE_WRSC','MIKE_WSJC','MIKE_WSSC','MTM_CROSS1','MTM_CROSS2','MTM_CROSS3'
         ,'MTM_CROSS4','OSC_CROSS1','OSC_CROSS2','OSC_CROSS3','OSC_CROSS4','PBX_TR','RSI_CROSS1','RSI_CROSS2','SKDJ_CROSS1'
         ,'SKDJ_CROSS2','VPT_CROSS1','VPT_CROSS2','VPT_CROSS3','VPT_CROSS4','WR_CROSS1','WR_CROSS2','RNG_L_O','LAG_TOR_O','DAYS_O'
-        ,'cate'   ]
+        ,'cate','code'   ]
     col_tar = []
     for i in range(len(cols)):
         for j in range(len(list(res.columns))):
