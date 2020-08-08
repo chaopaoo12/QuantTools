@@ -75,7 +75,7 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
         ,'KDJ_CROSS2','MACD_TR','MIKE_TR','MIKE_BOLL','MIKE_WRJC','MIKE_WRSC','MIKE_WSJC','MIKE_WSSC','MTM_CROSS1','MTM_CROSS2','MTM_CROSS3'
         ,'MTM_CROSS4','OSC_CROSS1','OSC_CROSS2','OSC_CROSS3','OSC_CROSS4','PBX_TR','RSI_CROSS1','RSI_CROSS2','SKDJ_CROSS1'
         ,'SKDJ_CROSS2','VPT_CROSS1','VPT_CROSS2','VPT_CROSS3','VPT_CROSS4','WR_CROSS1','WR_CROSS2','RNG_L_O','LAG_TOR_O','DAYS_O'
-        ,'cate','code'   ]
+          ]
     col_tar = []
     for i in range(len(cols)):
         for j in range(len(list(res.columns))):
@@ -83,7 +83,6 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
                 continue
             col_tar.append(list(res.columns)[j])
     col_tar = list(set(col_tar))
-    print(res)
     QA_util_log_info(
         '##JOB index quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     if type == 'standardize':
@@ -93,6 +92,7 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
     else:
         res = res[[x for x in list(res.columns) if x not in col_tar]].join(res[col_tar]).reset_index()
         QA_util_log_info('##JOB type must be in [standardize, normalization]', ui_log)
+    print(res)
     res = res.assign(cate=res['code'].apply(lambda x: str(QA_fetch_index_info(str(x))['cate'])))
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
