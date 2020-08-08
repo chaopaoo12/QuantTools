@@ -46,6 +46,15 @@ def QA_fetch_index_name(stock_code):
     items = QA_fetch_index_list_adv().loc[str(stock_code)]
     return items['name']
 
+def QA_fetch_index_cate(stock_code):
+    '''
+    获取指数名称
+    :param stock_code: '600001'
+    :return: string 指数名称 eg： '上证指数'
+    '''
+    items = QA_fetch_index_list_adv().loc[str(stock_code)]
+    return items['cate']
+
 def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype='EN', db=DATABASE):
     """获取专业财务报表
 
@@ -1431,13 +1440,9 @@ def QA_fetch_index_info(code, format='pd', collections=DATABASE.index_info):
             ]
         )
         #data['date'] = pd.to_datetime(data['date'])
-
+        return data.set_index('code', drop=False)
     except Exception as e:
         QA_util_log_info(code, e)
-
-    if data.shape[0] > 0:
-        return data.set_index('code', drop=False)
-    else:
         return None
 
 def QA_fetch_stock_delist(collections=DATABASE.stock_delist):
