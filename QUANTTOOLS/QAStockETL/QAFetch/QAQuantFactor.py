@@ -1,11 +1,17 @@
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv,QA_fetch_stock_financial_percent_adv,
                                                            QA_fetch_index_alpha_adv,QA_fetch_index_technical_index_adv,QA_fetch_stock_alpha101_adv,QA_fetch_index_alpha101_adv)
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_cate
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_info
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,QA_util_get_trade_range,
                                QA_util_get_pre_trade_date)
 import math
 from QUANTTOOLS.QAStockETL.QAUtil.base_func import normalization, standardize, time_this_function
+
+def QA_fetch_index_cate(data, stock_code):
+    try:
+        return data.loc[stock_code]['cate'].values[0][0]
+    except:
+        return None
 
 @time_this_function
 def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize', ui_log = None):
@@ -76,7 +82,8 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
     else:
         res = res[[x for x in list(res.columns) if x not in col_tar]].join(res[col_tar]).reset_index()
         QA_util_log_info('##JOB type must be in [standardize, normalization]', ui_log)
-    res = res.assign(cate=res['code'].apply(lambda x: str(QA_fetch_index_cate(str(x)))))
+    cate = QA_fetch_index_info(codes)
+    res = res.assign(cate=res['code'].apply(lambda x: str(QA_fetch_index_cate(cate, str(x)))))
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
 
