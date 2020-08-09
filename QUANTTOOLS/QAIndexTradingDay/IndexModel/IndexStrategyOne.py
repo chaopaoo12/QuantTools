@@ -5,6 +5,7 @@ from QUANTTOOLS.FactorTools.QuantMk import get_index_quant_data
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_log_info,QA_util_get_trade_range
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
+from sklearn import feature_selection
 
 class model():
 
@@ -37,16 +38,19 @@ class model():
                                                                'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
                                                                'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
                                                                'INDEX_TARGET10','date_stamp','PRE_DATE','next_date']]
-        self.info['cols'] = self.cols
 
     def set_train_rng(self, train_start, train_end):
         QA_util_log_info('##JOB Set Train Range from {_from} to {_to} ==-== {date}'.format(_from=train_start,_to=train_end, date=self.info['date']), ui_log = None)
         self.TR_RNG = QA_util_get_trade_range(train_start, train_end)
         self.info['train_rng'] = [train_start,train_end]
 
-    def prepare_data(self):
+    def prepare_data(self, percent=20):
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
         self.X_train, self.Y_train = self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'].fillna(0)
+        QA_util_log_info('##JOB Feature Selection ===== {}'.format(self.info['date']), ui_log = None)
+        self.fs = feature_selection.SelectPercentile(feature_selection.chi2, percentile=percent)
+        self.X_train = self.fs.fit_transform(self.X_train, self.Y_train)
+        self.info['fs'] = self.fs
 
     def build_model(self, other_params):
         QA_util_log_info('##JOB Set Model Params ===== {}'.format(self.info['date']), ui_log = None)
@@ -91,6 +95,7 @@ class model():
 
 
     def save_model(self, name, working_dir = 'D:\\model\\current'):
+        self.info['cols'] = self.cols
         QA_util_log_info('##JOB Now Model Saving ===== {}'.format(self.info['date']), ui_log = None)
 
         if mkdir(working_dir):
@@ -115,7 +120,7 @@ def load_model(name, working_dir= 'D:\\model\\current'):
     info = joblib.load(working_dir+"\\{name}_info.joblib.dat".format(name=name))
     return(model, info)
 
-def model_predict(model, start, end, cols, type='crawl'):
+def model_predict(model, start, end, cols, fs, type='crawl'):
     QA_util_log_info('##JOB Now Got Prediction Data ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
     data = get_index_quant_data(start, end, type= type)
 
@@ -137,10 +142,11 @@ def model_predict(model, start, end, cols, type='crawl'):
     QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
     QA_util_log_info(n_cols)
 
+    train = fs.transform(train[cols].fillna(0))
     QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
     b = data[['INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
-    b = b.assign(y_pred = model.predict(train[cols].fillna(0)))
-    bina = pd.DataFrame(model.predict_proba(train[cols].fillna(0)))[[0,1]]
+    b = b.assign(y_pred = model.predict(train))
+    bina = pd.DataFrame(model.predict_proba(train))[[0,1]]
     bina.index = b.index
     b[['Z_PROB','O_PROB']] = bina
     b.loc[:,'RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
