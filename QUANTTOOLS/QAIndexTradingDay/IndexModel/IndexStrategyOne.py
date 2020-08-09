@@ -44,7 +44,7 @@ class model():
         self.TR_RNG = QA_util_get_trade_range(train_start, train_end)
         self.info['train_rng'] = [train_start,train_end]
 
-    def prepare_data(self, percent=20):
+    def prepare_data(self, percent=13):
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
         self.X_train, self.Y_train = self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'].fillna(0)
         QA_util_log_info('##JOB Feature Selection ===== {}'.format(self.info['date']), ui_log = None)
