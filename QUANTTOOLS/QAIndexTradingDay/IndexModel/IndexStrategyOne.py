@@ -6,6 +6,7 @@ from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_log_info,QA_util_get_trad
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
 from sklearn import feature_selection
+import numpy as np
 
 class model():
 
@@ -110,7 +111,8 @@ class model():
 
     def model_important(self):
         QA_util_log_info('##JOB Now Got Model Importance ===== {}'.format(self.info['date']), ui_log = None)
-        importance = pd.DataFrame({'featur' :list(self.X_train.columns),'value':list(self.model.feature_importances_)}).sort_values(by='value',ascending=False)
+        importance = pd.DataFrame({'featur' :list(np.asarray(self.info['cols'])[np.asarray(self.info['fs'].get_support())]),
+                                   'value':list(self.model.feature_importances_)}).sort_values(by='value',ascending=False)
         return(importance)
 
 def load_model(name, working_dir= 'D:\\model\\current'):
@@ -125,7 +127,7 @@ def model_predict(model, start, end, cols, fs, type='crawl'):
     data = get_index_quant_data(start, end, type= type)
 
     QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
-    cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
+    cols1 = [i for i in data.columns if i not in ['moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
                                                   'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3','cate',
                                                   'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
                                                   'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
