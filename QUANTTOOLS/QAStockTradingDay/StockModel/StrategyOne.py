@@ -8,6 +8,7 @@ from QUANTAXIS.QAUtil import (QA_util_log_info, QA_util_today_str,QA_util_get_tr
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
 from sklearn import feature_selection
+import numpy as np
 
 class model():
 
@@ -111,7 +112,8 @@ class model():
 
     def model_important(self):
         QA_util_log_info('##JOB Now Got Model Importance ===== {}'.format(self.info['date']), ui_log = None)
-        importance = pd.DataFrame({'featur' :list(self.X_train.columns),'value':list(self.model.feature_importances_)}).sort_values(by='value',ascending=False)
+        importance = pd.DataFrame({'featur' :list(np.asarray(self.info['cols'])[np.asarray(self.info['fs'].get_support())]),
+                                   'value':list(self.model.feature_importances_)}).sort_values(by='value',ascending=False)
         return(importance)
 
 def load_model(name, working_dir= 'D:\\model\\current'):
