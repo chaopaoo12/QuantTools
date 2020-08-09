@@ -3,6 +3,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_get_qu
                                            QA_fetch_stock_quant_pre_adv,QA_fetch_index_quant_pre_adv,
                                            QA_fetch_index_info)
 import QUANTAXIS as QA
+import pandas as pd
 
 def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value'):
     if block is True:
@@ -37,7 +38,7 @@ def get_index_quant_data(start_date, end_date, type = 'crawl', method = 'value')
         res = QA_fetch_index_quant_data(codes, start_date, end_date)
         target = QA_fetch_index_target(codes, start_date, end_date, method=method)
         res = res.join(target)
-    return(res)
+    return(pd.get_dummies(res))
 
 def get_index_quant_data_norm(start_date, end_date, type = 'crawl', method = 'value'):
 
@@ -50,7 +51,7 @@ def get_index_quant_data_norm(start_date, end_date, type = 'crawl', method = 'va
         res = QA_fetch_get_index_quant_data(codes, start_date, end_date, type='normalization').set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_index_target(codes, start_date, end_date, method=method)
         res = res.join(target)
-    return(res)
+    return(pd.get_dummies(res))
 
 def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value'):
     if block is True:
