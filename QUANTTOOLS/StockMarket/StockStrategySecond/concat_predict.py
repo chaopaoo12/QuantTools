@@ -20,9 +20,9 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
     try:
         QA_util_log_info(
             '##JOB Now Load Model ==== {}'.format(str(trading_date)), ui_log)
-        stock_model_temp,stock_info_temp = Stock.load_model('stock',working_dir = working_dir)
-        index_model_temp,index_info_temp = Index.load_model('index',working_dir = working_dir)
-        safe_model_temp,safe_info_temp = Index.load_model('safe',working_dir = working_dir)
+        stock_model_temp, stock_info_temp = Stock.load_model('stock',working_dir = working_dir)
+        index_model_temp, index_info_temp = Index.load_model('index',working_dir = working_dir)
+        safe_model_temp, safe_info_temp = Index.load_model('safe',working_dir = working_dir)
     except:
         send_email('错误报告', '无法正确加载模型,请检查', trading_date)
         send_actionnotice(strategy_id,
