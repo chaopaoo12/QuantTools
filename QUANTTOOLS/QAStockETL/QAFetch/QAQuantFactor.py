@@ -73,12 +73,6 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
         res = res[[x for x in list(res.columns) if x not in col_tar]].join(res[col_tar]).reset_index()
         QA_util_log_info('##JOB type must be in [standardize, normalization]', ui_log)
 
-    for columnname in [i for i in res.columns if i not in ['date','code']]:
-        if technical[columnname].dtype == 'float64':
-            technical[columnname]=technical[columnname].astype('float16')
-        if technical[columnname].dtype == 'int64':
-            technical[columnname]=technical[columnname].astype('int8')
-
     cate = QA_fetch_index_info(codes)
     res = res.assign(cate=res['code'].apply(lambda x: str(QA_fetch_index_cate(cate, str(x)))))
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
