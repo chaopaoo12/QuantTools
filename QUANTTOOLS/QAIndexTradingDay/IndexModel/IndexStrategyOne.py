@@ -39,6 +39,7 @@ class model():
                                                                'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
                                                                'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
                                                                'INDEX_TARGET10','date_stamp','PRE_DATE','next_date']]
+        self.info['cols'] = self.cols
 
     def set_train_rng(self, train_start, train_end):
         QA_util_log_info('##JOB Set Train Range from {_from} to {_to} ==-== {date}'.format(_from=train_start,_to=train_end, date=self.info['date']), ui_log = None)
@@ -96,7 +97,6 @@ class model():
 
 
     def save_model(self, name, working_dir = 'D:\\model\\current'):
-        self.info['cols'] = self.cols
         QA_util_log_info('##JOB Now Model Saving ===== {}'.format(self.info['date']), ui_log = None)
 
         if mkdir(working_dir):
