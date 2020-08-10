@@ -25,6 +25,10 @@ def standardize_series(series): #原始值法
 def normalization_series(series): #原始值法
     if series.max() ==1 and series.min() == 0:
         return(series)
+    elif series.max() ==0 and series.min() == 0:
+        return(series)
+    elif series.max() == series.min():
+        return(series.max()/series.min())
     else:
         return((series-series.min())/(series.max()-series.min()))
 
