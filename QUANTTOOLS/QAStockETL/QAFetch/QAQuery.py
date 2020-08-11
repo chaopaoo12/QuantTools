@@ -169,7 +169,7 @@ def QA_fetch_financial_report(code, start_date, end_date, type ='report', ltype=
     except Exception as e:
         raise e
 
-def QA_fetch_stock_financial_calendar(code, start, end=None, format='pd',type = 'day', collections=DATABASE.report_calendar):
+def QA_fetch_stock_financial_calendar(code, start, end=None, type = 'day', format='pd',collections=DATABASE.report_calendar):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
@@ -184,7 +184,8 @@ def QA_fetch_stock_financial_calendar(code, start, end=None, format='pd',type = 
         end = QA_util_today_str()
     else:
         end = end
-
+    print('start',start,'end',end)
+    print('start',QA_util_date_stamp(start),'end',QA_util_date_stamp(end))
     if QA_util_date_valid(end):
 
         __data = []
