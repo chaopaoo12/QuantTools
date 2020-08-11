@@ -1,23 +1,16 @@
 import pandas as pd
-from xgboost import XGBClassifier
 from sklearn.metrics import (accuracy_score,classification_report,precision_score)
 from QUANTTOOLS.FactorTools.QuantMk import get_index_quant_data
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_log_info,QA_util_get_trade_range
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
 from sklearn import feature_selection
-import numpy as np
-import numpy
-from keras.callbacks import Callback
 from sklearn.metrics import f1_score, precision_score, recall_score
 from keras.optimizers import Adam
-import keras
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
-from keras.layers import LSTM
 from keras import backend as K
-from keras.metrics import top_k_categorical_accuracy
-import tensorflow as tf
+from sklearn.utils import shuffle
 
 def precision(y_true, y_pred):
     # Calculates the precision
@@ -66,7 +59,7 @@ class model():
 
     def prepare_data(self, percent=13):
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
-        self.X_train, self.Y_train = self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'].fillna(0)
+        self.X_train, self.Y_train = shuffle(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'].fillna(0), random_state=0)
         QA_util_log_info('##JOB Feature Selection ===== {}'.format(self.info['date']), ui_log = None)
         self.fs = feature_selection.SelectPercentile(feature_selection.chi2, percentile=percent)
         self.X_train = self.fs.fit_transform(self.X_train, self.Y_train)
