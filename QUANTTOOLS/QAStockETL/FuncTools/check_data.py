@@ -19,7 +19,7 @@ def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
     try:
         code = list(QA_fetch_stock_list_adv()['code'])
     except:
-        code = list(QA_fetch_get_stock_list()['code'])
+        code = list(QA_fetch_get_stock_list('tdx')['code'])
 
     if type == 'day' and mark_day is None:
         mark_day = QA_util_today_str()
@@ -82,7 +82,7 @@ def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
     try:
         code = list(QA_fetch_stock_list_adv()['code'])
     except:
-        code = list(QA_fetch_get_stock_list()['code'])
+        code = list(QA_fetch_get_stock_list('tdx')['code'])
 
     if mark_day is None:
         mark_day = QA_util_today_str()
@@ -149,7 +149,7 @@ def check_index_data(func = None, mark_day = None, title = None, ui_log = None):
     try:
         code = list(QA_fetch_index_list_adv()['code'])
     except:
-        code = list(QA_fetch_get_index_list()['code'])
+        code = list(QA_fetch_get_index_list('tdx')['code'])
 
     if mark_day is None:
         mark_day = QA_util_today_str()
