@@ -77,6 +77,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         except:
             QA_util_log_info('##JOB Now Get Close Price Failed.')
         res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
+        QA_util_log_info(res[res['买卖价'] == 0])
+        res = res[res['买卖价'] > 0]
         res['sort_gp'] = 1
         res.loc[sell_code,'sort_gp']=0
         res['sort'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
@@ -90,7 +92,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res['target'] = res['target'] * res['position']
 
         QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
-        res['目标持股数'] = res.apply(lambda x: math.floor(x['target'] / x['买卖价'] / 100 if x['买卖价'] > 0 else 0)*100, axis=1)
+        res['目标持股数'] = res.apply(lambda x: math.floor(x['target'] / x['买卖价'] / 100)*100, axis=1)
         res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
 
         QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
