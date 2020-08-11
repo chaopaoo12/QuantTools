@@ -139,8 +139,8 @@ class model():
 
         if mkdir(working_dir):
             try:
-                joblib.dump(self.model, working_dir+"\\{name}.joblib.dat".format(name=name))
-                joblib.dump(self.info, working_dir+"\\{name}_info.joblib.dat".format(name=name))
+                joblib.dump(self.model, working_dir+"\\{name}keras.joblib.dat".format(name=name))
+                joblib.dump(self.info, working_dir+"\\{name}keras_info.joblib.dat".format(name=name))
                 print("dump success")
                 return(True)
             except:
@@ -149,9 +149,9 @@ class model():
 
 def load_model(name, working_dir= 'D:\\model\\current'):
     QA_util_log_info('##JOB Now Model Loading', ui_log = None)
-    model = joblib.load(working_dir+"\\{name}.joblib.dat".format(name=name))
+    model = joblib.load(working_dir+"\\{name}keras.joblib.dat".format(name=name))
     QA_util_log_info('##JOB Now Model Info Loading', ui_log = None)
-    info = joblib.load(working_dir+"\\{name}_info.joblib.dat".format(name=name))
+    info = joblib.load(working_dir+"\\{name}keras_info.joblib.dat".format(name=name))
     return(model, info)
 
 def model_predict(model, start, end, cols, fs, type='crawl'):
