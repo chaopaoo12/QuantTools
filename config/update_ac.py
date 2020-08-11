@@ -52,7 +52,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
 if __name__ == '__main__':
     print("write tdx financial data into sqldatabase")
 
-    QA_SU_save_financialfiles_fromtdx()
+    #QA_SU_save_financialfiles_fromtdx()
     QA_etl_stock_financial('all')
     print("done")
     print("write wy financial data into sqldatabase")
