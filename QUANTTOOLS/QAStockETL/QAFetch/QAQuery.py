@@ -213,6 +213,7 @@ def QA_fetch_stock_financial_calendar(code, start, end=None, type = 'day', forma
         try:
             res = res.drop_duplicates(
                 (['report_date', 'code']))
+            print('0')
             res = res.ix[:, ['code', 'name', 'pre_date', 'first_date', 'second_date',
                              'third_date', 'real_date', 'codes', 'report_date', 'crawl_date']]
             print('1')
