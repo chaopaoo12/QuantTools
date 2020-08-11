@@ -209,18 +209,13 @@ def QA_fetch_stock_financial_calendar(code, start, end=None, type = 'day', forma
         else:
             QA_util_log_info("type must be one of [report, day, crawl]")
 
-        print(res.head())
         try:
             #res = res.drop_duplicates(
             #    (['report_date', 'code']))
-            print('0')
             res = res[['code', 'name', 'pre_date', 'first_date', 'second_date',
                         'third_date', 'real_date', 'codes', 'report_date', 'crawl_date']]
-            print('1')
             res['real_date'] = res['real_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
-            print('2')
             res['crawl_date'] = res['crawl_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
-            print('3')
             res['report_date'] = res['report_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
         except:
             res = None
