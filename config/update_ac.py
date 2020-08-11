@@ -49,9 +49,6 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_etl_process_financial_day,QA_etl_stock_shares,
                                    QA_util_process_stock_financial,QA_etl_stock_financial_wy,QA_SU_save_usstock_list_day)
 
-
-
-
 if __name__ == '__main__':
     print("write tdx financial data into sqldatabase")
 
