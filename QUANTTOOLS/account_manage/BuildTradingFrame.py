@@ -88,7 +88,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         avg_account = (sub_accounts * percent)/res['position'].sum()
         res = res.assign(target=avg_account)
         res['target'] = res['target'] * res['position']
-        QA_util_log_info(res[['NAME','target','买卖价','ask1','bid1']])
+
         QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
         res['目标持股数'] = res.apply(lambda x: math.floor(x['target'] / x['买卖价'] / 100 if x['买卖价'] > 0 else 0)*100, axis=1)
         res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
@@ -96,13 +96,17 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
         k = 100
         while (res['测算持股金额'].sum() - sub_accounts) <= 10000:
-            QA_util_log_info('##JOB Budget Less than Capital k: {}'.format(k), ui_log = None)
+            QA_util_log_info('##JOB Budget {budget} Less than Capital {capital} k: {k}'.format(k=k,
+                                                                                               budget=res['测算持股金额'].sum(),
+                                                                                               capital = sub_accounts), ui_log = None)
             res['trim'] = list(res['sort'].apply(lambda x:k if x == 1 else 0))
             res['目标持股数'] = res.apply(lambda x: x['目标持股数'] + x['trim'], axis=1)
             res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
 
         while res['测算持股金额'].sum() > sub_accounts:
-            QA_util_log_info('##JOB Budget Larger than Capital k: {}'.format(k), ui_log = None)
+            QA_util_log_info('##JOB Budget {budget} Larger than Capital {capital} k: {k}'.format(k=k,
+                                                                             budget=res['测算持股金额'].sum(),
+                                                                             capital = sub_accounts), ui_log = None)
             res['trim'] = list(res['sort'].apply(lambda x:k if x == 1 else 0))
             res['目标持股数'] = res.apply(lambda x: x['目标持股数'] - x['trim'], axis=1)
             res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
