@@ -184,8 +184,7 @@ def QA_fetch_stock_financial_calendar(code, start, end=None, type = 'day', forma
         end = QA_util_today_str()
     else:
         end = end
-    print('start',start,'end',end)
-    print('start',QA_util_date_stamp(start),'end',QA_util_date_stamp(end))
+    print(code)
     if QA_util_date_valid(end):
 
         __data = []
