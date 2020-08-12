@@ -718,7 +718,7 @@ class Alpha_191:
         part2=(part2.rank(pct=1))**5
         part2=part2.rank(pct=1)
 
-        part1[part1<part2]=1                        #先令part1<part2的值为1，再令part1中不为1的值为0，最后替换掉NaN的值
+        part1[part1<part2.squeeze()]=1                        #先令part1<part2的值为1，再令part1中不为1的值为0，最后替换掉NaN的值
         part1=part1.apply(lambda x: 0 if x <1 else None)
         alpha=part1.fillna(1)
         return alpha.dropna()
