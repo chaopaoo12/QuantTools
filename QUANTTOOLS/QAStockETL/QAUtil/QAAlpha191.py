@@ -18,7 +18,7 @@ def stock_alpha(code, date=None):
     else:
         end_date = date
     start_date = QA_util_get_pre_trade_date(date, 250)
-    price = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data.reset_index()
+    price = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
     return(Alpha_191(price, date).alpha())
 
 def index_alpha(code, date=None):
@@ -28,18 +28,15 @@ def index_alpha(code, date=None):
     else:
         end_date = date
     start_date = QA_util_get_pre_trade_date(date, 250)
-    price = QA_fetch_index_day_adv(code, start_date, end_date ).data.reset_index()
+    price = QA_fetch_index_day_adv(code, start_date, end_date ).data.reset_index().dropna(axis=0, how='any')
     return(Alpha_191(price, date).alpha())
 
 class Alpha_191:
 
     def __init__(self,  price, date):
-        ###security = get_index_stocks(index)
-        #price = QA_fetch_stock_day_adv(code, self.end_date, self.date ).data.reset_index()
         self.date = date
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
-        #price = price.set_index(['date','code']).to_panel()
         #benchmark_price = QA_fetch_index_day_adv('000300', self.end_date, self.date).data.reset_index()[['date','code','open','close','low','high','amount','volume']].set_index(['date','code']).to_panel()
         ###分别取开盘价，收盘价，最高价，最低价，最低价，均价，成交量#######
         self.open_price = price.pivot_table(columns='code',index='date',values='open').fillna(method = 'ffill')
@@ -718,7 +715,7 @@ class Alpha_191:
         part2=(part2.rank(pct=1))**5
         part2=part2.rank(pct=1)
 
-        part1[part1<part2.squeeze()]=1                        #先令part1<part2的值为1，再令part1中不为1的值为0，最后替换掉NaN的值
+        part1[part1<part2.values]=1                        #先令part1<part2的值为1，再令part1中不为1的值为0，最后替换掉NaN的值
         part1=part1.apply(lambda x: 0 if x <1 else None)
         alpha=part1.fillna(1)
         return alpha.dropna()
@@ -2526,61 +2523,61 @@ class Alpha_191:
         alpha_191=self.alpha_191()
 
         res = pd.DataFrame({
-            "alpha_001":alpha_001,
-            "alpha_002":alpha_002,
-            "alpha_003":alpha_003,
-            "alpha_004":alpha_004,
-            "alpha_005":alpha_005,
-            "alpha_006":alpha_006,
-            "alpha_007":alpha_007,
-            "alpha_008":alpha_008,
-            "alpha_009":alpha_009,
-            "alpha_010":alpha_010,
-            "alpha_011":alpha_011,
-            "alpha_012":alpha_012,
-            "alpha_013":alpha_013,
-            "alpha_014":alpha_014,
-            "alpha_015":alpha_015,
-            "alpha_016":alpha_016,
-            "alpha_017":alpha_017,
-            "alpha_018":alpha_018,
-            "alpha_019":alpha_019,
-            "alpha_020":alpha_020,
-            "alpha_021":alpha_021,
-            "alpha_022":alpha_022,
-            "alpha_023":alpha_023,
-            "alpha_024":alpha_024,
-            "alpha_025":alpha_025,
-            "alpha_026":alpha_026,
-            #"alpha_027":alpha_027,
-            "alpha_028":alpha_028,
-            "alpha_029":alpha_029,
-            #"alpha_030":alpha_030,
-            "alpha_031":alpha_031,
-            "alpha_032":alpha_032,
-            "alpha_033":alpha_033,
-            "alpha_034":alpha_034,
-            "alpha_035":alpha_035,
-            "alpha_036":alpha_036,
-            "alpha_037":alpha_037,
-            "alpha_038":alpha_038,
-            "alpha_039":alpha_039,
-            "alpha_040":alpha_040,
-            "alpha_041":alpha_041,
-            "alpha_042":alpha_042,
-            "alpha_043":alpha_043,
-            "alpha_044":alpha_044,
-            "alpha_045":alpha_045,
-            "alpha_046":alpha_046,
-            "alpha_047":alpha_047,
-            "alpha_048":alpha_048,
-            "alpha_049":alpha_049,
-            #"alpha_050":alpha_050,
-            #"alpha_051":alpha_051,
-            "alpha_052":alpha_052,
-            "alpha_053":alpha_053,
-            "alpha_054":alpha_054,
-            "alpha_055":alpha_055,
+           "alpha_001":alpha_001,
+           "alpha_002":alpha_002,
+           "alpha_003":alpha_003,
+           "alpha_004":alpha_004,
+           "alpha_005":alpha_005,
+           "alpha_006":alpha_006,
+           "alpha_007":alpha_007,
+           "alpha_008":alpha_008,
+           "alpha_009":alpha_009,
+           "alpha_010":alpha_010,
+           "alpha_011":alpha_011,
+           "alpha_012":alpha_012,
+           "alpha_013":alpha_013,
+           "alpha_014":alpha_014,
+           "alpha_015":alpha_015,
+           "alpha_016":alpha_016,
+           "alpha_017":alpha_017,
+           "alpha_018":alpha_018,
+           "alpha_019":alpha_019,
+           "alpha_020":alpha_020,
+           "alpha_021":alpha_021,
+           "alpha_022":alpha_022,
+           "alpha_023":alpha_023,
+           "alpha_024":alpha_024,
+           "alpha_025":alpha_025,
+           "alpha_026":alpha_026,
+           #"alpha_027":alpha_027,
+           "alpha_028":alpha_028,
+           "alpha_029":alpha_029,
+           #"alpha_030":alpha_030,
+           "alpha_031":alpha_031,
+           "alpha_032":alpha_032,
+           "alpha_033":alpha_033,
+           "alpha_034":alpha_034,
+           "alpha_035":alpha_035,
+           "alpha_036":alpha_036,
+           "alpha_037":alpha_037,
+           "alpha_038":alpha_038,
+           "alpha_039":alpha_039,
+           "alpha_040":alpha_040,
+           "alpha_041":alpha_041,
+           "alpha_042":alpha_042,
+           "alpha_043":alpha_043,
+           "alpha_044":alpha_044,
+           "alpha_045":alpha_045,
+           "alpha_046":alpha_046,
+           "alpha_047":alpha_047,
+           "alpha_048":alpha_048,
+           "alpha_049":alpha_049,
+           #"alpha_050":alpha_050,
+           #"alpha_051":alpha_051,
+           "alpha_052":alpha_052,
+           "alpha_053":alpha_053,
+           "alpha_054":alpha_054,
+           "alpha_055":alpha_055,
             "alpha_056":alpha_056,
             "alpha_057":alpha_057,
             "alpha_058":alpha_058,
