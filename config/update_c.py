@@ -45,13 +45,17 @@ if __name__ == '__main__':
         QA_SU_save_stock_list('tdx')
         QA_SU_save_stock_industryinfo()
         print("download day data")
-        QA_SU_save_stock_day('tdx')
-        check_stock_day(mark_day)
+
+        while check_stock_day(mark_day) is None or check_stock_day(mark_day)  > 20:
+            QA_SU_save_stock_day('tdx')
+
         QA_SU_save_stock_block('tdx')
         QA_SU_save_stock_info('tdx')
         QA_SU_save_stock_info_tushare()
-        QA_SU_save_stock_xdxr('tdx')
-        check_stock_adj(mark_day)
+
+        while check_stock_adj(mark_day) is None or check_stock_adj(mark_day)  > 20:
+            QA_SU_save_stock_xdxr('tdx')
+
         print("done")
         print("write data into sqldatabase")
         QA_etl_stock_list()
