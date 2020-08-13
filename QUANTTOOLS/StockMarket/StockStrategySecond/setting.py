@@ -1,3 +1,3 @@
 working_dir = 'D:\\model\\current'
-percent = 1
+percent = 0.1
 exceptions = None
