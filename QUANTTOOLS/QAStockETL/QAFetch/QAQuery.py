@@ -345,7 +345,7 @@ def QA_fetch_stock_fianacial(code, start, end = None, format='pd', collections=D
         res = pd.DataFrame([item for item in cursor])
         try:
             res.columns = [i.lower() if i == 'CODE' else i for i in list(res.columns)]
-            res = res.drop(['date_stamp','_id'], axis=1).drop_duplicates((['code', 'date']))
+            res = res.drop(['date_stamp','_id'], axis=1).drop_duplicates((['code', 'date'])).drop('date_stamp', 1)
             res['RNG_RES'] = res['AVG60_RNG'] *60 / res['RNG_60']
         except:
             res = None
@@ -384,7 +384,7 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
         res = pd.DataFrame([item for item in cursor])
         try:
             res = res.drop_duplicates(
-                (['code', 'date'])).set_index(['date','code'])
+                (['code', 'date'])).set_index(['date','code']).drop('date_stamp', 1)
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
@@ -876,7 +876,7 @@ def QA_fetch_index_alpha(code, start, end=None, format='pd', collections=DATABAS
         res = pd.DataFrame([item for item in cursor])
         try:
             res = res.drop_duplicates(
-                (['code', 'date'])).set_index(['date','code'])
+                (['code', 'date'])).set_index(['date','code']).drop('date_stamp', 1)
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
