@@ -384,7 +384,7 @@ def QA_fetch_stock_alpha(code, start, end=None, format='pd', collections=DATABAS
         res = pd.DataFrame([item for item in cursor])
         try:
             res = res.drop_duplicates(
-                (['code', 'date'])).set_index(['date','code']).drop('date_stamp', 1)
+                (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
