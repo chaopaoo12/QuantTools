@@ -4,12 +4,11 @@ from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch
                                                QA_fetch_stock_day_adv)
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,QA_util_get_trade_range,QA_util_log_info,
                                QA_util_if_trade,QA_util_get_pre_trade_date)
-
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,
                                            QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,QA_fetch_stock_alpha101_adv,
                                            QA_fetch_stock_fianacial_adv,QA_fetch_stock_financial_percent_adv,
                                            QA_fetch_index_alpha_adv,QA_fetch_index_alpha101_adv,
-                                           QA_fetch_index_technical_index_adv,
+                                           QA_fetch_index_technical_index_adv,QA_fetch_index_info,
                                            QA_fetch_financial_report_wy_adv, QA_fetch_stock_alpha_adv,
                                            QA_fetch_stock_technical_index_adv)
 from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr)
@@ -375,7 +374,9 @@ def QA_etl_index_alpha_day(from_ = QA_util_today_str(), to_= None, ui_log= None)
         to_ = QA_util_today_str()
     QA_util_log_info(
         '##JOB Now ETL INDEX ALPHA191 ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
-    codes = list(QA_fetch_index_list_adv()['code'])
+    codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
+    codes = list(codes[codes.cate != '5'].code)
+    codes.extend(['000001','399001','399006'])
     data = QA_fetch_index_alpha_adv(codes, from_, to_).data.groupby('date').apply(standardize)
     if data is None:
         QA_util_log_info(
@@ -391,7 +392,9 @@ def QA_etl_index_alpha101_day(from_ = QA_util_today_str(), to_= None, ui_log= No
         to_ = QA_util_today_str()
     QA_util_log_info(
         '##JOB Now ETL INDEX ALPHA101 ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
-    codes = list(QA_fetch_index_list_adv()['code'])
+    codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
+    codes = list(codes[codes.cate != '5'].code)
+    codes.extend(['000001','399001','399006'])
     data = QA_fetch_index_alpha101_adv(codes, from_, to_).data.groupby('date').apply(standardize)
     if data is None:
         QA_util_log_info(
@@ -406,7 +409,9 @@ def QA_etl_index_technical_day(from_ = QA_util_today_str(), to_= None, ui_log= N
     if to_ is None:
         to_ = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL INDEX TECHNICAL ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
-    codes = list(QA_fetch_index_list_adv()['code'])
+    codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
+    codes = list(codes[codes.cate != '5'].code)
+    codes.extend(['000001','399001','399006'])
     data = QA_fetch_index_technical_index_adv(codes, from_, to_).data.groupby('date').apply(standardize)
     if data is None:
         QA_util_log_info(
@@ -420,8 +425,9 @@ def QA_etl_index_technical_week(from_ = QA_util_today_str(), to_= None, ui_log= 
     if to_ is None:
         to_ = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL INDEX TECHNICAL WEEK ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
-    codes = list(QA_fetch_index_list_adv()['code'])
-
+    codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
+    codes = list(codes[codes.cate != '5'].code)
+    codes.extend(['000001','399001','399006'])
     data = QA_fetch_index_technical_index_adv(codes, from_, to_, type='week').data.groupby('date').apply(standardize)
     if data is None:
         QA_util_log_info(
