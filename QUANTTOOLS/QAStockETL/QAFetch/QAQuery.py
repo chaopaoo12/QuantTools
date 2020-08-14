@@ -14,6 +14,12 @@ from QUANTTOOLS.QAStockETL.QAData.financial_mean import financial_dict, dict2
 from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,time_this_function,index_pct_log,pct_log
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade, QA_util_get_next_datetime,QA_util_get_real_date,QA_util_get_trade_range
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_delist
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex import QA_Sql_Stock_Index
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexWeek import QA_Sql_Stock_IndexWeek
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101 import QA_Sql_Stock_Alpha101
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191 import QA_Sql_Stock_Alpha191
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancial import QA_Sql_Stock_Financial
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancialPE import QA_Sql_Stock_FinancialPercent
 
 def QA_fetch_stock_industry(stock_code):
     '''
@@ -345,7 +351,7 @@ def QA_fetch_stock_fianacial(code, start, end = None, format='pd', collections=D
         res = pd.DataFrame([item for item in cursor])
         try:
             res.columns = [i.lower() if i == 'CODE' else i for i in list(res.columns)]
-            res = res.drop(['date_stamp','_id'], axis=1).drop_duplicates((['code', 'date'])).drop('date_stamp', 1)
+            res = res.drop(['date_stamp','_id'], axis=1).drop_duplicates((['code', 'date']))
             res['RNG_RES'] = res['AVG60_RNG'] *60 / res['RNG_60']
         except:
             res = None
