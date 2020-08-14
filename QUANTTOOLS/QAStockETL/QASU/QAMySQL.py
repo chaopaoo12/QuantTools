@@ -381,7 +381,7 @@ def QA_etl_stock_financial_percent_day(from_ = QA_util_today_str(), to_= None, u
             '##JOB NO STOCK FINANCIAL PERCENT HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     else:
         data = data.reset_index()
-        QA_util_sql_store_mysql(data, "stock_quant_financial",if_exists='append')
+        QA_util_sql_store_mysql(data, "stock_quant_financial_percent",if_exists='append')
         QA_util_log_info(
             '##JOB ETL STOCK FINANCIAL PERCENT HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
 
