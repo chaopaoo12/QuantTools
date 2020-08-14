@@ -1652,7 +1652,7 @@ class Alpha_191:
         '''
         尚未实现
         '''
-        return
+        return 0
 
 
     def alpha_138(self):
@@ -1750,14 +1750,14 @@ class Alpha_191:
         '''
         尚未实现
         '''
-        return
+        return 0
 
 
     def alpha_147(self):
         '''
         尚未实现
         '''
-        return
+        return 0
 
 
     def alpha_148(self):
@@ -1776,7 +1776,7 @@ class Alpha_191:
         '''
         尚未实现
         '''
-        return
+        return 0
 
 
     def alpha_150(self):
@@ -2384,7 +2384,7 @@ class Alpha_191:
         alpha_052=self.alpha_052()
         alpha_053=self.alpha_053()
         alpha_054=self.alpha_054()
-        alpha_055=self.alpha_055()
+        #alpha_055=self.alpha_055()
         alpha_056=self.alpha_056()
         alpha_057=self.alpha_057()
         alpha_058=self.alpha_058()
@@ -2475,10 +2475,10 @@ class Alpha_191:
         alpha_143=self.alpha_143()
         alpha_144=self.alpha_144()
         alpha_145=self.alpha_145()
-        alpha_146=self.alpha_146()
-        alpha_147=self.alpha_147()
+        #alpha_146=self.alpha_146()
+        #alpha_147=self.alpha_147()
         alpha_148=self.alpha_148()
-        alpha_149=self.alpha_149()
+        #alpha_149=self.alpha_149()
         alpha_150=self.alpha_150()
         alpha_151=self.alpha_151()
         alpha_152=self.alpha_152()
@@ -2577,7 +2577,7 @@ class Alpha_191:
            "alpha_052":alpha_052,
            "alpha_053":alpha_053,
            "alpha_054":alpha_054,
-           "alpha_055":alpha_055,
+           #"alpha_055":alpha_055,
             "alpha_056":alpha_056,
             "alpha_057":alpha_057,
             "alpha_058":alpha_058,
@@ -2668,10 +2668,10 @@ class Alpha_191:
             #"alpha_143":alpha_143,
             "alpha_144":alpha_144,
             "alpha_145":alpha_145,
-            "alpha_146":alpha_146,
-            "alpha_147":alpha_147,
+            #"alpha_146":alpha_146,
+            #"alpha_147":alpha_147,
             "alpha_148":alpha_148,
-            "alpha_149":alpha_149,
+            #"alpha_149":alpha_149,
             "alpha_150":alpha_150,
             #"alpha_151":alpha_151,
             "alpha_152":alpha_152,
