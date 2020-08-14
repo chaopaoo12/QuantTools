@@ -95,7 +95,7 @@ from stock_alpha101
 where to_Date(order_Date, 'yyyy-mm-dd') >=
 to_date('{from_}', 'yyyy-mm-dd')
 and to_Date(order_Date, 'yyyy-mm-dd') <=
-to_date('{to_}', 'yyyy-mm-dd');
+to_date('{to_}', 'yyyy-mm-dd')
 '''
 
 def QA_Sql_Stock_Alpha101(from_ , to_, sql_text = sql_text, ui_log= None):
@@ -105,4 +105,4 @@ def QA_Sql_Stock_Alpha101(from_ , to_, sql_text = sql_text, ui_log= None):
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
-    return(data.drop_duplicates((['CODE', 'ORDER_DATE'])))
+    return(data.drop_duplicates((['CODE', 'ORDER_DATE'])).set_index(['ORDER_DATE','CODE']))

@@ -105,7 +105,7 @@ from STOCK_QUANT_FINANCIAL
 where to_Date(order_Date, 'yyyy-mm-dd') >=
 to_date('{from_}', 'yyyy-mm-dd')
 and to_Date(order_Date, 'yyyy-mm-dd') <=
-to_date('{to_}', 'yyyy-mm-dd');
+to_date('{to_}', 'yyyy-mm-dd')
 '''
 
 def QA_Sql_Stock_Financial(from_ , to_, sql_text = sql_text, ui_log= None):
