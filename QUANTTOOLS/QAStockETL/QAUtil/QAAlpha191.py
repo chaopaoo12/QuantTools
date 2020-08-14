@@ -1553,14 +1553,14 @@ class Alpha_191:
         '''
         公式不明
         '''
-        return
+        return 0
 
 
     def alpha_128(self):
         '''
         尚未实现
         '''
-        return
+        return 0
 
 
     def alpha_129(self):
