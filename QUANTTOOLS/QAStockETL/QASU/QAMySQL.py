@@ -273,7 +273,7 @@ def QA_etl_stock_alpha_day(from_ = QA_util_today_str(), to_= None, ui_log= None)
         to_ = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL STOCK ALPHA191 ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     codes = list(QA_fetch_stock_list_adv()['code'])
-    data = QA_fetch_stock_alpha_adv(codes, from_, to_).data.groupby('date').apply(standardize)
+    data = QA_fetch_stock_alpha_adv(codes, from_, to_).data.groupby('date').apply(normalization)
     if data is None:
         QA_util_log_info(
             '##JOB NO STOCK ALPHA191 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
@@ -287,7 +287,7 @@ def QA_etl_stock_alpha101_day(from_ = QA_util_today_str(), to_= None, ui_log= No
         to_ = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL STOCK ALPHA101 ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     codes = list(QA_fetch_stock_list_adv()['code'])
-    data = QA_fetch_stock_alpha101_adv(codes, from_, to_).data.groupby('date').apply(standardize)
+    data = QA_fetch_stock_alpha101_adv(codes, from_, to_).data.groupby('date').apply(normalization)
     if data is None:
         QA_util_log_info('##JOB NO STOCK ALPHA101 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     else:
@@ -300,7 +300,7 @@ def QA_etl_stock_technical_day(from_ = QA_util_today_str(), to_= None, ui_log= N
         to_ = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL STOCK TECHNICAL ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     codes = list(QA_fetch_stock_list_adv()['code'])
-    data = QA_fetch_stock_technical_index_adv(codes, from_, to_).data.groupby('date').apply(standardize)
+    data = QA_fetch_stock_technical_index_adv(codes, from_, to_).data.groupby('date').apply(normalization)
     if data is None:
         QA_util_log_info(
             '##JOB NO STOCK TECHNICAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
@@ -314,7 +314,7 @@ def QA_etl_stock_technical_week(from_ = QA_util_today_str(), to_= None,ui_log= N
         to_ = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL STOCK TECHNICAL WEEK ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     codes = list(QA_fetch_stock_list_adv()['code'])
-    data = QA_fetch_stock_technical_index_adv(codes, from_, to_,type='week').data.groupby('date').apply(standardize)
+    data = QA_fetch_stock_technical_index_adv(codes, from_, to_,type='week').data.groupby('date').apply(normalization)
     if data is None:
         QA_util_log_info(
             '##JOB NO STOCK TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
@@ -359,7 +359,7 @@ def QA_etl_stock_financial_day(from_ = QA_util_today_str(), to_= None,ui_log= No
                   'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                   'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                   'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
-                  'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR','TOTALPROFITINRATE']].groupby('date').apply(standardize).join(data[['DAYS']])
+                  'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR','TOTALPROFITINRATE']].groupby('date').apply(normalization).join(data[['DAYS']])
     if data is None:
         QA_util_log_info(
             '##JOB NO STOCK QUANT FINANCIAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
@@ -375,7 +375,7 @@ def QA_etl_stock_financial_percent_day(from_ = QA_util_today_str(), to_= None, u
     QA_util_log_info(
         '##JOB Now ETL STOCK FINANCIAL PERCENT ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     codes = list(QA_fetch_stock_list_adv()['code'])
-    data = QA_fetch_stock_financial_percent_adv(codes, from_, to_).data.groupby('date').apply(standardize)
+    data = QA_fetch_stock_financial_percent_adv(codes, from_, to_).data.groupby('date').apply(normalization)
     if data is None:
         QA_util_log_info(
             '##JOB NO STOCK FINANCIAL PERCENT HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
@@ -393,7 +393,7 @@ def QA_etl_index_alpha_day(from_ = QA_util_today_str(), to_= None, ui_log= None)
     codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
     codes = list(codes[codes.cate != '5'].code)
     codes.extend(['000001','399001','399006'])
-    data = QA_fetch_index_alpha_adv(codes, from_, to_).data.groupby('date').apply(standardize)
+    data = QA_fetch_index_alpha_adv(codes, from_, to_).data.groupby('date').apply(normalization)
     if data is None:
         QA_util_log_info(
             '##JOB NO INDEX ALPHA191 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
@@ -411,7 +411,7 @@ def QA_etl_index_alpha101_day(from_ = QA_util_today_str(), to_= None, ui_log= No
     codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
     codes = list(codes[codes.cate != '5'].code)
     codes.extend(['000001','399001','399006'])
-    data = QA_fetch_index_alpha101_adv(codes, from_, to_).data.groupby('date').apply(standardize)
+    data = QA_fetch_index_alpha101_adv(codes, from_, to_).data.groupby('date').apply(normalization)
     if data is None:
         QA_util_log_info(
             '##JOB NO INDEX ALPHA101 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
@@ -428,7 +428,7 @@ def QA_etl_index_technical_day(from_ = QA_util_today_str(), to_= None, ui_log= N
     codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
     codes = list(codes[codes.cate != '5'].code)
     codes.extend(['000001','399001','399006'])
-    data = QA_fetch_index_technical_index_adv(codes, from_, to_).data.groupby('date').apply(standardize)
+    data = QA_fetch_index_technical_index_adv(codes, from_, to_).data.groupby('date').apply(normalization)
     if data is None:
         QA_util_log_info(
             '##JOB NO INDEX TECHNICAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
@@ -444,7 +444,7 @@ def QA_etl_index_technical_week(from_ = QA_util_today_str(), to_= None, ui_log= 
     codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
     codes = list(codes[codes.cate != '5'].code)
     codes.extend(['000001','399001','399006'])
-    data = QA_fetch_index_technical_index_adv(codes, from_, to_, type='week').data.groupby('date').apply(standardize)
+    data = QA_fetch_index_technical_index_adv(codes, from_, to_, type='week').data.groupby('date').apply(normalization)
     if data is None:
         QA_util_log_info(
             '##JOB NO INDEX TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
