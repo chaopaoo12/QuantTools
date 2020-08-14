@@ -6,8 +6,12 @@ from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,QA_util_get_
                                QA_util_if_trade,QA_util_get_pre_trade_date)
 
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,
-                                           QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,
-                                           QA_fetch_financial_report_wy_adv, QA_fetch_stock_alpha_adv, QA_fetch_stock_technical_index_adv)
+                                           QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,QA_fetch_stock_alpha101_adv,
+                                           QA_fetch_stock_fianacial_adv,QA_fetch_stock_financial_percent_adv,
+                                           QA_fetch_index_alpha_adv,QA_fetch_index_alpha101_adv,
+                                           QA_fetch_index_technical_index_adv,
+                                           QA_fetch_financial_report_wy_adv, QA_fetch_stock_alpha_adv,
+                                           QA_fetch_stock_technical_index_adv)
 from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr)
 
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_sql_store_mysql
@@ -17,8 +21,15 @@ from QUANTAXIS.QAUtil import QA_util_log_info
 import numpy as np
 import pandas as pd
 import datetime
-
+from QUANTTOOLS.QAStockETL.QAUtil.base_func import normalization, standardize, time_this_function
 from scipy import stats
+
+def QA_fetch_index_cate(data, stock_code):
+    try:
+        return data.loc[stock_code]['cate']
+    except:
+        return None
+
 def rolling_ols(y):
     '''
     滚动回归，返回滚动回归后的回归系数
@@ -120,7 +131,8 @@ def QA_etl_stock_list(ui_log= None):
 def QA_etl_stock_shares(ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK SHARES ==== {}'.format(str(datetime.date.today())), ui_log)
-    data = QA_fetch_stock_shares_adv(list(QA_fetch_stock_list_adv()['code'])).data
+    codes = list(QA_fetch_stock_list_adv()['code'])
+    data = QA_fetch_stock_shares_adv(codes).data
     QA_util_sql_store_mysql(data, "stock_shares",if_exists='replace')
     QA_util_log_info(
         '##JOB ETL STOCK SHARES HAS BEEN SAVED ==== {}'.format(str(datetime.date.today())), ui_log)
@@ -135,13 +147,13 @@ def QA_etl_stock_info(ui_log= None):
         '##JOB ETL STOCK INFO HAS BEEN SAVED ==== {}'.format(str(datetime.date.today())), ui_log)
 
 def QA_etl_stock_xdxr(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
-    QA_util_log_info(
-        '##JOB Now ETL STOCK XDXR ==== {}'.format(mark_day), ui_log)
+    QA_util_log_info('##JOB Now ETL STOCK XDXR ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
     if type == "all":
-        data = QA_fetch_stock_xdxr(list(QA_fetch_stock_list_adv()['code'])).reset_index(drop=True).fillna(0)
+        data = QA_fetch_stock_xdxr(codes).reset_index(drop=True).fillna(0)
         QA_util_sql_store_mysql(data, "stock_xdxr",if_exists='replace')
     elif type == "day":
-        data = QA_fetch_stock_xdxr(list(QA_fetch_stock_list_adv()['code']), mark_day)
+        data = QA_fetch_stock_xdxr(codes, mark_day)
         if data is None:
             QA_util_log_info("We have no XDXR data for the day {}".format(mark_day))
         else:
@@ -169,12 +181,13 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log=
 def QA_etl_stock_financial(type = "crawl", start_date = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK FINANCIAL REPORT ==== {}'.format(start_date), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
     if type == 'all':
-        data = QA_fetch_financial_report_adv(list(QA_fetch_stock_list_adv()['code'])).data
+        data = QA_fetch_financial_report_adv(codes).data
         columns = [i for i in list(data.columns) if i.startswith('unknown') == False and i.isdigit() == False and i.startswith('IS_R') == False]
         QA_util_sql_store_mysql(data[columns].reset_index(drop=True).fillna(0), "stock_financial",if_exists='replace')
     elif type == "crawl":
-        data = QA_fetch_financial_report_adv(list(QA_fetch_stock_list_adv()['code']),start_date,type = 'crawl').data
+        data = QA_fetch_financial_report_adv(codes,start_date,type = 'crawl').data
         if data is None:
             QA_util_log_info(
                 '##JOB NO STOCK FINANCIAL REPORT HAS BEEN SAVED ==== {}'.format(start_date), ui_log)
@@ -187,11 +200,12 @@ def QA_etl_stock_financial(type = "crawl", start_date = str(datetime.date.today(
 def QA_etl_stock_calendar(type = "crawl", start = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK CALENDAR ==== {}'.format(start), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
     if type == "all":
-        data = QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']),start = "all", type = 'report').data.reset_index(drop=True)
+        data = QA_fetch_stock_financial_calendar_adv(codes,start = "all", type = 'report').data.reset_index(drop=True)
         QA_util_sql_store_mysql(data, "stock_calendar",if_exists='replace')
     elif type == "crawl":
-        data = QA_fetch_stock_financial_calendar_adv(list(QA_fetch_stock_list_adv()['code']), start, type = 'crawl').data
+        data = QA_fetch_stock_financial_calendar_adv(codes, start, type = 'crawl').data
         if data is None:
             QA_util_log_info(
                 '##JOB NO STOCK CALENDAR HAS BEEN SAVED ==== {}'.format(start), ui_log)
@@ -212,11 +226,12 @@ def QA_etl_stock_block(ui_log= None):
 def QA_etl_stock_divyield(type = "crawl", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK divyield ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
     if type == "all":
-        data = QA_fetch_stock_divyield_adv(list(QA_fetch_stock_list_adv()['code']),start = "all").data.reset_index()
+        data = QA_fetch_stock_divyield_adv(codes,start = "all").data.reset_index()
         QA_util_sql_store_mysql(data, "stock_divyield",if_exists='replace')
     elif type == "crawl":
-        data = QA_fetch_stock_divyield_adv(list(QA_fetch_stock_list_adv()['code']), mark_day).data
+        data = QA_fetch_stock_divyield_adv(codes, mark_day).data
         if data is None:
             QA_util_log_info(
                 '##JOB NO STOCK Divyield HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
@@ -240,11 +255,12 @@ def QA_etl_process_financial_day(type = "day", deal_date = str(datetime.date.tod
 def QA_etl_stock_financial_wy(type = "crawl", start_date = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK FINANCIAL REPORT WY ==== {}'.format(start_date), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
     if type == 'all':
-        data = QA_fetch_financial_report_wy_adv(list(QA_fetch_stock_list_adv()['code'])).data.reset_index(drop=True).fillna(0)
+        data = QA_fetch_financial_report_wy_adv(codes).data.reset_index(drop=True).fillna(0)
         QA_util_sql_store_mysql(data, "stock_financial_wy",if_exists='replace')
     elif type == "crawl":
-        data = QA_fetch_financial_report_wy_adv(list(QA_fetch_stock_list_adv()['code']),start_date,type = 'crawl').data
+        data = QA_fetch_financial_report_wy_adv(codes,start_date,type = 'crawl').data
         if data is None:
             QA_util_log_info(
                 '##JOB NO STOCK FINANCIAL REPORT WY HAS BEEN SAVED ==== {}'.format(start_date), ui_log)
@@ -256,29 +272,49 @@ def QA_etl_stock_financial_wy(type = "crawl", start_date = str(datetime.date.tod
 
 def QA_etl_stock_alpha_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
-        '##JOB Now ETL STOCK ALPHA ==== {}'.format(mark_day), ui_log)
+        '##JOB Now ETL STOCK ALPHA191 ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
     if type == "all":
-        data = QA_fetch_stock_alpha_adv(list(QA_fetch_stock_list_adv()['code'])).data.reset_index()
-        QA_util_sql_store_mysql(data, "stock_alpha",if_exists='replace')
+        data = QA_fetch_stock_alpha_adv(codes).data.groupby('date').apply(standardize).reset_index()
+        QA_util_sql_store_mysql(data, "stock_alpha191",if_exists='replace')
     elif type == "day":
-        data = QA_fetch_stock_alpha_adv(list(QA_fetch_stock_list_adv()['code']), mark_day).data
+        data = QA_fetch_stock_alpha_adv(codes, mark_day).data.groupby('date').apply(standardize)
         if data is None:
             QA_util_log_info(
-                '##JOB NO STOCK ALPHA HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+                '##JOB NO STOCK ALPHA191 HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
         else:
             data = data.reset_index()
-            QA_util_sql_store_mysql(data, "stock_alpha",if_exists='append')
+            QA_util_sql_store_mysql(data, "stock_alpha191",if_exists='append')
             QA_util_log_info(
-                '##JOB ETL STOCK ALPHA HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+                '##JOB ETL STOCK ALPHA191 HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+
+def QA_etl_stock_alpha101_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
+    QA_util_log_info(
+        '##JOB Now ETL STOCK ALPHA101 ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
+    if type == "all":
+        data = QA_fetch_stock_alpha101_adv(codes).data.groupby('date').apply(standardize).reset_index()
+        QA_util_sql_store_mysql(data, "stock_alpha101",if_exists='replace')
+    elif type == "day":
+        data = QA_fetch_stock_alpha101_adv(codes, mark_day).data.groupby('date').apply(standardize)
+        if data is None:
+            QA_util_log_info(
+                '##JOB NO STOCK ALPHA101 HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+        else:
+            data = data.reset_index()
+            QA_util_sql_store_mysql(data, "stock_alpha101",if_exists='append')
+            QA_util_log_info(
+                '##JOB ETL STOCK ALPHA101 HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
 
 def QA_etl_stock_technical_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK TECHNICAL ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
     if type == "all":
-        data = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code'])).data.reset_index()
+        data = QA_fetch_stock_technical_index_adv(codes).data.groupby('date').apply(standardize).reset_index()
         QA_util_sql_store_mysql(data, "stock_technical",if_exists='replace')
     elif type == "day":
-        data = QA_fetch_stock_technical_index_adv(list(QA_fetch_stock_list_adv()['code']), mark_day).data
+        data = QA_fetch_stock_technical_index_adv(codes, mark_day).data.groupby('date').apply(standardize)
         if data is None:
             QA_util_log_info(
                 '##JOB NO STOCK TECHNICAL HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
@@ -287,3 +323,159 @@ def QA_etl_stock_technical_day(type = "day", mark_day = str(datetime.date.today(
             QA_util_sql_store_mysql(data, "stock_technical",if_exists='append')
             QA_util_log_info(
                 '##JOB ETL STOCK TECHNICAL HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+
+def QA_etl_stock_technical_week(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
+    QA_util_log_info(
+        '##JOB Now ETL STOCK TECHNICAL WEEK ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
+    if type == "all":
+        data = QA_fetch_stock_technical_index_adv(codes,type='week').data.groupby('date').apply(standardize).reset_index()
+        QA_util_sql_store_mysql(data, "stock_technical_week",if_exists='replace')
+    elif type == "day":
+        data = QA_fetch_stock_technical_index_adv(codes, mark_day,type='week').data.groupby('date').apply(standardize)
+        if data is None:
+            QA_util_log_info(
+                '##JOB NO STOCK TECHNICAL WEEK HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+        else:
+            data = data.reset_index()
+            QA_util_sql_store_mysql(data, "stock_technical_week",if_exists='append')
+            QA_util_log_info(
+                '##JOB ETL STOCK TECHNICAL WEEK HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+
+def QA_etl_stock_financial_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
+    QA_util_log_info(
+        '##JOB Now ETL STOCK QUANT FINANCIAL ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
+    if type == "all":
+        data = QA_fetch_stock_fianacial_adv(codes).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE', 'DAYS',
+                                                         'AVG5','AVG10','AVG20','AVG30','AVG60',
+                                                         'LAG','LAG5','LAG10','LAG20','LAG30','LAG60',
+                                                         'AVG5_TOR', 'AVG20_TOR','AVG30_TOR','AVG60_TOR',
+                                                         'GROSSMARGIN','NETPROFIT_INRATE','OPERATINGRINRATE','NETCASHOPERATINRATE',
+                                                         'PB', 'PBG', 'PC', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PM', 'PS','PSG','PT',
+                                                         'I_PB','I_PE','I_PEEGL','I_ROE','I_ROE_TOTAL','I_ROA','I_ROA_TOTAL','I_GROSSMARGIN',
+                                                         'PE_RATE','PEEGL_RATE','PB_RATE','ROE_RATE','ROE_RATET','ROA_RATE','ROA_RATET',
+                                                         'GROSS_RATE','ROA_AVG5','ROE_AVG5','GROSS_AVG5','ROE_MIN','ROA_MIN','GROSS_MIN',
+                                                         'ROE_CH','ROA_CH','GROSS_CH','OPINRATE_AVG3','NETPINRATE_AVG3',
+                                                         'RNG','RNG_L','RNG_5','RNG_10','RNG_20', 'RNG_30', 'RNG_60',
+                                                         'AVG5_RNG','AVG10_RNG','AVG20_RNG','AVG30_RNG','AVG60_RNG',
+                                                         'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
+                                                         'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
+                                                         'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
+                                                         'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR','TOTALPROFITINRATE']].groupby('date').apply(standardize)
+        QA_util_sql_store_mysql(data, "stock_quant_financial",if_exists='replace')
+    elif type == "day":
+        data = QA_fetch_stock_fianacial_adv(codes, mark_day).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE', 'DAYS',
+                                                                    'AVG5','AVG10','AVG20','AVG30','AVG60',
+                                                                    'LAG','LAG5','LAG10','LAG20','LAG30','LAG60',
+                                                                    'AVG5_TOR', 'AVG20_TOR','AVG30_TOR','AVG60_TOR',
+                                                                    'GROSSMARGIN','NETPROFIT_INRATE','OPERATINGRINRATE','NETCASHOPERATINRATE',
+                                                                    'PB', 'PBG', 'PC', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PM', 'PS','PSG','PT',
+                                                                    'I_PB','I_PE','I_PEEGL','I_ROE','I_ROE_TOTAL','I_ROA','I_ROA_TOTAL','I_GROSSMARGIN',
+                                                                    'PE_RATE','PEEGL_RATE','PB_RATE','ROE_RATE','ROE_RATET','ROA_RATE','ROA_RATET',
+                                                                    'GROSS_RATE','ROA_AVG5','ROE_AVG5','GROSS_AVG5','ROE_MIN','ROA_MIN','GROSS_MIN',
+                                                                    'ROE_CH','ROA_CH','GROSS_CH','OPINRATE_AVG3','NETPINRATE_AVG3',
+                                                                    'RNG','RNG_L','RNG_5','RNG_10','RNG_20', 'RNG_30', 'RNG_60',
+                                                                    'AVG5_RNG','AVG10_RNG','AVG20_RNG','AVG30_RNG','AVG60_RNG',
+                                                                    'ROA', 'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
+                                                                    'ROE', 'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
+                                                                    'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
+                                                                    'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR','TOTALPROFITINRATE']].groupby('date').apply(standardize)
+        if data is None:
+            QA_util_log_info(
+                '##JOB NO STOCK QUANT FINANCIAL HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+        else:
+            data = data.reset_index()
+            QA_util_sql_store_mysql(data, "stock_quant_financial",if_exists='append')
+            QA_util_log_info(
+                '##JOB ETL STOCK QUANT FINANCIAL HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+
+def QA_etl_stock_financial_percent_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
+    QA_util_log_info(
+        '##JOB Now ETL STOCK FINANCIAL PERCENT ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
+    if type == "all":
+        data = QA_fetch_stock_financial_percent_adv(codes).data.groupby('date').apply(standardize)
+        QA_util_sql_store_mysql(data, "stock_quant_financial",if_exists='replace')
+    elif type == "day":
+        data = QA_fetch_stock_financial_percent_adv(codes, mark_day).data.groupby('date').apply(standardize)
+        if data is None:
+            QA_util_log_info(
+                '##JOB NO STOCK FINANCIAL PERCENT HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+        else:
+            data = data.reset_index()
+            QA_util_sql_store_mysql(data, "stock_quant_financial",if_exists='append')
+            QA_util_log_info(
+                '##JOB ETL STOCK FINANCIAL PERCENT HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+
+def QA_etl_index_alpha_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
+    QA_util_log_info(
+        '##JOB Now ETL INDEX ALPHA191 ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
+    if type == "all":
+        data = QA_fetch_index_alpha_adv(codes).data.groupby('date').apply(standardize).reset_index()
+        QA_util_sql_store_mysql(data, "index_alpha191",if_exists='replace')
+    elif type == "day":
+        data = QA_fetch_index_alpha_adv(codes, mark_day).data.groupby('date').apply(standardize)
+        if data is None:
+            QA_util_log_info(
+                '##JOB NO INDEX ALPHA191 HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+        else:
+            data = data.reset_index()
+            QA_util_sql_store_mysql(data, "index_alpha191",if_exists='append')
+            QA_util_log_info(
+                '##JOB ETL INDEX ALPHA191 HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+
+def QA_etl_index_alpha101_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
+    QA_util_log_info(
+        '##JOB Now ETL INDEX ALPHA101 ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
+    if type == "all":
+        data = QA_fetch_index_alpha101_adv(codes).data.groupby('date').apply(standardize).reset_index()
+        QA_util_sql_store_mysql(data, "index_alpha101",if_exists='replace')
+    elif type == "day":
+        data = QA_fetch_index_alpha101_adv(codes, mark_day).data.groupby('date').apply(standardize)
+        if data is None:
+            QA_util_log_info(
+                '##JOB NO INDEX ALPHA101 HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+        else:
+            data = data.reset_index()
+            QA_util_sql_store_mysql(data, "index_alpha101",if_exists='append')
+            QA_util_log_info(
+                '##JOB ETL INDEX ALPHA101 HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+
+def QA_etl_index_technical_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
+    QA_util_log_info(
+        '##JOB Now ETL INDEX TECHNICAL ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
+    if type == "all":
+        data = QA_fetch_index_technical_index_adv(codes).data.groupby('date').apply(standardize).reset_index()
+        QA_util_sql_store_mysql(data, "index_technical",if_exists='replace')
+    elif type == "day":
+        data = QA_fetch_index_technical_index_adv(codes, mark_day).data.groupby('date').apply(standardize)
+        if data is None:
+            QA_util_log_info(
+                '##JOB NO INDEX TECHNICAL HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+        else:
+            data = data.reset_index()
+            QA_util_sql_store_mysql(data, "index_technical",if_exists='append')
+            QA_util_log_info(
+                '##JOB ETL INDEX TECHNICAL HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+
+def QA_etl_index_technical_week(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
+    QA_util_log_info(
+        '##JOB Now ETL INDEX TECHNICAL WEEK ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_list_adv()['code'])
+    if type == "all":
+        data = QA_fetch_index_technical_index_adv(codes,type='week').data.groupby('date').apply(standardize).reset_index()
+        QA_util_sql_store_mysql(data, "index_technical_week",if_exists='replace')
+    elif type == "day":
+        data = QA_fetch_index_technical_index_adv(codes, mark_day,type='week').data.groupby('date').apply(standardize)
+        if data is None:
+            QA_util_log_info(
+                '##JOB NO INDEX TECHNICAL WEEK HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+        else:
+            data = data.reset_index()
+            QA_util_sql_store_mysql(data, "index_technical_week",if_exists='append')
+            QA_util_log_info(
+                '##JOB ETL INDEX TECHNICAL WEEK HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
