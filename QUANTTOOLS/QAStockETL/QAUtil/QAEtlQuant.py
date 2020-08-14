@@ -4,6 +4,10 @@ import datetime
 from QUANTAXIS.QAUtil import QA_util_log_info
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
                                QA_util_if_trade,QA_util_get_pre_trade_date)
+from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Oracle_User, Oracle_Password, Oralce_Server, MongoDB_Server, MongoDB_Database)
+
+ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
+
 
 def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
     QA_util_log_info(
@@ -486,7 +490,7 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
     else:
         if QA_util_if_trade(deal_date) == True:
             sql = sql.format(start_date=deal_date)
-            conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
+            conn = cx_Oracle.connect(ORACLE_PATH2)
             data = pd.read_sql(sql=sql, con=conn)
             conn.close()
         else:

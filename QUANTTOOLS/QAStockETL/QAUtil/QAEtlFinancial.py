@@ -4,6 +4,10 @@ from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
                                QA_util_get_trade_range,QA_util_get_last_day,
                                QA_util_if_trade)
 from QUANTAXIS.QAUtil import QA_util_log_info
+from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Oracle_User, Oracle_Password, Oralce_Server, MongoDB_Server, MongoDB_Database)
+
+ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
+
 
 def QA_util_process_stock_financial(ui_log= None):
     QA_util_log_info(
@@ -1603,7 +1607,7 @@ def QA_util_etl_financial_TTM(ui_log= None):
                 CASHRATIO_LQ
   from stock_financial_analysis
     '''
-    conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
+    conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql, con=conn)
     data = data.assign(date_stamp=data['REPORT_DATE'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     conn.close()
