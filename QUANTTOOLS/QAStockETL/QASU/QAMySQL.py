@@ -442,7 +442,7 @@ def QA_etl_index_alpha_day(from_ = QA_util_today_str(), to_= None, ui_log= None)
     data = QA_fetch_index_alpha_adv(codes, from_, to_).data[['alpha_001','alpha_002','alpha_003','alpha_004','alpha_005',
                                                              'alpha_006','alpha_007','alpha_008','alpha_009','alpha_010',
                                                              'alpha_011','alpha_012','alpha_013','alpha_014','alpha_015',
-                                                             'alpha_016','alpha_017','alpha_018','alpha_019','alpha_020',
+                                                             'alpha_016','alpha_018','alpha_019','alpha_020',
                                                              'alpha_021','alpha_022','alpha_023','alpha_024','alpha_025',
                                                              'alpha_026','alpha_028','alpha_029','alpha_031','alpha_032',
                                                              'alpha_033','alpha_034','alpha_035','alpha_036','alpha_037',
