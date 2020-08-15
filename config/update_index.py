@@ -35,13 +35,8 @@ from QUANTTOOLS.QAStockETL import (QA_SU_save_index_alpha_day,
                                    QA_SU_save_index_info)
 from QUANTAXIS.QASU.main import (QA_SU_save_index_day,QA_SU_save_index_list)
 from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_index_day)
-from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_fianacial,check_stock_finper,
-                                                        check_stock_techindex,check_stock_techweek,
-                                                        check_stock_alpha101,check_stock_alpha191,
-                                                        check_stock_quant,
-                                                        check_index_alpha101,check_index_alpha191,
-                                                        check_index_techindex,check_index_techweek,
-                                                        check_index_quant)
+from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_index_alpha101,check_index_alpha191,
+                                                        check_index_techindex,check_index_techweek)
 from QUANTTOOLS.QAStockETL import (QA_etl_index_alpha_day,
                                    QA_etl_index_alpha101_day,
                                    QA_etl_index_technical_day,
