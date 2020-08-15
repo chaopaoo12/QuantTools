@@ -36,7 +36,7 @@ class model():
             QA_util_log_info('##target type must be in [value,percent] ===== {}'.format(self.info['date']), ui_log = None)
 
         QA_util_log_info('##save used columns ==== {}'.format(self.info['date']), ui_log = None)
-        self.cols = [i for i in self.data.columns if i not in ['moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
+        self.cols = [i for i in self.data.columns if i not in ['moon','star','mars','venus','sun','MARK','RNG_LO',
                                                                'LAG_TORO','OPEN_MARK','PASS_MARK','TARGET','TARGET3',
                                                                'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
                                                                'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
