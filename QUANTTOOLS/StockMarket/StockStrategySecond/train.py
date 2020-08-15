@@ -1,8 +1,8 @@
 #coding=utf-8
 
 from QUANTTOOLS.StockMarket.StockStrategySecond.setting import working_dir
-from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyOne import model as StockModel
-from QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexStrategyOne import model as IndexModel
+from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyXgboost import model as StockModel
+from QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexXGboost import model as IndexModel
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 import pandas as pd
 from QUANTAXIS.QAUtil import (QA_util_log_info)

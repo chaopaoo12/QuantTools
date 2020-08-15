@@ -1,7 +1,7 @@
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
-import QUANTTOOLS.QAStockTradingDay.StockModel.StrategyTwo as Stock
-import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexStrategyTwo as Index
+import QUANTTOOLS.QAStockTradingDay.StockModel.StrategyKeras as Stock
+import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexKeras as Index
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name
 from QUANTTOOLS.FactorTools.base_tools import combine_model,combine_index
