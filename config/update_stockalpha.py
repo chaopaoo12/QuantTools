@@ -29,7 +29,9 @@
 """
 from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_alpha_day,
                                    QA_SU_save_stock_alpha101_day)
-from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_day,check_stock_adj)
+from QUANTTOOLS.QAStockETL import (QA_etl_stock_alpha_day,
+                                   QA_etl_stock_alpha101_day)
+from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_day,check_stock_adj,check_stock_alpha101,check_stock_alpha191)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 import time
 
@@ -45,3 +47,12 @@ if __name__ == '__main__':
         time.sleep(600)
         QA_SU_save_stock_alpha_day(start_date = mark_day, end_date = mark_day)
         QA_SU_save_stock_alpha101_day(start_date = mark_day, end_date = mark_day)
+
+        while check_stock_alpha101(mark_day) is None or check_stock_alpha101(mark_day)  > 20:
+            time.sleep(300)
+
+        while check_stock_alpha191(mark_day) is None or check_stock_alpha191(mark_day)  > 20:
+            time.sleep(300)
+
+        QA_etl_stock_alpha_day(start_date = mark_day,end_date = mark_day)
+        QA_etl_stock_alpha101_day(start_date = mark_day,end_date = mark_day)

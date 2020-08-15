@@ -36,8 +36,11 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,
                                    QA_SU_save_stock_fianacial_percent_day, QA_util_process_stock_financial,
                                    QA_SU_save_stock_fianacial_momgo, QA_SU_save_fianacialTTM_momgo,
                                    QA_SU_save_stock_industryinfo)
-from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_day, check_stock_fianacial, check_stock_adj)
+from QUANTTOOLS.QAStockETL import (QA_etl_stock_financial_day,
+                                   QA_etl_stock_financial_percent_day)
+from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_day, check_stock_fianacial, check_stock_adj, check_stock_finper)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
+import time
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
@@ -79,4 +82,11 @@ if __name__ == '__main__':
         check_stock_fianacial(mark_day)
         QA_SU_save_stock_fianacial_percent_day(start_date = mark_day, end_date = mark_day)
         print("done")
+        while check_stock_fianacial(mark_day) is None or check_stock_fianacial(mark_day)  > 20:
+            time.sleep(300)
 
+        while check_stock_finper(mark_day) is None or check_stock_finper(mark_day)  > 20:
+            time.sleep(300)
+
+        QA_etl_stock_financial_day(start_date = mark_day,end_date = mark_day)
+        QA_etl_stock_financial_percent_day(start_date = mark_day,end_date = mark_day)
