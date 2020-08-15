@@ -340,7 +340,6 @@ def QA_etl_stock_alpha101_day(from_ = QA_util_today_str(), to_= None, ui_log= No
     else:
         data = data.reset_index()
         data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
-        print(list(data.columns))
         QA_util_sql_store_mysql(data, "stock_alpha101",if_exists='append')
         QA_util_log_info('##JOB ETL STOCK ALPHA101 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
 
