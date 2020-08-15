@@ -92,9 +92,9 @@ ALPHA098,
 ALPHA099,
 ALPHA101
 from stock_alpha101
-where to_Date(order_Date, 'yyyy-mm-dd') >=
+where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
-and to_Date(order_Date, 'yyyy-mm-dd') <=
+and order_Date <=
 to_date('{to_}', 'yyyy-mm-dd')
 '''
 

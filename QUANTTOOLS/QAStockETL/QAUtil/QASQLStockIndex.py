@@ -219,9 +219,9 @@ CODE,VR
 ,CDLUPSIDEGAP2CROWS
 ,CDLXSIDEGAP3METHODS
 from STOCK_TECHNICAL
-where to_Date(order_Date, 'yyyy-mm-dd') >=
+where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
-and to_Date(order_Date, 'yyyy-mm-dd') <=
+and order_Date <=
 to_date('{to_}', 'yyyy-mm-dd')
 '''
 

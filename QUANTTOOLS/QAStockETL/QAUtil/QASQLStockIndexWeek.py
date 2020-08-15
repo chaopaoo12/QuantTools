@@ -219,9 +219,9 @@ CODE,VR as VR_WK
 ,CDLUPSIDEGAP2CROWS as CDLUPSIDEGAP2CROWS_WK
 ,CDLXSIDEGAP3METHODS as CDLXSIDEGAP3METHODS_WK
 from STOCK_TECHNICAL_WEEK
-where to_Date(order_Date, 'yyyy-mm-dd') >=
+where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
-and to_Date(order_Date, 'yyyy-mm-dd') <=
+and order_Date <=
 to_date('{to_}', 'yyyy-mm-dd')
 '''
 
