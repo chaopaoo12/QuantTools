@@ -20,6 +20,10 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101 import QA_Sql_Stock_Alpha10
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191 import QA_Sql_Stock_Alpha191
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancial import QA_Sql_Stock_Financial
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancialPE import QA_Sql_Stock_FinancialPercent
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndex import QA_Sql_Index_Index
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexWeek import QA_Sql_Index_IndexWeek
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha101 import QA_Sql_Index_Alpha101
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha191 import QA_Sql_Index_Alpha191
 
 def QA_fetch_stock_industry(stock_code):
     '''
@@ -968,10 +972,10 @@ def QA_fetch_index_quant_data(code, start, end = None, format='pd'):
     #code= [code] if isinstance(code,str) else code
     # code checking
     code = QA_util_code_tolist(code)
-    index = DATABASE.index_quant_data_index
-    week = DATABASE.index_quant_data_week
-    alpha = DATABASE.index_quant_data_alpha
-    alpha101 = DATABASE.index_quant_data_alpha101
+    index = QA_Sql_Index_Index
+    week = QA_Sql_Index_IndexWeek
+    alpha = QA_Sql_Index_Alpha191
+    alpha101 = QA_Sql_Index_Alpha101
 
     if QA_util_date_valid(end):
 
@@ -979,45 +983,33 @@ def QA_fetch_index_quant_data(code, start, end = None, format='pd'):
 
         QA_util_log_info(
             'JOB Get Index Tech Index data start=%s end=%s' % (start, end))
-        cursor = index.find({
-            'code': {'$in': code}, "date_stamp": {
-                "$lte": QA_util_date_stamp(end),
-                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
-        index_res = pd.DataFrame([item for item in cursor])
+        index_res = index(start,end)
+        index_res = index_res[index_res.code.isin(code)]
 
         QA_util_log_info(
             'JOB Get Index Tech Week data start=%s end=%s' % (start, end))
-        cursor = week.find({
-            'code': {'$in': code}, "date_stamp": {
-                "$lte": QA_util_date_stamp(end),
-                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
-        week_res = pd.DataFrame([item for item in cursor])
+        week_res = week(start,end)
+        week_res = week_res[week_res.code.isin(code)]
 
         QA_util_log_info(
             'JOB Get Index Alpha191 data start=%s end=%s' % (start, end))
-        cursor = alpha.find({
-            'code': {'$in': code}, "date_stamp": {
-                "$lte": QA_util_date_stamp(end),
-                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
-        alpha_res = pd.DataFrame([item for item in cursor])
+        alpha_res = alpha(start,end)
+        alpha_res = alpha_res[alpha_res.code.isin(code)]
 
         QA_util_log_info(
             'JOB Get Index Alpha101 data start=%s end=%s' % (start, end))
-        cursor = alpha101.find({
-            'code': {'$in': code}, "date_stamp": {
-                "$lte": QA_util_date_stamp(end),
-                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
-        alpha101_res = pd.DataFrame([item for item in cursor])
+        alpha101_res = alpha101(start,end)
+        alpha101_res = alpha101_res[alpha101_res.code.isin(code)]
 
         try:
             res = index_res.drop_duplicates(
-                    (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code']).join(
+                    (['code', 'date'])).set_index(['date','code']).join(
                 week_res.drop_duplicates(
-                    (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])).join(
+                    (['code', 'date'])).set_index(['date','code'])).join(
                 alpha_res.drop_duplicates(
-                    (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])).join(
+                    (['code', 'date'])).set_index(['date','code'])).join(
                 alpha101_res.drop_duplicates(
-                    (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code']))
+                    (['code', 'date'])).set_index(['date','code']))
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
