@@ -312,6 +312,7 @@ def QA_etl_stock_alpha_day(from_ = QA_util_today_str(), to_= None, ui_log= None)
             '##JOB NO STOCK ALPHA191 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     else:
         data = data.reset_index()
+        data = data.assign(ORDER_DATE=data.ORDER_DATE.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "stock_alpha191",if_exists='append')
         QA_util_log_info('##JOB ETL STOCK ALPHA191 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
 
@@ -338,6 +339,7 @@ def QA_etl_stock_alpha101_day(from_ = QA_util_today_str(), to_= None, ui_log= No
         QA_util_log_info('##JOB NO STOCK ALPHA101 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     else:
         data = data.reset_index()
+        data = data.assign(ORDER_DATE=data.ORDER_DATE.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "stock_alpha101",if_exists='append')
         QA_util_log_info('##JOB ETL STOCK ALPHA101 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
 
@@ -352,6 +354,7 @@ def QA_etl_stock_technical_day(from_ = QA_util_today_str(), to_= None, ui_log= N
             '##JOB NO STOCK TECHNICAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     else:
         data = data.reset_index()
+        data = data.assign(ORDER_DATE=data.ORDER_DATE.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "stock_technical",if_exists='append')
         QA_util_log_info('##JOB ETL STOCK TECHNICAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
 
@@ -366,6 +369,7 @@ def QA_etl_stock_technical_week(from_ = QA_util_today_str(), to_= None,ui_log= N
             '##JOB NO STOCK TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     else:
         data = data.reset_index()
+        data = data.assign(ORDER_DATE=data.ORDER_DATE.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "stock_technical_week",if_exists='append')
         QA_util_log_info('##JOB ETL STOCK TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
 
@@ -411,6 +415,7 @@ def QA_etl_stock_financial_day(from_ = QA_util_today_str(), to_= None,ui_log= No
             '##JOB NO STOCK QUANT FINANCIAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     else:
         data = data.reset_index()
+        data = data.assign(ORDER_DATE=data.ORDER_DATE.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "stock_quant_financial",if_exists='append')
         QA_util_log_info(
             '##JOB ETL STOCK QUANT FINANCIAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
@@ -427,6 +432,7 @@ def QA_etl_stock_financial_percent_day(from_ = QA_util_today_str(), to_= None, u
             '##JOB NO STOCK FINANCIAL PERCENT HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     else:
         data = data.reset_index()
+        data = data.assign(ORDER_DATE=data.ORDER_DATE.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "stock_quant_financial_percent",if_exists='append')
         QA_util_log_info(
             '##JOB ETL STOCK FINANCIAL PERCENT HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
@@ -478,6 +484,7 @@ def QA_etl_index_alpha_day(from_ = QA_util_today_str(), to_= None, ui_log= None)
             '##JOB NO INDEX ALPHA191 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     else:
         data = data.reset_index()
+        data = data.assign(ORDER_DATE=data.ORDER_DATE.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "index_alpha191",if_exists='append')
         QA_util_log_info(
             '##JOB ETL INDEX ALPHA191 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
@@ -509,6 +516,7 @@ def QA_etl_index_alpha101_day(from_ = QA_util_today_str(), to_= None, ui_log= No
             '##JOB NO INDEX ALPHA101 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     else:
         data = data.reset_index()
+        data = data.assign(ORDER_DATE=data.ORDER_DATE.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "index_alpha101",if_exists='append')
         QA_util_log_info(
             '##JOB ETL INDEX ALPHA101 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
@@ -526,6 +534,7 @@ def QA_etl_index_technical_day(from_ = QA_util_today_str(), to_= None, ui_log= N
             '##JOB NO INDEX TECHNICAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     else:
         data = data.reset_index()
+        data = data.assign(ORDER_DATE=data.ORDER_DATE.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "index_technical",if_exists='append')
         QA_util_log_info('##JOB ETL INDEX TECHNICAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
 
@@ -542,5 +551,6 @@ def QA_etl_index_technical_week(from_ = QA_util_today_str(), to_= None, ui_log= 
             '##JOB NO INDEX TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     else:
         data = data.reset_index()
+        data = data.assign(ORDER_DATE=data.ORDER_DATE.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "index_technical_week",if_exists='append')
         QA_util_log_info('##JOB ETL INDEX TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
