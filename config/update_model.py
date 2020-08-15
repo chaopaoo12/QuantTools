@@ -32,7 +32,7 @@ from QUANTTOOLS.QAStockETL.FuncTools.check_data import (
                                                         check_stock_quant,
                                                         check_index_quant)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_real_date
-from QUANTTOOLS.StockMarket.StockStrategySecond.daily_job import job111
+from QUANTTOOLS.StockMarket.StockStrategySecond.train_job import daily_train
 import time
 
 if __name__ == '__main__':
@@ -45,4 +45,4 @@ if __name__ == '__main__':
     while check_index_quant(ckeck_day) is None or check_index_quant(ckeck_day)  > 10:
         time.sleep(180)
 
-    job111(mark_day)
+    daily_train(mark_day)
