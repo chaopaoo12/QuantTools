@@ -77,9 +77,9 @@ if __name__ == '__main__':
 
         time.sleep(600)
         #QA_SU_save_stock_quant_data_day(start_date = mark_day, end_date = mark_day)
-        QA_SU_save_index_quant_data_day(start_date = mark_day, end_date = mark_day)
+        #QA_SU_save_index_quant_data_day(start_date = mark_day, end_date = mark_day)
 
         check_stock_quant(mark_day)
         check_index_quant(mark_day)
 
-    job111(mark_day)
+        job111(mark_day)
