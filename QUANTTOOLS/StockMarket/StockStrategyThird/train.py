@@ -2,7 +2,7 @@
 
 from QUANTTOOLS.StockMarket.StockStrategyThird.setting import working_dir
 from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyKeras import model as StockModel
-from QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexKeras import model as IndexModel
+from QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexXGboost import model as IndexModel
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 import pandas as pd
 from QUANTAXIS.QAUtil import (QA_util_log_info)
