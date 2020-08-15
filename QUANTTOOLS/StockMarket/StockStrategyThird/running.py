@@ -16,17 +16,17 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
     QA_util_log_info('##JOB02 Now Predict ==== {}'.format(str(trading_date)), ui_log)
-    tar,tar_index,index_tar,safe_tar,stock_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
+    tar,stock_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
 
     QA_util_log_info('##JOB03 Now Saving Result ==== {}'.format(str(trading_date)), ui_log)
     save_prediction({'date': trading_date, 'tar':tar}, 'prediction', working_dir)
 
     QA_util_log_info('##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
 
-    try:
-        index1 = tar_index.loc[trading_date][['NAME','Z_PROB','O_PROB','RANK','model_type']]
-    except:
-        index1 = None
+    #try:
+    #    index1 = tar_index.loc[trading_date][['NAME','Z_PROB','O_PROB','RANK','model_type']]
+    #except:
+    #    index1 = None
 
     try:
         tar1 = tar.loc[trading_date]
@@ -55,24 +55,24 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
         tar = pd.DataFrame()
 
     QA_util_log_info('##JOB06 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
-    try:
-        safe_res = safe_tar.loc[trading_date][['NAME','Z_PROB','O_PROB','RANK']]
-    except:
-        safe_res = pd.DataFrame()
+    #try:
+    #    safe_res = safe_tar.loc[trading_date][['NAME','Z_PROB','O_PROB','RANK']]
+    #except:
+    #    safe_res = pd.DataFrame()
 
-    try:
-        index_res = index_tar.loc[trading_date][['NAME','Z_PROB','O_PROB','RANK']]
-    except:
-        index_res = pd.DataFrame()
+    #try:
+    #    index_res = index_tar.loc[trading_date][['NAME','Z_PROB','O_PROB','RANK']]
+    #except:
+    #    index_res = pd.DataFrame()
 
     try:
         stock_res = stock_tar[stock_tar['RANK']<=5].loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
     except:
         stock_res = pd.DataFrame()
 
-    index_d = index_tar.groupby('date').mean()[['Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    #index_d = index_tar.groupby('date').mean()[['Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
     stock_d = stock_tar.groupby('date').mean()[['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
-    combine_d = tar_index.groupby('date').mean()[['Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    #combine_d = tar_index.groupby('date').mean()[['Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
 
     try:
         err_msg = '模型训练日期:{model_date}'.format(model_date=model_date)
@@ -81,25 +81,25 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
 
     ########
 
-    try:
-        safe_body = build_table(safe_res, 'safe模型结果_{}'.format(str(trading_date)))
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:Safe模型结果", trading_date)
+    #try:
+    #    safe_body = build_table(safe_res, 'safe模型结果_{}'.format(str(trading_date)))
+    #except:
+    #    send_email('交易报告:'+ trading_date, "消息组件运算失败:Safe模型结果", trading_date)
 
-    try:
-        index_body = build_table(index_res, '指数模型结果_{}'.format(str(trading_date)))
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:指数模型结果", trading_date)
+    #try:
+    #    index_body = build_table(index_res, '指数模型结果_{}'.format(str(trading_date)))
+    #except:
+    #    send_email('交易报告:'+ trading_date, "消息组件运算失败:指数模型结果", trading_date)
 
     try:
         stock_body = build_table(stock_res, '选股模型结果_{}'.format(str(trading_date)))
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:选股模型结果", trading_date)
 
-    try:
-        combine_body = build_table(index1, '合成指数模型结果_from:{a}_to:{b}'.format(a=start, b=end))
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:合成指数模型结果", trading_date)
+    #try:
+    #    combine_body = build_table(index1, '合成指数模型结果_from:{a}_to:{b}'.format(a=start, b=end))
+    #except:
+    #    send_email('交易报告:'+ trading_date, "消息组件运算失败:合成指数模型结果", trading_date)
 
     #########
 
@@ -124,15 +124,15 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内交易成绩", trading_date)
 
-    try:
-        combine_score = build_table(combine_d, '合成指数模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:合成指数模型模型周期内交易成绩", trading_date)
+    #try:
+    #    combine_score = build_table(combine_d, '合成指数模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
+    #except:
+    #    send_email('交易报告:'+ trading_date, "消息组件运算失败:合成指数模型模型周期内交易成绩", trading_date)
 
-    try:
-        index_score = build_table(index_d, '基础指数模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:基础指数模型周期内交易成绩", trading_date)
+    #try:
+    #    index_score = build_table(index_d, '基础指数模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
+    #except:
+    #    send_email('交易报告:'+ trading_date, "消息组件运算失败:基础指数模型周期内交易成绩", trading_date)
 
     try:
         stock_socre = build_table(stock_d, '选股模型周期内交易成绩_from:{a}_to:{b}'.format(a=start, b=end))
@@ -146,10 +146,10 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内选股记录", trading_date)
 
-    try:
-        indexhis_body = build_table(tar_index[['NAME','Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']], '模型周期内指数合成记录_from:{a}_to:{b}'.format(a=start, b=end))
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内指数合成记录", trading_date)
+    #try:
+    #    indexhis_body = build_table(tar_index[['NAME','Z_PROB','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']], '模型周期内指数合成记录_from:{a}_to:{b}'.format(a=start, b=end))
+    #except:
+    #    send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内指数合成记录", trading_date)
 
 
     if res is not None:
@@ -158,10 +158,10 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
         title = '空仓交易报告'
 
     try:
-        msg = build_email(build_head(),err_msg,safe_body,index_body,stock_body,combine_body,
+        msg = build_email(build_head(),err_msg,stock_body,
                           target_body,hold_body,fronzen_body,
-                          model_score, combine_score, index_score, stock_socre,
-                          modelhis_body, indexhis_body)
+                          model_score,  stock_socre,
+                          modelhis_body)
         send_actionnotice(strategy_id,
                           '交易报告:{}'.format(trading_date),
                           '模型运行完毕',

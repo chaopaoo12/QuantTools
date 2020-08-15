@@ -20,13 +20,11 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(date)), ui_log)
     stock_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
                               train_end=QA_util_get_last_day(QA_util_get_real_date(date), 5))
-    stock_model.prepare_data()
-    stock_model.build_model()
-    QA_util_log_info(
-        '##JOB05 Now Stock Model Trainnig ==== {}'.format(str(date)), ui_log)
-    stock_model.model_running()
-    QA_util_log_info(
-        '##JOB06 Now Save Stock Model ==== {}'.format(str(date)), ui_log)
+    stock_model.prepare_data(percent=30)
+    stock_model.build_model(loss = 'binary_crossentropy')
+    QA_util_log_info('##JOB05 Now Stock Model Trainnig ==== {}'.format(str(date)), ui_log)
+    stock_model.model_running(batch_size=4096, nb_epoch=100)
+    QA_util_log_info('##JOB06 Now Save Stock Model ==== {}'.format(str(date)), ui_log)
     important = stock_model.model_important()
     stock_model.save_model('stock',working_dir = working_dir)
     stock_train_report = build_table(pd.DataFrame(stock_model.info['train_report']), '个股模型训练集情况')
