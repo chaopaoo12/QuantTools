@@ -67,7 +67,7 @@ class model():
         self.X_train = self.fs.fit_transform(self.X_train, self.Y_train)
         self.info['fs'] = self.fs
 
-    def build_model(self, columns_num, loss = 'binary_crossentropy', optimizer = Adam(lr=3e-4), metrics = ['accuracy',precision]):
+    def build_model(self, columns_num, loss = 'binary_crossentropy', optimizer = Adam(lr=1e-4), metrics = ['accuracy',precision]):
         QA_util_log_info('##JOB Set Model Params ===== {}'.format(self.info['date']), ui_log = None)
 
         self.model = Sequential() #建立模型
@@ -88,7 +88,7 @@ class model():
         #编译模型，损失函数为binary_crossentropy，用adam法求解
         self.model.compile(loss=loss, optimizer=optimizer,metrics=metrics)
 
-    def model_running(self, batch_size=50000,nb_epoch=100,validation_split=0.2):
+    def model_running(self, batch_size=4096,nb_epoch=100,validation_split=0.2):
         QA_util_log_info('##JOB Now Model Traning ===== {}'.format(self.info['date']), ui_log = None)
         #self.model.fit(self.X_train,self.Y_train)
         self.model.fit(self.X_train, self.Y_train,
