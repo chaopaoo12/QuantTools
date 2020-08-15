@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Ora
 ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
 
 sql_text = '''select to_char(ORDER_DATE, 'yyyy-mm-dd') as "date",
-CODE,VR as VR_WK
+CODE AS "code",VR as VR_WK
 ,VRSI as VRSI_WK
 ,VRSI_C as VRSI_C_WK
 ,VSTD as VSTD_WK
@@ -232,4 +232,4 @@ def QA_Sql_Stock_IndexWeek(from_ , to_, sql_text = sql_text, ui_log= None):
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
-    return(data.drop_duplicates((['CODE', 'DATE'])))
+    return(data.drop_duplicates((['code', 'date'])))
