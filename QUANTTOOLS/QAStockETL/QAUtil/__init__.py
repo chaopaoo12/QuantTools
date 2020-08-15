@@ -20,3 +20,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101 import QA_Sql_Stock_Alpha10
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191 import QA_Sql_Stock_Alpha191
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancial import QA_Sql_Stock_Financial
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancialPE import QA_Sql_Stock_FinancialPercent
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndex import QA_Sql_Index_Index
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexWeek import QA_Sql_Index_IndexWeek
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha101 import QA_Sql_Index_Alpha101
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha191 import QA_Sql_Index_Alpha191
