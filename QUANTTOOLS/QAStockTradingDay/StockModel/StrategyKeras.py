@@ -67,11 +67,11 @@ class model():
         self.X_train = self.fs.fit_transform(self.X_train, self.Y_train)
         self.info['fs'] = self.fs
 
-    def build_model(self, columns_num, loss = 'binary_crossentropy', optimizer = Adam(lr=1e-4), metrics = ['accuracy',precision]):
+    def build_model(self, loss = 'binary_crossentropy', optimizer = Adam(lr=1e-4), metrics = ['accuracy',precision]):
         QA_util_log_info('##JOB Set Model Params ===== {}'.format(self.info['date']), ui_log = None)
 
         self.model = Sequential() #建立模型
-        self.model.add(Dense(input_dim = columns_num, units = 2400)) #添加输入层、隐藏层的连接
+        self.model.add(Dense(input_dim = self.X_train.shape[1], units = 2400)) #添加输入层、隐藏层的连接
         self.model.add(Activation('relu')) #以Relu函数为激活函数
         #model.add(Dropout(0.25))
         self.model.add(Dense(input_dim = 2400, units = 1200)) #添加隐藏层、隐藏层的连接
