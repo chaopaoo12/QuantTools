@@ -180,5 +180,6 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
 
     QA_util_log_info(
         '##JOB got Data stock industry info ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+    print(res)
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
