@@ -18,7 +18,7 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_bloc
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method).data
     if type == 'model':
-        res = QA_fetch_get_quant_data(codes, start_date, end_date, block = sub_block).set_index(['date','code']).drop(['date_stamp'], axis=1)
+        res = QA_fetch_get_quant_data(codes, start_date, end_date, block = sub_block, type=None).set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
         res = res.join(target)
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
