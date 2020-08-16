@@ -158,9 +158,6 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
     fianacial['RNG60_RES']= (fianacial['AVG60_RNG']*60) / fianacial['RNG_60']
     fianacial['RNG20_RES']= (fianacial['AVG60_RNG']*20) / fianacial['RNG_20']
     fianacial['TOTAL_MARKET']= fianacial['TOTAL_MARKET'].apply(lambda x:math.log(x))
-    INDUSTRY = fianacial[['INDUSTRY']].loc[rng1]
-    TOR = fianacial[['RNG_L','DAYS']].astype('float16').loc[rng1]
-    TOR.columns = ['RNG_LO','DAYSO']
     fianacial = fianacial.loc[rng1]
     for columnname in fianacial.columns:
         if fianacial[columnname].dtype == 'float64':
@@ -170,14 +167,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
     QA_util_log_info(
         '##JOB stock quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     res = fianacial.join(technical).join(alphas)
-    cols = ['RNG_L_O','LAG_TOR_O','DAYS_O']
-    col_tar = []
-    for i in range(len(cols)):
-        for j in range(len(list(res.columns))):
-            if list(res.columns)[j].find(cols[i]) == -1:
-                continue
-            col_tar.append(list(res.columns)[j])
-    col_tar = list(set(col_tar))
+    col_tar = ['DAYS','INDUSTRY']
     QA_util_log_info(
         '##JOB stock quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     if type == 'standardize':
@@ -185,11 +175,10 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
     elif type == 'normalization':
         res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
     else:
-        res = res[[x for x in list(res.columns) if x not in col_tar]].join(res[col_tar])
+        pass
         QA_util_log_info('##JOB type must be in [standardize, normalization]', ui_log)
 
     QA_util_log_info(
         '##JOB got Data stock industry info ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    res = pd.concat([res,INDUSTRY,TOR],axis=1).reset_index()
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(res)
