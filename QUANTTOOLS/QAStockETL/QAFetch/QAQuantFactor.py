@@ -55,22 +55,14 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
     QA_util_log_info(
         '##JOB index quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     res = technical.join(alphas)
-    cols = ['RNG_L_O','LAG_TOR_O','DAYS_O']
-    col_tar = []
-    for i in range(len(cols)):
-        for j in range(len(list(res.columns))):
-            if list(res.columns)[j].find(cols[i]) == -1:
-                continue
-            col_tar.append(list(res.columns)[j])
-    col_tar = list(set(col_tar))
     QA_util_log_info(
         '##JOB index quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     if type == 'standardize':
-        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar]).reset_index()
+        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).reset_index()
     elif type == 'normalization':
-        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar]).reset_index()
+        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).reset_index()
     else:
-        res = res[[x for x in list(res.columns) if x not in col_tar]].join(res[col_tar]).reset_index()
+        res = res.reset_index()
         QA_util_log_info('##JOB type must be in [standardize, normalization]', ui_log)
 
     cate = QA_fetch_index_info(codes)
