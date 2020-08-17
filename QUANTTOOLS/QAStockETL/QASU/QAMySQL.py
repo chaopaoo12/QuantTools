@@ -2,8 +2,8 @@
 
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch_stock_block_adv,QA_fetch_index_list_adv,
                                                QA_fetch_stock_day_adv)
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,QA_util_get_trade_range,QA_util_log_info,
-                               QA_util_if_trade,QA_util_get_pre_trade_date)
+from  QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_trade_range,QA_util_log_info,
+                               QA_util_get_pre_trade_date)
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,
                                            QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,QA_fetch_stock_alpha101_adv,
                                            QA_fetch_stock_fianacial_adv,QA_fetch_stock_financial_percent_adv,
@@ -14,12 +14,10 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetc
 from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr)
 
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_sql_store_mysql
-from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_process_financial,QA_util_etl_financial_TTM,\
-    QA_util_process_stock_financial,QA_util_etl_stock_quant)
+from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_process_financial)
 import numpy as np
 import pandas as pd
 import datetime
-from QUANTTOOLS.QAStockETL.QAUtil.base_func import normalization, standardize, time_this_function
 from scipy import stats
 
 def QA_fetch_index_cate(data, stock_code):
