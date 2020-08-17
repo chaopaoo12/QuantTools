@@ -663,28 +663,28 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, format='pd', 
         __data = []
         QA_util_log_info(
             'JOB Get Stock Financial data start=%s end=%s' % (start, end))
-        pe_res = pe(start,end)
+        pe_res = pe(start,end).reset_index()
         pe_res = pe_res[pe_res.code.isin(code)]
-        financial_res = financial(start,end)
+        financial_res = financial(start,end).reset_index()
         financial_res = financial_res[financial_res.code.isin(code)]
 
         QA_util_log_info(
             'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
 
-        index_res = index(start,end)
+        index_res = index(start,end).reset_index()
         index_res = index_res[index_res.code.isin(code)]
         QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
 
-        week_res = week(start,end)
+        week_res = week(start,end).reset_index()
         week_res = week_res[week_res.code.isin(code)]
         QA_util_log_info(
             'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start,end)
+        alpha_res = alpha(start,end).reset_index()
         alpha_res = alpha_res[alpha_res.code.isin(code)]
         QA_util_log_info(
             'JOB Get Stock Alpha101 data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start,end)
+        alpha101_res = alpha101(start,end).reset_index()
         alpha101_res = alpha101_res[alpha101_res.code.isin(code)]
         try:
             res = financial_res.drop_duplicates(
@@ -983,22 +983,22 @@ def QA_fetch_index_quant_data(code, start, end = None, format='pd'):
 
         QA_util_log_info(
             'JOB Get Index Tech Index data start=%s end=%s' % (start, end))
-        index_res = index(start,end)
+        index_res = index(start,end).reset_index()
         index_res = index_res[index_res.code.isin(code)]
 
         QA_util_log_info(
             'JOB Get Index Tech Week data start=%s end=%s' % (start, end))
-        week_res = week(start,end)
+        week_res = week(start,end).reset_index()
         week_res = week_res[week_res.code.isin(code)]
 
         QA_util_log_info(
             'JOB Get Index Alpha191 data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start,end)
+        alpha_res = alpha(start,end).reset_index()
         alpha_res = alpha_res[alpha_res.code.isin(code)]
 
         QA_util_log_info(
             'JOB Get Index Alpha101 data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start,end)
+        alpha101_res = alpha101(start,end).reset_index()
         alpha101_res = alpha101_res[alpha101_res.code.isin(code)]
 
         try:
