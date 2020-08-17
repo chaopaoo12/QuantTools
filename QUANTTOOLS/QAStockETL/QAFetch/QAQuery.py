@@ -702,9 +702,9 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, format='pd', 
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
-                    res[columnname]=res[columnname].astype('float16')
+                    res[columnname]=res[columnname].astype('float32')
                 if res[columnname].dtype == 'float32':
-                    res[columnname]=res[columnname].astype('float16')
+                    res[columnname]=res[columnname].astype('float32')
                 if res[columnname].dtype == 'int64':
                     res[columnname]=res[columnname].astype('int8')
                 if res[columnname].dtype == 'int32':
