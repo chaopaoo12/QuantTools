@@ -99,7 +99,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
     QA_util_log_info(
         '##JOB got Data stock perank data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     perank = QA_fetch_stock_financial_percent_adv(codes,start,end_date).data
-    fianacial = fianacial.join(perank)
+    fianacial = fianacial.join(perank).groupby('code').fillna(method='ffill')
     QA_util_log_info(
         '##JOB got Data stock alpha191 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     alpha = QA_fetch_stock_alpha_adv(codes,start,end_date).data[["alpha_001","alpha_002","alpha_003","alpha_004","alpha_005","alpha_006","alpha_007","alpha_008",
@@ -127,7 +127,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
     QA_util_log_info(
         '##JOB got Data stock alpha101 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     alpha101 = QA_fetch_stock_alpha101_adv(codes,start,end_date).data.loc[rng1]
-    alphas = alpha.join(alpha101)
+    alphas = alpha.join(alpha101).groupby('code').fillna(method='ffill')
     for columnname in alphas.columns:
         if alphas[columnname].dtype == 'float64':
             alphas[columnname]=alphas[columnname].astype('float16')
@@ -140,7 +140,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
         '##JOB got Data stock tech week data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     tech_week = QA_fetch_stock_technical_index_adv(codes,start,end_date, 'week').data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
     tech_week.columns = [x + '_WK' for x in tech_week.columns]
-    technical = technical.join(tech_week)
+    technical = technical.join(tech_week).groupby('code').fillna(method='ffill')
     for columnname in technical.columns:
         if technical[columnname].dtype == 'float64':
             technical[columnname]=technical[columnname].astype('float16')
