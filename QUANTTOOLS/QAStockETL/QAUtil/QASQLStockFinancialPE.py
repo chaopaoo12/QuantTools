@@ -103,4 +103,4 @@ def QA_Sql_Stock_FinancialPercent(from_ , to_, sql_text = sql_text, ui_log= None
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
-    return(data.drop_duplicates((['code', 'date'])))
+    return(data.drop_duplicates((['code', 'date'])).groupby('code').fillna(method='ffill'))
