@@ -96,7 +96,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
                                                                           'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
                                                                           'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR','TOTALPROFITINRATE']]
     fianacial = fianacial[fianacial.DAYS >= 90]
-    print(fianacial[['TOTAL_MARKET']])
+    fianacial = fianacial.assign(TOTAL_MARKET =fianacial.TOTAL_MARKET.apply(lambda x:round(x/100000000,2)))
     QA_util_log_info(
         '##JOB got Data stock perank data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     perank = QA_fetch_stock_financial_percent_adv(codes,start,end_date).data
