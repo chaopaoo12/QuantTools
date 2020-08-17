@@ -29,7 +29,7 @@
 """
 from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_technical_index_day,
                                    QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_month_day)
-from QUANTTOOLS.QAStockETL import (QA_etl_stock_financial_day,
+from QUANTTOOLS.QAStockETL import (QA_etl_stock_technical_day,
                                    QA_etl_stock_technical_week)
 from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_day,check_stock_adj,check_stock_techindex,check_stock_techweek)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
@@ -54,6 +54,6 @@ if __name__ == '__main__':
         while check_stock_techweek(mark_day) is None or check_stock_techweek(mark_day)  > 20:
             time.sleep(300)
 
-        QA_etl_stock_financial_day(mark_day, mark_day)
+        QA_etl_stock_technical_day(mark_day, mark_day)
         QA_etl_stock_technical_week(mark_day, mark_day)
         QA_SU_save_stock_technical_month_day(start_date = mark_day, end_date = mark_day)
