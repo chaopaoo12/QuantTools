@@ -74,7 +74,7 @@ if __name__ == '__main__':
         while check_index_techweek(mark_day) is None or check_index_techweek(mark_day)  > 10:
             time.sleep(180)
 
-        QA_etl_index_alpha_day(start_date = mark_day, end_date = mark_day)
-        QA_etl_index_alpha101_day(start_date = mark_day, end_date = mark_day)
-        QA_etl_index_technical_day(start_date = mark_day, end_date = mark_day)
-        QA_etl_index_technical_week(start_date = mark_day, end_date = mark_day)
+        QA_etl_index_alpha_day(mark_day, mark_day)
+        QA_etl_index_alpha101_day(mark_day, mark_day)
+        QA_etl_index_technical_day(mark_day, mark_day)
+        QA_etl_index_technical_week(mark_day,  mark_day)

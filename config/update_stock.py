@@ -54,6 +54,6 @@ if __name__ == '__main__':
         while check_stock_techweek(mark_day) is None or check_stock_techweek(mark_day)  > 20:
             time.sleep(300)
 
-        QA_etl_stock_financial_day(start_date = mark_day,end_date = mark_day)
-        QA_etl_stock_technical_week(start_date = mark_day,end_date = mark_day)
+        QA_etl_stock_financial_day(mark_day, mark_day)
+        QA_etl_stock_technical_week(mark_day, mark_day)
         QA_SU_save_stock_technical_month_day(start_date = mark_day, end_date = mark_day)
