@@ -43,7 +43,7 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
     QA_util_log_info(
         '##JOB got Data index alpha101 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     alpha101 = QA_fetch_index_alpha101_adv(codes,start,end_date).data.loc[rng1]
-    alphas = alpha.join(alpha101)
+    alphas = alpha.join(alpha101).groupby('code').fillna(method='ffill')
     QA_util_log_info(
         '##JOB got Data index tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     technical = QA_fetch_index_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
@@ -51,16 +51,16 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
         '##JOB got Data index tech week data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     tech_week = QA_fetch_index_technical_index_adv(codes,start,end_date, 'week').data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
     tech_week.columns = [x + '_WK' for x in tech_week.columns]
-    technical = technical.join(tech_week)
+    technical = technical.join(tech_week).groupby('code').fillna(method='ffill')
     QA_util_log_info(
         '##JOB index quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     res = technical.join(alphas)
     QA_util_log_info(
         '##JOB index quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     if type == 'standardize':
-        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).reset_index()
+        res = res.groupby('date').apply(standardize).reset_index()
     elif type == 'normalization':
-        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).reset_index()
+        res = res.groupby('date').apply(normalization).reset_index()
     else:
         res = res.reset_index()
         QA_util_log_info('##JOB type must be in [standardize, normalization]', ui_log)
