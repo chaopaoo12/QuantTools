@@ -49,14 +49,14 @@ if __name__ == '__main__':
         QA_SU_save_stock_industryinfo()
         print("download day data")
 
-        while check_stock_day(mark_day) is None or check_stock_day(mark_day)  > 20:
+        while check_stock_day(mark_day) is None or check_stock_day(mark_day) > 20:
             QA_SU_save_stock_day('tdx')
 
         QA_SU_save_stock_block('tdx')
         QA_SU_save_stock_info('tdx')
         QA_SU_save_stock_info_tushare()
 
-        while check_stock_adj(mark_day) is None or check_stock_adj(mark_day)  > 20:
+        while check_stock_adj(mark_day) is None or check_stock_adj(mark_day) > 20:
             QA_SU_save_stock_xdxr('tdx')
 
         print("done")
