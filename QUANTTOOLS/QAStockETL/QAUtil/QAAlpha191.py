@@ -72,9 +72,10 @@ class Alpha_191:
         return len(na) - na.values.argmin()
 
     #############################################################################
+    #(-1 * CORR(RANK(DELTA(LOG(VOLUME),1)),RANK(((CLOSE-OPEN)/OPEN)),6)
     def alpha_001(self):
         #####成交量与日内价格波动秩关系
-        data1 = self.volume.diff(1).rank(axis=1,pct=True)
+        data1 = np.log(self.volume).diff(1).rank(axis=1,pct=True)
         data2 = ((self.close - self.open_price)/self.open_price).rank(axis=1,pct=True)
         alpha = -data1.iloc[-6:,:].corrwith(data2.iloc[-6:,:]).dropna()
         alpha = alpha.dropna()
@@ -237,8 +238,9 @@ class Alpha_191:
 
     ##################################################################
     def alpha_017(self):
+        #RANK((VWAP-MAX(VWAP,15)))^DELTA(CLOSE,5)
         temp1=self.avg_price.rolling(15).max()
-        temp2=(self.close-temp1).dropna()
+        temp2=(self.avg_price-temp1)
         part1=temp2.rank(axis=1,pct=True)
         part2=self.close.diff(5)
         result=part1**part2
