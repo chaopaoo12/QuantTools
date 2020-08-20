@@ -39,22 +39,22 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
                                                                  'alpha_152', 'alpha_153', 'alpha_156', 'alpha_158', 'alpha_159', 'alpha_160', 'alpha_161', 'alpha_162',
                                                                  'alpha_163', 'alpha_164', 'alpha_167', 'alpha_168', 'alpha_169', 'alpha_170', 'alpha_171', 'alpha_172', 'alpha_173',
                                                                  'alpha_175', 'alpha_176', 'alpha_177', 'alpha_178', 'alpha_179', 'alpha_184', 'alpha_185', 'alpha_186',
-                                                                 'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']].loc[rng1]
+                                                                 'alpha_187', 'alpha_188', 'alpha_189', 'alpha_191']]
     QA_util_log_info(
         '##JOB got Data index alpha101 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    alpha101 = QA_fetch_index_alpha101_adv(codes,start,end_date).data.loc[rng1]
+    alpha101 = QA_fetch_index_alpha101_adv(codes,start,end_date).data
     alphas = alpha.join(alpha101).groupby('code').fillna(method='ffill')
     QA_util_log_info(
         '##JOB got Data index tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    technical = QA_fetch_index_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
+    technical = QA_fetch_index_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1)
     QA_util_log_info(
         '##JOB got Data index tech week data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    tech_week = QA_fetch_index_technical_index_adv(codes,start,end_date, 'week').data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
+    tech_week = QA_fetch_index_technical_index_adv(codes,start,end_date, 'week').data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1)
     tech_week.columns = [x + '_WK' for x in tech_week.columns]
     technical = technical.join(tech_week).groupby('code').fillna(method='ffill')
     QA_util_log_info(
         '##JOB index quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    res = technical.join(alphas)
+    res = technical.join(alphas).loc[rng1]
     QA_util_log_info(
         '##JOB index quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     if type == 'standardize':
@@ -73,7 +73,7 @@ def QA_fetch_get_index_quant_data(codes, start_date, end_date, type='standardize
 @time_this_function
 def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_log = None):
     '获取股票量化机器学习最终指标V1'
-    start = QA_util_get_pre_trade_date(start_date,0)
+    start = QA_util_get_pre_trade_date(start_date,15)
     QA_util_log_info(
         '##JOB got stock quant data date range ============== from {from_} to {to_} '.format(from_=start,to_=end_date), ui_log)
     rng1 = QA_util_get_trade_range(start_date, end_date)
@@ -144,10 +144,10 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
                                                                  "alpha_157","alpha_158","alpha_159","alpha_160","alpha_161","alpha_163","alpha_164",
                                                                  "alpha_167","alpha_168","alpha_169","alpha_170","alpha_172","alpha_173","alpha_174",
                                                                  "alpha_175","alpha_177","alpha_178","alpha_179","alpha_180","alpha_185",
-                                                                 "alpha_186","alpha_187","alpha_188","alpha_189","alpha_191"]].loc[rng1]
+                                                                 "alpha_186","alpha_187","alpha_188","alpha_189","alpha_191"]]
     QA_util_log_info(
         '##JOB got Data stock alpha101 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    alpha101 = QA_fetch_stock_alpha101_adv(codes,start,end_date).data.loc[rng1].fillna(0)
+    alpha101 = QA_fetch_stock_alpha101_adv(codes,start,end_date).data.fillna(0)
     alphas = alpha.join(alpha101).groupby('code').fillna(method='ffill')
     for columnname in alphas.columns:
         if alphas[columnname].dtype == 'float64':
@@ -156,10 +156,10 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
             alphas[columnname]=alphas[columnname].astype('int8')
     QA_util_log_info(
         '##JOB got Data stock tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
+    technical = QA_fetch_stock_technical_index_adv(codes,start,end_date).data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1)
     QA_util_log_info(
         '##JOB got Data stock tech week data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    tech_week = QA_fetch_stock_technical_index_adv(codes,start,end_date, 'week').data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1).loc[rng1]
+    tech_week = QA_fetch_stock_technical_index_adv(codes,start,end_date, 'week').data.drop(['PBX1','PBX1_C','PBX2','PBX2_C','PBX3','PBX3_C','PBX4','PBX4_C','PBX5','PBX5_C','PBX6','PBX6_C','PBX_STD','PVT','PVT_C'], axis=1)
     tech_week.columns = [x + '_WK' for x in tech_week.columns]
     technical = technical.join(tech_week).groupby('code').fillna(method='ffill')
     for columnname in technical.columns:

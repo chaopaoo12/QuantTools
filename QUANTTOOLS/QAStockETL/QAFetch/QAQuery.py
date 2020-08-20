@@ -24,6 +24,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndex import QA_Sql_Index_Index
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexWeek import QA_Sql_Index_IndexWeek
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha101 import QA_Sql_Index_Alpha101
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha191 import QA_Sql_Index_Alpha191
+from QUANTTOOLS.QAStockETL.QAUtil.base_func import normalization, standardize
 
 def QA_fetch_stock_industry(stock_code):
     '''
@@ -646,7 +647,7 @@ def QA_fetch_stock_financial_percent(code, start, end=None, format='pd', collect
             'QA Error QA_fetch_stock_financial_percent data parameter start=%s end=%s is not right' % (start, end))
 
 @time_this_function
-def QA_fetch_stock_quant_data(code, start, end=None, block = True, format='pd', collections=DATABASE.stock_quant_data):
+def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normalization', format='pd', collections=DATABASE.stock_quant_data):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
@@ -718,6 +719,17 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, format='pd', 
                 block.columns = ['S_' + i for i  in  list(block.columns)]
                 res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
             else:
+                pass
+
+            col_tar = ['DAYS','INDUSTRY']
+            if type == 'standardize':
+                QA_util_log_info('##JOB stock quant data standardize trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
+                res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
+            elif type == 'normalization':
+                QA_util_log_info('##JOB stock quant data normalization trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
+                res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
+            else:
+                QA_util_log_info('##JOB type must be in [standardize, normalization]')
                 pass
         except:
             res = None
@@ -967,7 +979,7 @@ def QA_fetch_index_target(codes, start_date, end_date, method = 'value'):
     return(res)
 
 @time_this_function
-def QA_fetch_index_quant_data(code, start, end = None, format='pd'):
+def QA_fetch_index_quant_data(code, start, end = None, type = 'normalization', format='pd'):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
@@ -1025,6 +1037,14 @@ def QA_fetch_index_quant_data(code, start, end = None, format='pd'):
 
         except:
             res = None
+
+        if type == 'standardize':
+            res = res.groupby('date').apply(standardize).reset_index()
+        elif type == 'normalization':
+            res = res.groupby('date').apply(normalization).reset_index()
+        else:
+            res = res.reset_index()
+            QA_util_log_info('##JOB type must be in [standardize, normalization]')
 
         if format in ['P', 'p', 'pandas', 'pd']:
             return res
