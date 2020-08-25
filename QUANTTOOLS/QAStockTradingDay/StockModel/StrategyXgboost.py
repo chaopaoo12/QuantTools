@@ -1,14 +1,13 @@
 import pandas as pd
 from xgboost import XGBClassifier
-from sklearn.metrics import (accuracy_score,confusion_matrix,
-                             classification_report,roc_curve,roc_auc_score,
-                             auc,precision_score,recall_score,f1_score)
-from QUANTTOOLS.FactorTools.QuantMk import get_quant_data
+from sklearn.metrics import (accuracy_score,
+                             classification_report,
+                             precision_score)
+from QUANTTOOLS.FactorTools.QuantMk import get_quant_data_norm
 from QUANTAXIS.QAUtil import (QA_util_log_info, QA_util_today_str,QA_util_get_trade_range)
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
-from sklearn import feature_selection
-import numpy as np
+
 
 class model():
 
@@ -20,7 +19,7 @@ class model():
 
     def get_data(self, start, end, block=True, sub_block=True, type ='crawl'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-        self.data = get_quant_data(start, end, type = type, block = block, sub_block = sub_block)
+        self.data = get_quant_data_norm(start, end, type = type, block = block, sub_block = sub_block)
         self.data = self.data[(self.data.DAYS>= 90)&(self.data.next_date == self.data.PRE_DATE)]
         print(self.data.shape)
 
@@ -48,19 +47,19 @@ class model():
         self.TR_RNG = QA_util_get_trade_range(train_start, train_end)
         self.info['train_rng'] = [train_start,train_end]
 
-    def prepare_data(self, percent=13):
+    def prepare_data(self,thresh = 0):
+        nan_num = self.data[self.cols].isnull().sum(axis=1)[self.data[self.cols].isnull().sum(axis=1) == thresh].sum()
+        QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ===== {date}'.format(
+            NAN_NUM = nan_num, per=nan_num/self.data.shape[0], shape=self.data.shape[0], thresh=thresh,date=self.info['date']), ui_log = None)
+        self.data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh))
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
         self.X_train, self.Y_train = self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'].fillna(0)
-        QA_util_log_info('##JOB Feature Selection ===== {}'.format(self.info['date']), ui_log = None)
-        self.fs = feature_selection.SelectPercentile(feature_selection.chi2, percentile=percent)
-        self.X_train = self.fs.fit_transform(self.X_train, self.Y_train)
-        self.info['fs'] = self.fs
+        self.info['thresh'] = thresh
 
     def build_model(self, other_params):
         QA_util_log_info('##JOB Set Model Params ===== {}'.format(self.info['date']), ui_log = None)
-        #self.model = XGBClassifier(n_estimators = n_estimators, max_depth = max_depth, subsample= subsample,seed=seed)
-        other_params = other_params
-        self.model = XGBClassifier(**other_params)
+        self.info['other_params'] = other_params
+        self.model = XGBClassifier(**self.info['other_params'])
 
     def model_running(self):
         QA_util_log_info('##JOB Now Model Traning ===== {}'.format(self.info['date']), ui_log = None)
@@ -112,8 +111,8 @@ class model():
 
     def model_important(self):
         QA_util_log_info('##JOB Now Got Model Importance ===== {}'.format(self.info['date']), ui_log = None)
-        importance = pd.DataFrame({'featur' :list(np.asarray(self.info['cols'])[np.asarray(self.info['fs'].get_support())]),
-                                   'value':list(self.model.feature_importances_)}).sort_values(by='value',ascending=False)
+        importance = pd.DataFrame({'featur' :self.info['cols'],'value':list(self.model.feature_importances_)}
+                                  ).sort_values(by='value',ascending=False)
         return(importance)
 
 def load_model(name, working_dir= 'D:\\model\\current'):
@@ -122,9 +121,9 @@ def load_model(name, working_dir= 'D:\\model\\current'):
     info = joblib.load(working_dir+"\\{name}xg_info.joblib.dat".format(name=name))
     return(model, info)
 
-def model_predict(model, start, end, cols, fs, block = False, sub_block= False, type='crawl'):
+def model_predict(model, start, end, cols, thresh, block = False, sub_block= False, type='crawl'):
     QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-    data = get_quant_data(start, end, type= type,block = block, sub_block=sub_block)
+    data = get_quant_data_norm(start, end, type= type,block = block, sub_block=sub_block)
 
     QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
     cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
@@ -144,7 +143,11 @@ def model_predict(model, start, end, cols, fs, block = False, sub_block= False, 
     QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
     QA_util_log_info(n_cols)
 
-    train = fs.transform(train[cols].fillna(0))
+    nan_num = train[cols].isnull().sum(axis=1)[train[cols].isnull().sum(axis=1) == thresh].sum()
+    QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ==== from {_from} to {_to}'.format(
+        NAN_NUM = nan_num, per=nan_num/train.shape[0], shape=train.shape[0], thresh=thresh,_from=start,_to = end), ui_log = None)
+    train = train[cols].dropna(thresh=(len(cols) - thresh))
+
     QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
     b = data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
     b = b.assign(y_pred = model.predict(train))

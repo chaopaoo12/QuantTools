@@ -2,11 +2,11 @@ import pandas as pd
 from sklearn.metrics import (accuracy_score,confusion_matrix,
                              classification_report,roc_curve,roc_auc_score,
                              auc,precision_score,recall_score,f1_score)
-from QUANTTOOLS.FactorTools.QuantMk import get_quant_data
+from QUANTTOOLS.FactorTools.QuantMk import get_quant_data_norm
 from QUANTAXIS.QAUtil import (QA_util_log_info, QA_util_today_str,QA_util_get_trade_range)
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
-from sklearn import feature_selection
+from keras.layers.normalization import BatchNormalization
 import numpy as np
 from keras.layers.core import Dense, Dropout, Activation
 from keras.optimizers import Adam
@@ -31,7 +31,7 @@ class model():
 
     def get_data(self, start, end, block=True, sub_block=True, type ='crawl'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-        self.data = get_quant_data(start, end, type = type, block = block, sub_block = sub_block)
+        self.data = get_quant_data_norm(start, end, type = type, block = block, sub_block = sub_block)
         self.data = self.data[(self.data.DAYS>= 90)&(self.data.next_date == self.data.PRE_DATE)]
         print(self.data.shape)
 
@@ -59,32 +59,34 @@ class model():
         self.TR_RNG = QA_util_get_trade_range(train_start, train_end)
         self.info['train_rng'] = [train_start,train_end]
 
-    def prepare_data(self, percent=30):
+    def prepare_data(self,thresh = 0):
+        nan_num = self.data[self.cols].isnull().sum(axis=1)[self.data[self.cols].isnull().sum(axis=1) == thresh].sum()
+        QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ===== {date}'.format(
+            NAN_NUM = nan_num, per=nan_num/self.data.shape[0], shape=self.data.shape[0], thresh=thresh,date=self.info['date']), ui_log = None)
+        self.data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh))
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
-        self.X_train, self.Y_train = shuffle(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'].fillna(0), random_state=0)
-        QA_util_log_info('##JOB Feature Selection ===== {}'.format(self.info['date']), ui_log = None)
-        self.fs = feature_selection.SelectPercentile(feature_selection.chi2, percentile=percent)
-        self.X_train = self.fs.fit_transform(self.X_train, self.Y_train)
-        self.info['fs'] = self.fs
+        self.X_train, self.Y_train = shuffle(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'])
+        self.info['thresh'] = thresh
 
     def build_model(self, loss = 'binary_crossentropy', optimizer = Adam(lr=1e-4), metrics = ['accuracy',precision]):
         QA_util_log_info('##JOB Set Model Params ===== {}'.format(self.info['date']), ui_log = None)
 
         self.model = Sequential() #建立模型
-        self.model.add(Dense(input_dim = self.X_train.shape[1], units = 2400)) #添加输入层、隐藏层的连接
+
+        self.model.add(Dense(input_dim = self.X_train.shape[1], units = 256)) #添加输入层、隐藏层的连接
+        self.model.add(BatchNormalization())
         self.model.add(Activation('relu')) #以Relu函数为激活函数
-        #model.add(Dropout(0.25))
-        self.model.add(Dense(input_dim = 2400, units = 1200)) #添加隐藏层、隐藏层的连接
+        self.model.add(Dropout(0.2))
+
+        self.model.add(Dense(input_dim = 256, units = 128)) #添加隐藏层、隐藏层的连接
+        self.model.add(BatchNormalization())
         self.model.add(Activation('relu')) #以Relu函数为激活函数
-        self.model.add(Dropout(0.4))
-        self.model.add(Dense(input_dim = 1200, units = 1200)) #添加隐藏层、隐藏层的连接
-        self.model.add(Activation('relu')) #以Relu函数为激活函数
-        self.model.add(Dropout(0.4))
-        self.model.add(Dense(input_dim = 1200, units = 1200)) #添加隐藏层、隐藏层的连接
-        self.model.add(Activation('relu')) #以Relu函数为激活函数
-        self.model.add(Dropout(0.4))
-        self.model.add(Dense(input_dim = 1200, units = 1)) #添加隐藏层、输出层的连接
+        self.model.add(Dropout(0.2))
+
+        self.model.add(Dense(input_dim = 128, units = 1)) #添加隐藏层、输出层的连接
+        self.model.add(BatchNormalization())
         self.model.add(Activation('sigmoid')) #以sigmoid函数为激活函数
+
         #编译模型，损失函数为binary_crossentropy，用adam法求解
         self.model.compile(loss=loss, optimizer=optimizer,metrics=metrics)
 
@@ -153,9 +155,9 @@ def load_model(name, working_dir= 'D:\\model\\current'):
     info = joblib.load(working_dir+"\\{name}keras_info.joblib.dat".format(name=name))
     return(model, info)
 
-def model_predict(model, start, end, cols, fs, block = False, sub_block= False, type='crawl'):
+def model_predict(model, start, end, cols, thresh, block = False, sub_block= False, type='crawl'):
     QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-    data = get_quant_data(start, end, type= type,block = block, sub_block=sub_block)
+    data = get_quant_data_norm(start, end, type= type,block = block, sub_block=sub_block)
 
     QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
     cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','DAYSO','RNG_LO',
@@ -175,7 +177,11 @@ def model_predict(model, start, end, cols, fs, block = False, sub_block= False, 
     QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
     QA_util_log_info(n_cols)
 
-    train = fs.transform(train[cols].fillna(0))
+    nan_num = train[cols].isnull().sum(axis=1)[train[cols].isnull().sum(axis=1) == thresh].sum()
+    QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ==== from {_from} to {_to}'.format(
+        NAN_NUM = nan_num, per=nan_num/train.shape[0], shape=train.shape[0], thresh=thresh,_from=start,_to = end), ui_log = None)
+    train = train[cols].dropna(thresh=(len(cols) - thresh))
+
     QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
     b = data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
     b = b.assign(y_pred = model.predict(train))
