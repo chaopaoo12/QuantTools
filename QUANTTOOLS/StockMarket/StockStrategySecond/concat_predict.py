@@ -38,15 +38,15 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
     QA_util_log_info(
         '##JOB Now Index Model Predict ==== {}'.format(str(trading_date)), ui_log)
     #index_list,index_report,index_top_report = Index.check_model(index_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),index_info_temp['cols'], 'INDEXT_TARGET5', 0.3)
-    index_tar, index_b  = Index.model_predict(index_model_temp, start, end, index_info_temp['cols'], index_info_temp['fs'])
+    index_tar, index_b  = Index.model_predict(index_model_temp, start, end, index_info_temp['cols'], index_info_temp['thresh'])
     QA_util_log_info(
         '##JOB Now Safe Model Predict ==== {}'.format(str(trading_date)), ui_log)
     #safe_list,safe_report,safe_top_report = Index.check_model(safe_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),safe_info_temp['cols'], 'INDEXT_TARGET', 0.3)
-    safe_tar, safe_b  = Index.model_predict(safe_model_temp, start, end, safe_info_temp['cols'], safe_info_temp['fs'])
+    safe_tar, safe_b  = Index.model_predict(safe_model_temp, start, end, safe_info_temp['cols'], safe_info_temp['thresh'])
     QA_util_log_info(
         '##JOB Now Stock Model Predict ==== {}'.format(str(trading_date)), ui_log)
     #stock_list,report,top_report = Stock.check_model(stock_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),stock_info_temp['cols'], 0.42)
-    stock_tar, stock_b  = Stock.model_predict(stock_model_temp, start, end, stock_info_temp['cols'], stock_info_temp['fs'])
+    stock_tar, stock_b  = Stock.model_predict(stock_model_temp, start, end, stock_info_temp['cols'], stock_info_temp['thresh'])
 
     QA_util_log_info(
         '##JOB Now Combine Predictions ==== {}'.format(str(trading_date)), ui_log)
