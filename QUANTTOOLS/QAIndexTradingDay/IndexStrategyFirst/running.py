@@ -1,5 +1,5 @@
 
-from QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexStrategyOne import load_model, model_predict, check_model
+from QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexXGboost import load_model, model_predict, check_model
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial_adv
 import pandas as pd
