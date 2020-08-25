@@ -43,7 +43,7 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
     #safe_tar, safe_b  = Index.model_predict(safe_model_temp, start, end, safe_info_temp['cols'], safe_info_temp['fs'])
     QA_util_log_info('##JOB Now Stock Model Predict ==== {}'.format(str(trading_date)), ui_log)
     #stock_list,report,top_report = Stock.check_model(stock_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),stock_info_temp['cols'], 0.42)
-    stock_tar, stock_b  = Stock.model_predict(stock_model_temp, start, end, stock_info_temp['cols'], stock_info_temp['fs'])
+    stock_tar, stock_b  = Stock.model_predict(stock_model_temp, start, end, stock_info_temp['cols'], stock_info_temp['thresh'])
 
     QA_util_log_info('##JOB Now Combine Predictions ==== {}'.format(str(trading_date)), ui_log)
 
