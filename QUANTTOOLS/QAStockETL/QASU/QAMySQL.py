@@ -277,7 +277,7 @@ def QA_etl_stock_alpha_day(start_date = QA_util_today_str(), end_date= None, ui_
                                                                        "alpha_025","alpha_026","alpha_028","alpha_029","alpha_031","alpha_032","alpha_033","alpha_034",
                                                                        "alpha_035","alpha_036","alpha_037","alpha_038","alpha_039","alpha_040","alpha_041","alpha_042",
                                                                        "alpha_043","alpha_044","alpha_045","alpha_046","alpha_047","alpha_048","alpha_049","alpha_052",
-                                                                       "alpha_053","alpha_054","alpha_055","alpha_056","alpha_057","alpha_058","alpha_059","alpha_060",
+                                                                       "alpha_053","alpha_054","alpha_056","alpha_057","alpha_058","alpha_059","alpha_060",
                                                                        "alpha_061","alpha_062","alpha_063","alpha_064","alpha_065","alpha_066","alpha_067","alpha_068",
                                                                        "alpha_070","alpha_071","alpha_072","alpha_074","alpha_076","alpha_077","alpha_078","alpha_079",
                                                                        "alpha_080","alpha_081","alpha_082","alpha_083","alpha_084","alpha_085","alpha_086","alpha_087",
