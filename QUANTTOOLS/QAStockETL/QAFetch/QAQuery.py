@@ -820,7 +820,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close', method = 'v
 def QA_fetch_stock_quant_pre(code, start, end=None, block = True, type='close', method='value', format='pd'):
     QA_util_log_info(
         'JOB Get Stock Quant data start=%s end=%s' % (start, end))
-    res = QA_fetch_stock_quant_data(code, start, end, block)
+    res = QA_fetch_stock_quant_data(code, start, end, block, type='normalization')
     QA_util_log_info(
         'JOB Get Stock Target data start=%s end=%s' % (start, end))
     target = QA_fetch_stock_target(code, start, end, type=type, method=method)
