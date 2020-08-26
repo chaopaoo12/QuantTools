@@ -66,7 +66,10 @@ class model():
         nan_num = self.data[self.cols].isnull().sum(axis=1)[self.data[self.cols].isnull().sum(axis=1) == thresh].sum()
         QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ===== {date}'.format(
             NAN_NUM = nan_num, per=nan_num/self.data.shape[0], shape=self.data.shape[0], thresh=thresh,date=self.info['date']), ui_log = None)
-        self.data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh))
+        if thresh == 0:
+            pass
+        else:
+            self.data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh))
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
         self.X_train, self.Y_train = shuffle(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'])
         self.info['thresh'] = thresh
