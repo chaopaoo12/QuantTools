@@ -52,14 +52,17 @@ class model():
                                                                'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
                                                                'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
                                                                'INDEX_TARGET10','date_stamp','PRE_DATE','next_date']]
-        self.info['cols'] = self.cols
 
     def set_train_rng(self, train_start, train_end):
         QA_util_log_info('##JOB Set Train Range from {_from} to {_to} ===== {date}'.format(_from=train_start,_to=train_end, date=self.info['date']), ui_log = None)
         self.TR_RNG = QA_util_get_trade_range(train_start, train_end)
         self.info['train_rng'] = [train_start,train_end]
 
-    def prepare_data(self,thresh = 0):
+    def prepare_data(self,thresh = 0, cols= None):
+        if cols is None:
+            pass
+        else:
+            self.cols = cols
         nan_num = self.data[self.cols].isnull().sum(axis=1)[self.data[self.cols].isnull().sum(axis=1) == thresh].sum()
         QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ===== {date}'.format(
             NAN_NUM = nan_num, per=nan_num/self.data.shape[0], shape=self.data.shape[0], thresh=thresh,date=self.info['date']), ui_log = None)
@@ -131,6 +134,7 @@ class model():
             self.info['train_status']['status'] = True
 
     def save_model(self, name, working_dir = 'D:\\model\\current'):
+        self.info['cols'] = self.cols
         QA_util_log_info('##JOB Now Model Saving ===== {}'.format(self.info['date']), ui_log = None)
 
         if mkdir(working_dir):
