@@ -1,4 +1,8 @@
-from QUANTAXIS import QA_fetch_get_usstock_list,QA_fetch_get_index_list,QA_fetch_get_index_day,QA_fetch_get_stock_day
+from QUANTAXIS import (QA_fetch_get_usstock_list,QA_fetch_get_index_list,QA_fetch_get_index_day,
+                       QA_fetch_get_stock_day,QA_fetch_get_stock_xdxr,QA_fetch_get_stock_info
+                       )
+from QUANTAXIS.QAData.data_fq import _QA_data_stock_to_fq
+from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_day
 import datetime
 import pymongo
 from QUANTAXIS.QAUtil import (
@@ -721,6 +725,154 @@ def QA_SU_save_index_year(client=DATABASE, ui_log=None, ui_progress=None):
         )
 
         __saving_work(stock_list[item], coll_index_year)
+    if len(err) < 1:
+        QA_util_log_info('SUCCESS', ui_log=ui_log)
+    else:
+        QA_util_log_info(' ERROR CODE \n ', ui_log=ui_log)
+        QA_util_log_info(err, ui_log=ui_log)
+
+def QA_SU_save_stock_xdxr(client=DATABASE, ui_log=None, ui_progress=None):
+    """[summary]
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+    stock_list = QA_fetch_stock_all().code.unique().tolist()
+    # client.drop_collection('stock_xdxr')
+
+    try:
+        coll = client.stock_xdxr
+        coll.create_index(
+            [('code',
+              pymongo.ASCENDING),
+             ('date',
+              pymongo.ASCENDING)],
+            unique=True
+        )
+        coll_adj = client.stock_adj
+        coll_adj.create_index(
+            [('code',
+              pymongo.ASCENDING),
+             ('date',
+              pymongo.ASCENDING)],
+            unique=True
+        )
+    except:
+        client.drop_collection('stock_xdxr')
+        coll = client.stock_xdxr
+        coll.create_index(
+            [('code',
+              pymongo.ASCENDING),
+             ('date',
+              pymongo.ASCENDING)],
+            unique=True
+        )
+        client.drop_collection('stock_adj')
+        coll_adj = client.stock_adj
+        coll_adj.create_index(
+            [('code',
+              pymongo.ASCENDING),
+             ('date',
+              pymongo.ASCENDING)],
+            unique=True
+        )
+
+    err = []
+
+    def __saving_work(code, coll):
+        QA_util_log_info(
+            '##JOB02 Now Saving XDXR INFO ==== {}'.format(str(code)),
+            ui_log=ui_log
+        )
+        try:
+
+            xdxr  = QA_fetch_get_stock_xdxr(str(code))
+            try:
+                coll.insert_many(
+                    QA_util_to_json_from_pandas(xdxr),
+                    ordered=False
+                )
+            except:
+                pass
+            try:
+                data = QA_fetch_stock_day(str(code), '1990-01-01',str(datetime.date.today()), 'pd')
+                qfq = _QA_data_stock_to_fq(data, xdxr, 'qfq')
+                qfq = qfq.assign(date=qfq.date.apply(lambda x: str(x)[0:10]))
+                adjdata = QA_util_to_json_from_pandas(qfq.loc[:, ['date','code', 'adj']])
+                coll_adj.delete_many({'code': code})
+                #print(adjdata)
+                coll_adj.insert_many(adjdata)
+
+
+            except Exception as e:
+                print(e)
+
+
+        except Exception as e:
+            print(e)
+
+            err.append(str(code))
+
+    for i_ in range(len(stock_list)):
+        QA_util_log_info(
+            'The {} of Total {}'.format(i_,
+                                        len(stock_list)),
+            ui_log=ui_log
+        )
+        strLogInfo = 'DOWNLOAD PROGRESS {} '.format(
+            str(float(i_ / len(stock_list) * 100))[0:4] + '%'
+        )
+        intLogProgress = int(float(i_ / len(stock_list) * 100))
+        QA_util_log_info(
+            strLogInfo,
+            ui_log=ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=intLogProgress
+        )
+        __saving_work(stock_list[i_], coll)
+
+def QA_SU_save_stock_info(client=DATABASE, ui_log=None, ui_progress=None):
+    """save stock_info
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+
+    client.drop_collection('stock_info')
+    stock_list = QA_fetch_stock_all().code.unique().tolist()
+    coll = client.stock_info
+    coll.create_index('code')
+    err = []
+
+    def __saving_work(code, coll):
+        QA_util_log_info(
+            '##JOB10 Now Saving STOCK INFO ==== {}'.format(str(code)),
+            ui_log=ui_log
+        )
+        try:
+            coll.insert_many(
+                QA_util_to_json_from_pandas(QA_fetch_get_stock_info(str(code)))
+            )
+
+        except:
+            err.append(str(code))
+
+    for i_ in range(len(stock_list)):
+        # __saving_work('000001')
+
+        strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
+            str(float(i_ / len(stock_list) * 100))[0:4] + '%'
+        )
+        intLogProgress = int(float(i_ / len(stock_list) * 10000.0))
+        QA_util_log_info('The {} of Total {}'.format(i_, len(stock_list)))
+        QA_util_log_info(
+            strLogProgress,
+            ui_log=ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=intLogProgress
+        )
+
+        __saving_work(stock_list[i_], coll)
     if len(err) < 1:
         QA_util_log_info('SUCCESS', ui_log=ui_log)
     else:
