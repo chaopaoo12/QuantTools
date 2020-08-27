@@ -183,3 +183,9 @@ def QA_SU_save_index_year():
 
 def QA_SU_save_stock_day():
     save_tdx.QA_SU_save_stock_day()
+
+def QA_SU_save_stock_xdxr():
+    save_tdx.QA_SU_save_stock_xdxr()
+
+def QA_SU_save_stock_info():
+    save_tdx.QA_SU_save_stock_info()
