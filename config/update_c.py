@@ -40,7 +40,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_financial_day,
                                    QA_etl_stock_financial_percent_day)
 from QUANTAXIS.QASU.main import (QA_SU_save_financialfiles_fromtdx)
 from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_day, check_stock_fianacial, check_stock_adj, check_stock_finper,
-                                                        check_wy_financial, check_tdx_financial)
+                                                        check_wy_financial, check_tdx_financial, check_ttm_financial)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 import time
 
@@ -82,6 +82,7 @@ if __name__ == '__main__':
 
         QA_util_process_stock_financial()
         QA_SU_save_fianacialTTM_momgo()
+        check_ttm_financial(mark_day)
         print("done")
         print("processing quant data in sqldatabase")
         QA_etl_process_financial_day('day',mark_day)
