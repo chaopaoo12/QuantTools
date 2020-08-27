@@ -48,6 +48,7 @@ if __name__ == '__main__':
     mark_day = QA_util_today_str()
     if QA_util_if_trade(mark_day):
         QA_SU_save_stock_list('tdx')
+        QA_SU_save_stock_info_tushare()
         QA_SU_save_stock_industryinfo()
         print("download day data")
 
@@ -56,7 +57,6 @@ if __name__ == '__main__':
 
         QA_SU_save_stock_block('tdx')
         QA_SU_save_stock_info('tdx')
-        QA_SU_save_stock_info_tushare()
 
         while check_stock_adj(mark_day) is None or check_stock_adj(mark_day) > 20:
             QA_SU_save_stock_xdxr('tdx')
