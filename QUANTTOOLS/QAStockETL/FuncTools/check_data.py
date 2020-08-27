@@ -25,7 +25,7 @@ def check_tdx_financial(mark_day=None, type='day', ui_log = None):
     res = data[data.real_date < mark_day]
     if res is None:
         QA_util_log_info(
-            '##JOB Now Check TDX Financial Reports data Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day), ui_log)
+            '##JOB Now Check TDX Financial Reports data Success ============== {deal_date}'.format(deal_date=mark_day), ui_log)
         return(0)
     else:
         QA_util_log_info(
@@ -48,7 +48,7 @@ def check_wy_financial(mark_day=None, type='day', ui_log = None):
     res = data[data.real_date < mark_day]
     if res is None:
         QA_util_log_info(
-            '##JOB Now Check WY Financial Reports data Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day), ui_log)
+            '##JOB Now Check WY Financial Reports data Success ============== {deal_date}'.format(deal_date=mark_day), ui_log)
         return(0)
     else:
         QA_util_log_info(
