@@ -1,5 +1,6 @@
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pandas,QA_util_today_str,QA_util_get_trade_range, QA_util_if_trade,QA_util_code_tolist)
-from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv,QA_fetch_index_list_adv
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_index_list_adv
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_alpha,QA_fetch_get_index_alpha,QA_fetch_get_stock_alpha101,QA_fetch_get_index_alpha101
 import pymongo
 import gc
@@ -20,7 +21,7 @@ def QA_SU_save_stock_alpha_day(code = None, start_date = None, end_date = None, 
     deal_date_list = QA_util_get_trade_range(start_date, end_date)
 
     if code is None:
-        code = list(QA_fetch_stock_list_adv()['code'])
+        code = list(QA_fetch_stock_all()['code'])
 
     stock_alpha = client.stock_alpha
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -62,7 +63,7 @@ def QA_SU_save_stock_alpha_his(code = None, start_date = None, end_date = None, 
     :return:
     '''
     if code is None:
-        code = list(QA_fetch_stock_list_adv()['code'])
+        code = list(QA_fetch_stock_all()['code'])
     if end_date is None:
         end_date = QA_util_today_str()
 
@@ -211,7 +212,7 @@ def QA_SU_save_stock_alpha101_day(code = None, start_date = None, end_date = Non
         start_date = '2009-01-01'
     codes = code
     if codes is None:
-        codes = list(QA_fetch_stock_list_adv()['code'])
+        codes = list(QA_fetch_stock_all()['code'])
 
     stock_alpha = client.stock_alpha101
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)

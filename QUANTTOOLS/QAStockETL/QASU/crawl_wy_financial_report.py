@@ -1,8 +1,8 @@
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pandas,QA_util_today_str,QA_util_datetime_to_strdate,QA_util_code_tolist)
-from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 from QUANTTOOLS.QAStockETL.QAFetch.QAFinancial import QA_fetch_get_stock_report_wy
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_financial_calendar_adv,QA_fetch_financial_code_wy,QA_fetch_financial_code_new
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_add_days
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all
 import pymongo
 import gc
 
@@ -60,7 +60,7 @@ def QA_SU_save_financial_report_his(client=DATABASE, ui_log = None, ui_progress 
     反向查询四个季度财报
     :return:
     '''
-    code = list(QA_fetch_stock_list_adv()['code'])
+    code = list(QA_fetch_stock_all()['code'])
     stock_financial = client.stock_financial_wy
     stock_financial.create_index([("code", pymongo.ASCENDING), ("report_date", pymongo.ASCENDING)], unique=True)
     err = []

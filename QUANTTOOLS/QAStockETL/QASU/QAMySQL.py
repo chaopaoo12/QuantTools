@@ -1,7 +1,8 @@
 
 
-from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_list_adv, QA_fetch_stock_block_adv,QA_fetch_index_list_adv,
+from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_block_adv,QA_fetch_index_list_adv,
                                                QA_fetch_stock_day_adv)
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all
 from  QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_trade_range,QA_util_log_info,
                                QA_util_get_pre_trade_date)
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,
@@ -11,8 +12,8 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetc
                                            QA_fetch_index_technical_index_adv,QA_fetch_index_info,
                                            QA_fetch_financial_report_wy_adv, QA_fetch_stock_alpha_adv,
                                            QA_fetch_stock_technical_index_adv)
-from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr)
-
+from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr,)
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_sql_store_mysql
 from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_process_financial)
 import numpy as np
@@ -127,7 +128,7 @@ def QA_etl_stock_list(ui_log= None):
 def QA_etl_stock_shares(ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK SHARES ==== {}'.format(str(datetime.date.today())), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     data = QA_fetch_stock_shares_adv(codes).data
     QA_util_sql_store_mysql(data, "stock_shares",if_exists='replace')
     QA_util_log_info(
@@ -144,7 +145,7 @@ def QA_etl_stock_info(ui_log= None):
 
 def QA_etl_stock_xdxr(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info('##JOB Now ETL STOCK XDXR ==== {}'.format(mark_day), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     if type == "all":
         data = QA_fetch_stock_xdxr(codes).reset_index(drop=True).fillna(0)
         QA_util_sql_store_mysql(data, "stock_xdxr",if_exists='replace')
@@ -161,7 +162,7 @@ def QA_etl_stock_xdxr(type = "day", mark_day = str(datetime.date.today()),ui_log
 def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK DAY ==== {}'.format(mark_day), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     if type == "all":
         data = ETL_stock_day(codes).reset_index()
         QA_util_sql_store_mysql(data, "stock_market_day",if_exists='replace')
@@ -177,7 +178,7 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log=
 def QA_etl_stock_financial(type = "crawl", start_date = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK FINANCIAL REPORT ==== {}'.format(start_date), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     if type == 'all':
         data = QA_fetch_financial_report_adv(codes).data
         columns = [i for i in list(data.columns) if i.startswith('unknown') == False and i.isdigit() == False and i.startswith('IS_R') == False]
@@ -196,7 +197,7 @@ def QA_etl_stock_financial(type = "crawl", start_date = str(datetime.date.today(
 def QA_etl_stock_calendar(type = "crawl", start = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK CALENDAR ==== {}'.format(start), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     if type == "all":
         data = QA_fetch_stock_financial_calendar_adv(codes,start = "all", type = 'report').data.reset_index(drop=True)
         QA_util_sql_store_mysql(data, "stock_calendar",if_exists='replace')
@@ -222,7 +223,7 @@ def QA_etl_stock_block(ui_log= None):
 def QA_etl_stock_divyield(type = "crawl", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK divyield ==== {}'.format(mark_day), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     if type == "all":
         data = QA_fetch_stock_divyield_adv(codes,start = "all").data.reset_index()
         QA_util_sql_store_mysql(data, "stock_divyield",if_exists='replace')
@@ -251,7 +252,7 @@ def QA_etl_process_financial_day(type = "day", deal_date = str(datetime.date.tod
 def QA_etl_stock_financial_wy(type = "crawl", start_date = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK FINANCIAL REPORT WY ==== {}'.format(start_date), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     if type == 'all':
         data = QA_fetch_financial_report_wy_adv(codes).data.reset_index(drop=True).fillna(0)
         QA_util_sql_store_mysql(data, "stock_financial_wy",if_exists='replace')
@@ -270,7 +271,7 @@ def QA_etl_stock_alpha_day(start_date = QA_util_today_str(), end_date= None, ui_
     if end_date is None:
         end_date = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL STOCK ALPHA191 ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     data = QA_fetch_stock_alpha_adv(codes, start_date, end_date).data[["alpha_001","alpha_002","alpha_003","alpha_004","alpha_005","alpha_006","alpha_007","alpha_008",
                                                                        "alpha_009","alpha_010","alpha_011","alpha_012","alpha_013","alpha_014","alpha_015","alpha_016",
                                                                        "alpha_018","alpha_019","alpha_020","alpha_022","alpha_023","alpha_024",
@@ -306,7 +307,7 @@ def QA_etl_stock_alpha101_day(start_date = QA_util_today_str(), end_date= None, 
     if end_date is None:
         end_date = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL STOCK ALPHA101 ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     data = QA_fetch_stock_alpha101_adv(codes, start_date, end_date).data[['alpha001','alpha002','alpha003','alpha004','alpha005','alpha006',
                                                                 'alpha007','alpha008','alpha009','alpha010','alpha011','alpha012',
                                                                 'alpha013','alpha014','alpha015','alpha016','alpha017','alpha018',
@@ -333,7 +334,7 @@ def QA_etl_stock_technical_day(start_date = QA_util_today_str(), end_date= None,
     if end_date is None:
         end_date = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL STOCK TECHNICAL ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     data = QA_fetch_stock_technical_index_adv(codes, start_date, end_date).data
     if data is None:
         QA_util_log_info(
@@ -348,7 +349,7 @@ def QA_etl_stock_technical_week(start_date = QA_util_today_str(), end_date= None
     if end_date is None:
         end_date = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL STOCK TECHNICAL WEEK ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     data = QA_fetch_stock_technical_index_adv(codes, start_date, end_date,type='week').data
     if data is None:
         QA_util_log_info(
@@ -363,7 +364,7 @@ def QA_etl_stock_financial_day(start_date = QA_util_today_str(), end_date= None,
     if end_date is None:
         end_date = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL STOCK QUANT FINANCIAL ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     data = QA_fetch_stock_fianacial_adv(codes, start_date, end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE', 'DAYS',
                                                                             'AVG5','AVG10','AVG20','AVG30','AVG60',
                                                                             'LAG','LAG5','LAG10','LAG20','LAG30','LAG60',
@@ -395,7 +396,7 @@ def QA_etl_stock_financial_percent_day(start_date = QA_util_today_str(), end_dat
         end_date = QA_util_today_str()
     QA_util_log_info(
         '##JOB Now ETL STOCK FINANCIAL PERCENT ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
-    codes = list(QA_fetch_stock_list_adv()['code'])
+    codes = list(QA_fetch_stock_all()['code'])
     data = QA_fetch_stock_financial_percent_adv(codes, start_date, end_date).data
     if data is None:
         QA_util_log_info(

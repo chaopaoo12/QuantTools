@@ -1,5 +1,5 @@
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pandas,QA_util_today_str,QA_util_datetime_to_strdate)
-from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all
 from QUANTTOOLS.QAStockETL.QAFetch.QAShares import QA_fetch_get_stock_shares_sina
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_financial_calendar_adv
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_add_days, QA_util_getBetweenYear
@@ -16,7 +16,7 @@ def QA_SU_save_stock_shares_day(client=DATABASE, ui_log = None, ui_progress = No
     END_DATE = QA_util_today_str()
     START_DATE = QA_util_datetime_to_strdate(QA_util_add_days(QA_util_today_str(),-7))
 
-    code = list(QA_fetch_stock_list_adv()['code'])
+    code = list(QA_fetch_stock_all()['code'])
     stock_shares = client.stock_shares
     stock_shares.create_index([("code", pymongo.ASCENDING), ("begin_date", pymongo.ASCENDING),
                                ('total_shares', pymongo.DESCENDING), ('reason', pymongo.DESCENDING)
@@ -60,7 +60,7 @@ def QA_SU_save_stock_shares_his(client=DATABASE, ui_log = None, ui_progress = No
     反向查询四个季度财报
     :return:
     '''
-    code = list(QA_fetch_stock_list_adv()['code'])
+    code = list(QA_fetch_stock_all()['code'])
     stock_shares = client.stock_shares
     stock_shares.create_index([("code", pymongo.ASCENDING), ("begin_date", pymongo.ASCENDING), ('total_shares', pymongo.DESCENDING)], unique=True)
     err = []
