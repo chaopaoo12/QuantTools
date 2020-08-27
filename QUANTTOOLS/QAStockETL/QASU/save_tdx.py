@@ -73,7 +73,7 @@ def QA_SU_save_stock_day(client=DATABASE, ui_log=None, ui_progress=None):
                 if start_date != end_date:
                     coll_stock_day.insert_many(
                         QA_util_to_json_from_pandas(
-                            QA_fetch_get_stock_day(
+                            QA_fetch_get_stock_day('tdx',
                                 str(code),
                                 QA_util_get_next_day(start_date),
                                 end_date,
@@ -95,7 +95,7 @@ def QA_SU_save_stock_day(client=DATABASE, ui_log=None, ui_progress=None):
                 if start_date != end_date:
                     coll_stock_day.insert_many(
                         QA_util_to_json_from_pandas(
-                            QA_fetch_get_stock_day(
+                            QA_fetch_get_stock_day('tdx',
                                 str(code),
                                 start_date,
                                 end_date,
