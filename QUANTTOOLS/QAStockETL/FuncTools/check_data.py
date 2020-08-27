@@ -31,8 +31,8 @@ def check_tdx_financial(mark_day=None, type='day', ui_log = None):
         QA_util_log_info(
             '##JOB Now Check TDX Financial Reports data Missing ============== {deal_date}: {num} Reports  '.format(deal_date=mark_day,num=res.shape[0]), ui_log)
         #send_email('错误报告', '数据检查错误,复权数据', mark_day)
-        send_actionnotice('复权数据检查错误报告',
-                          '复权数据缺失:{}'.format(mark_day),
+        send_actionnotice('TDX财报数据检查错误报告',
+                          'TDX财报数据缺失:{}'.format(mark_day),
                           'WARNING',
                           direction = 'Missing Data',
                           offset='{to_date}, 数据量:{num}',
@@ -48,14 +48,14 @@ def check_wy_financial(mark_day=None, type='day', ui_log = None):
     res = data[data.real_date < mark_day]
     if res is None:
         QA_util_log_info(
-            '##JOB Now Check TDX Financial Reports data Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day), ui_log)
+            '##JOB Now Check WY Financial Reports data Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day), ui_log)
         return(0)
     else:
         QA_util_log_info(
-            '##JOB Now Check TDX Financial Reports data Missing ============== {deal_date}: {num} Reports  '.format(deal_date=mark_day,num=res.shape[0]), ui_log)
+            '##JOB Now Check WY Financial Reports data Missing ============== {deal_date}: {num} Reports  '.format(deal_date=mark_day,num=res.shape[0]), ui_log)
         #send_email('错误报告', '数据检查错误,复权数据', mark_day)
-        send_actionnotice('复权数据检查错误报告',
-                          '复权数据缺失:{}'.format(mark_day),
+        send_actionnotice('网易财报数据检查错误报告',
+                          '网易财报数据缺失:{}'.format(mark_day),
                           'WARNING',
                           direction = 'Missing Data',
                           offset='{to_date}, 数据量:{num}',
