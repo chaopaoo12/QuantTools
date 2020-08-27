@@ -850,7 +850,7 @@ def QA_SU_save_stock_info(client=DATABASE, ui_log=None, ui_progress=None):
         )
         try:
             coll.insert_many(
-                QA_util_to_json_from_pandas(QA_fetch_get_stock_info(str(code)))
+                QA_util_to_json_from_pandas(QA_fetch_get_stock_info('tdx',str(code)))
             )
 
         except:
