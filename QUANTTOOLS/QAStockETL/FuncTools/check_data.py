@@ -23,7 +23,7 @@ def check_tdx_financial(mark_day=None, type='day', ui_log = None):
 
     data = QA_fetch_financial_code_tdx()
     res = data[data.real_date < mark_day]
-    if res is None:
+    if res is None or res.shape[0] == 0:
         QA_util_log_info(
             '##JOB Now Check TDX Financial Reports data Success ============== {deal_date}'.format(deal_date=mark_day), ui_log)
         return(0)
@@ -46,13 +46,13 @@ def check_wy_financial(mark_day=None, type='day', ui_log = None):
 
     data = QA_fetch_financial_code_wy()
     res = data[data.real_date < mark_day]
-    if res is None:
+    if res is None or res.shape[0] == 0:
         QA_util_log_info(
             '##JOB Now Check WY Financial Reports data Success ============== {deal_date}'.format(deal_date=mark_day), ui_log)
         return(0)
     else:
         QA_util_log_info(
-            '##JOB Now Check WY Financial Reports data Missing ============== {deal_date}: {num} Reports  '.format(deal_date=mark_day,num=res.shape[0]), ui_log)
+            '##JOB Now Check WY Financial Reports data Missing ============== {deal_date}: {num} Reports'.format(deal_date=mark_day,num=res.shape[0]), ui_log)
         #send_email('错误报告', '数据检查错误,复权数据', mark_day)
         send_actionnotice('网易财报数据检查错误报告',
                           '网易财报数据缺失:{}'.format(mark_day),
