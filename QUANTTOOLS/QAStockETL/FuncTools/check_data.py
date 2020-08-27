@@ -14,6 +14,54 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_index_alpha101_adv,
                                                            QA_fetch_index_technical_index_adv
                                                            )
+from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_code_wy,
+                                           QA_fetch_financial_code_tdx)
+
+def check_tdx_financial(mark_day=None, type='day', ui_log = None):
+    if type == 'day' and mark_day is None:
+        mark_day = QA_util_today_str()
+
+    data = QA_fetch_financial_code_tdx()
+    res = data[data.real_date < mark_day]
+    if res is None:
+        QA_util_log_info(
+            '##JOB Now Check TDX Financial Reports data Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day), ui_log)
+        return(0)
+    else:
+        QA_util_log_info(
+            '##JOB Now Check TDX Financial Reports data Missing ============== {deal_date}: {num} Reports  '.format(deal_date=mark_day,num=res.shape[0]), ui_log)
+        #send_email('错误报告', '数据检查错误,复权数据', mark_day)
+        send_actionnotice('复权数据检查错误报告',
+                          '复权数据缺失:{}'.format(mark_day),
+                          'WARNING',
+                          direction = 'Missing Data',
+                          offset='{to_date}, 数据量:{num}',
+                          volume= '缺失数据量:{num}'.format(num =(res.shape[0]))
+                          )
+        return(None)
+
+def check_wy_financial(mark_day=None, type='day', ui_log = None):
+    if type == 'day' and mark_day is None:
+        mark_day = QA_util_today_str()
+
+    data = QA_fetch_financial_code_wy()
+    res = data[data.real_date < mark_day]
+    if res is None:
+        QA_util_log_info(
+            '##JOB Now Check TDX Financial Reports data Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day), ui_log)
+        return(0)
+    else:
+        QA_util_log_info(
+            '##JOB Now Check TDX Financial Reports data Missing ============== {deal_date}: {num} Reports  '.format(deal_date=mark_day,num=res.shape[0]), ui_log)
+        #send_email('错误报告', '数据检查错误,复权数据', mark_day)
+        send_actionnotice('复权数据检查错误报告',
+                          '复权数据缺失:{}'.format(mark_day),
+                          'WARNING',
+                          direction = 'Missing Data',
+                          offset='{to_date}, 数据量:{num}',
+                          volume= '缺失数据量:{num}'.format(num =(res.shape[0]))
+                          )
+        return(None)
 
 def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
     try:
