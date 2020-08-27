@@ -6,10 +6,11 @@ from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import DATABASE,QA_util_log_info
 
 
-def QA_SU_save_fianacialTTM_momgo():
+def QA_SU_save_fianacialTTM_momgo(client=DATABASE):
 
     data = QA_util_to_json_from_pandas(QA_util_etl_financial_TTM())
     QA_util_log_info("got financial TTM data.")
+    client.drop_collection('financial_TTM')
     col = DATABASE.financial_TTM
     col.create_index(
         [("CODE", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
