@@ -1,12 +1,12 @@
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pandas,QA_util_today_str,QA_util_datetime_to_strdate,QA_util_code_tolist)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 from QUANTTOOLS.QAStockETL.QAFetch.QAFinancial import QA_fetch_get_stock_report_wy
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_financial_calendar_adv,QA_fetch_financial_code
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_financial_calendar_adv,QA_fetch_financial_code_wy,QA_fetch_financial_code_new
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_add_days
 import pymongo
 import gc
 
-def QA_SU_save_financial_report_day(code = None, client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_financial_report_day( code = None, client=DATABASE, ui_log = None, ui_progress = None):
     '''
      save stock_day
     保存财报日历
@@ -26,7 +26,8 @@ def QA_SU_save_financial_report_day(code = None, client=DATABASE, ui_log = None,
             print(error0)
             err.append(str(code))
     if code is None:
-        code =  QA_fetch_financial_code()
+        code =  QA_fetch_financial_code_new()
+        code =  list(set(QA_fetch_financial_code_wy()['code'])) + code
     else:
         code = QA_util_code_tolist(code)
     if code is not None:
