@@ -1140,7 +1140,7 @@ SELECT A.CODE,
     conn.commit()
     conn.close()
 
-def QA_util_etl_financial_TTM(ui_log= None):
+def QA_util_etl_financial_TTM(mark_day,ui_log= None):
     QA_util_log_info(
         '##JOB01 Now Etl Stock Financial TTM ==== {}'.format(QA_util_today_str()), ui_log)
 
@@ -1609,6 +1609,7 @@ def QA_util_etl_financial_TTM(ui_log= None):
     '''
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql, con=conn)
+    data = data.assign(deal_date=mark_day)
     data = data.assign(date_stamp=data['REPORT_DATE'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     conn.close()
     return(data)
