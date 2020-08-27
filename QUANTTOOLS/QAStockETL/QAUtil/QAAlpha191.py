@@ -503,7 +503,7 @@ class Alpha_191:
         temp3=temp2.rolling(14).corr(sum_vol)
         temp3=temp3.iloc[-m:,:]
         part2=-temp3.apply(lambda x: x*weight2)
-        part2.rank(axis=1,pct=True)
+        part2=part2.rank(axis=1,pct=True)
         result=part1.iloc[-1,:]-part2.iloc[-1,:]
         alpha=result
         alpha=alpha[(alpha<np.inf)&(alpha>-np.inf)]
@@ -564,15 +564,13 @@ class Alpha_191:
 
     ##################################################################
     def alpha_044(self):
-        part1=self.open_price*0.4+self.close*0.6
         n=6
         m=10
         temp1=self.low.rolling(7).corr(self.volume.rolling(10).mean())
         temp1=temp1.iloc[-n:,:]
         seq1=[2*i/(n*(n+1)) for i in range(1,n+1)]   #Decaylinear 1
         seq2=[2*i/(m*(m+1)) for i in range(1,m+1)]   #Decaylinear 2
-        # weight1=np.array(seq1[::-1])
-        # weight2=np.array(seq2[::-1])
+
         weight1=np.array(seq1)
         weight2=np.array(seq2)
         part1=temp1.apply(lambda x: x*weight1)   #dataframe * numpy array
@@ -581,7 +579,7 @@ class Alpha_191:
         temp2=self.avg_price.diff(3)
         temp2=temp2.iloc[-m:,:]
         part2=temp2.apply(lambda x: x*weight2)
-        part2=part1.iloc[-5:,].rank(axis=0,pct=True)
+        part2=part2.iloc[-5:,].rank(axis=0,pct=True)
         alpha=part1.iloc[-1,:]+part2.iloc[-1,:]
         alpha=alpha.dropna()
         return alpha
