@@ -36,4 +36,4 @@ from QUANTTOOLS.QAStockETL import (QA_fetch_financial_report_adv, QA_fetch_stock
                                    QA_fetch_stock_quant_data,QA_fetch_stock_quant_data_adv,
                                    QA_fetch_stock_quant_pre,QA_fetch_stock_quant_pre_adv,
                                    QA_fetch_stock_target,QA_fetch_stock_target_adv,QA_fetch_stock_industry,
-                                   QA_fetch_financial_code_wy,QA_fetch_financial_code_tdx,QA_fetch_financial_code_new)
+                                   QA_fetch_financial_code_wy,QA_fetch_financial_code_tdx,QA_fetch_financial_code_new,QA_fetch_financial_code_ttm)
