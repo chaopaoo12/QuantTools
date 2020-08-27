@@ -1,5 +1,6 @@
 from QUANTAXIS import QA_fetch_stock_adj,QA_fetch_stock_day_adv,QA_fetch_stock_list_adv,QA_fetch_index_day_adv,QA_fetch_index_list_adv
-from QUANTAXIS import QA_fetch_get_stock_list, QA_fetch_get_index_list
+from QUANTAXIS import QA_fetch_get_index_list,QA_fetch_get_stock_list
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day,QA_util_get_real_date,QA_util_if_trade,QA_util_log_info
 from QUANTTOOLS.message_func.email import send_email
 from QUANTTOOLS.message_func.wechat import send_actionnotice
@@ -90,10 +91,7 @@ def check_wy_financial(mark_day=None, type='day', ui_log = None):
         return(None)
 
 def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
-    try:
-        code = list(QA_fetch_stock_list_adv()['code'])
-    except:
-        code = list(QA_fetch_get_stock_list('tdx')['code'])
+    code = list(QA_fetch_stock_all()['code'])
 
     if type == 'day' and mark_day is None:
         mark_day = QA_util_today_str()
@@ -153,10 +151,7 @@ def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
         return(0)
 
 def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
-    try:
-        code = list(QA_fetch_stock_list_adv()['code'])
-    except:
-        code = list(QA_fetch_get_stock_list('tdx')['code'])
+    code = list(QA_fetch_stock_all()['code'])
 
     if mark_day is None:
         mark_day = QA_util_today_str()
