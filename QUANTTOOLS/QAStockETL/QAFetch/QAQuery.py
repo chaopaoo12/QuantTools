@@ -1523,7 +1523,8 @@ def QA_fetch_stock_delist(collections=DATABASE.stock_delist):
 def QA_fetch_stock_om_all():
     tushare_list = pd.DataFrame(QA.QAFetch.QAQuery.QA_fetch_stock_basic_info_tushare())[['code','name']]
     code_list = QA_fetch_stock_list()[['code','name']]
-    code_list = code_list.append(tushare_list)
+    code = [i for i in tushare_list.code if i not in list(code_list.code)]
+    code_list = code_list.append(tushare_list[tushare_list.code.isin(code)])
     return(code_list)
 
 
@@ -1531,7 +1532,8 @@ def QA_fetch_stock_all():
     stock_delist = QA_fetch_stock_delist()[['code','name']]
     tushare_list = pd.DataFrame(QA.QAFetch.QAQuery.QA_fetch_stock_basic_info_tushare())[['code','name']]
     code_list = QA_fetch_stock_list()[['code','name']]
-    code_list = code_list.append(stock_delist).append(tushare_list)
+    code = [i for i in tushare_list.code if i not in list(code_list.code)]
+    code_list = code_list.append(stock_delist).append(tushare_list[tushare_list.code.isin(code)])
     return(code_list)
 
 def QA_fetch_stock_week(
