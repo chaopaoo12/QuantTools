@@ -6,4 +6,5 @@ from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_day,check_st
                                                         check_index_day,
                                                         check_index_alpha101,check_index_alpha191,
                                                         check_index_techindex,check_index_techweek,
-                                                        check_index_quant)
+                                                        check_index_quant,
+                                                        check_ttm_financial,check_tdx_financial,check_wy_financial)
