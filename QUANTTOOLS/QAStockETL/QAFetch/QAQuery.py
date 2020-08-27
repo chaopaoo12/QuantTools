@@ -848,7 +848,6 @@ def QA_fetch_financial_code_wy(ndays=30):
     code = list(set(data['code']))
     wy = QA_fetch_financial_report_wy(code,start_date,end_date)[['code','report_date']].reset_index(drop=True)
     wy = wy.assign(report_date= wy.report_date.apply(lambda x:str(x)[0:10]))
-    #code = list(set(data[~(data['code'].isin(wy['code']) & data['report_date'].isin(wy['report_date']))]['code']))
     return(data[~(data['code'].isin(wy['code']) & data['report_date'].isin(wy['report_date']))])
 
 def QA_fetch_financial_code_new(ndays=30):
@@ -869,8 +868,6 @@ def QA_fetch_financial_code_tdx(ndays=30):
     code = list(set(data['code']))
     tdx = QA_fetch_financial_report(code,start_date,end_date)[['code','report_date']].reset_index(drop=True)
     tdx = tdx.assign(report_date= tdx.report_date.apply(lambda x:str(x)[0:10]))
-    #code = list(set(data[~(data['code'].isin(tdx['code']) & data['report_date'].isin(tdx['report_date']))]['code']))
-
     return(data[~(data['code'].isin(tdx['code']) & data['report_date'].isin(tdx['report_date']))])
 
 def QA_fetch_financial_code_ttm(ndays=30):
@@ -881,10 +878,9 @@ def QA_fetch_financial_code_ttm(ndays=30):
     start_date = str(data['report_date'].min())[0:10]
     end_date = str(data['report_date'].max())[0:10]
     code = list(set(data['code']))
-    ttm = QA_fetch_stock_fianacial(code,start_date,end_date)[['code','report_date']].reset_index(drop=True)
-    ttm = ttm.assign(report_date= ttm.report_date.apply(lambda x:str(x)[0:10]))
-    #code = list(set(data[~(data['code'].isin(wy['code']) & data['report_date'].isin(wy['report_date']))]['code']))
-    return(data[~(data['code'].isin(ttm['code']) & data['report_date'].isin(ttm['report_date']))])
+    ttm = QA_fetch_financial_TTM(code,start_date,end_date)[['CODE','REPORT_DATE']].reset_index(drop=True)
+    ttm = ttm.assign(report_date= ttm.REPORT_DATE.apply(lambda x:str(x)[0:10]))
+    return(data[~(data['code'].isin(ttm['CODE']) & data['report_date'].isin(ttm['REPORT_DATE']))])
 
 def QA_fetch_interest_rate(start, end=None, format='pd', collections=DATABASE.interest_rate):
     '获取股票日线'
