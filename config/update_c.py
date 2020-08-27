@@ -73,13 +73,12 @@ if __name__ == '__main__':
         print("done")
         print("run financial data into sqldatabase")
 
-        while check_tdx_financial(mark_day) is None:
+        while check_tdx_financial(mark_day) is None or check_tdx_financial(mark_day) > 0:
             QA_SU_save_financialfiles_fromtdx()
 
         QA_etl_stock_financial('all')
 
-        while check_wy_financial(mark_day) is not None:
-            QA_etl_stock_financial_wy('all')
+        check_wy_financial(mark_day)
 
         QA_util_process_stock_financial()
         QA_SU_save_fianacialTTM_momgo()
