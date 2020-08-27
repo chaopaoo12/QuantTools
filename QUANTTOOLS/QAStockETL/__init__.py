@@ -10,7 +10,7 @@ from QUANTTOOLS.QAStockETL.QASU import (QA_SU_save_report_calendar_day, QA_SU_sa
                                         QA_etl_stock_block, QA_etl_stock_divyield,
                                         QA_etl_process_financial_day,QA_etl_stock_shares,
                                         QA_etl_stock_financial_wy,
-                                        QA_etl_stock_alpha_day,
+                                        QA_etl_stock_alpha_day,QA_SU_save_stock_day,
                                         QA_etl_stock_technical_day,
                                         QA_etl_stock_financial_day,
                                         QA_etl_stock_technical_week,
