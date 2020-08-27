@@ -838,11 +838,18 @@ def QA_fetch_stock_quant_pre(code, start, end=None, block = True, type='close', 
         QA_util_log_info("QA Error QA_fetch_stock_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
         return None
 
-def QA_fetch_financial_code(ndays=10):
+def QA_fetch_financial_code(ndays=30):
     START = str(QA_util_get_pre_trade_date(QA_util_today_str(),ndays))
-    code = list(QA_fetch_stock_financial_calendar(QA.QA_fetch_stock_list_adv().code.tolist(),start = START)['code'])
+    data = QA_fetch_stock_financial_calendar(QA.QA_fetch_stock_list_adv().code.tolist(),start = '2020-08-01')[['code','report_date']]
+    start_date = str(data['report_date'].min())[0:10]
+    end_date = str(data['report_date'].max())[0:10]
+    code = list(set(data['code']))
+    wy = QA_fetch_financial_report_wy(code,start_date,end_date)[['code','report_date']].reset_index(drop=True)
+    code = list(set(data[data['code'].isin(wy['code']) & data['report_date'].isin(wy['report_date'])]['code']))
+
     market_day = pd.DataFrame(QA_fetch_stock_basic_info_tushare())[['code','timeToMarket']]
     market_day['TM'] = market_day['timeToMarket'].apply(lambda x:str(QA_util_add_months(QA_util_date_int2str(int(x)),0) if x >0 else None)[0:10])
+
     code = list(market_day[market_day['TM'] >= START]['code'].values) + code
     return(code)
 
