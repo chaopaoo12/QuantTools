@@ -27,11 +27,13 @@
 
 """对应于save x
 """
+from  QUANTAXIS.QAUtil import QA_util_today_str
 from QUANTAXIS.QASU.main import (QA_SU_save_financialfiles_fromtdx)
 from QUANTTOOLS.QAStockETL import (QA_etl_stock_financial, QA_SU_save_fianacialTTM_momgo,QA_SU_save_stock_financial_wy_day,
                                    QA_util_process_stock_financial,QA_etl_stock_financial_wy)
 
 if __name__ == '__main__':
+    mark_day = QA_util_today_str()
     print("write tdx financial data into sqldatabase")
 
     QA_SU_save_financialfiles_fromtdx()
@@ -43,5 +45,5 @@ if __name__ == '__main__':
     print("done")
     print("run financial data into sqldatabase")
     QA_util_process_stock_financial()
-    QA_SU_save_fianacialTTM_momgo()
+    QA_SU_save_fianacialTTM_momgo(mark_day)
     print("done")
