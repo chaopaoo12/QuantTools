@@ -63,10 +63,11 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv, QA_fet
                                            QA_fetch_stock_quant_data,QA_fetch_stock_quant_data_adv,
                                            QA_fetch_stock_quant_pre,QA_fetch_stock_quant_pre_adv,
                                            QA_fetch_stock_target,QA_fetch_stock_target_adv,QA_fetch_stock_industry,
-                                           QA_fetch_financial_code,QA_fetch_index_info,QA_fetch_stock_industryinfo,
+                                           QA_fetch_financial_code_wy,QA_fetch_financial_code_tdx,QA_fetch_financial_code_new,
+                                           QA_fetch_index_info,QA_fetch_stock_industryinfo,
                                            QA_fetch_stock_all,QA_fetch_stock_delist,QA_fetch_stock_week_adv,QA_fetch_stock_month_adv,
                                            QA_fetch_stock_year_adv,QA_fetch_index_week_adv,QA_fetch_index_month_adv,
                                            QA_fetch_index_year_adv,QA_fetch_stock_week,QA_fetch_stock_month,
                                            QA_fetch_stock_year,QA_fetch_index_week,QA_fetch_index_month,QA_fetch_index_year)
 
-#from QUANTTOOLS.QAStockETL.FuncTools import (check_index_day,check_stock_day,check_stock_fianacial,check_stock_adj,check_stock_quant,check_index_quant)
+from QUANTTOOLS.QAStockETL.FuncTools import (check_index_day,check_stock_day,check_stock_fianacial,check_stock_adj,check_stock_quant,check_index_quant)
