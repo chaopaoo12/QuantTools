@@ -1904,7 +1904,7 @@ class Alpha_191:
         ################ writen by Chen Cheng
         ############sma((close<=delay(close,1)?std(close,20):0),20,1)
         data1=self.close.rolling(20).std()
-        cond=self.close<=self.close.shift(0)
+        cond=self.close<=self.prev_close
         data1[~cond]=0
         data2=pd.DataFrame.ewm(data1,span=39).mean()
         alpha=data2.iloc[-1,:]
