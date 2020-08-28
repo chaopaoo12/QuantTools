@@ -104,7 +104,8 @@ def ETL_stock_day(codes, start=None, end=None):
         end = QA_util_today_str()
 
     if start != end:
-        rng = [datetime.datetime.strptime(i,"%Y-%m-%d") for i in QA_util_get_trade_range(start, end)]
+        #rng = [datetime.datetime.strptime(i,"%Y-%m-%d") for i in QA_util_get_trade_range(start, end)]
+        rng = QA_util_get_trade_range(start, end)
     else:
         rng = str(start)[0:10]
 
