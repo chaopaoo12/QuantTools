@@ -900,11 +900,14 @@ def stock_alpha101(code, start=None, end = None):
     start_date = QA_util_get_pre_trade_date(start, 270)
     deal_date_list = QA_util_get_trade_range(start, end)
 
-    price = QA_fetch_stock_day_adv(code, start_date, end_date ).to_qfq()
-    pctchange = price.close_pct_change()
-    price = price.data
-    price['pctchange'] = pctchange
-    return(get_alpha(price).loc[deal_date_list].reset_index())
+    try:
+        price = QA_fetch_stock_day_adv(code, start_date, end_date ).to_qfq()
+        pctchange = price.close_pct_change()
+        price = price.data
+        price['pctchange'] = pctchange
+        return(get_alpha(price).loc[deal_date_list].reset_index())
+    except:
+        return(None)
 
 def index_alpha101(code, start=None, end = None):
     np.seterr(invalid='ignore')
@@ -920,9 +923,11 @@ def index_alpha101(code, start=None, end = None):
 
     start_date = QA_util_get_pre_trade_date(start, 270)
     deal_date_list = QA_util_get_trade_range(start, end)
-
-    price = QA_fetch_index_day_adv(code, start_date, end_date )
-    pctchange = price.close_pct_change()
-    price = price.data
-    price['pctchange'] = pctchange
-    return(get_alpha(price).loc[deal_date_list].reset_index())
+    try:
+        price = QA_fetch_index_day_adv(code, start_date, end_date )
+        pctchange = price.close_pct_change()
+        price = price.data
+        price['pctchange'] = pctchange
+        return(get_alpha(price).loc[deal_date_list].reset_index())
+    except:
+        return(None)

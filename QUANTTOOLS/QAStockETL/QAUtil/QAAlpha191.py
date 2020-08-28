@@ -18,8 +18,11 @@ def stock_alpha(code, date=None):
     else:
         end_date = date
     start_date = QA_util_get_pre_trade_date(date, 250)
-    price = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
-    return(Alpha_191(price, date).alpha())
+    try:
+        price = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
+        return(Alpha_191(price, date).alpha())
+    except:
+        return(None)
 
 def index_alpha(code, date=None):
     np.seterr(invalid='ignore')
@@ -28,8 +31,11 @@ def index_alpha(code, date=None):
     else:
         end_date = date
     start_date = QA_util_get_pre_trade_date(date, 250)
-    price = QA_fetch_index_day_adv(code, start_date, end_date ).data.reset_index().dropna(axis=0, how='any')
-    return(Alpha_191(price, date).alpha())
+    try:
+        price = QA_fetch_index_day_adv(code, start_date, end_date ).data.reset_index().dropna(axis=0, how='any')
+        return(Alpha_191(price, date).alpha())
+    except:
+        return(None)
 
 class Alpha_191:
 
