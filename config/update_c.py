@@ -52,14 +52,14 @@ if __name__ == '__main__':
         print("download day data")
 
         while check_stock_day(mark_day) is None or check_stock_day(mark_day) > 20:
-            QA_SU_save_stock_day('tdx')
+            QA_SU_save_stock_day()
 
         QA_SU_save_stock_block('tdx')
-        QA_SU_save_stock_info('tdx')
+        QA_SU_save_stock_info()
 
 
         while check_stock_adj(mark_day) is None or check_stock_adj(mark_day) > 20:
-            QA_SU_save_stock_xdxr('tdx')
+            QA_SU_save_stock_xdxr()
 
         print("done")
         print("write data into sqldatabase")
