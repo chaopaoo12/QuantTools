@@ -31,9 +31,11 @@ def QA_SU_save_stock_alpha_day(code = None, start_date = None, end_date = None, 
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving Stock Alpha191==== {}'.format(str(date)), ui_log)
-            stock_alpha.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_stock_alpha(code, date)), ordered=False)
-            gc.collect()
+            data = QA_fetch_get_stock_alpha(code, date)
+            if data is not None:
+                stock_alpha.insert_many(QA_util_to_json_from_pandas(
+                    data), ordered=False)
+                gc.collect()
         except Exception as error0:
             print(error0)
             err.append(str(date))
@@ -80,8 +82,10 @@ def QA_SU_save_stock_alpha_his(code = None, start_date = None, end_date = None, 
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving Stock Alpha191==== {}'.format(str(date)), ui_log)
-            stock_alpha.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_stock_alpha(code, date)), ordered=False)
+            data = QA_fetch_get_stock_alpha(code, date)
+            if data is not None:
+                stock_alpha.insert_many(QA_util_to_json_from_pandas(
+                    data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(date))
@@ -128,9 +132,11 @@ def QA_SU_save_index_alpha_day(code = None, start_date = None, end_date = None, 
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving Index Alpha191==== {}'.format(date), ui_log)
-            index_alpha.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_index_alpha(code, date)), ordered=False)
-            gc.collect()
+            data = QA_fetch_get_index_alpha(code, date)
+            if data is not None:
+                index_alpha.insert_many(QA_util_to_json_from_pandas(
+                    data), ordered=False)
+                gc.collect()
         except Exception as error0:
             print(error0)
             err.append(str(date))
@@ -175,8 +181,10 @@ def QA_SU_save_index_alpha_his(code = None, start_date = None, end_date = None, 
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving Index Alpha191==== {}'.format(str(date)), ui_log)
-            index_alpha.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_index_alpha(code, date)), ordered=False)
+            data = QA_fetch_get_index_alpha(code, date)
+            if data is not None:
+                index_alpha.insert_many(QA_util_to_json_from_pandas(
+                    data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(date))
@@ -222,9 +230,11 @@ def QA_SU_save_stock_alpha101_day(code = None, start_date = None, end_date = Non
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving Stock Alpha101==== {}'.format(str(code)), ui_log)
-            stock_alpha.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_stock_alpha101(code,start,end)), ordered=False)
-            gc.collect()
+            data = QA_fetch_get_stock_alpha101(code,start,end)
+            if data is not None:
+                stock_alpha.insert_many(QA_util_to_json_from_pandas(
+                    data), ordered=False)
+                gc.collect()
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -267,9 +277,11 @@ def QA_SU_save_index_alpha101_day(code = None, start_date = None, end_date = Non
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving Index Alpha101==== {}'.format(code), ui_log)
-            index_alpha.insert_many(QA_util_to_json_from_pandas(
-                QA_fetch_get_index_alpha101(code, start, end)), ordered=False)
-            gc.collect()
+            data = QA_fetch_get_index_alpha101(code, start, end)
+            if data is not None:
+                index_alpha.insert_many(QA_util_to_json_from_pandas(
+                    ), ordered=False)
+                gc.collect()
         except Exception as error0:
             print(error0)
             err.append(str(code))
