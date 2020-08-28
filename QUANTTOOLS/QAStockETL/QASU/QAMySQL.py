@@ -165,7 +165,7 @@ def QA_etl_stock_xdxr(type = "day", mark_day = str(datetime.date.today()),ui_log
 def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK DAY ==== {}'.format(mark_day), ui_log)
-    codes = list(QA_fetch_stock_all()['code'])[1422:]
+    codes = list(QA_fetch_stock_all()['code'])
     if type == "all":
         for i in codes:
             QA_util_log_info('The {} of Total {}====={}'.format
