@@ -171,7 +171,7 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log=
             QA_util_log_info('The {} of Total {}====={}'.format
                              ((codes.index(i) +1), len(codes), i))
             data = ETL_stock_day(i).reset_index()
-            QA_util_sql_store_mysql(data, "stock_market_day",if_exists='replace')
+            QA_util_sql_store_mysql(data, "stock_market_day",if_exists='append')
             QA_util_log_info(
                 '##JOB ETL STOCK DAY HAS BEEN SAVED ==== {}'.format(i), ui_log)
     elif type == "day":
