@@ -116,7 +116,23 @@ def ETL_stock_day(codes, start=None, end=None):
         data = data.data.join(res1).fillna(0).reset_index()
         res = data.groupby('code').apply(pct)
         res = res.set_index(['date','code']).loc[(rng,),].replace([np.inf, -np.inf], 0)
-        res = res.where((pd.notnull(res)), None).reset_index()
+        res = res.where((pd.notnull(res)), None).reset_index()[['date','code','open','high','low','close','volume','amount',
+                                                                'open_qfq','high_qfq','low_qfq','close_qfq','volume_qfq','amount_qfq','adj_qfq',
+                                                                'AVG_TOTAL_MARKET','LAG_MARKET','AVG_LAG_MARKET','LAG_HIGH','LAG_LOW',
+                                                                'LAG2_MARKET','AVG_LAG2_MARKET','LAG3_MARKET','AVG_LAG3_MARKET',
+                                                                'LAG5_MARKET','AVG_LAG5_MARKET','LAG10_MARKET','AVG_LAG10_MARKET',
+                                                                'LAG20_MARKET','AVG_LAG20_MARKET','LAG30_MARKET','AVG_LAG30_MARKET',
+                                                                'LAG30_HIGH','LAG30_LOW','LAG60_MARKET','AVG_LAG60_MARKET',
+                                                                'LAG60_HIGH','LAG60_LOW','LAG90_MARKET','AVG_LAG90_MARKET',
+                                                                'LAG90_HIGH','LAG90_LOW','AVG10_T_MARKET','AVG10_A_MARKET',
+                                                                'HIGH_10','LOW_10','AVG20_T_MARKET','AVG20_A_MARKET',
+                                                                'HIGH_20','LOW_20','AVG30_T_MARKET','AVG30_A_MARKET',
+                                                                'HIGH_30','LOW_30','AVG60_T_MARKET','AVG60_A_MARKET',
+                                                                'HIGH_60','LOW_60','AVG90_T_MARKET','AVG90_A_MARKET',
+                                                                'HIGH_90','LOW_90','AVG5_T_MARKET','AVG5_A_MARKET',
+                                                                'HIGH_5','LOW_5','AVG5_C_MARKET','AVG10_C_MARKET',
+                                                                'AVG20_C_MARKET','AVG30_C_MARKET','AVG60_C_MARKET','AVG90_C_MARKET',
+                                                                'RNG_L','RNG_5','RNG_10','RNG_20','RNG_30','RNG_60','RNG_90']]
     except:
         res=None
     return(res)
