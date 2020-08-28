@@ -110,12 +110,15 @@ def ETL_stock_day(codes, start=None, end=None):
 
     start_date = QA_util_get_pre_trade_date(start,100)
     data = QA_fetch_stock_day_adv(codes,start_date,end)
-    res1 = data.to_qfq().data
-    res1.columns = [x + '_qfq' for x in res1.columns]
-    data = data.data.join(res1).fillna(0).reset_index()
-    res = data.groupby('code').apply(pct)
-    res = res.set_index(['date','code']).loc[(rng,),].replace([np.inf, -np.inf], 0)
-    res = res.where((pd.notnull(res)), None).reset_index()
+    try:
+        res1 = data.to_qfq().data
+        res1.columns = [x + '_qfq' for x in res1.columns]
+        data = data.data.join(res1).fillna(0).reset_index()
+        res = data.groupby('code').apply(pct)
+        res = res.set_index(['date','code']).loc[(rng,),].replace([np.inf, -np.inf], 0)
+        res = res.where((pd.notnull(res)), None).reset_index()
+    except:
+        res=None
     return(res)
 
 def QA_etl_stock_list(ui_log= None):
