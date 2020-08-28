@@ -36,8 +36,7 @@ def QA_SU_save_stock_technical_index_day(start_date=None,end_date=None,client=DA
                 '##JOB01 Now Saving stock_technical_index from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
             data = QA_fetch_get_stock_indicator(code, start_date, end_date,'day')
             if data is not None:
-                stock_technical_index.insert_many(QA_util_to_json_from_pandas(
-                    data), ordered=False)
+                stock_technical_index.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -91,8 +90,7 @@ def QA_SU_save_stock_technical_index_his(start_date=None,end_date=None,client=DA
                 '##JOB01 Now Saving stock_technical_index from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
             data = QA_fetch_get_stock_indicator(code, start_date, end_date)
             if data is not None:
-                stock_technical_index.insert_many(QA_util_to_json_from_pandas(
-                data), ordered=False)
+                stock_technical_index.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -143,8 +141,7 @@ def QA_SU_save_stock_technical_week_day(start_date=None,end_date=None,client=DAT
                 '##JOB01 Now Saving stock_technical_week from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
             data = QA_fetch_get_stock_indicator(code, start_date, end_date, type='week')
             if data is not None:
-                stock_technical_week.insert_many(QA_util_to_json_from_pandas(
-                data), ordered=False)
+                stock_technical_week.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -198,8 +195,7 @@ def QA_SU_save_stock_technical_week_his(start_date=None,end_date=None,client=DAT
                 '##JOB01 Now Saving stock_technical_week from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
             data = QA_fetch_get_stock_indicator(code, start_date, end_date, type='week')
             if data is not None:
-                stock_technical_week.insert_many(QA_util_to_json_from_pandas(
-                data), ordered=False)
+                stock_technical_week.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -250,8 +246,7 @@ def QA_SU_save_stock_technical_month_day(start_date=None,end_date=None,client=DA
                 '##JOB01 Now Saving stock_technical_month from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
             data = QA_fetch_get_stock_indicator(code, start_date, end_date, type='month')
             if data is not None:
-                stock_technical_month.insert_many(QA_util_to_json_from_pandas(
-                data), ordered=False)
+                stock_technical_month.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -305,8 +300,7 @@ def QA_SU_save_stock_technical_month_his(start_date=None,end_date=None,client=DA
                 '##JOB01 Now Saving stock_technical_month from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
             data = QA_fetch_get_stock_indicator(code, start_date, end_date, type='month')
             if data is not None:
-                stock_technical_month.insert_many(QA_util_to_json_from_pandas(
-                data), ordered=False)
+                stock_technical_month.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -358,8 +352,7 @@ def QA_SU_save_index_technical_index_day(start_date=None,end_date=None,client=DA
                 '##JOB01 Now Saving index_technical_index from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
             data = QA_fetch_get_index_indicator(code, start_date, end_date,'day')
             if data is not None:
-                index_technical_index.insert_many(QA_util_to_json_from_pandas(
-                data), ordered=False)
+                index_technical_index.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -413,8 +406,7 @@ def QA_SU_save_index_technical_index_his(start_date=None,end_date=None,client=DA
                 '##JOB01 Now Saving index_technical_index from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
             data = QA_fetch_get_index_indicator(code, start_date, end_date)
             if data is not None:
-                index_technical_index.insert_many(QA_util_to_json_from_pandas(
-                data), ordered=False)
+                index_technical_index.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -465,8 +457,7 @@ def QA_SU_save_index_technical_week_day(start_date=None,end_date=None,client=DAT
                 '##JOB01 Now Saving index_technical_week from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
             data = QA_fetch_get_index_indicator(code, start_date, end_date, type='week')
             if data is not None:
-                index_technical_week.insert_many(QA_util_to_json_from_pandas(
-                data), ordered=False)
+                index_technical_week.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -520,8 +511,7 @@ def QA_SU_save_index_technical_week_his(start_date=None,end_date=None,client=DAT
                 '##JOB01 Now Saving index_technical_week from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
             data = QA_fetch_get_index_indicator(code, start_date, end_date, type='week')
             if data is not None:
-                index_technical_week.insert_many(QA_util_to_json_from_pandas(
-                data), ordered=False)
+                index_technical_week.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -572,8 +562,7 @@ def QA_SU_save_index_technical_month_day(start_date=None,end_date=None,client=DA
                 '##JOB01 Now Saving index_technical_month from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
             data = QA_fetch_get_index_indicator(code, start_date, end_date, type='month')
             if data is not None:
-                index_technical_month.insert_many(QA_util_to_json_from_pandas(
-                data), ordered=False)
+                index_technical_month.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
@@ -627,8 +616,7 @@ def QA_SU_save_index_technical_month_his(start_date=None,end_date=None,client=DA
                 '##JOB01 Now Saving index_technical_month from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
             data = QA_fetch_get_index_indicator(code, start_date, end_date, type='month')
             if data is not None:
-                index_technical_month.insert_many(QA_util_to_json_from_pandas(
-                data), ordered=False)
+                index_technical_month.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
             print(error0)
             err.append(str(code))
