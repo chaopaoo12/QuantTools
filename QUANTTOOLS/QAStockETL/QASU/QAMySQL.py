@@ -104,7 +104,7 @@ def ETL_stock_day(codes, start=None, end=None):
         end = QA_util_today_str()
 
     if start != end:
-        rng = QA_util_get_trade_range(start, end)
+        rng = [datetime.datetime.strptime(i,"%Y-%m-%d") for i in QA_util_get_trade_range(start, end)]
     else:
         rng = str(start)[0:10]
 
@@ -114,10 +114,8 @@ def ETL_stock_day(codes, start=None, end=None):
     res1.columns = [x + '_qfq' for x in res1.columns]
     data = data.data.join(res1).fillna(0).reset_index()
     res = data.groupby('code').apply(pct)
-    res = res.reset_index(drop = True)
-    res = res.assign(date = res.date.apply(lambda x:str(x)[0:10]))
-    res = res[res.date.isin(rng)]
-    res = res.set_index(['date','code']).replace([np.inf, -np.inf], 0)
+    res = res.set_index(['date','code']).loc[rng]
+    res = res.replace([np.inf, -np.inf], 0)
     res = res.where((pd.notnull(res)), None)
     return(res)
 
