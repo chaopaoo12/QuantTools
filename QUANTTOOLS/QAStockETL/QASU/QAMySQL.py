@@ -114,7 +114,9 @@ def ETL_stock_day(codes, start=None, end=None):
     res1.columns = [x + '_qfq' for x in res1.columns]
     data = data.data.join(res1).fillna(0).reset_index()
     res = data.groupby('code').apply(pct)
-    res = res.reset_index(level = 0,drop = True).reset_index().set_index(['date','code']).loc[rng].replace([np.inf, -np.inf], 0)
+    res = res.reset_index(level = 0,drop = True).reset_index()
+    res = res.assign(date = res.date.apply(lambda x:str(x)[0:10]))
+    res = res.set_index(['date','code']).loc[rng].replace([np.inf, -np.inf], 0)
     res = res.where((pd.notnull(res)), None)
     return(res)
 
@@ -164,8 +166,11 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log=
         '##JOB Now ETL STOCK DAY ==== {}'.format(mark_day), ui_log)
     codes = list(QA_fetch_stock_all()['code'])
     if type == "all":
-        data = ETL_stock_day(codes).reset_index()
-        QA_util_sql_store_mysql(data, "stock_market_day",if_exists='replace')
+        for i in codes:
+            data = ETL_stock_day(i).reset_index()
+            QA_util_sql_store_mysql(data, "stock_market_day",if_exists='replace')
+            QA_util_log_info(
+                '##JOB ETL STOCK DAY HAS BEEN SAVED ==== {}'.format(i), ui_log)
     elif type == "day":
         data = ETL_stock_day(codes, mark_day, mark_day).reset_index()
         if data is None:
