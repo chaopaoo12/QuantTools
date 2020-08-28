@@ -165,15 +165,18 @@ def QA_etl_stock_xdxr(type = "day", mark_day = str(datetime.date.today()),ui_log
 def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK DAY ==== {}'.format(mark_day), ui_log)
-    codes = list(QA_fetch_stock_all()['code'])[1411:]
+    codes = list(QA_fetch_stock_all()['code'])[1422:]
     if type == "all":
         for i in codes:
             QA_util_log_info('The {} of Total {}====={}'.format
                              ((codes.index(i) +1), len(codes), i))
             data = ETL_stock_day(i)
-            QA_util_sql_store_mysql(data, "stock_market_day",if_exists='append')
-            QA_util_log_info(
-                '##JOB ETL STOCK DAY HAS BEEN SAVED ==== {}'.format(i), ui_log)
+            if data is None:
+                QA_util_log_info("We have no MARKET data for the ======= {}".format(i))
+            else:
+                QA_util_sql_store_mysql(data, "stock_market_day",if_exists='append')
+                QA_util_log_info(
+                    '##JOB ETL STOCK DAY HAS BEEN SAVED ==== {}'.format(i), ui_log)
     elif type == "day":
         data = ETL_stock_day(codes, mark_day, mark_day)
         if data is None:
