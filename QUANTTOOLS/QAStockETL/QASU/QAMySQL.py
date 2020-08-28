@@ -116,7 +116,7 @@ def ETL_stock_day(codes, start=None, end=None):
     res = data.groupby('code').apply(pct)
     res = res.set_index(['date','code']).loc[rng]
     res = res.replace([np.inf, -np.inf], 0)
-    res = res.where((pd.notnull(res)), None)
+    res = res.where((pd.notnull(res)), None).reset_index()
     return(res)
 
 def QA_etl_stock_list(ui_log= None):
@@ -168,12 +168,12 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log=
         for i in codes:
             QA_util_log_info('The {} of Total {}====={}'.format
                              ((codes.index(i) +1), len(codes), i))
-            data = ETL_stock_day(i).reset_index()
+            data = ETL_stock_day(i)
             QA_util_sql_store_mysql(data, "stock_market_day",if_exists='append')
             QA_util_log_info(
                 '##JOB ETL STOCK DAY HAS BEEN SAVED ==== {}'.format(i), ui_log)
     elif type == "day":
-        data = ETL_stock_day(codes, mark_day, mark_day).reset_index()
+        data = ETL_stock_day(codes, mark_day, mark_day)
         if data is None:
             QA_util_log_info("We have no MARKET data for the day {}".format(mark_day))
         else:
