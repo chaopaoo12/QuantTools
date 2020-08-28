@@ -1,7 +1,7 @@
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_get_quant_data,QA_fetch_index_target,
                                            QA_fetch_index_quant_data,QA_fetch_get_index_quant_data,
                                            QA_fetch_stock_quant_pre_adv,QA_fetch_index_quant_pre_adv,
-                                           QA_fetch_index_info)
+                                           QA_fetch_index_info,QA_fetch_stock_all)
 import QUANTAXIS as QA
 import pandas as pd
 
@@ -11,7 +11,7 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_bloc
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
     else:
-        codes = list(QA.QA_fetch_stock_list_adv()['code'])
+        codes = list(QA_fetch_stock_all()['code'])
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
@@ -59,7 +59,7 @@ def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
     else:
-        codes = list(QA.QA_fetch_stock_list_adv()['code'])
+        codes = list(QA_fetch_stock_all()['code'])
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
@@ -81,7 +81,7 @@ def get_quant_data_stdd(start_date, end_date, type = 'crawl', block = False, sub
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
     else:
-        codes = list(QA.QA_fetch_stock_list_adv()['code'])
+        codes = list(QA_fetch_stock_all()['code'])
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
