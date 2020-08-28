@@ -856,7 +856,6 @@ into stock_analysis_data
                                    MAX(CLOSE_QFQ) as CLOSE_QFQ,
                                    MAX(VOLUME_QFQ) as VOLUME_QFQ,
                                    MAX(AMOUNT_QFQ) as AMOUNT_QFQ,
-                                   MAX(PRECLOSE_QFQ) as PRECLOSE_QFQ,
                                    MAX(ADJ_QFQ) as ADJ_QFQ,
                                    MAX(AVG_TOTAL_MARKET) as AVG_TOTAL_MARKET,
                                    MAX(LAG_MARKET) as LAG_MARKET,
