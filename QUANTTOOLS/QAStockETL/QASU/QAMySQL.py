@@ -114,7 +114,7 @@ def ETL_stock_day(codes, start=None, end=None):
     res1.columns = [x + '_qfq' for x in res1.columns]
     data = data.data.join(res1).fillna(0).reset_index()
     res = data.groupby('code').apply(pct)
-    res = res.reset_index(level = 0,drop = True).reset_index()
+    res = res.reset_index(drop = True)
     res = res.assign(date = res.date.apply(lambda x:str(x)[0:10]))
     res = res[res.date.isin(rng)]
     res = res.set_index(['date','code']).replace([np.inf, -np.inf], 0)
