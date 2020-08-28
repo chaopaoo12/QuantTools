@@ -583,7 +583,7 @@ def get_indicator(data):
     res['MA180'] = data['close']/res['MA180']-1
     res = res.reset_index()
     res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
-    res = res.set_index(['date','code'])
+    res = res.set_index(['date','code']).dropna(how='all')
     return(res)
 
 def ohlc(data,N=7):
