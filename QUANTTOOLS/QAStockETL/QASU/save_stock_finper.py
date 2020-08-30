@@ -111,7 +111,7 @@ def QA_SU_save_stock_fianacial_percent_his(code = None, start_date=None,end_date
         except Exception as error0:
             print(error0)
             err.append(str(code))
-    k=500
+    k=250
     for i in range(0, len(codes), k):
         code = codes[i:i+k]
         QA_util_log_info('The {} of Total {}'.format
