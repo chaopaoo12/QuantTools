@@ -37,7 +37,7 @@ def check_ttm_financial(mark_day=None, type='day', ui_log = None):
                           'TTM财报数据缺失:{}'.format(mark_day),
                           'WARNING',
                           direction = 'Missing Data',
-                          offset='{to_date}, 数据量:{num}',
+                          offset='None',
                           volume= '缺失数据量:{num}'.format(num =(res.shape[0]))
                           )
         return(None)
@@ -61,7 +61,7 @@ def check_tdx_financial(mark_day=None, type='day', ui_log = None):
                           'TDX财报数据缺失:{}'.format(mark_day),
                           'WARNING',
                           direction = 'Missing Data',
-                          offset='{to_date}, 数据量:{num}',
+                          offset='None',
                           volume= '缺失数据量:{num}'.format(num =(res.shape[0]))
                           )
         return(None)
@@ -85,7 +85,7 @@ def check_wy_financial(mark_day=None, type='day', ui_log = None):
                           '网易财报数据缺失:{}'.format(mark_day),
                           'WARNING',
                           direction = 'Missing Data',
-                          offset='{to_date}, 数据量:{num}',
+                          offset='None',
                           volume= '缺失数据量:{num}'.format(num =(res.shape[0]))
                           )
         return(None)
