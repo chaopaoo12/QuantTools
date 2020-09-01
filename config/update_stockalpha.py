@@ -49,10 +49,7 @@ if __name__ == '__main__':
         QA_SU_save_stock_alpha101_day(start_date = mark_day, end_date = mark_day)
 
         while check_stock_alpha101(mark_day) is None or check_stock_alpha101(mark_day)  > 20:
-            time.sleep(300)
+            QA_etl_stock_alpha101_day(mark_day,mark_day)
 
         while check_stock_alpha191(mark_day) is None or check_stock_alpha191(mark_day)  > 20:
-            time.sleep(300)
-
-        QA_etl_stock_alpha_day(mark_day,mark_day)
-        QA_etl_stock_alpha101_day(mark_day,mark_day)
+            QA_etl_stock_alpha_day(mark_day,mark_day)
