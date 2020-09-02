@@ -104,7 +104,7 @@ def QA_SU_save_stock_quant_data_day(code = None, start_date = None, end_date = N
     save_stock_quant.QA_SU_save_stock_quant_day(code = code, start_date = start_date ,end_date = end_date)
 
 def QA_SU_save_stock_quant_data_his(code = None, start_date = '2008-01-01', end_date = QA_util_today_str()):
-    save_stock_quant.QA_SU_save_stock_quant_day(code = code, start_date = start_date ,end_date = end_date)
+    save_stock_quant.QA_SU_save_stock_quant_his(code = code, start_date = start_date ,end_date = end_date)
 
 def QA_SU_save_stock_technical_week_day(start_date=None,end_date=None):
     save_stock_technical_index.QA_SU_save_stock_technical_week_day(start_date=start_date,end_date=end_date)
@@ -161,7 +161,7 @@ def QA_SU_save_index_alpha101_his(code = None, start_date = '2008-01-01', end_da
     save_stock_alpha.QA_SU_save_index_alpha101_day(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_stock_alpha101_his(code = None, start_date = '2008-01-01', end_date = QA_util_today_str()):
-    save_stock_alpha.QA_SU_save_stock_alpha101_day(code = code, start_date = start_date, end_date = end_date)
+    save_stock_alpha.QA_SU_save_stock_alpha101_his(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_index_info():
     save_tdx.QA_SU_save_index_info()

@@ -3,7 +3,7 @@ import pymongo
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_info, QA_util_add_months,
                               QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date,
                               QA_util_datetime_to_strdate)
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_stock_om_all
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_indicator,QA_fetch_get_index_indicator
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_index_list_adv
 
@@ -24,7 +24,7 @@ def QA_SU_save_stock_technical_index_day(start_date=None,end_date=None,client=DA
         start_date = QA_util_get_pre_trade_date(start_date,3)
         if end_date == None:
             end_date = QA_util_today_str()
-    codes = list(QA_fetch_stock_all()['code'])
+    codes = list(QA_fetch_stock_om_all()['code'])
 
     stock_technical_index = client.stock_technical_index
     stock_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -129,7 +129,7 @@ def QA_SU_save_stock_technical_week_day(start_date=None,end_date=None,client=DAT
         start_date = QA_util_get_pre_trade_date(start_date,3)
         if end_date == None:
             end_date = QA_util_today_str()
-    codes = list(QA_fetch_stock_all()['code'])
+    codes = list(QA_fetch_stock_om_all()['code'])
 
     stock_technical_week = client.stock_technical_week
     stock_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -234,7 +234,7 @@ def QA_SU_save_stock_technical_month_day(start_date=None,end_date=None,client=DA
         start_date = QA_util_get_pre_trade_date(start_date,3)
         if end_date == None:
             end_date = QA_util_today_str()
-    codes = list(QA_fetch_stock_all()['code'])
+    codes = list(QA_fetch_stock_om_all()['code'])
 
     stock_technical_month = client.stock_technical_month
     stock_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)

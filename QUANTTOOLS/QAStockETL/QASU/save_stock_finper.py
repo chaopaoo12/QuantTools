@@ -3,14 +3,14 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_financial_percent
 from QUANTTOOLS.QAStockETL.QAUtil import ASCENDING
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_to_json_from_pandas, QA_util_today_str,QA_util_code_tolist,QA_util_log_info,
                               QA_util_get_trade_range,QA_util_get_pre_trade_date)
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_stock_om_all
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_block_adv,
                                                QA_fetch_stock_day_adv)
 
 
 def QA_SU_save_stock_fianacial_percent(code = None, start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
     if code is None:
-        codes = list(QA_fetch_stock_all()['code'])
+        codes = list(QA_fetch_stock_om_all()['code'])
     else:
         codes = QA_util_code_tolist(code)
 
