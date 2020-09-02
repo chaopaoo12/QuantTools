@@ -57,7 +57,6 @@ if __name__ == '__main__':
         QA_SU_save_stock_block('tdx')
         QA_SU_save_stock_info()
 
-
         while check_stock_adj(mark_day) is None or check_stock_adj(mark_day) > 20:
             QA_SU_save_stock_xdxr()
 
