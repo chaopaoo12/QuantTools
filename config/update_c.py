@@ -41,7 +41,6 @@ from QUANTAXIS.QASU.main import (QA_SU_save_financialfiles_fromtdx)
 from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_day, check_stock_fianacial, check_stock_adj, check_stock_finper,
                                                         check_wy_financial, check_tdx_financial, check_ttm_financial)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
-import time
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
