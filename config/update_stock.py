@@ -46,10 +46,10 @@ if __name__ == '__main__':
 
         time.sleep(600)
 
-        while check_stock_techindex(mark_day) is None or check_stock_techindex(mark_day)  > 20:
+        while check_stock_techindex(mark_day) is None or check_stock_techindex(mark_day)  > 50:
             QA_SU_save_stock_technical_index_day(start_date=mark_day, end_date = mark_day)
 
-        while check_stock_techweek(mark_day) is None or check_stock_techweek(mark_day)  > 20:
+        while check_stock_techweek(mark_day) is None or check_stock_techweek(mark_day)  > 50:
             QA_SU_save_stock_technical_week_day(start_date=mark_day, end_date = mark_day)
 
         QA_etl_stock_technical_day(mark_day, mark_day)
