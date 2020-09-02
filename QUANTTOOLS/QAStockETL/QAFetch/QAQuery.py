@@ -664,7 +664,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
         __data = []
         QA_util_log_info(
             'JOB Get Stock Financial data start=%s end=%s' % (start, end))
-        pe_res = pe(start,end)[['PE_10PCT','PE_10VAL','PEEGL_10PCT','PEEGL_10VAL','PB_10PCT','PB_10VAL',
+        pe_res = pe(start,end).loc[((slice(None),code),)][['PE_10PCT','PE_10VAL','PEEGL_10PCT','PEEGL_10VAL','PB_10PCT','PB_10VAL',
                                 #'PEG_10PCT','PEG_10VAL',
                                 'PS_10PCT','PS_10VAL',
                                 'PE_20PCT','PE_20VAL','PEEGL_20PCT','PEEGL_20VAL','PB_20PCT','PB_20VAL',
@@ -685,42 +685,27 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
                                 'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
                                 #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
                                 #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
-                                ]].groupby('code').fillna(method='ffill').reset_index()
-        pe_res = pe_res[pe_res.code.isin(code)]
-        financial_res = financial(start,end).groupby('code').fillna(method='ffill').reset_index()
-        financial_res = financial_res[financial_res.code.isin(code)]
+                                ]].groupby('code').fillna(method='ffill')
+        financial_res = financial(start,end).loc[((slice(None),code),)].groupby('code').fillna(method='ffill')
 
         QA_util_log_info(
             'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
+        index_res = index(start,end).loc[((slice(None),code),)].groupby('code').fillna(method='ffill')
 
-        index_res = index(start,end).groupby('code').fillna(method='ffill').reset_index()
-        index_res = index_res[index_res.code.isin(code)]
         QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
+        week_res = week(start,end).loc[((slice(None),code),)].groupby('code').fillna(method='ffill')
 
-        week_res = week(start,end).groupby('code').fillna(method='ffill').reset_index()
-        week_res = week_res[week_res.code.isin(code)]
         QA_util_log_info(
             'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start,end).groupby('code').fillna(method='ffill').reset_index()
-        alpha_res = alpha_res[alpha_res.code.isin(code)]
+        alpha_res = alpha(start,end).loc[((slice(None),code),)].groupby('code').fillna(method='ffill')
+
         QA_util_log_info(
             'JOB Get Stock Alpha101 data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start,end).groupby('code').fillna(method='ffill').fillna(0).reset_index()
-        alpha101_res = alpha101_res[alpha101_res.code.isin(code)]
+        alpha101_res = alpha101(start,end).loc[((slice(None),code),)].groupby('code').fillna(method='ffill').fillna(0)
+
         try:
-            res = financial_res.drop_duplicates(
-                (['code', 'date'])).set_index(['date','code']).join(
-                index_res.drop_duplicates(
-                    (['code', 'date'])).set_index(['date','code'])).join(
-                week_res.drop_duplicates(
-                    (['code', 'date'])).set_index(['date','code'])).join(
-                alpha_res.drop_duplicates(
-                    (['code', 'date'])).set_index(['date','code'])).join(
-                alpha101_res.drop_duplicates(
-                    (['code', 'date'])).set_index(['date','code'])).join(
-                pe_res.drop_duplicates(
-                    (['code', 'date'])).set_index(['date','code']))
+            res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(pe_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
