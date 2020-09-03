@@ -59,7 +59,9 @@ def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
     else:
-        codes = list(QA_fetch_stock_om_all()['code'])
+        codes = QA_fetch_stock_om_all()
+        codes = codes[codes.name.apply(lambda x:x.count('*')) == 0]
+        codes = list(codes['code'])
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
