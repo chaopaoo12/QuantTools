@@ -20,7 +20,7 @@ def precision(y_true, y_pred):
     precision = true_positives / (predicted_positives + K.epsilon())
     return precision
 
-class model(QAStockModel):
+class QAStockKeras(QAStockModel):
 
     def build_model(self, loss = 'binary_crossentropy', optimizer = Adam(lr=1e-4), metrics = ['accuracy',precision]):
         QA_util_log_info('##JOB Set Model Params ===== {}'.format(self.info['date']), ui_log = None)

@@ -7,7 +7,7 @@ from QUANTTOOLS.FactorTools.QuantMk import get_quant_data_norm
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.QABaseModel.QAStockModel import QAStockModel
 
-class model(QAStockModel):
+class QAStockXGBoost(QAStockModel):
 
     def build_model(self, other_params):
         QA_util_log_info('##JOB Set Model Params ===== {}'.format(self.info['date']), ui_log = None)
