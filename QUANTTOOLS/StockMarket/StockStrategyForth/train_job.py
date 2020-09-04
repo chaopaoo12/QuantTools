@@ -1,7 +1,7 @@
 from datetime import datetime
-from QUANTTOOLS.StockMarket.StockStrategyThird.train import train
-from QUANTTOOLS.StockMarket.StockStrategyThird.running import predict
-from QUANTTOOLS.StockMarket.StockStrategyThird.setting import working_dir
+from QUANTTOOLS.StockMarket.StockStrategyForth.train import train
+from QUANTTOOLS.StockMarket.StockStrategyForth.running import predict
+from QUANTTOOLS.StockMarket.StockStrategyForth.setting import working_dir
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date,QA_util_get_last_day
 
 
