@@ -60,7 +60,7 @@ def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub
         #codes = [i for i in codes if i.startswith('300') == False]
     else:
         codes = QA_fetch_stock_om_all()
-        codes = codes[codes.name.apply(lambda x:x.count('*')) == 0]
+        #codes = codes[codes.name.apply(lambda x:x.count('*')) == 0]
         codes = list(codes['code'])
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
