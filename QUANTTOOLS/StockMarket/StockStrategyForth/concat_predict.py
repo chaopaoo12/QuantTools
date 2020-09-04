@@ -2,9 +2,9 @@ import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
 from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyXgboost import QAStockModel
 import pandas as pd
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name
 from QUANTTOOLS.message_func import send_email
-from QUANTTOOLS.StockMarket.StockStrategyThird.setting import working_dir
+from QUANTTOOLS.StockMarket.StockStrategyForth.setting import working_dir
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from datetime import datetime,timedelta

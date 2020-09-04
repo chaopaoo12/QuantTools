@@ -1,11 +1,16 @@
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_close
+
 from QUANTTOOLS.StockMarket.StockStrategyForth.concat_predict import concat_predict,save_prediction
-import pandas as pd
-from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 from QUANTTOOLS.StockMarket.StockStrategyForth.setting import working_dir, percent, exceptions
+
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_close
+
 from QUANTAXIS.QAUtil import (QA_util_log_info)
+
+from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 from QUANTTOOLS.account_manage import get_Client,check_Client
 from QUANTTOOLS.message_func.wechat import send_actionnotice
+
+import pandas as pd
 from datetime import timedelta
 delta3 = timedelta(days=7)
 

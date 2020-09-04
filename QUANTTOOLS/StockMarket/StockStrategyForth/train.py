@@ -1,12 +1,15 @@
 #coding=utf-8
 
 from QUANTTOOLS.StockMarket.StockStrategyForth.setting import working_dir
+
 from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyXgboost import model as StockModel
+
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
-import pandas as pd
-from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
+
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_get_real_date,QA_util_get_last_day
+from QUANTAXIS.QAUtil import (QA_util_log_info)
+import pandas as pd
 
 def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log = None):
     QA_util_log_info('##JOB01 Now Model Init ==== {}'.format(str(date)), ui_log)

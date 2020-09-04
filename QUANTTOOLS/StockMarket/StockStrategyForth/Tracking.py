@@ -1,10 +1,14 @@
+
+from QUANTTOOLS.StockMarket.StockStrategyForth.setting import working_dir, percent, exceptions
+from QUANTTOOLS.StockMarket.StockStrategyForth.concat_predict import concat_predict,load_prediction,check_prediction
+
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.account_manage import track_roboot
-from QUANTTOOLS.StockMarket.StockStrategyForth.setting import working_dir, percent, exceptions
-from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.account_manage import get_Client,check_Client
-from QUANTTOOLS.StockMarket.StockStrategyForth.concat_predict import concat_predict,load_prediction,check_prediction
+
+from QUANTAXIS.QAUtil import QA_util_log_info
+
 import time
 import datetime
 
