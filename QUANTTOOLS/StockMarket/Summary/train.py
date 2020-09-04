@@ -1,19 +1,19 @@
 #coding=utf-8
 
 from QUANTTOOLS.StockMarket.StockStrategyThird.setting import working_dir
-from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyXgboost import model as StockModelXGBosst
-from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyKeras import model as StockModelKeras
-from QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexKeras import model as IndexModelKeras
-from QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexXGboost import model as IndexModelXGBosst
+from QUANTTOOLS.QABaseModel.StockModel.StrategyXgboost import QAStockXGBoost
+from QUANTTOOLS.QABaseModel.StockModel.StrategyKeras import QAStockKeras
+from QUANTTOOLS.QABaseModel.IndexModel.IndexKeras import model as IndexModelKeras
+from QUANTTOOLS.QABaseModel.IndexModel.IndexXGboost import model as IndexModelXGBosst
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 import pandas as pd
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
-from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date,QA_util_get_last_day
+from QUANTAXIS.QAUtil.QADate_trade import QA_util_get_real_date,QA_util_get_last_day
 
 def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log = None):
     QA_util_log_info('##JOB01 Now Stock XGBoost Model Init ==== {}'.format(str(date)), ui_log)
-    stock_xgbosst = StockModelXGBosst()
+    stock_xgbosst = QAStockXGBoost()
 
     QA_util_log_info('##JOB02 Now Stock XGBoost Prepare Model Data ==== {}'.format(str(date)), ui_log)
     stock_xgbosst.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date, block=False, sub_block=False)
@@ -53,7 +53,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
                       )
 
     QA_util_log_info('##JOB01 Now Stock Keras Model Init ==== {}'.format(str(date)), ui_log)
-    stock_keras = StockModelKeras()
+    stock_keras = QAStockKeras()
     important.head(100)
     QA_util_log_info('##JOB02 Now Stock Keras Prepare Model Data ==== {}'.format(str(date)), ui_log)
     stock_keras.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date, block=False, sub_block=False)
@@ -62,7 +62,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info('##JOB04 Now Set Stock Keras Model Train time range ==== {}'.format(str(date)), ui_log)
     stock_keras.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
                               train_end=QA_util_get_last_day(QA_util_get_real_date(date), 5))
-    stock_keras.prepare_data(thres=0,cols = list(important.head(100).featur))
+    stock_keras.prepare_data(thresh=0, cols = list(important.head(100).featur))
     stock_keras.build_model(loss = 'binary_crossentropy')
     QA_util_log_info('##JOB05 Now Stock Keras Model Trainnig ==== {}'.format(str(date)), ui_log)
     stock_keras.model_running(batch_size=4096, nb_epoch=100)

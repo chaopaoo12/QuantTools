@@ -1,9 +1,9 @@
 
 from QUANTTOOLS.FactorTools.base_func import mkdir
-import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexKeras as IndexModelKeras
-import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexXGboost as IndexModelXGBosst
-from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyKeras import QAStockKeras
-from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyXgboost import QAStockXGBoost
+import QUANTTOOLS.QABaseModel.IndexModel.IndexKeras as IndexModelKeras
+import QUANTTOOLS.QABaseModel.IndexModel.IndexXGboost as IndexModelXGBosst
+from QUANTTOOLS.QABaseModel.StockModel.StrategyKeras import QAStockKeras
+from QUANTTOOLS.QABaseModel.StockModel.StrategyXgboost import QAStockXGBoost
 
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name
 
@@ -27,8 +27,10 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
     try:
         QA_util_log_info(
             '##JOB Now Load Model ==== {}'.format(str(trading_date)), ui_log)
-        stock_xgboost_temp, stock_xgboost_info = StockModelXGBosst.load_model('stock',working_dir = working_dir)
-        stock_keras_temp, stock_keras_info = StockModelKeras.load_model('stock',working_dir = working_dir)
+        StockModelXGBosst = StockModelXGBosst.load_model('stock',working_dir = working_dir)
+        StockModelKeras = StockModelKeras.load_model('stock',working_dir = working_dir)
+        stock_xgboost_info = StockModelXGBosst.info
+        stock_keras_info = StockModelKeras.info
         index_xgboost_temp, index_xgboost_info = IndexModelXGBosst.load_model('index',working_dir = working_dir)
         index_keras_temp, index_keras_info = IndexModelKeras.load_model('index',working_dir = working_dir)
     except:
@@ -49,8 +51,8 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
     index_keras_tar, index_keras_b  = IndexModelKeras.model_predict(index_keras_temp, start, end, index_keras_info['cols'], index_keras_info['thresh'])
 
     QA_util_log_info('##JOB Now Stock Model Predict ==== {}'.format(str(trading_date)), ui_log)
-    stock_xgboost_tar, stock_xgboost_b  = StockModelXGBosst.model_predict(stock_xgboost_temp, start, end, stock_xgboost_info['cols'], stock_xgboost_info['thresh'])
-    stock_keras_tar, stock_keras_b  = StockModelKeras.model_predict(stock_keras_temp, start, end, stock_keras_info['cols'], stock_keras_info['thresh'])
+    stock_xgboost_tar, stock_xgboost_b  = StockModelXGBosst.model_predict(start, end)
+    stock_keras_tar, stock_keras_b  = StockModelKeras.model_predict(start, end)
 
     QA_util_log_info('##JOB Now Combine Predictions ==== {}'.format(str(trading_date)), ui_log)
 
