@@ -6,11 +6,8 @@ import QUANTTOOLS.QAStockTradingDay.StockModel.StrategyKeras as StockModelKeras
 import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexKeras as IndexModelKeras
 import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexXGboost as IndexModelXGBosst
 
-import QUANTTOOLS.QAStockTradingDay.StockModel.StrategyKeras as Stock
-import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexKeras as Index
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name
-from QUANTTOOLS.FactorTools.base_tools import combine_model,combine_index
 from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.StockMarket.StockStrategyThird.setting import working_dir
 from QUANTAXIS.QAUtil import (QA_util_log_info)
@@ -19,12 +16,6 @@ from datetime import datetime,timedelta
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import *
 delta3 = timedelta(days=7)
-
-
-
-#index_model_temp, index_info_temp = Index.load_model('index',working_dir = working_dir)
-#safe_model_temp, safe_info_temp = Index.load_model('safe',working_dir = working_dir)
-
 
 def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=working_dir, ui_log = None):
 
