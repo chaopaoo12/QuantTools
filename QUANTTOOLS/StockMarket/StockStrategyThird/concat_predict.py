@@ -1,6 +1,6 @@
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
-import QUANTTOOLS.QAStockTradingDay.StockModel.StrategyKeras as Stock
+from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyKeras import QAStockKeras
 import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexKeras as Index
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name
@@ -16,7 +16,7 @@ delta3 = timedelta(days=7)
 
 
 def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=working_dir, ui_log = None):
-
+    Stock = QAStockKeras()
     try:
         QA_util_log_info(
             '##JOB Now Load Model ==== {}'.format(str(trading_date)), ui_log)

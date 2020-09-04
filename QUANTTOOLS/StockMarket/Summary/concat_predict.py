@@ -1,23 +1,28 @@
-import joblib
-from QUANTTOOLS.FactorTools.base_func import mkdir
 
-import QUANTTOOLS.QAStockTradingDay.StockModel.StrategyXgboost as StockModelXGBosst
-import QUANTTOOLS.QAStockTradingDay.StockModel.StrategyKeras as StockModelKeras
+from QUANTTOOLS.FactorTools.base_func import mkdir
 import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexKeras as IndexModelKeras
 import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexXGboost as IndexModelXGBosst
+from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyKeras import QAStockKeras
+from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyXgboost import QAStockXGBoost
 
-import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name
+
 from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.StockMarket.StockStrategyThird.setting import working_dir
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.message_func.wechat import send_actionnotice
+
+import joblib
+import pandas as pd
 from datetime import datetime,timedelta
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import *
 delta3 = timedelta(days=7)
 
 def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=working_dir, ui_log = None):
+
+    StockModelXGBosst = QAStockXGBoost()
+    StockModelKeras = QAStockKeras()
 
     try:
         QA_util_log_info(
