@@ -687,6 +687,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
                                 #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
                                 ]].groupby('code').fillna(method='ffill')
         financial_res = financial(start,end).loc[((slice(None),code),)].groupby('code').fillna(method='ffill')
+        financial_res = financial_res[financial_res.DAYS >= 90]
 
         QA_util_log_info(
             'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
@@ -727,7 +728,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
             else:
                 pass
 
-            col_tar = ['DAYS','INDUSTRY']
+            col_tar = ['INDUSTRY']
             if type == 'standardize':
                 QA_util_log_info('##JOB stock quant data standardize trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
                 res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
