@@ -1,7 +1,7 @@
 
 import logging
 import strategyease_sdk
-from QUANTTOOLS.account_manage.setting import yun_ip, yun_port, easytrade_password
+from QUANTTOOLS.account_manage.Setting.setting import yun_ip, yun_port, easytrade_password
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.message_func import send_email

@@ -1,11 +1,9 @@
-from QUANTAXIS.QAUtil import QA_util_get_last_day, QA_util_today_str, QA_util_log_info
+from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.message_func.wechat import send_actionnotice
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask,QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_close
-from QUANTTOOLS.account_manage.trading_message import send_trading_message
-from QUANTTOOLS.account_manage.Client import get_Client,check_Client,get_UseCapital,get_AllCapital,get_StockPos
-import pandas as pd
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_bid
+from QUANTTOOLS.account_manage.base_func.trading_message import send_trading_message
+from QUANTTOOLS.account_manage.base_func.Client import get_UseCapital, get_StockPos
 import time
-import datetime
 import math
 
 def BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target, close, type = 'end'):
