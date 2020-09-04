@@ -1,10 +1,8 @@
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
-from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyKeras import QAStockKeras
-import QUANTTOOLS.QAIndexTradingDay.IndexModel.IndexKeras as Index
+from QUANTTOOLS.QABaseModel.StockModel.StrategyKeras import QAStockKeras
 import pandas as pd
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name
-from QUANTTOOLS.FactorTools.base_tools import combine_model,combine_index
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name
 from QUANTTOOLS.message_func import send_email
 from QUANTTOOLS.StockMarket.StockStrategyThird.setting import working_dir
 from QUANTAXIS.QAUtil import (QA_util_log_info)
@@ -20,7 +18,8 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
     try:
         QA_util_log_info(
             '##JOB Now Load Model ==== {}'.format(str(trading_date)), ui_log)
-        stock_model_temp, stock_info_temp = Stock.load_model('stock',working_dir = working_dir)
+        Stock = Stock.load_model('stock',working_dir = working_dir)
+        stock_info_temp = Stock.info
         #index_model_temp, index_info_temp = Index.load_model('index',working_dir = working_dir)
         #safe_model_temp, safe_info_temp = Index.load_model('safe',working_dir = working_dir)
     except:
@@ -43,7 +42,7 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
     #safe_tar, safe_b  = Index.model_predict(safe_model_temp, start, end, safe_info_temp['cols'], safe_info_temp['fs'])
     QA_util_log_info('##JOB Now Stock Model Predict ==== {}'.format(str(trading_date)), ui_log)
     #stock_list,report,top_report = Stock.check_model(stock_model_temp, QA_util_get_last_day(trading_date),QA_util_get_last_day(trading_date),stock_info_temp['cols'], 0.42)
-    stock_tar, stock_b  = Stock.model_predict(stock_model_temp, start, end, stock_info_temp['cols'], stock_info_temp['thresh'])
+    stock_tar, stock_b  = Stock.model_predict(start, end)
 
     QA_util_log_info('##JOB Now Combine Predictions ==== {}'.format(str(trading_date)), ui_log)
 

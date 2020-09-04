@@ -1,7 +1,7 @@
 #coding=utf-8
 
 from QUANTTOOLS.StockMarket.StockStrategyThird.setting import working_dir
-from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyKeras import model as StockModel
+from QUANTTOOLS.QABaseModel.StockModel.StrategyKeras import QAStockKeras
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
 import pandas as pd
 from QUANTAXIS.QAUtil import (QA_util_log_info)
@@ -10,7 +10,7 @@ from QUANTAXIS.QAUtil.QADate_trade import QA_util_get_real_date,QA_util_get_last
 
 def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log = None):
     QA_util_log_info('##JOB01 Now Model Init ==== {}'.format(str(date)), ui_log)
-    stock_model = StockModel()
+    stock_model = QAStockKeras()
 
     QA_util_log_info('##JOB02 Now Stock Prepare Model Data ==== {}'.format(str(date)), ui_log)
     stock_model.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date, block=False, sub_block=False)
@@ -19,7 +19,7 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(date)), ui_log)
     stock_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
                               train_end=QA_util_get_last_day(QA_util_get_real_date(date), 5))
-    stock_model.prepare_data(percent=30)
+    stock_model.prepare_data()
     stock_model.build_model(loss = 'binary_crossentropy')
     QA_util_log_info('##JOB05 Now Stock Model Trainnig ==== {}'.format(str(date)), ui_log)
     stock_model.model_running(batch_size=4096, nb_epoch=100)
