@@ -70,12 +70,12 @@ class model():
         self.X_train, self.Y_train = shuffle(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'].fillna(0))
         self.info['thresh'] = thresh
 
-    def build_model(self, columns_num, loss = 'binary_crossentropy', optimizer = Adam(lr=3e-4), metrics = ['accuracy',precision]):
+    def build_model(self, loss = 'binary_crossentropy', optimizer = Adam(lr=1e-4), metrics = ['accuracy',precision]):
         QA_util_log_info('##JOB Set Model Params ===== {}'.format(self.info['date']), ui_log = None)
 
         self.model = Sequential() #建立模型
 
-        self.model.add(Dense(input_dim = columns_num, units = 256)) #添加输入层、隐藏层的连接
+        self.model.add(Dense(input_dim = self.X_train.shape[1], units = 256)) #添加输入层、隐藏层的连接
         self.model.add(BatchNormalization())
         self.model.add(Activation('relu')) #以Relu函数为激活函数
         self.model.add(Dropout(0.2))
@@ -187,15 +187,3 @@ def model_predict(model, start, end, cols, thresh, type='model'):
     b.loc[:,'RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
     return(b[b['y_pred']==1], b)
 
-def check_model(model, start, end, cols, col, target, type = 'value'):
-    tar, b = model_predict(model, start,end, cols)
-    if type == 'value':
-        b['star'] = b[col].apply(lambda x : 1 if x >= target else 0)
-    elif type == 'percent':
-        b['star'] = b[col].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= target else 0)
-    else:
-        print("target type must be in ['value','percent']")
-    report = classification_report(b['star'],b['y_pred'], output_dict=True)
-    c = b[b['RANK']<=5]
-    top_report = classification_report(c['star'],c['y_pred'], output_dict=True)
-    return(c, report, top_report)
