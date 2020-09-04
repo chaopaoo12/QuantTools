@@ -1,4 +1,4 @@
-from QUANTTOOLS.QAStockETL.Crawly import get_stock_report_ths, get_stock_report_sina, get_stock_report_wy,read_stock_report_wy
+from QUANTTOOLS.QAStockETL.Crawly import get_stock_report_ths, get_stock_report_sina, read_stock_report_wy
 from QUANTAXIS.QAUtil import QA_util_date_stamp
 
 def QA_fetch_get_stock_report_ths(code):
