@@ -1,6 +1,6 @@
 import joblib
 from QUANTTOOLS.FactorTools.base_func import mkdir
-from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyXgboost import QAStockXGBoost as QAStockXGBoost
+from QUANTTOOLS.QABaseModel.StockModel.StrategyXgboost import QAStockXGBoost
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name
 from QUANTTOOLS.message_func import send_email
@@ -14,13 +14,13 @@ delta3 = timedelta(days=7)
 
 
 def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=working_dir, ui_log = None):
-
+    Stock = QAStockXGBoost()
     try:
         QA_util_log_info(
             '##JOB Now Load Model ==== {}'.format(str(trading_date)), ui_log)
-        Stock = QAStockXGBoost()
-        stock_model_temp, stock_info_temp = Stock.load_model('stock_xg',working_dir = working_dir)
 
+        Stock = Stock.load_model('stock_xg',working_dir = working_dir)
+        stock_info_temp = Stock.info
     except:
         send_email('错误报告', '无法正确加载模型,请检查', trading_date)
         send_actionnotice(strategy_id,

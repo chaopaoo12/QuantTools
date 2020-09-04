@@ -1,7 +1,7 @@
 #coding=utf-8
 
 
-from QUANTTOOLS.QAStockTradingDay.StockModel.StrategyXgboost import QAStockXGBoost
+from QUANTTOOLS.QABaseModel.StockModel.StrategyXgboost import QAStockXGBoost
 from QUANTTOOLS.StockMarket.StockStrategyForth.setting import working_dir
 
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
