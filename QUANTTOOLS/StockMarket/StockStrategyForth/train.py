@@ -29,8 +29,8 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info('##JOB05 Now Stock Model Trainnig ==== {}'.format(str(date)), ui_log)
     stock_model.model_running()
     QA_util_log_info('##JOB06 Now Save Stock Model ==== {}'.format(str(date)), ui_log)
-    important = stock_model.model_important()
     stock_model.save_model('stock_xg',working_dir = working_dir)
+    important = stock_model.model_important()
     stock_train_report = build_table(pd.DataFrame(stock_model.info['train_report']), '个股模型训练集情况')
     stock_ft_importance = build_table(important.head(50), '个股模型特征重要性')
 
