@@ -45,4 +45,4 @@ if __name__ == '__main__':
     while check_index_quant(ckeck_day) is None or check_index_quant(ckeck_day)  > 10:
         time.sleep(180)
 
-    daily_train(mark_day)
+    daily_train(ckeck_day)
