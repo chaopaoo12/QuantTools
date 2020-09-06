@@ -15,6 +15,7 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_bloc
         codes = list(QA_fetch_stock_om_all()['code'])
         QA_util_log_info('##JOB Now Delete ST Stock')
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+        codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
@@ -67,6 +68,7 @@ def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub
         codes = QA_fetch_stock_om_all()
         QA_util_log_info('##JOB Now Delete ST Stock')
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+        codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
@@ -93,6 +95,7 @@ def get_quant_data_stdd(start_date, end_date, type = 'crawl', block = False, sub
         codes = list(QA_fetch_stock_om_all()['code'])
         QA_util_log_info('##JOB Now Delete ST Stock')
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+        codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
