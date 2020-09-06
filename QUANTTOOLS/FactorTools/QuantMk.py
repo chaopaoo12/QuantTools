@@ -3,6 +3,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_get_qu
                                            QA_fetch_stock_quant_pre_adv,QA_fetch_index_quant_pre_adv,
                                            QA_fetch_index_info,QA_fetch_stock_om_all)
 import QUANTAXIS as QA
+from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
 
 def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value'):
@@ -12,6 +13,10 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_bloc
         #codes = [i for i in codes if i.startswith('300') == False]
     else:
         codes = list(QA_fetch_stock_om_all()['code'])
+        QA_util_log_info('##JOB Now Delete ST Stock')
+        codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+        codes = list(codes['code'])
+        QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
@@ -60,8 +65,10 @@ def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub
         #codes = [i for i in codes if i.startswith('300') == False]
     else:
         codes = QA_fetch_stock_om_all()
-        codes = codes[codes.name.apply(lambda x:x.count('*')) == 0]
+        QA_util_log_info('##JOB Now Delete ST Stock')
+        codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
         codes = list(codes['code'])
+        QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
@@ -84,6 +91,10 @@ def get_quant_data_stdd(start_date, end_date, type = 'crawl', block = False, sub
         #codes = [i for i in codes if i.startswith('300') == False]
     else:
         codes = list(QA_fetch_stock_om_all()['code'])
+        QA_util_log_info('##JOB Now Delete ST Stock')
+        codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+        codes = list(codes['code'])
+        QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
