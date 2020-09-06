@@ -45,7 +45,7 @@ class QAStockModel():
         self.TR_RNG = QA_util_get_trade_range(train_start, train_end)
         self.info['train_rng'] = [train_start,train_end]
 
-    def prepare_data(self,thresh = 0, cols= None):
+    def prepare_data(self,thresh = 0, drop = 1, cols= None):
         if cols is None:
             pass
         else:
@@ -58,11 +58,16 @@ class QAStockModel():
         else:
             self.data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh))
 
-        s_cols = self.data[self.cols].describe().T
-        s_cols = list(s_cols[s_cols['std']==0].index)
-        QA_util_log_info('##JOB Drop Columns with 0 std {} ===== {}'.format(s_cols, self.info['date']), ui_log = None)
-        self.data = self.data.drop(columns=s_cols)
-        self.cols = [i for i in self.cols if i not in s_cols]
+        s_res = self.data[self.cols].describe().T
+        std_cols = list(s_res[s_res['std']==0].index)
+        QA_util_log_info('##JOB Drop Columns with 0 std {} ===== {}'.format(std_cols, self.info['date']), ui_log = None)
+        self.data = self.data.drop(columns=std_cols)
+        self.cols = [i for i in self.cols if i not in std_cols]
+
+        if drop < 1:
+            non_cols = list(s_res[s_res.rate < drop].index)
+            QA_util_log_info('##JOB Drop Columns with low {} fill rate {} ===== {}'.format(drop, non_cols, self.info['date']), ui_log = None)
+            self.cols = [i for i in self.cols if i not in non_cols]
 
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
         self.X_train, self.Y_train = shuffle(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'])
