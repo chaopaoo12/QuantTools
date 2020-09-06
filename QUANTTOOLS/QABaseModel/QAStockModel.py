@@ -73,6 +73,7 @@ class QAStockModel():
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
         self.X_train, self.Y_train = shuffle(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'])
         self.info['thresh'] = thresh
+        self.info['drop'] = drop
 
     def build_model(self):
         pass
