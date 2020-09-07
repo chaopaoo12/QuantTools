@@ -32,7 +32,7 @@ from QUANTTOOLS.QAStockETL.FuncTools.check_data import (
                                                         check_stock_quant,
                                                         check_index_quant)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_real_date
-from QUANTTOOLS.StockMarket.Summary.train_job import daily_train
+from QUANTTOOLS.StockMarket.StockStrategyForth.train_job import daily_train
 import time
 
 if __name__ == '__main__':
