@@ -32,12 +32,21 @@ from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_quant,
                                                         check_index_quant)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 from QUANTTOOLS.StockMarket.StockStrategyForth.daily_job import daily_run
+from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date,QA_util_get_last_day
+from datetime import datetime
 import time
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
 
     if QA_util_if_trade(mark_day):
+        mark_day = mark_day
+    elif QA_util_if_trade((datetime.datetime.strptime(mark_day,'%Y-%m-%d')+datetime.timedelta(days=1)).strftime("%Y-%m-%d")):
+        mark_day = QA_util_get_real_date(mark_day)
+    else:
+        mark_day is None
+
+    if mark_day is not None:
 
         while check_stock_quant(mark_day) is None or check_stock_quant(mark_day)  > 10:
             time.sleep(180)
