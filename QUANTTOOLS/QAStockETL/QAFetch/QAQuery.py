@@ -649,8 +649,10 @@ def QA_fetch_stock_financial_percent(code, start, end=None, format='pd', collect
 @time_this_function
 def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normalization', format='pd', collections=DATABASE.stock_quant_data):
     '获取股票日线'
-    #code= [code] if isinstance(code,str) else code
-    # code checking
+    start_date = QA_util_get_pre_trade_date(start,15)
+    end_date = end
+    rng = QA_util_get_trade_range(start, end)
+
     code = QA_util_code_tolist(code)
     financial = QA_Sql_Stock_Financial
     index = QA_Sql_Stock_Index
@@ -664,7 +666,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
         __data = []
         QA_util_log_info(
             'JOB Get Stock Financial data start=%s end=%s' % (start, end))
-        pe_res = pe(start,end).loc[((slice(None),code),)][['PE_10PCT','PE_10VAL','PEEGL_10PCT','PEEGL_10VAL','PB_10PCT','PB_10VAL',
+        pe_res = pe(start_date,end_date)[['PE_10PCT','PE_10VAL','PEEGL_10PCT','PEEGL_10VAL','PB_10PCT','PB_10VAL',
                                 #'PEG_10PCT','PEG_10VAL',
                                 'PS_10PCT','PS_10VAL',
                                 'PE_20PCT','PE_20VAL','PEEGL_20PCT','PEEGL_20VAL','PB_20PCT','PB_20VAL',
@@ -685,25 +687,25 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
                                 'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
                                 #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
                                 #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
-                                ]].groupby('code').fillna(method='ffill')
-        financial_res = financial(start,end).loc[((slice(None),code),)].groupby('code').fillna(method='ffill')
+                                ]].groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
         financial_res = financial_res[financial_res.DAYS >= 90]
 
         QA_util_log_info(
             'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
-        index_res = index(start,end).loc[((slice(None),code),)].groupby('code').fillna(method='ffill')
+        index_res = index(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
-        week_res = week(start,end).loc[((slice(None),code),)].groupby('code').fillna(method='ffill')
+        week_res = week(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start,end).loc[((slice(None),code),)].groupby('code').fillna(method='ffill')
+        alpha_res = alpha(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Stock Alpha101 data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start,end).loc[((slice(None),code),)].groupby('code').fillna(method='ffill').fillna(0)
+        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').fillna(0).loc[((rng,code),)]
 
         try:
             res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(pe_res)
@@ -1023,8 +1025,10 @@ def QA_fetch_index_target(codes, start_date, end_date, method = 'value'):
 @time_this_function
 def QA_fetch_index_quant_data(code, start, end = None, type = 'normalization', format='pd'):
     '获取股票日线'
-    #code= [code] if isinstance(code,str) else code
-    # code checking
+    start_date = QA_util_get_pre_trade_date(start,15)
+    end_date = end
+    rng = QA_util_get_trade_range(start, end)
+
     code = QA_util_code_tolist(code)
     index = QA_Sql_Index_Index
     week = QA_Sql_Index_IndexWeek
@@ -1037,33 +1041,22 @@ def QA_fetch_index_quant_data(code, start, end = None, type = 'normalization', f
 
         QA_util_log_info(
             'JOB Get Index Tech Index data start=%s end=%s' % (start, end))
-        index_res = index(start,end).groupby('code').fillna(method='ffill').reset_index()
-        index_res = index_res[index_res.code.isin(code)]
+        index_res = index(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Index Tech Week data start=%s end=%s' % (start, end))
-        week_res = week(start,end).groupby('code').fillna(method='ffill').reset_index()
-        week_res = week_res[week_res.code.isin(code)]
+        week_res = week(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Index Alpha191 data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start,end).groupby('code').fillna(method='ffill').reset_index()
-        alpha_res = alpha_res[alpha_res.code.isin(code)]
+        alpha_res = alpha(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Index Alpha101 data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start,end).groupby('code').fillna(method='ffill').fillna(0).reset_index()
-        alpha101_res = alpha101_res[alpha101_res.code.isin(code)]
+        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').fillna(0).loc[((rng,code),)]
 
         try:
-            res = index_res.drop_duplicates(
-                    (['code', 'date'])).set_index(['date','code']).join(
-                week_res.drop_duplicates(
-                    (['code', 'date'])).set_index(['date','code'])).join(
-                alpha_res.drop_duplicates(
-                    (['code', 'date'])).set_index(['date','code'])).join(
-                alpha101_res.drop_duplicates(
-                    (['code', 'date'])).set_index(['date','code']))
+            res = index_res.join(week_res).join(alpha_res).join(alpha101_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
