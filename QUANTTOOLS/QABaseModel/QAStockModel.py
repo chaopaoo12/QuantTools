@@ -104,7 +104,7 @@ class QAStockModel():
     def load_model(self, name, working_dir= 'D:\\model\\current'):
         QA_util_log_info('##JOB Now Model Loading', ui_log = None)
         self.model = joblib.load(working_dir+"\\{name}.joblib.dat".format(name=name))
-        self.info = joblib.load(working_dir+"\\{name}_info.joblib.dat".format(name=name))
+        self.info = joblib.load(working_dir+"\\{name}info.joblib.dat".format(name=name))
         self.cols = self.info['cols']
         self.thresh = self.info['thresh']
 
