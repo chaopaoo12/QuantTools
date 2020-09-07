@@ -63,7 +63,7 @@ class QAStockXGBoost(QAStockModel):
         train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
 
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
-        b = data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+        b = train[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
         b = b.assign(y_pred = self.model.predict(train))
         bina = pd.DataFrame(self.model.predict_proba(train))[[0,1]]
         bina.index = b.index
