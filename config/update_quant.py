@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     if QA_util_if_trade(mark_day):
         mark_day = mark_day
-    elif QA_util_if_trade((datetime.datetime.strptime(mark_day,'%Y-%m-%d')+datetime.timedelta(days=1)).strftime("%Y-%m-%d")):
+    elif QA_util_if_trade((datetime.strptime(mark_day,'%Y-%m-%d')+datetime.timedelta(days=1)).strftime("%Y-%m-%d")):
         mark_day = QA_util_get_real_date(mark_day)
     else:
         mark_day = None
@@ -49,9 +49,6 @@ if __name__ == '__main__':
     if mark_day is not None:
 
         while check_stock_quant(mark_day) is None or check_stock_quant(mark_day)  > 10:
-            time.sleep(180)
-
-        while check_index_quant(mark_day) is None or check_index_quant(mark_day)  > 10:
             time.sleep(180)
 
         daily_run(mark_day)

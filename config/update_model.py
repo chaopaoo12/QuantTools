@@ -42,7 +42,4 @@ if __name__ == '__main__':
     while check_stock_quant(ckeck_day) is None or check_stock_quant(ckeck_day)  > 10:
         time.sleep(180)
 
-    while check_index_quant(ckeck_day) is None or check_index_quant(ckeck_day)  > 10:
-        time.sleep(180)
-
     daily_train(ckeck_day)
