@@ -2,8 +2,7 @@
 from QUANTTOOLS.StockMarket.StockStrategyForth.concat_predict import concat_predict,save_prediction
 from QUANTTOOLS.StockMarket.StockStrategyForth.setting import working_dir, percent, exceptions
 
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_close
-
+from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_day
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
@@ -43,7 +42,7 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     else:
         tar2 = tar1[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']].reset_index()
 
-        tar2 = tar2.assign(close= tar2['code'].apply(lambda x:QA_fetch_get_stock_close(str(x))))
+        tar2 = tar2.assign(close= tar2['code'].apply(lambda x:QA_fetch_stock_day(str(x),trading_date,trading_date)['close']))
         res = tar2.set_index('code')
 
         avg_account = (sub_accounts - frozen)/tar1.shape[0]
