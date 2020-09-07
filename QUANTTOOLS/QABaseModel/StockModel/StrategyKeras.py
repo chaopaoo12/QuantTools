@@ -115,10 +115,11 @@ class QAStockKeras(QAStockModel):
         nan_num = train[self.cols].isnull().sum(axis=1)[train[self.cols].isnull().sum(axis=1) == self.thresh].sum()
         QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ==== from {_from} to {_to}'.format(
             NAN_NUM = nan_num, per=nan_num/train.shape[0], shape=train.shape[0], thresh=self.thresh,_from=start,_to = end), ui_log = None)
-        train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
+        if self.thresh > 0:
+            train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
 
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
-        b = data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+        b = train[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
         b = b.assign(y_pred = self.model.predict(train))
         b['O_PROB'] = self.model.predict_proba(train)
         b.loc[:,'RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
