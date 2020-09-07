@@ -44,7 +44,7 @@ if __name__ == '__main__':
     elif QA_util_if_trade((datetime.datetime.strptime(mark_day,'%Y-%m-%d')+datetime.timedelta(days=1)).strftime("%Y-%m-%d")):
         mark_day = QA_util_get_real_date(mark_day)
     else:
-        mark_day is None
+        mark_day = None
 
     if mark_day is not None:
 
