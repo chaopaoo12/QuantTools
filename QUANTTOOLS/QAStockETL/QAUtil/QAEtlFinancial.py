@@ -1121,7 +1121,7 @@ SELECT A.CODE,
     ON B4.REPORT_DATE = ADD_MONTHS(A.REPORT_DATE, -60)
    AND A.CODE = B4.CODE
         '''
-    conn = cx_Oracle.connect('quantaxis/123@192.168.3.56:1521/quantaxis')
+    conn = cx_Oracle.connect(ORACLE_PATH2)
     cursor = conn.cursor()
     try:
         cursor.execute('''drop table stock_financial_TTM''')
