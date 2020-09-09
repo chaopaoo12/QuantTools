@@ -3,6 +3,7 @@ from QUANTTOOLS.StockMarket.StockStrategyForth.concat_predict import concat_pred
 from QUANTTOOLS.StockMarket.StockStrategyForth.setting import working_dir, percent, exceptions
 
 from QUANTAXIS import QA_fetch_get_stock_realtime
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 
 from QUANTTOOLS.message_func import build_head, build_table, build_email, send_email
@@ -41,9 +42,11 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
         res = None
     else:
         tar2 = tar1[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']].reset_index()
-        values = QA_fetch_get_stock_realtime('tdx', list(tar2['code'])).reset_index('datetime',drop=True)[['last_close']]
-        values = values.rename(columns={'last_close':'close'},inplace=True)
-        res = tar2.set_index('code').join(values)
+        #values = QA_fetch_get_stock_realtime('tdx', list(tar2['code'])).reset_index('datetime',drop=True)[['last_close']]
+        #values = values.rename(columns={'last_close':'close'},inplace=True)
+        #res = tar2.set_index('code').join(values)
+        tar2 = tar2.assign(close= tar2['code'].apply(lambda x:float(QA_fetch_stock_day_adv(str(x),trading_date,trading_date).data['close'].values)))
+        res = tar2.set_index('code')
 
         avg_account = (sub_accounts - frozen)/tar1.shape[0]
         res = res.assign(tar=avg_account*percent)
