@@ -28,7 +28,11 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
 
     elif type == 'morning':
         QA_util_log_info('##JOB Get Up Price Before {code} Selling ===== {date}'.format(code = code, date=trading_date), ui_log = None)
-        price = round(float(close * 1.0995),2)
+        if str(code).startswith('300') is True:
+            low_value = 0.1995
+        else:
+            low_value = 0.0995
+        price = round(float(close * (1 + low_value)),2)
         QA_util_log_info('早盘挂单卖出 {code}({NAME},{INDUSTRY}) {deal_pos}股, 目标持仓:{target_pos},单价:{price},总金额:{target}====={trading_date}'.format(code=code,
                                                                                                                                              NAME= name,
                                                                                                                                              INDUSTRY= industry,
