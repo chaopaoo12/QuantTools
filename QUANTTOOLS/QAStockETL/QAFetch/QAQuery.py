@@ -687,7 +687,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
                                 'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
                                 #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
                                 #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
-                                ]].groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
+                                ]].groupby('code').fillna(method='ffill').loc[((rng,code),)]
         financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
         financial_res = financial_res[financial_res.DAYS >= 90]
 
