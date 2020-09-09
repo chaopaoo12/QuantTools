@@ -1,5 +1,5 @@
 from QUANTAXIS.QAUtil import  QA_util_log_info
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask,QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_close
+from QUANTAXIS import QA_fetch_get_stock_realtime
 import pandas as pd
 import math
 
@@ -70,12 +70,12 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res['市值'] = res['市值'].fillna(0)
         res['可用余额'] = res['可用余额'].fillna(0)
         res['position'] = res['position'].fillna(0)
-        res['ask1'] = list(res.reset_index()['code'].apply(lambda x:QA_fetch_get_stock_realtm_ask(x)))
-        res['bid1'] = list(res.reset_index()['code'].apply(lambda x:QA_fetch_get_stock_realtm_bid(x)))
         try:
-            res['close'] = list(res.reset_index()['code'].apply(lambda x:QA_fetch_get_stock_close(x)))
+            values = QA_fetch_get_stock_realtime('tdx', list(res.reset_index()['code'])).reset_index('datetime',drop=True)[['ask1','bid1','last_close']]
+            values = values.rename(columns={'last_close':'close'},inplace=True)
+            res = res.join(values)
         except:
-            QA_util_log_info('##JOB Now Get Close Price Failed.')
+            QA_util_log_info('##JOB Now Get RealTime Price Failed.')
         res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
         QA_util_log_info(res[res['买卖价'] == 0])
         res = res[res['买卖价'] > 0]
