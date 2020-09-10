@@ -74,8 +74,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         try:
             quotation = easyquotation.use('sina')
             values = pd.DataFrame(quotation.stocks(list(res.reset_index()['code']))).T[['ask1','bid1','close']]
-            print(values)
-            print(res)
+            print(values.index)
+            print(res.index)
             res = res.join(values)
         except:
             QA_util_log_info('##JOB Now Get RealTime Price Failed.')
