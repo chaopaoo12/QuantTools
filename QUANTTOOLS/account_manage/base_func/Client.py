@@ -73,10 +73,6 @@ def check_Client(client, account, strategy_id, trading_date, exceptions=exceptio
         positions['上市时间'] = positions['证券代码'].apply(lambda x:QA_util_get_days_to_today(str(QA_fetch_stock_to_market_date(x))))
         positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industry(x))
         positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
-        try:
-            positions['close'] = positions['证券代码'].apply(lambda x:QA_fetch_get_stock_close(x))
-        except:
-            QA_util_log_info('##JOB Now Get Positions Close Failed ==== {}'.format(str(trading_date)), ui_log)
         positions =positions.rename(columns={'证券代码': 'code'})
     except:
         QA_util_log_info('##JOB Now Get Positions Failed ==== {}'.format(str(trading_date)), ui_log)
