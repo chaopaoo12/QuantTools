@@ -76,7 +76,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
             values = pd.DataFrame(quotation.stocks(list(res.reset_index()['code']))).T[['ask1','bid1','close']]
             values.index.name = 'code'
             print(values)
-            print(res)
+            print(res['close'])
             print(res.join(values))
             print('OK')
             res = res.join(values)
