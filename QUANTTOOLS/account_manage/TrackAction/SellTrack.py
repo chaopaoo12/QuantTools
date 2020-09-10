@@ -1,11 +1,15 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask,QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_realtm_askvol,QA_fetch_get_stock_realtm_bidvol
-
+import easyquotation
 
 def SellTrack(strategy_id, trading_date, code, name, industry, close):
-    ask_vol = QA_fetch_get_stock_realtm_askvol(code)
-    ask_price = QA_fetch_get_stock_realtm_ask(code)
+    quotation = easyquotation.use('sina')
+    ask_price = quotation.real(code)[code]['sell']
+    ask_vol = quotation.real(code)[code]['ask1_volume']
+
+    #ask_vol = QA_fetch_get_stock_realtm_askvol(code)
+    #ask_price = QA_fetch_get_stock_realtm_ask(code)
     ask_pct = (ask_price - close)/close
 
     if ask_pct >= 0.05:

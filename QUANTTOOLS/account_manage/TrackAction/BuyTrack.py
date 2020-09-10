@@ -1,12 +1,16 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
+import easyquotation
 from QUANTTOOLS.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask,QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_realtm_askvol,QA_fetch_get_stock_realtm_bidvol
 
 
 def BuyTrack(strategy_id, trading_date, code, name, industry, close):
 
-    bid_vol = QA_fetch_get_stock_realtm_bidvol(code)
-    bid_price = QA_fetch_get_stock_realtm_bid(code)
+    quotation = easyquotation.use('sina')
+    bid_price = quotation.real(code)[code]['buy']
+    bid_vol = quotation.real(code)[code]['bid1_volume']
+    #bid_vol = QA_fetch_get_stock_realtm_bidvol(code)
+    #bid_price = QA_fetch_get_stock_realtm_bid(code)
     bid_pct = (bid_price - close)/close
 
     if bid_pct <= -0.05:
