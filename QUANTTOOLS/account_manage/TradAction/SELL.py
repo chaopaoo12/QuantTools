@@ -2,6 +2,7 @@ from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.account_manage.base_func.trading_message import send_trading_message
 from QUANTTOOLS.account_manage.base_func.Client import get_StockPos
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask
+import easyquotation
 
 def SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target, close, type = 'end'):
     QA_util_log_info('##JOB Get Real Time Postition Before {code} Selling ===== {date}'.format(code = code, date=trading_date), ui_log = None)
@@ -13,7 +14,9 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
 
     if type == 'end':
         QA_util_log_info('##JOB Get Real Time Price Before {code} Selling ===== {date}'.format(code = code, date=trading_date), ui_log = None)
-        price = round(QA_fetch_get_stock_realtm_ask(code)-0.01,2)
+        quotation = easyquotation.use('sina')
+        price = quotation.real(code)[code]['sell']+0.01
+        #price = round(QA_fetch_get_stock_realtm_ask(code)-0.01,2)
         QA_util_log_info('卖出 {code}({NAME},{INDUSTRY}) {deal_pos}股, 目标持仓:{target_pos},单价:{price},总金额:{target}====={trading_date}'.format(code=code,
                                                                                                                               NAME= name,
                                                                                                                               INDUSTRY= industry,
