@@ -1,5 +1,6 @@
 from QUANTAXIS.QAUtil import  QA_util_log_info
 from QUANTAXIS import QA_fetch_get_stock_realtime
+import easyquotation
 import pandas as pd
 import math
 
@@ -71,8 +72,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res['可用余额'] = res['可用余额'].fillna(0)
         res['position'] = res['position'].fillna(0)
         try:
-            values = QA_fetch_get_stock_realtime('tdx', list(res.reset_index()['code'])).reset_index('datetime',drop=True)[['ask1','bid1','last_close']]
-            values = values.rename(columns={'last_close':'close'},inplace=True)
+            quotation = easyquotation.use('sina')
+            values = pd.DataFrame(quotation.stocks(list(res.reset_index()['code'])) ).T[['ask1','bid1','close']]
             res = res.join(values)
         except:
             QA_util_log_info('##JOB Now Get RealTime Price Failed.')
