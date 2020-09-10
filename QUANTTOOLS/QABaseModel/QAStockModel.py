@@ -40,7 +40,7 @@ class QAStockModel():
         self.TR_RNG = QA_util_get_trade_range(train_start, train_end)
         self.info['train_rng'] = [train_start,train_end]
 
-    def prepare_data(self,thresh = 0, drop = 1, cols= None):
+    def prepare_data(self,thresh = None, drop = 1, cols= None):
 
         if cols is None:
             self.cols = [i for i in self.data.columns if i not in ['moon','star','mars','venus','sun','MARK',
@@ -51,7 +51,7 @@ class QAStockModel():
         else:
             self.cols = cols
 
-        if thresh == 0:
+        if thresh is None:
             pass
         else:
             nan_num = self.data[self.cols].isnull().sum(axis=1)[self.data[self.cols].isnull().sum(axis=1) == thresh].sum()
@@ -134,7 +134,7 @@ class QAStockModel():
         nan_num = train[self.cols].isnull().sum(axis=1)[train[self.cols].isnull().sum(axis=1) == self.thresh].sum()
         QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ==== from {_from} to {_to}'.format(
             NAN_NUM = nan_num, per=nan_num/train.shape[0], shape=train.shape[0], thresh=self.thresh,_from=start,_to = end), ui_log = None)
-        if self.thresh > 0:
+        if self.thresh is not None:
             train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
 
         train = train.join(data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']])
