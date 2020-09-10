@@ -24,7 +24,8 @@ def floor_round(x):
 def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     QA_util_log_info('##JOB Now Check Sub Accounts', ui_log = None)
     sub_accounts = float(sub_accounts) - 10000
-
+    print(target)
+    print(positions)
     if target is None:
         QA_util_log_info('##JOB Target is None', ui_log = None)
         res = positions.set_index('code')
@@ -76,7 +77,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
             values = pd.DataFrame(quotation.stocks(list(res.reset_index()['code']))).T[['ask1','bid1','close']]
             values.index.name = 'code'
             print(values)
-            print(res['close'])
+            print(res)
             print(res.join(values))
             print('OK')
             res = res.join(values)
