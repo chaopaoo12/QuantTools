@@ -40,7 +40,7 @@ class QAStockModel():
         self.TR_RNG = QA_util_get_trade_range(train_start, train_end)
         self.info['train_rng'] = [train_start,train_end]
 
-    def prepare_data(self,thresh = None, drop = 1, cols= None):
+    def prepare_data(self,thresh = None, drop = 0, cols= None):
 
         if cols is None:
             self.cols = [i for i in self.data.columns if i not in ['moon','star','mars','venus','sun','MARK',
@@ -65,7 +65,7 @@ class QAStockModel():
         self.data = self.data.drop(columns=std_cols)
         self.cols = [i for i in self.cols if i not in std_cols]
 
-        if drop < 1:
+        if drop > 0:
             non_cols = list(s_res[s_res.rate < drop].index)
             QA_util_log_info('##JOB Drop Columns with low {} fill rate {} ===== {}'.format(drop, non_cols, self.info['date']), ui_log = None)
             self.cols = [i for i in self.cols if i not in non_cols]
