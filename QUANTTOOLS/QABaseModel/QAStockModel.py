@@ -60,6 +60,7 @@ class QAStockModel():
             self.data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh)).join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
 
         s_res = self.data[self.cols].describe().T
+        s_res = s_res.assign(rate = s_res['count']/self.data.shape[0])
         std_cols = list(s_res[s_res['std']==0].index)
         QA_util_log_info('##JOB Drop Columns with 0 std {} ===== {}'.format(std_cols, self.info['date']), ui_log = None)
         self.data = self.data.drop(columns=std_cols)
