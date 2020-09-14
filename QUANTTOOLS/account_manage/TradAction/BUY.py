@@ -13,7 +13,7 @@ def BUY(client, account, strategy_id, account_info,trading_date, code, name, ind
 
     QA_util_log_info('##JOB Get Refresh Deal Position Before {code} Buying ===== {date}'.format(code = code, date=trading_date), ui_log = None)
     if target_pos > real_pos:
-        deal_pos = abs(real_pos - target_pos)
+        deal_pos = math.floor(abs(real_pos - target_pos)/100)*100
 
     if type == 'end':
         QA_util_log_info('##JOB Get Real Time Price Before {code} Buying ===== {date}'.format(code = code, date=trading_date), ui_log = None)

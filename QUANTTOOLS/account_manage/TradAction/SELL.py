@@ -3,6 +3,7 @@ from QUANTTOOLS.account_manage.base_func.trading_message import send_trading_mes
 from QUANTTOOLS.account_manage.base_func.Client import get_StockPos
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask
 import easyquotation
+import math
 
 def SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target, close, type = 'end'):
     QA_util_log_info('##JOB Get Real Time Postition Before {code} Selling ===== {date}'.format(code = code, date=trading_date), ui_log = None)
@@ -10,7 +11,7 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
 
     QA_util_log_info('##JOB Get Refresh Deal Position Before {code} Selling ===== {date}'.format(code = code, date=trading_date), ui_log = None)
     if target_pos < real_pos:
-        deal_pos = abs(real_pos - target_pos)
+        deal_pos = math.floor(abs(real_pos - target_pos)/100)*100
 
     if type == 'end':
         QA_util_log_info('##JOB Get Real Time Price Before {code} Selling ===== {date}'.format(code = code, date=trading_date), ui_log = None)
