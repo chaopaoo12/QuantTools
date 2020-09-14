@@ -88,6 +88,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
         ##实时修正
         res.loc[res.ask1 == 0,'position'] = 0
+        QA_util_log_info('##Today Position {}'.format(percent), ui_log = None)
         avg_account = (sub_accounts * percent)/res['position'].sum()
         res = res.assign(target=avg_account)
         res['target'] = res['target'] * res['position']
