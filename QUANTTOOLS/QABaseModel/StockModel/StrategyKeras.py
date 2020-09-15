@@ -116,7 +116,11 @@ class QAStockKeras(QAStockModel):
         QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ==== from {_from} to {_to}'.format(
             NAN_NUM = nan_num, per=nan_num/train.shape[0], shape=train.shape[0], thresh=self.thresh,_from=start,_to = end), ui_log = None)
 
-        if self.thresh is not None:
+        if self.thresh is None:
+            train = train[self.cols]
+        elif self.thresh == 0:
+            train = train[self.cols].dropna()
+        else:
             train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
 
         train = train.join(data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']])

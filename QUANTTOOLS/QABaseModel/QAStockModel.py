@@ -27,9 +27,9 @@ class QAStockModel():
         self.data['sun'] = self.data['TARGET'].apply(lambda x : 1 if x > 0 else 0)
 
         if type == 'value':
-            self.data['star'] = self.data['TARGET5'].apply(lambda x : 1 if x >= mark else 0)
+            self.data['star'] = self.data['TARGET'].apply(lambda x : 1 if x >= mark else 0)
         elif type == 'percent':
-            self.data['star'] = self.data['TARGET5'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
+            self.data['star'] = self.data['TARGET'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
         else:
             QA_util_log_info('##target type must be in [value,percent] ===== {}'.format(self.info['date']), ui_log = None)
 
@@ -53,6 +53,8 @@ class QAStockModel():
 
         if thresh is None:
             pass
+        elif thresh == 0:
+            self.data = self.data[self.cols].dropna().join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
         else:
             nan_num = self.data[self.cols].isnull().sum(axis=1)[self.data[self.cols].isnull().sum(axis=1) == thresh].sum()
             QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ===== {date}'.format(
@@ -135,7 +137,11 @@ class QAStockModel():
         nan_num = train[self.cols].isnull().sum(axis=1)[train[self.cols].isnull().sum(axis=1) == self.thresh].sum()
         QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ==== from {_from} to {_to}'.format(
             NAN_NUM = nan_num, per=nan_num/train.shape[0], shape=train.shape[0], thresh=self.thresh,_from=start,_to = end), ui_log = None)
-        if self.thresh is not None:
+        if self.thresh is None:
+            train = train[self.cols]
+        elif self.thresh == 0:
+            train = train[self.cols].dropna()
+        else:
             train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
 
         train = train.join(data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']])
