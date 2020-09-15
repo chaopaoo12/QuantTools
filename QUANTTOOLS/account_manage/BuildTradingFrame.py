@@ -78,7 +78,6 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         except:
             QA_util_log_info('##JOB Now Get RealTime Price Failed.')
         res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
-        QA_util_log_info(res[res['买卖价'] == 0])
         res = res[res['买卖价'] > 0]
         res['sort_gp'] = 1
         res.loc[sell_code,'sort_gp']=0
