@@ -11,7 +11,8 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv,QA_fetch_index_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare,QA_fetch_stock_list
 from QUANTTOOLS.QAStockETL.QAData.financial_mean import financial_dict, dict2
-from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,time_this_function,index_pct_log,pct_log
+from QUANTTOOLS.QAStockETL.FuncTools.base_func import time_this_function
+from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,index_pct_log,pct_log
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade, QA_util_get_next_datetime,QA_util_get_real_date,QA_util_get_trade_range
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_delist
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex import QA_Sql_Stock_Index
@@ -24,7 +25,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndex import QA_Sql_Index_Index
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexWeek import QA_Sql_Index_IndexWeek
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha101 import QA_Sql_Index_Alpha101
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha191 import QA_Sql_Index_Alpha191
-from QUANTTOOLS.QAStockETL.QAUtil.base_func import normalization, standardize
+from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
 
 def QA_fetch_stock_industry(stock_code):
     '''

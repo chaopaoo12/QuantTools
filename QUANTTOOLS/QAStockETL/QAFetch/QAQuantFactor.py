@@ -1,11 +1,11 @@
-import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv,QA_fetch_stock_financial_percent_adv,
                                                            QA_fetch_index_alpha_adv,QA_fetch_index_technical_index_adv,QA_fetch_stock_alpha101_adv,QA_fetch_index_alpha101_adv)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_info
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,QA_util_get_trade_range,
                                QA_util_get_pre_trade_date)
 import math
-from QUANTTOOLS.QAStockETL.QAUtil.base_func import normalization, standardize, time_this_function
+from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
+from QUANTTOOLS.QAStockETL.FuncTools.base_func import time_this_function
 
 def QA_fetch_index_cate(data, stock_code):
     try:

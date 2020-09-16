@@ -1,9 +1,8 @@
-from QUANTAXIS import QA_fetch_stock_adj,QA_fetch_stock_day_adv,QA_fetch_stock_list_adv,QA_fetch_index_day_adv,QA_fetch_index_list_adv
-from QUANTAXIS import QA_fetch_get_index_list,QA_fetch_get_stock_list
+from QUANTAXIS import QA_fetch_stock_adj,QA_fetch_stock_day_adv, QA_fetch_index_day_adv,QA_fetch_index_list_adv
+from QUANTAXIS import QA_fetch_get_index_list
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day,QA_util_get_real_date,QA_util_if_trade,QA_util_log_info
-from QUANTTOOLS.message_func.email import send_email
-from QUANTTOOLS.message_func.wechat import send_actionnotice
+from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,
                                                            QA_fetch_stock_quant_data_adv,
                                                            QA_fetch_index_quant_data_adv,
