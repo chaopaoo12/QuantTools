@@ -34,15 +34,14 @@ from QUANTTOOLS.QAStockETL import (QA_SU_save_index_alpha_day,
                                    QA_SU_save_index_alpha101_day,
                                    QA_SU_save_index_info)
 from QUANTAXIS.QASU.main import (QA_SU_save_index_day,QA_SU_save_index_list)
-from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_index_day)
-from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_index_alpha101,check_index_alpha191,
-                                                        check_index_techindex,check_index_techweek)
+from QUANTTOOLS.QAStockETL.Check.check_data import (check_index_day)
+from QUANTTOOLS.QAStockETL.Check.check_data import (check_index_alpha101, check_index_alpha191,
+                                                    check_index_techindex, check_index_techweek)
 from QUANTTOOLS.QAStockETL import (QA_etl_index_alpha_day,
                                    QA_etl_index_alpha101_day,
                                    QA_etl_index_technical_day,
                                    QA_etl_index_technical_week)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
-import time
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()

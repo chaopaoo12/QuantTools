@@ -28,18 +28,17 @@
 """对应于save x
 """
 from QUANTAXIS.QASU.main import (QA_SU_save_stock_block,QA_SU_save_stock_list,QA_SU_save_stock_info_tushare)
-from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info,QA_etl_stock_financial_wy,
-                                   QA_etl_stock_xdxr, QA_etl_stock_day,QA_etl_stock_financial,
+from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info, QA_etl_stock_xdxr, QA_etl_stock_day, QA_etl_stock_financial,
                                    QA_etl_stock_block, QA_etl_process_financial_day,
-                                    QA_SU_save_stock_xdxr,QA_SU_save_stock_info,
+                                   QA_SU_save_stock_xdxr, QA_SU_save_stock_info,
                                    QA_SU_save_stock_fianacial_percent_day, QA_util_process_stock_financial,
                                    QA_SU_save_stock_fianacial_momgo, QA_SU_save_fianacialTTM_momgo,
                                    QA_SU_save_stock_industryinfo, QA_SU_save_stock_day)
 from QUANTTOOLS.QAStockETL import (QA_etl_stock_financial_day,
                                    QA_etl_stock_financial_percent_day)
 from QUANTAXIS.QASU.main import (QA_SU_save_financialfiles_fromtdx)
-from QUANTTOOLS.QAStockETL.FuncTools.check_data import (check_stock_day, check_stock_fianacial, check_stock_adj, check_stock_finper,
-                                                        check_wy_financial, check_tdx_financial, check_ttm_financial)
+from QUANTTOOLS.QAStockETL.Check.check_data import (check_stock_day, check_stock_fianacial, check_stock_adj, check_stock_finper,
+                                                    check_wy_financial, check_tdx_financial, check_ttm_financial)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 
 if __name__ == '__main__':
