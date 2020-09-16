@@ -8,7 +8,7 @@ from QUANTTOOLS.Model.StockModel.StrategyXgboost import QAStockXGBoost
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name
 
 from QUANTTOOLS.Message import send_email,send_actionnotice
-from QUANTTOOLS.Market.StockMarket.Summary.setting import working_dir
+from .setting import working_dir
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 
 import joblib

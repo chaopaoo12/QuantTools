@@ -1,5 +1,5 @@
 from datetime import datetime
-from QUANTTOOLS.Market.StockMarket.Summary.running import predict
+from .running import predict
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date
 
 

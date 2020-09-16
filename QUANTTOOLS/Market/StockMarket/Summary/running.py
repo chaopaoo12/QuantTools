@@ -1,9 +1,9 @@
-from QUANTTOOLS.Market.StockMarket.StockStrategySecond.concat_predict import concat_predict,save_prediction
-import pandas as pd
+from .concat_predict import concat_predict,save_prediction
+from .setting import working_dir, exceptions
 from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
-from QUANTTOOLS.Market.StockMarket.Summary.setting import working_dir, exceptions
-from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Trader import get_Client,check_Client
+from QUANTAXIS.QAUtil import (QA_util_log_info)
+import pandas as pd
 from datetime import timedelta
 delta3 = timedelta(days=7)
 
@@ -14,7 +14,7 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
     QA_util_log_info('##JOB02 Now Predict ==== {}'.format(str(trading_date)), ui_log)
-    stock_xgboost_tar,stock_keras_tar,index_xgboost_tar,index_keras_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
+    stock_xgboost_tar,stock_keras_tar,index_xgboost_tar,index_keras_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id, working_dir=working_dir)
 
     QA_util_log_info('##JOB03 Now Saving Result ==== {}'.format(str(trading_date)), ui_log)
     try:

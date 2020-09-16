@@ -1,6 +1,6 @@
 #coding=utf-8
 
-from QUANTTOOLS.Market.StockMarket.Summary.setting import working_dir
+from .setting import working_dir
 from QUANTTOOLS.Model.StockModel.StrategyXgboost import QAStockXGBoost
 from QUANTTOOLS.Model.StockModel.StrategyKeras import QAStockKeras
 from QUANTTOOLS.Model.IndexModel.IndexKeras import model as IndexModelKeras
