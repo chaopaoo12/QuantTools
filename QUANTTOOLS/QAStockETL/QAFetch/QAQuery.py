@@ -439,7 +439,7 @@ def QA_fetch_stock_shares(code, start, end=None, format='pd',type = 'day', colle
             QA_util_log_info("type must be one of [day, crawl]")
 
         try:
-            res = res.ix[:, ['begin_date','code','crawl_date','exe_shares',
+            res = res[['begin_date','code','crawl_date','exe_shares',
                              'nontra_ashares','nontra_bshares','pre_shares','reason',
                              'send_date','total_shares','tra_ashares','tra_bshares','tra_hshares']]
             res['begin_date'] = res['begin_date'].apply(lambda x: datetime.datetime.fromtimestamp(math.floor(x)))
