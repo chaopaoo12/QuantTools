@@ -1,6 +1,30 @@
 from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTAXIS.QAUtil import QA_util_log_info
 
+def Sell(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, price):
+    if type == 'MARKET':
+        QA_util_log_info('最优五档卖出 {code}({NAME},{INDUSTRY}) {cnt}股'.format(code=symbol, NAME= NAME,
+                                                                          INDUSTRY= INDUSTRY,cnt=amount), ui_log=None)
+        client.sell(account1, symbol=symbol, type=type, priceType=priceType, amount=amount)
+    elif type == 'LIMIT':
+        QA_util_log_info('限价卖出 {code}({NAME},{INDUSTRY}) {cnt}股 单价:{price} 总价:{tar}'.format(code=symbol, NAME= NAME,
+                                                                                            INDUSTRY= INDUSTRY,cnt=amount, price=price, tar=price*amount), ui_log=None)
+        client.sell(account1, symbol=symbol, type=type, amount=amount , price = price)
+    else:
+        QA_util_log_info('Direction 参数错误 type{type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
+
+def Buy(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, price):
+    if type == 'MARKET':
+        QA_util_log_info('最优五档买入 {code}({NAME},{INDUSTRY}) {cnt}股'.format(code=symbol, NAME= NAME,
+                                                                          INDUSTRY= INDUSTRY,cnt=amount), ui_log=None)
+        client.buy(account1, symbol=symbol, type=type, priceType=priceType, amount=amount)
+    elif type == 'LIMIT':
+        QA_util_log_info('限价买入 {code}({NAME},{INDUSTRY}) {cnt}股 单价:{price} 总价:{tar}'.format(code=symbol, NAME= NAME,
+                                                                                            INDUSTRY= INDUSTRY,cnt=amount, price=price, tar=price*amount), ui_log=None)
+        client.buy(account1, symbol=symbol, type=type, amount=amount , price = price)
+    else:
+        QA_util_log_info('Direction 参数错误 {type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
+
 def send_trading_message(account1, strategy_id, account_info, code, NAME, INDUSTRY, mark, direction, type, priceType, price, client):
     codes = []
     try:
@@ -14,29 +38,35 @@ def send_trading_message(account1, strategy_id, account_info, code, NAME, INDUST
                           )
 
         if direction == 'SELL':
-            if type == 'MARKET':
-                QA_util_log_info('最优五档卖出 {code}({NAME},{INDUSTRY}) {cnt}股'.format(code=code, NAME= NAME,
-                                                                                  INDUSTRY= INDUSTRY,cnt=abs(mark)), ui_log=None)
-                client.sell(account1, symbol=code, type=type, priceType=priceType, amount=abs(mark))
-            elif type == 'LIMIT':
-                QA_util_log_info('限价卖出 {code}({NAME},{INDUSTRY}) {cnt}股 单价:{price} 总价:{tar}'.format(code=code, NAME= NAME,
-                                                                                                    INDUSTRY= INDUSTRY,cnt=abs(mark), price=price, tar=price*abs(mark)), ui_log=None)
-                client.sell(account1, symbol=code, type=type, amount=abs(mark) , price = price)
-            else:
-                QA_util_log_info('Direction 参数错误 {type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
-                pass
+            Sell(client, account1, code, NAME, INDUSTRY, type, priceType, abs(mark), price)
+            #if type == 'MARKET':
+            #    Sell(client, account1, code, NAME, INDUSTRY, type, priceType, abs(mark))
+            #    #QA_util_log_info('最优五档卖出 {code}({NAME},{INDUSTRY}) {cnt}股'.format(code=code, NAME= NAME,
+            #    #                                                                  INDUSTRY= INDUSTRY,cnt=abs(mark)), ui_log=None)
+            #    #client.sell(account1, symbol=code, type=type, priceType=priceType, amount=abs(mark))
+            #elif type == 'LIMIT':
+            #    Sell(client, account1, code, NAME, INDUSTRY, type, priceType, abs(mark), price)
+            #    #QA_util_log_info('限价卖出 {code}({NAME},{INDUSTRY}) {cnt}股 单价:{price} 总价:{tar}'.format(code=code, NAME= NAME,
+            #    #                                                                                    INDUSTRY= INDUSTRY,cnt=abs(mark), price=price, tar=price*abs(mark)), ui_log=None)
+            #    #client.sell(account1, symbol=code, type=type, amount=abs(mark) , price = price)
+            #else:
+            #    QA_util_log_info('Direction 参数错误 {type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
+            #    pass
         elif direction == 'BUY':
-            if type == 'MARKET':
-                QA_util_log_info('最优五档买入 {code}({NAME},{INDUSTRY}) {cnt}股'.format(code=code, NAME= NAME,
-                                                                                  INDUSTRY= INDUSTRY,cnt=abs(mark)), ui_log=None)
-                client.buy(account1, symbol=code, type=type, priceType=priceType, amount=abs(mark))
-            elif type == 'LIMIT':
-                QA_util_log_info('限价买入 {code}({NAME},{INDUSTRY}) {cnt}股 单价:{price} 总价:{tar}'.format(code=code, NAME= NAME,
-                                                                                                    INDUSTRY= INDUSTRY,cnt=abs(mark), price=price, tar=price*abs(mark)), ui_log=None)
-                client.buy(account1, symbol=code, type=type, amount=abs(mark) , price = price)
-            else:
-                QA_util_log_info('Direction 参数错误 {type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
-                pass
+            Buy(client, account1, code, NAME, INDUSTRY, type, priceType, abs(mark), price)
+            #if type == 'MARKET':
+            #    Buy(client, account1, code, NAME, INDUSTRY, type, priceType, abs(mark))
+            #    #QA_util_log_info('最优五档买入 {code}({NAME},{INDUSTRY}) {cnt}股'.format(code=code, NAME= NAME,
+            #    #                                                                  INDUSTRY= INDUSTRY,cnt=abs(mark)), ui_log=None)
+            #    #client.buy(account1, symbol=code, type=type, priceType=priceType, amount=abs(mark))
+            #elif type == 'LIMIT':
+            #    Buy(client, account1, code, NAME, INDUSTRY, type, priceType, abs(mark), price)
+            #    #QA_util_log_info('限价买入 {code}({NAME},{INDUSTRY}) {cnt}股 单价:{price} 总价:{tar}'.format(code=code, NAME= NAME,
+            #    #                                                                                    INDUSTRY= INDUSTRY,cnt=abs(mark), price=price, tar=price*abs(mark)), ui_log=None)
+            #    #client.buy(account1, symbol=code, type=type, amount=abs(mark) , price = price)
+            #else:
+            #    QA_util_log_info('Direction 参数错误 {type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
+            #    pass
         elif direction == 'HOLD':
             QA_util_log_info('保持持股 {code}({NAME},{INDUSTRY}) {cnt}股'.format(code=code, NAME= NAME,
                                                                               INDUSTRY= INDUSTRY,cnt=abs(mark)), ui_log=None)
