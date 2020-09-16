@@ -64,7 +64,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res = pd.concat([sell_table,
                          buy_table,
                          hold_table], axis=0)
-
+        QA_util_log_info(res, ui_log = None)
         QA_util_log_info('##JOB Add Info to Result Frame', ui_log = None)
         res['股票余额'] = res['股票余额'].fillna(0)
         res['市值'] = res['市值'].fillna(0)
