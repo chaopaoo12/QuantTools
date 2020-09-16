@@ -1,6 +1,6 @@
 
 from QUANTTOOLS.Market.StockMarket.StockStrategyForth.concat_predict import concat_predict,save_prediction
-from QUANTTOOLS.Market.StockMarket.StockStrategyForth.setting import working_dir, percent, exceptions
+from QUANTTOOLS.Market.StockMarket.StockStrategyForth.setting import working_dir, percent, exceptions, top
 
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
 from QUANTAXIS.QAUtil import (QA_util_log_info)
@@ -71,7 +71,7 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     #    index_res = pd.DataFrame()
 
     try:
-        stock_res = stock_tar[stock_tar['RANK']<=5].loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
+        stock_res = stock_tar[stock_tar['RANK']<=top].loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
     except:
         stock_res = pd.DataFrame()
 
