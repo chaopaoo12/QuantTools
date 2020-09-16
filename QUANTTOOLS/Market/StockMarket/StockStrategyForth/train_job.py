@@ -1,5 +1,5 @@
 
-from QUANTTOOLS.Market.StockMarket.StockStrategyForth import train
+from QUANTTOOLS.Market.StockMarket.StockStrategyForth.train import train
 from QUANTTOOLS.Market.StockMarket.StockStrategyForth.running import predict
 from QUANTTOOLS.Market.StockMarket.StockStrategyForth.setting import working_dir
 
