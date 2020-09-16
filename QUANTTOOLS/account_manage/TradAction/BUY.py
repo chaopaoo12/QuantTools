@@ -1,6 +1,6 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.message_func.wechat import send_actionnotice
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_bid
+from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtm_bid
 import easyquotation
 from QUANTTOOLS.account_manage.base_func.trading_message import send_trading_message
 from QUANTTOOLS.account_manage.base_func.Client import get_UseCapital, get_StockPos
@@ -17,10 +17,11 @@ def BUY(client, account, strategy_id, account_info,trading_date, code, name, ind
     QA_util_log_info('##JOB Get Refresh Deal Position {deal_pos} Before {code} Buying ===== {date}'.format(deal_pos = deal_pos, code = code, date=trading_date), ui_log = None)
 
     if type == 'end':
-        quotation = easyquotation.use('sina')
-        price = quotation.real(code)[code]['buy']+0.01
+        #quotation = easyquotation.use('sina')
+        #price = quotation.real(code)[code]['buy']+0.01
+        price = QA_fetch_get_stock_realtm_bid(code)['buy']+0.01
         QA_util_log_info('##JOB Get Real Time Price {price} Before {code} Buying ===== {date}'.format(price = price, code = code, date=trading_date), ui_log = None)
-        #price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
+
         ####check account usefull capital
         UseCapital = get_UseCapital(client, account)
         QA_util_log_info('##JOB Check Account Usefull Capital {UseCapital} Before {code} Buying ===== {date}'.format(UseCapital = UseCapital,code = code, date=trading_date), ui_log = None)
