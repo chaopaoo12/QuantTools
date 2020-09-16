@@ -14,6 +14,7 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
         pass
     else:
         deal_pos = math.floor(abs(real_pos - target_pos)/100)*100
+
     QA_util_log_info('##JOB Get Refresh Deal Position {deal_pos} Before {code} Buying ===== {date}'.format(deal_pos = deal_pos, code = code, date=trading_date), ui_log = None)
 
     if type == 'end':
