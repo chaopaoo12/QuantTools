@@ -3,10 +3,9 @@ from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
 from QUANTTOOLS.Model.StockModel.StrategyXgboost import QAStockXGBoost
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name
-from QUANTTOOLS.Message import send_email
-from QUANTTOOLS.Market.StockMarket.StockStrategyForth.setting import working_dir
+from .setting import working_dir
 from QUANTAXIS.QAUtil import (QA_util_log_info)
-from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
+from QUANTTOOLS.Message import send_actionnotice, send_email
 from datetime import datetime,timedelta
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import *

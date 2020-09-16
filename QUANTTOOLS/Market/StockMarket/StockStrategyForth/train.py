@@ -2,7 +2,7 @@
 
 
 from QUANTTOOLS.Model.StockModel.StrategyXgboost import QAStockXGBoost
-from QUANTTOOLS.Market.StockMarket.StockStrategyForth.setting import working_dir
+from .setting import working_dir
 
 from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
 

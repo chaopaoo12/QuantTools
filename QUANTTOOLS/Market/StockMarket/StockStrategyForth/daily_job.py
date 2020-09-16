@@ -1,5 +1,5 @@
 
-from QUANTTOOLS.Market.StockMarket.StockStrategyForth.running import predict
+from .running import predict
 
 
 def daily_run(trading_date):

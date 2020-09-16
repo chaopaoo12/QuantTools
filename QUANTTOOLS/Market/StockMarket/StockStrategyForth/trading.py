@@ -1,6 +1,6 @@
 
-from QUANTTOOLS.Market.StockMarket.StockStrategyForth.setting import working_dir, percent, exceptions
-from QUANTTOOLS.Market.StockMarket.StockStrategyForth.concat_predict import concat_predict,load_prediction,check_prediction
+from .setting import working_dir, percent, exceptions
+from .concat_predict import concat_predict,load_prediction,check_prediction
 
 from QUANTTOOLS.Message import send_actionnotice, send_email
 from QUANTTOOLS.Trader import trade_roboot,get_Client,check_Client
