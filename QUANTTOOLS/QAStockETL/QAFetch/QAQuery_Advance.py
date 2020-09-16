@@ -155,6 +155,7 @@ def QA_fetch_stock_shares_adv(code, start="all", end=None,type='crawl', collecti
     end = start if end is None else end
     start = str(start)[0:10]
     end = str(end)[0:10]
+    print(start, end)
     return QA_DataStruct_Financial(QA_fetch_stock_shares(code, start, end, type =type, format='pd'))
 
 def QA_fetch_financial_report_wy_adv(code=None, start=None, end=None, type='report', ltype='EN'):
