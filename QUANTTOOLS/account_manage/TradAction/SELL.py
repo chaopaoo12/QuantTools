@@ -10,7 +10,6 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
     real_pos = get_StockPos(code, client, account)
     QA_util_log_info('##JOB Get Real Time Postition {real_pos} Before {code} Buying ===== {date}'.format(real_pos=real_pos, code = code, date=trading_date), ui_log = None)
 
-    deal_pos = deal_pos
     QA_util_log_info('##JOB Get Refresh Deal Position {deal_pos} Before {code} Buying ===== {date}'.format(deal_pos = deal_pos, code = code, date=trading_date), ui_log = None)
 
     if type == 'end':
