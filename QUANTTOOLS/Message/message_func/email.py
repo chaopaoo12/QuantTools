@@ -3,7 +3,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart  # 构建邮件头信息，包括发件人，接收人，标题等
 from email.header import Header
-from QUANTTOOLS.message_func.setting import smtpserver,smtpport,msg_from,passwd,msg_to
+from QUANTTOOLS.Message.message_func.setting import smtpserver,smtpport,msg_from,passwd,msg_to
 
 def send_email(mail_title, msg, date, smtpserver=smtpserver, smtpport=smtpport,msg_from=msg_from,msg_to=msg_to,passwd=passwd):
     smtpserver = smtpserver

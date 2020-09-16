@@ -1,6 +1,6 @@
 import requests
 import datetime
-from QUANTTOOLS.message_func.setting import QAPRO_ID
+from QUANTTOOLS.Message.message_func.setting import QAPRO_ID
 
 # 下面的参数自行填写
 # user, strategy_id, account, code, direction, offset, price, volume, 
