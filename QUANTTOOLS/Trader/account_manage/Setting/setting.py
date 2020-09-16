@@ -1,3 +1,7 @@
-yun_ip = '132.232.89.97'
-yun_port='8888'
-easytrade_password='123456'
+from QUANTAXIS.QAUtil.QASetting import QA_Setting
+
+QASETTING = QA_Setting()
+
+yun_ip = QASETTING.get_config('EASYTRADE','ip')
+yun_port = QASETTING.get_config('EASYTRADE','port')
+easytrade_password = QASETTING.get_config('EASYTRADE','password')
