@@ -1,14 +1,14 @@
 
 import logging
 import strategyease_sdk
-from QUANTTOOLS.account_manage.Setting.setting import yun_ip, yun_port, easytrade_password
+from QUANTTOOLS.Trader.account_manage.Setting.setting import yun_ip, yun_port, easytrade_password
 from QUANTAXIS.QAUtil import QA_util_log_info
-from QUANTTOOLS.message_func.wechat import send_actionnotice
-from QUANTTOOLS.message_func import send_email
-from QUANTTOOLS.StockMarket.StockStrategySecond.setting import exceptions
+from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
+from QUANTTOOLS.Message.message_func import send_email
+from QUANTTOOLS.Market.StockMarket.StockStrategySecond.setting import exceptions
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_get_days_to_today
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_get_stock_close
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name
 import pandas as pd
 
 def get_Client(host=yun_ip, port=yun_port, key=easytrade_password):

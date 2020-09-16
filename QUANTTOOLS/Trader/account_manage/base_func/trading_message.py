@@ -1,4 +1,4 @@
-from QUANTTOOLS.message_func.wechat import send_actionnotice
+from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTAXIS.QAUtil import QA_util_log_info
 
 def send_trading_message(account1, strategy_id, account_info, code, NAME, INDUSTRY, mark, direction, type, priceType, price, client):

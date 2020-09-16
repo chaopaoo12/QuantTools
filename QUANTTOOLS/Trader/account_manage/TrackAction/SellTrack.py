@@ -1,6 +1,5 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
-from QUANTTOOLS.message_func.wechat import send_actionnotice
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask,QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_realtm_askvol,QA_fetch_get_stock_realtm_bidvol
+from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 import easyquotation
 
 def SellTrack(strategy_id, trading_date, code, name, industry, close):

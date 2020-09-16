@@ -1,9 +1,8 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
-from QUANTTOOLS.message_func.wechat import send_actionnotice
+from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtm_bid
-import easyquotation
-from QUANTTOOLS.account_manage.base_func.trading_message import send_trading_message
-from QUANTTOOLS.account_manage.base_func.Client import get_UseCapital, get_StockPos
+from QUANTTOOLS.Trader.account_manage.base_func.trading_message import send_trading_message
+from QUANTTOOLS.Trader.account_manage.base_func.Client import get_UseCapital, get_StockPos
 import time
 import math
 

@@ -1,5 +1,5 @@
 from QUANTAXIS.QAUtil import  QA_util_log_info
-from QUANTTOOLS.message_func.wechat import send_actionnotice
+from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 
 
 def HOLD(strategy_id, account_info,trading_date, code, name, industry, target_pos, target):
