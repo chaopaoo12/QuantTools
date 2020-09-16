@@ -5,7 +5,6 @@ from QUANTTOOLS.Trader.account_manage.Setting.setting import yun_ip, yun_port, e
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTTOOLS.Message.message_func import send_email
-from QUANTTOOLS.Market.StockMarket.StockStrategySecond.setting import exceptions
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_get_days_to_today
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name
@@ -44,7 +43,7 @@ def get_Position(client, account):
     positions =positions.rename(columns={'证券代码': 'code'})
     return(positions)
 
-def check_Client(client, account, strategy_id, trading_date, exceptions=exceptions, ui_log= None):
+def check_Client(client, account, strategy_id, trading_date, exceptions, ui_log= None):
     logging.basicConfig(level=logging.DEBUG)
     try:
         QA_util_log_info(
