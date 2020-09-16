@@ -1,3 +1,4 @@
+# todo 需要保密转移
 QAPRO_ID='oL-C4w1_ETCiWO42fo_kakd6Sq_Q'
 smtpserver = "smtp.qq.com"
 smtpport = "465"
