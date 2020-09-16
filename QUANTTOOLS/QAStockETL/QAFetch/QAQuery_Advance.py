@@ -146,16 +146,15 @@ def QA_fetch_stock_alpha_adv(code, start="all", end=None, collections=DATABASE.s
 def QA_fetch_stock_shares_adv(code, start="all", end=None,type='crawl', collections=DATABASE.stock_shares):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
-    end = start if end is None else end
-    start = str(start)[0:10]
-    end = str(end)[0:10]
-
     # code checking
     if start == 'all':
         start = '2001-01-01'
-        end = QA_util_today_str()
     if end is None:
         end = QA_util_today_str()
+
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
     return QA_DataStruct_Financial(QA_fetch_stock_shares(code, start, end, type =type, format='pd'))
 
 def QA_fetch_financial_report_wy_adv(code=None, start=None, end=None, type='report', ltype='EN'):
