@@ -12,24 +12,29 @@ def QA_fetch_get_stock_realtime(code):
     values.index.name = 'code'
     return(values)
 
+def QA_fetch_get_stock_real(code):
+    quotation = easyquotation.use('sina')
+    values = quotation.real(code)[code]
+    return(values)
+
 def QA_fetch_get_stock_close(code):
     return(float(QA_fetch_get_stock_realtime(code)['close']))
 
 def QA_fetch_get_stock_realtm_ask(code):
-    return(float(QA_fetch_get_stock_realtime(code)['ask1']))
+    return(float(QA_fetch_get_stock_real(code)['ask1']))
 
 def QA_fetch_get_stock_realtm_askvol(code):
-    return(float(QA_fetch_get_stock_realtime(code)['ask_vol1']))
+    return(float(QA_fetch_get_stock_real(code)['aks1_volume']))
 
 def QA_fetch_get_stock_realtm_askvol5(code):
     res = float(QA_fetch_get_stock_realtime(code)[['aks1_volume','aks2_volume','aks3_volume','aks4_volume','aks5_volume']])
     return(float(res.aks1_volume + res.aks2_volume + res.aks3_volume + res.aks4_volume + res.aks5_volume))
 
 def QA_fetch_get_stock_realtm_bid(code):
-    return(float(QA_fetch_get_stock_realtime(code)['bid1']))
+    return(float(QA_fetch_get_stock_real(code)['bid1']))
 
 def QA_fetch_get_stock_realtm_bidvol(code):
-    return(float(QA_fetch_get_stock_realtime(code)['bid_vol1']))
+    return(float(QA_fetch_get_stock_real(code)['bid1_volume']))
 
 def QA_fetch_get_stock_realtm_bidvol5(code):
     res = float(QA_fetch_get_stock_realtime(code)[['bid1_volume','bid2_volume','bid3_volume','bid4_volume','bid5_volume']])
