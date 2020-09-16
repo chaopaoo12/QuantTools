@@ -18,7 +18,7 @@ def BUY(client, account, strategy_id, account_info,trading_date, code, name, ind
     if type == 'end':
         #quotation = easyquotation.use('sina')
         #price = quotation.real(code)[code]['buy']+0.01
-        price = QA_fetch_get_stock_realtm_bid(code)['buy']+0.01
+        price = QA_fetch_get_stock_realtm_bid(code)+0.01
         QA_util_log_info('##JOB Get Real Time Price {price} Before {code} Buying ===== {date}'.format(price = price, code = code, date=trading_date), ui_log = None)
 
         ####check account usefull capital
