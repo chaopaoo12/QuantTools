@@ -99,7 +99,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res.loc[res.sort_gp == 0, 'sort_sell']=0
     k = 100
     ####调增
-    while (res['测算持股金额'].sum() - (sub_accounts * percent)) <= 10000:
+    while (res['测算持股金额'].sum() - res['target'].sum()) <= 10000:
         QA_util_log_info('##JOB Budget {budget} Less than Capital {capital} k: {k}'.format(k=k,
                                                                                            budget=res['测算持股金额'].sum(),
                                                                                            capital = (sub_accounts * percent)), ui_log = None)
@@ -114,7 +114,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res['sort_buy'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
     res.loc[res.sort_gp == 0, 'sort_buy']=0
     ####调减
-    while res['测算持股金额'].sum() > (sub_accounts * percent):
+    while res['测算持股金额'].sum() > res['target'].sum():
         QA_util_log_info('##JOB Budget {budget} Larger than Capital {capital} k: {k}'.format(k=k,
                                                                          budget=res['测算持股金额'].sum(),
                                                                          capital = (sub_accounts * percent)), ui_log = None)
