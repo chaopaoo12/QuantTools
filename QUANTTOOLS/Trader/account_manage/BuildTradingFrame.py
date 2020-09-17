@@ -87,6 +87,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
     res['目标持股数'] = res.apply(lambda x: math.floor(x['target'] / x['买卖价'] / 100)*100, axis=1)
     res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
+    res['deal'] = (res['目标持股数'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
+    res['deal'] = res.apply(lambda x: x['deal'] if -x['deal'] <= x['可用余额'] else -x['可用余额'], axis = 1)
 
     QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
     sell_code = list(set(res[res.deal < 0].index))
