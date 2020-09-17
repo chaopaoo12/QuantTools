@@ -32,6 +32,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res['目标持股数'] = 0
         res['测算持股金额'] = 0
         tar1 = target
+        values = QA_fetch_get_stock_realtime(list(res.reset_index()['code']))[['ask1','bid1','close']]
+        res = res.join(values)
         sell_code = list(res.index)
     else:
         QA_util_log_info('##JOB Target is not None', ui_log = None)
