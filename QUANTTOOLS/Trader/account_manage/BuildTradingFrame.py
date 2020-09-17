@@ -4,11 +4,11 @@ import easyquotation
 import pandas as pd
 import math
 
-def func1(x, y, z):
-    if x > 0:
+def func1(x, y):
+    if x == 0:
         return y
     else:
-        return z
+        return x
 
 def floor_round(x):
     if isinstance(x, int):
