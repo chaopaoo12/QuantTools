@@ -21,7 +21,8 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
 
     if target_tar is None:
         QA_util_log_info('触发清仓 ==================== {}'.format(trading_date), ui_log=None)
-        e = send_trading_message(account, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
+        send_actionnotice(strategy_id,'触发清仓:{}'.format(trading_date),'触发清仓',direction = 'SELL',offset='SELL',volume=None)
+        #e = send_trading_message(account, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
 
     QA_util_log_info('##JOB Now Build Trading Frame ===== {}'.format(str(trading_date)), ui_log = None)
     res = build(target_tar, positions, sub_accounts, percent, False)

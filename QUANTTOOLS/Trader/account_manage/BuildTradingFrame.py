@@ -4,11 +4,11 @@ import easyquotation
 import pandas as pd
 import math
 
-def func1(x, y):
-    if x == 0:
+def func1(x, y, z):
+    if x > 0:
         return y
     else:
-        return x
+        return z
 
 def floor_round(x):
     if isinstance(x, int):
@@ -24,17 +24,11 @@ def floor_round(x):
 def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     QA_util_log_info('##JOB Now Check Sub Accounts', ui_log = None)
     sub_accounts = float(sub_accounts) - 10000
+
     if target is None:
         QA_util_log_info('##JOB Target is None', ui_log = None)
         res = positions.set_index('code')
-        avg_account = 0
-        res = res.assign(target=avg_account)
-        res['目标持股数'] = 0
-        res['测算持股金额'] = 0
-        tar1 = target
-        values = QA_fetch_get_stock_realtime(list(res.reset_index()['code']))[['ask1','bid1','close']]
-        res = res.join(values)
-        sell_code = list(res.index)
+        res['position'] = 0
     else:
         QA_util_log_info('##JOB Target is not None', ui_log = None)
         tar1 = target.reset_index().groupby('code').max()
@@ -67,55 +61,64 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
                          buy_table,
                          hold_table], axis=0)
 
-        QA_util_log_info('##JOB Add Info to Result Frame', ui_log = None)
-        res['股票余额'] = res['股票余额'].fillna(0)
-        res['市值'] = res['市值'].fillna(0)
-        res['可用余额'] = res['可用余额'].fillna(0)
-        res['position'] = res['position'].fillna(0)
-        try:
-            #quotation = easyquotation.use('sina')
-            #values = pd.DataFrame(quotation.stocks(list(res.reset_index()['code']))).T
-            #values.index.name = 'code'
-            values = QA_fetch_get_stock_realtime(list(res.reset_index()['code']))[['ask1','bid1','close']]
-            res = res.join(values)
-        except:
-            QA_util_log_info('##JOB Now Get RealTime Price Failed.')
-        res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
-        res = res[res['买卖价'] > 0]
-        res['sort_gp'] = 1
-        res.loc[sell_code,'sort_gp']=0
-        res['sort'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
-        res.loc[res.sort_gp == 0, 'sort']=0
+    QA_util_log_info('##JOB Add Info to Result Frame', ui_log = None)
+    res['股票余额'] = res['股票余额'].fillna(0)
+    res['市值'] = res['市值'].fillna(0)
+    res['可用余额'] = res['可用余额'].fillna(0)
+    res['position'] = res['position'].fillna(0)
+    try:
+        values = QA_fetch_get_stock_realtime(list(res.reset_index()['code']))[['ask1','bid1','close']]
+        res = res.join(values)
+    except:
+        QA_util_log_info('##JOB Now Get RealTime Price Failed.')
 
-        QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
-        ##实时修正
-        res.loc[res.ask1 == 0,'position'] = 0
-        QA_util_log_info('##Today Position {}'.format(percent), ui_log = None)
+    ###资金分配
+    QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
+    res.loc[res.ask1 == 0,'position'] = 0
+    QA_util_log_info('##Today Position {}'.format(percent), ui_log = None)
+    if res['position'].sum() > 0:
         avg_account = (sub_accounts * percent)/res['position'].sum()
-        res = res.assign(target=avg_account)
-        res['target'] = res['target'] * res['position']
+    else:
+        avg_account = 0
+    res = res.assign(target=avg_account)
+    res['target'] = res['target'] * res['position']
 
-        QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
-        res['目标持股数'] = res.apply(lambda x: math.floor(x['target'] / x['买卖价'] / 100)*100, axis=1)
+    QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
+    res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
+    res['目标持股数'] = res.apply(lambda x: math.floor(x['target'] / x['买卖价'] / 100)*100, axis=1)
+    res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
+
+    QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
+    sell_code = list(set(res[res.deal < 0].index))
+    res = res[res['买卖价'] > 0]
+    res['sort_gp'] = 1
+    res.loc[sell_code,'sort_gp']=0
+    res['sort_sell'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
+    res.loc[res.sort_gp == 0, 'sort_sell']=0
+    k = 100
+    ####调增
+    while (res['测算持股金额'].sum() - (sub_accounts * percent)) <= 10000:
+        QA_util_log_info('##JOB Budget {budget} Less than Capital {capital} k: {k}'.format(k=k,
+                                                                                           budget=res['测算持股金额'].sum(),
+                                                                                           capital = (sub_accounts * percent)), ui_log = None)
+        res['trim'] = list(res['sort_sell'].apply(lambda x:k if x == 1 else 0))
+        res['目标持股数'] = res.apply(lambda x: x['目标持股数'] + x['trim'], axis=1)
         res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
 
-        QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
-        k = 100
-        while (res['测算持股金额'].sum() - (sub_accounts * percent)) <= 10000:
-            QA_util_log_info('##JOB Budget {budget} Less than Capital {capital} k: {k}'.format(k=k,
-                                                                                               budget=res['测算持股金额'].sum(),
-                                                                                               capital = (sub_accounts * percent)), ui_log = None)
-            res['trim'] = list(res['sort'].apply(lambda x:k if x == 1 else 0))
-            res['目标持股数'] = res.apply(lambda x: x['目标持股数'] + x['trim'], axis=1)
-            res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
-
-        while res['测算持股金额'].sum() > (sub_accounts * percent):
-            QA_util_log_info('##JOB Budget {budget} Larger than Capital {capital} k: {k}'.format(k=k,
-                                                                             budget=res['测算持股金额'].sum(),
-                                                                             capital = (sub_accounts * percent)), ui_log = None)
-            res['trim'] = list(res['sort'].apply(lambda x:k if x == 1 else 0))
-            res['目标持股数'] = res.apply(lambda x: x['目标持股数'] - x['trim'], axis=1)
-            res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
+    buy_code = list(set(res[res.deal > 0].index))
+    res = res[res['买卖价'] > 0]
+    res['sort_gp'] = 1
+    res.loc[buy_code,'sort_gp']=0
+    res['sort_buy'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
+    res.loc[res.sort_gp == 0, 'sort_buy']=0
+    ####调减
+    while res['测算持股金额'].sum() > (sub_accounts * percent):
+        QA_util_log_info('##JOB Budget {budget} Larger than Capital {capital} k: {k}'.format(k=k,
+                                                                         budget=res['测算持股金额'].sum(),
+                                                                         capital = (sub_accounts * percent)), ui_log = None)
+        res['trim'] = list(res['sort_buy'].apply(lambda x:k if x == 1 else 0))
+        res['目标持股数'] = res.apply(lambda x: x['目标持股数'] - x['trim'], axis=1)
+        res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
 
     QA_util_log_info('##JOB Caculate Deal Position', ui_log = None)
     res['deal'] = (res['目标持股数'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
@@ -123,7 +126,9 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
 
     if Zbreak == True:
         QA_util_log_info('##JOB Stop Confirm', ui_log = None)
-        if res.loc[sell_code]['市值'].sum() == 0 and abs(res.loc[list(tar1.index)]['市值'].sum() - res.loc[list(tar1.index)]['target'].sum()) <= 5000:
+
+        if res.loc[sell_code]['市值'].sum() == 0 and \
+                (res['市值'] - res['target']).apply(lambda x:abs(x)).sum() <= 5000:
             res = res.assign(deal=0)
         else:
             QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
