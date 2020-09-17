@@ -10,6 +10,7 @@ import time
 import datetime
 
 def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='end', exceptions = None):
+    test = True
 
     QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
     client = get_Client()
@@ -44,7 +45,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
         if tm >= target_af:
             QA_util_log_info('已过交易时段 {hour} ==================== {date}'.format(hour = tm, date = trading_date), ui_log=None)
             send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'已过交易时段',direction = 'HOLD',offset='HOLD',volume=None)
-            break
+            #break
         #if tm >= target_af:
         #    break
 
@@ -62,7 +63,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
                 close = float(res.loc[code]['close'])
 
                 QA_util_log_info('##JOB Now Start Selling {code} ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
-                SELL(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target, close, type = type)
+                SELL(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target, close, type = type, test = test)
 
                 time.sleep(3)
 
@@ -100,7 +101,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
                 close = float(res.loc[code]['close'])
 
                 QA_util_log_info('##JOB Now Start Buying {code} ===== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
-                BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target, close, type)
+                BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target, close, type, test = test)
 
                 time.sleep(3)
 
