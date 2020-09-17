@@ -99,7 +99,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res.loc[res.sort_gp == 0, 'sort_sell']=0
     k = 100
     ####调增
-    while (res['测算持股金额'].sum() - res['target'].sum()) < 10000:
+    while (res['测算持股金额'].sum() - res['target'].sum()) < 10000 and res['target'].sum() > 0:
         QA_util_log_info('##JOB Budget {budget} Less than Capital {capital} k: {k}'.format(k=k,
                                                                                            budget=res['测算持股金额'].sum(),
                                                                                            capital = res['target'].sum()), ui_log = None)
