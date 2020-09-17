@@ -5,7 +5,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask
 import easyquotation
 import math
 
-def SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target, close, type = 'end'):
+def SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target, close, type = 'end', test = False):
 
     real_pos = get_StockPos(code, client, account)
     QA_util_log_info('##JOB Get Real Time Postition {real_pos} Before {code} Buying ===== {date}'.format(real_pos=real_pos, code = code, date=trading_date), ui_log = None)
@@ -32,8 +32,11 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
                                                                                                                               price=price,
                                                                                                                               trading_date=trading_date),
                          ui_log=None)
-        #e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='MARKET', priceType=4, price=None, client=client)
-        e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
+        if test == True:
+            #e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='MARKET', priceType=4, price=None, client=client)
+            e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
+        else:
+            pass
 
     elif type == 'morning':
         if str(code).startswith('300') is True:
@@ -53,7 +56,10 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
                                                                                                                                              price=price,
                                                                                                                                              trading_date=trading_date),
                          ui_log=None)
-        e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
+        if test == True:
+            e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
+        else:
+            pass
     else:
         QA_util_log_info('type 参数错误 {type} 必须为 [morning, end]====={trading_date}'.format(type=type,trading_date=trading_date), ui_log=None)
 
