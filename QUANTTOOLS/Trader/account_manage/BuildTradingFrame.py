@@ -94,7 +94,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
     k = 100
 
-    min_code = list(res[res.target > 0]['买卖价'].min().index)
+    min_code = list(res[res['买卖价'] == res[res.target > 0]['买卖价'].min()].index)
     res['min_code'] = 0
     res.loc[min_code,'min_code'] = 1
 
