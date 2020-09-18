@@ -10,7 +10,7 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
     real_pos = get_StockPos(code, client, account)
     QA_util_log_info('##JOB Get Real Time Postition {real_pos} Before {code} Buying ===== {date}'.format(real_pos=real_pos, code = code, date=trading_date), ui_log = None)
 
-    if math.floor(target_pos/100)*100 < target_pos:
+    if math.floor(target_pos/100)*100 <= target_pos:
         pass
     else:
         deal_pos = math.floor(abs(real_pos - target_pos)/100)*100
