@@ -45,7 +45,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
         if tm >= target_af:
             QA_util_log_info('已过交易时段 {hour} ==================== {date}'.format(hour = tm, date = trading_date), ui_log=None)
             send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'已过交易时段',direction = 'HOLD',offset='HOLD',volume=None)
-            break
+            #break
         #if tm >= target_af:
         #    break
 
