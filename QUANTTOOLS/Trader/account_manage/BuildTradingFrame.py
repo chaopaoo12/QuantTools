@@ -95,6 +95,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     k = 100
 
     min_code = list(res[res['买卖价'] == res[res.target > 0]['买卖价'].min()].index)
+    if len(min_code) > 0:
+        min_code = min_code[0]
     res['min_code'] = 0
     res.loc[min_code,'min_code'] = 1
 
