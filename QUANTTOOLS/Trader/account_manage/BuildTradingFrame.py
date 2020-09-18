@@ -126,7 +126,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         QA_util_log_info('##JOB Stop Confirm', ui_log = None)
 
         if res[res.target == 0]['市值'].sum() == 0 and \
-                (res['市值'] - res['target']).apply(lambda x:abs(x)).sum() <= 5000:
+                (res['目标持股数'] - res['股票余额']).apply(lambda x:abs(x)).sum() <= 5000:
             res = res.assign(deal=0)
         else:
             QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
