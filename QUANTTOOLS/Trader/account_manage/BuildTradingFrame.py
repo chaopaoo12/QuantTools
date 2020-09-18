@@ -89,15 +89,19 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
     res['deal'] = (res['目标持股数'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
     res['deal'] = res.apply(lambda x: x['deal'] if -x['deal'] <= x['可用余额'] else -x['可用余额'], axis = 1)
+    QA_util_log_info(res[['NAME','INDUSTRY','deal','close','目标持股数','股票余额','可用余额','冻结数量','买卖价']])
+    #res[res.target == 0]
+    #res[res.target > 0]
 
     QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
+    k = 100
     sell_code = list(set(res[res.deal < 0].index))
     res = res[res['买卖价'] > 0]
     res['sort_gp'] = 1
     res.loc[sell_code,'sort_gp']=0
     res['sort_sell'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
     res.loc[res.sort_gp == 0, 'sort_sell']=0
-    k = 100
+
     ####调增
     while (res['测算持股金额'].sum() - res['target'].sum()) < 10000 and res['target'].sum() > 0:
         QA_util_log_info('##JOB Budget {budget} Less than Capital {capital} k: {k}'.format(k=k,
@@ -113,6 +117,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res.loc[buy_code,'sort_gp']=0
     res['sort_buy'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
     res.loc[res.sort_gp == 0, 'sort_buy']=0
+
     ####调减
     while res['测算持股金额'].sum() > res['target'].sum():
         QA_util_log_info('##JOB Budget {budget} Larger than Capital {capital} k: {k}'.format(k=k,
