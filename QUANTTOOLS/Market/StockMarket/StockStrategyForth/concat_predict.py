@@ -29,7 +29,10 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
                           offset='HOLD',
                           volume=None
                           )
-    start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-1))).strftime('%Y-%m-%d')
+    if datetime.strptime(trading_date, "%Y-%m-%d").weekday() == 4:
+        start = (datetime.strptime(trading_date, "%Y-%m-%d") - delta3).strftime('%Y-%m-%d')
+    else:
+        start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-1))).strftime('%Y-%m-%d')
     end = trading_date
     rng = pd.Series(pd.date_range(start, end, freq='D')).apply(lambda x: str(x)[0:10])
     QA_util_log_info('##JOB Now Stock Model Predict from {start} to {end} ==== {s}'.format(start = start, end = end, s = str(trading_date)), ui_log)
