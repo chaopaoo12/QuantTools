@@ -10,7 +10,7 @@ import time
 import datetime
 
 def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='end', exceptions = None):
-    test = True
+    test = False
 
     QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
     client = get_Client()
