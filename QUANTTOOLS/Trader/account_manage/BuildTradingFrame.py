@@ -90,40 +90,31 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res['deal'] = (res['目标持股数'] - res['股票余额'].apply(lambda x:float(x))).apply(lambda x:math.floor(x/100)*100)
     res['deal'] = res.apply(lambda x: x['deal'] if -x['deal'] <= x['可用余额'] else -x['可用余额'], axis = 1)
     QA_util_log_info(res[['NAME','INDUSTRY','deal','close','目标持股数','股票余额','可用余额','冻结数量','买卖价']])
-    #res[res.target == 0]
-    #res[res.target > 0]
 
     QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
     k = 100
-    sell_code = list(set(res[res.deal < 0].index))
-    res = res[res['买卖价'] > 0]
-    res['sort_gp'] = 1
-    res.loc[sell_code,'sort_gp']=0
-    res['sort_sell'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
-    res.loc[res.sort_gp == 0, 'sort_sell']=0
+
+    min_code = list(res[res.target > 0]['买卖价'].min().index)
+    res['min_code'] = 0
+    res.loc[min_code,'min_code'] = 1
 
     ####调增
-    while (res['测算持股金额'].sum() - res['target'].sum()) < 10000 and res['target'].sum() > 0:
-        QA_util_log_info('##JOB Budget {budget} Less than Capital {capital} k: {k}'.format(k=k,
+    #当预计仓位低于目标金额10000时增加面值最小的股票持股目标
+    while (res['测算持股金额'].sum() - res['target'].sum()) < -10000:
+        QA_util_log_info('##JOB Budget {budget} Less than Capital {capital} Over 100000 deal k: {k}'.format(k=k,
                                                                                            budget=res['测算持股金额'].sum(),
                                                                                            capital = res['target'].sum()), ui_log = None)
-        res['trim'] = list(res['sort_sell'].apply(lambda x:k if x == 1 else 0))
+        res['trim'] = list(res['min_code'].apply(lambda x:k if x == 1 else 0))
         res['目标持股数'] = res.apply(lambda x: x['目标持股数'] + x['trim'], axis=1)
         res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
 
-    buy_code = list(set(res[res.deal > 0].index))
-    res = res[res['买卖价'] > 0]
-    res['sort_gp'] = 1
-    res.loc[buy_code,'sort_gp']=0
-    res['sort_buy'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
-    res.loc[res.sort_gp == 0, 'sort_buy']=0
-
     ####调减
+    #当预计仓位高于目标金额时增加面值最小的股票持股目标
     while res['测算持股金额'].sum() > res['target'].sum():
-        QA_util_log_info('##JOB Budget {budget} Larger than Capital {capital} k: {k}'.format(k=k,
+        QA_util_log_info('##JOB Budget {budget} Larger than Capital {capital} Deal k: {k}'.format(k=k,
                                                                          budget=res['测算持股金额'].sum(),
                                                                          capital = res['target'].sum()), ui_log = None)
-        res['trim'] = list(res['sort_buy'].apply(lambda x:k if x == 1 else 0))
+        res['trim'] = list(res['min_code'].apply(lambda x:k if x == 1 else 0))
         res['目标持股数'] = res.apply(lambda x: x['目标持股数'] - x['trim'], axis=1)
         res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
 
@@ -134,7 +125,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     if Zbreak == True:
         QA_util_log_info('##JOB Stop Confirm', ui_log = None)
 
-        if res.loc[sell_code]['市值'].sum() == 0 and \
+        if res[res.target == 0]['市值'].sum() == 0 and \
                 (res['市值'] - res['target']).apply(lambda x:abs(x)).sum() <= 5000:
             res = res.assign(deal=0)
         else:
