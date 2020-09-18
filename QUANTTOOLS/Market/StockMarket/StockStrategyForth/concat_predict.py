@@ -32,7 +32,7 @@ def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=wo
     start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-1))).strftime('%Y-%m-%d')
     end = trading_date
     rng = pd.Series(pd.date_range(start, end, freq='D')).apply(lambda x: str(x)[0:10])
-    QA_util_log_info('##JOB Now Stock Model Predict ==== {}'.format(str(trading_date)), ui_log)
+    QA_util_log_info('##JOB Now Stock Model Predict from {start} to {end} ==== {s}'.format(start = start, end = end, s = str(trading_date)), ui_log)
     stock_tar, stock_b  = Stock.model_predict(start, end)
 
     QA_util_log_info('##JOB Now Combine Predictions ==== {}'.format(str(trading_date)), ui_log)
