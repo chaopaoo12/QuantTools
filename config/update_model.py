@@ -38,7 +38,9 @@ if __name__ == '__main__':
     mark_day = QA_util_today_str()
     ckeck_day = QA_util_get_real_date(mark_day)
 
-    while check_stock_quant(ckeck_day) is None or check_stock_quant(ckeck_day)  > 10:
+    check = check_stock_quant(ckeck_day)
+    while check is None or check > 10:
         time.sleep(180)
+        check = check_stock_quant(ckeck_day)
 
     daily_train(ckeck_day)
