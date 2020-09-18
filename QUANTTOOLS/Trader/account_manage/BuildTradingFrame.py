@@ -92,32 +92,38 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     QA_util_log_info(res[['NAME','INDUSTRY','deal','close','目标持股数','股票余额','可用余额','冻结数量','买卖价']])
 
     QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
+    ###流程
+    #建立基础分配表 按均值计算取floor 正常情况下应该是仓位未用完
+    #微调 加仓算法 缺省仓位 比较 目标持股单位操作金额
+    res['sort_gp'] = res.target.apply(lambda x:1 if x == 0 else 0)
+    res['price_rank'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
+    #求一个单位
+
     k = 100
+    res['trim'] = 0
 
-    min_code = list(res[res['买卖价'] == res[res.target > 0]['买卖价'].min()].index)
-    if len(min_code) > 0:
-        min_code = min_code[0]
-    res['min_code'] = 0
-    res.loc[min_code,'min_code'] = 1
-
-    ####调增
-    #当预计仓位低于目标金额10000时增加面值最小的股票持股目标
     while (res['测算持股金额'].sum() - res['target'].sum()) < -10000:
-        QA_util_log_info('##JOB Budget {budget} Less than Capital {capital} Over 100000 deal k: {k}'.format(k=k,
-                                                                                           budget=res['测算持股金额'].sum(),
-                                                                                           capital = res['target'].sum()), ui_log = None)
-        res['trim'] = list(res['min_code'].apply(lambda x:k if x == 1 else 0))
+        ####调增判断
+        ###调增
+        #调整范围确认 行动为多买
+        for i in range(len(list(res[res.sort_gp == 0].index)), 0, -1):
+            if res[(res.sort_gp == 0 & res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() <= (res['测算持股金额'].sum() - res['target'].sum()):
+                trim_code = list(res[(res.sort_gp == 0 & res.price_rank <= i)].index)
+                res.loc[trim_code,'trim'] = res.loc[trim_code,'trim'] + k
+            else:
+                pass
         res['目标持股数'] = res.apply(lambda x: x['目标持股数'] + x['trim'], axis=1)
         res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
 
-    ####调减
-    #当预计仓位高于目标金额时增加面值最小的股票持股目标
     while res['测算持股金额'].sum() > res['target'].sum():
-        QA_util_log_info('##JOB Budget {budget} Larger than Capital {capital} Deal k: {k}'.format(k=k,
-                                                                         budget=res['测算持股金额'].sum(),
-                                                                         capital = res['target'].sum()), ui_log = None)
-        res['trim'] = list(res['min_code'].apply(lambda x:k if x == 1 else 0))
-        res['目标持股数'] = res.apply(lambda x: x['目标持股数'] - x['trim'], axis=1)
+        ####调减判断 行动为多卖
+        for i in range(1, len(list(res[res.sort_gp == 0].index))+1, 1):
+            if res[(res.sort_gp == 0 & res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() > (res['测算持股金额'].sum() - res['target'].sum()):
+                trim_code = list(res[(res.sort_gp == 0 & res.price_rank <= i)].index)
+                res.loc[trim_code,'trim'] = res.loc[trim_code,'trim'] - k
+            else:
+                pass
+        res['目标持股数'] = res.apply(lambda x: x['目标持股数'] + x['trim'], axis=1)
         res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
 
     QA_util_log_info('##JOB Caculate Deal Position', ui_log = None)
