@@ -60,7 +60,6 @@ def check_Client(client, account, strategy_id, trading_date, exceptions, ui_log=
                           )
     try:
         QA_util_log_info('##JOB Now Get Sub_Accounts ==== {}'.format(str(trading_date)), ui_log)
-        QA_util_log_info(res['sub_accounts'])
         sub_accounts = float(res['sub_accounts']['总 资 产'])
     except:
         QA_util_log_info('##JOB Now Get Sub_Accounts Failed ==== {}'.format(str(trading_date)), ui_log)
