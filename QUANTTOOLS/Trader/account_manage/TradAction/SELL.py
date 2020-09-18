@@ -36,7 +36,7 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
             #e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='MARKET', priceType=4, price=None, client=client)
             e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
         else:
-            pass
+            QA_util_log_info('Test Mode', ui_log=None)
 
     elif type == 'morning':
         if str(code).startswith('300') is True:
@@ -56,10 +56,10 @@ def SELL(client, account, strategy_id, account_info, trading_date, code, name, i
                                                                                                                                              price=price,
                                                                                                                                              trading_date=trading_date),
                          ui_log=None)
-        if test == True:
+        if test == False:
             e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
         else:
-            pass
+            QA_util_log_info('Test Mode', ui_log=None)
     else:
         QA_util_log_info('type 参数错误 {type} 必须为 [morning, end]====={trading_date}'.format(type=type,trading_date=trading_date), ui_log=None)
 
