@@ -958,5 +958,5 @@ def stock_alpha101_half(code, start=None, end = None):
 
 def half_ohlc(data):
     data = data.reset_index().set_index('datetime')
-    res = data.resample('12H').agg({'open': 'first', 'high': 'max',  'low': 'min', 'close': 'last','volume': 'sum'})
+    res = data.resample('12H').agg({'open': 'first', 'high': 'max',  'low': 'min', 'close': 'last','volume': 'sum','amount': 'sum'})
     return(res)
