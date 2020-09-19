@@ -31,7 +31,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_stock_year,
                                                    QA_fetch_index_week,
                                                    QA_fetch_index_month,
-                                                   QA_fetch_index_year)
+                                                   QA_fetch_index_year,
+                                                   QA_fetch_stock_alpha101half)
 from QUANTAXIS.QAUtil.QADate import month_data
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,QA_util_log_info,
                               QA_util_datetime_to_strdate, QA_util_add_months,
@@ -366,6 +367,23 @@ def QA_fetch_index_alpha101_adv(code, start="all", end=None, collections=DATABAS
     else:
         data = QA_fetch_index_alpha101(code, start, end, format='pd')
         return QA_DataStruct_Index_day(data)
+
+def QA_fetch_stock_alpha101half_adv(code, start="all", end=None, collections=DATABASE.stock_alpha101_half):
+    '获取股票财报日历'
+    #code= [code] if isinstance(code,str) else code
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2005-01-01'
+        end = QA_util_today_str()
+        data = QA_fetch_stock_alpha101half(code, start, end, format='pd')
+        return QA_DataStruct_Stock_day(data)
+    else:
+        data = QA_fetch_stock_alpha101half(code, start, end, format='pd')
+        return QA_DataStruct_Stock_day(data)
 
 def QA_fetch_stock_week_adv(
         code,

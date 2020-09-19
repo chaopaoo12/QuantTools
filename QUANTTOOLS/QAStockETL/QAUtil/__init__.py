@@ -11,7 +11,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha191 import stock_alpha, index_alpha
 
 from QUANTTOOLS.QAStockETL.QAUtil.QADate import QA_util_add_days, QA_util_add_years, QA_util_getBetweenYear, QA_util_get_days_to_today
 
-from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha101 import stock_alpha101, index_alpha101
+from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha101 import stock_alpha101, index_alpha101, stock_alpha101_half
 
 #Fetch
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex import QA_Sql_Stock_Index

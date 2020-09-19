@@ -11,7 +11,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetc
                                            QA_fetch_index_alpha_adv,QA_fetch_index_alpha101_adv,
                                            QA_fetch_index_technical_index_adv,QA_fetch_index_info,
                                            QA_fetch_financial_report_wy_adv, QA_fetch_stock_alpha_adv,
-                                           QA_fetch_stock_technical_index_adv)
+                                           QA_fetch_stock_technical_index_adv,QA_fetch_stock_alpha101half_adv)
 from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr,)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_sql_store_mysql
@@ -356,6 +356,33 @@ def QA_etl_stock_alpha101_day(start_date = QA_util_today_str(), end_date= None, 
         data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "stock_alpha101",if_exists='append')
         QA_util_log_info('##JOB ETL STOCK ALPHA101 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+
+def QA_etl_stock_alpha101half_day(start_date = QA_util_today_str(), end_date= None, ui_log= None):
+    if end_date is None:
+        end_date = QA_util_today_str()
+    QA_util_log_info('##JOB Now ETL STOCK ALPHA101 ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    codes = list(QA_fetch_stock_all()['code'])
+    data = QA_fetch_stock_alpha101half_adv(codes, start_date, end_date).data[['alpha001','alpha002','alpha003','alpha004','alpha005','alpha006',
+                                                                          'alpha007','alpha008','alpha009','alpha010','alpha011','alpha012',
+                                                                          'alpha013','alpha014','alpha015','alpha016','alpha017','alpha018',
+                                                                          'alpha019','alpha020','alpha021','alpha022','alpha023','alpha024',
+                                                                          'alpha025','alpha026','alpha027','alpha028','alpha029','alpha030',
+                                                                          'alpha031','alpha032','alpha033','alpha034','alpha035','alpha036',
+                                                                          'alpha037','alpha038','alpha039','alpha040','alpha041','alpha042',
+                                                                          'alpha043','alpha044','alpha045','alpha046','alpha047','alpha049',
+                                                                          'alpha050','alpha051','alpha052','alpha053','alpha054','alpha055',
+                                                                          'alpha057','alpha060','alpha061','alpha062','alpha064','alpha065',
+                                                                          'alpha066','alpha068','alpha071','alpha072','alpha073','alpha074',
+                                                                          'alpha075','alpha077','alpha078','alpha081','alpha083','alpha085',
+                                                                          'alpha086','alpha088','alpha092','alpha094','alpha095','alpha096',
+                                                                          'alpha098','alpha099','alpha101']]
+    if data is None:
+        QA_util_log_info('##JOB NO STOCK ALPHA101 HALF HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    else:
+        data = data.reset_index()
+        data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
+        QA_util_sql_store_mysql(data, "stock_alpha101_half",if_exists='append')
+        QA_util_log_info('##JOB ETL STOCK ALPHA101 HALF HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
 
 def QA_etl_stock_technical_day(start_date = QA_util_today_str(), end_date= None, ui_log= None):
     if end_date is None:

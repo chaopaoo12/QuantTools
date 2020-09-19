@@ -5,7 +5,7 @@ from numpy import log
 from numpy import sign
 from scipy.stats import rankdata
 import copy
-from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_index_day_adv
+from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_index_day_adv,QA_fetch_stock_min_adv
 from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date,QA_util_get_trade_range)
 
 # region Auxiliary functions
@@ -931,3 +931,32 @@ def index_alpha101(code, start=None, end = None):
         return(get_alpha(price).loc[deal_date_list].reset_index())
     except:
         return(None)
+
+def stock_alpha101_half(code, start=None, end = None):
+    np.seterr(invalid='ignore')
+    if end is None:
+        end_date = QA_util_today_str()
+    else:
+        end_date = end
+
+    if start is None:
+        start = QA_util_today_str()
+    else:
+        start = start
+
+    start_date = QA_util_get_pre_trade_date(start, 270)
+    deal_date_list = QA_util_get_trade_range(start, end)
+
+    try:
+        price = QA_fetch_stock_min_adv(code, start_date, end_date ,frequence='60min').to_qfq()
+        price = price.groupby('code').apply(half_ohlc).dropna().reset_index().set_index('datetime')
+        price = price.assign(pctchange = price.close/price.close.shift()-1)
+        price = price.between_time("00:00", "09:00").reset_index().rename(columns={'datetime':'date'}).set_index(['date','code'])
+        return(get_alpha(price).loc[deal_date_list].reset_index())
+    except:
+        return(None)
+
+def half_ohlc(data):
+    data = data.reset_index().set_index('datetime')
+    res = data.resample('12H').agg({'open': 'first', 'high': 'max',  'low': 'min', 'close': 'last','volume': 'sum'})
+    return(res)
