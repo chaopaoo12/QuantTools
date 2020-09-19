@@ -949,7 +949,7 @@ def stock_alpha101_half(code, start=None, end = None):
     deal_date_list = QA_util_get_trade_range(start, end)
 
     try:
-        price = QA_fetch_stock_min_adv(code, start_date, end_date ,frequence='60min').to_qfq()
+        price = QA_fetch_stock_min_adv(code, start_date, end_date ,frequence='60min').to_qfq().data
         price = price.groupby('code').apply(half_ohlc).dropna().reset_index().set_index('datetime')
         price = price.assign(pctchange = price.close/price.close.shift()-1)
         price = price.between_time("00:00", "09:00").reset_index().rename(columns={'datetime':'date'}).set_index(['date','code'])
