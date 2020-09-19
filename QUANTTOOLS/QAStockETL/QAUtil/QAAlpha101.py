@@ -195,7 +195,7 @@ class Alphas(object):
         self.close = df_data['close']
         self.volume = df_data['volume']*100
         self.returns = df_data['pctchange']
-        self.vwap = (df_data['amount']*1000)/(df_data['volume']*100+1)
+        self.vwap = df_data['amount']/(df_data['volume']*100+1)
 
         # Alpha#1	 (rank(Ts_ArgMax(SignedPower(((returns < 0) ? stddev(returns, 20) : close), 2.), 5)) -0.5)
     def alpha001(self):
