@@ -1,4 +1,5 @@
 import numpy as np
+import easyquotation
 import pandas as pd
 from numpy import abs
 from numpy import log
@@ -6,7 +7,7 @@ from numpy import sign
 from scipy.stats import rankdata
 import copy
 from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_index_day_adv,QA_fetch_stock_min_adv
-from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date,QA_util_get_trade_range)
+from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date,QA_util_get_trade_range,QA_util_get_last_day)
 
 # region Auxiliary functions
 def ts_sum(df, window=10):
@@ -953,6 +954,40 @@ def stock_alpha101_half(code, start=None, end = None):
         price = price.assign(pctchange = price.close/price.close.shift()-1)
         price = price.between_time("00:00", "09:00").reset_index().rename(columns={'datetime':'date'}).set_index(['date','code'])
         return(get_alpha(price).loc[deal_date_list].reset_index())
+    except:
+        return(None)
+
+def stock_alpha101_half_realtime(code, start=None, end = None):
+    np.seterr(invalid='ignore')
+    if end is None:
+        end_date = QA_util_get_last_day(QA_util_today_str())
+    else:
+        end_date = QA_util_get_last_day(end)
+
+    if start is None:
+        start = QA_util_get_last_day(QA_util_today_str())
+    else:
+        start = start
+
+    start_date = QA_util_get_pre_trade_date(start, 270)
+    deal_date_list = QA_util_get_trade_range(start, end)
+
+    try:
+        price = QA_fetch_stock_min_adv(code, start_date, end_date ,frequence='60min').to_qfq().data
+        price = price.groupby('code').apply(half_ohlc).dropna().reset_index().set_index('datetime')
+        price = price.assign(pctchange = price.close/price.close.shift()-1)
+        price = price.between_time("00:00", "09:00").reset_index().rename(columns={'datetime':'date'}).set_index(['date','code'])
+        quotation = easyquotation.use('sina')
+        res = pd.DataFrame(quotation.stocks(code) ).T[['date','open','high','low','now','turnover','volume','close']]
+        res = res.reset_index().rename(columns={'index':'code',
+                                          'close':'pctchange',
+                                          'now':'close',
+                                          'turnover':'volume',
+                                          'volume':'amount'})
+        res = res.assign(pctchange=res.close/res.pctchange-1).set_index(['date','code'])
+        res = price.append(res.astype('float64')).groupby('code').apply(get_alpha)
+        res = res.reset_index(level=2).drop('code',axis=1).reset_index().set_index(['date','code'])
+        return(res.loc[deal_date_list].reset_index())
     except:
         return(None)
 
