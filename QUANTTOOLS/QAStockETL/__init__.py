@@ -70,4 +70,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv, QA_fet
                                            QA_fetch_index_year_adv,QA_fetch_stock_week,QA_fetch_stock_month,
                                            QA_fetch_stock_year,QA_fetch_index_week,QA_fetch_index_month,QA_fetch_index_year)
 
-from QUANTTOOLS.QAStockETL.Check import (check_index_day,check_stock_day,check_stock_fianacial,check_stock_adj,check_stock_quant,check_index_quant)
+from QUANTTOOLS.QAStockETL.Check import (check_index_day,check_stock_day,
+                                         check_stock_fianacial,check_stock_adj,
+                                         check_stock_quant,check_index_quant,
+                                         check_stock_alpha101half)
