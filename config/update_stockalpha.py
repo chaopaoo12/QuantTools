@@ -28,6 +28,7 @@
 """对应于save x
 """
 from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_alpha_day,
+                                   QA_SU_save_stock_alpha101half_day,
                                    QA_SU_save_stock_alpha101_day)
 from QUANTTOOLS.QAStockETL import (QA_etl_stock_alpha_day,
                                    QA_etl_stock_alpha101_day)
