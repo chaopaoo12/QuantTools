@@ -1,7 +1,8 @@
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_get_quant_data,QA_fetch_index_target,
                                            QA_fetch_index_quant_data,QA_fetch_get_index_quant_data,
                                            QA_fetch_stock_quant_pre_adv,QA_fetch_index_quant_pre_adv,
-                                           QA_fetch_index_info,QA_fetch_stock_om_all)
+                                           QA_fetch_index_info,QA_fetch_stock_om_all,QA_fetch_stock_quant_pre_train_adv,
+                                           QA_fetch_get_quant_data_train)
 import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
@@ -22,9 +23,9 @@ def get_quant_data(start_date, end_date, type = 'crawl', block = False, sub_bloc
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
-        res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method).data
+        res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method).data
     if type == 'model':
-        res = QA_fetch_get_quant_data(codes, start_date, end_date, type=None).set_index(['date','code']).drop(['date_stamp'], axis=1)
+        res = QA_fetch_get_quant_data_train(codes, start_date, end_date, type='normalization').set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
         res = res.join(target)
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
