@@ -78,4 +78,4 @@ def QA_SU_save_financial_files(fromtdx=False):
 
 
 
-print('SUCCESSFULLY SAVE/UPDATE FINANCIAL DATA')
+#print('SUCCESSFULLY SAVE/UPDATE FINANCIAL DATA')
