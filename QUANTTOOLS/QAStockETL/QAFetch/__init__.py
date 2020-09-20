@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_financial_re
                                                            QA_fetch_index_quant_pre_adv,QA_fetch_stock_alpha101_adv,QA_fetch_index_alpha101_adv,
                                                            QA_fetch_stock_week_adv,QA_fetch_stock_month_adv,QA_fetch_stock_year_adv,
                                                            QA_fetch_index_month_adv,QA_fetch_index_year_adv,QA_fetch_stock_alpha101half_adv,
-                                                           QA_fetch_stock_quant_pre_train_adv)
+                                                           QA_fetch_stock_quant_pre_train_adv,QA_fetch_stock_half_adv)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report, QA_fetch_stock_financial_calendar, QA_fetch_stock_divyield,
                                                    QA_fetch_financial_TTM, QA_fetch_stock_fianacial,QA_fetch_stock_alpha,QA_fetch_stock_shares,
@@ -17,7 +17,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report, QA
                                                    QA_fetch_stock_quant_data,QA_fetch_stock_quant_pre,QA_fetch_stock_target,
                                                    QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_index_name,QA_fetch_index_cate,
                                                    QA_fetch_financial_code_wy, QA_fetch_financial_code_tdx,QA_fetch_financial_code_new,
-                                                   QA_fetch_financial_code_ttm,
+                                                   QA_fetch_financial_code_ttm,QA_fetch_stock_half,
                                                    QA_fetch_interest_rate,QA_fetch_index_alpha,QA_fetch_index_technical_index,
                                                    QA_fetch_index_target,QA_fetch_index_quant_data,QA_fetch_index_quant_data,
                                                    QA_fetch_index_quant_pre,QA_fetch_stock_alpha101,QA_fetch_index_alpha101,
@@ -54,4 +54,4 @@ from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_stock_close,
                                                  QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_realtm_bidvol,
                                                  QA_fetch_get_stock_realtm_askvol5,QA_fetch_get_stock_realtm_bidvol5,
                                                  QA_fetch_get_stock_industryinfo,QA_fetch_get_index_info,
-                                                 QA_fetch_get_stock_delist)
+                                                 QA_fetch_get_stock_delist,QA_fetch_get_stock_half)

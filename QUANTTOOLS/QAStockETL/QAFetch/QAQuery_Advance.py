@@ -33,7 +33,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_index_week,
                                                    QA_fetch_index_month,
                                                    QA_fetch_index_year,
-                                                   QA_fetch_stock_alpha101half)
+                                                   QA_fetch_stock_alpha101half,
+                                                   QA_fetch_stock_half)
 from QUANTAXIS.QAUtil.QADate import month_data
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,QA_util_log_info,
                               QA_util_datetime_to_strdate, QA_util_add_months,
@@ -402,13 +403,13 @@ def QA_fetch_stock_alpha101half_adv(code, start="all", end=None, collections=DAT
         data = QA_fetch_stock_alpha101half(code, start, end, format='pd')
         return QA_DataStruct_Financial(data)
 
-def QA_fetch_stock_week_adv(
+def QA_fetch_stock_half_adv(
         code,
         start='all',
         end=None,
         if_drop_index=True,
         # 🛠 todo collections 参数没有用到， 且数据库是固定的， 这个变量后期去掉
-        collections=DATABASE.stock_week
+        collections=DATABASE.stock_day_half
 ):
     '''
 
@@ -428,11 +429,11 @@ def QA_fetch_stock_week_adv(
         start = '1990-01-01'
         end = str(datetime.date.today())
 
-    res = QA_fetch_stock_week(code, start, end, format='pd', collections= collections)
+    res = QA_fetch_stock_half(code, start, end, format='pd', collections= collections)
     if res is None:
         # 🛠 todo 报告是代码不合法，还是日期不合法
         print(
-            "QA Error QA_fetch_stock_week_adv parameter code=%s , start=%s, end=%s call QA_fetch_stock_week return None"
+            "QA Error QA_fetch_stock_half_adv parameter code=%s , start=%s, end=%s call QA_fetch_stock_week return None"
             % (code,
                start,
                end)
@@ -441,7 +442,7 @@ def QA_fetch_stock_week_adv(
     else:
         res_reset_index = res.set_index(['date', 'code'], drop=if_drop_index)
         # if res_reset_index is None:
-        #     print("QA Error QA_fetch_stock_week_adv set index 'datetime, code' return None")
+        #     print("QA Error QA_fetch_stock_half_adv set index 'datetime, code' return None")
         #     return None
         return QA_DataStruct_Stock_day(res_reset_index)
 

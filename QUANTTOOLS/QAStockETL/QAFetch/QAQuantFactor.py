@@ -2,12 +2,25 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_stock_financial_percent_adv,QA_fetch_index_alpha_adv,
                                                            QA_fetch_index_technical_index_adv,QA_fetch_stock_alpha101_adv,
                                                            QA_fetch_index_alpha101_adv,QA_fetch_stock_alpha101half_adv)
+from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha101 import stock_alpha101_half_realtime
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_info
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,QA_util_get_trade_range,
+from  QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,QA_util_get_trade_range,QA_util_get_next_trade_date,QA_util_code_tolist,
                                QA_util_get_pre_trade_date)
 import math
 from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import time_this_function
+
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex import QA_Sql_Stock_Index
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexWeek import QA_Sql_Stock_IndexWeek
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101 import QA_Sql_Stock_Alpha101
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101Half import QA_Sql_Stock_Alpha101Half
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191 import QA_Sql_Stock_Alpha191
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancial import QA_Sql_Stock_Financial
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancialPE import QA_Sql_Stock_FinancialPercent
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndex import QA_Sql_Index_Index
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexWeek import QA_Sql_Index_IndexWeek
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha101 import QA_Sql_Index_Alpha101
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha191 import QA_Sql_Index_Alpha191
 
 def QA_fetch_index_cate(data, stock_code):
     try:
@@ -282,11 +295,11 @@ def QA_fetch_get_quant_data_train(codes, start_date, end_date, type='standardize
                                                                  "alpha_186","alpha_187","alpha_188","alpha_189","alpha_191"]].groupby('code').fillna(method='ffill')
     QA_util_log_info(
         '##JOB got Data stock alpha101 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    alpha101 = QA_fetch_stock_alpha101_adv(codes,start,end_date).data.fillna(0)
+    alpha101 = QA_fetch_stock_alpha101_adv(codes,start,end_date).data.fillna(method='ffill').fillna(0)
 
     QA_util_log_info(
         '##JOB got Data stock alpha101 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    alpha101_half = QA_fetch_stock_alpha101half_adv(codes,start,end_date).data.groupby('code').apply(lambda x:x.shift(-1)).fillna(0)
+    alpha101_half = QA_fetch_stock_alpha101half_adv(codes,start,end_date).data.groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).fillna(0)
     alpha101_half.columns = [x + '_HALF' for x in alpha101_half.columns]
     alphas = alpha.join(alpha101).join(alpha101_half)
     for columnname in alphas.columns:
@@ -321,6 +334,117 @@ def QA_fetch_get_quant_data_train(codes, start_date, end_date, type='standardize
         '##JOB stock quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     res = fianacial.join(technical).join(alphas)
     col_tar = ['DAYS','INDUSTRY']
+    QA_util_log_info(
+        '##JOB stock quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+    if type == 'standardize':
+        QA_util_log_info('##JOB stock quant data standardize trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
+    elif type == 'normalization':
+        QA_util_log_info('##JOB stock quant data normalization trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+        res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
+    else:
+        QA_util_log_info('##JOB type must be in [standardize, normalization]', ui_log)
+        pass
+
+    QA_util_log_info(
+        '##JOB got Data stock industry info ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+    res = res.reset_index()
+    res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
+    return(res)
+
+@time_this_function
+def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='standardize', ui_log = None):
+    '获取股票量化机器学习最终指标V1'
+    start = QA_util_get_pre_trade_date(start_date,15)
+    start_date = QA_util_get_pre_trade_date(start,15)
+    end_date = end_date
+    sec_end = QA_util_get_next_trade_date(end_date)
+    rng = QA_util_get_trade_range(start, end_date)
+
+    code = QA_util_code_tolist(code)
+
+    financial = QA_Sql_Stock_Financial
+    index = QA_Sql_Stock_Index
+    week = QA_Sql_Stock_IndexWeek
+    alpha = QA_Sql_Stock_Alpha191
+    alpha101 = QA_Sql_Stock_Alpha101
+    pe = QA_Sql_Stock_FinancialPercent
+    alpha101_half = QA_Sql_Stock_Alpha101Half
+    alpha101_half_real = stock_alpha101_half_realtime
+
+
+    QA_util_log_info(
+        '##JOB got stock quant data date range ============== from {from_} to {to_} '.format(from_=start,to_=end_date), ui_log)
+    rng1 = QA_util_get_trade_range(start_date, end_date)
+    QA_util_log_info(
+        '##JOB got Data stock fianacial data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+    financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+    financial_res = financial_res[financial_res.DAYS >= 90]
+
+    QA_util_log_info(
+        '##JOB got Data stock perank data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+    pe_res = pe(start_date,end_date)[['PE_10PCT','PE_10VAL','PEEGL_10PCT','PEEGL_10VAL','PB_10PCT','PB_10VAL',
+                                      #'PEG_10PCT','PEG_10VAL',
+                                      'PS_10PCT','PS_10VAL',
+                                      'PE_20PCT','PE_20VAL','PEEGL_20PCT','PEEGL_20VAL','PB_20PCT','PB_20VAL',
+                                      #'PEG_20PCT','PEG_20VAL',
+                                      'PS_20PCT','PS_20VAL',
+                                      'PE_30PCT','PE_30VAL','PE_30DN','PE_30UP',
+                                      'PEEGL_30PCT','PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
+                                      'PB_30PCT','PB_30VAL','PB_30DN','PB_30UP',
+                                      #'PEG_30PCT','PEG_30VAL','PEG_30DN','PEG_30UP',
+                                      'PS_30PCT','PS_30VAL','PS_30DN','PS_30UP',
+                                      'PE_60PCT','PE_60VAL','PE_60DN','PE_60UP',
+                                      'PEEGL_60PCT','PEEGL_60VAL','PEEGL_60DN','PEEGL_60UP',
+                                      'PB_60PCT','PB_60VAL','PB_60DN','PB_60UP',
+                                      #'PEG_60PCT','PEG_60VAL','PEG_60DN','PEG_60UP',
+                                      'PS_60PCT','PS_60VAL','PS_60DN','PS_60UP',
+                                      'PE_90PCT','PE_90VAL','PE_90DN','PE_90UP',
+                                      'PEEGL_90PCT','PEEGL_90VAL','PEEGL_90DN','PEEGL_90UP',
+                                      'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
+                                      #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
+                                      #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
+                                      ]].groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
+
+    QA_util_log_info(
+        '##JOB got Data stock alpha191 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+    alpha_res = alpha(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+
+    QA_util_log_info(
+        '##JOB got Data stock alpha101 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+    alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').fillna(0).loc[((rng,code),)]
+
+    QA_util_log_info(
+        '##JOB got Data stock alpha101 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+    QA_Sql_Stock_Alpha101Half
+    alpha101half_res = alpha101_half(start_date,sec_end).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).fillna(0).loc[((rng,code),)]
+    alpha101half_real = alpha101_half_real(code)
+    alpha101half_res.append(alpha101half_real)
+
+    QA_util_log_info(
+        '##JOB got Data stock tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+    index_res = index(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+    QA_util_log_info(
+        '##JOB got Data stock tech week data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+    week_res = week(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+
+    QA_util_log_info(
+        '##JOB stock quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+    res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(alpha101half_res).join(pe_res)
+
+    for columnname in res.columns:
+        if res[columnname].dtype == 'float64':
+            res[columnname]=res[columnname].astype('float32')
+        if res[columnname].dtype == 'float32':
+            res[columnname]=res[columnname].astype('float32')
+        if res[columnname].dtype == 'int64':
+            res[columnname]=res[columnname].astype('int8')
+        if res[columnname].dtype == 'int32':
+            res[columnname]=res[columnname].astype('int8')
+        if res[columnname].dtype == 'int16':
+            res[columnname]=res[columnname].astype('int8')
+
+    col_tar = ['INDUSTRY']
     QA_util_log_info(
         '##JOB stock quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     if type == 'standardize':

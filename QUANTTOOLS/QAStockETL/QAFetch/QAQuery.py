@@ -7,7 +7,7 @@ import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
                               QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_int2str,
                               QA_util_to_json_from_pandas, QA_util_today_str, QA_util_get_pre_trade_date,
-                              QA_util_add_months)
+                              QA_util_add_months,QA_util_get_next_trade_date)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv,QA_fetch_index_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare,QA_fetch_stock_list
 from QUANTTOOLS.QAStockETL.QAData.financial_mean import financial_dict, dict2
@@ -653,6 +653,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
     '获取股票日线'
     start_date = QA_util_get_pre_trade_date(start,15)
     end_date = end
+    sec_end = QA_util_get_next_trade_date(end)
     rng = QA_util_get_trade_range(start, end)
 
     code = QA_util_code_tolist(code)
@@ -670,27 +671,27 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
         QA_util_log_info(
             'JOB Get Stock Financial train data start=%s end=%s' % (start, end))
         pe_res = pe(start_date,end_date)[['PE_10PCT','PE_10VAL','PEEGL_10PCT','PEEGL_10VAL','PB_10PCT','PB_10VAL',
-                                #'PEG_10PCT','PEG_10VAL',
-                                'PS_10PCT','PS_10VAL',
-                                'PE_20PCT','PE_20VAL','PEEGL_20PCT','PEEGL_20VAL','PB_20PCT','PB_20VAL',
-                                #'PEG_20PCT','PEG_20VAL',
-                                'PS_20PCT','PS_20VAL',
-                                'PE_30PCT','PE_30VAL','PE_30DN','PE_30UP',
-                                'PEEGL_30PCT','PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
-                                'PB_30PCT','PB_30VAL','PB_30DN','PB_30UP',
-                                #'PEG_30PCT','PEG_30VAL','PEG_30DN','PEG_30UP',
-                                'PS_30PCT','PS_30VAL','PS_30DN','PS_30UP',
-                                'PE_60PCT','PE_60VAL','PE_60DN','PE_60UP',
-                                'PEEGL_60PCT','PEEGL_60VAL','PEEGL_60DN','PEEGL_60UP',
-                                'PB_60PCT','PB_60VAL','PB_60DN','PB_60UP',
-                                #'PEG_60PCT','PEG_60VAL','PEG_60DN','PEG_60UP',
-                                'PS_60PCT','PS_60VAL','PS_60DN','PS_60UP',
-                                'PE_90PCT','PE_90VAL','PE_90DN','PE_90UP',
-                                'PEEGL_90PCT','PEEGL_90VAL','PEEGL_90DN','PEEGL_90UP',
-                                'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
-                                #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
-                                #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
-                                ]].groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
+                                          #'PEG_10PCT','PEG_10VAL',
+                                          'PS_10PCT','PS_10VAL',
+                                          'PE_20PCT','PE_20VAL','PEEGL_20PCT','PEEGL_20VAL','PB_20PCT','PB_20VAL',
+                                          #'PEG_20PCT','PEG_20VAL',
+                                          'PS_20PCT','PS_20VAL',
+                                          'PE_30PCT','PE_30VAL','PE_30DN','PE_30UP',
+                                          'PEEGL_30PCT','PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
+                                          'PB_30PCT','PB_30VAL','PB_30DN','PB_30UP',
+                                          #'PEG_30PCT','PEG_30VAL','PEG_30DN','PEG_30UP',
+                                          'PS_30PCT','PS_30VAL','PS_30DN','PS_30UP',
+                                          'PE_60PCT','PE_60VAL','PE_60DN','PE_60UP',
+                                          'PEEGL_60PCT','PEEGL_60VAL','PEEGL_60DN','PEEGL_60UP',
+                                          'PB_60PCT','PB_60VAL','PB_60DN','PB_60UP',
+                                          #'PEG_60PCT','PEG_60VAL','PEG_60DN','PEG_60UP',
+                                          'PS_60PCT','PS_60VAL','PS_60DN','PS_60UP',
+                                          'PE_90PCT','PE_90VAL','PE_90DN','PE_90UP',
+                                          'PEEGL_90PCT','PEEGL_90VAL','PEEGL_90DN','PEEGL_90UP',
+                                          'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
+                                          #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
+                                          #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
+                                          ]].groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
         financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
         financial_res = financial_res[financial_res.DAYS >= 90]
 
@@ -711,8 +712,8 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
         alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').fillna(0).loc[((rng,code),)]
 
         QA_util_log_info(
-            'JOB Get Stock Alpha101 Half train data start=%s end=%s' % (start, end))
-        alpha101half_res = alpha101_half(start_date,end_date).groupby('code').fillna(method='ffill').fillna(0).loc[((rng,code),)]
+            'JOB Get Stock Alpha101 Half train data start=%s end=%s' % (start, sec_end))
+        alpha101half_res = alpha101_half(start_date,sec_end).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).fillna(0).loc[((rng,code),)]
 
         try:
             res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(alpha101half_res).join(pe_res)
@@ -1693,6 +1694,94 @@ def QA_fetch_stock_all():
     code = [i for i in tushare_list.code if i not in list(code_list.code)]
     code_list = code_list.append(stock_delist).append(tushare_list[tushare_list.code.isin(code)])
     return(code_list)
+
+def QA_fetch_stock_half(
+        code,
+        start,
+        end,
+        format='numpy',
+        collections=DATABASE.stock_day_half
+):
+    """'获取股票日线'
+
+    Returns:
+        [type] -- [description]
+
+        感谢@几何大佬的提示
+        https://docs.mongodb.com/manual/tutorial/project-fields-from-query-results/#return-the-specified-fields-and-the-id-field-only
+
+    """
+
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+    #code= [code] if isinstance(code,str) else code
+
+    # code checking
+    code = QA_util_code_tolist(code)
+
+    if QA_util_date_valid(end):
+
+        cursor = collections.find(
+            {
+                'code': {
+                    '$in': code
+                },
+                "date_stamp":
+                    {
+                        "$lte": QA_util_date_stamp(end),
+                        "$gte": QA_util_date_stamp(start)
+                    }
+            },
+            {"_id": 0},
+            batch_size=10000
+        )
+        #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
+
+        res = pd.DataFrame([item for item in cursor])
+        try:
+            res = res.assign(
+                volume=res.vol,
+                date=pd.to_datetime(res.date)
+            ).drop_duplicates((['date',
+                                'code'])).query('volume>1').set_index(
+                'date',
+                drop=False
+            )
+            res = res.loc[:,
+                  [
+                      'code',
+                      'open',
+                      'high',
+                      'low',
+                      'close',
+                      'volume',
+                      'amount',
+                      'pctchange',
+                      'date'
+                  ]]
+        except:
+            res = None
+        if format in ['P', 'p', 'pandas', 'pd']:
+            return res
+        elif format in ['json', 'dict']:
+            return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+        elif format in ['n', 'N', 'numpy']:
+            return numpy.asarray(res)
+        elif format in ['list', 'l', 'L']:
+            return numpy.asarray(res).tolist()
+        else:
+            print(
+                "QA Error QA_fetch_stock_half format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
+                % format
+            )
+            return None
+    else:
+        QA_util_log_info(
+            'QA Error QA_fetch_stock_half data parameter start=%s end=%s is not right'
+            % (start,
+               end)
+        )
 
 def QA_fetch_stock_week(
         code,
