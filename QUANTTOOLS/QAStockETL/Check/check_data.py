@@ -13,7 +13,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_index_alpha_adv,
                                                            QA_fetch_index_alpha101_adv,
                                                            QA_fetch_index_technical_index_adv,
-                                                           QA_fetch_stock_alpha101half_adv
+                                                           QA_fetch_stock_alpha101half_adv,
+                                                           QA_fetch_stock_half_adv
                                                            )
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_code_wy,QA_fetch_financial_code_ttm,
                                            QA_fetch_financial_code_tdx)
@@ -287,6 +288,9 @@ def QA_fetch_stock_60min(code, start, end):
 
 def check_stock_60min(mark_day = None, ui_log = None):
     return(check_stock_data(func = QA_fetch_stock_60min, mark_day = mark_day, title = 'Stock 60Min', ui_log = ui_log))
+
+def check_stock_half(mark_day = None, ui_log = None):
+    return(check_stock_data(func = QA_fetch_stock_half_adv, mark_day = mark_day, title = 'Stock Half', ui_log = ui_log))
 
 def check_stock_day(mark_day = None, ui_log = None):
     return(check_stock_data(func = QA_fetch_stock_day_adv, mark_day = mark_day, title = 'Stock Day', ui_log = ui_log))
