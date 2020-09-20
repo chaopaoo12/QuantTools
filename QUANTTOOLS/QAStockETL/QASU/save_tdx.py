@@ -16,7 +16,7 @@ from QUANTAXIS.QAUtil import (
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_usstock_adj,QA_fetch_get_usstock_day,QA_fetch_get_usstock_cik,
                                                  QA_fetch_get_usstock_financial, QA_fetch_get_usstock_financial_calendar,
                                                  QA_fetch_get_stock_industryinfo,QA_fetch_get_index_info,
-                                                 QA_fetch_get_stock_delist)
+                                                 QA_fetch_get_stock_delist,QA_fetch_get_stock_half)
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_stock_om_all,QA_fetch_stock_all)
 
 
@@ -25,6 +25,106 @@ def now_time():
            ' 17:00:00' if datetime.datetime.now().hour < 15 else str(QA_util_get_real_date(
         str(datetime.date.today()), trade_date_sse, -1)) + ' 15:00:00'
 
+def QA_SU_save_stock_half(client=DATABASE, ui_log=None, ui_progress=None):
+    '''
+     save stock_day
+    保存日线数据
+    :param client:
+    :param ui_log:  给GUI qt 界面使用
+    :param ui_progress: 给GUI qt 界面使用
+    :param ui_progress_int_value: 给GUI qt 界面使用
+    '''
+    stock_list = QA_fetch_stock_all().code.unique().tolist()
+    coll_stock_day = client.stock_day_half
+    coll_stock_day.create_index(
+        [("code",
+          pymongo.ASCENDING),
+         ("date_stamp",
+          pymongo.ASCENDING)]
+    )
+    err = []
+
+    def __saving_work(code, coll_stock_day):
+        try:
+            QA_util_log_info(
+                '##JOB01 Now Saving STOCK_DAY_HALF==== {}'.format(str(code)),
+                ui_log
+            )
+
+            # 首选查找数据库 是否 有 这个代码的数据
+            ref = coll_stock_day.find({'code': str(code)[0:6]})
+            end_date = str(now_time())[0:10]
+
+            # 当前数据库已经包含了这个代码的数据， 继续增量更新
+            # 加入这个判断的原因是因为如果股票是刚上市的 数据库会没有数据 所以会有负索引问题出现
+            if ref.count() > 0:
+
+                # 接着上次获取的日期继续更新
+                start_date = ref[ref.count() - 1]['date']
+
+                QA_util_log_info(
+                    'UPDATE_STOCK_DAY \n Trying updating {} from {} to {}'
+                        .format(code,
+                                start_date,
+                                end_date),
+                    ui_log
+                )
+                if start_date != end_date:
+                    coll_stock_day.insert_many(
+                        QA_util_to_json_from_pandas(
+                            QA_fetch_get_stock_half(str(code),
+                                                   QA_util_get_next_day(start_date),
+                                                   end_date
+                                                   )
+                        )
+                    )
+
+            # 当前数据库中没有这个代码的股票数据， 从1990-01-01 开始下载所有的数据
+            else:
+                start_date = '1990-01-01'
+                QA_util_log_info(
+                    'UPDATE_STOCK_DAY \n Trying updating {} from {} to {}'
+                        .format(code,
+                                start_date,
+                                end_date),
+                    ui_log
+                )
+                if start_date != end_date:
+                    coll_stock_day.insert_many(
+                        QA_util_to_json_from_pandas(
+                            QA_fetch_get_stock_half(
+                                                   str(code),
+                                                   start_date,
+                                                   end_date
+                                                   )
+                        )
+                    )
+        except Exception as error0:
+            print(error0)
+            err.append(str(code))
+
+    for item in range(len(stock_list)):
+        QA_util_log_info('The {} of Total {}'.format(item, len(stock_list)))
+
+        strProgressToLog = 'DOWNLOAD PROGRESS {} {}'.format(
+            str(float(item / len(stock_list) * 100))[0:4] + '%',
+            ui_log
+        )
+        intProgressToLog = int(float(item / len(stock_list) * 100))
+        QA_util_log_info(
+            strProgressToLog,
+            ui_log=ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=intProgressToLog
+        )
+
+        __saving_work(stock_list[item], coll_stock_day)
+
+    if len(err) < 1:
+        QA_util_log_info('SUCCESS save stock day half ^_^', ui_log)
+    else:
+        QA_util_log_info('ERROR CODE \n ', ui_log)
+        QA_util_log_info(err, ui_log)
 
 def QA_SU_save_stock_day(client=DATABASE, ui_log=None, ui_progress=None):
     '''

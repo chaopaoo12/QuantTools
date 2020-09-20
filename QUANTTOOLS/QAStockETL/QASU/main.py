@@ -187,6 +187,9 @@ def QA_SU_save_index_month():
 def QA_SU_save_index_year():
     save_tdx.QA_SU_save_index_year()
 
+def QA_SU_save_stock_half():
+    save_tdx.QA_SU_save_stock_half()
+
 def QA_SU_save_stock_day():
     save_tdx.QA_SU_save_stock_day()
 
