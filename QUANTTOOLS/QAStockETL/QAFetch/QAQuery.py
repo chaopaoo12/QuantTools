@@ -943,7 +943,28 @@ def QA_fetch_stock_quant_pre(code, start, end=None, block = True, type='close', 
     elif format in ['list', 'l', 'L']:
         return numpy.asarray(res).tolist()
     else:
-        QA_util_log_info("QA Error QA_fetch_stock_quant_data format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+        QA_util_log_info("QA Error QA_fetch_stock_quant_pre format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+        return None
+
+def QA_fetch_stock_quant_pre_train(code, start, end=None, block = True, type='close', method='value', format='pd'):
+    QA_util_log_info(
+        'JOB Get Stock Quant data start=%s end=%s' % (start, end))
+    res = QA_fetch_stock_quant_data_train(code, start, end, block, type='normalization')
+    QA_util_log_info(
+        'JOB Get Stock Target data start=%s end=%s' % (start, end))
+    target = QA_fetch_stock_target(code, start, end, type=type, method=method)
+    res = res.join(target)
+    if format in ['P', 'p', 'pandas', 'pd']:
+        return res
+    elif format in ['json', 'dict']:
+        return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+    elif format in ['n', 'N', 'numpy']:
+        return numpy.asarray(res)
+    elif format in ['list', 'l', 'L']:
+        return numpy.asarray(res).tolist()
+    else:
+        QA_util_log_info("QA Error QA_fetch_stock_quant_pre_train format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
         return None
 
 def QA_fetch_financial_code_wy(ndays=30):
