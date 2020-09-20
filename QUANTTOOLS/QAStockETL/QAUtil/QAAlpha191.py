@@ -4,38 +4,10 @@ import numpy as np
 import pandas as pd
 from numpy import abs
 
-from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_index_day_adv
-from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date)
-
 def linreg(x,B):
     slope, intercept, rvalue, pvalue, stderr = sp.stats.linregress(x,B)
     return([slope, intercept, rvalue, pvalue, stderr])
 
-def stock_alpha(code, date=None):
-    np.seterr(invalid='ignore')
-    if date == None:
-        end_date = QA_util_today_str()
-    else:
-        end_date = date
-    start_date = QA_util_get_pre_trade_date(date, 250)
-    try:
-        price = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
-        return(Alpha_191(price, date).alpha())
-    except:
-        return(None)
-
-def index_alpha(code, date=None):
-    np.seterr(invalid='ignore')
-    if date == None:
-        end_date = QA_util_today_str()
-    else:
-        end_date = date
-    start_date = QA_util_get_pre_trade_date(date, 250)
-    try:
-        price = QA_fetch_index_day_adv(code, start_date, end_date ).data.reset_index().dropna(axis=0, how='any')
-        return(Alpha_191(price, date).alpha())
-    except:
-        return(None)
 
 class Alpha_191:
 
