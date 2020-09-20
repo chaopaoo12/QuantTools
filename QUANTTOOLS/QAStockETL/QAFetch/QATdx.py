@@ -110,9 +110,11 @@ def QA_fetch_get_stock_half(code, start, end):
     else:
         end = QA_util_get_real_date(end)
 
-    price = QA_fetch_stock_min_adv(code, start_date, end, frequence='60min').data
-    price = price.groupby('code').apply(half_ohlc).reset_index().set_index('datetime')
-    price = price.assign(pctchange = price.close/price.close.shift()-1)
+    data = QA_fetch_stock_min_adv(code, start_date, end, frequence='60min')
+    pctchange = data.to_qfq().data.groupby('code').apply(half_ohlc)
+    pctchange = pctchange.assign(pctchange = pctchange.close/pctchange.close.shift()-1)
+    data = data.data.groupby('code').apply(half_ohlc)
+    price = data.join(pctchange['pctchange']).reset_index().set_index('datetime')
     price = price.between_time("00:00", "09:00").reset_index().rename(columns={'datetime':'date'}).dropna()
     price['date_stamp'] = price['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10]))
     return(price)
