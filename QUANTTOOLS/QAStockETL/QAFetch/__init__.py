@@ -35,7 +35,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAFinancial import QA_fetch_get_stock_report_
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAAlpha import (QA_fetch_get_stock_alpha,QA_fetch_get_index_alpha,
                                                    QA_fetch_get_stock_alpha101,QA_fetch_get_index_alpha101,
-                                                   QA_fetch_get_stock_alpha101_half)
+                                                   QA_fetch_get_stock_alpha101_half,
+                                                   QA_fetch_get_stock_alpha101half_realtime)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAShares import QA_fetch_get_stock_shares_sina
 
