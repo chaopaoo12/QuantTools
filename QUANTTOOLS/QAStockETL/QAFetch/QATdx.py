@@ -1,7 +1,7 @@
 from QUANTAXIS import QA_fetch_get_future_day, QA_fetch_stock_min_adv
 from QUANTTOOLS.QAStockETL.QAData.database_settings import tdx_dir
-from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date,
-                              QA_util_get_trade_range,QA_util_get_real_date,
+from QUANTAXIS.QAUtil import (QA_util_today_str, QA_util_get_pre_trade_date, QA_util_get_pre_trade_date,
+                              QA_util_get_trade_range, QA_util_get_real_date,
                               QA_util_if_trade,QA_util_get_last_day,
                               QA_util_date_stamp)
 import easyquotation
@@ -83,13 +83,6 @@ def QA_fetch_get_stock_delist():
     sz = sz.assign(QIANYI_DATE = sz.QIANYI_DATE.apply(lambda x:str(x)[0:10]))
     return(sz)
 
-#def QA_fetch_get_stock_half(code, start_date, end_date):
-#    price = QA_fetch_stock_min_adv(code, start_date, end_date ,frequence='60min').to_qfq().data
-#    price = price.groupby('code').apply(half_ohlc).dropna().reset_index().set_index('datetime')
-#    price = price.assign(pctchange = price.close/price.close.shift()-1)
-#    price = price.between_time("00:00", "09:00").reset_index().rename(columns={'datetime':'date'}).set_index(['date','code'])
-#    return(price)
-
 def QA_fetch_get_stock_half_realtime(code, source = 'sina'):
     quotation = easyquotation.use(source)
     res = pd.DataFrame(quotation.stocks(code) ).T[['date','open','high','low','now','turnover','volume','close']]
@@ -107,7 +100,16 @@ def half_ohlc(data):
     return(res)
 
 def QA_fetch_get_stock_half(code, start, end):
-    start_date = QA_util_get_last_day(start)
+    if QA_util_if_trade(start):
+        start_date = QA_util_get_last_day(start)
+    else:
+        start_date = QA_util_get_real_date(start)
+
+    if QA_util_if_trade(end):
+        end = QA_util_get_last_day(end)
+    else:
+        end = QA_util_get_real_date(end)
+
     price = QA_fetch_stock_min_adv(code, start_date, end, frequence='60min').data
     price = price.groupby('code').apply(half_ohlc).reset_index().set_index('datetime')
     price = price.assign(pctchange = price.close/price.close.shift()-1)
