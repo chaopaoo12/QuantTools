@@ -60,8 +60,8 @@ def QA_SU_save_stock_half(client=DATABASE, ui_log=None, ui_progress=None):
             if ref.count() > 0:
 
                 # 接着上次获取的日期继续更新
-                start_date = ref[ref.count() - 1]['date']
-
+                start_date = str(ref[ref.count() - 1]['date'])[0:10]
+                print(start_date)
                 QA_util_log_info(
                     'UPDATE_STOCK_DAY \n Trying updating {} from {} to {}'
                         .format(code,
@@ -81,7 +81,7 @@ def QA_SU_save_stock_half(client=DATABASE, ui_log=None, ui_progress=None):
 
             # 当前数据库中没有这个代码的股票数据， 从1990-01-01 开始下载所有的数据
             else:
-                start_date = '1990-01-01'
+                start_date = '2010-01-01'
                 QA_util_log_info(
                     'UPDATE_STOCK_DAY \n Trying updating {} from {} to {}'
                         .format(code,
