@@ -52,20 +52,30 @@ if __name__ == '__main__':
         QA_SU_save_index_day('tdx')
         QA_SU_save_index_info()
 
-        while check_index_day(mark_day) is None or check_index_day(mark_day)  > 10:
+        res = check_index_day(mark_day)
+        while res is None or res  > 10:
             QA_SU_save_index_day('tdx')
+            res = check_index_day(mark_day)
 
-        while check_index_alpha101(mark_day) is None or check_index_alpha101(mark_day)  > 10:
+        res = check_index_alpha101(mark_day)
+        while res is None or res  > 10:
             QA_SU_save_index_alpha101_day(start_date = mark_day, end_date = mark_day)
+            res = check_index_alpha101(mark_day)
 
-        while check_index_alpha191(mark_day) is None or check_index_alpha191(mark_day)  > 10:
+        res = check_index_alpha191(mark_day)
+        while res is None or res  > 10:
             QA_SU_save_index_alpha_day(start_date = mark_day, end_date = mark_day)
+            res = check_index_alpha191(mark_day)
 
-        while check_index_techindex(mark_day) is None or check_index_techindex(mark_day)  > 10:
+        res = check_index_techindex(mark_day)
+        while res is None or res  > 10:
             QA_SU_save_index_technical_index_day(start_date = mark_day, end_date = mark_day)
+            res = check_index_techindex(mark_day)
 
-        while check_index_techweek(mark_day) is None or check_index_techweek(mark_day)  > 10:
+        res = check_index_techweek(mark_day)
+        while res is None or res  > 10:
             QA_SU_save_index_technical_week_day(start_date = mark_day, end_date = mark_day)
+            res = check_index_techweek(mark_day)
 
         QA_SU_save_index_technical_month_day(start_date = mark_day, end_date = mark_day)
 

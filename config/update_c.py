@@ -49,14 +49,18 @@ if __name__ == '__main__':
         QA_SU_save_stock_industryinfo()
         print("download day data")
 
-        while check_stock_day(mark_day) is None or check_stock_day(mark_day) > 20:
+        res = check_stock_day(mark_day)
+        while res is None or res > 20:
             QA_SU_save_stock_day()
+            res = check_stock_day(mark_day)
 
         QA_SU_save_stock_block('tdx')
         QA_SU_save_stock_info()
 
-        while check_stock_adj(mark_day) is None or check_stock_adj(mark_day) > 20:
+        res = check_stock_adj(mark_day)
+        while res is None or res > 20:
             QA_SU_save_stock_xdxr()
+            res = check_stock_adj(mark_day)
 
         print("done")
         print("write data into sqldatabase")
@@ -70,8 +74,10 @@ if __name__ == '__main__':
         print("done")
         print("run financial data into sqldatabase")
 
-        while check_tdx_financial(mark_day) is None or check_tdx_financial(mark_day) > 0:
+        res = check_tdx_financial(mark_day)
+        while res is None or res > 0:
             QA_SU_save_financialfiles_fromtdx()
+            res = check_tdx_financial(mark_day)
 
         QA_etl_stock_financial('all')
 
@@ -87,11 +93,15 @@ if __name__ == '__main__':
         print("write quant data into mongodb")
 
         print("done")
-        while check_stock_fianacial(mark_day) is None or check_stock_fianacial(mark_day)  > 20:
+        res = check_stock_fianacial(mark_day)
+        while res is None or res  > 20:
             QA_SU_save_stock_fianacial_momgo(mark_day,mark_day)
+            res = check_stock_fianacial(mark_day)
 
-        while check_stock_finper(mark_day) is None or check_stock_finper(mark_day)  > 300:
+        res = check_stock_finper(mark_day)
+        while res is None or res  > 300:
             QA_SU_save_stock_fianacial_percent_day(start_date = mark_day, end_date = mark_day)
+            res = check_stock_finper(mark_day)
 
         QA_etl_stock_financial_day(mark_day, mark_day)
         QA_etl_stock_financial_percent_day(mark_day, mark_day)

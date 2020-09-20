@@ -38,19 +38,28 @@ import time
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
     if QA_util_if_trade(mark_day):
-        while check_stock_day(mark_day) is None or check_stock_day(mark_day)  > 20:
-            time.sleep(180)
 
-        while check_stock_adj(mark_day) is None or check_stock_adj(mark_day)  > 20:
+        res = check_stock_day(mark_day)
+        while res is None or res > 20:
             time.sleep(180)
+            res = check_stock_day(mark_day)
+
+        res = check_stock_adj(mark_day)
+        while res is None or res > 20:
+            time.sleep(180)
+            res = check_stock_adj(mark_day)
 
         time.sleep(600)
 
-        while check_stock_techindex(mark_day) is None or check_stock_techindex(mark_day)  > 50:
+        res = check_stock_techindex(mark_day)
+        while res is None or res > 50:
             QA_SU_save_stock_technical_index_day(start_date=mark_day, end_date = mark_day)
+            res = check_stock_techindex(mark_day)
 
-        while check_stock_techweek(mark_day) is None or check_stock_techweek(mark_day)  > 50:
+        res = check_stock_techweek(mark_day)
+        while res is None or res > 50:
             QA_SU_save_stock_technical_week_day(start_date=mark_day, end_date = mark_day)
+            res = check_stock_techweek(mark_day)
 
         QA_etl_stock_technical_day(mark_day, mark_day)
         QA_etl_stock_technical_week(mark_day, mark_day)

@@ -64,7 +64,6 @@ if __name__ == '__main__':
     if QA_util_if_trade(QA_util_today_str()):
 
         print("download min data ")
-        QA_SU_save_stock_min('tdx')
         QA_SU_save_index_min('tdx')
         QA_SU_save_etf_min('tdx')
         print("done")
