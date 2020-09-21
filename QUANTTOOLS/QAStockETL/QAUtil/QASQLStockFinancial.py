@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Ora
 ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
 
 sql_text = '''select to_char(ORDER_DATE, 'yyyy-mm-dd') as "date",
-CODE AS "code",INDUSTRY,TOTAL_MARKET, TRA_RATE, DAYS,
+CODE AS "code",INDUSTRY,ln(TOTAL_MARKET) as TOTAL_MARKET, TRA_RATE, DAYS,
 AVG5,AVG10,AVG20,AVG30,AVG60,
 LAG,LAG5,LAG10,LAG20,LAG30,LAG60,
 AVG5_TOR, AVG20_TOR,AVG30_TOR,AVG60_TOR,
