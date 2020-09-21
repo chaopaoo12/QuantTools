@@ -81,7 +81,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     top_num = 5
     stay_table = res[(res['position'] > 0) & (res['市值'] > 0)]
     inc_table = res[(res['position'] > 0) & (res['市值'] == 0) & (res['mark'] == 1)].sort_values('RANK').head(top_num-stay_table.shape[0])
-    res = stay_table.append(inc_table)
+    res = stay_table.append(inc_table).append(res[res['position'] == 0])
+    QA_util_log_info(res[['NAME','INDUSTRY','close','position','股票余额','可用余额','冻结数量']])
 
     ###初步资金分配
     QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
