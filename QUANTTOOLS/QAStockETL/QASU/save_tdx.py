@@ -61,7 +61,6 @@ def QA_SU_save_stock_half(client=DATABASE, ui_log=None, ui_progress=None):
 
                 # 接着上次获取的日期继续更新
                 start_date = str(ref[ref.count() - 1]['date'])[0:10]
-                print(start_date)
                 QA_util_log_info(
                     'UPDATE_STOCK_DAY \n Trying updating {} from {} to {}'
                         .format(code,
