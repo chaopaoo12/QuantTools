@@ -40,7 +40,7 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
     QA_util_log_info('##JOB04 Now Timing Control ==== {}'.format(str(trading_date)), ui_log)
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
     target_tm = int(time.strftime("%H%M%S", time.strptime("14:50:00", "%H:%M:%S")))
-    if test is True:
+    if test is False:
         while tm < target_tm:
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
             time.sleep(15)
