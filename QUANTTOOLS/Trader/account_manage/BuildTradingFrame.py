@@ -77,6 +77,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res['mark'] = res.ask1.apply(lambda x: 0 if x ==0 else 1)
 
     QA_util_log_info('##JOB Now Get Code with Top Price.')
+    QA_util_log_info(res[['NAME','INDUSTRY','close','position','股票余额','可用余额','冻结数量']])
     top_num = 5
     stay_table = res[(res['position'] > 0) & (res['市值'] > 0)]
     inc_table = res[(res['position'] > 0) & (res['市值'] == 0) & (res['mark'] == 1)].sort_values('RANK').head(top_num-stay_table.shape[0])
@@ -97,7 +98,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res['target_change'] = (res[(res['target'] > res['市值']) & (res['mark'] == 0)]['target'] - res[(res['target'] > res['市值']) & (res['mark'] == 0)]['市值']).fillna(0)
     change = res['target_change'].sum() / res[(res['target_change'] == 0) & (res['position'] > 0)].shape[0]
     print(change)
-    res.loc[(res['target_change'] == 0) & (res['position'] > 0),'target_change'] = change
+    res.loc[((res['target_change'] == 0) & (res['position'] > 0)),'target_change'] = change
 
     #check target_change.sum = 0
     if res['target_change'].sum() == 0:
