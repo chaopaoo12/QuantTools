@@ -94,6 +94,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
 
     #总调仓金额确认
     #不可买入金额
+    print(res[(res['target'] > res['市值']) & (res['mark'] == 0)]['target'].fillna(0))
+    print(res[(res['target'] > res['市值']) & (res['mark'] == 0)]['市值'].fillna(0))
     res['target_change'] = (res[(res['target'] > res['市值']) & (res['mark'] == 0)]['target'].fillna(0) - res[(res['target'] > res['市值']) & (res['mark'] == 0)]['市值'].fillna(0))
     change = res['target_change'].sum() / res[(res['target_change'] == 0) & (res['position'] > 0)].shape[0]
     print(change)
