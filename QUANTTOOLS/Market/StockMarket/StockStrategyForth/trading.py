@@ -11,7 +11,7 @@ import time
 import datetime
 
 def trading(trading_date, percent=percent, strategy_id= '机器学习1号', account= 'name:client-1', working_dir= working_dir, exceptions= exceptions, ui_log= None):
-
+    test = False
     QA_util_log_info('##JOB01 Now Predict ==== {}'.format(str(trading_date)), ui_log)
     try:
         prediction = load_prediction('prediction', working_dir)
@@ -40,9 +40,10 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
     QA_util_log_info('##JOB04 Now Timing Control ==== {}'.format(str(trading_date)), ui_log)
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
     target_tm = int(time.strftime("%H%M%S", time.strptime("14:50:00", "%H:%M:%S")))
-    while tm < target_tm:
-        tm = int(datetime.datetime.now().strftime("%H%M%S"))
-        time.sleep(15)
+    if test is True:
+        while tm < target_tm:
+            tm = int(datetime.datetime.now().strftime("%H%M%S"))
+            time.sleep(15)
 
     QA_util_log_info(
         '##JOB04 Now Trading ==== {}'.format(str(trading_date)), ui_log)
@@ -53,7 +54,7 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
                       offset='HOLD',
                       volume=None
                       )
-    res = trade_roboot(r_tar, account, trading_date, percent, strategy_id, type='end', exceptions = exceptions)
+    res = trade_roboot(r_tar, account, trading_date, percent, strategy_id, type='end', exceptions = exceptions, test = test)
     return(res)
 
 if __name__ == '__main__':
