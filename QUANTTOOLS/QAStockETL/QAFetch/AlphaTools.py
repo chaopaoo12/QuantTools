@@ -102,7 +102,7 @@ def stock_alpha101_half(code, start=None, end = None):
     except:
         return(None)
 
-def stock_alpha101_half_realtime(code, start = None):
+def stock_alpha101_half_realtime(code, start = None, end = None):
     end =QA_util_today_str()
 
     if QA_util_if_trade(end):
