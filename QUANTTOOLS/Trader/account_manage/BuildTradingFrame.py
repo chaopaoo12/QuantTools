@@ -97,8 +97,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
 
     #总调仓金额确认
     #不可买入金额
-    res['target_change'] = res[(res['target'] > res['市值'] & res['mark'] == 0)]['target'] - res[(res['target'] > res['市值'] & res['mark'] == 0)]['市值']
-    change = res['target_change'].sum() / res[(res['target_change'] == 0 & res['position'] > 0)].shape[0]
+    res['target_change'] = res[(res['target'] > res['市值']) & (res['mark'] == 0)]['target'] - res[(res['target'] > res['市值']) & (res['mark'] == 0)]['市值']
+    change = res['target_change'].sum() / res[(res['target_change'] == 0) & (res['position'] > 0)].shape[0]
     res.loc[(res['target_change'] == 0 & res['position'] > 0),'target_change'] = change
 
     #check target_change.sum = 0
@@ -132,8 +132,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         ###调增
         #调整范围确认 行动为多买
         for i in range(len(list(res[res.sort_gp == 0].index)), 0, -1):
-            if res[(res.sort_gp == 0 & res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() <= (res['测算持股金额'].sum() - res['target'].sum()):
-                trim_code = list(res[(res.sort_gp == 0 & res.price_rank <= i)].index)
+            if res[(res.sort_gp == 0) & (res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() <= (res['测算持股金额'].sum() - res['target'].sum()):
+                trim_code = list(res[(res.sort_gp == 0) & (res.price_rank <= i)].index)
                 res.loc[trim_code,'trim'] = res.loc[trim_code,'trim'] + k
             else:
                 pass
@@ -143,8 +143,8 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     while res['测算持股金额'].sum() > res['target'].sum():
         ####调减判断 行动为多卖
         for i in range(1, len(list(res[res.sort_gp == 0].index))+1, 1):
-            if res[(res.sort_gp == 0 & res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() > (res['测算持股金额'].sum() - res['target'].sum()):
-                trim_code = list(res[(res.sort_gp == 0 & res.price_rank <= i)].index)
+            if res[(res.sort_gp == 0) & (res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() > (res['测算持股金额'].sum() - res['target'].sum()):
+                trim_code = list(res[(res.sort_gp == 0) & (res.price_rank <= i)].index)
                 res.loc[trim_code,'trim'] = res.loc[trim_code,'trim'] - k
             else:
                 pass
