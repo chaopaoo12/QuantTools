@@ -22,7 +22,7 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     tar,stock_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
 
     QA_util_log_info('##JOB03 Now Saving Result ==== {}'.format(str(trading_date)), ui_log)
-    save_prediction({'date': trading_date, 'tar':tar}, 'prediction', working_dir)
+    save_prediction({'date': trading_date, 'tar':stock_tar, 'stock_tar':stock_tar}, 'prediction', working_dir)
 
     QA_util_log_info('##JOB04 Now Funding Decision ==== {}'.format(str(trading_date)), ui_log)
 
