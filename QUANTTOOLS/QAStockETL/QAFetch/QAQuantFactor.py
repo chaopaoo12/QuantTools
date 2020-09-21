@@ -369,7 +369,6 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='standardi
     alpha = QA_Sql_Stock_Alpha191
     alpha101 = QA_Sql_Stock_Alpha101
     pe = QA_Sql_Stock_FinancialPercent
-    alpha101_half = QA_Sql_Stock_Alpha101Half
     alpha101_half_real = QA_fetch_get_stock_alpha101half_realtime
 
 
@@ -415,11 +414,10 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='standardi
     alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').fillna(0).loc[((rng,code),)]
 
     QA_util_log_info(
-        '##JOB got Data stock alpha101 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    QA_Sql_Stock_Alpha101Half
-    alpha101half_res = alpha101_half(start_date,sec_end).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).fillna(0).loc[((rng,code),)]
-    alpha101half_real = alpha101_half_real(code).drop(['date_stamp'], axis=1).set_index(['date','code'])
-    alpha101half_res = alpha101half_res.append(alpha101half_real)
+        '##JOB got Data stock alpha101 half data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+
+    alpha101half_real = alpha101_half_real(code, start_date, sec_end).drop(['date_stamp'], axis=1).set_index(['date','code']).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).fillna(0).loc[((rng,code),)]
+    alpha101half_real.columns = [x + '_HALF' for x in alpha101half_real.columns]
 
     QA_util_log_info(
         '##JOB got Data stock tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
@@ -430,7 +428,8 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='standardi
 
     QA_util_log_info(
         '##JOB stock quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(alpha101half_res).join(pe_res)
+
+    res = financial_res.join(pe_res).join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(alpha101half_real)
 
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':

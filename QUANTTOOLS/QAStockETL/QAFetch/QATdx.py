@@ -105,11 +105,6 @@ def QA_fetch_get_stock_half(code, start, end):
     else:
         start_date = QA_util_get_real_date(start)
 
-    if QA_util_if_trade(end):
-        end = QA_util_get_last_day(end)
-    else:
-        end = QA_util_get_real_date(end)
-
     data = QA_fetch_stock_min_adv(code, start_date, end, frequence='60min')
     pctchange = data.to_qfq().data.groupby('code').apply(half_ohlc)
     pctchange = pctchange.assign(pctchange = pctchange.close/pctchange.close.shift()-1)
