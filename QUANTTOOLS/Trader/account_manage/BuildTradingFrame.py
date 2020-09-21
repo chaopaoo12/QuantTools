@@ -104,7 +104,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     #check target_change.sum = 0
     if res['target_change'].sum() == 0:
         pass
-
+    QA_util_log_info(res[['NAME','INDUSTRY','close','target','target_change','position','股票余额','可用余额','冻结数量']])
     res['target'] = res['target'] * res['position'] + res['target_change']
 
     QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
