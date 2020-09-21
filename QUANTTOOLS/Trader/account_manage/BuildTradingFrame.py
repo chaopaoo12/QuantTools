@@ -99,6 +99,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     #不可买入金额
     res['target_change'] = res[(res['target'] > res['市值']) & (res['mark'] == 0)]['target'] - res[(res['target'] > res['市值']) & (res['mark'] == 0)]['市值']
     change = res['target_change'].sum() / res[(res['target_change'] == 0) & (res['position'] > 0)].shape[0]
+    print(change)
     res.loc[(res['target_change'] == 0) & (res['position'] > 0),'target_change'] = change
 
     #check target_change.sum = 0
