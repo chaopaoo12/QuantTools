@@ -72,11 +72,18 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     except:
         QA_util_log_info('##JOB Now Get RealTime Price Failed.')
 
-    #todo top5
+    res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
+    #可否加仓信号 1为可以加仓 0为否
+    res['mark'] = res.ask1.apply(lambda x: 0 if x ==0 else 1)
 
-    ###资金分配
+    QA_util_log_info('##JOB Now Get Code with Top Price.')
+    top = 5
+    rank = res[(res['position'] > 0 & res['市值'] > 0)]
+    inc = res[(res['position'] > 0 & res['市值'] == 0 & res['mark'] == 1)].sort_values('RANK').top(top-rank.shape[0])
+    res = rank.append(inc)
+
+    ###初步资金分配
     QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
-    res.loc[res.ask1 == 0,'position'] = 0
     QA_util_log_info('##Today Position {}'.format(percent), ui_log = None)
     if res['position'].sum() > 0:
         avg_account = (sub_accounts * percent)/res['position'].sum()
@@ -84,6 +91,18 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         avg_account = 0
     res = res.assign(target=avg_account)
     res['target'] = res['target'] * res['position']
+
+    #总调仓金额确认
+    #不可买入金额
+    res['target_change'] = res[(res['target'] > res['市值'] & res['mark'] == 0)]['target'] - res[(res['target'] > res['市值'] & res['mark'] == 0)]['市值']
+    change = res['target_change'].sum() / res[(res['target_change'] == 0 & res['position'] > 0)].shape[0]
+    res.loc[(res['target_change'] == 0 & res['position'] > 0),'target_change'] = change
+
+    #check target_change.sum = 0
+    if res['target_change'].sum() == 0:
+        pass
+
+    res['target'] = res['target'] * res['position'] + res['target_change']
 
     QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
     res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
