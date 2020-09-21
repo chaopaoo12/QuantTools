@@ -13,7 +13,7 @@ def get_quant_data_train(start_date, end_date, type = 'crawl', block = False, su
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
     else:
-        codes = QA_fetch_stock_om_all()['code']
+        codes = QA_fetch_stock_om_all()
         QA_util_log_info('##JOB Now Delete ST Stock')
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
         codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
@@ -40,7 +40,7 @@ def get_quant_data_realtime(start_date, end_date, type = 'crawl', block = False,
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
     else:
-        codes = QA_fetch_stock_om_all()['code']
+        codes = QA_fetch_stock_om_all()
         QA_util_log_info('##JOB Now Delete ST Stock')
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
         codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
