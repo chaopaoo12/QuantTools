@@ -16,7 +16,7 @@ def trading(trading_date, percent=percent, strategy_id= '机器学习1号', acco
     try:
         prediction = load_prediction('prediction', working_dir)
         check_prediction(prediction, trading_date)
-        tar = prediction['tar']
+        tar = prediction['stock_tar']
     except:
         tar,stock_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
 
