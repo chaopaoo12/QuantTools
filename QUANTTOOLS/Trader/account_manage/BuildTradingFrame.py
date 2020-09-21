@@ -80,9 +80,9 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     top_num = 5
     res[res['position'] > 0]
     res[res['市值'] > 0]
-    res[res['position'] > 0 & res['市值'] > 0]
-    stay_table = res[(res['position'] > 0 & res['市值'] > 0)]
-    inc_table = res[(res['position'] > 0 & res['市值'] == 0 & res['mark'] == 1)].sort_values('RANK').head(top_num-stay_table.shape[0])
+    res[(res['position'] > 0) & (res['市值'] > 0)]
+    stay_table = res[(res['position'] > 0) & (res['市值'] > 0)]
+    inc_table = res[(res['position'] > 0) & (res['市值'] == 0) & (res['mark'] == 1)].sort_values('RANK').head(top_num-stay_table.shape[0])
     res = stay_table.append(inc_table)
 
     ###初步资金分配
