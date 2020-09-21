@@ -78,9 +78,6 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
 
     QA_util_log_info('##JOB Now Get Code with Top Price.')
     top_num = 5
-    res[res['position'] > 0]
-    res[res['市值'] > 0]
-    res[(res['position'] > 0) & (res['市值'] > 0)]
     stay_table = res[(res['position'] > 0) & (res['市值'] > 0)]
     inc_table = res[(res['position'] > 0) & (res['市值'] == 0) & (res['mark'] == 1)].sort_values('RANK').head(top_num-stay_table.shape[0])
     res = stay_table.append(inc_table)
@@ -97,7 +94,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
 
     #总调仓金额确认
     #不可买入金额
-    res['target_change'] = res[(res['target'] > res['市值']) & (res['mark'] == 0)]['target'] - res[(res['target'] > res['市值']) & (res['mark'] == 0)]['市值']
+    res['target_change'] = (res[(res['target'] > res['市值']) & (res['mark'] == 0)]['target'] - res[(res['target'] > res['市值']) & (res['mark'] == 0)]['市值']).fillna(0)
     change = res['target_change'].sum() / res[(res['target_change'] == 0) & (res['position'] > 0)].shape[0]
     print(change)
     res.loc[(res['target_change'] == 0) & (res['position'] > 0),'target_change'] = change
