@@ -353,7 +353,7 @@ def QA_fetch_get_quant_data_train(codes, start_date, end_date, type='standardize
     return(res)
 
 @time_this_function
-def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='standardize', ui_log = None):
+def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normalization', ui_log = None):
     '获取股票量化机器学习最终指标V1'
     start = QA_util_get_pre_trade_date(start_date,15)
     start_date = QA_util_get_pre_trade_date(start,15)
