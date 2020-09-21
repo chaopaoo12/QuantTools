@@ -11,7 +11,7 @@ import time
 import datetime
 
 def trading(trading_date, percent=percent, strategy_id= '机器学习1号', account= 'name:client-1', working_dir= working_dir, exceptions= exceptions, ui_log= None):
-    test = False
+    test = True
     QA_util_log_info('##JOB01 Now Predict ==== {}'.format(str(trading_date)), ui_log)
     try:
         prediction = load_prediction('prediction', working_dir)
