@@ -356,7 +356,7 @@ def QA_SU_save_stock_alpha101half_day(code = None, start_date = None, end_date =
         end_date = QA_util_today_str()
 
     if start_date is None:
-        start_date = '2009-01-01'
+        start_date = '2017-04-10'
     codes = code
     if codes is None:
         codes = list(QA_fetch_stock_om_all()['code'])
