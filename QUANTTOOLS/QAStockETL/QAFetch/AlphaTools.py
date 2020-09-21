@@ -98,7 +98,7 @@ def stock_alpha101_half(code, start=None, end = None):
 
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data
-        print(get_alpha(price))
+        print(get_alpha(price).loc[deal_date_list])
         return(get_alpha(price).loc[deal_date_list].reset_index())
     except:
         return(None)
