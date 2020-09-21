@@ -95,11 +95,9 @@ def stock_alpha101_half(code, start=None, end = None):
 
     start_date = QA_util_get_pre_trade_date(start, 270)
     deal_date_list = QA_util_get_trade_range(start, end)
-    print(deal_date_list)
 
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data
-        print(price)
         return(get_alpha(price).loc[deal_date_list].reset_index())
     except:
         return(None)
