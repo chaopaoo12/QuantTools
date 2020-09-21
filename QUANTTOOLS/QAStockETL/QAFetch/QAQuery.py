@@ -1740,7 +1740,6 @@ def QA_fetch_stock_half(
         res = pd.DataFrame([item for item in cursor])
         try:
             res = res.assign(
-                volume=res.vol,
                 date=pd.to_datetime(res.date)
             ).drop_duplicates((['date',
                                 'code'])).query('volume>1').set_index(
