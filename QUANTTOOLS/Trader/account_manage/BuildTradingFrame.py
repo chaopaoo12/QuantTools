@@ -76,25 +76,25 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     #可否加仓信号 1为可以加仓 0为否
     res['mark'] = res.ask1.apply(lambda x: 0 if x ==0 else 1)
 
-    QA_util_log_info('##JOB Now Get Code with Top Price.')
-    top_num = 5
-    stay_table = res[(res['position'] > 0) & (res['市值'] > 0)]
-    inc_table = res[(res['position'] > 0) & (res['市值'] == 0) & (res['mark'] == 1)].sort_values('RANK').head(top_num-stay_table.shape[0])
-    res = stay_table.append(inc_table).append(res[res['position'] == 0])
-
-    ###初步资金分配
     QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
     QA_util_log_info('##Today Position {}'.format(percent), ui_log = None)
-    if res is None:
+    ###初步资金分配
+    if res['position'].sum() > 0:
+        avg_account = (sub_accounts * percent)/res['position'].sum()
+    else:
+        avg_account = 0
+    res = res.assign(target=avg_account)
+    res['target'] = res['target'] * res['position']
+
+    if Zbreak == True and res is None:
         QA_util_log_info('##JOB All Top', ui_log = None)
         res = None
     else:
-        if res['position'].sum() > 0:
-            avg_account = (sub_accounts * percent)/res['position'].sum()
-        else:
-            avg_account = 0
-        res = res.assign(target=avg_account)
-        res['target'] = res['target'] * res['position']
+        QA_util_log_info('##JOB Now Get Code with Top Price.')
+        top_num = 5
+        stay_table = res[(res['position'] > 0) & (res['市值'] > 0) & (res['mark'] == 0)].sort_values('RANK').head(top_num)
+        inc_table = res[(res['position'] > 0) & (res['市值'] == 0) & (res['mark'] == 1)].sort_values('RANK').head(top_num-stay_table.shape[0])
+        res = stay_table.append(inc_table).append(res[res['position'] == 0])
 
         #总调仓金额确认
         #不可买入金额
@@ -111,6 +111,10 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         QA_util_log_info(res[['NAME','INDUSTRY','close','target','target_change','position','股票余额','可用余额','冻结数量']])
         res['target'] = res['target'] * res['position'] + res['target_change']
 
+    if res is None:
+        QA_util_log_info('##JOB All Top', ui_log = None)
+        res = None
+    else:
         QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
         res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
         QA_util_log_info(res[['NAME','INDUSTRY','close','target','股票余额','可用余额','冻结数量','买卖价']])
