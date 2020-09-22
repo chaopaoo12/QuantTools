@@ -12,9 +12,9 @@ def BuyTrack(strategy_id, trading_date, code, name, industry, close):
     #bid_price = QA_fetch_get_stock_realtm_bid(code)
     bid_pct = (bid_price - close)/close
 
-    if bid_pct <= -0.05:
+    if abs(bid_pct) >= 0.09:
         bid_mark = True
-    elif bid_pct <= -0.09:
+    elif abs(bid_pct) >= 0.05:
         bid_mark = True
     elif bid_vol == 0:
         bid_mark = True
@@ -22,7 +22,7 @@ def BuyTrack(strategy_id, trading_date, code, name, industry, close):
         bid_mark = False
 
     if bid_mark:
-        QA_util_log_info('##JOB Buying Tracking {name}({code}){industry} 卖价{bid_price} 下跌:{bid_pct}===={date}'.format(date=trading_date,
+        QA_util_log_info('##JOB Buying Tracking {name}({code}){industry} 卖价{bid_price} 波动:{bid_pct}===={date}'.format(date=trading_date,
                                                                                                                       code=code,
                                                                                                                       name= name,
                                                                                                                       industry=industry,
@@ -30,7 +30,7 @@ def BuyTrack(strategy_id, trading_date, code, name, industry, close):
                                                                                                                       bid_pct=bid_pct), ui_log=None)
         send_actionnotice(strategy_id,
                           '买入跟踪报告:{}'.format(trading_date),
-                          '{name}({code})--{industry}下跌'.format(name=name,code=code,industry=industry),
+                          '{name}({code})--{industry}波动'.format(name=name,code=code,industry=industry),
                           direction = 'BUY',
                           offset=bid_price,
                           volume=bid_pct)

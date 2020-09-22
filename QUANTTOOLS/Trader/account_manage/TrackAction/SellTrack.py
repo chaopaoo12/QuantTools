@@ -11,9 +11,9 @@ def SellTrack(strategy_id, trading_date, code, name, industry, close):
     #ask_price = QA_fetch_get_stock_realtm_ask(code)
     ask_pct = (ask_price - close)/close
 
-    if ask_pct >= 0.05:
+    if abs(ask_pct) >= 0.09:
         ask_mark = True
-    elif ask_pct >= 0.09:
+    elif abs(ask_pct) >= 0.05:
         ask_mark = True
     elif ask_vol == 0:
         ask_mark = True
