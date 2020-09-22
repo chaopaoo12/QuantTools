@@ -12,13 +12,16 @@ if __name__ == '__main__':
         res = check_stock_60min(mark_day)
         while res is None or res > 20:
             QA_SU_save_stock_min('tdx')
+            res = check_stock_60min(mark_day)
 
         res = check_stock_half(mark_day)
         while res is None or res > 20:
             QA_SU_save_stock_half()
+            res = check_stock_half(mark_day)
 
         res = check_stock_alpha101half(mark_day)
         while res is None or res > 20:
             QA_SU_save_stock_alpha101half_day(start_date = mark_day,  end_date = mark_day)
+            res = check_stock_alpha101half(mark_day)
 
         QA_etl_stock_alpha101half_day(mark_day, mark_day)
