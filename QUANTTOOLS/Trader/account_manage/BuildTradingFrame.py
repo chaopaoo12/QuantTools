@@ -85,86 +85,90 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     ###初步资金分配
     QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
     QA_util_log_info('##Today Position {}'.format(percent), ui_log = None)
-    if res['position'].sum() > 0:
-        avg_account = (sub_accounts * percent)/res['position'].sum()
+    if res is None:
+        QA_util_log_info('##JOB All Top', ui_log = None)
+        res = None
     else:
-        avg_account = 0
-    res = res.assign(target=avg_account)
-    res['target'] = res['target'] * res['position']
-
-    #总调仓金额确认
-    #不可买入金额
-    if res[(res['target'] > res['市值']) & (res['mark'] == 0)].shape[0] > 0:
-        res['target_change'] = (res[(res['target'] > res['市值']) & (res['mark'] == 0)]['target'].fillna(0) - res[(res['target'] > res['市值']) & (res['mark'] == 0)]['市值'].fillna(0))
-        change = res['target_change'].sum() / res[(res['target_change'] == 0) & (res['position'] > 0)].shape[0]
-        res.loc[((res['target_change'] == 0) & (res['position'] > 0)),'target_change'] = change
-    else:
-        res['target_change'] = 0
-
-    #check target_change.sum = 0
-    if res['target_change'].sum() == 0:
-        pass
-    QA_util_log_info(res[['NAME','INDUSTRY','close','target','target_change','position','股票余额','可用余额','冻结数量']])
-    res['target'] = res['target'] * res['position'] + res['target_change']
-
-    QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
-    res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
-    QA_util_log_info(res[['NAME','INDUSTRY','close','target','股票余额','可用余额','冻结数量','买卖价']])
-    res['目标持股数'] = res.apply(lambda x: math.floor(x['target'] / x['买卖价'] / 100)*100, axis=1)
-    res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
-    res['deal'] = res['目标持股数'] - res['股票余额']
-    #QA_util_log_info(res[['NAME','INDUSTRY','deal','close','target','position','目标持股数','股票余额','可用余额','冻结数量','买卖价']])
-    #res['deal'] = res.apply(lambda x: x['deal'] if -x['deal'] < x['可用余额'] else -x['可用余额'], axis = 1)
-    QA_util_log_info(res[['NAME','INDUSTRY','deal','close','目标持股数','股票余额','可用余额','冻结数量','买卖价']])
-
-    QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
-    ###流程
-    #建立基础分配表 按均值计算取floor 正常情况下应该是仓位未用完
-    #微调 加仓算法 缺省仓位 比较 目标持股单位操作金额
-    res['sort_gp'] = res.target.apply(lambda x:1 if x == 0 else 0)
-    res['price_rank'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
-    #求一个单位
-
-    k = 100
-    res['trim'] = 0
-
-    while (res['测算持股金额'].sum() - res['target'].sum()) < -10000:
-        ####调增判断
-        ###调增
-        #调整范围确认 行动为多买
-        for i in range(len(list(res[res.sort_gp == 0].index)), 0, -1):
-            if res[(res.sort_gp == 0) & (res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() <= (res['测算持股金额'].sum() - res['target'].sum()):
-                trim_code = list(res[(res.sort_gp == 0) & (res.price_rank <= i)].index)
-                res.loc[trim_code,'trim'] = res.loc[trim_code,'trim'] + k
-            else:
-                pass
-        res['目标持股数'] = res.apply(lambda x: x['目标持股数'] + x['trim'], axis=1)
-        res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
-
-    while res['测算持股金额'].sum() > res['target'].sum():
-        ####调减判断 行动为多卖
-        for i in range(1, len(list(res[res.sort_gp == 0].index))+1, 1):
-            if res[(res.sort_gp == 0) & (res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() > (res['测算持股金额'].sum() - res['target'].sum()):
-                trim_code = list(res[(res.sort_gp == 0) & (res.price_rank <= i)].index)
-                res.loc[trim_code,'trim'] = res.loc[trim_code,'trim'] - k
-            else:
-                pass
-        res['目标持股数'] = res.apply(lambda x: x['目标持股数'] + x['trim'], axis=1)
-        res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
-
-    QA_util_log_info('##JOB Caculate Deal Position', ui_log = None)
-    res['deal'] = res['目标持股数'] - res['股票余额']
-    #res['deal'] = res.apply(lambda x: x['deal'] if -x['deal'] <= x['可用余额'] else -x['可用余额'], axis = 1)
-
-    if Zbreak == True:
-        QA_util_log_info('##JOB Stop Confirm', ui_log = None)
-
-        if res[res.target == 0]['市值'].sum() == 0 and \
-                (res['目标持股数'] - res['股票余额']).apply(lambda x:abs(x)).sum() <= 5000:
-            res = res.assign(deal=0)
+        if res['position'].sum() > 0:
+            avg_account = (sub_accounts * percent)/res['position'].sum()
         else:
-            QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
-            res = res[(res.deal> 0) | (res.deal < 0)]
+            avg_account = 0
+        res = res.assign(target=avg_account)
+        res['target'] = res['target'] * res['position']
+
+        #总调仓金额确认
+        #不可买入金额
+        if res[(res['target'] > res['市值']) & (res['mark'] == 0)].shape[0] > 0:
+            res['target_change'] = (res[(res['target'] > res['市值']) & (res['mark'] == 0)]['target'].fillna(0) - res[(res['target'] > res['市值']) & (res['mark'] == 0)]['市值'].fillna(0))
+            change = res['target_change'].sum() / res[(res['target_change'] == 0) & (res['position'] > 0)].shape[0]
+            res.loc[((res['target_change'] == 0) & (res['position'] > 0)),'target_change'] = change
+        else:
+            res['target_change'] = 0
+
+        #check target_change.sum = 0
+        if res['target_change'].sum() == 0:
+            pass
+        QA_util_log_info(res[['NAME','INDUSTRY','close','target','target_change','position','股票余额','可用余额','冻结数量']])
+        res['target'] = res['target'] * res['position'] + res['target_change']
+
+        QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
+        res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
+        QA_util_log_info(res[['NAME','INDUSTRY','close','target','股票余额','可用余额','冻结数量','买卖价']])
+        res['目标持股数'] = res.apply(lambda x: math.floor(x['target'] / x['买卖价'] / 100)*100, axis=1)
+        res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
+        res['deal'] = res['目标持股数'] - res['股票余额']
+        #QA_util_log_info(res[['NAME','INDUSTRY','deal','close','target','position','目标持股数','股票余额','可用余额','冻结数量','买卖价']])
+        #res['deal'] = res.apply(lambda x: x['deal'] if -x['deal'] < x['可用余额'] else -x['可用余额'], axis = 1)
+        QA_util_log_info(res[['NAME','INDUSTRY','deal','close','目标持股数','股票余额','可用余额','冻结数量','买卖价']])
+
+        QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
+        ###流程
+        #建立基础分配表 按均值计算取floor 正常情况下应该是仓位未用完
+        #微调 加仓算法 缺省仓位 比较 目标持股单位操作金额
+        res['sort_gp'] = res.target.apply(lambda x:1 if x == 0 else 0)
+        res['price_rank'] = res.groupby('sort_gp')['买卖价'].rank(ascending = True)
+        #求一个单位
+
+        k = 100
+        res['trim'] = 0
+
+        while (res['测算持股金额'].sum() - res['target'].sum()) < -10000:
+            ####调增判断
+            ###调增
+            #调整范围确认 行动为多买
+            for i in range(len(list(res[res.sort_gp == 0].index)), 0, -1):
+                if res[(res.sort_gp == 0) & (res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() <= (res['测算持股金额'].sum() - res['target'].sum()):
+                    trim_code = list(res[(res.sort_gp == 0) & (res.price_rank <= i)].index)
+                    res.loc[trim_code,'trim'] = res.loc[trim_code,'trim'] + k
+                else:
+                    pass
+            res['目标持股数'] = res.apply(lambda x: x['目标持股数'] + x['trim'], axis=1)
+            res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
+
+        while res['测算持股金额'].sum() > res['target'].sum():
+            ####调减判断 行动为多卖
+            for i in range(1, len(list(res[res.sort_gp == 0].index))+1, 1):
+                if res[(res.sort_gp == 0) & (res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() > (res['测算持股金额'].sum() - res['target'].sum()):
+                    trim_code = list(res[(res.sort_gp == 0) & (res.price_rank <= i)].index)
+                    res.loc[trim_code,'trim'] = res.loc[trim_code,'trim'] - k
+                else:
+                    pass
+            res['目标持股数'] = res.apply(lambda x: x['目标持股数'] + x['trim'], axis=1)
+            res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
+
+        QA_util_log_info('##JOB Caculate Deal Position', ui_log = None)
+        res['deal'] = res['目标持股数'] - res['股票余额']
+        #res['deal'] = res.apply(lambda x: x['deal'] if -x['deal'] <= x['可用余额'] else -x['可用余额'], axis = 1)
+
+        if Zbreak == True:
+            QA_util_log_info('##JOB Stop Confirm', ui_log = None)
+
+            if res[res.target == 0]['市值'].sum() == 0 and \
+                    (res['目标持股数'] - res['股票余额']).apply(lambda x:abs(x)).sum() <= 5000:
+                res = res.assign(deal=0)
+            else:
+                QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
+                res = res[(res.deal> 0) | (res.deal < 0)]
     return(res)
 
 if __name__ == 'main':
