@@ -108,7 +108,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         #check target_change.sum = 0
         if res['target_change'].sum() == 0:
             pass
-        QA_util_log_info(res[['NAME','INDUSTRY','close','target','target_change','position','股票余额','可用余额','冻结数量']])
+        QA_util_log_info(res[['NAME','INDUSTRY','close','mark','target','target_change','position','股票余额','可用余额','冻结数量']])
         res['target'] = res['target'] * res['position'] + res['target_change']
 
     if res is None:
@@ -117,7 +117,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     else:
         QA_util_log_info('##JOB Caculate Target Position', ui_log = None)
         res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
-        QA_util_log_info(res[['NAME','INDUSTRY','close','target','position','target_change','股票余额','可用余额','冻结数量','买卖价']])
+        QA_util_log_info(res[['NAME','INDUSTRY','close','target','股票余额','可用余额','冻结数量','买卖价']])
         res['目标持股数'] = res.apply(lambda x: math.floor(x['target'] / x['买卖价'] / 100)*100, axis=1)
         res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
         res['deal'] = res['目标持股数'] - res['股票余额']
