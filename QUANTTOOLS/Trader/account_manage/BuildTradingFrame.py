@@ -77,14 +77,6 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res['mark'] = res.ask1.apply(lambda x: 0 if x ==0 else 1)
 
     QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
-    QA_util_log_info('##Today Position {}'.format(percent), ui_log = None)
-    ###初步资金分配
-    if res['position'].sum() > 0:
-        avg_account = (sub_accounts * percent)/res['position'].sum()
-    else:
-        avg_account = 0
-    res = res.assign(target=avg_account)
-    res['target'] = res['target'] * res['position']
 
     if Zbreak == True and res is None:
         QA_util_log_info('##JOB All Top', ui_log = None)
@@ -94,7 +86,16 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         top_num = 5
         stay_table = res[(res['position'] > 0) & (res['市值'] > 0) & (res['mark'] == 0)].sort_values('RANK').head(top_num)
         inc_table = res[(res['position'] > 0) & (res['市值'] == 0) & (res['mark'] == 1)].sort_values('RANK').head(top_num-stay_table.shape[0])
-        res = stay_table.append(inc_table).append(res[res['position'] == 0])
+        res = stay_table.append(inc_table).append(res[res['position'] == 0]).append(res[res['position'] > 0])
+
+        QA_util_log_info('##Today Position {}'.format(percent), ui_log = None)
+        ###初步资金分配
+        if res['position'].sum() > 0:
+            avg_account = (sub_accounts * percent)/res['position'].sum()
+        else:
+            avg_account = 0
+        res = res.assign(target=avg_account)
+        res['target'] = res['target'] * res['position']
 
         #总调仓金额确认
         #不可买入金额
