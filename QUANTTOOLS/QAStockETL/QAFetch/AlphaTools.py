@@ -131,6 +131,7 @@ def stock_alpha101_half_realtime(code, start = None, end = None):
         res['date'] = pd.to_datetime(res['date'])
         res[['open','high','low','close','volume','amount','pctchange']] = res[['open','high','low','close','volume','amount','pctchange']].apply(pd.to_numeric)
         res = res.assign(pctchange=res.close/res.pctchange-1).set_index(['date','code'])
+        res['date'] = pd.to_datetime(res['date'])
         res = price.append(res).groupby('code').apply(get_alpha)
         res = res.reset_index(level=2).drop('code',axis=1).reset_index().set_index(['date','code'])
         return(res.loc[deal_date_list])
@@ -172,6 +173,7 @@ def stock_alpha191_half_realtime(code, date = None):
                                                 'volume':'amount'})
         res['date'] = pd.to_datetime(res['date'])
         res[['open','high','low','close','volume','amount','prev_close']] = res[['open','high','low','close','volume','amount','prev_close']].apply(pd.to_numeric)
+        res = res[res.close > 0]
         res = price[['date','code','open','high','low','close','volume','amount','prev_close']].append(res)
         return(Alpha_191(res, date).alpha())
     except:
