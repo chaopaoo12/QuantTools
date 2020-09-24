@@ -17,7 +17,8 @@ from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (QA_etl_stock_list, QA_etl_stock_
                                                 QA_etl_index_alpha_day,
                                                 QA_etl_index_alpha101_day,
                                                 QA_etl_index_technical_day,
-                                                QA_etl_index_technical_week)
+                                                QA_etl_index_technical_week,
+                                                QA_etl_stock_alpha191half_day)
 
 from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_report_calendar_day, QA_SU_save_report_calendar_his,
                                              QA_SU_save_stock_divyield_day, QA_SU_save_stock_divyield_his,
@@ -44,4 +45,5 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_report_calendar_day, QA_
                                              QA_SU_save_index_info,QA_SU_save_stock_industryinfo,QA_SU_save_stock_delist,
                                              QA_SU_save_index_week,QA_SU_save_index_month,QA_SU_save_index_year,
                                              QA_SU_save_stock_day,QA_SU_save_stock_xdxr,QA_SU_save_stock_info,
-                                             QA_SU_save_stock_alpha101half_day,QA_SU_save_stock_alpha101half_his)
+                                             QA_SU_save_stock_alpha101half_day,QA_SU_save_stock_alpha101half_his,
+                                             QA_SU_save_stock_alpha191half_day,QA_SU_save_stock_alpha191half_his)

@@ -13,7 +13,7 @@ class Alpha_191:
 
     def __init__(self,  price, date):
         self.date = date
-        price['prev_close'] = price[['code','close']].groupby('code').shift()
+        #price['prev_close'] = price[['code','close']].groupby('code').shift()
         price['avg_price'] = price['amount']/price['volume']
         #benchmark_price = QA_fetch_index_day_adv('000300', self.end_date, self.date).data.reset_index()[['date','code','open','close','low','high','amount','volume']].set_index(['date','code']).to_panel()
         ###分别取开盘价，收盘价，最高价，最低价，最低价，均价，成交量#######

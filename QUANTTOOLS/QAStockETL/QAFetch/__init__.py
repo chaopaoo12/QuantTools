@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_financial_re
                                                            QA_fetch_index_quant_pre_adv,QA_fetch_stock_alpha101_adv,QA_fetch_index_alpha101_adv,
                                                            QA_fetch_stock_week_adv,QA_fetch_stock_month_adv,QA_fetch_stock_year_adv,
                                                            QA_fetch_index_month_adv,QA_fetch_index_year_adv,QA_fetch_stock_alpha101half_adv,
-                                                           QA_fetch_stock_quant_pre_train_adv,QA_fetch_stock_half_adv)
+                                                           QA_fetch_stock_quant_pre_train_adv,QA_fetch_stock_half_adv,QA_fetch_stock_alpha191half_adv)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report, QA_fetch_stock_financial_calendar, QA_fetch_stock_divyield,
                                                    QA_fetch_financial_TTM, QA_fetch_stock_fianacial,QA_fetch_stock_alpha,QA_fetch_stock_shares,
@@ -25,7 +25,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report, QA
                                                    QA_fetch_stock_week,QA_fetch_stock_month,QA_fetch_stock_year,
                                                    QA_fetch_index_week,QA_fetch_index_month,QA_fetch_index_year,
                                                    QA_fetch_stock_om_all,QA_fetch_stock_all,QA_fetch_stock_alpha101half,
-                                                   QA_fetch_stock_quant_pre_train)
+                                                   QA_fetch_stock_quant_pre_train,QA_fetch_stock_alpha191half)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAcalendar import QA_fetch_get_financial_calendar
 
@@ -36,7 +36,9 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAFinancial import QA_fetch_get_stock_report_
 from QUANTTOOLS.QAStockETL.QAFetch.QAAlpha import (QA_fetch_get_stock_alpha,QA_fetch_get_index_alpha,
                                                    QA_fetch_get_stock_alpha101,QA_fetch_get_index_alpha101,
                                                    QA_fetch_get_stock_alpha101_half,
-                                                   QA_fetch_get_stock_alpha101half_realtime)
+                                                   QA_fetch_get_stock_alpha101half_realtime,
+                                                   QA_fetch_get_stock_alpha191_half,
+                                                   QA_fetch_get_stock_alpha191half_realtime)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAShares import QA_fetch_get_stock_shares_sina
 
