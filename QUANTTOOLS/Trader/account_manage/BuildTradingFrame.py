@@ -86,7 +86,6 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         QA_util_log_info('##JOB All Top', ui_log = None)
         res = None
     else:
-        QA_util_log_info('##JOB Now Get Code with Top Price.')
 
         QA_util_log_info('##Today Position {}'.format(percent), ui_log = None)
         ###初步资金分配
