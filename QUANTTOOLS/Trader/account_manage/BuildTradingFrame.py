@@ -64,6 +64,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     QA_util_log_info('##JOB Add Info to Result Frame', ui_log = None)
     res['股票余额'] = res['股票余额'].fillna(0)
     res['市值'] = res['市值'].fillna(0)
+    res['rank'] = res['rank'].fillna(0)
     res['可用余额'] = res['可用余额'].fillna(0)
     res['position'] = res['position'].fillna(0)
     try:
@@ -75,6 +76,9 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
     #可否加仓信号 1为可以加仓 0为否
     res['mark'] = res.ask1.apply(lambda x: 0 if x ==0 else 1)
+    top_num = 5
+    hold = res[(res.mark == 1) & (res.rank > 0)].head(top_num)
+    res = res[res['市值'] > 0].append(hold[hold['市值'] == 0])
 
     QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
 
@@ -83,10 +87,6 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res = None
     else:
         QA_util_log_info('##JOB Now Get Code with Top Price.')
-        top_num = 5
-        stay_table = res[(res['position'] > 0) & (res['市值'] > 0) & (res['mark'] == 0)].sort_values('RANK').head(top_num)
-        inc_table = res[(res['position'] > 0) & (res['市值'] == 0) & (res['mark'] == 1)].sort_values('RANK').head(top_num-stay_table.shape[0])
-        res = stay_table.append(inc_table).append(res[res['position'] == 0])
 
         QA_util_log_info('##Today Position {}'.format(percent), ui_log = None)
         ###初步资金分配
