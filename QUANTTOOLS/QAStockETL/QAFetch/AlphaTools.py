@@ -3,7 +3,8 @@ import easyquotation
 import pandas as pd
 from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_index_day_adv,QA_fetch_stock_min_adv
 from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date,QA_util_get_trade_range,QA_util_get_real_date,QA_util_if_trade)
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_half_adv,QA_fetch_get_stock_half_realtime
+from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_half_realtime
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_half_adv
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha191 import Alpha_191
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha101 import get_alpha
 
