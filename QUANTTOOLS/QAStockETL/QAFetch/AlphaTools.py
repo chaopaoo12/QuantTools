@@ -3,7 +3,7 @@ import easyquotation
 import pandas as pd
 from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_index_day_adv,QA_fetch_stock_min_adv
 from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date,QA_util_get_trade_range,QA_util_get_real_date,QA_util_if_trade)
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_half_adv
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_half_adv,QA_fetch_get_stock_half_realtime
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha191 import Alpha_191
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha101 import get_alpha
 
@@ -121,17 +121,8 @@ def stock_alpha101_half_realtime(code, start = None, end = None):
     deal_date_list = QA_util_get_trade_range(start, end)
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end).to_qfq().data
-        quotation = easyquotation.use('sina')
-        res = pd.DataFrame(quotation.stocks(code) ).T[['date','open','high','low','now','turnover','volume','close']]
-        res = res.reset_index().rename(columns={'index':'code',
-                                                'close':'pctchange',
-                                                'now':'close',
-                                                'turnover':'volume',
-                                                'volume':'amount'})
-        res['date'] = pd.to_datetime(res['date'])
-        res[['open','high','low','close','volume','amount','pctchange']] = res[['open','high','low','close','volume','amount','pctchange']].apply(pd.to_numeric)
-        res = res.assign(pctchange=res.close/res.pctchange-1).set_index(['date','code'])
-        res['date'] = pd.to_datetime(res['date'])
+        res = QA_fetch_get_stock_half_realtime(code)
+        res = res.assign(pctchange=res.close/res.prev_close-1).set_index(['date','code'])[['open','high','low','close','volume','amount','pctchange']]
         res = price.append(res).groupby('code').apply(get_alpha)
         res = res.reset_index(level=2).drop('code',axis=1).reset_index().set_index(['date','code'])
         return(res.loc[deal_date_list])
@@ -164,17 +155,7 @@ def stock_alpha191_half_realtime(code, date = None):
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
         price['prev_close'] = price[['code','close']].groupby('code').shift()
-        quotation = easyquotation.use('sina')
-        res = pd.DataFrame(quotation.stocks(code) ).T[['date','open','high','low','now','turnover','volume','close']]
-        res = res.reset_index().rename(columns={'index':'code',
-                                                'close':'prev_close',
-                                                'now':'close',
-                                                'turnover':'volume',
-                                                'volume':'amount'})
-        res['date'] = pd.to_datetime(res['date'])
-        res[['open','high','low','close','volume','amount','prev_close']] = res[['open','high','low','close','volume','amount','prev_close']].apply(pd.to_numeric)
-        res = res[res.close > 0]
-        res = price[['date','code','open','high','low','close','volume','amount','prev_close']].append(res)
+        res = QA_fetch_get_stock_half_realtime(code)
         return(Alpha_191(res, date).alpha())
     except:
         return(None)

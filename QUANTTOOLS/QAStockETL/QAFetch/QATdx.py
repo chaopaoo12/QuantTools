@@ -87,12 +87,14 @@ def QA_fetch_get_stock_half_realtime(code, source = 'sina'):
     quotation = easyquotation.use(source)
     res = pd.DataFrame(quotation.stocks(code) ).T[['date','open','high','low','now','turnover','volume','close']]
     res = res.reset_index().rename(columns={'index':'code',
-                                            'close':'pctchange',
+                                            'close':'prev_close',
                                             'now':'close',
                                             'turnover':'volume',
                                             'volume':'amount'})
-    res = res.assign(pctchange=res.close/res.pctchange-1).set_index(['date','code'])
-    return(res.astype('float64'))
+    res['date'] = pd.to_datetime(res['date'])
+    res[['open','high','low','close','volume','amount','prev_close']] = res[['open','high','low','close','volume','amount','prev_close']].apply(pd.to_numeric)
+    res = res[res.close > 0]
+    return(res)
 
 def half_ohlc(data):
     data = data.reset_index().set_index('datetime')
