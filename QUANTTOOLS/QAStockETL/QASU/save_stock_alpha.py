@@ -466,7 +466,7 @@ def QA_SU_save_stock_alpha191half_day(code = None, start_date = None, end_date =
     def __saving_work(code,date):
         try:
             QA_util_log_info(
-                '##JOB01 Now Saving Stock Alpha191 Half==== {}'.format(str(code)), ui_log)
+                '##JOB01 Now Saving Stock Alpha191 Half==== {}'.format(str(date)), ui_log)
             data = QA_fetch_get_stock_alpha191_half(code,date)
             if data is not None:
                 stock_alpha.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
@@ -516,7 +516,7 @@ def QA_SU_save_stock_alpha191half_his(code = None, start_date = None, end_date =
     def __saving_work(code, date):
         try:
             QA_util_log_info(
-                '##JOB01 Now Saving Stock Alpha191 Half==== {}'.format(str(code)), ui_log)
+                '##JOB01 Now Saving Stock Alpha191 Half==== {}'.format(str(date)), ui_log)
             data = QA_fetch_get_stock_alpha191_half(code, date)
             if data is not None:
                 stock_alpha.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
