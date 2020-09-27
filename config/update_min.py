@@ -1,8 +1,8 @@
 from QUANTAXIS.QASU.main import (QA_SU_save_stock_min)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
-from QUANTTOOLS.QAStockETL.Check import check_stock_60min, check_stock_alpha101half,check_stock_half
+from QUANTTOOLS.QAStockETL.Check import check_stock_60min, check_stock_alpha101half,check_stock_half,check_stock_alpha191half
 from QUANTTOOLS.QAStockETL.QASU import QA_SU_save_stock_half
-from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_alpha101half_day, QA_etl_stock_alpha101half_day)
+from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_alpha101half_day,QA_SU_save_stock_alpha191half_day, QA_etl_stock_alpha101half_day,QA_etl_stock_alpha191half_day)
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
@@ -24,4 +24,10 @@ if __name__ == '__main__':
             QA_SU_save_stock_alpha101half_day(start_date = mark_day,  end_date = mark_day)
             res = check_stock_alpha101half(mark_day)
 
+        res = check_stock_alpha191half(mark_day)
+        while res is None or res > 20:
+            QA_SU_save_stock_alpha191half_day(start_date = mark_day,  end_date = mark_day)
+            res = check_stock_alpha191half(mark_day)
+
         QA_etl_stock_alpha101half_day(mark_day, mark_day)
+        QA_etl_stock_alpha191half_day(mark_day, mark_day)
