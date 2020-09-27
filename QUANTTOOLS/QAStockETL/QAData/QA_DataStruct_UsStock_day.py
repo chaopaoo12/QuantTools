@@ -365,13 +365,13 @@ class QA_DataStruct_UsStock_min(_quotation_base):
                     data = u.join(adj).set_index(['datetime', 'code'])
 
                     for col in ['open', 'high', 'low', 'close']:
-                        data[col] = data[col] * data['adj']
+                        data[col] = data[col] * data['adj'] + data['adjust']
                     # data['volume'] = data['volume'] / \
                     #     data['adj']
                     #data['volume'] = data['volume']  if 'volume' in data.columns else data['vol']
                     try:
-                        data['high_limit'] = data['high_limit'] * data['adj']
-                        data['low_limit'] = data['high_limit'] * data['adj']
+                        data['high_limit'] = data['high_limit'] * data['adj'] + data['adjust']
+                        data['low_limit'] = data['high_limit'] * data['adj'] + data['adjust']
                     except:
                         pass
                     return self.new(data, self.type, 'qfq')
