@@ -44,8 +44,11 @@ def QA_fetch_get_stock_realtm_bidvol5(code):
     res = float(QA_fetch_get_stock_realtime(code)[['bid1_volume','bid2_volume','bid3_volume','bid4_volume','bid5_volume']])
     return(float(res.bid1_volume + res.bid2_volume + res.bid3_volume + res.bid4_volume + res.bid5_volume))
 
-def QA_fetch_get_usstock_adj():
-    pass
+def QA_fetch_get_usstock_adj(code):
+    qfq_df = ak.stock_us_daily(symbol=code, adjust="qfq-factor").reset_index()
+    qfq_df = qfq_df.assign(code = code)
+    qfq_df = qfq_df.rename(columns = {'qfq_factor':'adj'})
+    return(qfq_df)
 
 def QA_fetch_get_usstock_cik():
     pass
