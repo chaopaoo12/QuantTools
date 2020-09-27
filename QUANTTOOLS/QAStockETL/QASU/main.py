@@ -167,7 +167,7 @@ def QA_SU_save_stock_alpha101half_day(code = None, start_date = QA_util_today_st
     save_stock_alpha.QA_SU_save_stock_alpha101half_day(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_stock_alpha101half_his(code = None, start_date = '2008-01-01', end_date = QA_util_today_str()):
-    save_stock_alpha.QA_SU_save_stock_alpha11half_his(code = code, start_date = start_date, end_date = end_date)
+    save_stock_alpha.QA_SU_save_stock_alpha101half_his(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_stock_alpha191half_day(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
     save_stock_alpha.QA_SU_save_stock_alpha191half_day(code = code, start_date = start_date, end_date = end_date)
@@ -204,3 +204,9 @@ def QA_SU_save_stock_xdxr():
 
 def QA_SU_save_stock_info():
     save_tdx.QA_SU_save_stock_info()
+
+def QA_SU_save_usstock_day():
+    save_tdx.QA_SU_save_usstock_day()
+
+def QA_SU_save_usstock_adj():
+    save_tdx.QA_SU_save_usstock_adj()
