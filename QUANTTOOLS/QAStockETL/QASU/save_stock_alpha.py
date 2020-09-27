@@ -452,6 +452,9 @@ def QA_SU_save_stock_alpha191half_day(code = None, start_date = None, end_date =
 
     if start_date is None:
         start_date = '2017-04-10'
+
+    deal_date_list = QA_util_get_trade_range(start_date, end_date)
+
     codes = code
     if codes is None:
         codes = list(QA_fetch_stock_om_all()['code'])
@@ -460,11 +463,11 @@ def QA_SU_save_stock_alpha191half_day(code = None, start_date = None, end_date =
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start,end):
+    def __saving_work(code,date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving Stock Alpha191 Half==== {}'.format(str(code)), ui_log)
-            data = QA_fetch_get_stock_alpha191_half(code,start,end)
+            data = QA_fetch_get_stock_alpha191_half(code,date)
             if data is not None:
                 stock_alpha.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
                 gc.collect()
@@ -472,14 +475,14 @@ def QA_SU_save_stock_alpha191half_day(code = None, start_date = None, end_date =
             print(error0)
             err.append(str(code))
 
-    for code in codes:
+    for item in deal_date_list:
         QA_util_log_info('The {} of Total {}'.format
-                         ((codes.index(code) +1), len(codes)))
+                         ((deal_date_list.index(item) +1), len(deal_date_list)))
 
-        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(code) +1) / len(codes) * 100))[0:4] + '%', ui_log)
-        intProgressToLog = int(float((codes.index(code) +1) / len(codes) * 100))
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((deal_date_list.index(item) +1) / len(deal_date_list) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((deal_date_list.index(item) +1) / len(deal_date_list) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
-        __saving_work(code,start_date,end_date)
+        __saving_work(codes,item)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save Stock Alpha191 Half ^_^',  ui_log)
@@ -499,6 +502,9 @@ def QA_SU_save_stock_alpha191half_his(code = None, start_date = None, end_date =
 
     if start_date is None:
         start_date = '2009-01-01'
+
+    deal_date_list = QA_util_get_trade_range(start_date, end_date)
+
     codes = code
     if codes is None:
         codes = list(QA_fetch_stock_all()['code'])
@@ -507,11 +513,11 @@ def QA_SU_save_stock_alpha191half_his(code = None, start_date = None, end_date =
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start,end):
+    def __saving_work(code, date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving Stock Alpha191 Half==== {}'.format(str(code)), ui_log)
-            data = QA_fetch_get_stock_alpha191_half(code,start,end)
+            data = QA_fetch_get_stock_alpha191_half(code, date)
             if data is not None:
                 stock_alpha.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
                 gc.collect()
@@ -519,14 +525,14 @@ def QA_SU_save_stock_alpha191half_his(code = None, start_date = None, end_date =
             print(error0)
             err.append(str(code))
 
-    for code in codes:
+    for item in deal_date_list:
         QA_util_log_info('The {} of Total {}'.format
-                         ((codes.index(code) +1), len(codes)))
+                         ((deal_date_list.index(item) +1), len(deal_date_list)))
 
-        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(code) +1) / len(codes) * 100))[0:4] + '%', ui_log)
-        intProgressToLog = int(float((codes.index(code) +1) / len(codes) * 100))
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((deal_date_list.index(item) +1) / len(deal_date_list) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((deal_date_list.index(item) +1) / len(deal_date_list) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
-        __saving_work(code,start_date,end_date)
+        __saving_work(codes, item)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save Stock Alpha191 Half ^_^',  ui_log)
