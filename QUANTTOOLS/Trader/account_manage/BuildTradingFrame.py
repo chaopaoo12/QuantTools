@@ -79,7 +79,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     #可否加仓信号 1为可以加仓 0为否
     res['mark'] = res.ask1.apply(lambda x: 0 if x ==0 else 1)
     top_num = 5
-    hold = res[(res.mark == 1) & (res.rank > 0)].sort_values('RANK').head(top_num)
+    hold = res[(res.mark == 1) & (res.RANK > 0)].sort_values('RANK').head(top_num)
     res = res[res['市值'] > 0].append(hold[hold['市值'] == 0])
 
     QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
