@@ -64,7 +64,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
     QA_util_log_info('##JOB Add Info to Result Frame', ui_log = None)
     res['股票余额'] = res['股票余额'].fillna(0)
     res['市值'] = res['市值'].fillna(0)
-    res['rank'] = res['rank'].fillna(0)
+    res['RANK'] = res['RANK'].fillna(0)
     res['可用余额'] = res['可用余额'].fillna(0)
     res['position'] = res['position'].fillna(0)
     try:
