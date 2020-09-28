@@ -29,6 +29,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         QA_util_log_info('##JOB Target is None', ui_log = None)
         res = positions.set_index('code')
         res['position'] = 0
+        res['RANK'] = 0
     else:
         QA_util_log_info('##JOB Target is not None', ui_log = None)
         tar1 = target.reset_index().groupby('code').max()
@@ -60,11 +61,12 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res = pd.concat([sell_table,
                          buy_table,
                          hold_table], axis=0)
+        res['RANK'] = res['RANK'].fillna(0)
 
     QA_util_log_info('##JOB Add Info to Result Frame', ui_log = None)
     res['股票余额'] = res['股票余额'].fillna(0)
     res['市值'] = res['市值'].fillna(0)
-    res['RANK'] = res['RANK'].fillna(0)
+
     res['可用余额'] = res['可用余额'].fillna(0)
     res['position'] = res['position'].fillna(0)
     try:
