@@ -30,7 +30,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res = positions.set_index('code')
         res['position'] = 0
         res['RANK'] = 0
-    else:
+    elif positions is not None:
         QA_util_log_info('##JOB Target is not None', ui_log = None)
         tar1 = target.reset_index().groupby('code').max()
         tar1['position'] = tar1.reset_index().groupby('code')['RANK'].count()
@@ -62,25 +62,29 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
                          buy_table,
                          hold_table], axis=0)
         res['RANK'] = res['RANK'].fillna(0)
+    else:
+        res = None
 
-    QA_util_log_info('##JOB Add Info to Result Frame', ui_log = None)
-    res['股票余额'] = res['股票余额'].fillna(0)
-    res['市值'] = res['市值'].fillna(0)
+    if res is not None:
 
-    res['可用余额'] = res['可用余额'].fillna(0)
-    res['position'] = res['position'].fillna(0)
-    try:
-        values = QA_fetch_get_stock_realtime(list(res.reset_index()['code']))[['ask1','bid1','close']]
-        res = res.join(values)
-    except:
-        QA_util_log_info('##JOB Now Get RealTime Price Failed.')
+        QA_util_log_info('##JOB Add Info to Result Frame', ui_log = None)
+        res['股票余额'] = res['股票余额'].fillna(0)
+        res['市值'] = res['市值'].fillna(0)
 
-    res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
-    #可否加仓信号 1为可以加仓 0为否
-    res['mark'] = res.ask1.apply(lambda x: 0 if x ==0 else 1)
-    top_num = 5
-    hold = res[(res.mark == 1) & (res.RANK > 0)].sort_values('RANK').head(top_num)
-    res = res[res['市值'] > 0].append(hold[hold['市值'] == 0])
+        res['可用余额'] = res['可用余额'].fillna(0)
+        res['position'] = res['position'].fillna(0)
+        try:
+            values = QA_fetch_get_stock_realtime(list(res.reset_index()['code']))[['ask1','bid1','close']]
+            res = res.join(values)
+        except:
+            QA_util_log_info('##JOB Now Get RealTime Price Failed.')
+
+        res['买卖价'] = res.apply(lambda x: func1(x['ask1'], x['bid1']),axis = 1)
+        #可否加仓信号 1为可以加仓 0为否
+        res['mark'] = res.ask1.apply(lambda x: 0 if x ==0 else 1)
+        top_num = 5
+        hold = res[(res.mark == 1) & (res.RANK > 0)].sort_values('RANK').head(top_num)
+        res = res[res['市值'] > 0].append(hold[hold['市值'] == 0])
 
     QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
 
