@@ -70,7 +70,7 @@ class QAStockXGBoost(QAStockModel):
                 train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
 
             send_email('模型训练报告:{}'.format(end) + end, "数据损失比例 {}".format(nan_num/train.shape[0]), self.info['date'])
-            if nan_num/self.data.shape[0] >= 0.01:
+            if nan_num/train.shape[0] >= 0.01:
                 send_actionnotice('模型训练报告',
                                   '交易报告:{}'.format(end),
                                   "数据损失比例过高 {}".format(nan_num/train.shape[0]),
