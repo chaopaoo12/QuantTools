@@ -4,6 +4,7 @@ from QUANTAXIS.QAUtil import (QA_util_log_info, QA_util_today_str,QA_util_get_tr
 import joblib
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
 from sklearn.utils import shuffle
+from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
 
 class QAStockModel():
 
@@ -65,18 +66,24 @@ class QAStockModel():
 
         if thresh is None:
             pass
-        elif thresh == 0:
+        else:
             nan_num = self.data[self.cols].isnull().sum(axis=1)[self.data[self.cols].isnull().sum(axis=1) > 0].count()
             QA_util_log_info('##JOB Drop Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ===== {date}'.format(
                 NAN_NUM = nan_num, per=nan_num/self.data.shape[0], shape=self.data.shape[0], thresh=thresh,date=self.info['date']), ui_log = None)
-            self.data = self.data[self.cols].dropna().join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
-        else:
-            nan_num = self.data[self.cols].isnull().sum(axis=1)[self.data[self.cols].isnull().sum(axis=1) >= thresh].count()
-            QA_util_log_info('##JOB Drop Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ===== {date}'.format(
-                NAN_NUM = nan_num, per=nan_num/self.data.shape[0], shape=self.data.shape[0], thresh=thresh,date=self.info['date']), ui_log = None)
-            self.data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh)).join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
+            if thresh == 0:
+                self.data = self.data[self.cols].dropna().join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
+            else:
+                self.data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh)).join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
 
-
+            send_email('模型训练报告:'+ self.info['date'], "数据损失比例 {}".format(nan_num/self.data.shape[0]), self.info['date'])
+            if nan_num/self.data.shape[0] >= 0.01:
+                send_actionnotice('模型训练报告',
+                              '交易报告:{}'.format(self.info['date']),
+                              "数据损失比例过高 {}".format(nan_num/self.data.shape[0]),
+                              direction = 'WARNING',
+                              offset='WARNING',
+                              volume=None
+                              )
 
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
         self.X_train, self.Y_train = shuffle(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'])
@@ -141,16 +148,24 @@ class QAStockModel():
 
         if self.thresh is None:
             train = train[self.cols]
-        elif self.thresh == 0:
+        else:
             nan_num = train[self.cols].isnull().sum(axis=1)[train[self.cols].isnull().sum(axis=1) > 0].count()
             QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain NAN ==== from {_from} to {_to}'.format(
                 NAN_NUM = nan_num, per=nan_num/train.shape[0], shape=train.shape[0], _from=start,_to = end), ui_log = None)
-            train = train[self.cols].dropna()
-        else:
-            nan_num = train[self.cols].isnull().sum(axis=1)[train[self.cols].isnull().sum(axis=1) > self.thresh].count()
-            QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ==== from {_from} to {_to}'.format(
-                NAN_NUM = nan_num, per=nan_num/train.shape[0], shape=train.shape[0], thresh=self.thresh,_from=start,_to = end), ui_log = None)
-            train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
+            if self.thresh == 0:
+                train = train[self.cols].dropna()
+            else:
+                train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
+
+            send_email('模型训练报告:'+ end, "数据损失比例 {}".format(nan_num/self.data.shape[0]), self.info['date'])
+            if nan_num/self.data.shape[0] >= 0.01:
+                send_actionnotice('模型训练报告',
+                                  '交易报告:{}'.format(end),
+                                  "数据损失比例过高 {}".format(nan_num/self.data.shape[0]),
+                                  direction = 'WARNING',
+                                  offset='WARNING',
+                                  volume=None
+                                  )
 
         train = train.join(data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']])
 

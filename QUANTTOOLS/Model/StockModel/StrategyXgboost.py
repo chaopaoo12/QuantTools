@@ -6,6 +6,7 @@ from sklearn.metrics import (accuracy_score,
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_norm
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAStockModel import QAStockModel
+from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
 
 class QAStockXGBoost(QAStockModel):
 
@@ -59,16 +60,24 @@ class QAStockXGBoost(QAStockModel):
 
         if self.thresh is None:
             train = train[self.cols]
-        elif self.thresh == 0:
+        else:
             nan_num = train[self.cols].isnull().sum(axis=1)[train[self.cols].isnull().sum(axis=1) > 0].count()
             QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain NAN ==== from {_from} to {_to}'.format(
                 NAN_NUM = nan_num, per=nan_num/train.shape[0], shape=train.shape[0], _from=start,_to = end), ui_log = None)
-            train = train[self.cols].dropna()
-        else:
-            nan_num = train[self.cols].isnull().sum(axis=1)[train[self.cols].isnull().sum(axis=1) >= self.thresh].count()
-            QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ==== from {_from} to {_to}'.format(
-                NAN_NUM = nan_num, per=nan_num/train.shape[0], shape=train.shape[0], thresh=self.thresh,_from=start,_to = end), ui_log = None)
-            train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
+            if self.thresh == 0:
+                train = train[self.cols].dropna()
+            else:
+                train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
+
+            send_email('模型训练报告:'+ end, "数据损失比例 {}".format(nan_num/self.data.shape[0]), self.info['date'])
+            if nan_num/self.data.shape[0] >= 0.01:
+                send_actionnotice('模型训练报告',
+                                  '交易报告:{}'.format(end),
+                                  "数据损失比例过高 {}".format(nan_num/self.data.shape[0]),
+                                  direction = 'WARNING',
+                                  offset='WARNING',
+                                  volume=None
+                                  )
 
         train = train.join(data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']])
 
