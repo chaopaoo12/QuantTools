@@ -145,7 +145,7 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
         send_email('交易报告:'+ trading_date, "消息组件运算失败:选股模型周期内交易成绩", trading_date)
 
     #########
-
+    print(tar[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']])
     try:
         modelhis_body = build_table(tar[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']], '模型周期内选股记录_from:{a}_to:{b}'.format(a=start, b=end))
     except:
