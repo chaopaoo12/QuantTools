@@ -55,9 +55,10 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     #table1 = tar[tar['RANK']<=5].groupby('date').mean()
     if tar is not None and tar.shape[0] > 0:
         table1 = tar.groupby('date').mean()[['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
+        tar_res = tar[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
     else:
         table1 = pd.DataFrame()
-        tar = pd.DataFrame()
+        tar_res = pd.DataFrame()
 
     QA_util_log_info('##JOB06 Now Message Building ==== {}'.format(str(trading_date)), ui_log)
     #try:
@@ -145,9 +146,8 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
         send_email('交易报告:'+ trading_date, "消息组件运算失败:选股模型周期内交易成绩", trading_date)
 
     #########
-    print(tar[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']])
     try:
-        modelhis_body = build_table(tar[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']], '模型周期内选股记录_from:{a}_to:{b}'.format(a=start, b=end))
+        modelhis_body = build_table(tar_res, '模型周期内选股记录_from:{a}_to:{b}'.format(a=start, b=end))
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内选股记录", trading_date)
 
