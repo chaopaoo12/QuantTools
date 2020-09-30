@@ -87,7 +87,7 @@ def _QA_fetch_usstock_adj(
     #code= [code] if isinstance(code,str) else code
 
     # code checking
-    code = QA_util_code_tolist(code)
+    #code = QA_util_code_tolist(code)
 
     if QA_util_date_valid(end):
 
@@ -131,7 +131,7 @@ class QA_DataStruct_UsStock_day(_quotation_base):
     # 抽象类继承
 
     def choose_db(self):
-        self.mongo_coll = DATABASE.stock_day
+        self.mongo_coll = DATABASE.usstock_day
 
     def __repr__(self):
         return '< QA_DataStruct_UsStock_day with {} securities >'.format(
@@ -160,14 +160,14 @@ class QA_DataStruct_UsStock_day(_quotation_base):
                                  'code'])
                     data = self.data.join(adj)
                     for col in ['open', 'high', 'low', 'close']:
-                        data[col] = data[col] * data['adj']
+                        data[col] = data[col] * data['adj'] + data['adjust']
                     # data['volume'] = data['volume'] / \
                     #     data['adj'] if 'volume' in data.columns else data['vol']/data['adj']
 
                     data['volume'] = data['volume']  if 'volume' in data.columns else data['vol']
                     try:
-                        data['high_limit'] = data['high_limit'] * data['adj']
-                        data['low_limit'] = data['high_limit'] * data['adj']
+                        data['high_limit'] = data['high_limit'] * data['adj'] + data['adjust']
+                        data['low_limit'] = data['high_limit'] * data['adj'] + data['adjust']
                     except:
                         pass
                     return self.new(data, self.type, 'qfq')

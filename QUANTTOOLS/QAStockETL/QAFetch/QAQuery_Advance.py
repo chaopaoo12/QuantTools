@@ -5,7 +5,9 @@ import pandas as pd
 from QUANTAXIS.QAData import (QA_DataStruct_Financial,
                               QA_DataStruct_Stock_day,
                               QA_DataStruct_Index_day)
-
+from QUANTTOOLS.QAStockETL.QAData.QA_DataStruct_UsStock_day import (
+                              QA_DataStruct_UsStock_day
+                              )
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_stock_financial_calendar,
                                                    QA_fetch_stock_divyield,
@@ -35,7 +37,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_index_year,
                                                    QA_fetch_stock_alpha101half,
                                                    QA_fetch_stock_half,
-                                                   QA_fetch_stock_alpha191half)
+                                                   QA_fetch_stock_alpha191half,
+                                                   QA_fetch_usstock_day)
 from QUANTAXIS.QAUtil.QADate import month_data
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,QA_util_log_info,
                               QA_util_datetime_to_strdate, QA_util_add_months,
@@ -712,3 +715,46 @@ def QA_fetch_index_year_adv(
         #     print("QA Error QA_fetch_index_year_adv set index 'date, code' return None")
         #     return None
         return QA_DataStruct_Index_day(res_set_index)
+
+def QA_fetch_usstock_day_adv(
+        code,
+        start='all',
+        end=None,
+        if_drop_index=True,
+        # 🛠 todo collections 参数没有用到， 且数据库是固定的， 这个变量后期去掉
+        collections=DATABASE.usstock_day
+):
+    '''
+
+    :param code:  股票代码
+    :param start: 开始日期
+    :param end:   结束日期
+    :param if_drop_index:
+    :param collections: 默认数据库
+    :return: 如果股票代码不存 或者开始结束日期不存在 在返回 None ，合法返回 QA_DataStruct_Stock_day 数据
+    '''
+    '获取股票日线'
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    if start == 'all':
+        start = '1990-01-01'
+        end = str(datetime.date.today())
+
+    res = QA_fetch_usstock_day(code, start, end, format='pd', collections= collections)
+    if res is None:
+        # 🛠 todo 报告是代码不合法，还是日期不合法
+        print(
+            "QA Error QA_fetch_usstock_day_adv parameter code=%s , start=%s, end=%s call QA_fetch_usstock_day return None"
+            % (code,
+               start,
+               end)
+        )
+        return None
+    else:
+        res_reset_index = res.set_index(['date', 'code'], drop=if_drop_index)
+        # if res_reset_index is None:
+        #     print("QA Error QA_fetch_stock_day_adv set index 'datetime, code' return None")
+        #     return None
+        return QA_DataStruct_UsStock_day(res_reset_index)
