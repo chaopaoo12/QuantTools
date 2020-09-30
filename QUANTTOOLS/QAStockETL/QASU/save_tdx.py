@@ -6,19 +6,21 @@ from QUANTAXIS.QAData.data_fq import _QA_data_stock_to_fq
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_day
 import datetime
 import pymongo
+import pandas as pd
 from QUANTAXIS.QAUtil import (
     DATABASE,
     QA_util_get_next_day,
     QA_util_get_real_date,
     QA_util_log_info,
     QA_util_to_json_from_pandas,
+    QA_util_today_str,
     trade_date_sse
 )
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_usstock_adj,QA_fetch_get_usstock_day,QA_fetch_get_usstock_cik,
                                                  QA_fetch_get_usstock_financial, QA_fetch_get_usstock_financial_calendar,
                                                  QA_fetch_get_stock_industryinfo,QA_fetch_get_index_info,
                                                  QA_fetch_get_stock_delist,QA_fetch_get_stock_half)
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_stock_om_all,QA_fetch_stock_all)
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_stock_om_all,QA_fetch_stock_all,QA_fetch_usstock_day)
 
 
 def now_time():
@@ -395,8 +397,11 @@ def QA_SU_save_usstock_adj(client=DATABASE, ui_log=None, ui_progress=None):
         )
         try:
             qfq = QA_fetch_get_usstock_adj(code)
-            qfq = qfq.assign(date=qfq.date.apply(lambda x: str(x)[0:10]))
-            adjdata = QA_util_to_json_from_pandas(qfq.loc[:, ['date','code', 'adj', 'adjust']])
+            qfq = qfq.assign(date=pd.to_datetime(qfq.date))
+
+            market_day = QA_fetch_usstock_day(str(code), '1990-01-01', QA_util_today_str(), 'pd')
+            data2 = pd.concat([market_day, qfq.set_index('date')[['adj','adjust']]],axis=1)
+            adjdata = QA_util_to_json_from_pandas(data2.fillna(method='ffill')[~data2.code.isna()].loc[:, ['date','code', 'adj', 'adjust']].reset_index(drop=True))
             coll_adj.delete_many({'code': code})
             #print(adjdata)
             coll_adj.insert_many(adjdata)
