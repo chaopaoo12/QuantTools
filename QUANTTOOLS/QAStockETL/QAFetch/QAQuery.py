@@ -1456,7 +1456,7 @@ def QA_fetch_usstock_day(
     #code= [code] if isinstance(code,str) else code
 
     # code checking
-    code = QA_util_code_tolist(code)
+    code = QA_util_code_tolist(code, False)
 
     if QA_util_date_valid(end):
 
@@ -1477,6 +1477,7 @@ def QA_fetch_usstock_day(
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
         res = pd.DataFrame([item for item in cursor])
+
         try:
             res = res.assign(
                 volume=res.vol,
