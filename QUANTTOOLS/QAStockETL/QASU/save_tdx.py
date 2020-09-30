@@ -390,7 +390,7 @@ def QA_SU_save_usstock_adj(client=DATABASE, ui_log=None, ui_progress=None):
 
     def __saving_work(code):
         QA_util_log_info(
-            '##JOB02 Now Saving XDXR INFO ==== {}'.format(str(code)),
+            '##JOB02 Now Saving US ADJ INFO ==== {}'.format(str(code)),
             ui_log=ui_log
         )
         try:
