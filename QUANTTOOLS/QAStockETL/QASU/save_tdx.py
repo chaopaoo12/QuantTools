@@ -396,7 +396,7 @@ def QA_SU_save_usstock_adj(client=DATABASE, ui_log=None, ui_progress=None):
         try:
             qfq = QA_fetch_get_usstock_adj(code)
             qfq = qfq.assign(date=qfq.date.apply(lambda x: str(x)[0:10]))
-            adjdata = QA_util_to_json_from_pandas(qfq.loc[:, ['date','code', 'adj']])
+            adjdata = QA_util_to_json_from_pandas(qfq.loc[:, ['date','code', 'adj', 'adjust']])
             coll_adj.delete_many({'code': code})
             #print(adjdata)
             coll_adj.insert_many(adjdata)
