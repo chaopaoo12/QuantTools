@@ -272,15 +272,8 @@ def QA_SU_save_usstock_day(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
 
-    ##__usstock_list = QA_fetch_get_usstock_list_akshare().code.unique().tolist()
-    __usstock_list = ['SNY', 'SYT', 'ALL', 'ED', 'STM', 'JBHT', 'AFG', 'LDOS', 'NRG', 'GXP',
-                      'HFC', 'TDY', 'BEP', 'ATR', 'SATS', 'PTHN', 'GLPG', 'KGC', 'MMS', 'OPK',
-                      'LIVN', 'AVX', 'AAAP', 'ENR', 'VNTR', 'MDRX', 'CVI', 'BGS', 'DGI',
-                      'SUPN', 'MTFB', 'GRP.U', 'SCS', 'ACIA', 'DIOD', 'LZB', 'REV', 'WASH',
-                      'NFBK', 'DEA', 'FOR', 'VNDA', 'AVH', 'GNC', 'FSAC', 'OSBC', 'CRC', 'FELP',
-                      'CXDC', 'MPV', 'PROV', 'HLTH', 'APPS', 'HWCC', 'HHS', 'BAA', 'CUO', 'TRPX',
-                      'AIII', 'DCIX', 'FTNW', 'ARCT', 'LKM', 'CVIA', 'AEYE', 'PYX', 'ETON', 'RTW',
-                      'CTST', 'HCR', 'SONG', 'FLLC', 'LMNL', 'IGLDF', 'QHCQQ', 'KC', 'BVSNQ']
+    __usstock_list = QA_fetch_get_usstock_list_akshare().code.unique().tolist()
+
     coll = client.usstock_day
     coll.create_index(
         [('code',
