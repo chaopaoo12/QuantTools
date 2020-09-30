@@ -398,7 +398,7 @@ def QA_SU_save_usstock_adj(client=DATABASE, ui_log=None, ui_progress=None):
         )
         try:
             qfq = QA_fetch_get_usstock_adj(code)
-            qfq = qfq.assign(date=pd.to_datetime(qfq.date))
+
 
             market_day = QA_fetch_usstock_day(str(code), '1990-01-01', QA_util_today_str(), 'pd')
             data2 = pd.concat([market_day, qfq.set_index('date')[['adj','adjust']]],axis=1)

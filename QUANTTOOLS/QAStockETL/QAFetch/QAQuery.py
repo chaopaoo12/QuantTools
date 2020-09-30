@@ -1626,7 +1626,7 @@ def QA_fetch_usstock_adj(
     #code= [code] if isinstance(code,str) else code
 
     # code checking
-    code = QA_util_code_tolist(code)
+    #code = QA_util_code_tolist(code)
 
     if QA_util_date_valid(end):
 
