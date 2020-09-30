@@ -363,7 +363,7 @@ def QA_SU_save_usstock_adj(client=DATABASE, ui_log=None, ui_progress=None):
     Keyword Arguments:
         client {[type]} -- [description] (default: {DATABASE})
     """
-    stock_list = QA_fetch_get_usstock_list().code.unique().tolist()
+    stock_list = QA_fetch_get_usstock_list_akshare().code.unique().tolist()
     # client.drop_collection('stock_xdxr')
 
     try:
