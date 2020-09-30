@@ -1,6 +1,7 @@
 from QUANTAXIS import (QA_fetch_get_usstock_list,QA_fetch_get_index_list,QA_fetch_get_index_day,
                        QA_fetch_get_stock_day,QA_fetch_get_stock_xdxr,QA_fetch_get_stock_info
                        )
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare
 from QUANTAXIS.QAData.data_fq import _QA_data_stock_to_fq
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_day
 import datetime
@@ -242,7 +243,7 @@ def QA_SU_save_usstock_list(client=DATABASE, ui_log=None, ui_progress=None):
             ui_progress=ui_progress,
             ui_progress_int_value=5000
         )
-        usstock_list_from_tdx = QA_fetch_get_usstock_list()
+        usstock_list_from_tdx = QA_fetch_get_usstock_list_akshare()
         pandas_data = QA_util_to_json_from_pandas(usstock_list_from_tdx)
 
         if len(pandas_data) > 0:
@@ -269,7 +270,7 @@ def QA_SU_save_usstock_day(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
 
-    __usstock_list = QA_fetch_get_usstock_list().code.unique().tolist()
+    __usstock_list = QA_fetch_get_usstock_list_akshare().code.unique().tolist()
     coll = client.usstock_day
     coll.create_index(
         [('code',

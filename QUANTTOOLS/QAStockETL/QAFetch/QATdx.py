@@ -8,7 +8,11 @@ import easyquotation
 import pandas as pd
 import akshare as ak
 
-QA_fetch_get_usstock_day = QA_fetch_get_future_day
+def QA_fetch_get_usstock_day(code, start, end):
+    data = QA_fetch_get_future_day('tdx',code, start, end)
+    data = data.rename(columns={'trade':'vol','':'','':''})
+    data = data[['open','close','high','low','vol','amount','date','code','date_stamp']]
+    return(data)
 
 def QA_fetch_get_stock_realtime(code):
     quotation = easyquotation.use('sina')
