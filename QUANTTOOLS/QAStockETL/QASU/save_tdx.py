@@ -14,7 +14,8 @@ from QUANTAXIS.QAUtil import (
     QA_util_log_info,
     QA_util_to_json_from_pandas,
     QA_util_today_str,
-    trade_date_sse
+    trade_date_sse,
+    QA_util_date_stamp
 )
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_usstock_adj,QA_fetch_get_usstock_day,QA_fetch_get_usstock_cik,
                                                  QA_fetch_get_usstock_financial, QA_fetch_get_usstock_financial_calendar,
@@ -401,7 +402,8 @@ def QA_SU_save_usstock_adj(client=DATABASE, ui_log=None, ui_progress=None):
             market_day = QA_fetch_usstock_day(str(code), '1990-01-01', QA_util_today_str(), 'pd')
             data2 = pd.concat([market_day, qfq.set_index('date')[['adj','adjust','date_stamp']]],axis=1)
             data2[['adj','adjust']] = data2[['adj','adjust']].fillna(method='ffill')
-            adjdata = QA_util_to_json_from_pandas(data2[~data2.code.isna()].loc[:, ['date','code', 'adj', 'adjust', 'date_stamp']].reset_index(drop=True))
+            data2 = data2.reset_index(drop=True).assign(date_stamp=data2.date.apply(lambda x:QA_util_date_stamp(str(x).replace('1900','1971'))))
+            adjdata = QA_util_to_json_from_pandas(data2[~data2.code.isna()][['date','code', 'adj', 'adjust']])
             coll_adj.delete_many({'code': code})
             #print(adjdata)
             coll_adj.insert_many(adjdata)
