@@ -46,6 +46,7 @@ from QUANTTOOLS.QAStockETL.QASU.main import (
 from QUANTTOOLS.QAStockETL.QASU.main import (
                                              QA_SU_save_usstock_list_day,QA_SU_save_usstock_list,
                                              QA_SU_save_usstock_day,QA_SU_save_usstock_adj,
+                                             QA_SU_save_usstock_pe,QA_SU_save_usstock_pb
                                              )
 
 from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (QA_etl_stock_list, QA_etl_stock_info,

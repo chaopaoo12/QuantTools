@@ -27,7 +27,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report, QA
                                                    QA_fetch_index_week,QA_fetch_index_month,QA_fetch_index_year,
                                                    QA_fetch_stock_om_all,QA_fetch_stock_all,QA_fetch_stock_alpha101half,
                                                    QA_fetch_stock_quant_pre_train,QA_fetch_stock_alpha191half,
-                                                   QA_fetch_usstock_day)
+                                                   QA_fetch_usstock_day,QA_fetch_usstock_pb,QA_fetch_usstock_pe,QA_fetch_usstock_adj)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAcalendar import QA_fetch_get_financial_calendar
 
@@ -60,4 +60,5 @@ from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_stock_close,
                                                  QA_fetch_get_stock_realtm_askvol5,QA_fetch_get_stock_realtm_bidvol5,
                                                  QA_fetch_get_stock_industryinfo,QA_fetch_get_index_info,
                                                  QA_fetch_get_stock_delist,QA_fetch_get_stock_half,
-                                                 QA_fetch_get_stock_half_realtime)
+                                                 QA_fetch_get_stock_half_realtime,
+                                                 QA_fetch_get_usstock_pe,QA_fetch_get_usstock_pb)

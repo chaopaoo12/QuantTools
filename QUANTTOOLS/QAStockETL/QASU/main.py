@@ -212,4 +212,10 @@ def QA_SU_save_usstock_day():
     save_tdx.QA_SU_save_usstock_day()
 
 def QA_SU_save_usstock_adj():
-    save_tdx.QA_SU_save_usstock_adj()
+        save_tdx.QA_SU_save_usstock_adj()
+
+def QA_SU_save_usstock_pb():
+    save_tdx.QA_SU_save_usstock_pb()
+
+def QA_SU_save_usstock_pe():
+    save_tdx.QA_SU_save_usstock_pe()

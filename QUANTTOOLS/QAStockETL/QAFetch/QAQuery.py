@@ -1649,6 +1649,84 @@ def QA_fetch_usstock_adj(
         res.date = pd.to_datetime(res.date)
         return res.set_index('date', drop=False)
 
+def QA_fetch_usstock_pb(
+        code,
+        start,
+        end,
+        format='pd',
+        collections=DATABASE.usstock_pb
+):
+    """获取股票复权系数 ADJ
+
+    """
+
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+    #code= [code] if isinstance(code,str) else code
+
+    # code checking
+    #code = QA_util_code_tolist(code)
+
+    if QA_util_date_valid(end):
+
+        cursor = collections.find(
+            {
+                'code': {
+                    '$in': code
+                },
+                "date_stamp": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)
+                }
+            },
+            {"_id": 0},
+            batch_size=10000
+        )
+        #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
+
+        res = pd.DataFrame([item for item in cursor])
+        res.date = pd.to_datetime(res.date)
+        return res.set_index('date', drop=False)
+
+def QA_fetch_usstock_pe(
+        code,
+        start,
+        end,
+        format='pd',
+        collections=DATABASE.usstock_pe
+):
+    """获取股票复权系数 ADJ
+
+    """
+
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+    #code= [code] if isinstance(code,str) else code
+
+    # code checking
+    #code = QA_util_code_tolist(code)
+
+    if QA_util_date_valid(end):
+
+        cursor = collections.find(
+            {
+                'code': {
+                    '$in': code
+                },
+                "date_stamp": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)
+                }
+            },
+            {"_id": 0},
+            batch_size=10000
+        )
+        #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
+
+        res = pd.DataFrame([item for item in cursor])
+        res.date = pd.to_datetime(res.date)
+        return res.set_index('date', drop=False)
+
 def QA_fetch_usstock_cik(collections=DATABASE.usstock_cik):
     '获取股票列表'
 

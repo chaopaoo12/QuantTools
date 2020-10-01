@@ -56,6 +56,24 @@ def QA_fetch_get_usstock_adj(code):
     qfq_df[['adj','adjust']] = qfq_df[['adj','adjust']].apply(pd.to_numeric,axis=0)
     return(qfq_df)
 
+def QA_fetch_get_usstock_pe(code):
+    qfq_df = ak.stock_us_fundamental(stock=code, symbol="PE").reset_index()
+    qfq_df = qfq_df.assign(code = code)
+    qfq_df = qfq_df.rename(columns = {'pe_ratio':'pe'})
+    qfq_df = qfq_df.assign(date_stamp=qfq_df.date.apply(lambda x:QA_util_date_stamp(str(x))),
+                           date=pd.to_datetime(qfq_df.date))
+    qfq_df[['stock_price','ttm_net_eps','pe']] = qfq_df[['stock_price','ttm_net_eps','pe']].apply(pd.to_numeric,axis=0)
+    return(qfq_df)
+
+def QA_fetch_get_usstock_pb(code):
+    qfq_df = ak.stock_us_fundamental(stock=code, symbol="PB").reset_index()
+    qfq_df = qfq_df.assign(code = code)
+    qfq_df = qfq_df.rename(columns = {'price_to_book_ratio':'pb'})
+    qfq_df = qfq_df.assign(date_stamp=qfq_df.date.apply(lambda x:QA_util_date_stamp(str(x))),
+                           date=pd.to_datetime(qfq_df.date))
+    qfq_df[['stock_price','book_value_per_share','pb']] = qfq_df[['stock_price','book_value_per_share','pb']].apply(pd.to_numeric,axis=0)
+    return(qfq_df)
+
 def QA_fetch_get_usstock_cik():
     pass
 
