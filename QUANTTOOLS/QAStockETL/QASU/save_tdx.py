@@ -384,7 +384,7 @@ def QA_SU_save_usstock_adj(client=DATABASE, ui_log=None, ui_progress=None):
         coll_adj.create_index(
             [('code',
               pymongo.ASCENDING),
-             ('date',
+             ('date_stamp',
               pymongo.ASCENDING)],
             unique=True
         )
@@ -399,7 +399,7 @@ def QA_SU_save_usstock_adj(client=DATABASE, ui_log=None, ui_progress=None):
         try:
             qfq = QA_fetch_get_usstock_adj(code)
             market_day = QA_fetch_usstock_day(str(code), '1990-01-01', QA_util_today_str(), 'pd')
-            data2 = pd.concat([market_day, qfq.set_index('date')[['adj','adjust']]],axis=1)
+            data2 = pd.concat([market_day, qfq.set_index('date')[['adj','adjust','date_stamp']]],axis=1)
             data2[['adj','adjust']] = data2[['adj','adjust']].fillna(method='ffill')
             adjdata = QA_util_to_json_from_pandas(data2[~data2.code.isna()].loc[:, ['date','code', 'adj', 'adjust']].reset_index(drop=True))
             coll_adj.delete_many({'code': code})
