@@ -1635,9 +1635,9 @@ def QA_fetch_usstock_adj(
                 'code': {
                     '$in': code
                 },
-                "date": {
-                    "$lte": end,
-                    "$gte": start
+                "date_stamp": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)
                 }
             },
             {"_id": 0},
