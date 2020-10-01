@@ -376,7 +376,7 @@ def QA_SU_save_usstock_adj(client=DATABASE, ui_log=None, ui_progress=None):
         coll_adj.create_index(
             [('code',
               pymongo.ASCENDING),
-             ('date',
+             ('date_stamp',
               pymongo.ASCENDING)],
             unique=True
         )
@@ -448,7 +448,7 @@ def QA_SU_save_usstock_pb(client=DATABASE, ui_log=None, ui_progress=None):
         coll.create_index(
             [('code',
               pymongo.ASCENDING),
-             ('date',
+             ('date_stamp',
               pymongo.ASCENDING)],
             unique=True
         )
@@ -515,7 +515,7 @@ def QA_SU_save_usstock_pe(client=DATABASE, ui_log=None, ui_progress=None):
         coll.create_index(
             [('code',
               pymongo.ASCENDING),
-             ('date',
+             ('date_stamp',
               pymongo.ASCENDING)],
             unique=True
         )
