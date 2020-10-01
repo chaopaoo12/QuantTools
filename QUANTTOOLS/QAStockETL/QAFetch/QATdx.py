@@ -52,9 +52,8 @@ def QA_fetch_get_usstock_adj(code):
     qfq_df = ak.stock_us_daily(symbol=code, adjust="qfq-factor").reset_index()
     qfq_df = qfq_df.assign(code = code)
     qfq_df = qfq_df.rename(columns = {'qfq_factor':'adj'})
-    qfq_df = qfq_df.assign(date_stamp=qfq_df.date.apply(lambda x:QA_util_date_stamp(str(x))),
-        date=pd.to_datetime(qfq_df.date)
-                           )
+    qfq_df = qfq_df.assign(date_stamp=qfq_df.date.apply(lambda x:QA_util_date_stamp(str(x).replace('1900','1971'))),
+                           date=pd.to_datetime(qfq_df.date))
     qfq_df[['adj','adjust']] = qfq_df[['adj','adjust']].apply(pd.to_numeric,axis=0)
     return(qfq_df)
 
