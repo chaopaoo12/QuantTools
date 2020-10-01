@@ -403,7 +403,7 @@ def QA_SU_save_usstock_adj(client=DATABASE, ui_log=None, ui_progress=None):
             data2 = pd.concat([market_day, qfq.set_index('date')[['adj','adjust']]],axis=1)
             data2[['adj','adjust']] = data2[['adj','adjust']].fillna(method='ffill')
             data2 = data2.reset_index(drop=True).assign(date_stamp=data2.date.apply(lambda x:QA_util_date_stamp(str(x).replace('1900','1971'))))
-            adjdata = QA_util_to_json_from_pandas(data2[~data2.code.isna()][['date','code', 'adj', 'adjust']])
+            adjdata = QA_util_to_json_from_pandas(data2[~data2.code.isna()][['date','code', 'adj', 'adjust', 'date_stamp']])
             coll_adj.delete_many({'code': code})
             #print(adjdata)
             coll_adj.insert_many(adjdata)
