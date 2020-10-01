@@ -65,7 +65,8 @@ from QUANTAXIS.QAUtil import (
     QA_util_date_valid,
     QA_util_code_tolist,
     QA_util_to_pandas_from_json,
-    trade_date_sse
+    trade_date_sse,
+    QA_util_date_stamp
 )
 from QUANTAXIS.QAUtil.QADate import QA_util_to_datetime
 from QUANTAXIS.QAUtil.QAParameter import FREQUENCE, MARKET_TYPE
@@ -96,9 +97,9 @@ def _QA_fetch_usstock_adj(
                 'code': {
                     '$in': code
                 },
-                "date": {
-                    "$lte": end,
-                    "$gte": start
+                "date_stamp": {
+                    "$lte": QA_util_date_stamp(end),
+                    "$gte": QA_util_date_stamp(start)
                 }
             },
             {"_id": 0},
