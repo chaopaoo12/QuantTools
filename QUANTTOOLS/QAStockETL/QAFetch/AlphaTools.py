@@ -16,6 +16,8 @@ def stock_alpha(code, date=None):
     start_date = QA_util_get_pre_trade_date(date, 250)
     try:
         price = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
+        price = price.assign(volume=price.volume*100)
+        price['avg_price'] = price['amount']/price['volume']*price['adj']
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         return(Alpha_191(price, date).alpha())
     except:
@@ -30,6 +32,8 @@ def index_alpha(code, date=None):
     start_date = QA_util_get_pre_trade_date(date, 250)
     try:
         price = QA_fetch_index_day_adv(code, start_date, end_date ).data.reset_index().dropna(axis=0, how='any')
+        price = price.assign(volume=price.volume*100)
+        price['avg_price'] = price['amount']/price['volume']
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         return(Alpha_191(price, date).alpha())
     except:
@@ -54,6 +58,8 @@ def stock_alpha101(code, start=None, end = None):
         price = QA_fetch_stock_day_adv(code, start_date, end_date ).to_qfq()
         pctchange = price.close_pct_change()
         price = price.data
+        price = price.assign(volume=price.volume*100)
+        price['avg_price'] = price['amount']/price['volume']*price['adj']
         price['pctchange'] = pctchange
         return(get_alpha(price).loc[deal_date_list].reset_index())
     except:
@@ -77,6 +83,8 @@ def index_alpha101(code, start=None, end = None):
         price = QA_fetch_index_day_adv(code, start_date, end_date )
         pctchange = price.close_pct_change()
         price = price.data
+        price = price.assign(volume=price.volume*100)
+        price['avg_price'] = price['amount']/price['volume']
         price['pctchange'] = pctchange
         return(get_alpha(price).loc[deal_date_list].reset_index())
     except:
@@ -98,7 +106,9 @@ def stock_alpha101_half(code, start=None, end = None):
     deal_date_list = QA_util_get_trade_range(start, end)
 
     try:
-        price = get_alpha(QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data).reset_index()
+        data = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data
+        data['avg_price'] = data['amount']/data['volume']*data['adj']
+        price = get_alpha(data).reset_index()
         price = price[price.date.isin(deal_date_list)]
 
         return(price)
@@ -120,8 +130,9 @@ def stock_alpha101_half_realtime(code, start = None, end = None):
     deal_date_list = QA_util_get_trade_range(start, end)
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end).to_qfq().data
+        price['avg_price'] = price['amount']/price['volume']*price['adj']
         res = QA_fetch_get_stock_half_realtime(code)
-        res = res.assign(pctchange=res.close/res.prev_close-1).set_index(['date','code'])[['open','high','low','close','volume','amount','pctchange']]
+        res = res.assign(pctchange=res.close/res.prev_close-1).set_index(['date','code'])[['open','high','low','close','volume','amount','pctchange','avg_price']]
         res = price.append(res).groupby('code').apply(get_alpha)
         res = res.reset_index(level=2).drop('code',axis=1).reset_index().set_index(['date','code'])
         return(res.loc[deal_date_list])
@@ -139,7 +150,7 @@ def stock_alpha191_half(code, date=None):
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
         price['prev_close'] = price['close']*(1+price['pctchange'])
-
+        price['avg_price'] = price['amount']/price['volume']*price['adj']
         return(Alpha_191(price, date).alpha())
     except:
         return(None)
@@ -153,6 +164,7 @@ def stock_alpha191_half_realtime(code, date = None):
     start_date = QA_util_get_pre_trade_date(date, 250)
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
+        price['avg_price'] = price['amount']/price['volume']*price['adj']
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         res = QA_fetch_get_stock_half_realtime(code)
         return(Alpha_191(res, date).alpha())
@@ -168,6 +180,7 @@ def usstock_alpha(code, date=None):
     start_date = QA_util_get_pre_trade_date(date, 250)
     try:
         price = QA_fetch_usstock_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
+        price['avg_price'] = price['amount']/price['volume']*price['adj']+price['adjust']
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         return(Alpha_191(price, date).alpha())
     except:
@@ -192,6 +205,7 @@ def usstock_alpha101(code, start=None, end = None):
         price = QA_fetch_usstock_day_adv(code, start_date, end_date ).to_qfq()
         pctchange = price.close_pct_change()
         price = price.data
+        price['avg_price'] = price['amount']/price['volume']*price['adj']+price['adjust']
         price['pctchange'] = pctchange
         return(get_alpha(price).loc[deal_date_list].reset_index())
     except:
