@@ -120,6 +120,7 @@ def QA_fetch_get_stock_half_realtime(code, source = 'sina'):
                                             'volume':'amount'})
     res['date'] = pd.to_datetime(res['date'])
     res[['open','high','low','close','volume','amount','prev_close']] = res[['open','high','low','close','volume','amount','prev_close']].apply(pd.to_numeric)
+    res['avg_price'] = res['amount']/res['volume']
     res = res[res.close > 0]
     return(res)
 
