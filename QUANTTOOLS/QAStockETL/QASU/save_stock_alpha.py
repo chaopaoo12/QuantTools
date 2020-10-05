@@ -409,7 +409,7 @@ def QA_SU_save_stock_alpha101half_his(code = None, start_date = None, end_date =
     if codes is None:
         codes = list(QA_fetch_stock_all()['code'])
 
-    stock_alpha = client.stock_alpha101_half
+    stock_alpha = client.stock_alpha101_half1
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
@@ -509,7 +509,7 @@ def QA_SU_save_stock_alpha191half_his(code = None, start_date = None, end_date =
     if codes is None:
         codes = list(QA_fetch_stock_all()['code'])
 
-    stock_alpha = client.stock_alpha191_half
+    stock_alpha = client.stock_alpha191_half1
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
