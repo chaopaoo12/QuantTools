@@ -61,7 +61,8 @@ def stock_alpha101(code, start=None, end = None):
         price = price.assign(volume=price.volume*100)
         price['avg_price'] = price['amount']/price['volume']*price['adj']
         price['pctchange'] = pctchange
-        print(get_alpha(price))
+        print(deal_date_list)
+        print(get_alpha(price).loc[deal_date_list])
         return(get_alpha(price).loc[deal_date_list].reset_index())
     except:
         return(None)
