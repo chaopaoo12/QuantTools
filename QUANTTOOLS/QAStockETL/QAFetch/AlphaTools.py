@@ -61,9 +61,8 @@ def stock_alpha101(code, start=None, end = None):
         price = price.assign(volume=price.volume*100)
         price['avg_price'] = price['amount']/price['volume']*price['adj']
         price['pctchange'] = pctchange
-        print(deal_date_list)
-        print(get_alpha(price).loc[deal_date_list])
-        return(get_alpha(price).loc[deal_date_list].reset_index())
+        res = get_alpha(price).reset_index()
+        return(res[res.date.isin(deal_date_list)])
     except:
         return(None)
 
@@ -88,7 +87,8 @@ def index_alpha101(code, start=None, end = None):
         price = price.assign(volume=price.volume*100)
         price['avg_price'] = price['amount']/price['volume']
         price['pctchange'] = pctchange
-        return(get_alpha(price).loc[deal_date_list].reset_index())
+        res = get_alpha(price).reset_index()
+        return(res[res.date.isin(deal_date_list)])
     except:
         return(None)
 
@@ -139,8 +139,8 @@ def stock_alpha101_half_realtime(code, start = None, end = None):
         res = res.assign(pctchange=res.close/res.prev_close-1).set_index(['date','code'])[['open','high','low','close','volume','amount','pctchange','avg_price']]
         res = price.append(res)
         res = res.groupby('code').apply(get_alpha)
-        res = res.reset_index(level=2).drop('code',axis=1).reset_index().set_index(['date','code'])
-        return(res.loc[deal_date_list])
+        res = res.reset_index(level=2).drop('code',axis=1).reset_index()
+        return(res[res.date.isin(deal_date_list)])
     except:
         return(None)
 
@@ -214,6 +214,7 @@ def usstock_alpha101(code, start=None, end = None):
         price = price.data
         price['avg_price'] = price['amount']/price['volume']*price['adj']+price['adjust']
         price['pctchange'] = pctchange
-        return(get_alpha(price).loc[deal_date_list].reset_index())
+        res = get_alpha(price).reset_index()
+        return(res[res.date.isin(deal_date_list)])
     except:
         return(None)
