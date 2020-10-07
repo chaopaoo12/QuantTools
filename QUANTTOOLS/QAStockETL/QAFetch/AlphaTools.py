@@ -218,3 +218,20 @@ def usstock_alpha101(code, start=None, end = None):
         return(res[res.date.isin(deal_date_list)])
     except:
         return(None)
+
+def hedge_alpha(code, index, date=None):
+    np.seterr(invalid='ignore')
+    if date == None:
+        end_date = QA_util_today_str()
+    else:
+        end_date = date
+    start_date = QA_util_get_pre_trade_date(date, 250)
+    try:
+        price = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
+        price = price.assign(volume=price.volume*100)
+        price['avg_price'] = price['amount']/price['volume']*price['adj']
+        price['prev_close'] = price[['code','close']].groupby('code').shift()
+        index_price = QA_fetch_index_day_adv(index, start_date, end_date).data.reset_index().dropna(axis=0, how='any')
+        return(Alpha_191(price, date, index_price).alpha())
+    except:
+        return(None)

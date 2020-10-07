@@ -1,7 +1,8 @@
-from QUANTTOOLS.QAStockETL.QAFetch.AlphaTools import (stock_alpha, index_alpha, stock_alpha101, index_alpha101,
+from QUANTTOOLS.QAStockETL.QAFetch.AlphaTools import (stock_alpha, index_alpha, stock_alpha101, index_alpha101,hedge_alpha,
                                                       stock_alpha101_half, stock_alpha101_half_realtime,
                                                       stock_alpha191_half, stock_alpha191_half_realtime)
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_if_trade,QA_util_log_info,QA_util_get_trade_range,QA_util_today_str,QA_util_get_real_date
+from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_block, QA_fetch_index_list
 
 def QA_fetch_get_stock_alpha(code, date, ui_log = None):
     if QA_util_if_trade(date) == True:
@@ -133,3 +134,26 @@ def QA_fetch_get_stock_alpha191half_realtime(code, date, ui_log = None):
     else:
         QA_util_log_info(
             '##JOB Non Data Stock Alpha191 Half HALF REALTIME for ============== {}'.format(date), ui_log)
+
+def QA_fetch_get_hedge_alpha(index_code, date, ui_log = None):
+    index_list = QA_fetch_index_list()
+    index = index_list[index_list.code == index_code]['name']
+    data = QA_fetch_stock_block()
+    index = index
+    code = list(data[data.blockname.isin(index)]['code'].drop_duplicates())
+
+
+    if QA_util_if_trade(date) == True:
+        data = hedge_alpha(code, index_code, date).reset_index()
+        if data is not None:
+            names = list(data.columns)
+            names[0] = 'code'
+            data.columns = names
+            data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
+            return(data)
+        else:
+            QA_util_log_info(
+                '##JOB Non Data Stock Alpha191 for ============== {}'.format(date), ui_log)
+    else:
+        QA_util_log_info(
+            '##JOB Non Data Stock Alpha191 for ============== {}'.format(date), ui_log)
