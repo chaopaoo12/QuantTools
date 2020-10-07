@@ -11,7 +11,7 @@ def linreg(x,B):
 
 class Alpha_191:
 
-    def __init__(self,  price, date):
+    def __init__(self,  price, date, benchmark_price=None):
         self.date = date
         #price['prev_close'] = price[['code','close']].groupby('code').shift()
         #benchmark_price = QA_fetch_index_day_adv('000300', self.end_date, self.date).data.reset_index()[['date','code','open','close','low','high','amount','volume']].set_index(['date','code']).to_panel()
@@ -24,6 +24,12 @@ class Alpha_191:
         self.prev_close = price.pivot_table(columns='code',index='date',values='prev_close', dropna=False).fillna(method = 'ffill')
         self.volume     = price.pivot_table(columns='code',index='date',values='volume').fillna(method = 'ffill')
         self.amount     = price.pivot_table(columns='code',index='date',values='amount').fillna(method = 'ffill')
+        if benchmark_price is not None:
+            self.benchmark_open_price = benchmark_price.pivot_table(columns='code',index='date',values='open').fillna(method = 'ffill')
+            self.benchmark_close_price = benchmark_price.pivot_table(columns='code',index='date',values='close').fillna(method = 'ffill')
+        else:
+            self.benchmark_open_price = None
+            self.benchmark_close_price = None
         #self.benchmark_open_price = benchmark_price.loc[:, 'open']
         #self.benchmark_close_price = benchmark_price.loc[:, 'close']
         #########################################################################
@@ -2488,7 +2494,8 @@ class Alpha_191:
         alpha_179=self.alpha_179()
         alpha_180=self.alpha_180()
         #alpha_181=self.alpha_181()
-        #alpha_182=self.alpha_182()
+        if self.benchmark_open_price is not None:
+            alpha_182=self.alpha_182()
         #alpha_183=self.alpha_183()
         alpha_184=self.alpha_184()
         alpha_185=self.alpha_185()
