@@ -40,7 +40,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAAlpha import (QA_fetch_get_stock_alpha,QA_f
                                                    QA_fetch_get_stock_alpha101_half,
                                                    QA_fetch_get_stock_alpha101half_realtime,
                                                    QA_fetch_get_stock_alpha191_half,
-                                                   QA_fetch_get_stock_alpha191half_realtime)
+                                                   QA_fetch_get_stock_alpha191half_realtime,
+                                                   QA_fetch_get_hedge_alpha)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAShares import QA_fetch_get_stock_shares_sina
 

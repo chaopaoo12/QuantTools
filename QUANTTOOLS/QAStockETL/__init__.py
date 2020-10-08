@@ -70,7 +70,7 @@ from QUANTTOOLS.QAStockETL.QASU import (QA_etl_index_alpha_day,
 from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_process_financial,QA_util_etl_financial_TTM,
                                           QA_util_etl_stock_quant,QA_util_sql_store_mysql,QA_util_process_stock_financial)
 ###Crawl/Caculate Stock data
-from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_stock_alpha,QA_fetch_get_financial_calendar, QA_fetch_get_stock_divyield)
+from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_stock_alpha,QA_fetch_get_hedge_alpha,QA_fetch_get_financial_calendar, QA_fetch_get_stock_divyield)
 
 ###Query Index data
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_index_info,
