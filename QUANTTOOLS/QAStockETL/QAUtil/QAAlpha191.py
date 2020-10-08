@@ -2496,7 +2496,7 @@ class Alpha_191:
         alpha_189=self.alpha_189()
         #alpha_190=self.alpha_190()
         alpha_191=self.alpha_191()
-        if self.benchmark_open_price is None:
+        if self.benchmark_open_price is not None:
             res = pd.DataFrame({
                "alpha_001":alpha_001,
                "alpha_002":alpha_002,
