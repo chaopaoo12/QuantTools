@@ -1,7 +1,7 @@
 #coding=utf-8
 
 
-from QUANTTOOLS.Model.StockModel.StrategyXgboostReal import QAStockXGBoost
+from QUANTTOOLS.Model.StockModel.StrategyXgboostReal import QAStockXGBoostReal
 from .setting import working_dir, data_set, datareal_set
 
 from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
@@ -12,7 +12,7 @@ import pandas as pd
 
 def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log = None):
     QA_util_log_info('##JOB01 Now Model Init ==== {}'.format(str(date)), ui_log)
-    stock_model = QAStockXGBoost()
+    stock_model = QAStockXGBoostReal()
 
     QA_util_log_info('##JOB02 Now Stock Prepare Model Data ==== {}'.format(str(date)), ui_log)
     stock_model.get_data(start=str(int(date[0:4])-3)+"-01-01", end=date, block=False, sub_block=False)

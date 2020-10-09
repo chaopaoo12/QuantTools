@@ -8,7 +8,7 @@ from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAStockModelReal import QAStockModelReal
 from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
 
-class QAStockXGBoost(QAStockModelReal):
+class QAStockXGBoostReal(QAStockModelReal):
 
     def build_model(self, other_params):
         QA_util_log_info('##JOB Set Model Params ===== {}'.format(self.info['date']), ui_log = None)
