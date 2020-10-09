@@ -886,7 +886,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
         QA_util_log_info(
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
-def QA_fetch_stock_target(codes, start_date, end_date, type='close', method = 'value'):
+def QA_fetch_stock_target(codes, start_date, end_date, index='000300', type='close', method = 'value'):
     if QA_util_if_trade(end_date):
         pass
     else:
@@ -894,7 +894,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='close', method = 'v
     end = QA_util_get_next_datetime(end_date,10)
     rng1 = QA_util_get_trade_range(start_date, end_date)
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
-    market = QA.QA_fetch_index_day(['000001'],start_date,end,format='pd')['close'].reset_index()
+    market = QA.QA_fetch_index_day(index,start_date,end,format='pd')['close'].reset_index()
     if method == 'value':
         market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
     elif method == 'log':
