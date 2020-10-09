@@ -13,7 +13,7 @@ def stock_alpha(code, date=None):
         end_date = QA_util_today_str()
     else:
         end_date = date
-    start_date = QA_util_get_pre_trade_date(date, 250)
+    start_date = QA_util_get_pre_trade_date(date, 270)
     try:
         price = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
         price = price.assign(volume=price.volume*100)
@@ -29,7 +29,7 @@ def index_alpha(code, date=None):
         end_date = QA_util_today_str()
     else:
         end_date = date
-    start_date = QA_util_get_pre_trade_date(date, 250)
+    start_date = QA_util_get_pre_trade_date(date, 270)
     try:
         price = QA_fetch_index_day_adv(code, start_date, end_date ).data.reset_index().dropna(axis=0, how='any')
         price = price.assign(volume=price.volume*100)
@@ -150,7 +150,7 @@ def stock_alpha191_half(code, date=None):
         end_date = QA_util_today_str()
     else:
         end_date = date
-    start_date = QA_util_get_pre_trade_date(date, 250)
+    start_date = QA_util_get_pre_trade_date(date, 270)
 
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
@@ -167,7 +167,7 @@ def stock_alpha191_half_realtime(code, date = None):
     else:
         end_date = date
     end_date = QA_util_get_pre_trade_date(end_date, 1)
-    start_date = QA_util_get_pre_trade_date(date, 250)
+    start_date = QA_util_get_pre_trade_date(date, 270)
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
         price['avg_price'] = price['amount']/price['volume']*price['adj']
@@ -184,7 +184,7 @@ def usstock_alpha(code, date=None):
         end_date = QA_util_today_str()
     else:
         end_date = date
-    start_date = QA_util_get_pre_trade_date(date, 250)
+    start_date = QA_util_get_pre_trade_date(date, 270)
     try:
         price = QA_fetch_usstock_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
         price['avg_price'] = price['amount']/price['volume']*price['adj']+price['adjust']
@@ -225,12 +225,29 @@ def hedge_alpha(code, index, date=None):
         end_date = QA_util_today_str()
     else:
         end_date = date
-    start_date = QA_util_get_pre_trade_date(date, 250)
+    start_date = QA_util_get_pre_trade_date(date, 270)
     try:
         price = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
         price = price.assign(volume=price.volume*100)
         price['avg_price'] = price['amount']/price['volume']*price['adj']
         price['prev_close'] = price[['code','close']].groupby('code').shift()
+        index_price = QA_fetch_index_day_adv(index, start_date, end_date).data.reset_index().dropna(axis=0, how='any')
+        return(Alpha_191(price, date, index_price).alpha())
+    except:
+        return(None)
+
+def hedge_alpha_half(code, index, date=None):
+    np.seterr(invalid='ignore')
+    if date == None:
+        end_date = QA_util_today_str()
+    else:
+        end_date = date
+    start_date = QA_util_get_pre_trade_date(date, 270)
+
+    try:
+        price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data
+        price['prev_close'] = price['close']*(1+price['pctchange'])
+        price['avg_price'] = price['amount']/price['volume']*price['adj']
         index_price = QA_fetch_index_day_adv(index, start_date, end_date).data.reset_index().dropna(axis=0, how='any')
         return(Alpha_191(price, date, index_price).alpha())
     except:
