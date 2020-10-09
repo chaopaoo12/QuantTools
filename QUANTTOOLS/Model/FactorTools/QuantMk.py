@@ -2,7 +2,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_get_qu
                                            QA_fetch_index_quant_data,QA_fetch_get_index_quant_data,
                                            QA_fetch_stock_quant_pre_adv,QA_fetch_index_quant_pre_adv,
                                            QA_fetch_index_info,QA_fetch_stock_om_all,QA_fetch_stock_quant_pre_train_adv,
-                                           QA_fetch_get_quant_data_train)
+                                           QA_fetch_get_quant_data_train,QA_fetch_get_quant_data_realtime)
 import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
@@ -34,7 +34,7 @@ def get_quant_data_train(start_date, end_date, type = 'crawl', block = False, su
     #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
-def get_quant_data_realtime(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value'):
+def get_quant_data_realtime(start_date, end_date, type = 'model', block = False, sub_block= True, method = 'value'):
     if block is True:
         data = QA.QA_fetch_stock_block()
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
@@ -52,7 +52,7 @@ def get_quant_data_realtime(start_date, end_date, type = 'crawl', block = False,
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method).data
     if type == 'model':
-        res = QA_fetch_get_quant_data_train(codes, start_date, end_date, type='normalization').set_index(['date','code']).drop(['date_stamp'], axis=1)
+        res = QA_fetch_get_quant_data_realtime(codes, start_date, end_date, type='normalization').set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
         res = res.join(target)
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]

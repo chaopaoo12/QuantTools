@@ -51,7 +51,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAInterest import QA_fetch_get_interest_rate
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAFinper import QA_fetch_get_stock_financial_percent
 
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_quant_data,QA_fetch_get_index_quant_data,QA_fetch_get_quant_data_train
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import (QA_fetch_get_quant_data,QA_fetch_get_index_quant_data,
+                                                         QA_fetch_get_quant_data_train,QA_fetch_get_quant_data_realtime)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAusstock import QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare
 

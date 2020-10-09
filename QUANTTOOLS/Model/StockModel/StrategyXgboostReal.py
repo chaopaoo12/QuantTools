@@ -3,7 +3,7 @@ from xgboost import XGBClassifier
 from sklearn.metrics import (accuracy_score,
                              classification_report,
                              precision_score)
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_train
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_train,get_quant_data_realtime
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAStockModelReal import QAStockModelReal
 from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
@@ -38,7 +38,7 @@ class QAStockXGBoostReal(QAStockModelReal):
 
     def model_predict(self, start, end, block = False, sub_block= False, type='crawl'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-        data = get_quant_data_train(start, end, type= type,block = block, sub_block=sub_block)
+        data = get_quant_data_realtime(start, end, type= type,block = block, sub_block=sub_block)
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK',

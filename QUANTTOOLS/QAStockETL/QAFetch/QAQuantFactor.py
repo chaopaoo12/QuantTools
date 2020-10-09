@@ -2,7 +2,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_stock_financial_percent_adv,QA_fetch_index_alpha_adv,
                                                            QA_fetch_index_technical_index_adv,QA_fetch_stock_alpha101_adv,
                                                            QA_fetch_index_alpha101_adv,QA_fetch_stock_alpha101half_adv)
-from QUANTTOOLS.QAStockETL.QAFetch.QAAlpha import QA_fetch_get_stock_alpha101half_realtime
+from QUANTTOOLS.QAStockETL.QAFetch.QAAlpha import QA_fetch_get_stock_alpha101half_realtime,QA_fetch_get_stock_alpha191half_realtime
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_info
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,QA_util_get_trade_range,QA_util_get_next_trade_date,QA_util_code_tolist,
                                QA_util_get_pre_trade_date)
@@ -391,7 +391,7 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
     alpha101 = QA_Sql_Stock_Alpha101
     pe = QA_Sql_Stock_FinancialPercent
     alpha101_half_real = QA_fetch_get_stock_alpha101half_realtime
-
+    alpha191_half_real = QA_fetch_get_stock_alpha191half_realtime
 
     QA_util_log_info(
         '##JOB got stock quant data date range ============== from {from_} to {to_} '.format(from_=start,to_=end_date), ui_log)
@@ -441,6 +441,11 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
     alpha101half_real.columns = [x + '_HALF' for x in alpha101half_real.columns]
 
     QA_util_log_info(
+        '##JOB got Data stock alpha101 half data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+    alpha191half_real = alpha191_half_real(code, start_date, sec_end).drop(['date_stamp'], axis=1).set_index(['date','code']).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
+    alpha191half_real.columns = [x + '_HALF' for x in alpha191half_real.columns]
+
+    QA_util_log_info(
         '##JOB got Data stock tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     index_res = index(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
     QA_util_log_info(
@@ -450,7 +455,7 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
     QA_util_log_info(
         '##JOB stock quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
 
-    res = financial_res.join(pe_res).join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(alpha101half_real)
+    res = financial_res.join(pe_res).join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(alpha101half_real).join(alpha191half_real)
 
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':
