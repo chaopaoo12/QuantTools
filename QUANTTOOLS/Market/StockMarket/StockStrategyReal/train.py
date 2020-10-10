@@ -38,15 +38,17 @@ def train(date, strategy_id='机器学习1号', working_dir=working_dir, ui_log 
     QA_util_log_info('##JOB06 Now Model Trainning Report ==== {}'.format(str(date)), ui_log)
     msg = build_email(build_head(),msg1,
                       stock_train_report,stock_ft_importance)
-
-    send_email('模型训练报告', msg, 'date')
-    send_actionnotice(strategy_id,
-                      '报告:{}'.format(date),
-                      'REAL模型训练完成,请查收结果',
-                      direction = 'HOLD',
-                      offset='HOLD',
-                      volume=None
-                      )
+    try:
+        send_email('模型训练报告', msg, 'date')
+        send_actionnotice(strategy_id,
+                          '报告:{}'.format(date),
+                          'REAL模型训练完成,请查收结果',
+                          direction = 'HOLD',
+                          offset='HOLD',
+                          volume=None
+                          )
+    except:
+        pass
 
     stock_model.prepare_data(thresh=0, drop=0.99, cols = data_set)
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
