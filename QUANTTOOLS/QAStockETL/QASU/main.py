@@ -28,7 +28,7 @@ from QUANTTOOLS.QAStockETL.QASU import crawl_jrj_financial_reportdate as save_fi
     crawl_sina_financial_report as save_stock_financial_sina, crawl_sina_shares_change as save_stock_shares_sina,\
     crawl_wy_financial_report as save_stock_financial_wy, save_stock_technical_index as save_stock_technical_index,\
     crawl_interest_rate as crawl_interest_rate, save_stock_finper as save_stock_finper, save_stock_quant as save_stock_quant,\
-    crawl_sina_usstock as crawl_sina_hkstock, save_tdx as save_tdx
+    crawl_sina_usstock as crawl_sina_hkstock, save_tdx as save_tdx, save_stock_alpha_real as alpha_real
 from QUANTAXIS.QAUtil import QA_util_today_str
 
 def QA_SU_save_report_calendar_day():
@@ -177,6 +177,12 @@ def QA_SU_save_stock_alpha191half_day(code = None, start_date = QA_util_today_st
 
 def QA_SU_save_stock_alpha191half_his(code = None, start_date = '2008-01-01', end_date = QA_util_today_str()):
     save_stock_alpha.QA_SU_save_stock_alpha191half_his(code = code, start_date = start_date, end_date = end_date)
+
+def QA_SU_save_stock_alpha101half_real(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
+    alpha_real.QA_SU_save_stock_alpha101half_real(code = code, start_date = start_date, end_date = end_date)
+
+def QA_SU_save_stock_alpha191half_real(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
+    alpha_real.QA_SU_save_stock_alpha191half_real(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_index_info():
     save_tdx.QA_SU_save_index_info()

@@ -29,7 +29,8 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_fianacialTTM_momgo,
                                              QA_SU_save_stock_technical_month_day,QA_SU_save_stock_technical_month_his,
                                              QA_SU_save_stock_quant_data_day,QA_SU_save_stock_quant_data_his,
                                              QA_SU_save_stock_alpha101half_day,QA_SU_save_stock_alpha101half_his,
-                                             QA_SU_save_stock_alpha191half_day,QA_SU_save_stock_alpha191half_his)
+                                             QA_SU_save_stock_alpha191half_day,QA_SU_save_stock_alpha191half_his,
+                                             QA_SU_save_stock_alpha101half_real,QA_SU_save_stock_alpha191half_real)
 
 ###Index indicator
 from QUANTTOOLS.QAStockETL.QASU.main import (
