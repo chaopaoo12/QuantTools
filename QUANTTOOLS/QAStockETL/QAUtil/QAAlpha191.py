@@ -1800,7 +1800,9 @@ class Alpha_191:
     # @author: fuzhongjie
     def alpha_154(self):
         # (((VWAP-MIN(VWAP,16)))<(CORR(VWAP,MEAN(VOLUME,180),18))) #
-        alpha = (self.avg_price-self.avg_price.rolling(16).min()).iloc[-1,:]<self.avg_price.iloc[-18:,:].corrwith((self.volume.rolling(180).mean()).iloc[-18:,:])
+        compare1 = (self.avg_price-self.avg_price.rolling(16).min()).iloc[-1,:]
+        compare2 = self.avg_price.iloc[-18:,:].corrwith((self.volume.rolling(180).mean()).iloc[-18:,:])
+        alpha = compare1<compare2
         alpha=alpha.dropna()
         return alpha
 

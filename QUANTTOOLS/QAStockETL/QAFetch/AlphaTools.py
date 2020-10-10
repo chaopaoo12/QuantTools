@@ -129,12 +129,12 @@ def stock_alpha101_half_realtime(code, start = None, end = QA_util_today_str()):
 
     start_date = QA_util_get_pre_trade_date(start, 270)
     deal_date_list = QA_util_get_trade_range(start, end)
-    end = QA_util_get_pre_trade_date(end, 1)
+    end_date = QA_util_get_pre_trade_date(end, 1)
 
     try:
-        price = QA_fetch_stock_half_adv(code, start_date, end).to_qfq().data
+        price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data
         price['avg_price'] = price['amount']/price['volume']*price['adj']
-        res = QA_fetch_stock_real(code)
+        res = QA_fetch_stock_real(code,end,end)
         res = res.assign(pctchange=res.close/res.prev_close-1).set_index(['date','code'])[['open','high','low','close','volume','amount','pctchange','avg_price']]
         res = price.append(res)
         res = res.groupby('code').apply(get_alpha)
@@ -162,21 +162,21 @@ def stock_alpha191_half(code, date=None):
 def stock_alpha191_half_realtime(code, date = None):
 
     if date == None:
-        end_date = QA_util_today_str()
+        end = QA_util_today_str()
     else:
-        end_date = date
-    end_date = QA_util_get_pre_trade_date(end_date, 1)
+        end = date
+    end_date = QA_util_get_pre_trade_date(end, 1)
     start_date = QA_util_get_pre_trade_date(date, 270)
-    #try:
-    price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
-    price['avg_price'] = price['amount']/price['volume']*price['adj']
-    price['prev_close'] = price['close']*(1+price['pctchange'])
-    res = QA_fetch_stock_real(code)
-    res = price.append(res)
-    return(Alpha_191(res, date).alpha())
-    #except Exception as e:
-    #    print(e)
-    #    return(None)
+    try:
+        price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
+        price['avg_price'] = price['amount']/price['volume']*price['adj']
+        price['prev_close'] = price['close']*(1+price['pctchange'])
+        res = QA_fetch_stock_real(code,end,end)
+        res = price.append(res)
+        return(Alpha_191(res, date).alpha())
+    except Exception as e:
+        print(e)
+        return(None)
 
 def usstock_alpha(code, date=None):
     np.seterr(invalid='ignore')
