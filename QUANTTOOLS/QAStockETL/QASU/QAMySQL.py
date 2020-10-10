@@ -360,17 +360,17 @@ def QA_etl_stock_alpha191half_day(start_date = QA_util_today_str(), end_date= No
                                                                               'alpha_094','alpha_095','alpha_096','alpha_097','alpha_098','alpha_099',
                                                                               'alpha_100','alpha_101','alpha_102','alpha_103','alpha_104','alpha_105',
                                                                               'alpha_106','alpha_107','alpha_108','alpha_109','alpha_111','alpha_112',
-                                                                              'alpha_113','alpha_114','alpha_115','alpha_116','alpha_117','alpha_119',
-                                                                              'alpha_120','alpha_122','alpha_123','alpha_124','alpha_125','alpha_126',
-                                                                              'alpha_127','alpha_128','alpha_129','alpha_130','alpha_132','alpha_133',
-                                                                              'alpha_134','alpha_135','alpha_136','alpha_137','alpha_138','alpha_139',
-                                                                              'alpha_141','alpha_142','alpha_145','alpha_148','alpha_150','alpha_152',
-                                                                              'alpha_153','alpha_154','alpha_155','alpha_156','alpha_157','alpha_158',
-                                                                              'alpha_160','alpha_161','alpha_162','alpha_163','alpha_164','alpha_167',
-                                                                              'alpha_168','alpha_169','alpha_170','alpha_171','alpha_172','alpha_173',
-                                                                              'alpha_174','alpha_175','alpha_176','alpha_177','alpha_178','alpha_179',
-                                                                              'alpha_180','alpha_184','alpha_185','alpha_186','alpha_187','alpha_188',
-                                                                              'alpha_189','alpha_191'
+                                                                              'alpha_113','alpha_114','alpha_115','alpha_116','alpha_117','alpha_118',
+                                                                              'alpha_119','alpha_120','alpha_122','alpha_123','alpha_124','alpha_125',
+                                                                              'alpha_126','alpha_127','alpha_128','alpha_129','alpha_130','alpha_132',
+                                                                              'alpha_133','alpha_134','alpha_135','alpha_136','alpha_137','alpha_138',
+                                                                              'alpha_139','alpha_141','alpha_142','alpha_145','alpha_148','alpha_150',
+                                                                              'alpha_152','alpha_153','alpha_154','alpha_155','alpha_156','alpha_157',
+                                                                              'alpha_158','alpha_160','alpha_161','alpha_162','alpha_163','alpha_164',
+                                                                              'alpha_167','alpha_168','alpha_169','alpha_170','alpha_171','alpha_172',
+                                                                              'alpha_173','alpha_174','alpha_175','alpha_176','alpha_177','alpha_178',
+                                                                              'alpha_179','alpha_180','alpha_184','alpha_185','alpha_186','alpha_187',
+                                                                              'alpha_188','alpha_189','alpha_191'
                                                                               ]]
     if data is None:
         QA_util_log_info(
