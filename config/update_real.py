@@ -28,7 +28,8 @@
 """对应于save x
 """
 
-from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_alpha101real,check_stock_alpha191real)
+from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_alpha101real,check_stock_alpha191real,check_stock_real)
+from QUANTTOOLS.QAStockETL.QASU import QA_SU_save_stock_real
 from  QUANTAXIS.QAUtil import QA_util_today_str
 from .setting import daily_run
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date
@@ -46,6 +47,11 @@ if __name__ == '__main__':
         mark_day = None
 
     if mark_day is not None:
+
+        res = check_stock_real(mark_day)
+        while res is None or res > 20:
+            QA_SU_save_stock_real()
+            res = check_stock_real(mark_day)
 
         check = None
         while check is None or check  > 20:
