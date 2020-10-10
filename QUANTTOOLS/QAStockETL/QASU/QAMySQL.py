@@ -323,11 +323,11 @@ def QA_etl_stock_alpha_day(start_date = QA_util_today_str(), end_date= None, ui_
                                                                        'alpha_133','alpha_134','alpha_135','alpha_136','alpha_137','alpha_138',
                                                                        'alpha_139','alpha_141','alpha_142','alpha_145','alpha_148','alpha_150',
                                                                        'alpha_152','alpha_153','alpha_154','alpha_155','alpha_156','alpha_157',
-                                                                       'alpha_158','alpha_160','alpha_161','alpha_162','alpha_163','alpha_164',
-                                                                       'alpha_167','alpha_168','alpha_169','alpha_170','alpha_171','alpha_172',
-                                                                       'alpha_173','alpha_174','alpha_175','alpha_176','alpha_177','alpha_178',
-                                                                       'alpha_179','alpha_180','alpha_184','alpha_185','alpha_186','alpha_187',
-                                                                       'alpha_188','alpha_189','alpha_191'
+                                                                       'alpha_158','alpha_159','alpha_160','alpha_161','alpha_162','alpha_163',
+                                                                       'alpha_164','alpha_167','alpha_168','alpha_169','alpha_170','alpha_171',
+                                                                       'alpha_172','alpha_173','alpha_174','alpha_175','alpha_176','alpha_177',
+                                                                       'alpha_178','alpha_179','alpha_180','alpha_184','alpha_185','alpha_186',
+                                                                       'alpha_187','alpha_188','alpha_189','alpha_191'
                                                                        ]]
     if data is None:
         QA_util_log_info(
@@ -366,11 +366,11 @@ def QA_etl_stock_alpha191half_day(start_date = QA_util_today_str(), end_date= No
                                                                               'alpha_133','alpha_134','alpha_135','alpha_136','alpha_137','alpha_138',
                                                                               'alpha_139','alpha_141','alpha_142','alpha_145','alpha_148','alpha_150',
                                                                               'alpha_152','alpha_153','alpha_154','alpha_155','alpha_156','alpha_157',
-                                                                              'alpha_158','alpha_160','alpha_161','alpha_162','alpha_163','alpha_164',
-                                                                              'alpha_167','alpha_168','alpha_169','alpha_170','alpha_171','alpha_172',
-                                                                              'alpha_173','alpha_174','alpha_175','alpha_176','alpha_177','alpha_178',
-                                                                              'alpha_179','alpha_180','alpha_184','alpha_185','alpha_186','alpha_187',
-                                                                              'alpha_188','alpha_189','alpha_191'
+                                                                              'alpha_158','alpha_159','alpha_160','alpha_161','alpha_162','alpha_163',
+                                                                              'alpha_164','alpha_167','alpha_168','alpha_169','alpha_170','alpha_171',
+                                                                              'alpha_172','alpha_173','alpha_174','alpha_175','alpha_176','alpha_177',
+                                                                              'alpha_178','alpha_179','alpha_180','alpha_184','alpha_185','alpha_186',
+                                                                              'alpha_187','alpha_188','alpha_189','alpha_191'
                                                                               ]]
     if data is None:
         QA_util_log_info(
