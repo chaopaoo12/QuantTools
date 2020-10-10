@@ -9,6 +9,20 @@ from multiprocessing import Pool
 import pymongo
 import gc
 
+def stock_alpha101half_real_saving_work(code, start_date, end_date, client):
+    try:
+        QA_util_log_info(
+            '##JOB01 Now Saving Stock Alpha101 Half Real==== {}'.format(str(code)), ui_log)
+        data = QA_fetch_get_stock_alpha101half_realtime(code,start_date,end_date)
+        if data is not None:
+            client.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
+            gc.collect()
+        QA_util_log_info(
+            '##JOB01 Now Saving Stock Alpha101 Half Real Success==== {}'.format(str(code)), ui_log)
+    except Exception as error0:
+        print(error0)
+        return(str(code))
+
 def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date = None, client=DATABASE, ui_log = None, ui_progress = None):
     '''
      save stock_day
@@ -33,19 +47,7 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code, start_date, end_date):
-        try:
-            QA_util_log_info(
-                '##JOB01 Now Saving Stock Alpha101 Half Real==== {}'.format(str(code)), ui_log)
-            data = QA_fetch_get_stock_alpha101half_realtime(code,start_date,end_date)
-            if data is not None:
-                stock_alpha.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
-                gc.collect()
-            QA_util_log_info(
-                '##JOB01 Now Saving Stock Alpha101 Half Real Success==== {}'.format(str(code)), ui_log)
-        except Exception as error0:
-            print(error0)
-            err.append(str(code))
+
 
     #executor = ThreadPoolExecutor(max_workers=5)
     ## executor.map((__saving_work,  stock_list[i_], coll),URLS)
@@ -99,7 +101,8 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
         intProgressToLog = int(float((codes.index(code) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
         #__saving_work(code,start_date,end_date)
-        pool.apply_async(__saving_work, args =(code,start_date,end_date)).get()
+        _erros = pool.apply_async(stock_alpha101half_real_saving_work, args =(code,start_date,end_date)).get()
+        err.append(str(_erros))
     pool.close()
     pool.join()
 
