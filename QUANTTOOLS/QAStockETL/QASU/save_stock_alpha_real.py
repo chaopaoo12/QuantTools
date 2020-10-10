@@ -88,7 +88,8 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     #    QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
     #    __saving_work(code,start_date,end_date)
-    pool = Pool(1)
+
+    pool = Pool(10)
     for code in codes:
         QA_util_log_info('The {} of Total {} ==== {}'.format
                          ((codes.index(code) +1), len(codes), str(code)))
