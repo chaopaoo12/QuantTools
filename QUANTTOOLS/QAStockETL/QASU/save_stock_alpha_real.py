@@ -39,7 +39,7 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     codes = code
     if codes is None:
         codes = list(QA_fetch_stock_om_all()['code'])
-        #codes = [codes[i:i+100] for i in range(0,len(codes),100)]
+        codes = [codes[i:i+100] for i in range(0,len(codes),100)]
 
     #deal_date_list = QA_util_get_trade_range(start_date, end_date)
 
@@ -93,8 +93,8 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     pool = Pool(20)
     #pool.map(__saving_work, [code, start_date, end_date])
     for code in codes:
-        QA_util_log_info('The {} of Total {} ==== {}'.format
-                         ((codes.index(code) +1), len(codes), str(code)))
+        QA_util_log_info('The {} of Total {} ==== '.format
+                         ((codes.index(code) +1), len(codes)))
 
         strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(code) +1) / len(codes) * 100))[0:4] + '%', ui_log)
         intProgressToLog = int(float((codes.index(code) +1) / len(codes) * 100))
