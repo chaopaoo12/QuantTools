@@ -2501,3 +2501,21 @@ def QA_fetch_stock_alpha101_real(code, start, end=None, format='pd', collections
     else:
         QA_util_log_info(
             'QA Error QA_fetch_stock_alpha101_real data parameter start=%s end=%s is not right' % (start, end))
+
+def QA_fetch_stock_real(code, start, end, format='pd', collections=DATABASE.stock_real):
+    code = QA_util_code_tolist(code)
+
+    if QA_util_date_valid(end):
+
+        __data = []
+        cursor = collections.find({
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+
+        data = pd.DataFrame([item for item in cursor])
+        try:
+            return data
+        except Exception as e:
+            QA_util_log_info(e)
+            return None

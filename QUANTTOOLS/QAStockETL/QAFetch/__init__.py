@@ -29,7 +29,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report, QA
                                                    QA_fetch_stock_om_all,QA_fetch_stock_all,QA_fetch_stock_alpha101half,
                                                    QA_fetch_stock_quant_pre_train,QA_fetch_stock_alpha191half,
                                                    QA_fetch_usstock_day,QA_fetch_usstock_pb,QA_fetch_usstock_pe,QA_fetch_usstock_adj,
-                                                   QA_fetch_stock_alpha101_real,QA_fetch_stock_alpha_real)
+                                                   QA_fetch_stock_alpha101_real,QA_fetch_stock_alpha_real,
+                                                   QA_fetch_stock_real)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAcalendar import QA_fetch_get_financial_calendar
 

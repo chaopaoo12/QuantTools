@@ -225,3 +225,6 @@ def QA_SU_save_usstock_pb():
 
 def QA_SU_save_usstock_pe():
     save_tdx.QA_SU_save_usstock_pe()
+
+def QA_SU_save_stock_real():
+    save_tdx.QA_SU_save_stock_real()

@@ -7,4 +7,4 @@ from QUANTTOOLS.QAStockETL.Check.check_data import (check_index_day,check_stock_
 
 from QUANTTOOLS.QAStockETL.Check.check_special import check_tdx_financial,check_stock_adj
 
-from QUANTTOOLS.QAStockETL.Check.check_real import check_stock_alpha191real,check_stock_alpha101real
+from QUANTTOOLS.QAStockETL.Check.check_real import check_stock_alpha191real,check_stock_alpha101real,check_stock_real

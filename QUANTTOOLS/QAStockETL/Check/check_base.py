@@ -23,6 +23,9 @@ def check_stock_base(func1 = None, func2 = None, mark_day = None, title = None, 
     except:
         data2 = None
 
+    print([i for i in data2 if i not in data1])
+    print([i for i in data1 if i not in data2])
+
     if data1 is None:
         QA_util_log_info(
             '##JOB Now Check {title} Failed ============== {deal_date} to {to_date} '.format(title = title,
@@ -49,6 +52,7 @@ def check_stock_base(func1 = None, func2 = None, mark_day = None, title = None, 
                           direction = '{mark_day}, 数据量:{num}'.format(mark_day = func2.__name__, num = len(data1)),
                           offset='{to_date}, 数据量:{num}'.format(to_date = func2.__name__, num = len(data2)),
                           volume= '缺失数据量:{num}'.format(num =(len(data2) - len(data1))))
+
         return((len(data2) - len(data1)))
     else:
         QA_util_log_info(

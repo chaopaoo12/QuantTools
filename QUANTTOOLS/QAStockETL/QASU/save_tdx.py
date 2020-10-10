@@ -1,7 +1,7 @@
 from QUANTAXIS import (QA_fetch_get_usstock_list,QA_fetch_get_index_list,QA_fetch_get_index_day,
                        QA_fetch_get_stock_day,QA_fetch_get_stock_xdxr,QA_fetch_get_stock_info
                        )
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare,QA_fetch_get_stock_half_realtime
 from QUANTAXIS.QAData.data_fq import _QA_data_stock_to_fq
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_day
 import datetime
@@ -1115,6 +1115,45 @@ def QA_SU_save_stock_info(client=DATABASE, ui_log=None, ui_progress=None):
         )
 
         __saving_work(stock_list[i_], coll)
+    if len(err) < 1:
+        QA_util_log_info('SUCCESS', ui_log=ui_log)
+    else:
+        QA_util_log_info(' ERROR CODE \n ', ui_log=ui_log)
+        QA_util_log_info(err, ui_log=ui_log)
+
+def QA_SU_save_stock_real(client=DATABASE, ui_log=None, ui_progress=None):
+    """save stock_info
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+
+    client.drop_collection('stock_real')
+    stock_list = QA_fetch_stock_all().code.unique().tolist()
+    coll = client.stock_real
+    coll.create_index([('code',
+                        pymongo.ASCENDING),
+                       ('date_stamp',
+                        pymongo.ASCENDING)],
+                      unique=True)
+    err = []
+
+    def __saving_work(stock_list, coll):
+        QA_util_log_info(
+            '##JOB10 Now Saving STOCK REAL ==== ',
+            ui_log=ui_log
+        )
+        data = QA_fetch_get_stock_half_realtime(stock_list)
+        try:
+            coll.insert_many(
+                QA_util_to_json_from_pandas(data)
+            )
+
+        except Exception as error0:
+            print(error0)
+            err.append(error0)
+    __saving_work(stock_list, coll)
+
     if len(err) < 1:
         QA_util_log_info('SUCCESS', ui_log=ui_log)
     else:

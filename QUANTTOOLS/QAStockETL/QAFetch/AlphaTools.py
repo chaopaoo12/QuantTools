@@ -1,7 +1,7 @@
 import numpy as np
 from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_index_day_adv,QA_fetch_stock_min_adv
 from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date,QA_util_get_trade_range,QA_util_get_real_date,QA_util_if_trade)
-from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_half_realtime
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_real
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_half_adv,QA_fetch_usstock_day_adv
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha191 import Alpha_191
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha101 import get_alpha
@@ -134,7 +134,7 @@ def stock_alpha101_half_realtime(code, start = None, end = QA_util_today_str()):
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end).to_qfq().data
         price['avg_price'] = price['amount']/price['volume']*price['adj']
-        res = QA_fetch_get_stock_half_realtime(code)
+        res = QA_fetch_stock_real(code)
         res = res.assign(pctchange=res.close/res.prev_close-1).set_index(['date','code'])[['open','high','low','close','volume','amount','pctchange','avg_price']]
         res = price.append(res)
         res = res.groupby('code').apply(get_alpha)
@@ -167,15 +167,16 @@ def stock_alpha191_half_realtime(code, date = None):
         end_date = date
     end_date = QA_util_get_pre_trade_date(end_date, 1)
     start_date = QA_util_get_pre_trade_date(date, 270)
-    try:
-        price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
-        price['avg_price'] = price['amount']/price['volume']*price['adj']
-        price['prev_close'] = price['close']*(1+price['pctchange'])
-        res = QA_fetch_get_stock_half_realtime(code)
-        res = price.append(res)
-        return(Alpha_191(res, date).alpha())
-    except:
-        return(None)
+    #try:
+    price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
+    price['avg_price'] = price['amount']/price['volume']*price['adj']
+    price['prev_close'] = price['close']*(1+price['pctchange'])
+    res = QA_fetch_stock_real(code)
+    res = price.append(res)
+    return(Alpha_191(res, date).alpha())
+    #except Exception as e:
+    #    print(e)
+    #    return(None)
 
 def usstock_alpha(code, date=None):
     np.seterr(invalid='ignore')

@@ -3,7 +3,8 @@
 ###Stock Basic data
 from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_stock_day,QA_SU_save_stock_xdxr,
                                              QA_SU_save_stock_half,QA_SU_save_stock_info,
-                                             QA_SU_save_stock_delist,QA_SU_save_stock_industryinfo)
+                                             QA_SU_save_stock_delist,QA_SU_save_stock_industryinfo,
+                                             QA_SU_save_stock_real)
 
 ###index basic data
 from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_index_info,

@@ -1,7 +1,7 @@
 ###Stock Basic data
 from QUANTTOOLS.QAStockETL.QASU import (QA_SU_save_report_calendar_day, QA_SU_save_report_calendar_his,
                                         QA_SU_save_stock_divyield_day, QA_SU_save_stock_divyield_his,
-                                        QA_SU_save_interest_rate,QA_SU_save_stock_day,
+                                        QA_SU_save_interest_rate,QA_SU_save_stock_day,QA_SU_save_stock_real,
                                         QA_SU_save_financialfiles,
                                         QA_SU_save_stock_financial_ths_day,QA_SU_save_stock_financial_ths_his,
                                         QA_SU_save_stock_financial_sina_day,QA_SU_save_stock_financial_sina_his,

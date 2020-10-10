@@ -2,6 +2,8 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pa
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_stock_om_all
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_stock_alpha101half_realtime,
                                            QA_fetch_get_stock_alpha191half_realtime)
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+import concurrent
 import pymongo
 import gc
 
@@ -20,6 +22,7 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     codes = code
     if codes is None:
         codes = list(QA_fetch_stock_om_all()['code'])
+        #codes = [codes[i:i+500] for i in range(0,len(codes),500)]
 
     #deal_date_list = QA_util_get_trade_range(start_date, end_date)
 
@@ -40,17 +43,47 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
             print(error0)
             err.append(str(code))
 
-    k=500
-    for i in range(0, len(codes), k):
-        code = codes[i:i+k]
-        QA_util_log_info('The {} of Total {}'.format
-                         ((i +k ), len(codes)))
+    executor = ThreadPoolExecutor(max_workers=5)
+    # executor.map((__saving_work,  stock_list[i_], coll),URLS)
+    res = {
+        executor.submit(__saving_work,
+                        codes[i_],
+                        start_date,
+                        end_date)
+        for i_ in range(len(codes))
+    }
 
-        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((i + k) / len(codes) * 100))[0:4] + '%', ui_log)
-        intProgressToLog = int(float((i + k ) / len(codes) * 100 ))
-        QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+    count = 0
+    for i_ in concurrent.futures.as_completed(res):
+        QA_util_log_info(
+            'The {} of Total {}'.format(count,
+                                        len(codes)),
+            ui_log=ui_log
+        )
 
-        __saving_work(code,start_date,end_date)
+        strProgress = 'DOWNLOAD PROGRESS {} '.format(
+            str(float(count / len(codes) * 100))[0:5] + '%'
+        )
+        intProgress = int(count / len(codes) * 10000.0)
+        QA_util_log_info(
+            strProgress,
+            ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=intProgress
+        )
+        count = count + 1
+
+    #k=500
+    #for i in range(0, len(codes), k):
+    #    code = codes[i:i+k]
+    #    QA_util_log_info('The {} of Total {}'.format
+    #                     ((i +k ), len(codes)))
+
+    #    strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((i + k) / len(codes) * 100))[0:4] + '%', ui_log)
+    #    intProgressToLog = int(float((i + k ) / len(codes) * 100 ))
+    #    QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+
+    #    __saving_work(code,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save Stock Alpha101 Half Real ^_^',  ui_log)

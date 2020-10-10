@@ -122,6 +122,7 @@ def QA_fetch_get_stock_half_realtime(code, source = 'sina'):
     res[['open','high','low','close','volume','amount','prev_close']] = res[['open','high','low','close','volume','amount','prev_close']].apply(pd.to_numeric)
     res['avg_price'] = res['amount']/res['volume']
     res = res[res.close > 0]
+    res['date_stamp'] = res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10]))
     return(res)
 
 def half_ohlc(data):
