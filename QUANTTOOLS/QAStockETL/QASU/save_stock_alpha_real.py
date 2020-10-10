@@ -90,7 +90,7 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
 
     #    __saving_work(code,start_date,end_date)
 
-    pool = Pool(20)
+    pool = Pool(10)
     #pool.map(__saving_work, [code, start_date, end_date])
     for code in codes:
         QA_util_log_info('The {} of Total {} ==== '.format
