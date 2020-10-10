@@ -38,7 +38,9 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_stock_alpha101half,
                                                    QA_fetch_stock_half,
                                                    QA_fetch_stock_alpha191half,
-                                                   QA_fetch_usstock_day)
+                                                   QA_fetch_usstock_day,
+                                                   QA_fetch_stock_alpha_real,
+                                                   QA_fetch_stock_alpha101_real)
 from QUANTAXIS.QAUtil.QADate import month_data
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,QA_util_log_info,
                               QA_util_datetime_to_strdate, QA_util_add_months,
@@ -758,3 +760,37 @@ def QA_fetch_usstock_day_adv(
         #     print("QA Error QA_fetch_stock_day_adv set index 'datetime, code' return None")
         #     return None
         return QA_DataStruct_UsStock_day(res_reset_index)
+
+def QA_fetch_stock_alpha191real_adv(code, start="all", end=None):
+    '获取股票财报日历'
+    #code= [code] if isinstance(code,str) else code
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2005-01-01'
+        end = QA_util_today_str()
+        data = QA_fetch_stock_alpha_real(code, start, end, format='pd')
+        return QA_DataStruct_Financial(data)
+    else:
+        data = QA_fetch_stock_alpha_real(code, start, end, format='pd')
+        return QA_DataStruct_Financial(data)
+
+def QA_fetch_stock_alpha101real_adv(code, start="all", end=None):
+    '获取股票财报日历'
+    #code= [code] if isinstance(code,str) else code
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2005-01-01'
+        end = QA_util_today_str()
+        data = QA_fetch_stock_alpha101_real(code, start, end, format='pd')
+        return QA_DataStruct_Financial(data)
+    else:
+        data = QA_fetch_stock_alpha101_real(code, start, end, format='pd')
+        return QA_DataStruct_Financial(data)

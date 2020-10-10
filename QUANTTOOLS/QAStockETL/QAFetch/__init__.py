@@ -10,7 +10,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_financial_re
                                                            QA_fetch_stock_week_adv,QA_fetch_stock_month_adv,QA_fetch_stock_year_adv,
                                                            QA_fetch_index_month_adv,QA_fetch_index_year_adv,QA_fetch_stock_alpha101half_adv,
                                                            QA_fetch_stock_quant_pre_train_adv,QA_fetch_stock_half_adv,
-                                                           QA_fetch_usstock_day_adv,QA_fetch_stock_alpha191half_adv)
+                                                           QA_fetch_usstock_day_adv,QA_fetch_stock_alpha191half_adv,
+                                                           QA_fetch_stock_alpha101real_adv,QA_fetch_stock_alpha191real_adv)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report, QA_fetch_stock_financial_calendar, QA_fetch_stock_divyield,
                                                    QA_fetch_financial_TTM, QA_fetch_stock_fianacial,QA_fetch_stock_alpha,QA_fetch_stock_shares,
@@ -27,7 +28,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report, QA
                                                    QA_fetch_index_week,QA_fetch_index_month,QA_fetch_index_year,
                                                    QA_fetch_stock_om_all,QA_fetch_stock_all,QA_fetch_stock_alpha101half,
                                                    QA_fetch_stock_quant_pre_train,QA_fetch_stock_alpha191half,
-                                                   QA_fetch_usstock_day,QA_fetch_usstock_pb,QA_fetch_usstock_pe,QA_fetch_usstock_adj)
+                                                   QA_fetch_usstock_day,QA_fetch_usstock_pb,QA_fetch_usstock_pe,QA_fetch_usstock_adj,
+                                                   QA_fetch_stock_alpha101_real,QA_fetch_stock_alpha_real)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAcalendar import QA_fetch_get_financial_calendar
 

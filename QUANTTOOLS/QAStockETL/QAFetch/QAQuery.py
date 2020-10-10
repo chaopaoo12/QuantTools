@@ -2427,3 +2427,77 @@ def QA_fetch_index_year(
             % (start,
                end)
         )
+
+def QA_fetch_stock_alpha_real(code, start, end=None, format='pd', collections=DATABASE.stock_alpha191_real):
+    '获取股票日线'
+    #code= [code] if isinstance(code,str) else code
+    # code checking
+    code = QA_util_code_tolist(code)
+
+    if QA_util_date_valid(end):
+
+        __data = []
+        cursor = collections.find({
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+        #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
+
+        res = pd.DataFrame([item for item in cursor])
+        try:
+            res = res.drop_duplicates(
+                (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])
+        except:
+            res = None
+        if format in ['P', 'p', 'pandas', 'pd']:
+            return res
+        elif format in ['json', 'dict']:
+            return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+        elif format in ['n', 'N', 'numpy']:
+            return numpy.asarray(res)
+        elif format in ['list', 'l', 'L']:
+            return numpy.asarray(res).tolist()
+        else:
+            QA_util_log_info("QA Error QA_fetch_stock_alpha191_real format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            return None
+    else:
+        QA_util_log_info(
+            'QA Error QA_fetch_stock_alpha191_real data parameter start=%s end=%s is not right' % (start, end))
+
+def QA_fetch_stock_alpha101_real(code, start, end=None, format='pd', collections=DATABASE.stock_alpha101_real):
+    '获取股票日线'
+    #code= [code] if isinstance(code,str) else code
+    # code checking
+    code = QA_util_code_tolist(code)
+
+    if QA_util_date_valid(end):
+
+        __data = []
+        cursor = collections.find({
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+        #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
+
+        res = pd.DataFrame([item for item in cursor])
+        try:
+            res = res.drop_duplicates(
+                (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])
+        except:
+            res = None
+        if format in ['P', 'p', 'pandas', 'pd']:
+            return res
+        elif format in ['json', 'dict']:
+            return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+        elif format in ['n', 'N', 'numpy']:
+            return numpy.asarray(res)
+        elif format in ['list', 'l', 'L']:
+            return numpy.asarray(res).tolist()
+        else:
+            QA_util_log_info("QA Error QA_fetch_stock_alpha101_real format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            return None
+    else:
+        QA_util_log_info(
+            'QA Error QA_fetch_stock_alpha101_real data parameter start=%s end=%s is not right' % (start, end))
