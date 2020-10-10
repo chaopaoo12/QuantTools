@@ -101,7 +101,7 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
         intProgressToLog = int(float((codes.index(code) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
         #__saving_work(code,start_date,end_date)
-        _erros = pool.apply_async(stock_alpha101half_real_saving_work, args =(code,start_date,end_date)).get()
+        _erros = pool.apply_async(stock_alpha101half_real_saving_work, args =(code,start_date,end_date,stock_alpha)).get()
         err.append(str(_erros))
     pool.close()
     pool.join()
