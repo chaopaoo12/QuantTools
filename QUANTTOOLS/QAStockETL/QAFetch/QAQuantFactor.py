@@ -453,12 +453,12 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
         'JOB Get Stock Alpha191 Half train data start=%s end=%s' % (start, sec_end))
     alpha191half_res = alpha191_half(start_date,end_date).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
 
-    alpha191half_res = alpha191half_res.append(alpha191half_res)
-
     QA_util_log_info(
         '##JOB got Data stock alpha101 half real data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     alpha191half_real = alpha191_half_real(code, sec_end).drop(['date_stamp'], axis=1).set_index(['date','code']).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
     alpha191half_real.columns = [x + '_HALF' for x in alpha191half_real.columns]
+
+    alpha191half_res = alpha191half_res.append(alpha191half_real)
 
     QA_util_log_info(
         '##JOB got Data stock tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
