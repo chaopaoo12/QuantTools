@@ -21,6 +21,8 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     if codes is None:
         codes = list(QA_fetch_stock_om_all()['code'])
 
+    #deal_date_list = QA_util_get_trade_range(start_date, end_date)
+
     client.drop_collection('stock_alpha101_real')
     stock_alpha = client.stock_alpha101_real
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -38,13 +40,16 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
             print(error0)
             err.append(str(code))
 
-    for code in codes:
+    k=500
+    for i in range(0, len(codes), k):
+        code = codes[i:i+k]
         QA_util_log_info('The {} of Total {}'.format
-                         ((codes.index(code) +1), len(codes)))
+                         ((i +k ), len(codes)))
 
-        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(code) +1) / len(codes) * 100))[0:4] + '%', ui_log)
-        intProgressToLog = int(float((codes.index(code) +1) / len(codes) * 100))
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((i + k) / len(codes) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((i + k ) / len(codes) * 100 ))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+
         __saving_work(code,start_date,end_date)
 
     if len(err) < 1:
