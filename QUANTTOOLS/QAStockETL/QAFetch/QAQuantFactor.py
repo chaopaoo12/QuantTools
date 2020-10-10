@@ -454,7 +454,7 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
     alpha191half_res = alpha191_half(start_date,end_date)
 
     QA_util_log_info(
-        '##JOB got Data stock alpha101 half real data ============== from {from_} to {to_} '.format(from_= sec_end,to_=sec_end), ui_log)
+        '##JOB got Data stock alpha191 half real data ============== from {from_} to {to_} '.format(from_= sec_end,to_=sec_end), ui_log)
     alpha191half_real = alpha191_half_real(code, sec_end).drop(['date_stamp'], axis=1).set_index(['date','code'])
     alpha191half_real.columns = [x + '_HALF' for x in alpha191half_real.columns]
 
