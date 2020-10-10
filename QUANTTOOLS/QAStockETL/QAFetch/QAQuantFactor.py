@@ -1,7 +1,8 @@
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,QA_fetch_stock_alpha_adv,QA_fetch_stock_technical_index_adv,
                                                            QA_fetch_stock_financial_percent_adv,QA_fetch_index_alpha_adv,
                                                            QA_fetch_index_technical_index_adv,QA_fetch_stock_alpha101_adv,
-                                                           QA_fetch_index_alpha101_adv,QA_fetch_stock_alpha101half_adv)
+                                                           QA_fetch_index_alpha101_adv,QA_fetch_stock_alpha101half_adv,
+                                                           QA_fetch_stock_alpha101real_adv,QA_fetch_stock_alpha191real_adv)
 from QUANTTOOLS.QAStockETL.QAFetch.QAAlpha import QA_fetch_get_stock_alpha101half_realtime,QA_fetch_get_stock_alpha191half_realtime
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_info
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,QA_util_get_trade_range,QA_util_get_next_trade_date,QA_util_code_tolist,
@@ -393,8 +394,10 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
     pe = QA_Sql_Stock_FinancialPercent
     alpha101_half = QA_Sql_Stock_Alpha101Half
     alpha191_half = QA_Sql_Stock_Alpha191Half
-    alpha101_half_real = QA_fetch_get_stock_alpha101half_realtime
-    alpha191_half_real = QA_fetch_get_stock_alpha191half_realtime
+    QA_fetch_stock_alpha101real_adv
+    QA_fetch_stock_alpha191real_adv
+    alpha101_half_real = QA_fetch_stock_alpha101real_adv
+    alpha191_half_real = QA_fetch_stock_alpha191real_adv
 
     QA_util_log_info(
         '##JOB got stock quant data date range ============== from {from_} to {to_} '.format(from_=start,to_=end_date), ui_log)
@@ -444,7 +447,7 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
     QA_util_log_info(
         '##JOB got Data stock alpha101 half real data ============== from {from_} to {to_} '.format(from_= sec_end,to_= sec_end), ui_log)
 
-    alpha101half_real = alpha101_half_real(code, sec_end, sec_end).drop(['date_stamp'], axis=1).set_index(['date','code'])
+    alpha101half_real = alpha101_half_real(code, sec_end, sec_end).data
     alpha101half_real.columns = [x + '_HALF' for x in alpha101half_real.columns]
 
     alpha101half_res = alpha101half_res.append(alpha101half_real).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).fillna(0).loc[((rng,code),)]
@@ -455,7 +458,7 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
 
     QA_util_log_info(
         '##JOB got Data stock alpha191 half real data ============== from {from_} to {to_} '.format(from_= sec_end,to_=sec_end), ui_log)
-    alpha191half_real = alpha191_half_real(code, sec_end).drop(['date_stamp'], axis=1).set_index(['date','code'])
+    alpha191half_real = alpha191_half_real(code, sec_end, sec_end).data
     alpha191half_real.columns = [x + '_HALF' for x in alpha191half_real.columns]
 
     alpha191half_res = alpha191half_res.append(alpha191half_real).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
