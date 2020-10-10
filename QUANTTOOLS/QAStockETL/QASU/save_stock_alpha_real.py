@@ -4,6 +4,8 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_stock_alpha101half_realt
                                            QA_fetch_get_stock_alpha191half_realtime)
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import concurrent
+from multiprocessing import Process
+from multiprocessing import Pool
 import pymongo
 import gc
 
@@ -22,7 +24,7 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     codes = code
     if codes is None:
         codes = list(QA_fetch_stock_om_all()['code'])
-        #codes = [codes[i:i+500] for i in range(0,len(codes),500)]
+        #codes = [codes[i:i+100] for i in range(0,len(codes),100)]
 
     #deal_date_list = QA_util_get_trade_range(start_date, end_date)
 
@@ -31,47 +33,49 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(code,start,end):
+    def __saving_work(code):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving Stock Alpha101 Half Real==== {}'.format(str(code)), ui_log)
-            data = QA_fetch_get_stock_alpha101half_realtime(code,start,end)
+            data = QA_fetch_get_stock_alpha101half_realtime(code,start_date,end_date)
             if data is not None:
                 stock_alpha.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
                 gc.collect()
+            QA_util_log_info(
+                '##JOB01 Now Saving Stock Alpha101 Half Real Success==== {}'.format(str(code)), ui_log)
         except Exception as error0:
             print(error0)
             err.append(str(code))
 
-    executor = ThreadPoolExecutor(max_workers=5)
-    # executor.map((__saving_work,  stock_list[i_], coll),URLS)
-    res = {
-        executor.submit(__saving_work,
-                        codes[i_],
-                        start_date,
-                        end_date)
-        for i_ in range(len(codes))
-    }
+    #executor = ThreadPoolExecutor(max_workers=5)
+    ## executor.map((__saving_work,  stock_list[i_], coll),URLS)
+    #res = {
+    #    executor.submit(__saving_work,
+    #                    codes[i_],
+    #                    start_date,
+    #                    end_date)
+    #    for i_ in range(len(codes))
+    #}
 
-    count = 0
-    for i_ in concurrent.futures.as_completed(res):
-        QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(codes)),
-            ui_log=ui_log
-        )
+    #count = 0
+    #for i_ in concurrent.futures.as_completed(res):
+    #    QA_util_log_info(
+    #        'The {} of Total {}'.format(count,
+    #                                    len(codes)),
+    #        ui_log=ui_log
+    #    )
 
-        strProgress = 'DOWNLOAD PROGRESS {} '.format(
-            str(float(count / len(codes) * 100))[0:5] + '%'
-        )
-        intProgress = int(count / len(codes) * 10000.0)
-        QA_util_log_info(
-            strProgress,
-            ui_log,
-            ui_progress=ui_progress,
-            ui_progress_int_value=intProgress
-        )
-        count = count + 1
+    #    strProgress = 'DOWNLOAD PROGRESS {} '.format(
+    #        str(float(count / len(codes) * 100))[0:5] + '%'
+    #    )
+    #    intProgress = int(count / len(codes) * 10000.0)
+    #    QA_util_log_info(
+    #        strProgress,
+    #        ui_log,
+    #        ui_progress=ui_progress,
+    #        ui_progress_int_value=intProgress
+    #    )
+    #    count = count + 1
 
     #k=500
     #for i in range(0, len(codes), k):
@@ -84,6 +88,18 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     #    QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
     #    __saving_work(code,start_date,end_date)
+    pool = Pool()
+    for code in codes:
+        QA_util_log_info('The {} of Total {} ==== {}'.format
+                         ((codes.index(code) +1), len(codes), str(code)))
+
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(code) +1) / len(codes) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((codes.index(code) +1) / len(codes) * 100))
+        QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+        #__saving_work(code,start_date,end_date)
+        pool.apply_async(__saving_work, args =(code,))
+    pool.close()
+    pool.join()
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save Stock Alpha101 Half Real ^_^',  ui_log)
