@@ -1,6 +1,6 @@
 import joblib
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
-from QUANTTOOLS.Model.StockModel.StrategyXgboostReal import QAStockXGBoost
+from QUANTTOOLS.Model.StockModel.StrategyXgboostReal import QAStockXGBoostReal
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name
 from .setting import working_dir
@@ -13,7 +13,7 @@ delta3 = timedelta(days=7)
 
 
 def concat_predict(trading_date, strategy_id='机器学习1号',  working_dir=working_dir, ui_log = None):
-    Stock = QAStockXGBoost()
+    Stock = QAStockXGBoostReal()
     try:
         QA_util_log_info(
             '##JOB Now Load Model ==== {}'.format(str(trading_date)), ui_log)
