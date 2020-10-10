@@ -720,8 +720,8 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
         alpha101half_res = alpha101_half(start_date,sec_end).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).fillna(0).loc[((rng,code),)]
 
         QA_util_log_info(
-            'JOB Get Stock Alpha191 Half train data start=%s end=%s' % (start, end))
-        alpha191half_res = alpha191_half(start_date,end_date).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
+            'JOB Get Stock Alpha191 Half train data start=%s end=%s' % (start, sec_end))
+        alpha191half_res = alpha191_half(start_date,sec_end).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
 
         try:
             res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(alpha101half_res).join(alpha191half_res).join(pe_res)
