@@ -442,7 +442,7 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
     alpha101half_res = alpha101_half(start_date,end_date).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).fillna(0).loc[((rng,code),)]
 
     QA_util_log_info(
-        '##JOB got Data stock alpha101 half real data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+        '##JOB got Data stock alpha101 half real data ============== from {from_} to {to_} '.format(from_= sec_end,to_= sec_end), ui_log)
 
     alpha101half_real = alpha101_half_real(code, sec_end, sec_end).drop(['date_stamp'], axis=1).set_index(['date','code']).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).fillna(0).loc[((rng,code),)]
     alpha101half_real.columns = [x + '_HALF' for x in alpha101half_real.columns]
@@ -450,11 +450,11 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
     alpha101half_res = alpha101half_res.append(alpha101half_real)
 
     QA_util_log_info(
-        'JOB Get Stock Alpha191 Half train data start=%s end=%s' % (start, sec_end))
+        'JOB Get Stock Alpha191 Half train data start=%s end=%s' % (start, end_date))
     alpha191half_res = alpha191_half(start_date,end_date).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
 
     QA_util_log_info(
-        '##JOB got Data stock alpha101 half real data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+        '##JOB got Data stock alpha101 half real data ============== from {from_} to {to_} '.format(from_= sec_end,to_=sec_end), ui_log)
     alpha191half_real = alpha191_half_real(code, sec_end).drop(['date_stamp'], axis=1).set_index(['date','code']).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
     alpha191half_real.columns = [x + '_HALF' for x in alpha191half_real.columns]
 
