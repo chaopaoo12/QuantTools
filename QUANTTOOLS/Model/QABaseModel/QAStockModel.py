@@ -56,7 +56,7 @@ class QAStockModel():
         s_res = s_res.assign(rate = s_res['count']/self.data.shape[0])
         std_cols = list(s_res[s_res['std']==0].index)
         QA_util_log_info('##JOB Drop Columns with 0 std {} ===== {}'.format(std_cols, self.info['date']), ui_log = None)
-        self.data = self.data.drop(columns=std_cols)
+        #self.data = self.data.drop(columns=std_cols)
         self.cols = [i for i in self.cols if i not in std_cols]
 
         if drop > 0:
