@@ -33,10 +33,7 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    def __saving_work(args):
-        code = args[0]
-        start_date = args[1]
-        end_date = args[2]
+    def __saving_work(code, start_date, end_date):
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving Stock Alpha101 Half Real==== {}'.format(str(code)), ui_log)
@@ -93,18 +90,18 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     #    __saving_work(code,start_date,end_date)
 
     pool = Pool(10)
-    pool.map(__saving_work, [code, start_date, end_date])
-    #for code in codes:
-    #    QA_util_log_info('The {} of Total {} ==== {}'.format
-    #                     ((codes.index(code) +1), len(codes), str(code)))
+    #pool.map(__saving_work, [code, start_date, end_date])
+    for code in codes:
+        QA_util_log_info('The {} of Total {} ==== {}'.format
+                         ((codes.index(code) +1), len(codes), str(code)))
 
-    #    strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(code) +1) / len(codes) * 100))[0:4] + '%', ui_log)
-    #    intProgressToLog = int(float((codes.index(code) +1) / len(codes) * 100))
-    #    QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
-    #    #__saving_work(code,start_date,end_date)
-    #    pool.apply_async(__saving_work, args =(code,))
-    #pool.close()
-    #pool.join()
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(code) +1) / len(codes) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((codes.index(code) +1) / len(codes) * 100))
+        QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+        #__saving_work(code,start_date,end_date)
+        pool.apply_async(__saving_work, args =(code,start_date,end_date)).get()
+    pool.close()
+    pool.join()
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save Stock Alpha101 Half Real ^_^',  ui_log)
