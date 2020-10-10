@@ -21,6 +21,7 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     if codes is None:
         codes = list(QA_fetch_stock_om_all()['code'])
 
+    client.drop_collection('stock_alpha101_real')
     stock_alpha = client.stock_alpha101_real
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -71,6 +72,7 @@ def QA_SU_save_stock_alpha191half_real(code = None, start_date = None, end_date 
     if codes is None:
         codes = list(QA_fetch_stock_om_all()['code'])
 
+    client.drop_collection('stock_alpha191_real')
     stock_alpha = client.stock_alpha191_real
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
