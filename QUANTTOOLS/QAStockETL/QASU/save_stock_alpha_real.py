@@ -16,7 +16,7 @@ def stock_alpha101half_real_saving_work(code, start_date, end_date, client):
         data = QA_fetch_get_stock_alpha101half_realtime(code,start_date,end_date)
         if data is not None:
             client.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
-            gc.collect()
+            #gc.collect()
         QA_util_log_info(
             '##JOB01 Now Saving Stock Alpha101 Half Real Success==== {}'.format(str(code)))
     except Exception as error0:
@@ -46,8 +46,6 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     stock_alpha = client.stock_alpha101_real
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
-
-
 
     #executor = ThreadPoolExecutor(max_workers=5)
     ## executor.map((__saving_work,  stock_list[i_], coll),URLS)
