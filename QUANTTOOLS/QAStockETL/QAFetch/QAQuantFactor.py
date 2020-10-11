@@ -3,9 +3,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_index_technical_index_adv,QA_fetch_stock_alpha101_adv,
                                                            QA_fetch_index_alpha101_adv,QA_fetch_stock_alpha101half_adv,
                                                            QA_fetch_stock_alpha101real_adv,QA_fetch_stock_alpha191real_adv)
-from QUANTTOOLS.QAStockETL.QAFetch.QAAlpha import QA_fetch_get_stock_alpha101half_realtime,QA_fetch_get_stock_alpha191half_realtime
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_info
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,QA_util_get_trade_range,QA_util_get_next_trade_date,QA_util_code_tolist,
+from QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,QA_util_get_trade_range,QA_util_get_next_trade_date,QA_util_code_tolist,
                                QA_util_get_pre_trade_date)
 import math
 from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
@@ -379,10 +378,9 @@ def QA_fetch_get_quant_data_train(codes, start_date, end_date, type='standardize
 def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normalization', ui_log = None):
     '获取股票量化机器学习最终指标V1'
     start = QA_util_get_pre_trade_date(start_date,15)
-    start_date = QA_util_get_pre_trade_date(start,15)
     end_date = end_date
     sec_end = QA_util_get_next_trade_date(end_date)
-    rng = QA_util_get_trade_range(start, end_date)
+    #rng = QA_util_get_trade_range(start_date, end_date)
 
     code = QA_util_code_tolist(code)
 
@@ -398,16 +396,16 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
     alpha191_half_real = QA_fetch_stock_alpha191real_adv
 
     QA_util_log_info(
-        '##JOB got stock quant data date range ============== from {from_} to {to_} '.format(from_=start,to_=end_date), ui_log)
-    rng1 = QA_util_get_trade_range(start_date, end_date)
+        '##JOB got stock quant data date range ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
+    rng = QA_util_get_trade_range(start_date, end_date)
     QA_util_log_info(
-        '##JOB got Data stock fianacial data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        '##JOB got Data stock fianacial data ============== from {from_} to {to_} '.format(from_= start,to_=end_date), ui_log)
+    financial_res = financial(start,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
     financial_res = financial_res[financial_res.DAYS >= 90]
 
     QA_util_log_info(
-        '##JOB got Data stock perank data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    pe_res = pe(start_date,end_date)[['PE_10PCT','PE_10VAL','PEEGL_10PCT','PEEGL_10VAL','PB_10PCT','PB_10VAL',
+        '##JOB got Data stock perank data ============== from {from_} to {to_} '.format(from_= start,to_=end_date), ui_log)
+    pe_res = pe(start,end_date)[['PE_10PCT','PE_10VAL','PEEGL_10PCT','PEEGL_10VAL','PB_10PCT','PB_10VAL',
                                       #'PEG_10PCT','PEG_10VAL',
                                       'PS_10PCT','PS_10VAL',
                                       'PE_20PCT','PE_20VAL','PEEGL_20PCT','PEEGL_20VAL','PB_20PCT','PB_20VAL',
@@ -431,46 +429,46 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
                                       ]].groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
 
     QA_util_log_info(
-        '##JOB got Data stock alpha191 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    alpha_res = alpha(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        '##JOB got Data stock alpha191 data ============== from {from_} to {to_} '.format(from_= start,to_=end_date), ui_log)
+    alpha_res = alpha(start,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
     QA_util_log_info(
-        '##JOB got Data stock alpha101 data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').fillna(0).loc[((rng,code),)]
+        '##JOB got Data stock alpha101 data ============== from {from_} to {to_} '.format(from_= start,to_=end_date), ui_log)
+    alpha101_res = alpha101(start,end_date).groupby('code').fillna(method='ffill').fillna(0).loc[((rng,code),)]
 
     QA_util_log_info(
         'JOB Get Stock Alpha101 Half train data start=%s end=%s' % (start, end_date))
-    alpha101half_res = alpha101_half(start_date,end_date)
+    alpha101half_res = alpha101_half(start,end_date)
 
     QA_util_log_info(
         '##JOB got Data stock alpha101 half real data ============== from {from_} to {to_} '.format(from_= sec_end,to_= sec_end), ui_log)
 
     alpha101half_real = alpha101_half_real(code, sec_end, sec_end).data
-    alpha101half_real.columns = [x + '_HALF' for x in alpha101half_real.columns]
+    alpha101half_real.columns = [x.upper() + '_HALF' for x in alpha101half_real.columns]
 
     alpha101half_res = alpha101half_res.append(alpha101half_real).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).fillna(0).loc[((rng,code),)]
 
     QA_util_log_info(
         'JOB Get Stock Alpha191 Half train data start=%s end=%s' % (start, end_date))
-    alpha191half_res = alpha191_half(start_date,end_date)
+    alpha191half_res = alpha191_half(start,end_date)
 
     QA_util_log_info(
         '##JOB got Data stock alpha191 half real data ============== from {from_} to {to_} '.format(from_= sec_end,to_=sec_end), ui_log)
     alpha191half_real = alpha191_half_real(code, sec_end, sec_end).data
-    alpha191half_real.columns = [x + '_HALF' for x in alpha191half_real.columns]
+    alpha191half_real.columns = [x.upper() + '_HALF' for x in alpha191half_real.columns]
 
     alpha191half_res = alpha191half_res.append(alpha191half_real).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
 
     QA_util_log_info(
-        '##JOB got Data stock tech data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    index_res = index(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        '##JOB got Data stock tech data ============== from {from_} to {to_} '.format(from_= start,to_=end_date), ui_log)
+    index_res = index(start,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
     QA_util_log_info(
-        '##JOB got Data stock tech week data ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    week_res = week(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        '##JOB got Data stock tech week data ============== from {from_} to {to_} '.format(from_= start,to_=end_date), ui_log)
+    week_res = week(start,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
     QA_util_log_info(
-        '##JOB stock quant data combine ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
+        '##JOB stock quant data combine ============== from {from_} to {to_} '.format(from_= start,to_=end_date), ui_log)
 
     res = financial_res.join(pe_res).join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(alpha101half_res).join(alpha191half_res)
 

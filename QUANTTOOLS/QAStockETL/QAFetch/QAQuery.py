@@ -2483,7 +2483,7 @@ def QA_fetch_stock_alpha101_real(code, start, end=None, format='pd', collections
         res = pd.DataFrame([item for item in cursor])
         try:
             res = res.drop_duplicates(
-                (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])
+                (['code', 'date'])).drop(['date_stamp','index'],axis=1).set_index(['date','code'])
         except:
             res = None
         if format in ['P', 'p', 'pandas', 'pd']:
