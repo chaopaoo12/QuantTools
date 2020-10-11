@@ -143,7 +143,6 @@ def QA_fetch_get_hedge_alpha(index_code, date, ui_log = None):
     index = index
     code = list(data[data.blockname.isin(index)]['code'].drop_duplicates())
 
-
     if QA_util_if_trade(date) == True:
         data = hedge_alpha(code, index_code, date).reset_index()
         if data is not None:

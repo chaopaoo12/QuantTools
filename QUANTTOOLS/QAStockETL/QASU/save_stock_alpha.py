@@ -4,7 +4,8 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_stock_om_a
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_stock_alpha,QA_fetch_get_index_alpha,
                                            QA_fetch_get_stock_alpha101,QA_fetch_get_index_alpha101,
                                            QA_fetch_get_stock_alpha101_half,
-                                           QA_fetch_get_stock_alpha191_half)
+                                           QA_fetch_get_stock_alpha191_half,
+                                           QA_fetch_get_hedge_alpha)
 import pymongo
 import gc
 
@@ -536,6 +537,106 @@ def QA_SU_save_stock_alpha191half_his(code = None, start_date = None, end_date =
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save Stock Alpha191 Half ^_^',  ui_log)
+    else:
+        QA_util_log_info(' ERROR CODE \n ',  ui_log)
+        QA_util_log_info(err, ui_log)
+
+def QA_SU_save_hedge_alpha_day(code = None, start_date = None, end_date = None, client=DATABASE, ui_log = None, ui_progress = None):
+    '''
+     save stock_day
+    保存财报日历
+    历史全部数据
+    :return:
+    '''
+    if end_date is None:
+        end_date = QA_util_today_str()
+
+    if start_date is None:
+        start_date = '2009-01-01'
+
+    deal_date_list = QA_util_get_trade_range(start_date, end_date)
+
+    if code is None:
+        code = '000300'
+
+    stock_alpha = client.hedge_alpha
+    stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
+    err = []
+
+    def __saving_work(date, code):
+        try:
+            QA_util_log_info(
+                '##JOB01 Now Saving Hedge Alpha191==== {}'.format(str(date)), ui_log)
+            data = QA_fetch_get_hedge_alpha(code, date)
+            if data is not None:
+                stock_alpha.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
+                gc.collect()
+        except Exception as error0:
+            print(error0)
+            err.append(str(date))
+
+    for item in deal_date_list:
+        QA_util_log_info('The {} of Total {}'.format
+                         ((deal_date_list.index(item) +1), len(deal_date_list)))
+
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((deal_date_list.index(item) +1) / len(deal_date_list) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((deal_date_list.index(item) +1) / len(deal_date_list) * 100))
+        QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+        if QA_util_if_trade(item) == True:
+            __saving_work( item, code)
+
+    if len(err) < 1:
+        QA_util_log_info('SUCCESS save Hedge Alpha191 ^_^',  ui_log)
+    else:
+        QA_util_log_info(' ERROR CODE \n ',  ui_log)
+        QA_util_log_info(err, ui_log)
+
+
+def QA_SU_save_hedge_alpha_his(code = None, start_date = None, end_date = None, client=DATABASE, ui_log = None, ui_progress = None):
+    '''
+    save stock_day
+    保存财报日历
+    反向查询四个季度财报
+    :return:
+    '''
+    if code is None:
+        code = '000300'
+    if end_date is None:
+        end_date = QA_util_today_str()
+
+    if start_date is None:
+        start_date = '2009-01-01'
+
+    deal_date_list = QA_util_get_trade_range(start_date, end_date)
+
+    stock_alpha = client.hedge_alpha
+    stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
+    err = []
+
+    def __saving_work(code, date):
+        try:
+            QA_util_log_info(
+                '##JOB01 Now Saving Hedge Alpha191==== {}'.format(str(date)), ui_log)
+            data = QA_fetch_get_hedge_alpha(code, date)
+            if data is not None:
+                stock_alpha.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
+        except Exception as error0:
+            print(error0)
+            err.append(str(date))
+
+    for item in deal_date_list:
+
+        QA_util_log_info('The {} of Total {}'.format
+                         ((deal_date_list.index(item) +1), len(deal_date_list)))
+
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((deal_date_list.index(item) +1) / len(deal_date_list) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((deal_date_list.index(item) + 1)/ len(deal_date_list) * 100))
+        QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+        if QA_util_if_trade(item) == True:
+            __saving_work(code, item)
+
+    if len(err) < 1:
+        QA_util_log_info('SUCCESS save Hedge Alpha191 ^_^',  ui_log)
     else:
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)

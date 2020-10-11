@@ -184,6 +184,12 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = QA_util_today_s
 def QA_SU_save_stock_alpha191half_real(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
     alpha_real.QA_SU_save_stock_alpha191half_real(code = code, start_date = start_date, end_date = end_date)
 
+def QA_SU_save_hedge_alpha_day(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
+    save_stock_alpha.QA_SU_save_hedge_alpha_day(code = code, start_date = start_date, end_date = end_date)
+
+def QA_SU_save_hedge_alpha_his(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
+    save_stock_alpha.QA_SU_save_hedge_alpha_his(code = code, start_date = start_date, end_date = end_date)
+
 def QA_SU_save_index_info():
     save_tdx.QA_SU_save_index_info()
 
