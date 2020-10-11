@@ -2,7 +2,7 @@ import numpy as np
 from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_index_day_adv,QA_fetch_stock_min_adv
 from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date,QA_util_get_trade_range,QA_util_get_real_date,QA_util_if_trade)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_real
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_half_adv,QA_fetch_usstock_day_adv
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_half_adv,QA_fetch_usstock_xq_day_adv,QA_fetch_usstock_day_adv
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha191 import Alpha_191
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha101 import get_alpha
 
@@ -186,7 +186,7 @@ def usstock_alpha(code, date=None):
         end_date = date
     start_date = QA_util_get_pre_trade_date(date, 270)
     try:
-        price = QA_fetch_usstock_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
+        price = QA_fetch_usstock_xq_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
         price['avg_price'] = price['amount']/price['volume']*price['adj']+price['adjust']
         price['prev_close'] = price[['code','close']].groupby('code').shift()
         return(Alpha_191(price, date).alpha())
@@ -209,7 +209,7 @@ def usstock_alpha101(code, start=None, end = None):
     deal_date_list = QA_util_get_trade_range(start, end)
 
     try:
-        price = QA_fetch_usstock_day_adv(code, start_date, end_date ).to_qfq()
+        price = QA_fetch_usstock_xq_day_adv(code, start_date, end_date ).to_qfq()
         pctchange = price.close_pct_change()
         price = price.data
         price['avg_price'] = price['amount']/price['volume']*price['adj']+price['adjust']
