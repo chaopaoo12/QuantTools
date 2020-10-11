@@ -64,10 +64,6 @@ class QAStockXGBoostReal(QAStockModelReal):
             nan_num = train[self.cols].isnull().sum(axis=1)[train[self.cols].isnull().sum(axis=1) > 0].count()
             QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain NAN ==== from {_from} to {_to}'.format(
                 NAN_NUM = nan_num, per=nan_num/train.shape[0], shape=train.shape[0], _from=start,_to = end), ui_log = None)
-            if self.thresh == 0:
-                train = train[self.cols].dropna()
-            else:
-                train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
 
             send_email('模型训练报告:{}'.format(end) + end, "数据损失比例 {}".format(nan_num/train.shape[0]), self.info['date'])
             if nan_num/train.shape[0] >= 0.01:
@@ -78,6 +74,11 @@ class QAStockXGBoostReal(QAStockModelReal):
                                   offset='WARNING',
                                   volume=None
                                   )
+
+            if self.thresh == 0:
+                train = train[self.cols].dropna()
+            else:
+                train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
 
         train = train.join(data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']])
 
