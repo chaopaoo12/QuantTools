@@ -1,11 +1,9 @@
 #coding=utf-8
 
-
 from QUANTTOOLS.Model.StockModel.StrategyXgboostReal import QAStockXGBoostReal
 from .setting import working_dir, data_set, datareal_set
 
 from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
-
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_get_real_date,QA_util_get_last_day
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 import pandas as pd
