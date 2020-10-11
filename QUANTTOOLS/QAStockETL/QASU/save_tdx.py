@@ -1207,7 +1207,7 @@ def QA_SU_save_usstock_xq_day(client=DATABASE, ui_log=None, ui_progress=None):
                 if start_date != end_date:
                     coll_stock_day.insert_many(
                         QA_util_to_json_from_pandas(
-                            QA_fetch_get_stock_half(str(code),
+                            QA_fetch_get_usstock_day_xq(str(code),
                                                     QA_util_get_next_day(start_date),
                                                     end_date
                                                     )
@@ -1227,7 +1227,7 @@ def QA_SU_save_usstock_xq_day(client=DATABASE, ui_log=None, ui_progress=None):
                 if start_date != end_date:
                     coll_stock_day.insert_many(
                         QA_util_to_json_from_pandas(
-                            QA_fetch_get_stock_half(
+                            QA_fetch_get_usstock_day_xq(
                                 str(code),
                                 start_date,
                                 end_date
