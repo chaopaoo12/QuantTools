@@ -71,11 +71,12 @@ class QAStockModelReal():
             QA_util_log_info('##JOB Drop Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ===== {date}'.format(
                 NAN_NUM = nan_num, per=nan_num/self.data.shape[0], shape=self.data.shape[0], thresh=thresh,date=self.info['date']), ui_log = None)
             if thresh == 0:
-                self.data = self.data[self.cols].dropna().join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
+                train_data = self.data[self.cols].dropna().join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
             else:
-                self.data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh)).join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
+                train_data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh)).join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
 
             send_email('模型训练报告:'+ self.info['date'], "数据损失比例 {}".format(nan_num/self.data.shape[0]), self.info['date'])
+
             if nan_num/self.data.shape[0] >= 0.01:
                 send_actionnotice('模型训练报告',
                               '交易报告:{}'.format(self.info['date']),
@@ -86,7 +87,7 @@ class QAStockModelReal():
                               )
 
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
-        self.X_train, self.Y_train = shuffle(self.data.loc[self.TR_RNG][self.cols].fillna(0),self.data.loc[self.TR_RNG]['star'])
+        self.X_train, self.Y_train = shuffle(train_data.loc[self.TR_RNG][self.cols],train_data.loc[self.TR_RNG]['star'])
         self.info['thresh'] = thresh
         self.info['drop'] = drop
 
