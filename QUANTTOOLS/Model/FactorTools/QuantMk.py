@@ -141,5 +141,32 @@ def get_quant_data_stdd(start_date, end_date, type = 'crawl', block = False, sub
     #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
+def get_hedge_data_train(start_date, end_date, type = 'crawl', block = True, sub_block= True, method = 'value'):
+    if block is True:
+        data = QA.QA_fetch_stock_block()
+        codes = list(data[data.blockname.isin(['沪深300'])]['code'].drop_duplicates())
+        #codes = [i for i in codes if i.startswith('300') == False]
+    else:
+        codes = QA_fetch_stock_om_all()
+        QA_util_log_info('##JOB Now Delete ST Stock')
+        codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+        codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
+        codes = list(codes['code'])
+        QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
+        codes = [i for i in codes if i.startswith('688') == False]
+        codes = [i for i in codes if i.startswith('787') == False]
+        codes = [i for i in codes if i.startswith('789') == False]
+    if type == 'crawl':
+        res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method).data
+    if type == 'model':
+        res = QA_fetch_get_quant_data_train(codes, start_date, end_date, type='normalization').set_index(['date','code']).drop(['date_stamp'], axis=1)
+        target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
+        res = res.join(target)
+    #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
+    #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
+    #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
+    #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
+    return(res)
+
 if __name__ == 'main':
     pass
