@@ -54,11 +54,18 @@ def start_train(stock_model, cols, name, other_params, thresh=0, drop=0.99, work
 def train_mult(date):
     stock_model = prepare_train(date)
 
-    other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
+    other_params = {'learning_rate': 0.1, 'n_estimators': 20, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
+    mults = []
+    p1 = Process(target=start_train, args=(stock_model, datareal_set, 'stock_xg_real1', other_params, 0, 0.99))
+    p1.daemon = True
+    p2 = Process(target=start_train, args=(stock_model, data_set, 'stock_xg1', other_params, 0, 0.99))
+    p2.daemon = True
+    p1.start()
+    p2.start()
+    mults.append(p1)
+    mults.append(p2)
+    [mult.join() for mult in mults]
 
-    p = Process(target=start_train, args=(stock_model, datareal_set, 'stock_xg_real', other_params, 0, 0.99))
-    p.start()
-    p = Process(target=start_train, args=(stock_model, data_set, 'stock_xg', other_params, 0, 0.99))
-    p.start()
-    p.join()
+if __name__ == '__main__':
+    pass
