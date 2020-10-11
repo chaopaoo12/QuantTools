@@ -1183,7 +1183,7 @@ def QA_SU_save_usstock_xq_day(client=DATABASE, ui_log=None, ui_progress=None):
     def __saving_work(code, coll_stock_day):
         try:
             QA_util_log_info(
-                '##JOB01 Now Saving US_STOCK_DAY==== {}'.format(str(code)),
+                '##JOB01 Now Saving US_STOCK_XQ_DAY==== {}'.format(str(code)),
                 ui_log
             )
 
@@ -1198,7 +1198,7 @@ def QA_SU_save_usstock_xq_day(client=DATABASE, ui_log=None, ui_progress=None):
                 # 接着上次获取的日期继续更新
                 start_date = str(ref[ref.count() - 1]['date'])[0:10]
                 QA_util_log_info(
-                    'UPDATE_US_STOCK_DAY \n Trying updating {} from {} to {}'
+                    'UPDATE_US_STOCK_XQ_DAY \n Trying updating {} from {} to {}'
                         .format(code,
                                 start_date,
                                 end_date),
@@ -1218,7 +1218,7 @@ def QA_SU_save_usstock_xq_day(client=DATABASE, ui_log=None, ui_progress=None):
             else:
                 start_date = '2016-01-01'
                 QA_util_log_info(
-                    'UPDATE_US_STOCK_DAY \n Trying updating {} from {} to {}'
+                    'UPDATE_US_STOCK_XQ_DAY \n Trying updating {} from {} to {}'
                         .format(code,
                                 start_date,
                                 end_date),
@@ -1256,7 +1256,7 @@ def QA_SU_save_usstock_xq_day(client=DATABASE, ui_log=None, ui_progress=None):
         __saving_work(stock_list[item], coll_stock_day)
 
     if len(err) < 1:
-        QA_util_log_info('SUCCESS save us stock day^_^', ui_log)
+        QA_util_log_info('SUCCESS save us stock xq day^_^', ui_log)
     else:
         QA_util_log_info('ERROR CODE \n ', ui_log)
         QA_util_log_info(err, ui_log)
