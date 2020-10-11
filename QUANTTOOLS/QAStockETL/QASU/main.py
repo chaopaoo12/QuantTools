@@ -21,14 +21,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from QUANTTOOLS.QAStockETL.QASU import crawl_jrj_financial_reportdate as save_financial_calendar, \
-    crawl_jrj_stock_divyield as save_stock_divyield, save_stock_financial as save_stock_financial, \
-    save_financial_TTM as save_financial_TTM, crawl_ths_financial_report as save_stock_financial_ths,\
-    save_stock_alpha as save_stock_alpha, save_financialfiles as save_financialfiles,\
-    crawl_sina_financial_report as save_stock_financial_sina, crawl_sina_shares_change as save_stock_shares_sina,\
-    crawl_wy_financial_report as save_stock_financial_wy, save_stock_technical_index as save_stock_technical_index,\
-    crawl_interest_rate as crawl_interest_rate, save_stock_finper as save_stock_finper, save_stock_quant as save_stock_quant,\
-    crawl_sina_usstock as crawl_sina_hkstock, save_tdx as save_tdx, save_stock_alpha_real as alpha_real
+from QUANTTOOLS.QAStockETL.QASU import \
+    crawl_jrj_financial_reportdate as save_financial_calendar, \
+    crawl_jrj_stock_divyield as save_stock_divyield, \
+    save_stock_financial as save_stock_financial, \
+    save_financial_TTM as save_financial_TTM, \
+    crawl_ths_financial_report as save_stock_financial_ths,\
+    save_stock_alpha as save_stock_alpha, \
+    save_financialfiles as save_financialfiles,\
+    crawl_sina_financial_report as save_stock_financial_sina,\
+    crawl_sina_shares_change as save_stock_shares_sina,\
+    crawl_wy_financial_report as save_stock_financial_wy,\
+    save_stock_technical_index as save_stock_technical_index,\
+    crawl_interest_rate as crawl_interest_rate, \
+    save_stock_finper as save_stock_finper,\
+    save_stock_quant as save_stock_quant,\
+    crawl_sina_usstock as crawl_sina_hkstock, \
+    save_tdx as save_tdx, \
+    save_stock_alpha_real as alpha_real,\
+    save_usstock_alpha as save_usstock_alpha
+
 from QUANTAXIS.QAUtil import QA_util_today_str
 
 def QA_SU_save_report_calendar_day():
@@ -237,3 +249,15 @@ def QA_SU_save_stock_real():
 
 def QA_SU_save_usstock_xq_day():
     save_tdx.QA_SU_save_usstock_xq_day()
+
+def QA_SU_save_usstock_alpha101_day(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
+    save_usstock_alpha.QA_SU_save_usstock_alpha101_day(code = code, start_date = start_date, end_date = end_date)
+
+def QA_SU_save_usstock_alpha101_his(code = None, start_date = '2016-01-01', end_date = QA_util_today_str()):
+    save_usstock_alpha.QA_SU_save_usstock_alpha101_his(code = code, start_date = start_date, end_date = end_date)
+
+def QA_SU_save_usstock_alpha_day(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
+    save_usstock_alpha.QA_SU_save_usstock_alpha_day(code = code, start_date = start_date, end_date = end_date)
+
+def QA_SU_save_usstock_alpha_his(code = None, start_date = '2016-01-01', end_date = QA_util_today_str()):
+    save_usstock_alpha.QA_SU_save_usstock_alpha_his(code = code, start_date = start_date, end_date = end_date)
