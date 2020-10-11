@@ -394,8 +394,6 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
     pe = QA_Sql_Stock_FinancialPercent
     alpha101_half = QA_Sql_Stock_Alpha101Half
     alpha191_half = QA_Sql_Stock_Alpha191Half
-    QA_fetch_stock_alpha101real_adv
-    QA_fetch_stock_alpha191real_adv
     alpha101_half_real = QA_fetch_stock_alpha101real_adv
     alpha191_half_real = QA_fetch_stock_alpha191real_adv
 
