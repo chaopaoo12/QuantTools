@@ -28,8 +28,7 @@
 """对应于save x
 """
 
-from QUANTTOOLS.QAStockETL.Check.check_data import (check_stock_quant,
-                                                    check_index_quant)
+from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_index_quant)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 from .setting import daily_run
 import time

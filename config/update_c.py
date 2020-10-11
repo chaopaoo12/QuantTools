@@ -37,7 +37,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info, QA_etl_
 from QUANTTOOLS.QAStockETL import (QA_etl_stock_financial_day,
                                    QA_etl_stock_financial_percent_day)
 from QUANTAXIS.QASU.main import (QA_SU_save_financialfiles_fromtdx)
-from QUANTTOOLS.QAStockETL.Check.check_data import (check_stock_day, check_stock_fianacial, check_stock_adj, check_stock_finper,
+from QUANTTOOLS.QAStockETL.Check import (check_stock_day, check_stock_fianacial, check_stock_adj, check_stock_finper,
                                                     check_wy_financial, check_tdx_financial, check_ttm_financial)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 
