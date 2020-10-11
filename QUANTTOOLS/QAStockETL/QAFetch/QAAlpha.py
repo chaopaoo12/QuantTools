@@ -3,7 +3,6 @@ from QUANTTOOLS.QAStockETL.QAFetch.AlphaTools import (stock_alpha, index_alpha, 
                                                       stock_alpha191_half, stock_alpha191_half_realtime)
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_if_trade,QA_util_log_info,QA_util_get_trade_range,QA_util_today_str,QA_util_get_real_date
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_block, QA_fetch_index_list
-import pandas as pd
 
 def QA_fetch_get_stock_alpha(code, date, ui_log = None):
     if QA_util_if_trade(date) == True:
