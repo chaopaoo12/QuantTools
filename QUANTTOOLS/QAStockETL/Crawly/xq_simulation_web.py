@@ -3,14 +3,10 @@
 '''
 import pandas as pd
 from selenium import webdriver
-from bs4 import BeautifulSoup
-import demjson
 import requests
 import json
 import datetime
 import time
-from QUANTAXIS.QAUtil import (QA_util_getBetweenQuarter,QA_util_add_months,
-                              QA_util_today_str,QA_util_datetime_to_strdate)
 
 def get_headers(headers):
     url = 'https://xueqiu.com/'
@@ -45,9 +41,23 @@ def read_data_from_xueqiu(url, headers = None):
 def read_financial_report(code, exchange, report_type):
     stockfi_url = 'https://stock.xueqiu.com/v5/stock/finance/{exchange}/{report_type}.json?symbol={code}&type=all&is_detail=true&count=1000&timestamp={timestamp}'.format(code=code,exchange=exchange, report_type=report_type, timestamp= int(time.mktime(datetime.datetime.now().timetuple())*1000))
     data = read_data_from_xueqiu(stockfi_url)
-    res = pd.DataFrame()
+    columns_list = []
     for i in data['data']['list']:
-        res = res.append(pd.DataFrame.from_dict(i))
+        columns_list = columns_list +list(data['data']['list'][0].keys())
+    columns_list = list(set(columns_list))
+    if report_type != 'income':
+        columns_list.remove('ctime')
+        columns_list.remove('sd')
+        columns_list.remove('ed')
+    res = pd.DataFrame()
+    for j in data['data']['list']:
+        a = dict()
+        for i in columns_list:
+            if isinstance(j[i],list):
+                a[i] = j[i][0]
+            else:
+                a[i] = j[i]
+        res = res.append(pd.DataFrame(a,index=[0]))
     res = res.assign(report_date = res.report_date.apply(lambda x:x/1000))
     res = res.assign(report_date = res.report_date.apply(lambda x:str(datetime.datetime.fromtimestamp(x))[0:10]))
     return(res)

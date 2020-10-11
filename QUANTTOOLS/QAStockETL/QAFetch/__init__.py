@@ -57,7 +57,9 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAFinper import QA_fetch_get_stock_financial_
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import (QA_fetch_get_quant_data,QA_fetch_get_index_quant_data,
                                                          QA_fetch_get_quant_data_train,QA_fetch_get_quant_data_realtime)
 
-from QUANTTOOLS.QAStockETL.QAFetch.QAusstock import QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare
+from QUANTTOOLS.QAStockETL.QAFetch.QAusstock import (QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare)
+
+from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import (QA_fetch_get_usstock_report_xq, QA_fetch_get_usstock_day_xq)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_stock_close,
                                                  QA_fetch_get_stock_realtm_ask,QA_fetch_get_stock_realtm_askvol,
