@@ -2519,3 +2519,92 @@ def QA_fetch_stock_real(code, start, end, format='pd', collections=DATABASE.stoc
         except Exception as e:
             QA_util_log_info(e)
             return None
+
+def QA_fetch_usstock_xq_day(
+        code,
+        start,
+        end,
+        format='numpy',
+        frequence='day',
+        collections=DATABASE.usstock_day_xq
+):
+    """'获取股票日线'
+
+    Returns:
+        [type] -- [description]
+
+        感谢@几何大佬的提示
+        https://docs.mongodb.com/manual/tutorial/project-fields-from-query-results/#return-the-specified-fields-and-the-id-field-only
+
+    """
+
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+    #code= [code] if isinstance(code,str) else code
+
+    # code checking
+    code = QA_util_code_tolist(code, False)
+
+    if QA_util_date_valid(end):
+
+        cursor = collections.find(
+            {
+                'code': {
+                    '$in': code
+                },
+                "date_stamp":
+                    {
+                        "$lte": QA_util_date_stamp(end),
+                        "$gte": QA_util_date_stamp(start)
+                    }
+            },
+            {"_id": 0},
+            batch_size=10000
+        )
+        #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
+
+        res = pd.DataFrame([item for item in cursor])
+
+        try:
+            res = res.assign(
+                volume=res.vol,
+                date=pd.to_datetime(res.date)
+            ).drop_duplicates((['date',
+                                'code'])).query('volume>1').set_index(
+                'date',
+                drop=False
+            )
+            #res = res.loc[:,
+            #      [
+            #          'code',
+            #          'open',
+            #          'high',
+            #          'low',
+            #          'close',
+            #          'volume',
+            #          'amount',
+            #          'date'
+            #      ]]
+        except:
+            res = None
+        if format in ['P', 'p', 'pandas', 'pd']:
+            return res
+        elif format in ['json', 'dict']:
+            return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+        elif format in ['n', 'N', 'numpy']:
+            return numpy.asarray(res)
+        elif format in ['list', 'l', 'L']:
+            return numpy.asarray(res).tolist()
+        else:
+            QA_util_log_info(
+                "QA Error QA_fetch_usstock_xq_day format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
+                % format
+            )
+            return None
+    else:
+        QA_util_log_info(
+            'QA Error QA_fetch_usstock_xq_day data parameter start=%s end=%s is not right'
+            % (start,
+               end)
+        )
