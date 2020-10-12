@@ -261,3 +261,6 @@ def QA_SU_save_usstock_alpha_day(code = None, start_date = QA_util_today_str(), 
 
 def QA_SU_save_usstock_alpha_his(code = None, start_date = '2016-01-01', end_date = QA_util_today_str()):
     save_usstock_alpha.QA_SU_save_usstock_alpha_his(code = code, start_date = start_date, end_date = end_date)
+
+def QA_SU_save_stock_min():
+    save_tdx.QA_SU_save_stock_min()

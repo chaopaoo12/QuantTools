@@ -1,10 +1,13 @@
 from QUANTAXIS import (QA_fetch_get_usstock_list,QA_fetch_get_index_list,QA_fetch_get_index_day,
-                       QA_fetch_get_stock_day,QA_fetch_get_stock_xdxr,QA_fetch_get_stock_info
+                       QA_fetch_get_stock_day,QA_fetch_get_stock_xdxr,QA_fetch_get_stock_info,
+                       QA_fetch_get_stock_list,QA_fetch_get_stock_min
                        )
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare,
                                            QA_fetch_get_stock_half_realtime, QA_fetch_get_usstock_day_xq)
 from QUANTAXIS.QAData.data_fq import _QA_data_stock_to_fq
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_day
+import concurrent
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import datetime
 import pymongo
 import pandas as pd
@@ -1260,3 +1263,126 @@ def QA_SU_save_usstock_xq_day(client=DATABASE, ui_log=None, ui_progress=None):
     else:
         QA_util_log_info('ERROR CODE \n ', ui_log)
         QA_util_log_info(err, ui_log)
+
+def QA_SU_save_stock_min(client=DATABASE, ui_log=None, ui_progress=None):
+    """save stock_min
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+
+    stock_list = QA_fetch_get_stock_list().code.unique().tolist()
+    coll = client.stock_min
+    coll.create_index(
+        [
+            ('code',
+             pymongo.ASCENDING),
+            ('time_stamp',
+             pymongo.ASCENDING),
+            ('date_stamp',
+             pymongo.ASCENDING)
+        ]
+    )
+    err = []
+
+    def __saving_work(code, coll):
+        QA_util_log_info(
+            '##JOB03 Now Saving STOCK_MIN ==== {}'.format(str(code)),
+            ui_log=ui_log
+        )
+        try:
+            type = '60min'
+            ref_ = coll.find({'code': str(code)[0:6], 'type': type})
+            end_time = str(now_time())[0:19]
+            if ref_.count() > 0:
+                start_time = ref_[ref_.count() - 1]['datetime']
+
+                QA_util_log_info(
+                    '##JOB03.{} Now Saving {} from {} to {} =={} '.format(
+                        ['1min',
+                         '5min',
+                         '15min',
+                         '30min',
+                         '60min'].index(type),
+                        str(code),
+                        start_time,
+                        end_time,
+                        type
+                    ),
+                    ui_log=ui_log
+                )
+                if start_time != end_time:
+                    __data = QA_fetch_get_stock_min(
+                        str(code),
+                        start_time,
+                        end_time,
+                        type
+                    )
+                    if len(__data) > 1:
+                        coll.insert_many(
+                            QA_util_to_json_from_pandas(__data)[1::]
+                        )
+            else:
+                start_time = '2015-01-01'
+                QA_util_log_info(
+                    '##JOB03.{} Now Saving {} from {} to {} =={} '.format(
+                        ['1min',
+                         '5min',
+                         '15min',
+                         '30min',
+                         '60min'].index(type),
+                        str(code),
+                        start_time,
+                        end_time,
+                        type
+                    ),
+                    ui_log=ui_log
+                )
+                if start_time != end_time:
+                    __data = QA_fetch_get_stock_min(
+                        str(code),
+                        start_time,
+                        end_time,
+                        type
+                    )
+                    if len(__data) > 1:
+                        coll.insert_many(
+                            QA_util_to_json_from_pandas(__data)
+                        )
+        except Exception as e:
+            QA_util_log_info(e, ui_log=ui_log)
+            err.append(code)
+            QA_util_log_info(err, ui_log=ui_log)
+
+    executor = ThreadPoolExecutor(max_workers=4)
+    # executor.map((__saving_work,  stock_list[i_], coll),URLS)
+    res = {
+        executor.submit(__saving_work,
+                        stock_list[i_],
+                        coll)
+        for i_ in range(len(stock_list))
+    }
+    count = 0
+    for i_ in concurrent.futures.as_completed(res):
+        QA_util_log_info(
+            'The {} of Total {}'.format(count,
+                                        len(stock_list)),
+            ui_log=ui_log
+        )
+
+        strProgress = 'DOWNLOAD PROGRESS {} '.format(
+            str(float(count / len(stock_list) * 100))[0:4] + '%'
+        )
+        intProgress = int(count / len(stock_list) * 10000.0)
+        QA_util_log_info(
+            strProgress,
+            ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=intProgress
+        )
+        count = count + 1
+    if len(err) < 1:
+        QA_util_log_info('SUCCESS', ui_log=ui_log)
+    else:
+        QA_util_log_info(' ERROR CODE \n ', ui_log=ui_log)
+        QA_util_log_info(err, ui_log=ui_log)

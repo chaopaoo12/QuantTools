@@ -51,7 +51,7 @@ from QUANTTOOLS.QAStockETL.QASU.main import (
                                              QA_SU_save_usstock_list_day,QA_SU_save_usstock_list,
                                              QA_SU_save_usstock_day,QA_SU_save_usstock_adj,
                                              QA_SU_save_usstock_pe,QA_SU_save_usstock_pb,
-                                             QA_SU_save_usstock_xq_day,
+                                             QA_SU_save_usstock_xq_day,QA_SU_save_stock_min,
 
                                              QA_SU_save_usstock_alpha_day, QA_SU_save_usstock_alpha_his,
                                              QA_SU_save_usstock_alpha101_day,QA_SU_save_usstock_alpha101_his
