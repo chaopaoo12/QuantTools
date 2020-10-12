@@ -24,7 +24,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
         #e = send_trading_message(account, strategy_id, account_info, None, "触发清仓", None, 0, direction = 'SELL', type='MARKET', priceType=4,price=None, client=client)
 
     QA_util_log_info('##JOB Now Build Trading Frame ===== {}'.format(str(trading_date)), ui_log = None)
-    res = build(target_tar, positions, sub_accounts, percent, False)
+    res = build(target_tar, positions, sub_accounts, percent)
     res1 = res
     QA_util_log_info(res[['NAME','INDUSTRY','deal','close','目标持股数','股票余额','可用余额','冻结数量']])
 
@@ -115,7 +115,7 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
             sub_accounts = sub_accounts - frozen
 
             QA_util_log_info('##JOB Now ReBuild Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
-            res = build(target_tar, positions, sub_accounts, percent, True)
+            res = build(target_tar, positions, sub_accounts, percent)
 
         elif type == 'morning':
             QA_util_log_info('##JOB Now Morning Trading Success ==== {}'.format(str(trading_date)), ui_log = None)
