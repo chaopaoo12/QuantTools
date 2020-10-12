@@ -178,6 +178,7 @@ def build(target, positions, sub_accounts, percent, k=100):
             res = res[(res.deal> 0) | (res.deal < 0)]
 
     if res is None:
+        QA_util_log_info('##JOB Target is None', ui_log = None)
         res = pd.DataFrame({'NAME': None,'INDUSTRY': None,'deal': None,
                             'close': None,'目标持股数': None,'股票余额': None,
                             '可用余额': None,'冻结数量': None},index=[0]).dropna()
