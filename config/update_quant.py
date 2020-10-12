@@ -31,26 +31,24 @@
 from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_alpha191real,check_stock_alpha101real)
 from  QUANTAXIS.QAUtil import QA_util_today_str
 from .setting import daily_run
-from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date
-from datetime import datetime
+from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date,QA_util_get_pre_trade_date
 import time
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
 
     if QA_util_if_trade(mark_day):
-        mark_day = mark_day
-    elif QA_util_if_trade((datetime.strptime(mark_day,'%Y-%m-%d')+datetime.timedelta(days=1)).strftime("%Y-%m-%d")):
-        mark_day = QA_util_get_real_date(mark_day)
+        check_day = QA_util_get_pre_trade_date(mark_day,1)
     else:
-        mark_day = None
+        check_day = QA_util_get_pre_trade_date(QA_util_get_real_date(mark_day),1)
+
 
     if mark_day is not None:
 
-        check = check_stock_quant(mark_day)
+        check = check_stock_quant(check_day)
         while check is None or check  > 20:
             time.sleep(180)
-            check = check_stock_quant(mark_day)
+            check = check_stock_quant(check_day)
 
         check = check_stock_alpha191real(mark_day)
         while check is None or check  > 20:
@@ -62,4 +60,4 @@ if __name__ == '__main__':
             time.sleep(180)
             check = check_stock_alpha101real(mark_day)
 
-        daily_run(mark_day)
+        daily_run(check_day)
