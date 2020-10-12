@@ -90,8 +90,12 @@ if __name__ == '__main__':
         print("done")
         print("processing quant data in sqldatabase")
         QA_util_process_stock_financial()
-        QA_SU_save_fianacialTTM_momgo()
-        check_ttm_financial(mark_day)
+
+        res = check_ttm_financial(mark_day)
+        if res is None or res > 20:
+            QA_SU_save_fianacialTTM_momgo()
+            check_ttm_financial(mark_day)
+
         QA_etl_process_financial_day('day',mark_day)
         print("done")
         print("write quant data into mongodb")
