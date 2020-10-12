@@ -1,6 +1,6 @@
 
 from .setting import working_dir, percent, exceptions
-from .concat_predict import concat_predict,load_prediction,check_prediction
+from .concat_predict_real import concat_predict,load_prediction,check_prediction
 
 from QUANTTOOLS.Message import send_email
 from QUANTTOOLS.Trader import trade_roboot,get_Client,check_Client
