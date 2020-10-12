@@ -87,7 +87,7 @@ def build(target, positions, sub_accounts, percent, Zbreak, k=100):
         res = res[res['市值'] > 0].append(hold[hold['市值'] == 0])
 
     QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
-
+    QA_util_log_info(res)
     if Zbreak == True and res is None:
         QA_util_log_info('##JOB All Top', ui_log = None)
         res = None
