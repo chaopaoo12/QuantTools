@@ -1,8 +1,7 @@
 from QUANTAXIS import (QA_fetch_get_usstock_list,QA_fetch_get_index_list,QA_fetch_get_index_day,
                        QA_fetch_get_stock_day,QA_fetch_get_stock_xdxr,QA_fetch_get_stock_info,
-                       QA_fetch_get_stock_min
                        )
-from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_list
+from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_list, QA_fetch_get_stock_min
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare,
                                            QA_fetch_get_stock_half_realtime, QA_fetch_get_usstock_day_xq)
 from QUANTAXIS.QAData.data_fq import _QA_data_stock_to_fq
