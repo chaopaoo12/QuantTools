@@ -1,5 +1,5 @@
 
-from .concat_predict_real import concat_predict,save_prediction
+from .concat_predict import concat_predict,save_prediction
 from .setting import working_dir, percent, exceptions, top
 
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv

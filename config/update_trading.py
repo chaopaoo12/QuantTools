@@ -28,7 +28,7 @@
 """对应于save x
 """
 
-from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_index_quant)
+from QUANTTOOLS.QAStockETL.Check import (check_stock_quant)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 from .setting import daily_run
 import time
@@ -39,9 +39,6 @@ if __name__ == '__main__':
     if QA_util_if_trade(mark_day):
 
         while check_stock_quant(mark_day) is None or check_stock_quant(mark_day)  > 10:
-            time.sleep(180)
-
-        while check_index_quant(mark_day) is None or check_index_quant(mark_day)  > 10:
             time.sleep(180)
 
         daily_run(mark_day)
