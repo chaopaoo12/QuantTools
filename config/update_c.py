@@ -29,8 +29,8 @@
 """
 from QUANTAXIS.QASU.main import (QA_SU_save_stock_block,QA_SU_save_stock_list,QA_SU_save_stock_info_tushare)
 from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info, QA_etl_stock_xdxr, QA_etl_stock_day, QA_etl_stock_financial,
-                                   QA_etl_stock_block, QA_etl_process_financial_day,
-                                   QA_SU_save_stock_xdxr, QA_SU_save_stock_info,
+                                   QA_etl_stock_block, QA_etl_process_financial_day,QA_etl_stock_financial_wy,
+                                   QA_SU_save_stock_xdxr, QA_SU_save_stock_info,QA_SU_save_stock_financial_wy_day,
                                    QA_SU_save_stock_fianacial_percent_day, QA_util_process_stock_financial,
                                    QA_SU_save_stock_fianacial_momgo, QA_SU_save_fianacialTTM_momgo,
                                    QA_SU_save_stock_industryinfo, QA_SU_save_stock_day)
@@ -74,14 +74,16 @@ if __name__ == '__main__':
         print("done")
         print("run financial data into sqldatabase")
 
-        res = check_tdx_financial(mark_day)
-        while res is None or res > 0:
-            QA_SU_save_financialfiles_fromtdx()
-            res = check_tdx_financial(mark_day)
-
+        QA_SU_save_financialfiles_fromtdx()
+        check_tdx_financial(mark_day)
         QA_etl_stock_financial('all')
 
-        check_wy_financial(mark_day)
+        res = check_wy_financial(mark_day)
+        while res is None or res > 0:
+            QA_SU_save_stock_financial_wy_day()
+            res = check_wy_financial(mark_day)
+
+        QA_etl_stock_financial_wy('all')
 
         QA_util_process_stock_financial()
         QA_SU_save_fianacialTTM_momgo()
@@ -92,7 +94,6 @@ if __name__ == '__main__':
         print("done")
         print("write quant data into mongodb")
 
-        print("done")
         res = check_stock_fianacial(mark_day)
         while res is None or res  > 20:
             QA_SU_save_stock_fianacial_momgo(mark_day,mark_day)
