@@ -165,11 +165,11 @@ def build(target, positions, sub_accounts, percent, k=100):
     sub_accounts = float(sub_accounts) - 10000
 
     res = merge_table(target, positions)
-    if res is not None:
+    if res is not None and res.shape[0] > 0:
         res = get_top(res , 5)
         QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
         QA_util_log_info(res)
-        if res is not None:
+        if res is not None and res.shape[0] > 0:
             res = caculate_position(res, percent, sub_accounts)
             QA_util_log_info(res[['NAME','INDUSTRY','deal','close','目标持股数','股票余额','可用余额','冻结数量','买卖价']])
             res = balance(res, k = k)
