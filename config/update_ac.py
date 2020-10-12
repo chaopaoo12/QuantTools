@@ -36,15 +36,18 @@ from QUANTTOOLS.QAStockETL.Check import (check_wy_financial, check_tdx_financial
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
     print("write tdx financial data into sqldatabase")
-    while check_tdx_financial(mark_day) is None or check_tdx_financial(mark_day) > 0:
-        QA_SU_save_financialfiles_fromtdx()
+
+    check_tdx_financial(mark_day)
+    QA_SU_save_financialfiles_fromtdx()
     QA_etl_stock_financial('all')
     print("done")
+
     print("write wy financial data into sqldatabase")
     while check_wy_financial(mark_day) is None or check_wy_financial(mark_day) > 0:
         QA_SU_save_stock_financial_wy_day()
     QA_etl_stock_financial_wy('all')
     print("done")
+
     print("run financial data into sqldatabase")
     QA_util_process_stock_financial()
     while check_ttm_financial(mark_day) is None or check_ttm_financial(mark_day) > 0:
