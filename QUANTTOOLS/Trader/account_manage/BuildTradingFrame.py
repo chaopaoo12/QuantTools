@@ -177,11 +177,15 @@ def build(target, positions, sub_accounts, percent, k=100):
             QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
             res = res[(res.deal> 0) | (res.deal < 0)]
 
-    if res is None:
-        QA_util_log_info('##JOB Target is None', ui_log = None)
-        res = pd.DataFrame({'NAME': None,'INDUSTRY': None,'deal': None,
-                            'close': None,'目标持股数': None,'股票余额': None,
-                            '可用余额': None,'冻结数量': None},index=[0]).dropna()
+    if res is None or res.shape[0] == 0:
+        if res is None:
+            QA_util_log_info('##JOB Target is None', ui_log = None)
+            res = pd.DataFrame()
+
+        for i in [i for i in ['NAME','INDUSTRY','deal','close','目标持股数','股票余额','可用余额','冻结数量'] if i not in list(res.columns)]:
+            res[i] = None
+        res = res.dropna()
+
     return(res)
 
 
