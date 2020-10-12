@@ -18,7 +18,7 @@ def predict(trading_date, strategy_id='机器学习1号', account='name:client-1
     client = get_Client()
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
-    QA_util_log_info('##JOB02 Now Predict ==== {}'.format(str(trading_date)), ui_log)
+    QA_util_log_info('##JOB02 Now XGBoost Real Predict ==== {}'.format(str(trading_date)), ui_log)
     tar,stock_tar,start,end,model_date = concat_predict(trading_date, strategy_id=strategy_id,  working_dir=working_dir)
 
     QA_util_log_info('##JOB03 Now Saving Result ==== {}'.format(str(trading_date)), ui_log)
