@@ -74,7 +74,10 @@ if __name__ == '__main__':
         print("done")
         print("run financial data into sqldatabase")
 
-        QA_SU_save_financialfiles_fromtdx()
+        res = check_tdx_financial(mark_day)
+        if res is None or res > 0:
+            QA_SU_save_financialfiles_fromtdx()
+
         check_tdx_financial(mark_day)
         QA_etl_stock_financial('all')
 
