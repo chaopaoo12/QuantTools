@@ -37,8 +37,8 @@ if __name__ == '__main__':
     mark_day = QA_util_today_str()
     print("write tdx financial data into sqldatabase")
 
-    check_tdx_financial(mark_day)
     QA_SU_save_financialfiles_fromtdx()
+    check_tdx_financial(mark_day)
     QA_etl_stock_financial('all')
     print("done")
 
