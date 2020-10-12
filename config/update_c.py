@@ -55,7 +55,7 @@ if __name__ == '__main__':
             res = check_stock_day(mark_day)
 
         QA_SU_save_stock_block('tdx')
-        QA_SU_save_stock_info()
+        #QA_SU_save_stock_info()
 
         res = check_stock_adj(mark_day)
         while res is None or res > 20:
