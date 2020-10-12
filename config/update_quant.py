@@ -42,7 +42,6 @@ if __name__ == '__main__':
     else:
         check_day = QA_util_get_pre_trade_date(QA_util_get_real_date(mark_day),1)
 
-
     if mark_day is not None:
 
         check = check_stock_quant(check_day)
