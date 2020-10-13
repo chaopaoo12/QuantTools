@@ -5,8 +5,8 @@ from QUANTAXIS.QAUtil import QA_util_log_info
 import time
 import datetime
 
-def trading_base(trading_date, func, model_name, file_name, percent, account,working_dir, exceptions):
-    test = False
+def trading_base(trading_date, func, model_name, file_name, percent, account, working_dir, exceptions, test = False):
+
     r_tar, prediction_tar = load_data(func, trading_date, working_dir, model_name, file_name)
 
     QA_util_log_info(
