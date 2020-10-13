@@ -29,8 +29,8 @@
 """
 
 from QUANTTOOLS.QAStockETL.Check import (check_stock_quant)
-from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
-from .setting import daily_run
+from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.daily_job import daily_run
 import time
 
 if __name__ == '__main__':
