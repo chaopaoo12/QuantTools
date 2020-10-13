@@ -1,28 +1,23 @@
 #coding=utf-8
 
-from QUANTTOOLS.Model.StockModel.StrategyXgboostReal import QAStockXGBoostReal
-from .setting import working_dir, data_set, datareal_set
-
 from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
-from multiprocessing import Process
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_get_real_date,QA_util_get_last_day
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 import pandas as pd
 
-def prepare_train(date, ui_log = None):
+def prepare_train(stock_model, date, k = 3, start = "-01-01", ui_log = None):
     QA_util_log_info('##JOB01 Now Model Init ==== {}'.format(str(date)), ui_log)
-    stock_model = QAStockXGBoostReal()
 
     QA_util_log_info('##JOB02 Now Stock Prepare Model Data ==== {}'.format(str(date)), ui_log)
-    stock_model.get_data(start=str(int(date[0:4])-3)+"-01-01", end= QA_util_get_last_day(QA_util_get_real_date(date), 1), block=False, sub_block=False)
+    stock_model.get_data(start=str(int(date[0:4])-k)+start, end= QA_util_get_last_day(QA_util_get_real_date(date), 1))
     QA_util_log_info('##JOB03 Now Set Stock Model Target ==== {}'.format(str(date)), ui_log)
-    stock_model.set_target(mark =0.3, type = 'percent')
+    stock_model.set_target(mark = 0.3, type = 'percent')
     QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(date)), ui_log)
-    stock_model.set_train_rng(train_start=str(int(date[0:4])-3)+"-01-01",
+    stock_model.set_train_rng(train_start=str(int(date[0:4])-k)+start,
                               train_end=QA_util_get_last_day(QA_util_get_real_date(date), 1))
     return(stock_model)
 
-def start_train(stock_model, cols, name, other_params, thresh=0, drop=0.99, working_dir = working_dir):
+def start_train(stock_model, cols, name, other_params, thresh=0, drop=0.99, working_dir=None):
 
     stock_model.prepare_data(thresh=thresh, drop=drop, cols = cols)
     other_params = other_params
@@ -51,21 +46,4 @@ def start_train(stock_model, cols, name, other_params, thresh=0, drop=0.99, work
         pass
     return(0)
 
-def train_mult(date):
-    stock_model = prepare_train(date)
 
-    other_params = {'learning_rate': 0.1, 'n_estimators': 20, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
-                    'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
-    mults = []
-    p1 = Process(target=start_train, args=(stock_model, datareal_set, 'stock_xg_real1', other_params, 0, 0.99))
-    p1.daemon = True
-    p2 = Process(target=start_train, args=(stock_model, data_set, 'stock_xg1', other_params, 0, 0.99))
-    p2.daemon = True
-    p1.start()
-    p2.start()
-    mults.append(p1)
-    mults.append(p2)
-    [mult.join() for mult in mults]
-
-if __name__ == '__main__':
-    pass

@@ -7,16 +7,6 @@ from QUANTTOOLS.Trader.account_manage.BuildTradingFrame import build
 import time
 import datetime
 
-def track_morning(target_tar, account, trading_date, percent, strategy_id, exceptions = None):
-    begin_time = '09:30:00'
-    stop_time = '11:30:00'
-    track_roboot(target_tar, account, trading_date, percent, strategy_id, begin_time, stop_time, exceptions = exceptions)
-
-def track_afternoon(target_tar, account, trading_date, percent, strategy_id, exceptions = None):
-    begin_time = '13:00:00'
-    stop_time = '15:00:00'
-    track_roboot(target_tar, account, trading_date, percent, strategy_id, begin_time, stop_time, exceptions = exceptions)
-
 def track_roboot(target_tar, account, trading_date, percent, strategy_id, begin_time, stop_time, exceptions = None):
     QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
     client = get_Client()

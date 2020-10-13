@@ -1,5 +1,5 @@
 
-from .train import train
+from .train import train, train_hedge
 from .running import predict
 from .setting import working_dir
 
@@ -21,4 +21,16 @@ def daily_train(trading_date):
     else:
         pass
 
+def hedge_train(trading_date):
 
+    if datetime.strptime(trading_date, "%Y-%m-%d").weekday() == 4:
+
+        if QA_util_if_trade(trading_date):
+            pass
+        else:
+            trading_date = QA_util_get_real_date(trading_date)
+
+        train_hedge(trading_date, working_dir=working_dir)
+        predict(trading_date)
+    else:
+        pass
