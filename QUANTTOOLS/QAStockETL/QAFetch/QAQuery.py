@@ -35,10 +35,9 @@ def QA_fetch_stock_industry(stock_code):
     :param stock_code: '600001'
     :return: string 上市日期 eg： '2018-05-15'
     '''
-    items = QA_fetch_stock_basic_info_tushare()
-    for row in items:
-        if row['code'] == stock_code:
-            return row['industry']
+    INDUSTRY = pd.DataFrame(QA_fetch_stock_basic_info_tushare()).set_index('code')[['industry']]
+    items = INDUSTRY.loc[stock_code]
+    return items['industry']
 
 def QA_fetch_stock_name(stock_code):
     '''
@@ -46,10 +45,9 @@ def QA_fetch_stock_name(stock_code):
     :param stock_code: '600001'
     :return: string 上市日期 eg： '民生银行'
     '''
-    items = QA_fetch_stock_basic_info_tushare()
-    for row in items:
-        if row['code'] == stock_code:
-            return row['name']
+    NAME = pd.DataFrame(QA_fetch_stock_basic_info_tushare()).set_index('code')[['name']]
+    items = NAME.loc[stock_code]
+    return items['name']
 
 def QA_fetch_index_name(stock_code):
     '''
@@ -57,7 +55,7 @@ def QA_fetch_index_name(stock_code):
     :param stock_code: '600001'
     :return: string 指数名称 eg： '上证指数'
     '''
-    items = QA_fetch_index_list_adv().loc[str(stock_code)]
+    items = QA_fetch_index_list_adv().loc[stock_code]
     return items['name']
 
 def QA_fetch_index_cate(stock_code):

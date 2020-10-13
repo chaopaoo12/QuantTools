@@ -37,8 +37,7 @@ def make_prediction(Stock, trading_date, name, working_dir, ui_log = None):
     QA_util_log_info(
         '##JOB Now Add info to Predictions ==== {}'.format(str(trading_date)), ui_log)
 
-    NAME = prediction.reset_index()[['code']].drop_duplicates()
-    NAME = NAME.assign(NAME = NAME.code.apply(QA_fetch_stock_name)).set_index('code')
+    NAME = QA_fetch_stock_name(prediction.reset_index()['code'].unique().tolist())
 
     target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index(['date','code']).sort_index()
 
