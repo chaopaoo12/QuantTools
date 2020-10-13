@@ -65,7 +65,7 @@ def QA_fetch_index_cate(stock_code):
     :return: string 指数名称 eg： '上证指数'
     '''
     try:
-        items = QA_fetch_index_info(str(stock_code))
+        items = QA_fetch_index_info(stock_code)
         return items['cate']
     except:
         return None
