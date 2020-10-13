@@ -14,7 +14,7 @@ def Tracking(trading_date, percent=percent, strategy_id= '机器学习1号', acc
 
     QA_util_log_info('##JOB01 Now Predict ===== {}'.format(str(trading_date)), ui_log)
     try:
-        prediction = load_prediction('prediction', working_dir)
+        prediction = load_prediction('prediction_real', working_dir)
         check_prediction(prediction, trading_date)
         tar = prediction['tar']
     except:
