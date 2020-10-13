@@ -2,24 +2,10 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pa
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_stock_om_all
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_stock_alpha101half_realtime,
                                            QA_fetch_get_stock_alpha191half_realtime)
-from multiprocessing import Pool
 import pymongo
 import gc
 
-def stock_alpha101half_real_saving_work(code, start_date, end_date):
-    stock_alpha = DATABASE.stock_alpha101_real
-    try:
-        QA_util_log_info(
-            '##JOB01 Now Saving Stock Alpha101 Half Real==== {}'.format(str(code)))
-        data = QA_fetch_get_stock_alpha101half_realtime(code,start_date,end_date)
-        if data is not None:
-            stock_alpha.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
-            #gc.collect()
-        QA_util_log_info(
-            '##JOB01 Now Saving Stock Alpha101 Half Real Success==== {}'.format(str(code)))
-    except Exception as error0:
-        print(error0)
-        return(str(code))
+
 
 def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date = None, client=DATABASE, ui_log = None, ui_progress = None):
     '''
@@ -36,15 +22,27 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
     codes = code
     if codes is None:
         codes = list(QA_fetch_stock_om_all()['code'])
-        codes = [codes[i:i+400] for i in range(0,len(codes),400)]
-
+        #codes = [codes[i:i+400] for i in range(0,len(codes),400)]
 
     client.drop_collection('stock_alpha101_real')
     stock_alpha = client.stock_alpha101_real
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
-    pool = Pool(10)
+    def __saving_work(code, start_date, end_date):
+        try:
+            QA_util_log_info(
+                '##JOB01 Now Saving Stock Alpha101 Half Real==== {}'.format(str(code)))
+            data = QA_fetch_get_stock_alpha101half_realtime(code,start_date,end_date)
+            if data is not None:
+                stock_alpha.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
+                gc.collect()
+            QA_util_log_info(
+                '##JOB01 Now Saving Stock Alpha101 Half Real Success==== {}'.format(str(code)))
+        except Exception as error0:
+            print(error0)
+            err.append(str(code))
+
     for code in codes:
         QA_util_log_info('The {} of Total {} ==== '.format
                          ((codes.index(code) +1), len(codes)))
@@ -52,12 +50,7 @@ def QA_SU_save_stock_alpha101half_real(code = None, start_date = None, end_date 
         strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(code) +1) / len(codes) * 100))[0:4] + '%', ui_log)
         intProgressToLog = int(float((codes.index(code) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
-        #__saving_work(code,start_date,end_date)
-        _erros = pool.apply_async(stock_alpha101half_real_saving_work, args =(code,start_date,end_date)).get()
-
-        err.append(str(_erros))
-    pool.close()
-    pool.join()
+        __saving_work(code,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save Stock Alpha101 Half Real ^_^',  ui_log)
