@@ -54,13 +54,13 @@ def Tracking(trading_date, percent=percent, strategy_id= '机器学习1号', acc
         '##JOB04 Now Tracking ===== {}'.format(str(trading_date)), ui_log)
     res = track_morning(r_tar, account, trading_date, percent, strategy_id, exceptions = exceptions)
 
-    r_tar = load_target(trading_date, 'prediction_real', strategy_id, account, working_dir, exceptions, ui_log)
-
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
     target_tm = int(time.strftime("%H%M%S", time.strptime("13:00:00", "%H:%M:%S")))
     while tm < target_tm:
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
         time.sleep(60)
+
+    r_tar = load_target(trading_date, 'prediction_real', strategy_id, account, working_dir, exceptions, ui_log)
 
     QA_util_log_info(
         '##JOB04 Now Tracking ===== {}'.format(str(trading_date)), ui_log)
