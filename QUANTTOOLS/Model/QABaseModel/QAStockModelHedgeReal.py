@@ -6,7 +6,7 @@ from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
 from sklearn.utils import shuffle
 from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
 
-class QAStockModelReal():
+class QAStockModelHedgeReal():
 
     def __init__(self):
         self.info=dict()
