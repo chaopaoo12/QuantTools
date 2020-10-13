@@ -38,5 +38,6 @@ def trading_base(trading_date, func, model_name, file_name, percent, account, wo
                       offset='HOLD',
                       volume=None
                       )
+
     res = trade_roboot(r_tar, account, trading_date, percent, model_name, type='end', exceptions = exceptions, test = test)
     return(res)
