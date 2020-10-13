@@ -7,8 +7,17 @@ from QUANTTOOLS.Trader.account_manage.BuildTradingFrame import build
 import time
 import datetime
 
-def track_roboot(target_tar, account, trading_date, percent, strategy_id, exceptions = None):
+def track_morning(target_tar, account, trading_date, percent, strategy_id, exceptions = None):
+    begin_time = '09:30:00'
+    stop_time = '11:30:00'
+    track_roboot(target_tar, account, trading_date, percent, strategy_id, begin_time, stop_time, exceptions = exceptions)
 
+def track_afternoon(target_tar, account, trading_date, percent, strategy_id, exceptions = None):
+    begin_time = '13:00:00'
+    stop_time = '15:00:00'
+    track_roboot(target_tar, account, trading_date, percent, strategy_id, begin_time, stop_time, exceptions = exceptions)
+
+def track_roboot(target_tar, account, trading_date, percent, strategy_id, begin_time, stop_time, exceptions = None):
     QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
     client = get_Client()
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
@@ -20,9 +29,10 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id, except
 
         QA_util_log_info('##JOB Now Check Timing ==== {}'.format(str(trading_date)), ui_log = None)
 
+        begin_time = int(time.strftime("%H%M%S", time.strptime(begin_time, "%H:%M:%S")))
+        stop_time = int(time.strftime("%H%M%S", time.strptime(stop_time, "%H:%M:%S")))
+
         target_ea = int(time.strftime("%H%M%S", time.strptime("09:25:00", "%H:%M:%S")))
-        target_bk1 = int(time.strftime("%H%M%S", time.strptime("11:30:00", "%H:%M:%S")))
-        target_bk2 = int(time.strftime("%H%M%S", time.strptime("13:00:00", "%H:%M:%S")))
         target_af = int(time.strftime("%H%M%S", time.strptime("15:00:00", "%H:%M:%S")))
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
         if tm < target_ea or tm >= target_af:
@@ -30,12 +40,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id, except
             send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'已过交易时段',direction = 'HOLD',offset='HOLD',volume=None)
 
         QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
-        while tm >= target_ea  and  tm <= target_af:
-
-            if tm > target_bk1 and tm < target_bk2:
-                time.sleep(120)
-                tm = int(datetime.datetime.now().strftime("%H%M%S"))
-                continue
+        while tm >= begin_time  and  tm <= stop_time:
 
             QA_util_log_info('##JOB Now Tracking Selling ==== {}'.format(str(trading_date)), ui_log = None)
             if res[res['deal']<0].shape[0] == 0:
@@ -69,6 +74,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id, except
     else:
         QA_util_log_info('JOB None Tracking Target ==================== {}'.format(trading_date), ui_log=None)
         send_actionnotice(strategy_id,'None Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)
+
 
 if __name__ == '__main__':
     pass
