@@ -10,7 +10,7 @@ def load_data(predict_func, trading_date, working_dir, model_name, file_name):
         target_pool = prediction['target_pool']
         prediction = prediction['prediction']
     except:
-        target_pool, prediction, start, end, model_date = predict_func(trading_date, name=model_name,  working_dir=working_dir)
+        target_pool, prediction, start, end, model_date = predict_func(trading_date, model_name=model_name,  working_dir=working_dir)
 
     try:
         r_tar = target_pool.loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
