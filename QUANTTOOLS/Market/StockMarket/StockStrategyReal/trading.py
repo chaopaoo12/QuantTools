@@ -15,5 +15,17 @@ def trading_hedge(trading_date, func = concat_predict_hedge, model_name = 'hedge
     res = trading_base(trading_date, func, model_name, file_name, percent = percent, account= account, working_dir = working_dir, exceptions = exceptions)
     return(res)
 
+def trading_summary(trading_date):
+
+    res = trading_real(trading_date)
+
+    if res is None or res.shape[0] == 0:
+        res = trading_hedge(trading_date)
+
+    if res is None or res.shape[0] == 0:
+        res = trading(trading_date)
+
+    return(res)
+
 if __name__ == '__main__':
     pass
