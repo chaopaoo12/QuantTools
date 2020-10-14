@@ -1222,11 +1222,11 @@ def QA_fetch_index_quant_data(code, start, end = None, type = 'normalization', f
             res = None
 
         if type == 'standardize':
-            res = res.groupby('date').apply(standardize).reset_index()
+            res = res.groupby('date').apply(standardize)
         elif type == 'normalization':
-            res = res.groupby('date').apply(normalization).reset_index()
+            res = res.groupby('date').apply(normalization)
         else:
-            res = res.reset_index()
+            res = res
             QA_util_log_info('##JOB type must be in [standardize, normalization]')
 
         if format in ['P', 'p', 'pandas', 'pd']:
@@ -1252,6 +1252,8 @@ def QA_fetch_index_quant_pre(code, start, end=None, method='value', format='pd')
     QA_util_log_info(
         'JOB Get Index Target data start=%s end=%s' % (start, end))
     target = QA_fetch_index_target(code, start, end, method=method)
+    print(res)
+    print(target)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
         return res
