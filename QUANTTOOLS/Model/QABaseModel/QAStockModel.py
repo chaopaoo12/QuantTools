@@ -20,12 +20,14 @@ class QAStockModel():
         self.data = self.data[(self.data.next_date == self.data.PRE_DATE)]
         print(self.data.shape)
 
-    def set_target(self, mark, type = 'value'):
-        QA_util_log_info('##JOB Set Train Target by {type} at {mark} ===== {date}'.format(type = type, mark=mark,
-                                                                                          date = self.info['date']),
+    def set_target(self, col, mark, type = 'value'):
+        self.target = col
+        QA_util_log_info('##JOB Set Train Target by {type} at {mark} in column {col} ==== {date}'.format(type = type, mark=mark,
+                                                                                                         col =col,date = self.info['date']),
                          ui_log = None)
-        self.data['moon'] = self.data['TARGET5'].apply(lambda x : 1 if x > 0 else 0)
-        self.data['sun'] = self.data['TARGET'].apply(lambda x : 1 if x > 0 else 0)
+
+        self.data['moon'] = self.data[self.target].apply(lambda x : 1 if x > 0 else 0)
+        self.data['sun'] = self.data[self.target].apply(lambda x : 1 if x > 0 else 0)
 
         if type == 'value':
             self.data['star'] = self.data['TARGET'].apply(lambda x : 1 if x >= mark else 0)
@@ -33,7 +35,7 @@ class QAStockModel():
             self.data['star'] = self.data['TARGET'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
         else:
             QA_util_log_info('##target type must be in [value,percent] ===== {}'.format(self.info['date']), ui_log = None)
-
+        self.info['target'] = self.target
         QA_util_log_info('##save used columns ==== {}'.format(self.info['date']), ui_log = None)
 
     def set_train_rng(self, train_start, train_end):
