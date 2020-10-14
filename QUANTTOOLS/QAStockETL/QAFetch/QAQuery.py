@@ -1252,8 +1252,6 @@ def QA_fetch_index_quant_pre(code, start, end=None, method='value', format='pd')
     QA_util_log_info(
         'JOB Get Index Target data start=%s end=%s' % (start, end))
     target = QA_fetch_index_target(code, start, end, method=method)
-    print(res)
-    print(target)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
         return res
