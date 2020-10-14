@@ -19,7 +19,6 @@ def train(date, working_dir=working_dir):
     stock_model = start_train(stock_model, data_set, other_params, 0, 0.99)
     save_report(stock_model, 'stock_xg', working_dir)
 
-
 def train_hedge(date, working_dir=working_dir):
     stock_model = QAStockModelHedgeReal()
     stock_model = prepare_train(stock_model, date, col = 'TARGET')
