@@ -17,12 +17,15 @@ def prepare_train(model, date, col = 'TARGET5', k = 3, start = "-01-01", ui_log 
                               train_end=QA_util_get_last_day(QA_util_get_real_date(date), 1))
     return(model)
 
-def start_train(model, cols, name, other_params, thresh=0, drop=0.99, working_dir=None):
+def start_train(model, cols, other_params, thresh=0, drop=0.99):
 
     model.prepare_data(thresh=thresh, drop=drop, cols = cols)
     other_params = other_params
     model.build_model(other_params)
     model.model_running()
+    return(model)
+
+def save_report(model, name, working_dir=None):
     model.save_model(name,working_dir = working_dir)
     important = model.model_important()
     stock_train_report = build_table(pd.DataFrame(model.info['train_report']), '个股模型训练集情况')
@@ -45,5 +48,3 @@ def start_train(model, cols, name, other_params, thresh=0, drop=0.99, working_di
     except:
         pass
     return(0)
-
-
