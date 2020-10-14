@@ -5,13 +5,13 @@ from QUANTAXIS.QAUtil.QADate_trade import QA_util_get_real_date,QA_util_get_last
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 import pandas as pd
 
-def prepare_train(stock_model, date, k = 3, start = "-01-01", ui_log = None):
+def prepare_train(stock_model, date, col = 'TARGET5', k = 3, start = "-01-01", ui_log = None):
     QA_util_log_info('##JOB01 Now Model Init ==== {}'.format(str(date)), ui_log)
 
     QA_util_log_info('##JOB02 Now Stock Prepare Model Data ==== {}'.format(str(date)), ui_log)
-    stock_model.get_data(start=str(int(date[0:4])-k)+start, end= QA_util_get_last_day(QA_util_get_real_date(date), 1))
+    stock_model.get_data(start=str(int(date[0:4])-k)+start, end= QA_util_get_last_day(QA_util_get_real_date(date), 5))
     QA_util_log_info('##JOB03 Now Set Stock Model Target ==== {}'.format(str(date)), ui_log)
-    stock_model.set_target(mark = 0.3, type = 'percent')
+    stock_model.set_target(col = col, mark = 0.3, type = 'percent')
     QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(date)), ui_log)
     stock_model.set_train_rng(train_start=str(int(date[0:4])-k)+start,
                               train_end=QA_util_get_last_day(QA_util_get_real_date(date), 1))
