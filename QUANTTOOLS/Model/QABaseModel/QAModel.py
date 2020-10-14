@@ -13,9 +13,6 @@ class QAModel():
         self.info['train_status']=dict()
         self.info['rng_status']=dict()
 
-    def get_data(self):
-        pass
-
     def set_target(self, col, mark, type = 'value'):
         self.target = col
         QA_util_log_info('##JOB Set Train Target by {type} at {mark} in column {col} ==== {date}'.format(type = type, mark=mark,
@@ -89,18 +86,6 @@ class QAModel():
             self.info['thresh'] = thresh
             self.info['drop'] = drop
 
-    def build_model(self):
-        pass
-
-    def model_running(self):
-        pass
-
-    def model_check(self):
-        pass
-
-    def model_important(self):
-        pass
-
     def save_model(self, name, working_dir = 'D:\\model\\current'):
         self.info['cols'] = self.cols
         QA_util_log_info('##JOB Now Model Saving ===== {}'.format(self.info['date']), ui_log = None)
@@ -122,9 +107,6 @@ class QAModel():
         self.cols = self.info['cols']
         self.thresh = self.info['thresh']
         return(self)
-
-    def model_predict(self, start, end, block = False, sub_block= False, type='crawl'):
-        pass
 
 if __name__ == 'main':
     pass
