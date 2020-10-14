@@ -38,11 +38,10 @@ def make_prediction(Stock, trading_date, name, working_dir, ui_log = None):
         '##JOB Now Add info to Predictions ==== {}'.format(str(trading_date)), ui_log)
 
     NAME = QA_fetch_stock_name(prediction.reset_index()['code'].unique().tolist())
-    NAME.columns = ['NAME']
 
-    target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index(['date','code']).sort_index()
+    target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index(['date','code']).sort_index().rename(columns={'name':'NAME'})
 
-    prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().set_index(['date','code']).sort_index()
+    prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().set_index(['date','code']).sort_index().rename(columns={'name':'NAME'})
 
     return(target_pool,prediction,start,end,stock_info_temp['date'])
 
