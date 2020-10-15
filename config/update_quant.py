@@ -33,6 +33,7 @@ from QUANTAXIS.QAUtil import QA_util_today_str
 from QUANTTOOLS.Market.StockMarket.StockStrategyReal.daily_job import daily_run_real
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date,QA_util_get_pre_trade_date
 from QUANTAXIS.QASU.main import (QA_SU_save_stock_list,QA_SU_save_stock_info_tushare)
+from QUANTTOOLS.QAStockETL import QA_SU_save_stock_aklist
 import time
 
 if __name__ == '__main__':
@@ -44,7 +45,7 @@ if __name__ == '__main__':
         check_day = QA_util_get_pre_trade_date(QA_util_get_real_date(mark_day),1)
 
     if mark_day is not None:
-
+        QA_SU_save_stock_aklist()
         res = check_stock_code()
         while len(res) > 0:
             QA_SU_save_stock_list('tdx')
