@@ -1,5 +1,6 @@
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
-from QUANTTOOLS.QAStockETL.Check import check_stock_60min, check_stock_alpha101half,check_stock_half,check_stock_alpha191half
+from QUANTAXIS.QASU.save_tdx import  QA_SU_save_single_stock_min
+from QUANTTOOLS.QAStockETL.Check import check_stock_60min, check_sinastock_60min, check_sinastock_half, check_stock_alpha101half,check_stock_half,check_stock_alpha191half
 from QUANTTOOLS.QAStockETL.QASU import QA_SU_save_stock_half,QA_SU_save_stock_min
 from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_alpha101half_day,QA_SU_save_stock_alpha191half_day, QA_etl_stock_alpha101half_day,QA_etl_stock_alpha191half_day)
 
