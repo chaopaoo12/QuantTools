@@ -17,7 +17,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_half_realtime
 from QUANTTOOLS.QAStockETL.Check.check_base import check_stock_data, check_index_data, check_stock_base
 
 def QA_fetch_stock_half_realtime(code, start, end):
-    return(QA_fetch_get_stock_half_realtime(code))
+    return(QA_fetch_get_stock_half_realtime(code, start))
 
 
 def QA_fetch_stock_60min(code, start, end):
