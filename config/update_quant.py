@@ -55,7 +55,7 @@ if __name__ == '__main__':
             check = check_stock_alpha191real(mark_day)
 
         check = check_stock_alpha101real(mark_day)
-        while check is None or check  > 20:
+        while check is None or check > 20:
             time.sleep(180)
             check = check_stock_alpha101real(mark_day)
 

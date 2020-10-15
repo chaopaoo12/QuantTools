@@ -1132,7 +1132,7 @@ def QA_SU_save_stock_real(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
 
-    client.drop_collection('stock_real')
+    #client.drop_collection('stock_real')
     stock_list = QA_fetch_stock_all().code.unique().tolist()
     coll = client.stock_real
     coll.create_index([('code',
