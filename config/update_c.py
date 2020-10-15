@@ -35,7 +35,7 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info, QA_etl_
                                    QA_SU_save_stock_fianacial_percent_day, QA_util_process_stock_financial,
                                    QA_SU_save_stock_fianacial_momgo, QA_SU_save_fianacialTTM_momgo,
                                    QA_SU_save_stock_industryinfo, QA_SU_save_stock_day,
-                                   QA_SU_save_single_stock_xdxr)
+                                   QA_SU_save_single_stock_xdxr,QA_SU_save_stock_aklist)
 from QUANTTOOLS.QAStockETL import (QA_etl_stock_financial_day,
                                    QA_etl_stock_financial_percent_day)
 from QUANTAXIS.QASU.main import (QA_SU_save_financialfiles_fromtdx)
@@ -48,6 +48,7 @@ if __name__ == '__main__':
     mark_day = QA_util_today_str()
     if QA_util_if_trade(mark_day):
 
+        QA_SU_save_stock_aklist()
         res = check_stock_code()
         while len(res) > 0:
             QA_SU_save_stock_list('tdx')

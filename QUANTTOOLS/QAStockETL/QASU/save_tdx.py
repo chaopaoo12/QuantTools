@@ -1620,7 +1620,7 @@ def QA_SU_save_stock_aklist(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
     client.drop_collection('akstock_list')
-    coll = client.stock_list
+    coll = client.akstock_list
     coll.create_index('code')
 
     try:
