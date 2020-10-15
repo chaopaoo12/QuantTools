@@ -1566,7 +1566,7 @@ def QA_SU_save_single_stock_xdxr(code : str, client=DATABASE, ui_log=None, ui_pr
         )
         try:
 
-            xdxr  = QA_fetch_get_stock_xdxr(str(code))
+            xdxr  = QA_fetch_get_stock_xdxr('tdx',str(code))
             try:
                 coll.insert_many(
                     QA_util_to_json_from_pandas(xdxr),
