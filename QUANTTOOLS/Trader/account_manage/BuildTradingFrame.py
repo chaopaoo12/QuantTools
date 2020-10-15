@@ -122,7 +122,7 @@ def caculate_position(res, percent, sub_accounts):
     return(res)
 
 def balance(res, k = 100):
-    QA_util_log_info('##JOB Refresh Final Result', ui_log = None)
+    QA_util_log_info('##JOB Banlance Result', ui_log = None)
     ###流程
     #建立基础分配表 按均值计算取floor 正常情况下应该是仓位未用完
     #微调 加仓算法 缺省仓位 比较 目标持股单位操作金额
