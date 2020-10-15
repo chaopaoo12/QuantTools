@@ -62,7 +62,6 @@ if __name__ == '__main__':
             res = check_sinastock_day(mark_day)
 
         QA_SU_save_stock_block('tdx')
-        #QA_SU_save_stock_info()
 
         res = check_stock_adj(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 20:
@@ -118,4 +117,4 @@ if __name__ == '__main__':
         QA_etl_stock_financial_day(mark_day, mark_day)
         QA_etl_stock_financial_percent_day(mark_day, mark_day)
 
-
+        QA_SU_save_stock_info()

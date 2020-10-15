@@ -1386,3 +1386,227 @@ def QA_SU_save_stock_min(client=DATABASE, ui_log=None, ui_progress=None):
     else:
         QA_util_log_info(' ERROR CODE \n ', ui_log=ui_log)
         QA_util_log_info(err, ui_log=ui_log)
+
+def QA_SU_save_single_stock_min(code : str, client=DATABASE, ui_log=None, ui_progress=None):
+    """save single stock_min
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+
+    #stock_list = QA_fetch_get_stock_list().code.unique().tolist()
+    stock_list = [code]
+    coll = client.stock_min
+    coll.create_index(
+        [
+            ('code',
+             pymongo.ASCENDING),
+            ('time_stamp',
+             pymongo.ASCENDING),
+            ('date_stamp',
+             pymongo.ASCENDING)
+        ]
+    )
+    err = []
+
+    def __saving_work(code, coll):
+        QA_util_log_info(
+            '##JOB03 Now Saving STOCK_MIN ==== {}'.format(str(code)),
+            ui_log=ui_log
+        )
+        try:
+            for type in ['60min']:
+                ref_ = coll.find({'code': str(code)[0:6], 'type': type})
+                end_time = str(now_time())[0:19]
+                if ref_.count() > 0:
+                    start_time = ref_[ref_.count() - 1]['datetime']
+
+                    QA_util_log_info(
+                        '##JOB03.{} Now Saving {} from {} to {} =={} '.format(
+                            ['1min',
+                             '5min',
+                             '15min',
+                             '30min',
+                             '60min'].index(type),
+                            str(code),
+                            start_time,
+                            end_time,
+                            type
+                        ),
+                        ui_log=ui_log
+                    )
+                    if start_time != end_time:
+                        __data = QA_fetch_get_stock_min(
+                            str(code),
+                            start_time,
+                            end_time,
+                            type
+                        )
+                        if len(__data) > 1:
+                            coll.insert_many(
+                                QA_util_to_json_from_pandas(__data)[1::]
+                            )
+                else:
+                    start_time = '2015-01-01'
+                    QA_util_log_info(
+                        '##JOB03.{} Now Saving {} from {} to {} =={} '.format(
+                            ['1min',
+                             '5min',
+                             '15min',
+                             '30min',
+                             '60min'].index(type),
+                            str(code),
+                            start_time,
+                            end_time,
+                            type
+                        ),
+                        ui_log=ui_log
+                    )
+                    if start_time != end_time:
+                        __data = QA_fetch_get_stock_min(
+                            str(code),
+                            start_time,
+                            end_time,
+                            type
+                        )
+                        if len(__data) > 1:
+                            coll.insert_many(
+                                QA_util_to_json_from_pandas(__data)
+                            )
+        except Exception as e:
+            QA_util_log_info(e, ui_log=ui_log)
+            err.append(code)
+            QA_util_log_info(err, ui_log=ui_log)
+
+    executor = ThreadPoolExecutor(max_workers=4)
+    # executor.map((__saving_work,  stock_list[i_], coll),URLS)
+    res = {
+        executor.submit(__saving_work,
+                        stock_list[i_],
+                        coll)
+        for i_ in range(len(stock_list))
+    }
+    count = 1
+    for i_ in concurrent.futures.as_completed(res):
+        QA_util_log_info(
+            'The {} of Total {}'.format(count,
+                                        len(stock_list)),
+            ui_log=ui_log
+        )
+
+        strProgress = 'DOWNLOAD PROGRESS {} '.format(
+            str(float(count / len(stock_list) * 100))[0:4] + '%'
+        )
+        intProgress = int(count / len(stock_list) * 10000.0)
+        QA_util_log_info(
+            strProgress,
+            ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=intProgress
+        )
+        count = count + 1
+    if len(err) < 1:
+        QA_util_log_info('SUCCESS', ui_log=ui_log)
+    else:
+        QA_util_log_info(' ERROR CODE \n ', ui_log=ui_log)
+        QA_util_log_info(err, ui_log=ui_log)
+
+def QA_SU_save_single_stock_xdxr(code : str, client=DATABASE, ui_log=None, ui_progress=None):
+    """[summary]
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+    stock_list = [code]
+    # client.drop_collection('stock_xdxr')
+
+    try:
+        coll = client.stock_xdxr
+        coll.create_index(
+            [('code',
+              pymongo.ASCENDING),
+             ('date',
+              pymongo.ASCENDING)],
+            unique=True
+        )
+        coll_adj = client.stock_adj
+        coll_adj.create_index(
+            [('code',
+              pymongo.ASCENDING),
+             ('date',
+              pymongo.ASCENDING)],
+            unique=True
+        )
+    except:
+        #client.drop_collection('stock_xdxr')
+        coll = client.stock_xdxr
+        coll.create_index(
+            [('code',
+              pymongo.ASCENDING),
+             ('date',
+              pymongo.ASCENDING)],
+            unique=True
+        )
+        #client.drop_collection('stock_adj')
+        coll_adj = client.stock_adj
+        coll_adj.create_index(
+            [('code',
+              pymongo.ASCENDING),
+             ('date',
+              pymongo.ASCENDING)],
+            unique=True
+        )
+
+    err = []
+
+    def __saving_work(code, coll):
+        QA_util_log_info(
+            '##JOB02 Now Saving XDXR INFO ==== {}'.format(str(code)),
+            ui_log=ui_log
+        )
+        try:
+
+            xdxr  = QA_fetch_get_stock_xdxr(str(code))
+            try:
+                coll.insert_many(
+                    QA_util_to_json_from_pandas(xdxr),
+                    ordered=False
+                )
+            except:
+                pass
+            try:
+                data = QA_fetch_stock_day(str(code), '1990-01-01',str(datetime.date.today()), 'pd')
+                qfq = _QA_data_stock_to_fq(data, xdxr, 'qfq')
+                qfq = qfq.assign(date=qfq.date.apply(lambda x: str(x)[0:10]))
+                adjdata = QA_util_to_json_from_pandas(qfq.loc[:, ['date','code', 'adj']])
+                coll_adj.delete_many({'code': code})
+                #print(adjdata)
+                coll_adj.insert_many(adjdata)
+
+
+            except Exception as e:
+                print(e)
+
+
+        except Exception as e:
+            print(e)
+
+            err.append(str(code))
+
+    for i_ in range(len(stock_list)):
+        QA_util_log_info(
+            'The {} of Total {}'.format(i_,
+                                        len(stock_list)),
+            ui_log=ui_log
+        )
+        strLogInfo = 'DOWNLOAD PROGRESS {} '.format(
+            str(float(i_ / len(stock_list) * 100))[0:4] + '%'
+        )
+        intLogProgress = int(float(i_ / len(stock_list) * 100))
+        QA_util_log_info(
+            strLogInfo,
+            ui_log=ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=intLogProgress
+        )
+        __saving_work(stock_list[i_], coll)
