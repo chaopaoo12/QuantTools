@@ -74,7 +74,7 @@ def QA_fetch_stock_alpha(code, start, end):
     return(QA_fetch_stock_alpha_adv(code, start, end).data)
 
 def check_stock_alpha191(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_alpha_adv, mark_day = mark_day, title = 'Stock Alpha191', ui_log = ui_log))
+    return(check_stock_data(func = QA_fetch_stock_alpha, mark_day = mark_day, title = 'Stock Alpha191', ui_log = ui_log))
 
 
 def QA_fetch_stock_alpha101(code, start, end):
