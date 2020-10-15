@@ -8,11 +8,11 @@ if __name__ == '__main__':
     if QA_util_if_trade(mark_day):
 
         res = check_stock_real(mark_day)
-        while res is None or res > 20:
+        while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_real()
             res = check_stock_real(mark_day)
 
         res = check_stock_alpha191real(mark_day)
-        while res is None or res > 20:
+        while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_alpha191half_real()
             res = check_stock_alpha191real(mark_day)

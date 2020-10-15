@@ -50,7 +50,8 @@ def check_stock_base(func1 = None, func2 = None, mark_day = None, title = None, 
                           offset='{to_date}, 数据量:{num}'.format(to_date = func2.__name__, num = len(data2)),
                           volume= '缺失数据量:{num}'.format(num =(len(data2) - len(data1))))
 
-        return((len(data2) - len(data1)))
+        return([i for i in data1 if i not in data2],
+               [i for i in data2 if i not in data1])
     else:
         QA_util_log_info(
             '##JOB Now Check {title} Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(title = title,
@@ -58,7 +59,8 @@ def check_stock_base(func1 = None, func2 = None, mark_day = None, title = None, 
                                                                                                               num1=len(data1),
                                                                                                               to_date=func2.__name__,
                                                                                                               num2=len(data2)), ui_log)
-        return(0)
+        return([[i for i in data1 if i not in data2],
+               [i for i in data2 if i not in data1]])
 
 def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
     code = list(QA_fetch_stock_all()['code'])
@@ -114,7 +116,8 @@ def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
                           direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = len(data1)),
                           offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = len(data2)),
                           volume= '缺失数据量:{num}'.format(num =(len(data2) - len(data1))))
-        return((len(data2) - len(data1)))
+        return([i for i in data1 if i not in data2],
+               [i for i in data2 if i not in data1])
     else:
         QA_util_log_info(
             '##JOB Now Check {title} Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(title = title,
@@ -122,7 +125,8 @@ def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
                                                                                                               num1=len(data1),
                                                                                                               to_date=to_date,
                                                                                                               num2=len(data2)), ui_log)
-        return(0)
+        return([[i for i in data1 if i not in data2],
+               [i for i in data2 if i not in data1]])
 
 def check_index_data(func = None, mark_day = None, title = None, ui_log = None):
     try:
@@ -181,7 +185,8 @@ def check_index_data(func = None, mark_day = None, title = None, ui_log = None):
                           direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = data1.shape[0]),
                           offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = data2.shape[0]),
                           volume= '缺失数据量:{num}'.format(num =(data2.shape[0] - data1.shape[0])))
-        return((len(data2) - len(data1)))
+        return([[i for i in data1 if i not in data2],
+               [i for i in data2 if i not in data1]])
     else:
         QA_util_log_info(
             '##JOB Now Check {title} Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(title = title,
@@ -189,4 +194,5 @@ def check_index_data(func = None, mark_day = None, title = None, ui_log = None):
                                                                                                               num1=len(data1),
                                                                                                               to_date=to_date,
                                                                                                               num2=len(data2)), ui_log)
-        return(0)
+        return([[i for i in data1 if i not in data2],
+               [i for i in data2 if i not in data1]])

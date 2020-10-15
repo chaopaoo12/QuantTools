@@ -45,17 +45,17 @@ if __name__ == '__main__':
     if mark_day is not None:
 
         check = check_stock_quant(check_day)
-        while check is None or check  > 20:
+        while check is None or (len(check[0]) + len(check[1])) > 20:
             time.sleep(180)
             check = check_stock_quant(check_day)
 
         check = check_stock_alpha191real(mark_day)
-        while check is None or check  > 20:
+        while check is None or (len(check[0]) + len(check[1])) > 20:
             time.sleep(180)
             check = check_stock_alpha191real(mark_day)
 
         check = check_stock_alpha101real(mark_day)
-        while check is None or check > 20:
+        while check is None or (len(check[0]) + len(check[1])) > 20:
             time.sleep(180)
             check = check_stock_alpha101real(mark_day)
 

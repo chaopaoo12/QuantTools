@@ -9,22 +9,22 @@ if __name__ == '__main__':
     if QA_util_if_trade(mark_day):
 
         res = check_stock_60min(mark_day)
-        while res is None or res > 20:
+        while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_min()
             res = check_stock_60min(mark_day)
 
         res = check_stock_half(mark_day)
-        while res is None or res > 20:
+        while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_half()
             res = check_stock_half(mark_day)
 
         res = check_stock_alpha101half(mark_day)
-        while res is None or res > 20:
+        while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_alpha101half_day(start_date = mark_day,  end_date = mark_day)
             res = check_stock_alpha101half(mark_day)
 
         res = check_stock_alpha191half(mark_day)
-        while res is None or res > 20:
+        while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_alpha191half_day(start_date = mark_day,  end_date = mark_day)
             res = check_stock_alpha191half(mark_day)
 

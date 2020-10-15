@@ -94,13 +94,13 @@ def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
 
     #check
     try:
-        data1 = QA_fetch_stock_adj(code, mark_day, mark_day)
+        data1 = QA_fetch_stock_adj(code, mark_day, mark_day).reset_index().code.unique()
     #report
     except:
         data1 = None
 
     try:
-        data2 = QA_fetch_stock_adj(code, to_date, to_date)
+        data2 = QA_fetch_stock_adj(code, to_date, to_date).reset_index().code.unique()
     #report
     except:
         data2 = None
@@ -118,7 +118,7 @@ def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
                           volume= '缺失全部数据'
                           )
         return(None)
-    elif data1.shape[0] < data2.shape[0]:
+    elif len(data1) < len(data2):
         QA_util_log_info(
             '##JOB Now Check Stock adj day data ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day,num1=data1.shape[0],
                                                                                                                  to_date=to_date,num2=data2.shape[0]), ui_log)
@@ -130,9 +130,11 @@ def check_stock_adj(mark_day = None, type = 'day', ui_log = None):
                           offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = data2.shape[0]),
                           volume= '缺失数据量:{num}'.format(num =(data2.shape[0] - data1.shape[0]))
                           )
-        return((data2.shape[0] - data1.shape[0]))
+        return([[i for i in data1 if i not in data2],
+               [i for i in data2 if i not in data1]])
     else:
         QA_util_log_info(
             '##JOB Now Check Stock adj day data Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(deal_date=mark_day,num1=data1.shape[0],
                                                                                                                          to_date=to_date,num2=data2.shape[0]), ui_log)
-        return(0)
+        return([[i for i in data1 if i not in data2],
+               [i for i in data2 if i not in data1]])

@@ -39,27 +39,27 @@ if __name__ == '__main__':
     ckeck_day1 = QA_util_get_pre_trade_date(mark_day,1)
 
     check = check_stock_day(ckeck_day)
-    while check is None or check > 10:
+    while check is None or (len(check[0]) + len(check[1])) > 10:
         time.sleep(180)
         check = check_stock_day(ckeck_day)
 
     check = check_stock_adj(ckeck_day)
-    while check is None or check > 10:
+    while check is None or (len(check[0]) + len(check[1])) > 10:
         time.sleep(180)
         check = check_stock_adj(ckeck_day)
 
     check = check_stock_quant(ckeck_day1)
-    while check is None or check > 10:
+    while check is None or (len(check[0]) + len(check[1])) > 10:
         time.sleep(180)
         check = check_stock_quant(ckeck_day1)
 
     check = check_stock_alpha191real(ckeck_day)
-    while check is None or check > 10:
+    while check is None or (len(check[0]) + len(check[1])) > 10:
         time.sleep(180)
         check = check_stock_alpha191real(ckeck_day)
 
     check = check_stock_alpha101real(ckeck_day)
-    while check is None or check > 10:
+    while check is None or (len(check[0]) + len(check[1])) > 10:
         time.sleep(180)
         check = check_stock_alpha101real(ckeck_day)
 

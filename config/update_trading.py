@@ -39,7 +39,7 @@ if __name__ == '__main__':
     if QA_util_if_trade(mark_day):
 
         res = check_stock_quant(mark_day)
-        while res is None or res > 10:
+        while res is None or (len(res[0]) + len(res[1])) > 10:
             time.sleep(180)
 
         daily_run(mark_day)
