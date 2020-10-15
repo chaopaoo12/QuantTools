@@ -214,6 +214,8 @@ def QA_SU_save_index_alpha101_day(code = None, start_date = None, end_date = Non
     codes = code
     if codes is None:
         codes = list(QA_fetch_index_list_adv()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     if end_date is None:
         end_date = QA_util_today_str()
@@ -267,6 +269,8 @@ def QA_SU_save_stock_alpha101_day(code = None, start_date = None, end_date = Non
     codes = code
     if codes is None:
         codes = list(QA_fetch_stock_om_all()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     stock_alpha = client.stock_alpha101
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -314,6 +318,8 @@ def QA_SU_save_stock_alpha101_his(code = None, start_date = None, end_date = Non
     codes = code
     if codes is None:
         codes = list(QA_fetch_stock_all()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     stock_alpha = client.stock_alpha101
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -362,6 +368,8 @@ def QA_SU_save_stock_alpha101half_day(code = None, start_date = None, end_date =
     codes = code
     if codes is None:
         codes = list(QA_fetch_stock_om_all()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     stock_alpha = client.stock_alpha101_half
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -409,6 +417,8 @@ def QA_SU_save_stock_alpha101half_his(code = None, start_date = None, end_date =
     codes = code
     if codes is None:
         codes = list(QA_fetch_stock_all()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     stock_alpha = client.stock_alpha101_half
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
