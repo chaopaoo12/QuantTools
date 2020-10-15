@@ -33,7 +33,7 @@ from QUANTAXIS.QASU.save_tdx import QA_SU_save_single_stock_day
 from QUANTTOOLS.QAStockETL import (QA_etl_stock_technical_day,
                                    QA_etl_stock_technical_week)
 from QUANTTOOLS.QAStockETL.Check import (check_stock_day, check_stock_adj, check_stock_techindex, check_stock_techweek,
-                                         check_sinastock_day, check_sinastock_adj)
+                                         check_sinastock_day, check_sinastock_adj,check_sinastock_techindex,check_sinastock_techweek)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 import time
 

@@ -112,11 +112,18 @@ def QA_fetch_stock_techindex(code, start, end):
 def check_stock_techindex(mark_day = None, ui_log = None):
     return(check_stock_data(func = QA_fetch_stock_techindex, mark_day = mark_day, title = 'Stock TechIndex', ui_log = ui_log))
 
+def check_sinastock_techindex(mark_day = None, ui_log = None):
+    return(check_stock_base(func1 = QA_fetch_stock_techindex, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock TechIndex sina', ui_log = ui_log))
+
+
 def QA_fetch_stock_techweek(code, start, end):
     return(QA_fetch_stock_technical_index_adv(code, start, end, type='week').data)
 
 def check_stock_techweek(mark_day = None, ui_log = None):
     return(check_stock_data(func = QA_fetch_stock_techweek, mark_day = mark_day, title = 'Stock TechWeek', ui_log = ui_log))
+
+def check_sinastock_techweek(mark_day = None, ui_log = None):
+    return(check_stock_base(func1 = QA_fetch_stock_techweek, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock TechWeek sina', ui_log = ui_log))
 
 
 def QA_fetch_stock_quant_data(code, start, end):
