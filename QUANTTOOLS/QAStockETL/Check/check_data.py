@@ -37,7 +37,7 @@ def check_stock_half(mark_day = None, ui_log = None):
     return(check_stock_data(func = QA_fetch_stock_half, mark_day = mark_day, title = 'Stock Half', ui_log = ui_log))
 
 def check_sinastock_half(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_half, func2=QA_fetch_stock_60min, mark_day = mark_day, title = 'Stock Half sina', ui_log = ui_log))
+    return(check_stock_base(func1 = QA_fetch_stock_half, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Half sina', ui_log = ui_log))
 
 
 def QA_fetch_stock_day(code, start, end):
