@@ -12,13 +12,21 @@ def check_stock_base(func1 = None, func2 = None, mark_day = None, title = None, 
 
     #check
     try:
-        data1 = func1(code, mark_day, mark_day).reset_index().code.unique()
+        try:
+            data = func1(code, mark_day, mark_day)
+            data1 = data.reset_index().code.unique()
+        except:
+            data1 = data.code.unique()
     #report
     except:
         data1 = None
 
     try:
-        data2 = func2(code, mark_day, mark_day).reset_index().code.unique()
+        try:
+            data = func2(code, mark_day, mark_day)
+            data2 = data.reset_index().code.unique()
+        except:
+            data2 = data.code.unique()
     #report
     except:
         data2 = None
