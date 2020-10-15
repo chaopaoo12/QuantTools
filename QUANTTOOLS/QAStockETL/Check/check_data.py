@@ -67,7 +67,7 @@ def QA_fetch_stock_financial_percent(code, start, end):
     return(QA_fetch_stock_financial_percent_adv(code, start, end).data)
 
 def check_stock_finper(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_financial_percent_adv, mark_day = mark_day, title = 'PE水位', ui_log = ui_log))
+    return(check_stock_data(func = QA_fetch_stock_financial_percent, mark_day = mark_day, title = 'PE水位', ui_log = ui_log))
 
 
 def QA_fetch_stock_alpha(code, start, end):
