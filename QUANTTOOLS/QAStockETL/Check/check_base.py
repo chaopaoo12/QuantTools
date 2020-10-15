@@ -79,13 +79,21 @@ def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
 
     #check
     try:
-        data1 = func(code, mark_day, mark_day).reset_index().code.unique()
+        try:
+            data = func(code, to_date, to_date)
+            data1 = data.reset_index().code.unique()
+        except:
+            data1 = data.code.unique()
     #report
     except:
         data1 = None
 
     try:
-        data2 = func(code, to_date, to_date).reset_index().code.unique()
+        data = func(code, to_date, to_date)
+        try:
+            data2 = data.reset_index().code.unique()
+        except:
+            data2 = data.code.unique()
     #report
     except:
         data2 = None
