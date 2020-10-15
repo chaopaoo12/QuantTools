@@ -27,11 +27,13 @@
 
 """对应于save x
 """
-from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_alpha_day,
+from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_alpha_day,QA_SU_save_single_stock_xdxr,
                                    QA_SU_save_stock_alpha101_day)
+from QUANTAXIS.QASU.save_tdx import QA_SU_save_single_stock_day
 from QUANTTOOLS.QAStockETL import (QA_etl_stock_alpha_day,
                                    QA_etl_stock_alpha101_day)
-from QUANTTOOLS.QAStockETL.Check import (check_stock_day, check_stock_adj, check_stock_alpha101, check_stock_alpha191)
+from QUANTTOOLS.QAStockETL.Check import (check_stock_day, check_stock_adj, check_stock_alpha101, check_stock_alpha191,
+                                         check_sinastock_day, check_sinastock_adj)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 import time
 
@@ -44,10 +46,22 @@ if __name__ == '__main__':
             time.sleep(180)
             res = check_stock_day(mark_day)
 
+        res = check_sinastock_day(mark_day)
+        while res is None or (len(res[0]) + len(res[1])) > 0:
+            for i in res[0] + res[1]:
+                QA_SU_save_single_stock_day(i)
+            res = check_sinastock_day(mark_day)
+
         res = check_stock_adj(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 20:
             time.sleep(180)
             res = check_stock_adj(mark_day)
+
+        res = check_sinastock_adj(mark_day)
+        while res is None or (len(res[0]) + len(res[1])) > 0:
+            for i in res[0] + res[1]:
+                QA_SU_save_single_stock_xdxr(i)
+            res = check_sinastock_adj(mark_day)
 
         time.sleep(600)
 
