@@ -164,6 +164,9 @@ def build(target, positions, sub_accounts, percent, k=100):
     QA_util_log_info('##JOB Now Check Sub Accounts', ui_log = None)
     sub_accounts = float(sub_accounts) - 10000
 
+    print(target)
+
+    print(positions)
     res = merge_table(target, positions)
 
     if res is not None and res.shape[0] > 0:
