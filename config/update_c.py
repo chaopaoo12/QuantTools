@@ -34,12 +34,14 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_list, QA_etl_stock_info, QA_etl_
                                    QA_SU_save_stock_xdxr, QA_SU_save_stock_info,QA_SU_save_stock_financial_wy_day,
                                    QA_SU_save_stock_fianacial_percent_day, QA_util_process_stock_financial,
                                    QA_SU_save_stock_fianacial_momgo, QA_SU_save_fianacialTTM_momgo,
-                                   QA_SU_save_stock_industryinfo, QA_SU_save_stock_day)
+                                   QA_SU_save_stock_industryinfo, QA_SU_save_stock_day,
+                                   QA_SU_save_single_stock_xdxr)
 from QUANTTOOLS.QAStockETL import (QA_etl_stock_financial_day,
                                    QA_etl_stock_financial_percent_day)
 from QUANTAXIS.QASU.main import (QA_SU_save_financialfiles_fromtdx)
 from QUANTTOOLS.QAStockETL.Check import (check_stock_day, check_stock_fianacial, check_stock_adj, check_stock_finper,
-                                         check_sinastock_day, check_wy_financial, check_tdx_financial, check_ttm_financial)
+                                         check_sinastock_day, check_sinastock_adj,
+                                         check_wy_financial, check_tdx_financial, check_ttm_financial)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 
 if __name__ == '__main__':
@@ -67,6 +69,12 @@ if __name__ == '__main__':
         while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_xdxr()
             res = check_stock_adj(mark_day)
+
+        res = check_sinastock_adj(mark_day)
+        while res is None or (len(res[0]) + len(res[1])) > 0:
+            for i in res[0] + res[1]:
+                QA_SU_save_single_stock_xdxr(i)
+            res = check_sinastock_adj(mark_day)
 
         print("done")
         print("write data into sqldatabase")
