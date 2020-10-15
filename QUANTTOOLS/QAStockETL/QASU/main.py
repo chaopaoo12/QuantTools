@@ -265,8 +265,8 @@ def QA_SU_save_usstock_alpha_his(code = None, start_date = '2016-01-01', end_dat
 def QA_SU_save_stock_min():
     save_tdx.QA_SU_save_stock_min()
 
-def QA_SU_save_single_stock_min():
-    save_tdx.QA_SU_save_single_stock_min()
+def QA_SU_save_single_stock_min(code):
+    save_tdx.QA_SU_save_single_stock_min(code)
 
-def QA_SU_save_single_stock_xdxr():
-    save_tdx.QA_SU_save_single_stock_xdxr()
+def QA_SU_save_single_stock_xdxr(code):
+    save_tdx.QA_SU_save_single_stock_xdxr(code)
