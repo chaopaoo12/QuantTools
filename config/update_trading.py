@@ -39,7 +39,7 @@ if __name__ == '__main__':
     mark_day = QA_util_today_str()
 
     if QA_util_if_trade(mark_day):
-        QA_SU_save_stock_aklist(0)
+        QA_SU_save_stock_aklist()
         res = check_stock_code()
         while len(res) > 0:
             QA_SU_save_stock_list('tdx')
