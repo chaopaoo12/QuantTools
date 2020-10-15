@@ -54,7 +54,7 @@ def check_stock_adj(mark_day = None, ui_log = None):
     return(check_stock_data(func = QA_fetch_stock_adj, mark_day = mark_day, title = 'Stock Adj', ui_log = ui_log))
 
 def check_sinastock_adj(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_adj, func2= QA_fetch_stock_day, mark_day = mark_day, title = 'Stock Adj', ui_log = ui_log))
+    return(check_stock_base(func1 = QA_fetch_stock_adj, func2= QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Adj Sina', ui_log = ui_log))
 
 
 def QA_fetch_stock_fianacial(code, start, end):
