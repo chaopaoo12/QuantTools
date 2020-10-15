@@ -83,8 +83,8 @@ def chunks(l, n):
         yield l[i:i + n]
 
 
-def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", passwd="123456", db="quantaxis", if_exists="fail"):
-    engine = create_engine(ORACLE_PATH1)
+def QA_util_sql_store_mysql(data, table_name, ORACLE_PATH=ORACLE_PATH1, if_exists="fail"):
+    engine = create_engine(ORACLE_PATH)
     columns = list(data.columns)
     for i in range(len(columns)):
         if columns[i].isdigit():
@@ -131,12 +131,6 @@ def QA_util_sql_store_mysql(data, table_name, host="localhost", user="root", pas
         cursor.close()
         conn.commit()
         conn.close()
-
-
-ASCENDING = pymongo.ASCENDING
-DESCENDING = pymongo.DESCENDING
-QA_util_sql_mongo_sort_ASCENDING = pymongo.ASCENDING
-QA_util_sql_mongo_sort_DESCENDING = pymongo.DESCENDING
 
 if __name__ == '__main__':
     # test async_mongo
