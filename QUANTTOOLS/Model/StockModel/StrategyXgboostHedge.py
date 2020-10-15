@@ -3,10 +3,8 @@ from xgboost import XGBClassifier
 from sklearn.metrics import (accuracy_score,
                              classification_report,
                              precision_score)
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_hedge_data_realtime
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAStockModelHedgeReal import QAStockModelHedgeReal
-from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
 
 class QAStockXGBoostHedge(QAStockModelHedgeReal):
 

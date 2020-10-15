@@ -3,11 +3,8 @@ from xgboost import XGBClassifier
 from sklearn.metrics import (accuracy_score,
                              classification_report,
                              precision_score)
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_norm
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAStockModel import QAStockModel
-from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old
 
 class QAStockXGBoost(QAStockModel):
 
