@@ -3,7 +3,9 @@ from QUANTAXIS import (QA_fetch_get_usstock_list,QA_fetch_get_index_list,QA_fetc
                        )
 from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_list, QA_fetch_get_stock_min
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare,
-                                           QA_fetch_get_stock_half_realtime, QA_fetch_get_usstock_day_xq)
+                                           QA_fetch_get_stock_half_realtime, QA_fetch_get_usstock_day_xq,
+                                           fetch_get_stock_code_all)
+
 from QUANTAXIS.QAData.data_fq import _QA_data_stock_to_fq
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_day
 import concurrent
@@ -1610,3 +1612,36 @@ def QA_SU_save_single_stock_xdxr(code : str, client=DATABASE, ui_log=None, ui_pr
             ui_progress_int_value=intLogProgress
         )
         __saving_work(stock_list[i_], coll)
+
+def QA_SU_save_stock_aklist(client=DATABASE, ui_log=None, ui_progress=None):
+    """save stock_list
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+    client.drop_collection('akstock_list')
+    coll = client.stock_list
+    coll.create_index('code')
+
+    try:
+        # 🛠todo 这个应该是第一个任务 JOB01， 先更新股票列表！！
+        QA_util_log_info(
+            '##JOB08 Now Saving STOCK_LIST from AKShare ====',
+            ui_log=ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=5000
+        )
+        stock_list_from_tdx = fetch_get_stock_code_all()
+        pandas_data = QA_util_to_json_from_pandas(stock_list_from_tdx)
+        coll.insert_many(pandas_data)
+        QA_util_log_info(
+            "完成股票列表获取",
+            ui_log=ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=10000
+        )
+    except Exception as e:
+        QA_util_log_info(e, ui_log=ui_log)
+        print(" Error save_tdx.QA_SU_save_stock_aklist exception!")
+
+        pass

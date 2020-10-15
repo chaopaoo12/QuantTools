@@ -2614,3 +2614,15 @@ def QA_fetch_usstock_xq_day(
             % (start,
                end)
         )
+
+def QA_fetch_stock_aklist(collections=DATABASE.akstock_list):
+    '获取股票列表'
+
+    return pd.DataFrame([item for item in collections.find()]).drop(
+        '_id',
+        axis=1,
+        inplace=False
+    ).set_index(
+        'code',
+        drop=False
+    )

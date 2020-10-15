@@ -270,3 +270,6 @@ def QA_SU_save_single_stock_min(code):
 
 def QA_SU_save_single_stock_xdxr(code):
     save_tdx.QA_SU_save_single_stock_xdxr(code)
+
+def QA_SU_save_stock_aklist():
+    save_tdx.QA_SU_save_stock_aklist()

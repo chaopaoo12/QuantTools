@@ -4,6 +4,7 @@ from QUANTAXIS.QAUtil import (QA_util_today_str, QA_util_get_pre_trade_date, QA_
                               QA_util_get_trade_range, QA_util_get_real_date,
                               QA_util_if_trade,QA_util_get_last_day,
                               QA_util_date_stamp)
+from akshare import stock_info_a_code_name
 import easyquotation
 import pandas as pd
 import akshare as ak
@@ -152,3 +153,6 @@ def QA_fetch_get_stock_half(code, start, end):
     price = price.between_time("00:00", "09:00").reset_index().rename(columns={'datetime':'date'})
     price['date_stamp'] = price['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10]))
     return(price)
+
+def fetch_get_stock_code_all():
+    return(stock_info_a_code_name())

@@ -39,7 +39,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_interest_rate,
 
                                                    QA_fetch_financial_code_wy, QA_fetch_financial_code_tdx,
                                                    QA_fetch_financial_code_new,QA_fetch_financial_code_ttm,
-                                                   QA_fetch_code_new,QA_fetch_code_old,
+                                                   QA_fetch_code_new,QA_fetch_code_old,QA_fetch_stock_aklist,
                                                    QA_fetch_stock_om_all,QA_fetch_stock_all,QA_fetch_stock_delist,
 
                                                    QA_fetch_stock_alpha,QA_fetch_stock_alpha101,QA_fetch_stock_technical_index,
@@ -95,7 +95,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAusstock import (QA_fetch_get_usstock_list_s
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import (QA_fetch_get_usstock_report_xq, QA_fetch_get_usstock_day_xq)
 
-from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_stock_close,
+from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_stock_close,fetch_get_stock_code_all,
                                                  QA_fetch_get_stock_realtm_ask,QA_fetch_get_stock_realtm_askvol,
                                                  QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_realtm_bidvol,
                                                  QA_fetch_get_stock_realtm_askvol5,QA_fetch_get_stock_realtm_bidvol5,
