@@ -96,7 +96,7 @@ def QA_fetch_stock_alpha191half(code, start, end):
     return(QA_fetch_stock_alpha191half_adv(code, start, end).data)
 
 def check_stock_alpha191half(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_alpha191half, mark_day = mark_day, title = 'Stock Alpha101 Half', ui_log = ui_log))
+    return(check_stock_data(func = QA_fetch_stock_alpha191half, mark_day = mark_day, title = 'Stock Alpha191 Half', ui_log = ui_log))
 
 
 
