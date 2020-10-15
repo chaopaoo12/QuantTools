@@ -88,11 +88,11 @@ def QA_SU_save_stock_shares_sina_day():
 def QA_SU_save_stock_shares_sina_his():
     save_stock_shares_sina.QA_SU_save_stock_shares_his()
 
-def QA_SU_save_stock_technical_index_day(start_date=None,end_date=None):
-    save_stock_technical_index.QA_SU_save_stock_technical_index_day(start_date=start_date,end_date=end_date)
+def QA_SU_save_stock_technical_index_day(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_stock_technical_index_day(codes = code,start_date=start_date,end_date=end_date)
 
-def QA_SU_save_stock_technical_index_his(start_date=None,end_date=None):
-    save_stock_technical_index.QA_SU_save_stock_technical_index_his(start_date=start_date,end_date=end_date)
+def QA_SU_save_stock_technical_index_his(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_stock_technical_index_his(codes = code,start_date=start_date,end_date=end_date)
 
 def QA_SU_save_stock_alpha_day(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
     save_stock_alpha.QA_SU_save_stock_alpha_day(code = code, start_date = start_date, end_date = end_date)
@@ -118,17 +118,17 @@ def QA_SU_save_stock_quant_data_day(code = None, start_date = None, end_date = N
 def QA_SU_save_stock_quant_data_his(code = None, start_date = '2008-01-01', end_date = QA_util_today_str()):
     save_stock_quant.QA_SU_save_stock_quant_his(code = code, start_date = start_date ,end_date = end_date)
 
-def QA_SU_save_stock_technical_week_day(start_date=None,end_date=None):
-    save_stock_technical_index.QA_SU_save_stock_technical_week_day(start_date=start_date,end_date=end_date)
+def QA_SU_save_stock_technical_week_day(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_stock_technical_week_day(codes = code,start_date=start_date,end_date=end_date)
 
-def QA_SU_save_stock_technical_week_his(start_date=None,end_date=None):
-    save_stock_technical_index.QA_SU_save_stock_technical_week_his(start_date=start_date,end_date=end_date)
+def QA_SU_save_stock_technical_week_his(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_stock_technical_week_his(codes = code,start_date=start_date,end_date=end_date)
 
-def QA_SU_save_stock_technical_month_day(start_date=None,end_date=None):
-    save_stock_technical_index.QA_SU_save_stock_technical_month_day(start_date=start_date,end_date=end_date)
+def QA_SU_save_stock_technical_month_day(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_stock_technical_month_day(codes = code,start_date=start_date,end_date=end_date)
 
-def QA_SU_save_stock_technical_month_his(start_date=None,end_date=None):
-    save_stock_technical_index.QA_SU_save_stock_technical_month_his(start_date=start_date,end_date=end_date)
+def QA_SU_save_stock_technical_month_his(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_stock_technical_month_his(codes = code,start_date=start_date,end_date=end_date)
 
 def QA_SU_save_usstock_list_day():
     crawl_sina_hkstock.QA_SU_save_usstock_list_day()
@@ -142,23 +142,23 @@ def QA_SU_save_index_alpha_day(code = None, start_date = QA_util_today_str(), en
 def QA_SU_save_index_alpha_his(code = None, start_date = None, end_date = None):
     save_stock_alpha.QA_SU_save_index_alpha_his(code = code, start_date = start_date, end_date = end_date)
 
-def QA_SU_save_index_technical_index_day(start_date=None,end_date=None):
-    save_stock_technical_index.QA_SU_save_index_technical_index_day(start_date=start_date,end_date=end_date)
+def QA_SU_save_index_technical_index_day(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_index_technical_index_day(codes = code,start_date=start_date,end_date=end_date)
 
-def QA_SU_save_index_technical_index_his(start_date=None,end_date=None):
-    save_stock_technical_index.QA_SU_save_index_technical_index_his(start_date=start_date,end_date=end_date)
+def QA_SU_save_index_technical_index_his(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_index_technical_index_his(codes = code,start_date=start_date,end_date=end_date)
 
-def QA_SU_save_index_technical_week_day(start_date=None,end_date=None):
-    save_stock_technical_index.QA_SU_save_index_technical_week_day(start_date=start_date,end_date=end_date)
+def QA_SU_save_index_technical_week_day(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_index_technical_week_day(codes = code,start_date=start_date,end_date=end_date)
 
-def QA_SU_save_index_technical_week_his(start_date=None,end_date=None):
-    save_stock_technical_index.QA_SU_save_index_technical_week_his(start_date=start_date,end_date=end_date)
+def QA_SU_save_index_technical_week_his(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_index_technical_week_his(codes = code,start_date=start_date,end_date=end_date)
 
-def QA_SU_save_index_technical_month_day(start_date=None,end_date=None):
-    save_stock_technical_index.QA_SU_save_index_technical_month_day(start_date=start_date,end_date=end_date)
+def QA_SU_save_index_technical_month_day(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_index_technical_month_day(codes = code,start_date=start_date,end_date=end_date)
 
-def QA_SU_save_index_technical_month_his(start_date=None,end_date=None):
-    save_stock_technical_index.QA_SU_save_index_technical_month_his(start_date=start_date,end_date=end_date)
+def QA_SU_save_index_technical_month_his(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_index_technical_month_his(codes = code,start_date=start_date,end_date=end_date)
 
 def QA_SU_save_index_quant_data_day(code = None, start_date = None, end_date = None):
     save_stock_quant.QA_SU_save_index_quant_day(code = code, start_date = start_date ,end_date = end_date)

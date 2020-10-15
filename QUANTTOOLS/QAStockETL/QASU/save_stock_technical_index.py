@@ -2,12 +2,12 @@
 import pymongo
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_info, QA_util_add_months,
                               QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date,
-                              QA_util_datetime_to_strdate)
+                              QA_util_datetime_to_strdate,QA_util_code_tolist)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_stock_om_all
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_indicator,QA_fetch_get_index_indicator
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_index_list_adv
 
-def QA_SU_save_stock_technical_index_day(start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_stock_technical_index_day(codes=None, start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
     '''
      save stock_day
     计算技术指标
@@ -24,7 +24,11 @@ def QA_SU_save_stock_technical_index_day(start_date=None,end_date=None,client=DA
         start_date = QA_util_get_pre_trade_date(start_date,3)
         if end_date == None:
             end_date = QA_util_today_str()
-    codes = list(QA_fetch_stock_om_all()['code'])
+
+    if codes is None:
+        codes = list(QA_fetch_stock_om_all()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     stock_technical_index = client.stock_technical_index
     stock_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -59,7 +63,7 @@ def QA_SU_save_stock_technical_index_day(start_date=None,end_date=None,client=DA
         QA_util_log_info(err, ui_log)
 
 
-def QA_SU_save_stock_technical_index_his(start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_stock_technical_index_his(codes=None, start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
 
     '''
      save stock_day
@@ -78,7 +82,10 @@ def QA_SU_save_stock_technical_index_his(start_date=None,end_date=None,client=DA
         if end_date == None:
             end_date = QA_util_today_str()
 
-    codes = list(QA_fetch_stock_all()['code'])
+    if codes is None:
+        codes = list(QA_fetch_stock_all()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     stock_technical_index = client.stock_technical_index
     stock_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -112,7 +119,7 @@ def QA_SU_save_stock_technical_index_his(start_date=None,end_date=None,client=DA
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
 
-def QA_SU_save_stock_technical_week_day(start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_stock_technical_week_day(codes = None,start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
     '''
      save stock_day
     计算技术指标
@@ -129,7 +136,11 @@ def QA_SU_save_stock_technical_week_day(start_date=None,end_date=None,client=DAT
         start_date = QA_util_get_pre_trade_date(start_date,3)
         if end_date == None:
             end_date = QA_util_today_str()
-    codes = list(QA_fetch_stock_om_all()['code'])
+
+    if codes is None:
+        codes = list(QA_fetch_stock_om_all()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     stock_technical_week = client.stock_technical_week
     stock_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -164,7 +175,7 @@ def QA_SU_save_stock_technical_week_day(start_date=None,end_date=None,client=DAT
         QA_util_log_info(err, ui_log)
 
 
-def QA_SU_save_stock_technical_week_his(start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_stock_technical_week_his(codes = None,start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
 
     '''
      save stock_day
@@ -183,7 +194,10 @@ def QA_SU_save_stock_technical_week_his(start_date=None,end_date=None,client=DAT
         if end_date == None:
             end_date = QA_util_today_str()
 
-    codes = list(QA_fetch_stock_all()['code'])
+    if codes is None:
+        codes = list(QA_fetch_stock_all()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     stock_technical_week = client.stock_technical_week
     stock_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -217,7 +231,7 @@ def QA_SU_save_stock_technical_week_his(start_date=None,end_date=None,client=DAT
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
 
-def QA_SU_save_stock_technical_month_day(start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_stock_technical_month_day(codes = None,start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
     '''
      save stock_day
     计算技术指标
@@ -234,7 +248,11 @@ def QA_SU_save_stock_technical_month_day(start_date=None,end_date=None,client=DA
         start_date = QA_util_get_pre_trade_date(start_date,3)
         if end_date == None:
             end_date = QA_util_today_str()
-    codes = list(QA_fetch_stock_om_all()['code'])
+
+    if codes is None:
+        codes = list(QA_fetch_stock_om_all()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     stock_technical_month = client.stock_technical_month
     stock_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -269,7 +287,7 @@ def QA_SU_save_stock_technical_month_day(start_date=None,end_date=None,client=DA
         QA_util_log_info(err, ui_log)
 
 
-def QA_SU_save_stock_technical_month_his(start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_stock_technical_month_his(codes = None,start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
 
     '''
      save stock_day
@@ -288,7 +306,10 @@ def QA_SU_save_stock_technical_month_his(start_date=None,end_date=None,client=DA
         if end_date == None:
             end_date = QA_util_today_str()
 
-    codes = list(QA_fetch_stock_all()['code'])
+    if codes is None:
+        codes = list(QA_fetch_stock_all()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     stock_technical_month = client.stock_technical_month
     stock_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -323,7 +344,7 @@ def QA_SU_save_stock_technical_month_his(start_date=None,end_date=None,client=DA
         QA_util_log_info(err, ui_log)
 
 
-def QA_SU_save_index_technical_index_day(start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_index_technical_index_day(codes = None,start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
     '''
      save stock_day
     计算技术指标
@@ -340,7 +361,11 @@ def QA_SU_save_index_technical_index_day(start_date=None,end_date=None,client=DA
         start_date = QA_util_get_pre_trade_date(start_date,3)
         if end_date == None:
             end_date = QA_util_today_str()
-    codes = list(QA_fetch_index_list_adv()['code'])
+
+    if codes is None:
+        codes = list(QA_fetch_index_list_adv()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     index_technical_index = client.index_technical_index
     index_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -375,7 +400,7 @@ def QA_SU_save_index_technical_index_day(start_date=None,end_date=None,client=DA
         QA_util_log_info(err, ui_log)
 
 
-def QA_SU_save_index_technical_index_his(start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_index_technical_index_his(codes = None,start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
 
     '''
      save stock_day
@@ -394,7 +419,10 @@ def QA_SU_save_index_technical_index_his(start_date=None,end_date=None,client=DA
         if end_date == None:
             end_date = QA_util_today_str()
 
-    codes = list(QA_fetch_index_list_adv()['code'])
+    if codes is None:
+        codes = list(QA_fetch_index_list_adv()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     index_technical_index = client.index_technical_index
     index_technical_index.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -428,7 +456,7 @@ def QA_SU_save_index_technical_index_his(start_date=None,end_date=None,client=DA
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
 
-def QA_SU_save_index_technical_week_day(start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_index_technical_week_day(codes = None,start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
     '''
      save stock_day
     计算技术指标
@@ -445,7 +473,10 @@ def QA_SU_save_index_technical_week_day(start_date=None,end_date=None,client=DAT
         start_date = QA_util_get_pre_trade_date(start_date,3)
         if end_date == None:
             end_date = QA_util_today_str()
-    codes = list(QA_fetch_index_list_adv()['code'])
+    if codes is None:
+        codes = list(QA_fetch_index_list_adv()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     index_technical_week = client.index_technical_week
     index_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -480,7 +511,7 @@ def QA_SU_save_index_technical_week_day(start_date=None,end_date=None,client=DAT
         QA_util_log_info(err, ui_log)
 
 
-def QA_SU_save_index_technical_week_his(start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_index_technical_week_his(codes = None,start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
 
     '''
      save stock_day
@@ -499,7 +530,10 @@ def QA_SU_save_index_technical_week_his(start_date=None,end_date=None,client=DAT
         if end_date == None:
             end_date = QA_util_today_str()
 
-    codes = list(QA_fetch_index_list_adv()['code'])
+    if codes is None:
+        codes = list(QA_fetch_index_list_adv()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     index_technical_week = client.index_technical_week
     index_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -533,7 +567,7 @@ def QA_SU_save_index_technical_week_his(start_date=None,end_date=None,client=DAT
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
 
-def QA_SU_save_index_technical_month_day(start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_index_technical_month_day(codes = None,start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
     '''
      save stock_day
     计算技术指标
@@ -550,7 +584,10 @@ def QA_SU_save_index_technical_month_day(start_date=None,end_date=None,client=DA
         start_date = QA_util_get_pre_trade_date(start_date,3)
         if end_date == None:
             end_date = QA_util_today_str()
-    codes = list(QA_fetch_index_list_adv()['code'])
+    if codes is None:
+        codes = list(QA_fetch_index_list_adv()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     index_technical_month = client.index_technical_month
     index_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
@@ -585,7 +622,7 @@ def QA_SU_save_index_technical_month_day(start_date=None,end_date=None,client=DA
         QA_util_log_info(err, ui_log)
 
 
-def QA_SU_save_index_technical_month_his(start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_index_technical_month_his(codes = None,start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
 
     '''
      save stock_day
@@ -604,7 +641,10 @@ def QA_SU_save_index_technical_month_his(start_date=None,end_date=None,client=DA
         if end_date == None:
             end_date = QA_util_today_str()
 
-    codes = list(QA_fetch_index_list_adv()['code'])
+    if codes is None:
+        codes = list(QA_fetch_index_list_adv()['code'])
+    else:
+        codes = QA_util_code_tolist(codes)
 
     index_technical_month = client.index_technical_month
     index_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
