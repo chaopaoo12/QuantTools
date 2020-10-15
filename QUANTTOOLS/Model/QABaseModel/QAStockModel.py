@@ -3,6 +3,7 @@ from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_norm
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAModel import QAModel
 from QUANTTOOLS.Message import send_email, send_actionnotice
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old
 
 class QAStockModel(QAModel):
 
@@ -15,6 +16,18 @@ class QAStockModel(QAModel):
     def model_predict(self, start, end, block = False, sub_block= False, type='crawl'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
         data = get_quant_data_norm(start, end, type= type,block = block, sub_block=sub_block)
+        code_list = QA_fetch_code_old()
+
+        de_code_list = [i for i in data.loc[end].reset_index().code.unique.tolist() if i not in code_list.code.unique().tolist()]
+        if len(de_code_list) > 0:
+            QA_util_log_info('##JOB {} Short Code: {} ===== from {_from} to {_to}'.format(len(de_code_list), de_code_list,_from=start,_to = end), ui_log = None)
+            send_actionnotice('基础数据缺失报告',
+                              '缺失警告:{}'.format(end),
+                              "缺少股票数量".format(len(de_code_list)),
+                              direction = 'WARNING',
+                              offset='WARNING',
+                              volume=None
+                              )
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK',
@@ -54,13 +67,25 @@ class QAStockModel(QAModel):
                                   offset='WARNING',
                                   volume=None
                                   )
+        de_code_list = [i for i in train.loc[end].reset_index().code.unique.tolist() if i not in code_list.code.unique().tolist()]
+        if len(de_code_list) > 0:
+            QA_util_log_info('##JOB {} Short Code: {} ===== from {_from} to {_to}'.format(len(de_code_list), de_code_list,_from=start,_to = end), ui_log = None)
+            send_actionnotice('预测数据缺失报告',
+                              '缺失警告:{}'.format(end),
+                              "缺少股票数量".format(len(de_code_list)),
+                              direction = 'WARNING',
+                              offset='WARNING',
+                              volume=None
+                              )
 
         train = train.join(data[['INDUSTRY','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']])
 
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         b = train[['INDUSTRY','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
         b = b.assign(y_pred = self.model.predict(train[self.cols]))
-        b['O_PROB'] = self.model.predict_proba(train[self.cols])
+        bina = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
+        bina.index = b.index
+        b[['Z_PROB','O_PROB']] = bina
         b.loc[:,'RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
         return(b[b['y_pred']==1], b)
 

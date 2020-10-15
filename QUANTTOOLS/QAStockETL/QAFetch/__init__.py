@@ -38,7 +38,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_interest_rate,
                                                    QA_fetch_stock_half,QA_fetch_stock_week,QA_fetch_stock_month,QA_fetch_stock_year,
 
                                                    QA_fetch_financial_code_wy, QA_fetch_financial_code_tdx,
-                                                   QA_fetch_financial_code_new,QA_fetch_financial_code_ttm,
+                                                   QA_fetch_financial_code_new,QA_fetch_financial_code_ttm,QA_fetch_code_old,
                                                    QA_fetch_stock_om_all,QA_fetch_stock_all,QA_fetch_stock_delist,
 
                                                    QA_fetch_stock_alpha,QA_fetch_stock_alpha101,QA_fetch_stock_technical_index,

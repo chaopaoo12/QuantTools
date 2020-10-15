@@ -19,7 +19,6 @@ from QUANTTOOLS.QAStockETL.Check.check_base import check_stock_data, check_index
 def QA_fetch_stock_half_realtime(code, start, end):
     return(QA_fetch_get_stock_half_realtime(code, start))
 
-
 def QA_fetch_stock_60min(code, start, end):
     return(QA_fetch_stock_min_adv(code, start, end, frequence='60min').data)
 

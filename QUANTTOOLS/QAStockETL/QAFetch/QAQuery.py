@@ -994,6 +994,10 @@ def QA_fetch_financial_code_new(ndays=30):
     code = list(market_day[market_day['TM'] >= timeToMarket]['code'].values)
     return(code)
 
+def QA_fetch_code_old(ndays=90):
+    code_list = QA_fetch_stock_om_all()
+    return(code_list[~code_list.code.isin(QA_fetch_financial_code_new(ndays))])
+
 def QA_fetch_financial_code_tdx(ndays=30):
     start = str(QA_util_get_pre_trade_date(QA_util_today_str(),ndays))
     data = QA_fetch_stock_financial_calendar(QA.QA_fetch_stock_list_adv().code.tolist(),start = start)[['code','real_date','report_date']]
