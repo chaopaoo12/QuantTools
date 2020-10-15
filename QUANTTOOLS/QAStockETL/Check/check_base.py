@@ -88,7 +88,7 @@ def check_stock_data(func = None, mark_day = None, title = None, ui_log = None):
     #check
     try:
         try:
-            data = func(code, to_date, to_date)
+            data = func(code, mark_day, mark_day)
             data1 = data.reset_index().code.unique()
         except:
             data1 = data.code.unique()
