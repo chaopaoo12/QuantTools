@@ -126,6 +126,11 @@ def QA_fetch_get_stock_half_realtime(code, date = QA_util_today_str(), source = 
     res['date_stamp'] = res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10]))
     return(res)
 
+def QA_fetch_get_stockcode_real(code, date = QA_util_today_str(), source = 'sina'):
+    res = QA_fetch_get_stock_half_realtime(code=code, date = date, source = source)
+
+    return(res.code.unique().tolist())
+
 def half_ohlc(data):
     data = data.reset_index().set_index('datetime')
     res = data.resample('12H').agg({'open': 'first', 'high': 'max',  'low': 'min', 'close': 'last','volume': 'sum','amount': 'sum'})

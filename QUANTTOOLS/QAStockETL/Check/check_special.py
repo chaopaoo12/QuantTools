@@ -3,6 +3,7 @@ from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day,QA_util_get_
 from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_code_wy,QA_fetch_financial_code_ttm,
                                            QA_fetch_financial_code_tdx)
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old,QA_fetch_get_stockcode_real,QA_fetch_stock_all,QA_fetch_code_new
 
 def check_ttm_financial(mark_day=None, type='day', ui_log = None):
     if type == 'day' and mark_day is None:
@@ -76,3 +77,19 @@ def check_wy_financial(mark_day=None, type='day', ui_log = None):
                           )
         return(None)
 
+def check_stock_code():
+    code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all().code.unique().tolist())
+    code_old = QA_fetch_code_old().code.unique().tolist()
+    code_new = QA_fetch_code_new().code.unique().tolist()
+    short_of_code = [i for i in code_all if i not in code_old + code_new]
+
+    if len(short_of_code) > 0:
+        QA_util_log_info('##JOB {} Short of Code: {}'.format(len(short_of_code), short_of_code))
+        send_actionnotice('股票列表数据缺失',
+                          '缺失警告',
+                          "缺少股票数量".format(len(short_of_code)),
+                          direction = 'WARNING',
+                          offset='WARNING',
+                          volume=None
+                          )
+    return(short_of_code)

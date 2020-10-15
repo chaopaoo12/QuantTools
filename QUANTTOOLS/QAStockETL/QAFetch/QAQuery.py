@@ -994,6 +994,10 @@ def QA_fetch_financial_code_new(ndays=30):
     code = list(market_day[market_day['TM'] >= timeToMarket]['code'].values)
     return(code)
 
+def QA_fetch_code_new(ndays=90):
+    code_list = QA_fetch_stock_om_all()
+    return(code_list[code_list.code.isin(QA_fetch_financial_code_new(ndays))])
+
 def QA_fetch_code_old(ndays=90):
     code_list = QA_fetch_stock_om_all()
     return(code_list[~code_list.code.isin(QA_fetch_financial_code_new(ndays))])
