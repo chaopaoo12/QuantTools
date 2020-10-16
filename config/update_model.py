@@ -28,8 +28,8 @@
 """对应于save x
 """
 
-from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_day,check_stock_adj,check_stock_alpha191real,check_stock_alpha101real)
-from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_real_date,QA_util_get_pre_trade_date
+from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_day,check_stock_adj)
+from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_real_date
 from QUANTTOOLS.Market.StockMarket.StockStrategyReal.train_job import daily_train
 import time
 
@@ -51,15 +51,5 @@ if __name__ == '__main__':
     while check is None or (len(check[0]) + len(check[1])) > 10:
         time.sleep(180)
         check = check_stock_quant(ckeck_day)
-
-    check = check_stock_alpha191real(ckeck_day)
-    while check is None or (len(check[0]) + len(check[1])) > 10:
-        time.sleep(180)
-        check = check_stock_alpha191real(ckeck_day)
-
-    check = check_stock_alpha101real(ckeck_day)
-    while check is None or (len(check[0]) + len(check[1])) > 10:
-        time.sleep(180)
-        check = check_stock_alpha101real(ckeck_day)
 
     daily_train(mark_day)
