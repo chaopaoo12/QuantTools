@@ -4,7 +4,7 @@ from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAModel import QAModel
 from QUANTTOOLS.Message import send_email, send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old,QA_fetch_get_stockcode_real,QA_fetch_stock_all,QA_fetch_code_new
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old,QA_fetch_get_stockcode_real,QA_fetch_stock_all,QA_fetch_code_new,QA_fetch_stock_om_all
 
 class QAStockModelReal(QAModel):
 
@@ -19,7 +19,14 @@ class QAStockModelReal(QAModel):
         code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all().code.unique().tolist())
         code_old = QA_fetch_code_old().code.unique().tolist()
         code_new = QA_fetch_code_new().code.unique().tolist()
-        target_code = [i for i in code_all if i in code_old + code_new]
+
+        codes = QA_fetch_stock_om_all()
+        ST = list(codes[codes.name.apply(lambda x:x.count('ST')) == 1]['code']) + list(codes[codes.name.apply(lambda x:x.count('退')) == 1]['code'])
+        codes = list(codes['code'])
+        code_688 = [i for i in codes if i.startswith('688') == True] + [i for i in codes if i.startswith('787') == True] + [i for i in codes if i.startswith('789') == True]
+
+        target_code = [i for i in code_all if i not in code_new + ST + code_688]
+
         short_of_code = [i for i in code_all if i not in code_old + code_new]
         short_of_data = [i for i in target_code if i not in data.loc[end].reset_index().code.unique().tolist()]
 
