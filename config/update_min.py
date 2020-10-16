@@ -18,9 +18,8 @@ if __name__ == '__main__':
         QA_SU_save_stock_aklist()
 
         res = check_stock_60min(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 20:
+        if res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_min()
-            res = check_stock_60min(mark_day)
 
         res = check_sinastock_60min(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 0:
@@ -29,9 +28,8 @@ if __name__ == '__main__':
             res = check_sinastock_60min(mark_day)
 
         res = check_stock_half(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 20:
+        if res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_half()
-            res = check_stock_half(mark_day)
 
         res = check_sinastock_half(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 0:
