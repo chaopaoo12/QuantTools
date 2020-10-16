@@ -77,12 +77,6 @@ if __name__ == '__main__':
                 QA_SU_save_stock_alpha101_day(code=i,start_date=mark_day, end_date = mark_day)
             res = check_sinastock_alpha101(mark_day)
 
-        res = check_realstock_alpha101half(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 0:
-            for i in res[0] + res[1]:
-                QA_SU_save_stock_alpha101_day(code=i,start_date=mark_day, end_date = mark_day)
-            res = check_realstock_alpha101half(mark_day)
-
         res = check_stock_alpha191(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_alpha_day(start_date=mark_day, end_date = mark_day)
@@ -92,3 +86,5 @@ if __name__ == '__main__':
 
         QA_etl_stock_alpha101_day(mark_day,mark_day)
         QA_etl_stock_alpha_day(mark_day,mark_day)
+
+        check_realstock_alpha101half(mark_day)
