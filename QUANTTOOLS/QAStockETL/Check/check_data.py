@@ -13,7 +13,9 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_stock_half_adv,
                                                            QA_fetch_stock_alpha191half_adv
                                                            )
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_half_realtime
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191Half import QA_Sql_Stock_Alpha191Half
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101Half import QA_Sql_Stock_Alpha101Half
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_half_realtime,QA_fetch_stock_alpha_real,QA_fetch_stock_alpha101_real
 from QUANTTOOLS.QAStockETL.Check.check_base import check_stock_data, check_index_data, check_stock_base
 
 def QA_fetch_stock_half_realtime(code, start, end):
@@ -96,6 +98,12 @@ def check_stock_alpha101half(mark_day = None, ui_log = None):
 def check_sinastock_alpha101half(mark_day = None, ui_log = None):
     return(check_stock_base(func1 = QA_fetch_stock_alpha101half, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Alpha101 Half sina', ui_log = ui_log))
 
+def QA_fetch_stock_alpha101_real_model(code, start, end):
+    return(QA_Sql_Stock_Alpha101Half(start, end))
+
+def check_realstock_alpha101half(mark_day = None, ui_log = None):
+    return(check_stock_base(func1 = QA_fetch_stock_alpha101_real_model, func2 = QA_fetch_stock_alpha101_real, mark_day = mark_day, title = 'Stock Alpha101 Half Real', ui_log = ui_log))
+
 
 def QA_fetch_stock_alpha191half(code, start, end):
     return(QA_fetch_stock_alpha191half_adv(code, start, end).data)
@@ -103,6 +111,11 @@ def QA_fetch_stock_alpha191half(code, start, end):
 def check_stock_alpha191half(mark_day = None, ui_log = None):
     return(check_stock_data(func = QA_fetch_stock_alpha191half, mark_day = mark_day, title = 'Stock Alpha191 Half', ui_log = ui_log))
 
+def QA_fetch_stock_alpha191_real_model(code, start, end):
+    return(QA_Sql_Stock_Alpha191Half(start, end))
+
+def check_realstock_alpha191half(mark_day = None, ui_log = None):
+    return(check_stock_base(func1 = QA_fetch_stock_alpha191_real_model, func2 = QA_fetch_stock_alpha_real, mark_day = mark_day, title = 'Stock Alpha191 Half Real', ui_log = ui_log))
 
 
 def QA_fetch_stock_techindex(code, start, end):

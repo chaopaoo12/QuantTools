@@ -7,6 +7,8 @@ from QUANTTOOLS.QAStockETL.Check.check_data import (check_stock_day,check_stock_
                                                     check_sinastock_alpha101,check_sinastock_alpha101half,
                                                     check_stock_techindex, check_stock_techweek,
                                                     check_sinastock_techindex,check_sinastock_techweek,
+
+                                                    check_realstock_alpha101half,check_realstock_alpha191half,
                                                     check_stock_quant,
 
                                                     check_index_day,

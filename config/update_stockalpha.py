@@ -33,7 +33,8 @@ from QUANTAXIS.QASU.save_tdx import QA_SU_save_single_stock_day
 from QUANTTOOLS.QAStockETL import (QA_etl_stock_alpha_day,
                                    QA_etl_stock_alpha101_day)
 from QUANTTOOLS.QAStockETL.Check import (check_stock_day, check_stock_adj, check_stock_alpha101, check_stock_alpha191,
-                                         check_sinastock_day, check_sinastock_adj,check_sinastock_alpha101)
+                                         check_sinastock_day, check_sinastock_adj,check_sinastock_alpha101,
+                                         check_realstock_alpha101half,check_realstock_alpha191half)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 import time
 
@@ -76,10 +77,18 @@ if __name__ == '__main__':
                 QA_SU_save_stock_alpha101_day(code=i,start_date=mark_day, end_date = mark_day)
             res = check_sinastock_alpha101(mark_day)
 
+        res = check_realstock_alpha101half(mark_day)
+        while res is None or (len(res[0]) + len(res[1])) > 0:
+            for i in res[0] + res[1]:
+                QA_SU_save_stock_alpha101_day(code=i,start_date=mark_day, end_date = mark_day)
+            res = check_realstock_alpha101half(mark_day)
+
         res = check_stock_alpha191(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_alpha_day(start_date=mark_day, end_date = mark_day)
             res = check_stock_alpha191(mark_day)
+
+        check_realstock_alpha191half(mark_day)
 
         QA_etl_stock_alpha101_day(mark_day,mark_day)
         QA_etl_stock_alpha_day(mark_day,mark_day)
