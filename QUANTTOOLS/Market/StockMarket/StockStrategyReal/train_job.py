@@ -7,7 +7,7 @@ from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date
 from datetime import datetime
 
 def train_base(trading_date, train_func, pred_func):
-    if datetime.strptime(trading_date, "%Y-%m-%d").weekday() == 4:
+    if datetime.strptime(trading_date, "%Y-%m-%d").weekday() == 5:
 
         if QA_util_if_trade(trading_date):
             pass
