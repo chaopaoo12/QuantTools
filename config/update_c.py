@@ -49,12 +49,9 @@ if __name__ == '__main__':
     if QA_util_if_trade(mark_day):
 
         QA_SU_save_stock_aklist()
-        res = check_stock_code()
-        while len(res) > 0:
-            QA_SU_save_stock_list('tdx')
-            QA_SU_save_stock_info_tushare()
-            QA_SU_save_stock_industryinfo()
-            res = check_stock_code()
+        QA_SU_save_stock_list('tdx')
+        QA_SU_save_stock_info_tushare()
+        QA_SU_save_stock_industryinfo()
         print("download day data")
 
         res = check_stock_day(mark_day)

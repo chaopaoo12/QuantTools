@@ -16,6 +16,7 @@ if __name__ == '__main__':
 
     if QA_util_if_trade(mark_day):
         QA_SU_save_stock_aklist()
+
         res = check_stock_60min(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_min()
