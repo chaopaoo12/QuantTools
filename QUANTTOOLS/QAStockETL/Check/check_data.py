@@ -78,6 +78,9 @@ def QA_fetch_stock_alpha(code, start, end):
 def check_stock_alpha191(mark_day = None, ui_log = None):
     return(check_stock_data(func = QA_fetch_stock_alpha, mark_day = mark_day, title = 'Stock Alpha191', ui_log = ui_log))
 
+def check_sinastock_alpha191(mark_day = None, ui_log = None):
+    return(check_stock_base(func1 = QA_fetch_stock_alpha, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Alpha191 sina', ui_log = ui_log))
+
 
 def QA_fetch_stock_alpha101(code, start, end):
     return(QA_fetch_stock_alpha101_adv(code, start, end).data)
@@ -86,7 +89,7 @@ def check_stock_alpha101(mark_day = None, ui_log = None):
     return(check_stock_data(func = QA_fetch_stock_alpha101, mark_day = mark_day, title = 'Stock Alpha101', ui_log = ui_log))
 
 def check_sinastock_alpha101(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_alpha101, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Alpha101 Half sina', ui_log = ui_log))
+    return(check_stock_base(func1 = QA_fetch_stock_alpha101, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Alpha101 sina', ui_log = ui_log))
 
 
 def QA_fetch_stock_alpha101half(code, start, end):
@@ -110,6 +113,9 @@ def QA_fetch_stock_alpha191half(code, start, end):
 
 def check_stock_alpha191half(mark_day = None, ui_log = None):
     return(check_stock_data(func = QA_fetch_stock_alpha191half, mark_day = mark_day, title = 'Stock Alpha191 Half', ui_log = ui_log))
+
+def check_sinastock_alpha191half(mark_day = None, ui_log = None):
+    return(check_stock_base(func1 = QA_fetch_stock_alpha191half, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Alpha101 Half sina', ui_log = ui_log))
 
 def QA_fetch_stock_alpha191_real_model(code, start, end):
     return(QA_Sql_Stock_Alpha191Half(start, end))
