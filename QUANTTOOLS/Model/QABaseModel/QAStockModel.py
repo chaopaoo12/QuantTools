@@ -22,7 +22,7 @@ class QAStockModel(QAModel):
         code_new = QA_fetch_code_new().code.unique().tolist()
         target_code = [i for i in code_all if i in code_old + code_new]
         short_of_code = [i for i in code_all if i not in code_old + code_new]
-        short_of_data = [i for i in target_code if i not in data.loc[end].reset_index().code.unique.tolist()]
+        short_of_data = [i for i in target_code if i not in data.loc[end].reset_index().code.unique().tolist()]
 
         if len(short_of_code) > 0:
             QA_util_log_info('##JOB {} Short of Code: {} ===== from {_from} to {_to}'.format(len(short_of_code), short_of_code,_from=start,_to = end), ui_log = None)
@@ -82,7 +82,7 @@ class QAStockModel(QAModel):
                                   offset='WARNING',
                                   volume=None
                                   )
-        short_of_data = [i for i in target_code if i not in train.loc[end].reset_index().code.unique.tolist()]
+        short_of_data = [i for i in target_code if i not in train.loc[end].reset_index().code.unique().tolist()]
 
         if len(short_of_data) > 0:
             QA_util_log_info('##JOB {} Short of Data: {} ===== from {_from} to {_to}'.format(len(short_of_data), short_of_data,_from=start,_to = end), ui_log = None)
