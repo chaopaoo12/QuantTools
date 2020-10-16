@@ -30,7 +30,7 @@
 
 from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_code)
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.daily_job import daily_run, daily_run_hedge
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.daily_job import daily_run, daily_run_hedge, daily_run_crawl
 from QUANTAXIS.QASU.main import (QA_SU_save_stock_list,QA_SU_save_stock_info_tushare)
 from QUANTTOOLS.QAStockETL import QA_SU_save_stock_aklist
 import time
@@ -52,4 +52,5 @@ if __name__ == '__main__':
             time.sleep(180)
 
         daily_run(mark_day)
+        daily_run_crawl(mark_day)
         daily_run_hedge(mark_day)

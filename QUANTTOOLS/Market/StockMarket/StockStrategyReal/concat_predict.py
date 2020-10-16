@@ -4,22 +4,28 @@ from QUANTTOOLS.Model.StockModel.StrategyXgboostReal import QAStockXGBoostReal
 from QUANTTOOLS.Model.StockModel.StrategyXgboostHedge import QAStockXGBoostHedge
 from QUANTTOOLS.Market.MarketTools import make_prediction,make_stockprediction,make_indexprediction
 
-def concat_predict(trading_date, working_dir, model_name = 'stock_xg'):
+def concat_predict(trading_date, working_dir, type = 'crawl', model_name = 'stock_xg'):
     Stock = QAStockXGBoost()
     stock_info_temp = Stock.info
-    target_pool,prediction,start,end,stock_info_temp['date'] = make_stockprediction(Stock, trading_date, model_name, working_dir)
+    target_pool,prediction,start,end,stock_info_temp['date'] = make_stockprediction(Stock, trading_date, model_name, working_dir, type)
     return(target_pool,prediction,start,end,stock_info_temp['date'])
 
-def concat_predict_real(trading_date, working_dir, model_name = 'stock_xg_real'):
+def concat_predict_real(trading_date, working_dir, type = 'model', model_name = 'stock_xg_real'):
     Stock = QAStockXGBoostReal()
     stock_info_temp = Stock.info
-    target_pool,prediction,start,end,stock_info_temp['date'] = make_stockprediction(Stock, trading_date, model_name, working_dir)
+    target_pool,prediction,start,end,stock_info_temp['date'] = make_stockprediction(Stock, trading_date, model_name, working_dir, type)
     return(target_pool,prediction,start,end,stock_info_temp['date'])
 
-def concat_predict_hedge(trading_date, working_dir, model_name = 'hedge_xg'):
+def concat_predict_crawl(trading_date, working_dir, type = 'crawl', model_name = 'stock_xg_real'):
+    Stock = QAStockXGBoostReal()
+    stock_info_temp = Stock.info
+    target_pool,prediction,start,end,stock_info_temp['date'] = make_stockprediction(Stock, trading_date, model_name, working_dir, type)
+    return(target_pool,prediction,start,end,stock_info_temp['date'])
+
+def concat_predict_hedge(trading_date, working_dir, type = 'model', model_name = 'hedge_xg'):
     Stock = QAStockXGBoostHedge()
     stock_info_temp = Stock.info
-    target_pool,prediction,start,end,stock_info_temp['date'] = make_stockprediction(Stock, trading_date, model_name, working_dir)
+    target_pool,prediction,start,end,stock_info_temp['date'] = make_stockprediction(Stock, trading_date, model_name, working_dir, type)
     return(target_pool,prediction,start,end,stock_info_temp['date'])
 
 def concat_predict_index(trading_date, working_dir, model_name = 'index_xg'):
