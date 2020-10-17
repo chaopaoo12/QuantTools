@@ -132,8 +132,6 @@ def stock_alpha101_half_realtime(code, start = None, end = QA_util_today_str()):
     start_date = QA_util_get_pre_trade_date(start, 270)
     deal_date_list = QA_util_get_trade_range(start, end)
     end_date = QA_util_get_pre_trade_date(end, 1)
-    new_code = QA_fetch_code_new(1).code.unique().tolist()
-    code = [i for i in code if i not in new_code]
 
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data
@@ -171,6 +169,8 @@ def stock_alpha191_half_realtime(code, date = None):
         end = date
     end_date = QA_util_get_pre_trade_date(end, 1)
     start_date = QA_util_get_pre_trade_date(date, 270)
+    new_code = QA_fetch_code_new(2).code.unique().tolist()
+    code = [i for i in code if i not in new_code]
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data.reset_index()
         price['avg_price'] = price['amount']/price['volume']*price['adj']
