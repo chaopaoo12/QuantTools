@@ -1,5 +1,6 @@
 import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_fianacial_adv
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_usstock_pe, QA_fetch_usstock_pb
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range)
 
 def rolling_rank(data):
@@ -73,3 +74,15 @@ def QA_fetch_get_stock_financial_percent(code,start_date,end_date):
     except:
         QA_util_log_info('JOB No Data for {code} ====== from {_from} to {_to}'.format(code=code, _from=start_date, _to=end_date))
 
+def QA_fetch_get_usstock_financial_percent(code,start_date,end_date):
+    start = QA_util_get_pre_trade_date(start_date,91)
+    pe = QA_fetch_usstock_pe(code,start,end_date)[['PE']]
+    pb = QA_fetch_usstock_pb(code,start,end_date)[['PB']]
+    fianacial = pd.concat([pb, pe])
+    try:
+        fianacial = fianacial.groupby('code').apply(perank).loc[QA_util_get_trade_range(start_date, end_date)].reset_index()
+        fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['PB', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PS','PB_RANK','PE_RANK']]]
+        fianacial['date_stamp'] = fianacial['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10]))
+        return(fianacial)
+    except:
+        QA_util_log_info('JOB No Data for {code} ====== from {_from} to {_to}'.format(code=code, _from=start_date, _to=end_date))
