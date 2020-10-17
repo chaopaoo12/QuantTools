@@ -48,14 +48,15 @@ if __name__ == '__main__':
             res = check_sinastock_adj(mark_day)
 
         res = check_stock_alpha101half(mark_day)
-        if res is None or (len(res[0]) + len(res[1])) > 20:
+        while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_alpha101half_day(start_date = mark_day,  end_date = mark_day)
+            res = check_stock_alpha101half(mark_day)
 
         res = check_sinastock_alpha101half(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 0:
+        if res is None or (len(res[0]) + len(res[1])) > 0:
             for i in res[0] + res[1]:
                 QA_SU_save_stock_alpha101half_day(code=i, start_date = mark_day,  end_date = mark_day)
-            res = check_sinastock_alpha101half(mark_day)
+            check_sinastock_alpha101half(mark_day)
 
         res = check_stock_alpha191half(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 20:
