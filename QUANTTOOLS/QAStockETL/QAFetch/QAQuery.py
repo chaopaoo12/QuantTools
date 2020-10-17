@@ -995,8 +995,12 @@ def QA_fetch_financial_code_new(ndays=30):
     return(code)
 
 def QA_fetch_code_new(ndays=90):
-    code_list = QA_fetch_stock_om_all()
-    return(code_list[code_list.code.isin(QA_fetch_financial_code_new(ndays))])
+    #code_list = QA_fetch_stock_om_all()
+    market_day = pd.DataFrame(QA_fetch_stock_basic_info_tushare())[['code','timeToMarket']]
+    market_day['TM'] = market_day['timeToMarket'].apply(lambda x:str(QA_util_add_months(QA_util_date_int2str(int(x)),0) if x >0 else None)[0:10])
+    timeToMarket = str(QA_util_get_pre_trade_date(QA_util_today_str(),ndays))
+    code = market_day[market_day['TM'] > timeToMarket][['code','TM','timeToMarket']]
+    return(code)
 
 def QA_fetch_code_old(ndays=90):
     code_list = QA_fetch_stock_om_all()

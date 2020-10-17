@@ -15,8 +15,8 @@ def QA_fetch_get_usstock_day(code, start, end):
     data = data[['open','close','high','low','vol','amount','date','code','date_stamp']]
     return(data)
 
-def QA_fetch_get_stock_realtime(code):
-    quotation = easyquotation.use('sina')
+def QA_fetch_get_stock_realtime(code, source ='sina'):
+    quotation = easyquotation.use(source)
     values = pd.DataFrame(quotation.stocks(code)).T
     values.index.name = 'code'
     return(values)
@@ -113,7 +113,7 @@ def QA_fetch_get_stock_delist():
 
 def QA_fetch_get_stock_half_realtime(code, date = QA_util_today_str(), source = 'sina'):
     quotation = easyquotation.use(source)
-    res = pd.DataFrame(quotation.stocks(code) ).T[['date','open','high','low','now','turnover','volume','close']]
+    res = pd.DataFrame(quotation.stocks(code)).T[['date','open','high','low','now','turnover','volume','close']]
     res = res.reset_index().rename(columns={'index':'code',
                                             'close':'prev_close',
                                             'now':'close',
@@ -125,6 +125,22 @@ def QA_fetch_get_stock_half_realtime(code, date = QA_util_today_str(), source = 
     res = res[res.volume > 0]
     res = res[res.date == date]
     res['date_stamp'] = res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10]))
+    return(res)
+
+def QA_fetch_get_stock_half_real(code, date, source = 'sina'):
+    res = QA_fetch_get_stock_realtime(code, source = source)
+    res = res.reset_index().rename(columns={'index':'code',
+                                            'close':'prev_close',
+                                            'now':'close',
+                                            'turnover':'volume',
+                                            'volume':'amount'})
+    res['date'] = pd.to_datetime(res['date'])
+    res[['open','high','low','close','volume','amount','prev_close']] = res[['open','high','low','close','volume','amount','prev_close']].apply(pd.to_numeric)
+    res['avg_price'] = res['amount']/res['volume']
+    res['date_stamp'] = res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10]))
+    res = res.loc[res.name.apply(lambda x:str(x).startswith('N') == 0)][['date','code','open','high','low','close','volume','amount','prev_close','avg_price','date_stamp']]
+    res = res[res.volume > 0]
+    res = res[res.date == date]
     return(res)
 
 def QA_fetch_get_stockcode_real(code, date = QA_util_today_str(), source = 'sina'):

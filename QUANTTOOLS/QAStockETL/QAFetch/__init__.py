@@ -104,6 +104,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_stock_close,fetch_
 
                                                  QA_fetch_get_stock_delist,QA_fetch_get_stockcode_real,
 
+                                                 QA_fetch_get_stock_half_real,
+
                                                  QA_fetch_get_stock_half,QA_fetch_get_stock_half_realtime,
 
                                                  QA_fetch_get_usstock_pe,QA_fetch_get_usstock_pb)

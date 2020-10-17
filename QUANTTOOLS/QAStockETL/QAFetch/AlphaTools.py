@@ -1,7 +1,7 @@
 import numpy as np
 from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_index_day_adv,QA_fetch_stock_min_adv
 from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date,QA_util_get_trade_range,QA_util_get_real_date,QA_util_if_trade)
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_real
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_real,QA_fetch_code_new
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_half_adv,QA_fetch_usstock_xq_day_adv,QA_fetch_usstock_day_adv
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha191 import Alpha_191
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha101 import get_alpha
@@ -132,6 +132,8 @@ def stock_alpha101_half_realtime(code, start = None, end = QA_util_today_str()):
     start_date = QA_util_get_pre_trade_date(start, 270)
     deal_date_list = QA_util_get_trade_range(start, end)
     end_date = QA_util_get_pre_trade_date(end, 1)
+    new_code = QA_fetch_code_new(1).code.unique().tolist()
+    code = [i for i in code if i not in new_code]
 
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data
