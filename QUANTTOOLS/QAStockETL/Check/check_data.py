@@ -24,169 +24,169 @@ def QA_fetch_stock_half_realtime(code, start, end):
 def QA_fetch_stock_60min(code, start, end):
     return(QA_fetch_stock_min_adv(code, start, end, frequence='60min').data)
 
-def check_stock_60min(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_60min, mark_day = mark_day, title = 'Stock 60Min', ui_log = ui_log))
+def check_stock_60min(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_60min, mark_day = mark_day, title = 'Stock 60Min'))
 
-def check_sinastock_60min(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_60min, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock 60Min sina', ui_log = ui_log))
+def check_sinastock_60min(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_60min, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock 60Min sina'))
 
 
 def QA_fetch_stock_half(code, start, end):
     return(QA_fetch_stock_half_adv(code, start, end).data)
 
-def check_stock_half(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_half, mark_day = mark_day, title = 'Stock Half', ui_log = ui_log))
+def check_stock_half(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_half, mark_day = mark_day, title = 'Stock Half'))
 
-def check_sinastock_half(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_half, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Half sina', ui_log = ui_log))
+def check_sinastock_half(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_half, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Half sina'))
 
 
 def QA_fetch_stock_day(code, start, end):
     return(QA_fetch_stock_day_adv(code, start, end).data)
 
-def check_stock_day(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_day, mark_day = mark_day, title = 'Stock Day', ui_log = ui_log))
+def check_stock_day(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_day, mark_day = mark_day, title = 'Stock Day'))
 
-def check_sinastock_day(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_day, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Day sina', ui_log = ui_log))
+def check_sinastock_day(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_day, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Day sina'))
 
 
-def check_stock_adj(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_adj, mark_day = mark_day, title = 'Stock Adj', ui_log = ui_log))
+def check_stock_adj(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_adj, mark_day = mark_day, title = 'Stock Adj'))
 
-def check_sinastock_adj(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_adj, func2= QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Adj Sina', ui_log = ui_log))
+def check_sinastock_adj(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_adj, func2= QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Adj Sina'))
 
 
 def QA_fetch_stock_fianacial(code, start, end):
     return(QA_fetch_stock_fianacial_adv(code, start, end).data)
 
-def check_stock_fianacial(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_fianacial, mark_day = mark_day, title = 'Stock Finance', ui_log = ui_log))
+def check_stock_fianacial(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_fianacial, mark_day = mark_day, title = 'Stock Finance'))
 
 
 def QA_fetch_stock_financial_percent(code, start, end):
     return(QA_fetch_stock_financial_percent_adv(code, start, end).data)
 
-def check_stock_finper(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_financial_percent, mark_day = mark_day, title = 'PE水位', ui_log = ui_log))
+def check_stock_finper(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_financial_percent, mark_day = mark_day, title = 'PE水位'))
 
 
 def QA_fetch_stock_alpha(code, start, end):
     return(QA_fetch_stock_alpha_adv(code, start, end).data)
 
-def check_stock_alpha191(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_alpha, mark_day = mark_day, title = 'Stock Alpha191', ui_log = ui_log))
+def check_stock_alpha191(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_alpha, mark_day = mark_day, title = 'Stock Alpha191'))
 
-def check_sinastock_alpha191(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_alpha, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Alpha191 sina', ui_log = ui_log))
+def check_sinastock_alpha191(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_alpha, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Alpha191 sina'))
 
 
 def QA_fetch_stock_alpha101(code, start, end):
     return(QA_fetch_stock_alpha101_adv(code, start, end).data)
 
-def check_stock_alpha101(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_alpha101, mark_day = mark_day, title = 'Stock Alpha101', ui_log = ui_log))
+def check_stock_alpha101(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_alpha101, mark_day = mark_day, title = 'Stock Alpha101'))
 
-def check_sinastock_alpha101(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_alpha101, func2 = QA_fetch_stock_alpha101_real, mark_day = mark_day, title = 'Stock Alpha101 sina', ui_log = ui_log))
+def check_sinastock_alpha101(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_alpha101, func2 = QA_fetch_stock_alpha101_real, mark_day = mark_day, title = 'Stock Alpha101 sina'))
 
 
 def QA_fetch_stock_alpha101half(code, start, end):
     return(QA_fetch_stock_alpha101half_adv(code, start, end).data)
 
-def check_stock_alpha101half(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_alpha101half, mark_day = mark_day, title = 'Stock Alpha101 Half', ui_log = ui_log))
+def check_stock_alpha101half(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_alpha101half, mark_day = mark_day, title = 'Stock Alpha101 Half'))
 
-def check_sinastock_alpha101half(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_alpha101half, func2 = QA_fetch_stock_alpha_real, mark_day = mark_day, title = 'Stock Alpha101 Half sina', ui_log = ui_log))
+def check_sinastock_alpha101half(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_alpha101half, func2 = QA_fetch_stock_alpha_real, mark_day = mark_day, title = 'Stock Alpha101 Half sina'))
 
 def QA_fetch_stock_alpha101_real_model(code, start, end):
     return(QA_Sql_Stock_Alpha101Half(start, end))
 
-def check_realstock_alpha101half(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_alpha101_real_model, func2 = QA_fetch_stock_alpha101_real, mark_day = mark_day, title = 'Stock Alpha101 Half Real', ui_log = ui_log))
+def check_realstock_alpha101half(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_alpha101_real_model, func2 = QA_fetch_stock_alpha101_real, mark_day = mark_day, title = 'Stock Alpha101 Half Real'))
 
 
 def QA_fetch_stock_alpha191half(code, start, end):
     return(QA_fetch_stock_alpha191half_adv(code, start, end).data)
 
-def check_stock_alpha191half(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_alpha191half, mark_day = mark_day, title = 'Stock Alpha191 Half', ui_log = ui_log))
+def check_stock_alpha191half(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_alpha191half, mark_day = mark_day, title = 'Stock Alpha191 Half'))
 
-def check_sinastock_alpha191half(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_alpha191half, func2 = QA_fetch_stock_alpha_real, mark_day = mark_day, title = 'Stock Alpha101 Half sina', ui_log = ui_log))
+def check_sinastock_alpha191half(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_alpha191half, func2 = QA_fetch_stock_alpha_real, mark_day = mark_day, title = 'Stock Alpha101 Half sina'))
 
 def QA_fetch_stock_alpha191_real_model(code, start, end):
     return(QA_Sql_Stock_Alpha191Half(start, end))
 
-def check_realstock_alpha191half(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_alpha191_real_model, func2 = QA_fetch_stock_alpha_real, mark_day = mark_day, title = 'Stock Alpha191 Half Real', ui_log = ui_log))
+def check_realstock_alpha191half(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_alpha191_real_model, func2 = QA_fetch_stock_alpha_real, mark_day = mark_day, title = 'Stock Alpha191 Half Real'))
 
 
 def QA_fetch_stock_techindex(code, start, end):
     return(QA_fetch_stock_technical_index_adv(code, start, end, type='day').data)
 
-def check_stock_techindex(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_techindex, mark_day = mark_day, title = 'Stock TechIndex', ui_log = ui_log))
+def check_stock_techindex(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_techindex, mark_day = mark_day, title = 'Stock TechIndex'))
 
-def check_sinastock_techindex(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_techindex, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock TechIndex sina', ui_log = ui_log))
+def check_sinastock_techindex(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_techindex, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock TechIndex sina'))
 
 
 def QA_fetch_stock_techweek(code, start, end):
     return(QA_fetch_stock_technical_index_adv(code, start, end, type='week').data)
 
-def check_stock_techweek(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_techweek, mark_day = mark_day, title = 'Stock TechWeek', ui_log = ui_log))
+def check_stock_techweek(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_techweek, mark_day = mark_day, title = 'Stock TechWeek'))
 
-def check_sinastock_techweek(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_techweek, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock TechWeek sina', ui_log = ui_log))
+def check_sinastock_techweek(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_techweek, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock TechWeek sina'))
 
 
 def QA_fetch_stock_quant_data(code, start, end):
     return(QA_fetch_stock_quant_data_adv(code, start, end).data)
 
-def check_stock_quant(mark_day = None, ui_log = None):
-    return(check_stock_data(func = QA_fetch_stock_quant_data, mark_day = mark_day, title = 'Stock Quant', ui_log = ui_log))
+def check_stock_quant(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_quant_data, mark_day = mark_day, title = 'Stock Quant'))
 
 
 def QA_fetch_index_day(code, start, end):
     return(QA_fetch_index_day_adv(code, start, end).data)
 
-def check_index_day(mark_day = None, ui_log = None):
-    return(check_index_data(func = QA_fetch_index_day, mark_day = mark_day, title = 'Index Day', ui_log = ui_log))
+def check_index_day(mark_day = None):
+    return(check_index_data(func = QA_fetch_index_day, mark_day = mark_day, title = 'Index Day'))
 
 def QA_fetch_index_alpha(code, start, end):
     return(QA_fetch_index_alpha_adv(code, start, end).data)
 
-def check_index_alpha191(mark_day = None, ui_log = None):
-    return(check_index_data(func = QA_fetch_index_alpha_adv, mark_day = mark_day, title = 'Index Alpha191', ui_log = ui_log))
+def check_index_alpha191(mark_day = None):
+    return(check_index_data(func = QA_fetch_index_alpha_adv, mark_day = mark_day, title = 'Index Alpha191'))
 
 def QA_fetch_index_alpha101(code, start, end):
     return(QA_fetch_index_alpha101_adv(code, start, end).data)
 
-def check_index_alpha101(mark_day = None, ui_log = None):
-    return(check_index_data(func = QA_fetch_index_alpha101, mark_day = mark_day, title = 'Index Alpha101', ui_log = ui_log))
+def check_index_alpha101(mark_day = None):
+    return(check_index_data(func = QA_fetch_index_alpha101, mark_day = mark_day, title = 'Index Alpha101'))
 
 
 def QA_fetch_index_techindex(code, start, end):
     return(QA_fetch_index_technical_index_adv(code, start, end, type='day').data)
 
-def check_index_techindex(mark_day = None,  ui_log = None):
-    return(check_index_data(func = QA_fetch_index_techindex, mark_day = mark_day, title = 'Index TechIndex', ui_log = ui_log))
+def check_index_techindex(mark_day = None):
+    return(check_index_data(func = QA_fetch_index_techindex, mark_day = mark_day, title = 'Index TechIndex'))
 
 def QA_fetch_index_techweek(code, start, end):
     return(QA_fetch_index_technical_index_adv(code, start, end, type='week').data)
 
-def check_index_techweek(mark_day = None, ui_log = None):
-    return(check_index_data(func = QA_fetch_index_techweek, mark_day = mark_day, title = 'Index TechWeek', ui_log = ui_log))
+def check_index_techweek(mark_day = None):
+    return(check_index_data(func = QA_fetch_index_techweek, mark_day = mark_day, title = 'Index TechWeek'))
 
 def QA_fetch_index_quant_data(code, start, end):
     return(QA_fetch_index_quant_data_adv(code, start, end).data)
 
-def check_index_quant(mark_day = None, ui_log = None):
-    return(check_index_data(func = QA_fetch_index_quant_data_adv, mark_day = mark_day, title = 'Index Quant', ui_log = ui_log))
+def check_index_quant(mark_day = None):
+    return(check_index_data(func = QA_fetch_index_quant_data_adv, mark_day = mark_day, title = 'Index Quant'))
 
 if __name__ == 'main':
     pass
