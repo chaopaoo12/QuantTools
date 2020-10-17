@@ -86,6 +86,9 @@ class QAModel():
             self.info['thresh'] = thresh
             self.info['drop'] = drop
 
+    def copy_model(self, object):
+        self.data = object.data
+
     def save_model(self, name, working_dir = 'D:\\model\\current'):
         self.info['cols'] = self.cols
         QA_util_log_info('##JOB Now Model Saving ===== {}'.format(self.info['date']), ui_log = None)
