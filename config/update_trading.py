@@ -55,4 +55,4 @@ if __name__ == '__main__':
 
         daily_run(mark_day)
         daily_run_crawl(check_day)
-        daily_run_hedge(check_day)
+        #daily_run_hedge(check_day)
