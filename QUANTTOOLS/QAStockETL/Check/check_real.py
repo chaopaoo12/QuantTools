@@ -11,11 +11,11 @@ def QA_fetch_stock_alpha101real(code, start, end):
 def QA_fetch_stock_half_realtime(code, start, end):
     return(QA_fetch_get_stock_half_realtime(code))
 
-def check_stock_alpha191real(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_alpha191real, func2=QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock ALPHA191 RealTime', ui_log = ui_log))
+def check_stock_alpha191real(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_alpha191real, func2=QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock ALPHA191 RealTime'))
 
-def check_stock_alpha101real(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_alpha101real, func2=QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock ALPHA101 RealTime', ui_log = ui_log))
+def check_stock_alpha101real(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_alpha101real, func2=QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock ALPHA101 RealTime'))
 
-def check_stock_real(mark_day = None, ui_log = None):
-    return(check_stock_base(func1 = QA_fetch_stock_real, func2=QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock ALPHA RealTime', ui_log = ui_log))
+def check_stock_real(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_real, func2=QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock ALPHA RealTime'))
