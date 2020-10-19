@@ -137,8 +137,9 @@ def stock_alpha101_half_realtime(code, start = None, end = QA_util_today_str()):
         price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data
         price['avg_price'] = price['amount']/price['volume']*price['adj']
         res = QA_fetch_stock_real(code,end,end)
-        res = res.assign(pctchange=res.close/res.prev_close-1).set_index(['date','code'])[['open','high','low','close','volume','amount','pctchange','avg_price']]
-        res = price.append(res).dropna(axis=0, how='any')
+        res = res.assign(pctchange=res.close/res.prev_close-1).set_index(['date','code'])
+        res = price.append(res)[['open','high','low','close','volume','amount','pctchange','avg_price']]
+        res = res.dropna(axis=0, how='any')
         res = res.groupby('code').apply(get_alpha)
         res = res.reset_index(level=2).drop('code',axis=1).reset_index()
         return(res[res.date.isin(deal_date_list)])
