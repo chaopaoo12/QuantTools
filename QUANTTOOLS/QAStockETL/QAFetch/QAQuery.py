@@ -1004,7 +1004,7 @@ def QA_fetch_code_new(ndays=90,date=QA_util_today_str()):
 
 def QA_fetch_code_old(ndays=90,date=QA_util_today_str()):
     code_list = QA_fetch_stock_om_all()
-    return(code_list[~code_list.code.isin(QA_fetch_code_new(date,ndays).code.unique().tolist())])
+    return(code_list[~code_list.code.isin(QA_fetch_code_new(ndays,date).code.unique().tolist())])
 
 def QA_fetch_financial_code_tdx(ndays=30):
     start = str(QA_util_get_pre_trade_date(QA_util_today_str(),ndays))
