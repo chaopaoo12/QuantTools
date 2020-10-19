@@ -176,7 +176,8 @@ def stock_alpha191_half_realtime(code, date = None):
         price['avg_price'] = price['amount']/price['volume']*price['adj']
         price['prev_close'] = price['close']*(1+price['pctchange'])
         res = QA_fetch_stock_real(code,end,end)
-        res = price.append(res).dropna(axis=0, how='any')
+        res = price.append(res)[['date','code','open','high','low','close','volume','amount','avg_price','prev_close']]
+        res = res.dropna(axis=0, how='any')
         return(Alpha_191(res, date).alpha())
     except Exception as e:
         print(e)
