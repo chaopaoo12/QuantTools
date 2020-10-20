@@ -2632,3 +2632,50 @@ def QA_fetch_stock_aklist(collections=DATABASE.akstock_list):
         'code',
         drop=False
     )
+
+
+def QA_fetch_stock_technical_half(code, start, end=None, type='day', format='pd'):
+    '获取股票日线'
+    #code= [code] if isinstance(code,str) else code
+    # code checking
+    if type == 'day':
+        collections=DATABASE.stock_technical_index_half
+    elif type == 'week':
+        collections=DATABASE.stock_technical_week_half
+    elif type == 'real':
+        collections=DATABASE.stock_technical_index_real
+    else:
+        QA_util_log_info("type should be in ['day', 'week', 'real']")
+    code = QA_util_code_tolist(code)
+    if QA_util_date_valid(end):
+
+        __data = []
+        cursor = collections.find({
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+        #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
+
+        res = pd.DataFrame([item for item in cursor])
+        try:
+            res = res.drop_duplicates(
+                (['code', 'date']))
+            res['date'] = res['date'].apply(lambda x: str(x)[0:10])
+            res = res.drop(['date_stamp'],axis=1).set_index(['date','code'])
+        except:
+            res = None
+        if format in ['P', 'p', 'pandas', 'pd']:
+            return res
+        elif format in ['json', 'dict']:
+            return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+        elif format in ['n', 'N', 'numpy']:
+            return numpy.asarray(res)
+        elif format in ['list', 'l', 'L']:
+            return numpy.asarray(res).tolist()
+        else:
+            QA_util_log_info("QA Error QA_fetch_index_technical_half format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            return None
+    else:
+        QA_util_log_info(
+            'QA Error QA_fetch_index_technical_half data parameter start=%s end=%s is not right' % (start, end))

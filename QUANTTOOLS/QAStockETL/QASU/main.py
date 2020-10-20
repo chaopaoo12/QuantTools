@@ -39,7 +39,8 @@ from QUANTTOOLS.QAStockETL.QASU import \
     crawl_sina_usstock as crawl_sina_hkstock, \
     save_tdx as save_tdx, \
     save_stock_alpha_real as alpha_real,\
-    save_usstock_alpha as save_usstock_alpha
+    save_usstock_alpha as save_usstock_alpha,\
+    save_stock_technical_real as technical_real
 
 from QUANTAXIS.QAUtil import QA_util_today_str
 
@@ -273,3 +274,21 @@ def QA_SU_save_single_stock_xdxr(code):
 
 def QA_SU_save_stock_aklist():
     save_tdx.QA_SU_save_stock_aklist()
+
+def QA_SU_save_stock_technical_index_half(code = None,start_date=None,end_date=None):
+    technical_real.QA_SU_save_stock_technical_index_half(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_stock_technical_index_half_his(code = None,start_date=None,end_date=None):
+    technical_real.QA_SU_save_stock_technical_index_half_his(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_stock_technical_week_half(code = None,start_date=None,end_date=None):
+    technical_real.QA_SU_save_stock_technical_week_half(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_stock_technical_week_half_his(code = None,start_date=None,end_date=None):
+    technical_real.QA_SU_save_stock_technical_week_half_his(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_stock_technical_index_real(code = None,start_date=None,end_date=None):
+    technical_real.QA_SU_save_stock_technical_index_real(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_stock_technical_week_real(code = None,start_date=None,end_date=None):
+    technical_real.QA_SU_save_stock_technical_week_real(codes = code,start_date=start_date,end_date=end_date)

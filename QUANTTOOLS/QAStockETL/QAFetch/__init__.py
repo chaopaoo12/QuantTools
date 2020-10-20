@@ -10,7 +10,9 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_interest_rat
                                                            QA_fetch_stock_half_adv,
                                                            QA_fetch_stock_alpha191half_adv,QA_fetch_stock_alpha101half_adv,
                                                            QA_fetch_stock_alpha101real_adv,QA_fetch_stock_alpha191real_adv,
-                                                           QA_fetch_stock_alpha_adv,QA_fetch_stock_alpha101_adv,QA_fetch_stock_technical_index_adv,
+                                                           QA_fetch_stock_alpha_adv,QA_fetch_stock_alpha101_adv,
+                                                           QA_fetch_stock_technical_index_adv,
+                                                           QA_fetch_stock_technical_half_adv,
 
                                                            QA_fetch_stock_quant_data_adv,QA_fetch_stock_quant_pre_adv,QA_fetch_stock_quant_pre_train_adv,
                                                            QA_fetch_stock_target_adv,
@@ -44,6 +46,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_interest_rate,
 
                                                    QA_fetch_stock_alpha,QA_fetch_stock_alpha101,QA_fetch_stock_technical_index,
                                                    QA_fetch_stock_alpha191half, QA_fetch_stock_alpha101half,
+                                                   QA_fetch_stock_technical_half,
 
                                                    QA_fetch_stock_quant_data,QA_fetch_stock_quant_pre,QA_fetch_stock_quant_pre_train,
                                                    QA_fetch_stock_target,
@@ -82,7 +85,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAAlpha import (QA_fetch_get_stock_alpha,QA_f
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAShares import QA_fetch_get_stock_shares_sina
 
-from QUANTTOOLS.QAStockETL.QAFetch.QATIndicator import QA_fetch_get_stock_indicator,QA_fetch_get_index_indicator
+from QUANTTOOLS.QAStockETL.QAFetch.QATIndicator import (QA_fetch_get_stock_indicator,QA_fetch_get_index_indicator,
+                                                        QA_fetch_get_stock_indicator_half,QA_fetch_get_stock_indicator_halfreal)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAInterest import QA_fetch_get_interest_rate
 

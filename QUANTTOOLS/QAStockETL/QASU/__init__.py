@@ -34,7 +34,10 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_fianacialTTM_momgo,
                                              QA_SU_save_stock_alpha101half_day,QA_SU_save_stock_alpha101half_his,
                                              QA_SU_save_stock_alpha191half_day,QA_SU_save_stock_alpha191half_his,
                                              QA_SU_save_stock_alpha101half_real,QA_SU_save_stock_alpha191half_real,
-                                             QA_SU_save_hedge_alpha_day,QA_SU_save_hedge_alpha_his
+                                             QA_SU_save_hedge_alpha_day,QA_SU_save_hedge_alpha_his,
+                                             QA_SU_save_stock_technical_index_half,QA_SU_save_stock_technical_index_half_his,
+                                             QA_SU_save_stock_technical_week_half,QA_SU_save_stock_technical_week_half_his,
+                                             QA_SU_save_stock_technical_index_real,QA_SU_save_stock_technical_week_real
                                              )
 
 ###Index indicator
