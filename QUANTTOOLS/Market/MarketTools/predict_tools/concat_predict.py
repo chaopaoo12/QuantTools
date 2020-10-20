@@ -25,7 +25,7 @@ def make_prediction(Model, trading_date, name, working_dir, type='model', ui_log
                           volume=None
                           )
     if datetime.strptime(trading_date, "%Y-%m-%d").weekday() >= 4:
-        start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-1))).strftime('%Y-%m-%d')
+        start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-2))).strftime('%Y-%m-%d')
     else:
         start = (datetime.strptime(trading_date, "%Y-%m-%d") - timedelta(days=datetime.strptime(trading_date, "%Y-%m-%d").weekday())).strftime('%Y-%m-%d')
     end = trading_date
