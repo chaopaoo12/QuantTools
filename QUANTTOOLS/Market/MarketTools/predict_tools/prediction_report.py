@@ -91,14 +91,19 @@ def prediction_report(trading_date, target_pool, prediction, model_date, top_num
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:选股模型周期内交易成绩", trading_date)
 
+    #########
+    try:
+        modelhis_body = build_table(current_details, '模型周期内选股记录')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内选股记录", trading_date)
+
     try:
         allstock_socre = build_table(top_score, '选股模型周期内TOP交易成绩')
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:选股模型周期内TOP交易成绩", trading_date)
 
-    #########
     try:
-        modelhis_body = build_table(current_details, '模型周期内选股记录')
+        modeltophis_body = build_table(top_details, '模型周期内TOP选股记录')
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内选股记录", trading_date)
 
@@ -112,7 +117,7 @@ def prediction_report(trading_date, target_pool, prediction, model_date, top_num
         msg = build_email(build_head(),err_msg,
                           target_body,hold_body,fronzen_body,
                           model_score,  stock_socre, allstock_socre,
-                          modelhis_body)
+                          modelhis_body, modeltophis_body)
         send_actionnotice("prediction_report",
                           '交易报告:{}'.format(trading_date),
                           '模型运行完毕',
