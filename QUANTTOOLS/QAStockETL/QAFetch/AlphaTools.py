@@ -15,10 +15,10 @@ def stock_alpha(code, date=None):
         end_date = date
     start_date = QA_util_get_pre_trade_date(date, 270)
     try:
-        price = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
+        price = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data.reset_index()
         price = price.assign(volume=price.volume*100)
         price['avg_price'] = price['amount']/price['volume']*price['adj']
-        price['prev_close'] = price[['code','close']].groupby('code').shift()
+        price['prev_close'] = price[['code','close']].groupby('code').shift().dropna(axis=0, how='any')
         return(Alpha_191(price, date).alpha())
     except:
         return(None)

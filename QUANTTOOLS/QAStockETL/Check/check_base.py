@@ -3,9 +3,11 @@ from QUANTAXIS import QA_fetch_get_index_list
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day,QA_util_get_real_date,QA_util_if_trade,QA_util_log_info
 from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_real,QA_fetch_code_new
 
 def check_stock_base(func1 = None, func2 = None, mark_day = None, title = None):
     code = list(QA_fetch_stock_all()['code'])
+    new_code = QA_fetch_code_new(1, mark_day).code.unique().tolist()
 
     if mark_day is None:
         mark_day = QA_util_today_str()
@@ -59,7 +61,8 @@ def check_stock_base(func1 = None, func2 = None, mark_day = None, title = None):
                           volume= '缺失数据量:{num}'.format(num =(len(data2) - len(data1))))
 
         return([i for i in data1 if i not in data2],
-               [i for i in data2 if i not in data1])
+               [i for i in data2 if i not in data1],
+               [i for i in data2 if i not in data1 + new_code])
     else:
         QA_util_log_info(
             '##JOB Now Check {title} Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(title = title,
@@ -67,11 +70,14 @@ def check_stock_base(func1 = None, func2 = None, mark_day = None, title = None):
                                                                                                               num1=len(data1),
                                                                                                               to_date=func2.__name__,
                                                                                                               num2=len(data2)))
+
         return([[i for i in data1 if i not in data2],
-               [i for i in data2 if i not in data1]])
+               [i for i in data2 if i not in data1],
+                [i for i in data2 if i not in data1 + new_code]])
 
 def check_stock_data(func = None, mark_day = None, title = None):
     code = list(QA_fetch_stock_all()['code'])
+    new_code = QA_fetch_code_new(1, mark_day).code.unique().tolist()
 
     if mark_day is None:
         mark_day = QA_util_today_str()
@@ -142,7 +148,8 @@ def check_stock_data(func = None, mark_day = None, title = None):
                                                                                                               to_date=to_date,
                                                                                                               num2=len(data2)))
         return([[i for i in data1 if i not in data2],
-               [i for i in data2 if i not in data1]])
+               [i for i in data2 if i not in data1],
+                [i for i in data2 if i not in data1 + new_code]])
 
 def check_index_data(func = None, mark_day = None, title = None):
     try:
