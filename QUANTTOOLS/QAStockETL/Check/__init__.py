@@ -8,6 +8,7 @@ from QUANTTOOLS.QAStockETL.Check.check_data import (check_stock_day,check_stock_
                                                     check_sinastock_alpha191,check_sinastock_alpha191half,
                                                     check_stock_techindex, check_stock_techweek,
                                                     check_sinastock_techindex,check_sinastock_techweek,
+                                                    check_sinastock_tech,
 
                                                     check_realstock_alpha101half,check_realstock_alpha191half,
                                                     check_stock_quant,
@@ -19,4 +20,4 @@ from QUANTTOOLS.QAStockETL.Check.check_data import (check_stock_day,check_stock_
 
 from QUANTTOOLS.QAStockETL.Check.check_special import check_tdx_financial,check_wy_financial,check_ttm_financial,check_stock_code
 
-from QUANTTOOLS.QAStockETL.Check.check_real import check_stock_alpha191real,check_stock_alpha101real,check_stock_real
+from QUANTTOOLS.QAStockETL.Check.check_real import check_stock_alpha191real,check_stock_alpha101real,check_stock_techreal,check_stock_real

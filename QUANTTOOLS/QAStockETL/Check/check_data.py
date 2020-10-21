@@ -11,7 +11,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_index_technical_index_adv,
                                                            QA_fetch_stock_alpha101half_adv,
                                                            QA_fetch_stock_half_adv,
-                                                           QA_fetch_stock_alpha191half_adv
+                                                           QA_fetch_stock_alpha191half_adv,
+                                                           QA_fetch_stock_technical_half_adv
                                                            )
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191Half import QA_Sql_Stock_Alpha191Half
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101Half import QA_Sql_Stock_Alpha101Half
@@ -132,6 +133,12 @@ def check_stock_techindex(mark_day = None):
 
 def check_sinastock_techindex(mark_day = None):
     return(check_stock_base(func1 = QA_fetch_stock_techindex, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock TechIndex sina'))
+
+def QA_fetch_stock_techhalf(code, start, end):
+    return(QA_fetch_stock_technical_half_adv(code, start, end, type='day').data)
+
+def check_sinastock_tech(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_techhalf, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock TechHalf sina'))
 
 
 def QA_fetch_stock_techweek(code, start, end):
