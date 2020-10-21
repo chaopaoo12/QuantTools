@@ -110,7 +110,10 @@ def stock_alpha101_half(code, start=None, end = None):
 
     try:
         data = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data
+        day = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data
+        data['prev_close'] = day['close'].groupby('code').shift()
         data['avg_price'] = data['amount']/data['volume']*data['adj']
+        data = data.assign(pctchange=data.close/data.prev_close-1)
         data = data.dropna(axis=0, how='any')
         price = get_alpha(data).reset_index()
         price = price[price.date.isin(deal_date_list)]
@@ -135,6 +138,9 @@ def stock_alpha101_half_realtime(code, start = None, end = QA_util_today_str()):
 
     try:
         price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data
+        day = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data
+        price['prev_close'] = day['close'].groupby('code').shift()
+        price = price.assign(pctchange=price.close/price.prev_close-1)
         price['avg_price'] = price['amount']/price['volume']*price['adj']
         res = QA_fetch_stock_real(code,end,end)
         res = res.assign(pctchange=res.close/res.prev_close-1).set_index(['date','code'])
@@ -155,9 +161,12 @@ def stock_alpha191_half(code, date=None):
     start_date = QA_util_get_pre_trade_date(date, 270)
 
     try:
-        price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
-        price['prev_close'] = price['close']*(1+price['pctchange'])
+        price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data
+        day = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data
+        price['prev_close'] = day['close'].groupby('code').shift()
+        #price['prev_close'] = price['close']*(1+price['pctchange'])
         price['avg_price'] = price['amount']/price['volume']*price['adj']
+        price = price.reset_index().dropna(axis=0, how='any')
         return(Alpha_191(price, date).alpha())
     except:
         return(None)
@@ -173,11 +182,13 @@ def stock_alpha191_half_realtime(code, date = None):
     new_code = QA_fetch_code_new(1, date).code.unique().tolist()
     code = [i for i in code if i not in new_code]
     try:
-        price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data.reset_index()
+        price = QA_fetch_stock_half_adv(code, start_date, end_date).to_qfq().data
+        day = QA_fetch_stock_day_adv(code, start_date, end_date).to_qfq().data
         price['avg_price'] = price['amount']/price['volume']*price['adj']
-        price['prev_close'] = price['close']*(1+price['pctchange'])
+        price['prev_close'] = day['close'].groupby('code').shift()
+        #price['prev_close'] = price['close']*(1+price['pctchange'])
         res = QA_fetch_stock_real(code,end,end)
-        res = price.append(res)[['date','code','open','high','low','close','volume','amount','avg_price','prev_close']]
+        res = price.reset_index().append(res)[['date','code','open','high','low','close','volume','amount','avg_price','prev_close']]
         res = res.dropna(axis=0, how='any')
         return(Alpha_191(res, date).alpha())
     except Exception as e:
