@@ -62,7 +62,7 @@ def check_stock_base(func1 = None, func2 = None, mark_day = None, title = None):
 
         return([i for i in data1 if i not in data2],
                [i for i in data2 if i not in data1],
-               [i for i in data2 if i not in data1 + new_code])
+               [i for i in data2 if i not in list(data1) + list(new_code)])
     else:
         QA_util_log_info(
             '##JOB Now Check {title} Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(title = title,
@@ -73,7 +73,7 @@ def check_stock_base(func1 = None, func2 = None, mark_day = None, title = None):
 
         return([[i for i in data1 if i not in data2],
                [i for i in data2 if i not in data1],
-                [i for i in data2 if i not in data1 + new_code]])
+                [i for i in data2 if i not in list(data1) + list(new_code)]])
 
 def check_stock_data(func = None, mark_day = None, title = None):
     code = list(QA_fetch_stock_all()['code'])
@@ -139,7 +139,8 @@ def check_stock_data(func = None, mark_day = None, title = None):
                           offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = len(data2)),
                           volume= '缺失数据量:{num}'.format(num =(len(data2) - len(data1))))
         return([i for i in data1 if i not in data2],
-               [i for i in data2 if i not in data1])
+               [i for i in data2 if i not in data1],
+               [i for i in data2 if i not in list(data1) + list(new_code)])
     else:
         QA_util_log_info(
             '##JOB Now Check {title} Success ============== {deal_date}: {num1} to {to_date}: {num2} '.format(title = title,
@@ -149,7 +150,7 @@ def check_stock_data(func = None, mark_day = None, title = None):
                                                                                                               num2=len(data2)))
         return([[i for i in data1 if i not in data2],
                [i for i in data2 if i not in data1],
-                [i for i in data2 if i not in data1 + new_code]])
+                [i for i in data2 if i not in list(data1) + list(new_code)]])
 
 def check_index_data(func = None, mark_day = None, title = None):
     try:
