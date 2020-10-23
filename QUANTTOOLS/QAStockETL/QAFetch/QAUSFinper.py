@@ -22,11 +22,10 @@ def rolling_calc(data,N):
           'PB_PCT','PB_VAL',
           'PS_PCT','PS_VAL',
           'PCF_PCT','PCF_VAL']] = \
-        res1.agg({'PE_TTM':[rolling_rank, rolling_median],
-                  'PEEGL_TTM':[rolling_rank, rolling_median],
+        res1.agg({'PE':[rolling_rank, rolling_median],
                   'PB':[rolling_rank, rolling_median],
-                  'PEG':[rolling_rank, rolling_median],
-                  'PS':[rolling_rank, rolling_median]}).reset_index(level=0,drop=True)
+                  'PS':[rolling_rank, rolling_median],
+                  'PCF':[rolling_rank, rolling_median]}).reset_index(level=0,drop=True)
     return(data[['PE_PCT','PE_VAL',
                  'PB_PCT','PB_VAL',
                  'PS_PCT','PS_VAL',
@@ -61,7 +60,7 @@ def perank(data):
                  'PE_90PCT','PE_90VAL','PE_90DN','PE_90UP','PB_90PCT','PB_90VAL','PB_90DN','PB_90UP','PS_90PCT','PS_90VAL','PS_90DN','PS_90UP','PCF_90PCT','PCF_90VAL','PCF_90DN','PCF_90UP']])
 
 def QA_fetch_get_usstock_financial_percent(code,start_date,end_date):
-    start = QA_util_get_pre_trade_date(start_date,91, 'us')
+    start = QA_util_get_pre_trade_date(start_date, 131, 'us')
     fianacial = QA_fetch_usstock_xq_day_adv(code,start,end_date).data[['pe', 'pb', 'ps', 'pcf']]
     fianacial.columns = [i.upper() for i in list(fianacial.columns)]
     try:
