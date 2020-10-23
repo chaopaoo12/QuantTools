@@ -141,7 +141,8 @@ def balance(res, k = 100):
         ####调增判断
         ###调增
         #调整范围确认 行动为多买
-        print(range(len(list(res[res.sort_gp == 0].index)), 0, -1))
+        QA_util_log_info(range(len(list(res[res.sort_gp == 0].index)), 0, -1))
+
         for i in range(len(list(res[res.sort_gp == 0].index)), 0, -1):
             print(i)
             if res[(res.sort_gp == 0) & (res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() <= (res['测算持股金额'].sum() - res['target'].sum()):
