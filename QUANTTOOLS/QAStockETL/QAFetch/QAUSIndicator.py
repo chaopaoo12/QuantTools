@@ -37,6 +37,7 @@ def QA_fetch_get_usstock_indicator(code, start_date, end_date, type = 'day'):
         return None
     else:
         data = get_indicator(data)
-        data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]].loc[rng1].reset_index()
+        data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]].reset_index()
+        data = data[data.date.isin(rng1)]
         data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
