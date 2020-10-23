@@ -6,16 +6,16 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator,ohlc
 
 def QA_fetch_get_usstock_indicator(code, start_date, end_date, type = 'day'):
     if type == 'day':
-        start = QA_util_get_pre_trade_date(start_date,200)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
+        start = QA_util_get_pre_trade_date(start_date,200, 'us')
+        rng1 = QA_util_get_trade_range(start_date, end_date, 'us')
         try:
             data = QA_fetch_usstock_xq_day_adv(code,start,end_date)
             data = data.to_qfq()
         except:
             QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'week':
-        start = QA_util_get_pre_trade_date(start_date,200)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
+        start = QA_util_get_pre_trade_date(start_date,200, 'us')
+        rng1 = QA_util_get_trade_range(start_date, end_date, 'us')
         try:
             data = QA_fetch_usstock_xq_day_adv(code,start,end_date)
             data = data.to_qfq()
@@ -24,8 +24,8 @@ def QA_fetch_get_usstock_indicator(code, start_date, end_date, type = 'day'):
             QA_util_log_info("JOB No Week data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
 
     elif type == 'month':
-        start = QA_util_get_pre_trade_date(start_date,220)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
+        start = QA_util_get_pre_trade_date(start_date,220, 'us')
+        rng1 = QA_util_get_trade_range(start_date, end_date, 'us')
         try:
             data = QA_fetch_usstock_xq_day_adv(code,start,end_date)
             data = data.to_qfq()
