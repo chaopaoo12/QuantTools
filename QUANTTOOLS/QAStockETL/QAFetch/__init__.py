@@ -24,7 +24,11 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_interest_rat
                                                            QA_fetch_index_quant_data_adv,QA_fetch_index_quant_pre_adv,
 
                                                            QA_fetch_usstock_day_adv,
-                                                           QA_fetch_usstock_xq_day_adv)
+                                                           QA_fetch_usstock_xq_day_adv,
+                                                           QA_fetch_usstock_alpha_adv,
+                                                           QA_fetch_usstock_alpha101_adv,
+                                                           QA_fetch_usstock_technical_index_adv,
+                                                           QA_fetch_usstock_financial_percent_adv)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_interest_rate,
 
@@ -63,7 +67,10 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_interest_rate,
                                                    QA_fetch_usstock_list,QA_fetch_usstock_adj,
                                                    QA_fetch_usstock_day,QA_fetch_usstock_xq_day,
 
-                                                   QA_fetch_usstock_pb,QA_fetch_usstock_pe
+                                                   QA_fetch_usstock_alpha,
+                                                   QA_fetch_usstock_alpha101,
+                                                   QA_fetch_usstock_technical_index,
+                                                   QA_fetch_usstock_financial_percent
                                                    )
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAcalendar import QA_fetch_get_financial_calendar

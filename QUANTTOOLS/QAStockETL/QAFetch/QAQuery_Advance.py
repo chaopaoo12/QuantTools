@@ -42,7 +42,11 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_stock_alpha_real,
                                                    QA_fetch_stock_alpha101_real,
                                                    QA_fetch_usstock_xq_day,
-                                                   QA_fetch_stock_technical_half)
+                                                   QA_fetch_stock_technical_half,
+                                                   QA_fetch_usstock_alpha,
+                                                   QA_fetch_usstock_alpha101,
+                                                   QA_fetch_usstock_technical_index,
+                                                   QA_fetch_usstock_financial_percent)
 from QUANTAXIS.QAUtil.QADate import month_data
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,QA_util_log_info,
                               QA_util_datetime_to_strdate, QA_util_add_months,
@@ -856,4 +860,72 @@ def QA_fetch_stock_technical_half_adv(code, start="all", end=None, type='day', c
         return QA_DataStruct_Financial(data)
     else:
         data = QA_fetch_stock_technical_half(code, start, end, type, format='pd')
+        return QA_DataStruct_Financial(data)
+
+def QA_fetch_usstock_alpha_adv(code, start="all", end=None, collections=DATABASE.usstock_alpha):
+    '获取股票财报日历'
+    #code= [code] if isinstance(code,str) else code
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2005-01-01'
+        end = QA_util_today_str()
+        data = QA_fetch_usstock_alpha(code, start, end, format='pd')
+        return QA_DataStruct_Financial(data)
+    else:
+        data = QA_fetch_usstock_alpha(code, start, end, format='pd')
+        return QA_DataStruct_Financial(data)
+
+def QA_fetch_usstock_alpha101_adv(code, start="all", end=None, collections=DATABASE.usstock_alpha101):
+    '获取股票财报日历'
+    #code= [code] if isinstance(code,str) else code
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2005-01-01'
+        end = QA_util_today_str()
+        data = QA_fetch_usstock_alpha101(code, start, end, format='pd')
+        return QA_DataStruct_Financial(data)
+    else:
+        data = QA_fetch_usstock_alpha101(code, start, end, format='pd')
+        return QA_DataStruct_Financial(data)
+
+def QA_fetch_usstock_technical_index_adv(code, start="all", end=None, type='day', collections=DATABASE.usstock_technical_index):
+    '获取股票财报日历'
+    #code= [code] if isinstance(code,str) else code
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2008-01-01'
+        end = QA_util_today_str()
+        data = QA_fetch_usstock_technical_index(code, start, end, type, format='pd')
+        return QA_DataStruct_Financial(data)
+    else:
+        data = QA_fetch_usstock_technical_index(code, start, end, type, format='pd')
+        return QA_DataStruct_Financial(data)
+
+def QA_fetch_usstock_financial_percent_adv(code, start="all", end=None, collections=DATABASE.usstock_financial_percent):
+    '获取股票财报日历'
+    #code= [code] if isinstance(code,str) else code
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2008-01-01'
+        end = QA_util_today_str()
+        data = QA_fetch_usstock_financial_percent(code, start, end, format='pd')
+        return QA_DataStruct_Financial(data)
+    else:
+        data = QA_fetch_usstock_financial_percent(code, start, end, format='pd')
         return QA_DataStruct_Financial(data)

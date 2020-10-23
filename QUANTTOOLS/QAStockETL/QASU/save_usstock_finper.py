@@ -25,7 +25,7 @@ def QA_SU_save_usstock_fianacial_percent(code = None, start_date=None,end_date=N
             if end_date < start_date:
                 QA_util_log_info('end_date should large than start_date start {_from} end {_to} '.format(_from=start_date, _to=end_date), ui_log)
 
-    stock_financial_percent = DATABASE.stock_financial_percent
+    stock_financial_percent = DATABASE.usstock_financial_percent
     stock_financial_percent.create_index(
         [("code", ASCENDING), ("date_stamp", ASCENDING)], unique=True)
     err = []
