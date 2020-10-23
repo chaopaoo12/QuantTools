@@ -70,6 +70,7 @@ def merge_table(target, positions):
 
     res['可用余额'] = res['可用余额'].fillna(0)
     res['position'] = res['position'].fillna(0)
+    QA_util_log_info(res)
     return(res)
 
 def get_top(res, num = 5):
@@ -84,6 +85,7 @@ def get_top(res, num = 5):
     #可否加仓信号 1为可以加仓 0为否
     res['mark'] = res.ask1.apply(lambda x: 0 if x ==0 else 1)
     top_num = num
+    QA_util_log_info(res[['NAME','INDUSTRY','close','mark','RANK','ask1','bid1']])
     hold = res[(res.mark == 1) & (res.RANK > 0)].sort_values('RANK').head(top_num)
     res = res[(res['市值'] > 0) & (res.RANK == 0)].append(hold)
     return(res)
@@ -168,10 +170,10 @@ def build(target, positions, sub_accounts, percent, k=100):
     sub_accounts = float(sub_accounts) - 10000
 
     res = merge_table(target, positions)
-    QA_util_log_info(res)
+
     if res is not None and res.shape[0] > 0:
         res = get_top(res , 5)
-        QA_util_log_info(res)
+
         QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
         #QA_util_log_info(res)
         if res is not None and res.shape[0] > 0:
