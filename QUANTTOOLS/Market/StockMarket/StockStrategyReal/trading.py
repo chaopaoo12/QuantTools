@@ -36,6 +36,7 @@ def trading_summary(trading_date,percent = percent, account= 'name:client-1',exc
 
     buy_code = []
     for i in list(r_tar.index):
+        print(i)
         if QA_fetch_get_stock_realtm_ask(i) > 0:
             buy_code = buy_code.append(i)
     print(buy_code)
