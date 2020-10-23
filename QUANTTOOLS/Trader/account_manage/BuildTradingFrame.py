@@ -135,7 +135,9 @@ def balance(res, k = 100):
     res['trim'] = 0
     QA_util_log_info(res[['NAME','mark','position','deal','测算持股金额','股票余额','可用余额','冻结数量']], ui_log = None)
     while (res['target'].sum() - res['测算持股金额'].sum()) > (res[res.RANK > 0]['买卖价'].min() * 100):
-        QA_util_log_info('##JOB Banlance ADD Trim {}'.format(res.trim.max()), ui_log = None)
+        QA_util_log_info('##JOB Banlance from {_from} to {_to} ADD Trim {trim}'.format(_from=res['target'].sum() - res['测算持股金额'].sum(),
+                                                                                   _to=res[res.RANK > 0]['买卖价'].min() * 100,
+                                                                                   trim=res.trim.max()), ui_log = None)
         ####调增判断
         ###调增
         #调整范围确认 行动为多买
@@ -150,7 +152,9 @@ def balance(res, k = 100):
         res['测算持股金额'] = res.apply(lambda x: x['目标持股数'] * x['买卖价'], axis=1)
 
     while res['测算持股金额'].sum() > res['target'].sum():
-        QA_util_log_info('##JOB Banlance DES Trim {}'.format(res.trim.max()), ui_log = None)
+        QA_util_log_info('##JOB Banlance from {_from} to {_to} DEC Trim {dec}'.format(_from=res['target'].sum(),
+                                                                                      _to=res['测算持股金额'].sum(),
+                                                                                      dec=res.trim.max()), ui_log = None)
         ####调减判断 行动为多卖
         for i in range(1, len(list(res[res.sort_gp == 0].index))+1, 1):
             if res[(res.sort_gp == 0) & (res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() > (res['测算持股金额'].sum() - res['target'].sum()):
