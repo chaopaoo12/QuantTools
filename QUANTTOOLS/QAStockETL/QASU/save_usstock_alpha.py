@@ -1,5 +1,7 @@
-from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pandas,QA_util_today_str,QA_util_get_trade_range, QA_util_if_trade,QA_util_code_tolist)
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_stock_om_all,QA_fetch_usstock_list
+from QUANTAXIS.QAUtil import (DATABASE, QA_util_log_info,QA_util_to_json_from_pandas,QA_util_today_str)
+from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_get_trade_range, QA_util_if_trade)
+
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_usstock_list
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_usstock_alpha,
                                            QA_fetch_get_usstock_alpha101)
 import pymongo
@@ -18,7 +20,7 @@ def QA_SU_save_usstock_alpha_day(code = None, start_date = None, end_date = None
     if start_date is None:
         start_date = '2009-01-01'
 
-    deal_date_list = QA_util_get_trade_range(start_date, end_date)
+    deal_date_list = QA_util_get_trade_range(start_date, end_date, 'us')
 
     if code is None:
         code = list(QA_fetch_usstock_list()['code'])
@@ -71,7 +73,7 @@ def QA_SU_save_usstock_alpha_his(code = None, start_date = None, end_date = None
     if start_date is None:
         start_date = '2009-01-01'
 
-    deal_date_list = QA_util_get_trade_range(start_date, end_date)
+    deal_date_list = QA_util_get_trade_range(start_date, end_date, 'us')
 
     stock_alpha = client.usstock_alpha
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
