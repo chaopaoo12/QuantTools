@@ -131,7 +131,7 @@ def balance(res, k = 100):
     #求一个单位
 
     res['trim'] = 0
-    QA_util_log_info(res[['NAME','INDUSTRY','mark','target','target_change','position','deal','测算持股金额','股票余额','可用余额','冻结数量']], ui_log = None)
+    QA_util_log_info(res[['NAME','mark','position','deal','测算持股金额','股票余额','可用余额','冻结数量']], ui_log = None)
     while (res['target'].sum() - res['测算持股金额'].sum()) > (res[res.RANK > 0]['买卖价'].min() * 100):
         QA_util_log_info('##JOB Banlance ADD Trim {}'.format(res.trim.max()), ui_log = None)
         ####调增判断
@@ -168,9 +168,10 @@ def build(target, positions, sub_accounts, percent, k=100):
     sub_accounts = float(sub_accounts) - 10000
 
     res = merge_table(target, positions)
-
+    QA_util_log_info(res)
     if res is not None and res.shape[0] > 0:
         res = get_top(res , 5)
+        QA_util_log_info(res)
         QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
         #QA_util_log_info(res)
         if res is not None and res.shape[0] > 0:
