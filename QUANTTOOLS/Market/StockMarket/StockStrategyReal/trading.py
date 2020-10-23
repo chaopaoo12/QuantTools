@@ -17,13 +17,13 @@ def trading_hedge(trading_date, func = concat_predict_hedge, model_name = 'hedge
 
 def trading_summary(trading_date):
 
-    res = trading_real(trading_date)
+    res = trading(trading_date)
 
-    if res is None or res.shape[0] == 0:
-        res = trading_hedge(trading_date)
-
-    if res is None or res.shape[0] == 0:
-        res = trading(trading_date)
+    #if res is None or res.shape[0] == 0:
+    #    res = trading_hedge(trading_date)
+#
+    #if res is None or res.shape[0] == 0:
+    #    res = trading(trading_date)
 
     return(res)
 
