@@ -38,6 +38,7 @@ def trading_summary(trading_date,percent = percent, account= 'name:client-1',exc
     for i in list(r_tar.index):
         if QA_fetch_get_stock_realtm_ask(i) > 0:
             buy_code = buy_code.append(i)
+    print(buy_code)
 
     if buy_code is None:
         r_tar, prediction_tar = load_data(concat_predict, trading_date, working_dir, 'stock_xg', 'prediction')
