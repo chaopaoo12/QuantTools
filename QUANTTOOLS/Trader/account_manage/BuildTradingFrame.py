@@ -141,7 +141,7 @@ def balance(res, k = 100):
         ####调增判断
         ###调增
         #调整范围确认 行动为多买
-        QA_util_log_info(range(len(list(res[res.sort_gp == 0].index)), 0, -1))
+        #QA_util_log_info(range(len(list(res[res.sort_gp == 0].index)), 0, -1))
 
         for i in range(len(list(res[res.sort_gp == 0].index)), 0, -1):
             QA_util_log_info(i)
