@@ -78,16 +78,18 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAAlpha import (QA_fetch_get_stock_alpha,QA_f
 
                                                    QA_fetch_get_hedge_alpha,
 
-                                                   QA_fetch_get_index_alpha,QA_fetch_get_index_alpha101,
-
-                                                   QA_fetch_get_usstock_alpha,QA_fetch_get_usstock_alpha101
+                                                   QA_fetch_get_index_alpha,QA_fetch_get_index_alpha101
                                                    )
+
+from QUANTTOOLS.QAStockETL.QAFetch.QAUSAlpha import (QA_fetch_get_usstock_alpha,QA_fetch_get_usstock_alpha101)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAShares import QA_fetch_get_stock_shares_sina
 
 from QUANTTOOLS.QAStockETL.QAFetch.QATIndicator import (QA_fetch_get_stock_indicator,QA_fetch_get_index_indicator,
-                                                        QA_fetch_get_stock_indicator_half,QA_fetch_get_stock_indicator_halfreal,
-                                                        QA_fetch_get_usstock_indicator)
+                                                        QA_fetch_get_stock_indicator_half,QA_fetch_get_stock_indicator_halfreal
+                                                        )
+
+from QUANTTOOLS.QAStockETL.QAFetch.QAUSIndicator import (QA_fetch_get_usstock_indicator)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAInterest import QA_fetch_get_interest_rate
 

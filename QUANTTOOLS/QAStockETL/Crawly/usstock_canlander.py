@@ -42,7 +42,7 @@ def getEveryDay(begin_date,end_date):
         begin_date += datetime.timedelta(days=1)
     return date_list
 
-def get_usstock_canlander(start='20080101', end='20170511'):
+def get_usstock_canlander(start='20080101', end='20200930'):
     a_list = getEveryDay(start,end)
     b_list = get_us_canlander()
     return([i for i in a_list if i not in b_list])
