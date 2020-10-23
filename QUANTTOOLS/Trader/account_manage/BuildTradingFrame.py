@@ -145,7 +145,7 @@ def balance(res, k = 100):
 
         for i in range(len(list(res[res.sort_gp == 0].index)), 0, -1):
             QA_util_log_info(i)
-            if res[(res.sort_gp == 0) & (res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() <= (res['测算持股金额'].sum() - res['target'].sum()):
+            if res[(res.sort_gp == 0) & (res.price_rank <= i)]['买卖价'].apply(lambda x :x*100).sum() <= (res['target'].sum() - res['测算持股金额'].sum()):
                 trim_code = list(res[(res.sort_gp == 0) & (res.price_rank <= i)].index)
                 QA_util_log_info(trim_code)
                 res.loc[trim_code,'trim'] = res.loc[trim_code,'trim'] + k
