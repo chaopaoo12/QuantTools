@@ -1,6 +1,7 @@
 import numpy as np
 from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_index_day_adv,QA_fetch_stock_min_adv
-from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_pre_trade_date,QA_util_get_trade_range,QA_util_get_real_date,QA_util_if_trade)
+from QUANTAXIS.QAUtil import (QA_util_today_str)
+from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_get_pre_trade_date,QA_util_get_trade_range,QA_util_get_real_date,QA_util_if_trade)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_real,QA_fetch_code_new
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_half_adv,QA_fetch_usstock_xq_day_adv,QA_fetch_usstock_day_adv
 from QUANTTOOLS.QAStockETL.QAUtil.QAAlpha191 import Alpha_191
@@ -201,12 +202,12 @@ def usstock_alpha(code, date=None):
         end_date = QA_util_today_str()
     else:
         end_date = date
-    start_date = QA_util_get_pre_trade_date(date, 270)
+    start_date = QA_util_get_pre_trade_date(date, 270, 'us')
     try:
-        price = QA_fetch_usstock_xq_day_adv(code, start_date, end_date).to_qfq().data.reset_index().dropna(axis=0, how='any')
+        price = QA_fetch_usstock_xq_day_adv(code, start_date, end_date).to_qfq().data[['open','high','low','close','volume','amount','adj','adjust']].reset_index().dropna(axis=0, how='any')
         price['avg_price'] = price['amount']/price['volume']*price['adj']+price['adjust']
         price['prev_close'] = price[['code','close']].groupby('code').shift()
-        price = price.dropna(axis=0, how='any')
+        price = price[['date','code','open','high','low','close','volume','amount','avg_price','prev_close']].dropna(axis=0, how='any')
         return(Alpha_191(price, date).alpha())
     except:
         return(None)
@@ -223,8 +224,8 @@ def usstock_alpha101(code, start=None, end = None):
     else:
         start = start
 
-    start_date = QA_util_get_pre_trade_date(start, 270)
-    deal_date_list = QA_util_get_trade_range(start, end)
+    start_date = QA_util_get_pre_trade_date(start, 270, 'us')
+    deal_date_list = QA_util_get_trade_range(start, end, 'us')
 
     try:
         price = QA_fetch_usstock_xq_day_adv(code, start_date, end_date ).to_qfq()
@@ -232,7 +233,7 @@ def usstock_alpha101(code, start=None, end = None):
         price = price.data
         price['avg_price'] = price['amount']/price['volume']*price['adj']+price['adjust']
         price['pctchange'] = pctchange
-        price = price.dropna(axis=0, how='any')
+        price = price[['open','high','low','close','volume','amount','avg_price','pctchange']].dropna(axis=0, how='any')
         res = get_alpha(price).reset_index()
         return(res[res.date.isin(deal_date_list)])
     except:
