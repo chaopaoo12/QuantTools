@@ -2576,10 +2576,8 @@ def QA_fetch_usstock_xq_day(
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
         res = pd.DataFrame([item for item in cursor])
-
         try:
             res = res.assign(
-                volume=res.vol,
                 date=pd.to_datetime(res.date)
             ).drop_duplicates((['date',
                                 'code'])).query('volume>1').set_index(

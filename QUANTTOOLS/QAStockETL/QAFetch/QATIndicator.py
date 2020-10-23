@@ -766,7 +766,7 @@ def QA_fetch_get_usstock_indicator(code, start_date, end_date, type = 'day'):
         start = QA_util_get_pre_trade_date(start_date,220)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_fetch_stock_day_adv(code,start,end_date)
+            data = QA_fetch_usstock_xq_day_adv(code,start,end_date)
             data = data.to_qfq()
             data = QA_DataStruct_Stock_day(data.data.groupby('code',sort=True).apply(ohlc,30))
         except:

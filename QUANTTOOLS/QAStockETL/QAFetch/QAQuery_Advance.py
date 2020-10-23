@@ -827,7 +827,7 @@ def QA_fetch_usstock_xq_day_adv(
     if res is None:
         # 🛠 todo 报告是代码不合法，还是日期不合法
         print(
-            "QA Error QA_fetch_usstock_day_adv parameter code=%s , start=%s, end=%s call QA_fetch_usstock_day return None"
+            "QA Error QA_fetch_usstock_xq_day_adv parameter code=%s , start=%s, end=%s call QA_fetch_usstock_day return None"
             % (code,
                start,
                end)
