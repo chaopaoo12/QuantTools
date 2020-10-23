@@ -131,7 +131,7 @@ def balance(res, k = 100):
     #求一个单位
 
     res['trim'] = 0
-
+    QA_util_log_info(res, ui_log = None)
     while (res['target'].sum() - res['测算持股金额'].sum()) > (res[res.RANK > 0]['买卖价'].min() * 100):
         QA_util_log_info('##JOB Banlance ADD Trim {}'.format(res.trim.max()), ui_log = None)
         ####调增判断
