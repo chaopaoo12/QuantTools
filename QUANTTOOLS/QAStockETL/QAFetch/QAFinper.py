@@ -1,4 +1,3 @@
-import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import QA_fetch_stock_fianacial_adv
 from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range)
 
