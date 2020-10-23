@@ -5,15 +5,15 @@ from QUANTAXIS.QAUtil import QA_util_log_info
 import time
 import datetime
 
-def trading_base(trading_date, func, model_name, file_name, percent, account, working_dir, exceptions, test = False):
+def trading_base(trading_date, r_tar, prediction_tar, percent, account, title, exceptions, test = False):
 
-    r_tar, prediction_tar = load_data(func, trading_date, working_dir, model_name, file_name)
+    #r_tar, prediction_tar = load_data(func, trading_date, working_dir, model_name, file_name)
 
     QA_util_log_info(
         '##JOB## Now Chect Account Server ==== {}'.format(str(trading_date)))
     client = get_Client()
-    check_Client(client, account, model_name, trading_date, exceptions=exceptions)
-    send_actionnotice(model_name,
+    check_Client(client, account, title, trading_date, exceptions=exceptions)
+    send_actionnotice(title,
                       '交易报告:{}'.format(trading_date),
                       '交易准备已完成',
                       direction = 'HOLD',
@@ -31,12 +31,12 @@ def trading_base(trading_date, func, model_name, file_name, percent, account, wo
 
     QA_util_log_info(
         '##JOB## Now Trading ==== {}'.format(str(trading_date)))
-    send_actionnotice(model_name,
+    send_actionnotice(title,
                       '交易报告:{}'.format(trading_date),
                       '进入交易时段',
                       direction = 'HOLD',
                       offset='HOLD',
                       volume=None
                       )
-    res = trade_roboot(r_tar, account, trading_date, percent, model_name, type='end', exceptions = exceptions, test = test)
+    res = trade_roboot(r_tar, account, trading_date, percent, title, type='end', exceptions = exceptions, test = test)
     return(res)
