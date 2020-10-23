@@ -85,7 +85,7 @@ def get_top(res, num = 5):
     #可否加仓信号 1为可以加仓 0为否
     res['mark'] = res.ask1.apply(lambda x: 0 if x ==0 else 1)
     top_num = num
-    QA_util_log_info(res[['NAME','INDUSTRY','close','mark','RANK','ask1','bid1']])
+    QA_util_log_info(res[['NAME','INDUSTRY','close','mark','RANK','买卖价','ask1','bid1']])
     hold = res[(res.mark == 1) & (res.RANK > 0)].sort_values('RANK').head(top_num)
     res = res[(res['市值'] > 0) & (res.RANK == 0)].append(hold)
     return(res)
