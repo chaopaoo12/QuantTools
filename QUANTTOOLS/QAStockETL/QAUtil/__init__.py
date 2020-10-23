@@ -12,8 +12,6 @@ from QUANTTOOLS.QAStockETL.QAUtil.QADate import QA_util_add_days, QA_util_add_ye
 #trade date
 from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import (QA_util_date_gap,
                                            QA_util_format_date2str,
-                                           QA_util_future_to_realdatetime,
-                                           QA_util_future_to_tradedatetime,
                                            QA_util_get_last_datetime,
                                            QA_util_get_last_day,
                                            QA_util_get_next_datetime,
@@ -33,9 +31,6 @@ from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import (QA_util_date_gap,
                                            QA_util_get_next_datetime,
                                            QA_util_get_order_datetime,
                                            QA_util_get_trade_datetime,
-                                           QA_util_future_to_realdatetime,
-                                           QA_util_future_to_tradedatetime,
-                                           trade_date_sse,
                                            QA_util_get_next_period)
 
 #Fetch
