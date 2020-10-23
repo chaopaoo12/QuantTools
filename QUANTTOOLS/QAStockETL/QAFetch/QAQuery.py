@@ -2580,7 +2580,11 @@ def QA_fetch_usstock_xq_day(
             res = res.assign(
                 date=pd.to_datetime(res.date)
             ).drop_duplicates((['date',
-                                'code'])).query('volume>1').set_index(
+                                'code'])).query('volume>1').drop(
+                ['timestamp','date_stamp'],
+                axis=1,
+                inplace=False
+            ).set_index(
                 'date',
                 drop=False
             )

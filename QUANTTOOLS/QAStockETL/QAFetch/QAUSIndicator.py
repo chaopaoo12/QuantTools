@@ -10,7 +10,7 @@ def QA_fetch_get_usstock_indicator(code, start_date, end_date, type = 'day'):
         rng1 = QA_util_get_trade_range(start_date, end_date, 'us')
         try:
             data = QA_fetch_usstock_xq_day_adv(code,start,end_date)
-            data = data.to_qfq()
+            data = data.to_qfq()[['open','high','low','close','volume','amount']]
         except:
             QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'week':
