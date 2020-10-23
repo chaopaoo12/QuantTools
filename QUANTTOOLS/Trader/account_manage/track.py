@@ -13,7 +13,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id, begin_
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
     QA_util_log_info('##JOB Now Build Tracking Frame ==== {}'.format(str(trading_date)), ui_log = None)
-    res = build(target_tar, positions, sub_accounts, percent, False)
+    res = build(target_tar, positions, sub_accounts, percent)
 
     if res is not None:
 
