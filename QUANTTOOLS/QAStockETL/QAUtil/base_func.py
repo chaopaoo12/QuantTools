@@ -11,6 +11,9 @@ def pct(data, type = 'close'):
         data[['PRE5_MARKET','AVG_PRE5_MARKET']]= data.shift(-5)[['close_qfq','AVG_TOTAL_MARKET']]
         data[['PRE10_MARKET','AVG_PRE10_MARKET']]= data.shift(-10)[['close_qfq','AVG_TOTAL_MARKET']]
         data['OPEN_MARK'] = (data['high_mark'] == data['low_mark']) * 1
+        data['UP_PRICE'] = data['close_qfq'] + data['close_qfq'].apply(lambda x:round(x * 0.1,2))
+        data['DW_PRICE'] = data['close_qfq'] - data['close_qfq'].apply(lambda x:round(x * 0.1,2))
+        data['OPEN_MARK'] = ((data['PRE_MARKET'] <= data['DW_PRICE']) | (data['PRE_MARKET'] >= data['UP_PRICE']) | (data['OPEN_MARK'] == 1))*1
         data['PASS_MARK'] = (data['PRE_MARKET']/data['close_qfq']-1).apply(lambda x:round(x * 100,2))
         data['TARGET'] = (data['PRE2_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
         data['TARGET3'] = (data['PRE3_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
@@ -62,6 +65,9 @@ def pct_log(data, type = 'close'):
         data[['PRE5_MARKET','AVG_PRE5_MARKET']]= data.shift(-5)[['close_qfq','AVG_TOTAL_MARKET']]
         data[['PRE10_MARKET','AVG_PRE10_MARKET']]= data.shift(-10)[['close_qfq','AVG_TOTAL_MARKET']]
         data['OPEN_MARK'] = (data['high_mark'] == data['low_mark']) * 1
+        data['UP_PRICE'] = data['close_qfq'] + data['close_qfq'].apply(lambda x:round(x * 0.1,2))
+        data['DW_PRICE'] = data['close_qfq'] - data['close_qfq'].apply(lambda x:round(x * 0.1,2))
+        data['OPEN_MARK'] = ((data['PRE_MARKET'] <= data['DW_PRICE']) | (data['PRE_MARKET'] >= data['UP_PRICE']) | (data['OPEN_MARK'] == 1))*1
         data['PASS_MARK'] = (data['PRE_MARKET']/data['close_qfq']-1).apply(lambda x:round(x * 100,2))
         data['TARGET'] = np.log(data['PRE2_MARKET']/data['PRE_MARKET'])
         data['TARGET3'] = np.log(data['PRE3_MARKET']/data['PRE_MARKET'])
