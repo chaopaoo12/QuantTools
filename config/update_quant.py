@@ -41,31 +41,29 @@ if __name__ == '__main__':
 
     if QA_util_if_trade(mark_day):
         check_day = QA_util_get_pre_trade_date(mark_day,1)
-    else:
-        check_day = QA_util_get_pre_trade_date(QA_util_get_real_date(mark_day),1)
 
-    if mark_day is not None:
-        QA_SU_save_stock_aklist()
-        res = check_stock_code()
-        while len(res) > 0:
-            QA_SU_save_stock_list('tdx')
-            QA_SU_save_stock_info_tushare()
-            #QA_SU_save_stock_industryinfo()
+        if mark_day is not None:
+            QA_SU_save_stock_aklist()
             res = check_stock_code()
+            while len(res) > 0:
+                QA_SU_save_stock_list('tdx')
+                QA_SU_save_stock_info_tushare()
+                #QA_SU_save_stock_industryinfo()
+                res = check_stock_code()
 
-        check = check_stock_quant(check_day)
-        while check is None or (len(check[0]) + len(check[1])) > 20:
-            time.sleep(180)
             check = check_stock_quant(check_day)
+            while check is None or (len(check[0]) + len(check[1])) > 20:
+                time.sleep(180)
+                check = check_stock_quant(check_day)
 
-        check = check_stock_alpha191real(mark_day)
-        while check is None or len(check[1]) > 20:
-            time.sleep(180)
             check = check_stock_alpha191real(mark_day)
+            while check is None or len(check[1]) > 20:
+                time.sleep(180)
+                check = check_stock_alpha191real(mark_day)
 
-        #check = check_stock_alpha101real(mark_day)
-        #while check is None or (len(check[0]) + len(check[1])) > 3000:
-        #    time.sleep(180)
-        #    check = check_stock_alpha101real(mark_day)
+            #check = check_stock_alpha101real(mark_day)
+            #while check is None or (len(check[0]) + len(check[1])) > 3000:
+            #    time.sleep(180)
+            #    check = check_stock_alpha101real(mark_day)
 
-        daily_run_real(check_day)
+            daily_run_real(check_day)
