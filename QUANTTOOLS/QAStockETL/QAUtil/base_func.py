@@ -3,6 +3,8 @@ import numpy as np
 def pct(data, type = 'close'):
     data = data.sort_values('date',ascending=True)
     if type == 'close':
+        #data = data.assign(up_rate= lambda x: 0.2 if x.date >= '2020-08-24' and str(x.code).startswith('300') == True else 0.1)
+        data['up_rate'] = data.apply(lambda x : 0.2 if str(x['date']) >= '2020-08-24'and str(x.code).startswith('300') == True else 0.1,axis=1)
         data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
         data[['PRE_MARKET','AVG_PRE_MARKET','high_mark','low_mark']]= data.shift(-1)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
         data[['PRE_DATE','PRE2_MARKET','AVG_PRE2_MARKET']]= data.shift(-2)[['date','close_qfq','AVG_TOTAL_MARKET']]
@@ -11,8 +13,8 @@ def pct(data, type = 'close'):
         data[['PRE5_MARKET','AVG_PRE5_MARKET']]= data.shift(-5)[['close_qfq','AVG_TOTAL_MARKET']]
         data[['PRE10_MARKET','AVG_PRE10_MARKET']]= data.shift(-10)[['close_qfq','AVG_TOTAL_MARKET']]
         data['OPEN_MARK'] = (data['high_mark'] == data['low_mark']) * 1
-        data['UP_PRICE'] = data['close_qfq'] + data['close_qfq'].apply(lambda x:round(x * 0.1,2))
-        data['DW_PRICE'] = data['close_qfq'] - data['close_qfq'].apply(lambda x:round(x * 0.1,2))
+        data['UP_PRICE'] = data['close_qfq'] + (data['close_qfq'] * data['up_rate']).apply(lambda x:round(x,2))
+        data['DW_PRICE'] = data['close_qfq'] - (data['close_qfq'] * data['up_rate']).apply(lambda x:round(x,2))
         data['OPEN_MARK'] = ((data['PRE_MARKET'] <= data['DW_PRICE']) | (data['PRE_MARKET'] >= data['UP_PRICE']) | (data['OPEN_MARK'] == 1))*1
         data['PASS_MARK'] = (data['PRE_MARKET']/data['close_qfq']-1).apply(lambda x:round(x * 100,2))
         data['TARGET'] = (data['PRE2_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
@@ -57,6 +59,7 @@ def index_pct(market):
 def pct_log(data, type = 'close'):
     data = data.sort_values('date',ascending=True)
     if type == 'close':
+        data = data.assign(up_rate= lambda x: 0.2 if (x.date >= '2020-08-24') and (str(x.code).startswith('300') == True) else 0.1)
         data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
         data[['PRE_MARKET','AVG_PRE_MARKET','high_mark','low_mark']]= data.shift(-1)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
         data[['PRE_DATE','PRE2_MARKET','AVG_PRE2_MARKET']]= data.shift(-2)[['date','close_qfq','AVG_TOTAL_MARKET']]
@@ -65,8 +68,8 @@ def pct_log(data, type = 'close'):
         data[['PRE5_MARKET','AVG_PRE5_MARKET']]= data.shift(-5)[['close_qfq','AVG_TOTAL_MARKET']]
         data[['PRE10_MARKET','AVG_PRE10_MARKET']]= data.shift(-10)[['close_qfq','AVG_TOTAL_MARKET']]
         data['OPEN_MARK'] = (data['high_mark'] == data['low_mark']) * 1
-        data['UP_PRICE'] = data['close_qfq'] + data['close_qfq'].apply(lambda x:round(x * 0.1,2))
-        data['DW_PRICE'] = data['close_qfq'] - data['close_qfq'].apply(lambda x:round(x * 0.1,2))
+        data['UP_PRICE'] = data['close_qfq'] + (data['close_qfq'] * data['up_rate']).apply(lambda x:round(x,2))
+        data['DW_PRICE'] = data['close_qfq'] - (data['close_qfq'] * data['up_rate']).apply(lambda x:round(x,2))
         data['OPEN_MARK'] = ((data['PRE_MARKET'] <= data['DW_PRICE']) | (data['PRE_MARKET'] >= data['UP_PRICE']) | (data['OPEN_MARK'] == 1))*1
         data['PASS_MARK'] = (data['PRE_MARKET']/data['close_qfq']-1).apply(lambda x:round(x * 100,2))
         data['TARGET'] = np.log(data['PRE2_MARKET']/data['PRE_MARKET'])
