@@ -82,7 +82,7 @@ class QAModel():
                 train_data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh)).join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
 
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
-        self.X_train, self.Y_train = shuffle(train_data.loc[self.TR_RNG][self.cols],train_data.loc[self.TR_RNG]['star'])
+        self.X_train, self.Y_train = shuffle(train_data[train_data['OPEN_MARK'] == 0].loc[self.TR_RNG][self.cols],train_data[train_data['OPEN_MARK'] == 0].loc[self.TR_RNG]['star'])
         self.info['thresh'] = thresh
         self.info['drop'] = drop
 
