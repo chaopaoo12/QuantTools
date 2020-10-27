@@ -51,12 +51,12 @@ def pct(data):
     res[['LAG60_MARKET','AVG_LAG60_MARKET','LAG60_HIGH','LAG60_LOW']]= data.shift(60)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
     res[['LAG90_MARKET','AVG_LAG90_MARKET','LAG90_HIGH','LAG90_LOW']]= data.shift(90)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
 
-    res[['AVG5_T_MARKET','AVG5_A_MARKET','HIGH_5','LOW_5','AMOUNT_5']] = data.rolling(window=5).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':'mean'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
-    res[['AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10','AMOUNT_10']] = data.rolling(window=10).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':'mean'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
-    res[['AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20','AMOUNT_20']] = data.rolling(window=20).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':'mean'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
-    res[['AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30','AMOUNT_30']] = data.rolling(window=30).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':'mean'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
-    res[['AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60','AMOUNT_60']] = data.rolling(window=60).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':'mean'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
-    res[['AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90','AMOUNT_90']] = data.rolling(window=90).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':'mean'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
+    res[['AVG5_T_MARKET','AVG5_A_MARKET','HIGH_5','LOW_5','AMOUNT_5','MAMOUNT_5']] = data.rolling(window=5).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
+    res[['AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10','AMOUNT_10','MAMOUNT_10']] = data.rolling(window=10).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
+    res[['AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20','AMOUNT_20','MAMOUNT_20']] = data.rolling(window=20).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
+    res[['AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30','AMOUNT_30','MAMOUNT_30']] = data.rolling(window=30).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
+    res[['AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60','AMOUNT_60','MAMOUNT_60']] = data.rolling(window=60).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
+    res[['AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90','AMOUNT_90','MAMOUNT_90']] = data.rolling(window=90).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
 
     res[[ 'AVG5_C_MARKET','AVG10_C_MARKET',
           'AVG20_C_MARKET','AVG30_C_MARKET',
@@ -80,6 +80,12 @@ def pct(data):
     res['AMT_30']= (res['amount']/res['AMOUNT_30']-1).apply(lambda x:round(x ,4))
     res['AMT_60']= (res['amount']/res['AMOUNT_60']-1).apply(lambda x:round(x ,4))
     res['AMT_90']= (res['amount']/res['AMOUNT_90']-1).apply(lambda x:round(x ,4))
+    res['MAMT_5']= (res['amount']/res['MAMOUNT_5']-1).apply(lambda x:round(x ,4))
+    res['MAMT_10']= (res['amount']/res['MAMOUNT_10']-1).apply(lambda x:round(x ,4))
+    res['MAMT_20']= (res['amount']/res['MAMOUNT_20']-1).apply(lambda x:round(x ,4))
+    res['MAMT_30']= (res['amount']/res['MAMOUNT_30']-1).apply(lambda x:round(x ,4))
+    res['MAMT_60']= (res['amount']/res['MAMOUNT_60']-1).apply(lambda x:round(x ,4))
+    res['MAMT_90']= (res['amount']/res['MAMOUNT_90']-1).apply(lambda x:round(x ,4))
     return(res)
 
 def ETL_stock_day(codes, start=None, end=None):
