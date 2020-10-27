@@ -920,7 +920,14 @@ into stock_analysis_data
                                    MAX(RNG_20) as RNG_20,
                                    MAX(RNG_30) as RNG_30,
                                    MAX(RNG_60) as RNG_60,
-                                   MAX(RNG_90) as RNG_90
+                                   MAX(RNG_90) as RNG_90,
+                                   MAX(AMT_L) as AMT_L,
+                                   MAX(AMT_5) as AMT_5,
+                                   MAX(AMT_10) as AMT_10,
+                                   MAX(AMT_20) as AMT_20,
+                                   MAX(AMT_30) as AMT_30,
+                                   MAX(AMT_60) as AMT_60,
+                                   MAX(AMT_90) as AMT_90
                                 from stock_market_day
                                WHERE order_date >=
                                      to_date('{deal_date}','yyyy-mm-dd') - 90
