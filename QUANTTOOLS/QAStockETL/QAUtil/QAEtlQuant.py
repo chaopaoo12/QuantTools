@@ -461,6 +461,13 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
                 CLOSE_QFQ / AVG90_A_MARKET - 1
              end) * 100,
              2) as avg90,
+       AMT_L,
+       AMT_5,
+       AMT_10,
+       AMT_20,
+       AMT_30,
+       AMT_60,
+       AMT_90
        AVG5_CR,
        AVG10_CR,
        AVG20_CR,
