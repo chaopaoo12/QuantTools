@@ -128,7 +128,8 @@ def ETL_stock_day(codes, start=None, end=None):
                                                                 'AVG5_C_MARKET','AVG10_C_MARKET',
                                                                 'AVG20_C_MARKET','AVG30_C_MARKET','AVG60_C_MARKET','AVG90_C_MARKET',
                                                                 'RNG_L','RNG_5','RNG_10','RNG_20','RNG_30','RNG_60','RNG_90',
-                                                                'AMT_L','AMT_5','AMT_10','AMT_20','AMT_30','AMT_60','AMT_90']]
+                                                                'AMT_L','AMT_5','AMT_10','AMT_20','AMT_30','AMT_60','AMT_90',
+                                                                'MAMT_L','MAMT_5','MAMT_10','MAMT_20','MAMT_30','MAMT_60','MAMT_90']]
     except:
         res=None
     return(res)
