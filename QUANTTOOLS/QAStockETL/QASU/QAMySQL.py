@@ -40,8 +40,8 @@ def rolling_ols(y):
 
 def pct(data):
     res=data
-    res['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
-    res[['LAG_MARKET','AVG_LAG_MARKET','LAG_HIGH','LAG_LOW']]= data.shift(1)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
+    res['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100 * data['adj_qfq']
+    res[['LAG_MARKET','AVG_LAG_MARKET','LAG_HIGH','LAG_LOW','LAG_AMOUNT']]= data.shift(1)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
     res[['LAG2_MARKET','AVG_LAG2_MARKET']]= data.shift(2)[['close_qfq','AVG_TOTAL_MARKET']]
     res[['LAG3_MARKET','AVG_LAG3_MARKET']]= data.shift(3)[['close_qfq','AVG_TOTAL_MARKET']]
     res[['LAG5_MARKET','AVG_LAG5_MARKET']]= data.shift(5)[['close_qfq','AVG_TOTAL_MARKET']]
@@ -50,20 +50,17 @@ def pct(data):
     res[['LAG30_MARKET','AVG_LAG30_MARKET','LAG30_HIGH','LAG30_LOW']]= data.shift(30)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
     res[['LAG60_MARKET','AVG_LAG60_MARKET','LAG60_HIGH','LAG60_LOW']]= data.shift(60)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
     res[['LAG90_MARKET','AVG_LAG90_MARKET','LAG90_HIGH','LAG90_LOW']]= data.shift(90)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
-    res[['AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10']] = data.rolling(window=10).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
-    res[['AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20']] = data.rolling(window=20).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
-    res[['AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30']] = data.rolling(window=30).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
-    res[['AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60']] = data.rolling(window=60).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
-    res[['AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90']] = data.rolling(window=90).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
-    a = data.rolling(window=5)
-    res[['AVG5_T_MARKET','AVG5_A_MARKET',
-         'HIGH_5','LOW_5']] = a.agg({'close_qfq':'mean',
-                                     'AVG_TOTAL_MARKET':'mean',
-                                     'high_qfq':'max',
-                                     'low_qfq':'min'})
+
+    res[['AVG5_T_MARKET','AVG5_A_MARKET','HIGH_5','LOW_5','AMOUNT_5']] = data.rolling(window=5).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':'mean'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
+    res[['AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10','AMOUNT_10']] = data.rolling(window=10).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':'mean'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
+    res[['AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20','AMOUNT_20']] = data.rolling(window=20).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':'mean'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
+    res[['AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30','AMOUNT_30']] = data.rolling(window=30).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':'mean'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
+    res[['AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60','AMOUNT_60']] = data.rolling(window=60).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':'mean'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
+    res[['AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90','AMOUNT_90']] = data.rolling(window=90).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':'mean'})[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
+
     res[[ 'AVG5_C_MARKET','AVG10_C_MARKET',
           'AVG20_C_MARKET','AVG30_C_MARKET',
-          'AVG60_C_MARKET','AVG90_C_MARKET']] = a.agg({ 'AVG5_T_MARKET':rolling_ols,
+          'AVG60_C_MARKET','AVG90_C_MARKET']] = res.rolling(window=5).agg({ 'AVG5_T_MARKET':rolling_ols,
                                                         'AVG10_T_MARKET':rolling_ols,
                                                         'AVG20_T_MARKET':rolling_ols,
                                                         'AVG30_T_MARKET':rolling_ols,
@@ -76,26 +73,14 @@ def pct(data):
     res['RNG_30']= (res['HIGH_30']/res['LOW_30']-1).apply(lambda x:round(x ,4))
     res['RNG_60']= (res['HIGH_60']/res['LOW_60']-1).apply(lambda x:round(x ,4))
     res['RNG_90']= (res['HIGH_90']/res['LOW_90']-1).apply(lambda x:round(x ,4))
-
+    res['AMT_L']= (res['amount']/res['LAG_AMOUNT']-1).apply(lambda x:round(x ,4))
+    res['AMT_5']= (res['amount']/res['AMOUNT_5']-1).apply(lambda x:round(x ,4))
+    res['AMT_10']= (res['amount']/res['AMOUNT_10']-1).apply(lambda x:round(x ,4))
+    res['AMT_20']= (res['amount']/res['AMOUNT_20']-1).apply(lambda x:round(x ,4))
+    res['AMT_30']= (res['amount']/res['AMOUNT_30']-1).apply(lambda x:round(x ,4))
+    res['AMT_60']= (res['amount']/res['AMOUNT_60']-1).apply(lambda x:round(x ,4))
+    res['AMT_90']= (res['amount']/res['AMOUNT_90']-1).apply(lambda x:round(x ,4))
     return(res)
-
-#def ETL_stock_day(codes, start=None,end=None):
-#    if start is None:
-#        data = QA_fetch_stock_day_adv(codes)
-#        res1 = data.to_qfq().data
-#        res1.columns = [x + '_qfq' for x in res1.columns]
-#        data = data.data.join(res1).fillna(0)
-#        res = data.groupby('code').apply(pct).reset_index()
-#        res = res.where((pd.notnull(res)), None)
-#    else:
-#        start_date = QA_util_get_pre_trade_date(start,100)
-#        data = QA_fetch_stock_day_adv(codes,start_date,end)
-#        res1 = data.to_qfq().data
-#        res1.columns = [x + '_qfq' for x in res1.columns]
-#        data = data.data.join(res1).fillna(0)
-#        res = data.groupby('code').apply(pct)
-#        res = res.loc[pd.date_range(start, end, freq='D')].reset_index()
-#    return(res)
 
 def ETL_stock_day(codes, start=None, end=None):
     if start is None:
@@ -118,22 +103,26 @@ def ETL_stock_day(codes, start=None, end=None):
         res = data.groupby('code').apply(pct)
         res = res.set_index(['date','code']).loc[(rng,),].replace([np.inf, -np.inf], 0)
         res = res.where((pd.notnull(res)), None).reset_index()[['date','code','open','high','low','close','volume','amount',
-                                                                'open_qfq','high_qfq','low_qfq','close_qfq','volume_qfq','amount_qfq','adj_qfq',
-                                                                'AVG_TOTAL_MARKET','LAG_MARKET','AVG_LAG_MARKET','LAG_HIGH','LAG_LOW',
-                                                                'LAG2_MARKET','AVG_LAG2_MARKET','LAG3_MARKET','AVG_LAG3_MARKET',
-                                                                'LAG5_MARKET','AVG_LAG5_MARKET','LAG10_MARKET','AVG_LAG10_MARKET',
-                                                                'LAG20_MARKET','AVG_LAG20_MARKET','LAG30_MARKET','AVG_LAG30_MARKET',
-                                                                'LAG30_HIGH','LAG30_LOW','LAG60_MARKET','AVG_LAG60_MARKET',
-                                                                'LAG60_HIGH','LAG60_LOW','LAG90_MARKET','AVG_LAG90_MARKET',
-                                                                'LAG90_HIGH','LAG90_LOW','AVG10_T_MARKET','AVG10_A_MARKET',
-                                                                'HIGH_10','LOW_10','AVG20_T_MARKET','AVG20_A_MARKET',
-                                                                'HIGH_20','LOW_20','AVG30_T_MARKET','AVG30_A_MARKET',
-                                                                'HIGH_30','LOW_30','AVG60_T_MARKET','AVG60_A_MARKET',
-                                                                'HIGH_60','LOW_60','AVG90_T_MARKET','AVG90_A_MARKET',
-                                                                'HIGH_90','LOW_90','AVG5_T_MARKET','AVG5_A_MARKET',
-                                                                'HIGH_5','LOW_5','AVG5_C_MARKET','AVG10_C_MARKET',
+                                                                'open_qfq','high_qfq','low_qfq','close_qfq','AVG_TOTAL_MARKET',
+                                                                'LAG_MARKET','AVG_LAG_MARKET','LAG_HIGH','LAG_LOW','LAG_AMOUNT',
+                                                                'LAG2_MARKET','AVG_LAG2_MARKET',
+                                                                'LAG3_MARKET','AVG_LAG3_MARKET',
+                                                                'LAG5_MARKET','AVG_LAG5_MARKET',
+                                                                'LAG10_MARKET','AVG_LAG10_MARKET',
+                                                                'LAG20_MARKET','AVG_LAG20_MARKET',
+                                                                'LAG30_MARKET','AVG_LAG30_MARKET','LAG30_HIGH','LAG30_LOW',
+                                                                'LAG60_MARKET','AVG_LAG60_MARKET','LAG60_HIGH','LAG60_LOW',
+                                                                'LAG90_MARKET','AVG_LAG90_MARKET','LAG90_HIGH','LAG90_LOW',
+                                                                'AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10',
+                                                                'AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20',
+                                                                'AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30',
+                                                                'AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60',
+                                                                'AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90',
+                                                                'AVG5_T_MARKET','AVG5_A_MARKET','HIGH_5','LOW_5',
+                                                                'AVG5_C_MARKET','AVG10_C_MARKET',
                                                                 'AVG20_C_MARKET','AVG30_C_MARKET','AVG60_C_MARKET','AVG90_C_MARKET',
-                                                                'RNG_L','RNG_5','RNG_10','RNG_20','RNG_30','RNG_60','RNG_90']]
+                                                                'RNG_L','RNG_5','RNG_10','RNG_20','RNG_30','RNG_60','RNG_90',
+                                                                'AMT_L','AMT_5','AMT_10','AMT_20','AMT_30','AMT_60','AMT_90']]
     except:
         res=None
     return(res)
