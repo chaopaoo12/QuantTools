@@ -7,7 +7,7 @@ import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
 
-def get_quant_data_train(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value'):
+def get_quant_data_train(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
     if block is True:
         data = QA.QA_fetch_stock_block()
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
@@ -23,9 +23,9 @@ def get_quant_data_train(start_date, end_date, type = 'crawl', block = False, su
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
-        res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method).data
+        res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     if type == 'model':
-        res = QA_fetch_get_quant_data_train(codes, start_date, end_date, type='normalization').set_index(['date','code']).drop(['date_stamp'], axis=1)
+        res = QA_fetch_get_quant_data_train(codes, start_date, end_date, norm_type=norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
         res = res.join(target)
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
@@ -34,7 +34,7 @@ def get_quant_data_train(start_date, end_date, type = 'crawl', block = False, su
     #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
-def get_quant_data_realtime(start_date, end_date, type = 'model', block = False, sub_block= True, method = 'value'):
+def get_quant_data_realtime(start_date, end_date, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
     if block is True:
         data = QA.QA_fetch_stock_block()
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
@@ -50,9 +50,9 @@ def get_quant_data_realtime(start_date, end_date, type = 'model', block = False,
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
-        res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method).data
+        res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     if type == 'model':
-        res = QA_fetch_get_quant_data_realtime(codes, start_date, end_date, type='normalization').set_index(['date','code']).drop(['date_stamp'], axis=1)
+        res = QA_fetch_get_quant_data_realtime(codes, start_date, end_date, norm_type =norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
         res = res.join(target)
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
@@ -87,7 +87,7 @@ def get_index_quant_data_norm(start_date, end_date, type = 'crawl', method = 'va
         res = res.join(target)
     return(pd.get_dummies(res))
 
-def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value'):
+def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
     if block is True:
         data = QA.QA_fetch_stock_block()
         codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
@@ -103,9 +103,9 @@ def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
-        res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method).data
+        res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     if type == 'model':
-        res = QA_fetch_get_quant_data(codes, start_date, end_date, type='normalization').set_index(['date','code']).drop(['date_stamp'], axis=1)
+        res = QA_fetch_get_quant_data(codes, start_date, end_date, norm_type =norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
         res = res.join(target)
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
@@ -114,7 +114,7 @@ def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub
     #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
-def get_hedge_data_train(start_date, end_date, type = 'crawl', block = True, sub_block= True, method = 'value'):
+def get_hedge_data_train(start_date, end_date, type = 'crawl', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
     if block is True:
         data = QA.QA_fetch_stock_block()
         codes = list(data[data.blockname.isin(['沪深300'])]['code'].drop_duplicates())
@@ -130,9 +130,9 @@ def get_hedge_data_train(start_date, end_date, type = 'crawl', block = True, sub
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
-        res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method).data
+        res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     if type == 'model':
-        res = QA_fetch_get_quant_data_train(codes, start_date, end_date, type='normalization').set_index(['date','code']).drop(['date_stamp'], axis=1)
+        res = QA_fetch_get_quant_data_train(codes, start_date, end_date, norm_type =norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
         res = res.join(target)
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
@@ -141,7 +141,7 @@ def get_hedge_data_train(start_date, end_date, type = 'crawl', block = True, sub
     #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
-def get_hedge_data_realtime(start_date, end_date, type = 'model', block = True, sub_block= True, method = 'value'):
+def get_hedge_data_realtime(start_date, end_date, type = 'model', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
     if block is True:
         data = QA.QA_fetch_stock_block()
         codes = list(data[data.blockname.isin(['沪深300'])]['code'].drop_duplicates())
@@ -157,9 +157,9 @@ def get_hedge_data_realtime(start_date, end_date, type = 'model', block = True, 
         codes = [i for i in codes if i.startswith('787') == False]
         codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
-        res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method).data
+        res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     if type == 'model':
-        res = QA_fetch_get_quant_data_realtime(codes, start_date, end_date, type='normalization').set_index(['date','code']).drop(['date_stamp'], axis=1)
+        res = QA_fetch_get_quant_data_realtime(codes, start_date, end_date, norm_type =norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
         res = res.join(target)
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]

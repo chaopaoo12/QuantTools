@@ -234,7 +234,7 @@ def QA_fetch_get_quant_data(codes, start_date, end_date, type='standardize', ui_
     return(res)
 
 @time_this_function
-def QA_fetch_get_quant_data_train(codes, start_date, end_date, type='standardize', ui_log = None):
+def QA_fetch_get_quant_data_train(codes, start_date, end_date, norm_type='standardize', ui_log = None):
     '获取股票量化机器学习最终指标V1'
     start = QA_util_get_pre_trade_date(start_date,15)
     QA_util_log_info(
@@ -358,10 +358,10 @@ def QA_fetch_get_quant_data_train(codes, start_date, end_date, type='standardize
     col_tar = ['DAYS','INDUSTRY']
     QA_util_log_info(
         '##JOB stock quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    if type == 'standardize':
+    if norm_type == 'standardize':
         QA_util_log_info('##JOB stock quant data standardize trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
         res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
-    elif type == 'normalization':
+    elif norm_type == 'normalization':
         QA_util_log_info('##JOB stock quant data normalization trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
         res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
     else:
@@ -375,7 +375,7 @@ def QA_fetch_get_quant_data_train(codes, start_date, end_date, type='standardize
     return(res)
 
 @time_this_function
-def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normalization', ui_log = None):
+def QA_fetch_get_quant_data_realtime(code, start_date, end_date, norm_type='normalization', ui_log = None):
     '获取股票量化机器学习最终指标V1'
     start = QA_util_get_pre_trade_date(start_date,15)
     end_date = end_date
@@ -487,10 +487,10 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, type='normaliza
     col_tar = ['INDUSTRY']
     QA_util_log_info(
         '##JOB stock quant data trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
-    if type == 'standardize':
+    if norm_type == 'standardize':
         QA_util_log_info('##JOB stock quant data standardize trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
         res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
-    elif type == 'normalization':
+    elif norm_type == 'normalization':
         QA_util_log_info('##JOB stock quant data normalization trans ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
         res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
     else:
