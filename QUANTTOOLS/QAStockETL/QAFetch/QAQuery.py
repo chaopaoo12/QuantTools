@@ -2758,7 +2758,6 @@ def QA_fetch_usstock_alpha101(code, start, end=None, format='pd', collections=DA
         QA_util_log_info(
             'QA Error QA_fetch_usstock_alpha101 data parameter start=%s end=%s is not right' % (start, end))
 
-
 def QA_fetch_usstock_technical_index(code, start, end=None, type='day', format='pd'):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
