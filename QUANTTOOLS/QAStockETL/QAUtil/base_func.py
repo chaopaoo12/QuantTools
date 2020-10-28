@@ -1,4 +1,65 @@
 import numpy as np
+import pandas as pd
+from scipy import stats
+
+def rolling_ols(y):
+    '''
+    滚动回归，返回滚动回归后的回归系数
+    rb: 因变量序列
+    '''
+    #slope = np.diff(y)/np.diff(pd.Series(range(1,len(y)+1)))
+    #return(slope)
+    model = stats.linregress(pd.Series(range(1,len(y)+1)),y)
+    return(round(model.slope,2))
+
+def uspct(data):
+    res=data
+    res[['LAG_MARKET','AVG_LAG_MARKET','LAG_HIGH','LAG_LOW','LAG_AMOUNT']]= data.shift(1)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
+    res[['LAG2_MARKET','AVG_LAG2_MARKET']]= data.shift(2)[['close_qfq','AVG_TOTAL_MARKET']]
+    res[['LAG3_MARKET','AVG_LAG3_MARKET']]= data.shift(3)[['close_qfq','AVG_TOTAL_MARKET']]
+    res[['LAG5_MARKET','AVG_LAG5_MARKET']]= data.shift(5)[['close_qfq','AVG_TOTAL_MARKET']]
+    res[['LAG10_MARKET','AVG_LAG10_MARKET']]= data.shift(10)[['close_qfq','AVG_TOTAL_MARKET']]
+    res[['LAG20_MARKET','AVG_LAG20_MARKET']]= data.shift(20)[['close_qfq','AVG_TOTAL_MARKET']]
+    res[['LAG30_MARKET','AVG_LAG30_MARKET','LAG30_HIGH','LAG30_LOW']]= data.shift(30)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
+    res[['LAG60_MARKET','AVG_LAG60_MARKET','LAG60_HIGH','LAG60_LOW']]= data.shift(60)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
+    res[['LAG90_MARKET','AVG_LAG90_MARKET','LAG90_HIGH','LAG90_LOW']]= data.shift(90)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
+
+    res[['AVG5_T_MARKET','AVG5_A_MARKET','HIGH_5','LOW_5','AMOUNT_5','MAMOUNT_5']] = data.rolling(window=5).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
+    res[['AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10','AMOUNT_10','MAMOUNT_10']] = data.rolling(window=10).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
+    res[['AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20','AMOUNT_20','MAMOUNT_20']] = data.rolling(window=20).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
+    res[['AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30','AMOUNT_30','MAMOUNT_30']] = data.rolling(window=30).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
+    res[['AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60','AMOUNT_60','MAMOUNT_60']] = data.rolling(window=60).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
+    res[['AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90','AMOUNT_90','MAMOUNT_90']] = data.rolling(window=90).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
+
+    res[[ 'AVG5_C_MARKET','AVG10_C_MARKET',
+          'AVG20_C_MARKET','AVG30_C_MARKET',
+          'AVG60_C_MARKET','AVG90_C_MARKET']] = res.rolling(window=5).agg({ 'AVG5_T_MARKET':rolling_ols,
+                                                                            'AVG10_T_MARKET':rolling_ols,
+                                                                            'AVG20_T_MARKET':rolling_ols,
+                                                                            'AVG30_T_MARKET':rolling_ols,
+                                                                            'AVG60_T_MARKET':rolling_ols,
+                                                                            'AVG90_T_MARKET':rolling_ols})
+    res['RNG_L']= (res['LAG_HIGH']/res['LAG_LOW']-1).apply(lambda x:round(x ,4))
+    res['RNG_5']= (res['HIGH_5']/res['LOW_5']-1).apply(lambda x:round(x ,4))
+    res['RNG_10']= (res['HIGH_10']/res['LOW_10']-1).apply(lambda x:round(x ,4))
+    res['RNG_20']= (res['HIGH_20']/res['LOW_20']-1).apply(lambda x:round(x ,4))
+    res['RNG_30']= (res['HIGH_30']/res['LOW_30']-1).apply(lambda x:round(x ,4))
+    res['RNG_60']= (res['HIGH_60']/res['LOW_60']-1).apply(lambda x:round(x ,4))
+    res['RNG_90']= (res['HIGH_90']/res['LOW_90']-1).apply(lambda x:round(x ,4))
+    res['AMT_L']= (res['amount']/res['LAG_AMOUNT']-1).apply(lambda x:round(x ,4))
+    res['AMT_5']= (res['amount']/res['AMOUNT_5']-1).apply(lambda x:round(x ,4))
+    res['AMT_10']= (res['amount']/res['AMOUNT_10']-1).apply(lambda x:round(x ,4))
+    res['AMT_20']= (res['amount']/res['AMOUNT_20']-1).apply(lambda x:round(x ,4))
+    res['AMT_30']= (res['amount']/res['AMOUNT_30']-1).apply(lambda x:round(x ,4))
+    res['AMT_60']= (res['amount']/res['AMOUNT_60']-1).apply(lambda x:round(x ,4))
+    res['AMT_90']= (res['amount']/res['AMOUNT_90']-1).apply(lambda x:round(x ,4))
+    res['MAMT_5']= (res['amount']/res['MAMOUNT_5']-1).apply(lambda x:round(x ,4))
+    res['MAMT_10']= (res['amount']/res['MAMOUNT_10']-1).apply(lambda x:round(x ,4))
+    res['MAMT_20']= (res['amount']/res['MAMOUNT_20']-1).apply(lambda x:round(x ,4))
+    res['MAMT_30']= (res['amount']/res['MAMOUNT_30']-1).apply(lambda x:round(x ,4))
+    res['MAMT_60']= (res['amount']/res['MAMOUNT_60']-1).apply(lambda x:round(x ,4))
+    res['MAMT_90']= (res['amount']/res['MAMOUNT_90']-1).apply(lambda x:round(x ,4))
+    return(res)
 
 def pct(data, type = 'close'):
     data = data.sort_values('date',ascending=True)
