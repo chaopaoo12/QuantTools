@@ -277,8 +277,8 @@ into stock_analysis_data
                     0
                  end AS AVG90_TR,
                  sum(amount) over(partition by order_Date) as all_amount
-            from (select a.code,
-                         a.order_date,
+            from (select a.order_date,
+                         a.code,
                          report_date,
                          market_day,
                          lastyear,
