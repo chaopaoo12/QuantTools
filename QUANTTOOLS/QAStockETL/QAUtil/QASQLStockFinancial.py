@@ -1,9 +1,6 @@
 import cx_Oracle
 import pandas as pd
-import datetime
 from QUANTAXIS.QAUtil import QA_util_log_info
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
-                               QA_util_if_trade,QA_util_get_pre_trade_date)
 from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Oracle_User, Oracle_Password, Oralce_Server, MongoDB_Server, MongoDB_Database)
 
 ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
@@ -16,8 +13,10 @@ LAG,LAG5,LAG10,LAG20,LAG30,LAG60,
 AVG5_TOR, AVG20_TOR,AVG30_TOR,AVG60_TOR,
 GROSSMARGIN,NETPROFIT_INRATE,OPERATINGRINRATE,NETCASHOPERATINRATE,
 PB, PBG, PC, PE_TTM, PEEGL_TTM, PEG, PM, PS,PSG,PT,
-PE_RATE,PEEGL_RATE,PB_RATE,ROE_RATE,ROE_RATET,ROA_RATE,ROA_RATET,
-GROSS_RATE,RNG,RNG_L,RNG_5,RNG_10,RNG_20, RNG_30, RNG_60,
+PE_RATE,PEEGL_RATE,PB_RATE,ROE_RATE,ROE_RATET,ROA_RATE,ROA_RATET,GROSS_RATE,
+RNG,RNG_L,RNG_5,RNG_10,RNG_20, RNG_30, RNG_60, RNG_90,
+AMT_L,AMT_5,AMT_10,AMT_20,AMT_30,AMT_60,AMT_90,
+MAMT_5,MAMT_10,MAMT_20,MAMT_30,MAMT_60,MAMT_90,
 AVG5_RNG,AVG10_RNG,AVG20_RNG,AVG30_RNG,AVG60_RNG,ROA, ROE, 
 AVG5_CR, AVG10_CR,AVG20_CR,AVG30_CR,AVG60_CR,
 AVG5_TR,AVG10_TR,AVG20_TR,AVG30_TR,AVG60_TR,TOTALPROFITINRATE

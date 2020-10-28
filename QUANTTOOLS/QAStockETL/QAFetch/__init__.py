@@ -70,7 +70,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_interest_rate,
                                                    QA_fetch_usstock_alpha,
                                                    QA_fetch_usstock_alpha101,
                                                    QA_fetch_usstock_technical_index,
-                                                   QA_fetch_usstock_financial_percent
+                                                   QA_fetch_usstock_financial_percent,
+                                                   QA_fetch_usstock_quant_data_train
                                                    )
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAcalendar import QA_fetch_get_financial_calendar

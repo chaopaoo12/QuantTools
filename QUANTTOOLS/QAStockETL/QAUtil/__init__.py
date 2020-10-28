@@ -54,3 +54,4 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockIndex import QA_Sql_USStock_Index
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockIndexWeek import QA_Sql_USStock_IndexWeek
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockAlpha101 import QA_Sql_USStock_Alpha101
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockAlpha191 import QA_Sql_USStock_Alpha191
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockFinancialPE import QA_Sql_USStock_FinancialPercent

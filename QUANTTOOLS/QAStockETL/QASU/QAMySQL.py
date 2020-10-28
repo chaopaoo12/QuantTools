@@ -21,7 +21,8 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetc
                                            QA_fetch_index_technical_index_adv,
 
                                            QA_fetch_usstock_alpha_adv,QA_fetch_usstock_alpha101_adv,
-                                           QA_fetch_usstock_technical_index_adv
+                                           QA_fetch_usstock_technical_index_adv,
+                                           QA_fetch_usstock_financial_percent_adv
                                            )
 from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
@@ -426,12 +427,14 @@ def QA_etl_stock_financial_day(start_date = QA_util_today_str(), end_date= None,
                                                                             'PE_RATE','PEEGL_RATE','PB_RATE','ROE_RATE','ROE_RATET','ROA_RATE','ROA_RATET',
                                                                             'GROSS_RATE',#'ROA_AVG5','ROE_AVG5','GROSS_AVG5','ROE_MIN','ROA_MIN','GROSS_MIN',
                                                                             #'ROE_CH','ROA_CH','GROSS_CH','OPINRATE_AVG3','NETPINRATE_AVG3',
-                                                                            'RNG','RNG_L','RNG_5','RNG_10','RNG_20', 'RNG_30', 'RNG_60',
+                                                                            'RNG','RNG_L','RNG_5','RNG_10','RNG_20', 'RNG_30', 'RNG_60','RNG_90',
                                                                             'AVG5_RNG','AVG10_RNG','AVG20_RNG','AVG30_RNG','AVG60_RNG',
                                                                             'ROA', #'ROA_L2Y', 'ROA_L3Y', 'ROA_L4Y', 'ROA_LY',
                                                                             'ROE', #'ROE_L2Y', 'ROE_L3Y', 'ROE_L4Y', 'ROE_LY',
                                                                             'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
-                                                                            'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR','TOTALPROFITINRATE']]
+                                                                            'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR','TOTALPROFITINRATE',
+                                                                            'AMT_L','AMT_5','AMT_10','AMT_20','AMT_30','AMT_60','AMT_90',
+                                                                            'MAMT_5','MAMT_10','MAMT_20','MAMT_30','MAMT_60','MAMT_90']]
     if data is None:
         QA_util_log_info(
             '##JOB NO STOCK QUANT FINANCIAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
@@ -664,3 +667,20 @@ def QA_etl_usstock_technical_week(start_date = QA_util_today_str(), end_date= No
         data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "usstock_technical_week",if_exists='append')
         QA_util_log_info('##JOB ETL USSTOCK TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+
+def QA_etl_usstock_financial_percent_day(start_date = QA_util_today_str(), end_date= None, ui_log= None):
+    if end_date is None:
+        end_date = QA_util_today_str()
+    QA_util_log_info(
+        '##JOB Now ETL USSTOCK FINANCIAL PERCENT ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    codes = list(QA_fetch_usstock_list()['code'])
+    data = QA_fetch_usstock_financial_percent_adv(codes, start_date, end_date).data
+    if data is None:
+        QA_util_log_info(
+            '##JOB NO USSTOCK FINANCIAL PERCENT HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    else:
+        data = data.reset_index()
+        data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
+        QA_util_sql_store_mysql(data, "usstock_quant_financial_percent",if_exists='append')
+        QA_util_log_info(
+            '##JOB ETL USSTOCK FINANCIAL PERCENT HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
