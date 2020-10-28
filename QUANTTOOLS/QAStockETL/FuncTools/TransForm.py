@@ -21,14 +21,43 @@ def normalization_series(series): #原始值法
     else:
         return((series-series.min())/(series.max()-series.min()))
 
+def standardize_series_rolling(series): #原始值法
+    if (np.max(series) == 1 and np.min(series) == 0) or (np.max(series) == np.min(series)) :
+        return(series[-1])
+    else:
+        std = np.std(series)
+        mean = np.mean(series)
+        return(round((series[-1]-mean)/std,4))
+
+def normalization_series_rolling(series): #原始值法
+    if series.max() ==1 and series.min() == 0:
+        return(series[-1])
+    elif series.max() ==0 and series.min() == 0:
+        return(series[-1])
+    elif series.max() == series.min():
+        return(series.max()/series.min())
+    else:
+        return((series[-1]-series.min())/(series.max()-series.min()))
+
 def filter_extreme_3sigma(array,n=3): #3 sigma
-    array1 = array.replace([np.inf, -np.inf], np.nan).astype(float)
+    try:
+        array[array == -np.inf] = np.nan
+        array[array == np.inf] = np.nan
+    except:
+        array = array.replace([np.inf, -np.inf], np.nan)
+    array1 = array.astype(float)
     vmin = array1.min()
     vmax = array1.max()
     sigma = array1.std()
     mu = array1.mean()
-    array1 = array.replace(np.inf, vmin).astype(float)
-    array = array1.replace(-np.inf, vmax).astype(float)
+    try:
+        array[array == -np.inf] = vmax
+        array[array == np.inf] = vmin
+    except:
+        array = array.replace(np.inf, vmin)
+        array = array.replace(-np.inf, vmax)
+
+    array = array.astype(float)
     array[array > mu + n*sigma] = mu + n*sigma
     array[array < mu - n*sigma] = mu - n*sigma
     return(array)
@@ -54,6 +83,14 @@ def normalization(data):
 
 def standardize(data):
     res1 = data[[i for i in list(data.columns) if i != 'INDUSTRY']].apply(lambda x:standardize_series(filter_extreme_3sigma(x)))
+    return(res1)
+
+def normalization_rolling(data, N):
+    res1 = data[[i for i in list(data.columns) if i != 'INDUSTRY']].rolling(N).apply(lambda x:normalization_series_rolling(filter_extreme_3sigma(x)))
+    return(res1)
+
+def standardize_rolling(data, N):
+    res1 = data[[i for i in list(data.columns) if i != 'INDUSTRY']].rolling(N).apply(lambda x:standardize_series_rolling(filter_extreme_3sigma(x)))
     return(res1)
 
 def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
