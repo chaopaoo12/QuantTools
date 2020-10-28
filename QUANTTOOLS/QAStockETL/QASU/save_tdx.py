@@ -2,10 +2,18 @@ from QUANTAXIS import (QA_fetch_get_usstock_list,QA_fetch_get_index_list,QA_fetc
                        QA_fetch_get_stock_day,QA_fetch_get_stock_xdxr,QA_fetch_get_stock_info,
                        )
 from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_list, QA_fetch_get_stock_min
-from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare,
-                                           QA_fetch_get_stock_half_realtime, QA_fetch_get_usstock_day_xq,
-                                           fetch_get_stock_code_all)
 
+from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_usstock_adj,QA_fetch_get_usstock_day,QA_fetch_get_usstock_cik,
+                                                 QA_fetch_get_usstock_financial, QA_fetch_get_usstock_financial_calendar,
+                                                 QA_fetch_get_stock_industryinfo,QA_fetch_get_index_info,
+                                                 QA_fetch_get_stock_delist,QA_fetch_get_stock_half,
+
+                                                 QA_fetch_get_usstock_pe,QA_fetch_get_usstock_pb)
+from QUANTTOOLS.QAStockETL.QAFetch import (fetch_get_stock_code_all,QA_fetch_get_stock_etlreal,
+                                           QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare,
+                                           QA_fetch_get_stock_half_realtime, QA_fetch_get_usstock_day_xq,
+
+                                           QA_fetch_stock_om_all,QA_fetch_stock_all,QA_fetch_usstock_day,)
 from QUANTAXIS.QAData.data_fq import _QA_data_stock_to_fq
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_day
 import concurrent
@@ -23,12 +31,7 @@ from QUANTAXIS.QAUtil import (
     trade_date_sse,
     QA_util_date_stamp
 )
-from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_usstock_adj,QA_fetch_get_usstock_day,QA_fetch_get_usstock_cik,
-                                                 QA_fetch_get_usstock_financial, QA_fetch_get_usstock_financial_calendar,
-                                                 QA_fetch_get_stock_industryinfo,QA_fetch_get_index_info,
-                                                 QA_fetch_get_stock_delist,QA_fetch_get_stock_half,
-                                                 QA_fetch_get_usstock_pe,QA_fetch_get_usstock_pb)
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_stock_om_all,QA_fetch_stock_all,QA_fetch_usstock_day)
+
 
 
 def now_time():
@@ -1645,3 +1648,42 @@ def QA_SU_save_stock_aklist(client=DATABASE, ui_log=None, ui_progress=None):
         print(" Error save_tdx.QA_SU_save_stock_aklist exception!")
 
         pass
+
+def QA_SU_save_stock_basereal(client=DATABASE, ui_log=None, ui_progress=None):
+    """save stock_info
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+
+    #client.drop_collection('stock_real')
+    stock_list = QA_fetch_stock_all().code.unique().tolist()
+    coll = client.stock_basereal
+    coll.create_index([('code',
+                        pymongo.ASCENDING),
+                       ('date_stamp',
+                        pymongo.ASCENDING)],
+                      unique=True)
+    err = []
+
+    def __saving_work(stock_list, coll):
+        QA_util_log_info(
+            '##JOB10 Now Saving STOCK BASE REAL ==== ',
+            ui_log=ui_log
+        )
+        data = QA_fetch_get_stock_etlreal(stock_list)
+        try:
+            coll.insert_many(
+                QA_util_to_json_from_pandas(data)
+            )
+
+        except Exception as error0:
+            print(error0)
+            err.append(error0)
+    __saving_work(stock_list, coll)
+
+    if len(err) < 1:
+        QA_util_log_info('SUCCESS', ui_log=ui_log)
+    else:
+        QA_util_log_info(' ERROR CODE \n ', ui_log=ui_log)
+        QA_util_log_info(err, ui_log=ui_log)

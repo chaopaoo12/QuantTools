@@ -55,7 +55,7 @@ from QUANTTOOLS.QAStockETL.QASU import (
 ###Stock Save Result
 from QUANTTOOLS.QAStockETL.QASU import (
                                         QA_etl_stock_list, QA_etl_stock_info,
-                                        QA_etl_stock_xdxr, QA_etl_stock_day,
+                                        QA_etl_stock_xdxr, QA_etl_stock_day, QA_etl_stock_half,
                                         QA_etl_stock_financial, QA_etl_stock_calendar,
                                         QA_etl_stock_block, QA_etl_stock_divyield,
                                         QA_etl_process_financial_day,QA_etl_stock_shares,
@@ -65,7 +65,12 @@ from QUANTTOOLS.QAStockETL.QASU import (
 
                                         QA_etl_stock_technical_day,QA_etl_stock_technical_week,
                                         QA_etl_stock_alpha101_day,QA_etl_stock_alpha101half_day,
-                                        QA_etl_stock_alpha_day,QA_etl_stock_alpha191half_day
+                                        QA_etl_stock_alpha_day,QA_etl_stock_alpha191half_day,
+
+                                        QA_etl_usstock_day,
+                                        QA_etl_usstock_alpha_day,QA_etl_usstock_alpha101_day,
+                                        QA_etl_usstock_technical_day,QA_etl_usstock_technical_week,
+                                        QA_etl_usstock_financial_percent_day
                                         )
 
 ###Index Save Result

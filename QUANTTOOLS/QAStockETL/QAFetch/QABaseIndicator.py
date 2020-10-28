@@ -149,7 +149,7 @@ def QA_fetch_get_stock_etlhalf(codes, start=None, end=None):
 
 def QA_fetch_get_stock_etlreal(codes, start=None, end=None):
     if start is None:
-        start = '2008-01-01'
+        start = QA_util_today_str()
 
     if end is None:
         end = QA_util_today_str()

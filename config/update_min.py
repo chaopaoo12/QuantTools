@@ -9,7 +9,8 @@ from QUANTTOOLS.QAStockETL.QASU import (QA_SU_save_stock_min,QA_SU_save_single_s
                                         QA_SU_save_stock_half,QA_SU_save_stock_aklist,
                                         QA_SU_save_stock_xdxr,QA_SU_save_single_stock_xdxr)
 from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_alpha101half_day,QA_SU_save_stock_alpha191half_day,
-                                   QA_etl_stock_alpha101half_day,QA_etl_stock_alpha191half_day)
+                                   QA_etl_stock_alpha101half_day,QA_etl_stock_alpha191half_day,
+                                   QA_etl_stock_half)
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
@@ -64,5 +65,6 @@ if __name__ == '__main__':
             res = check_stock_alpha191half(mark_day)
         check_sinastock_alpha191half(mark_day)
 
+        QA_etl_stock_half(mark_day, mark_day)
         QA_etl_stock_alpha101half_day(mark_day, mark_day)
         QA_etl_stock_alpha191half_day(mark_day, mark_day)

@@ -22,7 +22,7 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_report_calendar_day, QA_
                                              QA_SU_save_stock_financial_wy_day,QA_SU_save_stock_financial_wy_his)
 
 ###Stock indicator
-from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_fianacialTTM_momgo,
+from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_fianacialTTM_momgo,QA_SU_save_stock_basereal,
                                              QA_SU_save_stock_fianacial_momgo, QA_SU_save_stock_fianacial_momgo_his,
                                              QA_SU_save_stock_alpha_day, QA_SU_save_stock_alpha_his,
                                              QA_SU_save_stock_alpha101_day,QA_SU_save_stock_alpha101_his,
