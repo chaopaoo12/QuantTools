@@ -72,7 +72,9 @@ from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (QA_etl_stock_list, QA_etl_stock_
                                                 QA_etl_stock_financial, QA_etl_stock_calendar,
                                                 QA_etl_stock_block, QA_etl_stock_divyield,
                                                 QA_etl_stock_shares,
-                                                QA_etl_stock_financial_wy
+                                                QA_etl_stock_financial_wy,
+
+                                                QA_etl_usstock_day
                                                 )
 
 from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (
