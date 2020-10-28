@@ -112,7 +112,7 @@ def QA_fetch_get_stock_etlhalf(codes, start=None, end=None):
     else:
         rng = str(start)[0:10]
 
-    start_date = QA_util_get_pre_trade_date(start,100)
+    start_date = QA_util_get_pre_trade_date(start,150)
     data = QA_fetch_stock_half_adv(codes,start_date,end)
     try:
         res1 = data.to_qfq().data
@@ -159,7 +159,7 @@ def QA_fetch_get_stock_etlreal(codes, start=None, end=None):
     else:
         rng = str(start)[0:10]
 
-    start_date = QA_util_get_pre_trade_date(start,100)
+    start_date = QA_util_get_pre_trade_date(start,150)
     end_date = QA_util_get_pre_trade_date(end, 1)
     data = QA_fetch_stock_half_adv(codes,start_date,end_date)
     try:
