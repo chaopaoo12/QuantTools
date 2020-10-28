@@ -7,15 +7,21 @@ from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_log_info)
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,
                                            QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,
                                            QA_fetch_financial_report_wy_adv,
+
                                            QA_fetch_get_stock_etlday, QA_fetch_get_usstock_etlday,
                                            QA_fetch_get_stock_etlhalf,
+
                                            QA_fetch_stock_alpha_adv,QA_fetch_stock_alpha101_adv,
                                            QA_fetch_stock_alpha191half_adv,QA_fetch_stock_alpha101half_adv,
                                            QA_fetch_stock_technical_index_adv,
                                            QA_fetch_stock_fianacial_adv,QA_fetch_stock_financial_percent_adv,
+
                                            QA_fetch_index_info,
                                            QA_fetch_index_alpha_adv,QA_fetch_index_alpha101_adv,
-                                           QA_fetch_index_technical_index_adv
+                                           QA_fetch_index_technical_index_adv,
+
+                                           QA_fetch_usstock_alpha_adv,QA_fetch_usstock_alpha101_adv,
+                                           QA_fetch_usstock_technical_index_adv
                                            )
 from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
@@ -558,3 +564,103 @@ def QA_etl_index_technical_week(start_date = QA_util_today_str(), end_date= None
         data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "index_technical_week",if_exists='append')
         QA_util_log_info('##JOB ETL INDEX TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+
+def QA_etl_usstock_alpha_day(start_date = QA_util_today_str(), end_date= None, ui_log= None):
+    if end_date is None:
+        end_date = QA_util_today_str()
+    QA_util_log_info('##JOB Now ETL USSTOCK ALPHA191 ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    codes = list(QA_fetch_usstock_list()['code'])
+    data = QA_fetch_usstock_alpha_adv(codes, start_date, end_date).data[['alpha_001','alpha_002','alpha_003','alpha_004','alpha_005','alpha_006',
+                                                                         'alpha_007','alpha_008','alpha_009','alpha_010','alpha_011','alpha_012',
+                                                                         'alpha_013','alpha_014','alpha_015','alpha_016','alpha_018','alpha_019',
+                                                                         'alpha_020','alpha_021','alpha_022','alpha_023','alpha_024','alpha_025',
+                                                                         'alpha_026','alpha_028','alpha_029','alpha_031','alpha_032','alpha_033',
+                                                                         'alpha_034','alpha_035','alpha_036','alpha_037','alpha_038','alpha_039',
+                                                                         'alpha_040','alpha_041','alpha_042','alpha_043','alpha_044','alpha_045',
+                                                                         'alpha_046','alpha_047','alpha_048','alpha_049','alpha_052','alpha_053',
+                                                                         'alpha_054','alpha_056','alpha_057','alpha_058','alpha_059','alpha_060',
+                                                                         'alpha_061','alpha_062','alpha_063','alpha_064','alpha_065','alpha_066',
+                                                                         'alpha_067','alpha_068','alpha_070','alpha_071','alpha_072','alpha_074',
+                                                                         'alpha_076','alpha_077','alpha_078','alpha_079','alpha_080','alpha_081',
+                                                                         'alpha_082','alpha_083','alpha_084','alpha_085','alpha_086','alpha_087',
+                                                                         'alpha_088','alpha_089','alpha_090','alpha_091','alpha_092','alpha_093',
+                                                                         'alpha_094','alpha_095','alpha_096','alpha_097','alpha_098','alpha_099',
+                                                                         'alpha_100','alpha_101','alpha_102','alpha_103','alpha_104','alpha_105',
+                                                                         'alpha_106','alpha_107','alpha_108','alpha_109','alpha_111','alpha_112',
+                                                                         'alpha_113','alpha_114','alpha_115','alpha_116','alpha_117','alpha_118',
+                                                                         'alpha_119','alpha_120','alpha_122','alpha_123','alpha_124','alpha_125',
+                                                                         'alpha_126','alpha_127','alpha_128','alpha_129','alpha_130','alpha_132',
+                                                                         'alpha_133','alpha_134','alpha_135','alpha_136','alpha_137','alpha_138',
+                                                                         'alpha_139','alpha_141','alpha_142','alpha_145','alpha_148','alpha_150',
+                                                                         'alpha_152','alpha_153','alpha_154','alpha_155','alpha_156','alpha_157',
+                                                                         'alpha_158','alpha_159','alpha_160','alpha_161','alpha_162','alpha_163',
+                                                                         'alpha_164','alpha_167','alpha_168','alpha_169','alpha_170','alpha_171',
+                                                                         'alpha_172','alpha_173','alpha_174','alpha_175','alpha_176','alpha_177',
+                                                                         'alpha_178','alpha_179','alpha_180','alpha_184','alpha_185','alpha_186',
+                                                                         'alpha_187','alpha_188','alpha_189','alpha_191'
+                                                                         ]]
+    if data is None:
+        QA_util_log_info(
+            '##JOB NO USSTOCK ALPHA191 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    else:
+        data = data.reset_index()
+        data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
+        QA_util_sql_store_mysql(data, "usstock_alpha191",if_exists='append')
+        QA_util_log_info('##JOB ETL USSTOCK ALPHA191 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+
+def QA_etl_usstock_alpha101_day(start_date = QA_util_today_str(), end_date= None, ui_log= None):
+    if end_date is None:
+        end_date = QA_util_today_str()
+    QA_util_log_info('##JOB Now ETL USSTOCK ALPHA101 ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    codes = list(QA_fetch_usstock_list()['code'])
+    data = QA_fetch_usstock_alpha101_adv(codes, start_date, end_date).data[['alpha001','alpha002','alpha003','alpha004','alpha005','alpha006',
+                                                                            'alpha007','alpha008','alpha009','alpha010','alpha011','alpha012',
+                                                                            'alpha013','alpha014','alpha015','alpha016','alpha017','alpha018',
+                                                                            'alpha019','alpha020','alpha021','alpha022','alpha023','alpha024',
+                                                                            'alpha025','alpha026','alpha027','alpha028','alpha029','alpha030',
+                                                                            'alpha031','alpha032','alpha033','alpha034','alpha035','alpha036',
+                                                                            'alpha037','alpha038','alpha039','alpha040','alpha041','alpha042',
+                                                                            'alpha043','alpha044','alpha045','alpha046','alpha047','alpha049',
+                                                                            'alpha050','alpha051','alpha052','alpha053','alpha054','alpha055',
+                                                                            'alpha057','alpha060','alpha061','alpha062','alpha064','alpha065',
+                                                                            'alpha066','alpha068','alpha071','alpha072','alpha073','alpha074',
+                                                                            'alpha075','alpha077','alpha078','alpha081','alpha083','alpha085',
+                                                                            'alpha086','alpha088','alpha092','alpha094','alpha095','alpha096',
+                                                                            'alpha098','alpha099','alpha101']]
+    if data is None:
+        QA_util_log_info('##JOB NO USSTOCK ALPHA101 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    else:
+        data = data.reset_index()
+        data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
+        QA_util_sql_store_mysql(data, "usstock_alpha101",if_exists='append')
+        QA_util_log_info('##JOB ETL USSTOCK ALPHA101 HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+
+def QA_etl_usstock_technical_day(start_date = QA_util_today_str(), end_date= None, ui_log= None):
+    if end_date is None:
+        end_date = QA_util_today_str()
+    QA_util_log_info('##JOB Now ETL USSTOCK TECHNICAL ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    codes = list(QA_fetch_usstock_list()['code'])
+    data = QA_fetch_usstock_technical_index_adv(codes, start_date, end_date).data
+    if data is None:
+        QA_util_log_info(
+            '##JOB NO USSTOCK TECHNICAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    else:
+        data = data.reset_index()
+        data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
+        QA_util_sql_store_mysql(data, "usstock_technical",if_exists='append')
+        QA_util_log_info('##JOB ETL USSTOCK TECHNICAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+
+def QA_etl_usstock_technical_week(start_date = QA_util_today_str(), end_date= None,ui_log= None):
+    if end_date is None:
+        end_date = QA_util_today_str()
+    QA_util_log_info('##JOB Now ETL USSTOCK TECHNICAL WEEK ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    codes = list(QA_fetch_usstock_list()['code'])
+    data = QA_fetch_usstock_technical_index_adv(codes, start_date, end_date,type='week').data
+    if data is None:
+        QA_util_log_info(
+            '##JOB NO USSTOCK TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    else:
+        data = data.reset_index()
+        data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
+        QA_util_sql_store_mysql(data, "usstock_technical_week",if_exists='append')
+        QA_util_log_info('##JOB ETL USSTOCK TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)

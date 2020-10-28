@@ -74,7 +74,9 @@ from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (QA_etl_stock_list, QA_etl_stock_
                                                 QA_etl_stock_shares,
                                                 QA_etl_stock_financial_wy,
 
-                                                QA_etl_usstock_day
+                                                QA_etl_usstock_day,
+                                                QA_etl_usstock_alpha_day,QA_etl_usstock_alpha101_day,
+                                                QA_etl_usstock_technical_day,QA_etl_usstock_technical_week
                                                 )
 
 from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (
