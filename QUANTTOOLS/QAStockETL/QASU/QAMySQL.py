@@ -2,137 +2,33 @@
 
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_block_adv,QA_fetch_index_list_adv,
                                                QA_fetch_stock_day_adv)
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all
-from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_get_trade_range,QA_util_log_info,
-                               QA_util_get_pre_trade_date)
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_usstock_xq_day_adv,QA_fetch_usstock_list
+from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_log_info)
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,
-                                           QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,QA_fetch_stock_alpha101_adv,
+                                           QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,
+                                           QA_fetch_financial_report_wy_adv,
+                                           QA_fetch_get_stock_etlday, QA_fetch_get_usstock_etlday,
+                                           QA_fetch_get_stock_etlhalf,
+                                           QA_fetch_stock_alpha_adv,QA_fetch_stock_alpha101_adv,
+                                           QA_fetch_stock_alpha191half_adv,QA_fetch_stock_alpha101half_adv,
+                                           QA_fetch_stock_technical_index_adv,
                                            QA_fetch_stock_fianacial_adv,QA_fetch_stock_financial_percent_adv,
+                                           QA_fetch_index_info,
                                            QA_fetch_index_alpha_adv,QA_fetch_index_alpha101_adv,
-                                           QA_fetch_index_technical_index_adv,QA_fetch_index_info,
-                                           QA_fetch_financial_report_wy_adv, QA_fetch_stock_alpha_adv,
-                                           QA_fetch_stock_technical_index_adv,QA_fetch_stock_alpha101half_adv,
-                                           QA_fetch_stock_alpha191half_adv)
-from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr,)
+                                           QA_fetch_index_technical_index_adv
+                                           )
+from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_sql_store_mysql
 from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_process_financial)
-import numpy as np
 import pandas as pd
 import datetime
-from scipy import stats
 
 def QA_fetch_index_cate(data, stock_code):
     try:
         return data.loc[stock_code]['cate']
     except:
         return None
-
-def rolling_ols(y):
-    '''
-    滚动回归，返回滚动回归后的回归系数
-    rb: 因变量序列
-    '''
-    #slope = np.diff(y)/np.diff(pd.Series(range(1,len(y)+1)))
-    #return(slope)
-    model = stats.linregress(pd.Series(range(1,len(y)+1)),y)
-    return(round(model.slope,2))
-
-def pct(data):
-    res=data
-    res['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100 * data['adj_qfq']
-    res[['LAG_MARKET','AVG_LAG_MARKET','LAG_HIGH','LAG_LOW','LAG_AMOUNT']]= data.shift(1)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
-    res[['LAG2_MARKET','AVG_LAG2_MARKET']]= data.shift(2)[['close_qfq','AVG_TOTAL_MARKET']]
-    res[['LAG3_MARKET','AVG_LAG3_MARKET']]= data.shift(3)[['close_qfq','AVG_TOTAL_MARKET']]
-    res[['LAG5_MARKET','AVG_LAG5_MARKET']]= data.shift(5)[['close_qfq','AVG_TOTAL_MARKET']]
-    res[['LAG10_MARKET','AVG_LAG10_MARKET']]= data.shift(10)[['close_qfq','AVG_TOTAL_MARKET']]
-    res[['LAG20_MARKET','AVG_LAG20_MARKET']]= data.shift(20)[['close_qfq','AVG_TOTAL_MARKET']]
-    res[['LAG30_MARKET','AVG_LAG30_MARKET','LAG30_HIGH','LAG30_LOW']]= data.shift(30)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
-    res[['LAG60_MARKET','AVG_LAG60_MARKET','LAG60_HIGH','LAG60_LOW']]= data.shift(60)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
-    res[['LAG90_MARKET','AVG_LAG90_MARKET','LAG90_HIGH','LAG90_LOW']]= data.shift(90)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
-
-    res[['AVG5_T_MARKET','AVG5_A_MARKET','HIGH_5','LOW_5','AMOUNT_5','MAMOUNT_5']] = data.rolling(window=5).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
-    res[['AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10','AMOUNT_10','MAMOUNT_10']] = data.rolling(window=10).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
-    res[['AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20','AMOUNT_20','MAMOUNT_20']] = data.rolling(window=20).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
-    res[['AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30','AMOUNT_30','MAMOUNT_30']] = data.rolling(window=30).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
-    res[['AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60','AMOUNT_60','MAMOUNT_60']] = data.rolling(window=60).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
-    res[['AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90','AMOUNT_90','MAMOUNT_90']] = data.rolling(window=90).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
-
-    res[[ 'AVG5_C_MARKET','AVG10_C_MARKET',
-          'AVG20_C_MARKET','AVG30_C_MARKET',
-          'AVG60_C_MARKET','AVG90_C_MARKET']] = res.rolling(window=5).agg({ 'AVG5_T_MARKET':rolling_ols,
-                                                        'AVG10_T_MARKET':rolling_ols,
-                                                        'AVG20_T_MARKET':rolling_ols,
-                                                        'AVG30_T_MARKET':rolling_ols,
-                                                        'AVG60_T_MARKET':rolling_ols,
-                                                        'AVG90_T_MARKET':rolling_ols})
-    res['RNG_L']= (res['LAG_HIGH']/res['LAG_LOW']-1).apply(lambda x:round(x ,4))
-    res['RNG_5']= (res['HIGH_5']/res['LOW_5']-1).apply(lambda x:round(x ,4))
-    res['RNG_10']= (res['HIGH_10']/res['LOW_10']-1).apply(lambda x:round(x ,4))
-    res['RNG_20']= (res['HIGH_20']/res['LOW_20']-1).apply(lambda x:round(x ,4))
-    res['RNG_30']= (res['HIGH_30']/res['LOW_30']-1).apply(lambda x:round(x ,4))
-    res['RNG_60']= (res['HIGH_60']/res['LOW_60']-1).apply(lambda x:round(x ,4))
-    res['RNG_90']= (res['HIGH_90']/res['LOW_90']-1).apply(lambda x:round(x ,4))
-    res['AMT_L']= (res['amount']/res['LAG_AMOUNT']-1).apply(lambda x:round(x ,4))
-    res['AMT_5']= (res['amount']/res['AMOUNT_5']-1).apply(lambda x:round(x ,4))
-    res['AMT_10']= (res['amount']/res['AMOUNT_10']-1).apply(lambda x:round(x ,4))
-    res['AMT_20']= (res['amount']/res['AMOUNT_20']-1).apply(lambda x:round(x ,4))
-    res['AMT_30']= (res['amount']/res['AMOUNT_30']-1).apply(lambda x:round(x ,4))
-    res['AMT_60']= (res['amount']/res['AMOUNT_60']-1).apply(lambda x:round(x ,4))
-    res['AMT_90']= (res['amount']/res['AMOUNT_90']-1).apply(lambda x:round(x ,4))
-    res['MAMT_5']= (res['amount']/res['MAMOUNT_5']-1).apply(lambda x:round(x ,4))
-    res['MAMT_10']= (res['amount']/res['MAMOUNT_10']-1).apply(lambda x:round(x ,4))
-    res['MAMT_20']= (res['amount']/res['MAMOUNT_20']-1).apply(lambda x:round(x ,4))
-    res['MAMT_30']= (res['amount']/res['MAMOUNT_30']-1).apply(lambda x:round(x ,4))
-    res['MAMT_60']= (res['amount']/res['MAMOUNT_60']-1).apply(lambda x:round(x ,4))
-    res['MAMT_90']= (res['amount']/res['MAMOUNT_90']-1).apply(lambda x:round(x ,4))
-    return(res)
-
-def ETL_stock_day(codes, start=None, end=None):
-    if start is None:
-        start = '2008-01-01'
-
-    if end is None:
-        end = QA_util_today_str()
-
-    if start != end:
-        rng = QA_util_get_trade_range(start, end)
-    else:
-        rng = str(start)[0:10]
-
-    start_date = QA_util_get_pre_trade_date(start,100)
-    data = QA_fetch_stock_day_adv(codes,start_date,end)
-    try:
-        res1 = data.to_qfq().data
-        res1.columns = [x + '_qfq' for x in res1.columns]
-        data = data.data.join(res1).fillna(0).reset_index()
-        res = data.groupby('code').apply(pct)
-        res = res.set_index(['date','code']).loc[(rng,),].replace([np.inf, -np.inf], 0)
-        res = res.where((pd.notnull(res)), None).reset_index()[['date','code','open','high','low','close','volume','amount',
-                                                                'open_qfq','high_qfq','low_qfq','close_qfq','AVG_TOTAL_MARKET',
-                                                                'LAG_MARKET','AVG_LAG_MARKET','LAG_HIGH','LAG_LOW','LAG_AMOUNT',
-                                                                'LAG2_MARKET','AVG_LAG2_MARKET',
-                                                                'LAG3_MARKET','AVG_LAG3_MARKET',
-                                                                'LAG5_MARKET','AVG_LAG5_MARKET',
-                                                                'LAG10_MARKET','AVG_LAG10_MARKET',
-                                                                'LAG20_MARKET','AVG_LAG20_MARKET',
-                                                                'LAG30_MARKET','AVG_LAG30_MARKET','LAG30_HIGH','LAG30_LOW',
-                                                                'LAG60_MARKET','AVG_LAG60_MARKET','LAG60_HIGH','LAG60_LOW',
-                                                                'LAG90_MARKET','AVG_LAG90_MARKET','LAG90_HIGH','LAG90_LOW',
-                                                                'AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10',
-                                                                'AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20',
-                                                                'AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30',
-                                                                'AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60',
-                                                                'AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90',
-                                                                'AVG5_T_MARKET','AVG5_A_MARKET','HIGH_5','LOW_5',
-                                                                'AVG5_C_MARKET','AVG10_C_MARKET',
-                                                                'AVG20_C_MARKET','AVG30_C_MARKET','AVG60_C_MARKET','AVG90_C_MARKET',
-                                                                'RNG_L','RNG_5','RNG_10','RNG_20','RNG_30','RNG_60','RNG_90',
-                                                                'AMT_L','AMT_5','AMT_10','AMT_20','AMT_30','AMT_60','AMT_90',
-                                                                'MAMT_5','MAMT_10','MAMT_20','MAMT_30','MAMT_60','MAMT_90']]
-    except:
-        res=None
-    return(res)
 
 def QA_etl_stock_list(ui_log= None):
     QA_util_log_info(
@@ -175,6 +71,30 @@ def QA_etl_stock_xdxr(type = "day", mark_day = str(datetime.date.today()),ui_log
             QA_util_log_info(
                 '##JOB ETL STOCK XDXR HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
 
+def QA_etl_usstock_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
+    QA_util_log_info(
+        '##JOB Now ETL USSTOCK DAY ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_usstock_list()['code'])
+    if type == "all":
+        for i in codes:
+            QA_util_log_info('The {} of Total {}====={}'.format
+                             ((codes.index(i) +1), len(codes), i))
+            data = QA_fetch_get_usstock_etlday(i)
+            if data is None:
+                QA_util_log_info("We have no MARKET data for the ======= {}".format(i))
+            else:
+                QA_util_sql_store_mysql(data, "usstock_market_day",if_exists='append')
+                QA_util_log_info(
+                    '##JOB ETL USSTOCK DAY HAS BEEN SAVED ==== {}'.format(i), ui_log)
+    elif type == "day":
+        data = QA_fetch_get_usstock_etlday(codes, mark_day, mark_day)
+        if data is None:
+            QA_util_log_info("We have no MARKET data for the day {}".format(mark_day))
+        else:
+            QA_util_sql_store_mysql(data, "usstock_market_day",if_exists='append')
+            QA_util_log_info(
+                '##JOB ETL USSTOCK DAY HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+
 def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK DAY ==== {}'.format(mark_day), ui_log)
@@ -183,7 +103,7 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log=
         for i in codes:
             QA_util_log_info('The {} of Total {}====={}'.format
                              ((codes.index(i) +1), len(codes), i))
-            data = ETL_stock_day(i)
+            data = QA_fetch_get_stock_etlday(i)
             if data is None:
                 QA_util_log_info("We have no MARKET data for the ======= {}".format(i))
             else:
@@ -191,13 +111,37 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log=
                 QA_util_log_info(
                     '##JOB ETL STOCK DAY HAS BEEN SAVED ==== {}'.format(i), ui_log)
     elif type == "day":
-        data = ETL_stock_day(codes, mark_day, mark_day)
+        data = QA_fetch_get_stock_etlday(codes, mark_day, mark_day)
         if data is None:
             QA_util_log_info("We have no MARKET data for the day {}".format(mark_day))
         else:
             QA_util_sql_store_mysql(data, "stock_market_day",if_exists='append')
             QA_util_log_info(
                 '##JOB ETL STOCK DAY HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+
+def QA_etl_stock_half(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
+    QA_util_log_info(
+        '##JOB Now ETL STOCK HALF ==== {}'.format(mark_day), ui_log)
+    codes = list(QA_fetch_stock_all()['code'])
+    if type == "all":
+        for i in codes:
+            QA_util_log_info('The {} of Total {}====={}'.format
+                             ((codes.index(i) +1), len(codes), i))
+            data = QA_fetch_get_stock_etlhalf(i)
+            if data is None:
+                QA_util_log_info("We have no MARKET data for the ======= {}".format(i))
+            else:
+                QA_util_sql_store_mysql(data, "stock_market_half",if_exists='append')
+                QA_util_log_info(
+                    '##JOB ETL STOCK HALF HAS BEEN SAVED ==== {}'.format(i), ui_log)
+    elif type == "day":
+        data = QA_fetch_get_stock_etlhalf(codes, mark_day, mark_day)
+        if data is None:
+            QA_util_log_info("We have no MARKET data for the day {}".format(mark_day))
+        else:
+            QA_util_sql_store_mysql(data, "stock_market_half",if_exists='append')
+            QA_util_log_info(
+                '##JOB ETL STOCK HALF HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
 
 def QA_etl_stock_financial(type = "crawl", start_date = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
