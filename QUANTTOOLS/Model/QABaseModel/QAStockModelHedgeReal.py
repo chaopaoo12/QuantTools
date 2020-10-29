@@ -6,15 +6,15 @@ from QUANTTOOLS.Message import send_email, send_actionnotice
 
 class QAStockModelHedgeReal(QAModel):
 
-    def get_data(self, start, end, block=False, sub_block=False, type ='crawl'):
+    def get_data(self, start, end, block=False, sub_block=False, type ='crawl', norm_type='normalization'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-        self.data = get_hedge_data_train(start, end, type = type, block = block, sub_block = sub_block)
+        self.data = get_hedge_data_train(start, end, type = type, block = block, sub_block = sub_block, norm_type=norm_type)
         self.data = self.data[(self.data.next_date == self.data.PRE_DATE)]
         print(self.data.shape)
 
-    def model_predict(self, start, end, block = True, sub_block= False, type='model'):
+    def model_predict(self, start, end, block = True, sub_block= False, type='model', norm_type='normalization'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-        data = get_hedge_data_realtime(start, end, type= type,block = block, sub_block=sub_block)
+        data = get_hedge_data_realtime(start, end, type= type,block = block, sub_block=sub_block, norm_type=norm_type)
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK',
