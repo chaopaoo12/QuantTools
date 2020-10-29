@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Ora
 ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
 
 sql_text = '''select to_char(order_date, 'yyyy-mm-dd') as "date",
-       code,
+       a.code as "code",
        round(high_qfq/low_qfq - 1,4) as RNG_HALF,
        to_number(RNG_L) as RNG_L_HALF,
        to_number(RNG_5) as RNG_5_HALF,
@@ -142,7 +142,7 @@ sql_text = '''select to_char(order_date, 'yyyy-mm-dd') as "date",
        to_number(avg30_c_market) as avg30_c_HALF,
        to_number(avg60_c_market) as avg60_c_HALF,
        to_number(avg90_c_market) as avg90_c_HALF
-from stock_market_half
+from stock_market_half a
 where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
 and order_Date <=
@@ -156,4 +156,4 @@ def QA_Sql_Stock_BaseHalf(from_ , to_, sql_text = sql_text, ui_log= None):
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
-    return(data.drop_duplicates((['code', 'date'])).set_index(['date','code']).groupby('code').fillna(method='ffill'))
+    return(data.drop_duplicates((['code', 'date'])).set_index(['date','code']))
