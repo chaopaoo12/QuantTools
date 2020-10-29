@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Ora
 ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
 
 sql_text = '''select to_char(order_date, 'yyyy-mm-dd') as "date",
-       a.code,
+       code,
        round(high_qfq/low_qfq - 1,4) as RNG,
        to_number(RNG_L) as RNG_L,
        to_number(RNG_5) as RNG_5,
