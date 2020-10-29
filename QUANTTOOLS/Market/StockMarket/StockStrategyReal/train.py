@@ -18,10 +18,10 @@ def train(date, working_dir=working_dir):
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
-    stock_model = start_train(stock_model, datareal_set,  other_params, 0, 0.99)
+    stock_model = start_train(stock_model, None,  other_params, 0, 0.99)
     save_report(stock_model, 'stock_xg_real', working_dir)
 
-    stock_model = start_train(stock_model, data_set, other_params, 0, 0.99)
+    stock_model = start_train(stock_model, None, other_params, 0, 0.99)
     save_report(stock_model, 'stock_xg', working_dir)
 
 def train_hedge(date, working_dir=working_dir):
@@ -31,7 +31,7 @@ def train_hedge(date, working_dir=working_dir):
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
-    stock_model = start_train(stock_model, datareal_set, other_params, 0, 0.99)
+    stock_model = start_train(stock_model, None, other_params, 0, 0.99)
     save_report(stock_model, 'hedge_xg', working_dir)
 
 def train_index(date, working_dir=working_dir):
@@ -41,5 +41,5 @@ def train_index(date, working_dir=working_dir):
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
-    index_model = start_train(index_model, datareal_set, other_params, 0, 0.99)
+    index_model = start_train(index_model, None, other_params, 0, 0.99)
     save_report(index_model, 'index_xg', working_dir)
