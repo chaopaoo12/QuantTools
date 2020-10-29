@@ -705,7 +705,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
                                           #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
                                           ]]
         pe_res = pe_res.groupby('code').fillna(method='ffill')
-        pe_res = pe_res.loc[(rng,code),:].fillna(0)
+        pe_res = pe_res.loc[(rng,code),:]
         financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[(rng,code),:]
         financial_res = financial_res[financial_res.DAYS >= 150]
 
@@ -832,7 +832,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
                                           #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
                                           ]].groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
         financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
-        financial_res = financial_res[financial_res.DAYS >= 90]
+        financial_res = financial_res[financial_res.DAYS >= 150]
 
         QA_util_log_info(
             'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
@@ -848,7 +848,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
 
         QA_util_log_info(
             'JOB Get Stock Alpha101 data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').fillna(0).loc[((rng,code),)]
+        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         try:
             res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(pe_res)
