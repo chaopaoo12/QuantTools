@@ -70,6 +70,11 @@ class QAStockModel(QAModel):
         QA_util_log_info(n_cols)
         QA_util_log_info(train.shape[0])
 
+        s_res = self.data[self.cols].describe().T
+        s_res = s_res.assign(rate = s_res['count']/self.data.shape[0])
+        non_cols = list(s_res[s_res.rate < 0.99].index)
+        QA_util_log_info([i for i in non_cols if i in self.cols])
+
         if self.thresh is None:
             train = train[self.cols]
         else:
