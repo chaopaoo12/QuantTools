@@ -33,7 +33,7 @@ class QAStockModelHedgeReal(QAModel):
         train.index = data.index
         QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         QA_util_log_info(n_cols)
-        QA_util_log_info(train.shape[0], train.shape[1])
+        QA_util_log_info(train.shape[0])
         if self.thresh is None:
             train = train[self.cols]
         else:
@@ -56,7 +56,7 @@ class QAStockModelHedgeReal(QAModel):
             else:
                 train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
 
-        QA_util_log_info(train.shape[0], train.shape[1])
+        QA_util_log_info(train.shape[0])
         train = train.join(data[['INDUSTRY','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']])
 
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
