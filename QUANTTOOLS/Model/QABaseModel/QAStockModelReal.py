@@ -77,7 +77,7 @@ class QAStockModelReal(QAModel):
         if self.thresh is None:
             train = train[self.cols]
         else:
-            nan_num = (train[self.cols].isnull().sum(axis=1)> 0).count()
+            nan_num = (train[self.cols].isnull().sum(axis=1)> 0).sum()
             QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain NAN ==== from {_from} to {_to}'.format(
                 NAN_NUM = nan_num, per=nan_num/train.shape[0], shape=train.shape[0], _from=start,_to = end), ui_log = None)
 
