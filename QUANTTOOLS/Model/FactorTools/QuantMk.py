@@ -9,21 +9,23 @@ from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
 
 def get_quant_data_train(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
+    codes = QA_fetch_stock_all()
     if block is True:
         data = QA.QA_fetch_stock_block()
-        codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
+        block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
+        codes = codes[codes.code.isin(block)]
     else:
-        codes = QA_fetch_stock_all()
-        QA_util_log_info('##JOB Now Delete ST Stock')
-        codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
-        codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-        codes = list(codes['code'])
+        pass
+    QA_util_log_info('##JOB Now Delete ST Stock')
+    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
+    codes = list(codes['code'])
 
-        QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
-        codes = [i for i in codes if i.startswith('688') == False]
-        codes = [i for i in codes if i.startswith('787') == False]
-        codes = [i for i in codes if i.startswith('789') == False]
+    QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
+    codes = [i for i in codes if i.startswith('688') == False]
+    codes = [i for i in codes if i.startswith('787') == False]
+    codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     if type == 'model':
@@ -37,21 +39,23 @@ def get_quant_data_train(start_date, end_date, type = 'crawl', block = False, su
     return(res)
 
 def get_quant_data_realtime(start_date, end_date, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
+    codes = QA_fetch_stock_all()
     if block is True:
         data = QA.QA_fetch_stock_block()
-        codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
+        block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
+        codes = codes[codes.code.isin(block)]
     else:
-        codes = QA_fetch_stock_all()
-        QA_util_log_info('##JOB Now Delete ST Stock')
-        codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
-        codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-        codes = list(codes['code'])
+        pass
+    QA_util_log_info('##JOB Now Delete ST Stock')
+    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
+    codes = list(codes['code'])
 
-        QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
-        codes = [i for i in codes if i.startswith('688') == False]
-        codes = [i for i in codes if i.startswith('787') == False]
-        codes = [i for i in codes if i.startswith('789') == False]
+    QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
+    codes = [i for i in codes if i.startswith('688') == False]
+    codes = [i for i in codes if i.startswith('787') == False]
+    codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     if type == 'model':
@@ -91,21 +95,23 @@ def get_index_quant_data_norm(start_date, end_date, type = 'crawl', method = 'va
     return(pd.get_dummies(res))
 
 def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
+    codes = QA_fetch_stock_all()
     if block is True:
         data = QA.QA_fetch_stock_block()
-        codes = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
+        block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
+        codes = codes[codes.code.isin(block)]
     else:
-        codes = QA_fetch_stock_all()
-        QA_util_log_info('##JOB Now Delete ST Stock')
-        codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
-        codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-        codes = list(codes['code'])
+        pass
+    QA_util_log_info('##JOB Now Delete ST Stock')
+    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
+    codes = list(codes['code'])
 
-        QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
-        codes = [i for i in codes if i.startswith('688') == False]
-        codes = [i for i in codes if i.startswith('787') == False]
-        codes = [i for i in codes if i.startswith('789') == False]
+    QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
+    codes = [i for i in codes if i.startswith('688') == False]
+    codes = [i for i in codes if i.startswith('787') == False]
+    codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     if type == 'model':
@@ -119,21 +125,23 @@ def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub
     return(res)
 
 def get_hedge_data_train(start_date, end_date, type = 'crawl', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
+    codes = QA_fetch_stock_all()
     if block is True:
         data = QA.QA_fetch_stock_block()
-        codes = list(data[data.blockname.isin(['沪深300'])]['code'].drop_duplicates())
+        block = list(data[data.blockname.isin(['沪深300'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
+        codes = codes[codes.code.isin(block)]
     else:
-        codes = QA_fetch_stock_all()
-        QA_util_log_info('##JOB Now Delete ST Stock')
-        codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
-        codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-        codes = list(codes['code'])
+        pass
+    QA_util_log_info('##JOB Now Delete ST Stock')
+    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
+    codes = list(codes['code'])
 
-        QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
-        codes = [i for i in codes if i.startswith('688') == False]
-        codes = [i for i in codes if i.startswith('787') == False]
-        codes = [i for i in codes if i.startswith('789') == False]
+    QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
+    codes = [i for i in codes if i.startswith('688') == False]
+    codes = [i for i in codes if i.startswith('787') == False]
+    codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     if type == 'model':
@@ -147,21 +155,23 @@ def get_hedge_data_train(start_date, end_date, type = 'crawl', block = True, sub
     return(res)
 
 def get_hedge_data_realtime(start_date, end_date, type = 'model', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
+    codes = QA_fetch_stock_all()
     if block is True:
         data = QA.QA_fetch_stock_block()
-        codes = list(data[data.blockname.isin(['沪深300'])]['code'].drop_duplicates())
+        block = list(data[data.blockname.isin(['沪深300'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
+        codes = codes[codes.code.isin(block)]
     else:
-        codes = QA_fetch_stock_all()
-        QA_util_log_info('##JOB Now Delete ST Stock')
-        codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
-        codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-        codes = list(codes['code'])
+        pass
+    QA_util_log_info('##JOB Now Delete ST Stock')
+    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
+    codes = list(codes['code'])
 
-        QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
-        codes = [i for i in codes if i.startswith('688') == False]
-        codes = [i for i in codes if i.startswith('787') == False]
-        codes = [i for i in codes if i.startswith('789') == False]
+    QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
+    codes = [i for i in codes if i.startswith('688') == False]
+    codes = [i for i in codes if i.startswith('787') == False]
+    codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     if type == 'model':
