@@ -62,7 +62,7 @@ class QAModel():
         if thresh is None:
             train_data = self.data
         else:
-            nan_num = self.data[self.cols].isnull().sum(axis=1)[self.data[self.cols].isnull().sum(axis=1) > 0].count()
+            nan_num = (self.data[self.cols].isnull().sum(axis=1)> 0).count()
             QA_util_log_info('##JOB Drop Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ===== {date}'.format(
                 NAN_NUM = nan_num, per=nan_num/self.data.shape[0], shape=self.data.shape[0], thresh=thresh,date=self.info['date']), ui_log = None)
 
