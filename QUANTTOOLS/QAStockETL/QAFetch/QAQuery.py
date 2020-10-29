@@ -723,7 +723,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
 
         QA_util_log_info(
             'JOB Get Stock Alpha101 train data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
+        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Stock Alpha101 Half train data start=%s end=%s' % (start, sec_end))
@@ -731,7 +731,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
 
         QA_util_log_info(
             'JOB Get Stock Alpha191 Half train data start=%s end=%s' % (start, sec_end))
-        alpha191half_res = alpha191_half(start_date,sec_end).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
+        alpha191half_res = alpha191_half(start_date,sec_end).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)].fillna(0)
 
         QA_util_log_info(
             'JOB Get Stock Base Half train data start=%s end=%s' % (start, sec_end))
