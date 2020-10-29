@@ -1,5 +1,5 @@
 import pandas as pd
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_norm
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_realtime
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAModel import QAModel
 from QUANTTOOLS.Message import send_email, send_actionnotice
@@ -15,7 +15,7 @@ class QAStockModel(QAModel):
 
     def model_predict(self, start, end, block = False, sub_block= False, type='crawl', norm_type='normalization'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-        data = get_quant_data_norm(start, end, type= type,block = block, sub_block=sub_block, norm_type=norm_type)
+        data = get_quant_data_realtime(start, end, type= type,block = block, sub_block=sub_block, norm_type=norm_type)
 
         code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all().code.unique().tolist())
         code_old = QA_fetch_code_old().code.unique().tolist()
