@@ -2,7 +2,8 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_get_qu
                                            QA_fetch_index_quant_data,QA_fetch_get_index_quant_data,
                                            QA_fetch_stock_quant_pre_adv,QA_fetch_index_quant_pre_adv,QA_fetch_stock_all,
                                            QA_fetch_index_info,QA_fetch_stock_om_all,QA_fetch_stock_quant_pre_train_adv,
-                                           QA_fetch_get_quant_data_train,QA_fetch_get_quant_data_realtime)
+                                           QA_fetch_get_quant_data_train,QA_fetch_get_quant_data_realtime,
+                                           QA_fetch_code_new)
 import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
@@ -18,6 +19,10 @@ def get_quant_data_train(start_date, end_date, type = 'crawl', block = False, su
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
         codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
+
+        new_code = QA_fetch_code_new(90, end_date)
+        QA_util_log_info('##JOB Now Delete New Stock')
+        codes = [i for i in codes if i not in new_code.code.tolist()]
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
@@ -45,6 +50,9 @@ def get_quant_data_realtime(start_date, end_date, type = 'model', block = False,
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
         codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
+        new_code = QA_fetch_code_new(90, end_date)
+        QA_util_log_info('##JOB Now Delete New Stock')
+        codes = [i for i in codes if i not in new_code.code.tolist()]
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
@@ -98,6 +106,9 @@ def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
         codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
+        new_code = QA_fetch_code_new(90, end_date)
+        QA_util_log_info('##JOB Now Delete New Stock')
+        codes = [i for i in codes if i not in new_code.code.tolist()]
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
@@ -125,6 +136,9 @@ def get_hedge_data_train(start_date, end_date, type = 'crawl', block = True, sub
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
         codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
+        new_code = QA_fetch_code_new(90, end_date)
+        QA_util_log_info('##JOB Now Delete New Stock')
+        codes = [i for i in codes if i not in new_code.code.tolist()]
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
@@ -152,6 +166,9 @@ def get_hedge_data_realtime(start_date, end_date, type = 'model', block = True, 
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
         codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
+        new_code = QA_fetch_code_new(90, end_date)
+        QA_util_log_info('##JOB Now Delete New Stock')
+        codes = [i for i in codes if i not in new_code.code.tolist()]
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
