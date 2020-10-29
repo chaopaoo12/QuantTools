@@ -109,6 +109,7 @@ class QAModel():
         self.info = joblib.load(working_dir+"\\{name}info.joblib.dat".format(name=name))
         self.cols = self.info['cols']
         self.thresh = self.info['thresh']
+        self.drop = self.info['drop']
         return(self)
 
 if __name__ == 'main':
