@@ -704,38 +704,38 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
                                           #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
                                           #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
                                           ]]
-
-        pe_res = pe_res.loc[(rng,code),:]
-        financial_res = financial(start_date,end_date).loc[(rng,code),:]
-        financial_res = financial_res[financial_res.DAYS >= 90]
+        pe_res = pe_res.groupby('code').fillna(method='ffill')
+        pe_res = pe_res.loc[(rng,code),:].fillna(0)
+        financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[(rng,code),:]
+        financial_res = financial_res[financial_res.DAYS >= 150]
 
         QA_util_log_info(
             'JOB Get Stock Tech Index train data start=%s end=%s' % (start, end))
-        index_res = index(start_date,end_date).loc[((rng,code),)]
+        index_res = index(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Stock Tech Week train data start=%s end=%s' % (start, end))
-        week_res = week(start_date,end_date).loc[((rng,code),)]
+        week_res = week(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Stock Alpha191 train data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start_date,end_date).loc[((rng,code),)]
+        alpha_res = alpha(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Stock Alpha101 train data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').fillna(0).loc[((rng,code),)]
+        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Stock Alpha101 Half train data start=%s end=%s' % (start, sec_end))
-        alpha101half_res = alpha101_half(start_date,sec_end).groupby('code').apply(lambda x:x.shift(-1)).loc[((rng,code),)]
+        alpha101half_res = alpha101_half(start_date,sec_end).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Stock Alpha191 Half train data start=%s end=%s' % (start, sec_end))
-        alpha191half_res = alpha191_half(start_date,sec_end).groupby('code').apply(lambda x:x.shift(-1)).loc[((rng,code),)]
+        alpha191half_res = alpha191_half(start_date,sec_end).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Stock Base Half train data start=%s end=%s' % (start, sec_end))
-        basehalf_res = base_half(start_date,end_date).groupby('code').apply(lambda x:x.shift(-1)).loc[(rng,code),:]
+        basehalf_res = base_half(start_date,end_date).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[(rng,code),:]
 
         try:
             res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(alpha101half_res).join(alpha191half_res).join(pe_res).join(basehalf_res)
