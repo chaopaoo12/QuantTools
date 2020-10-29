@@ -20,9 +20,6 @@ def get_quant_data_train(start_date, end_date, type = 'crawl', block = False, su
         codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
 
-        new_code = QA_fetch_code_new(90, end_date)
-        QA_util_log_info('##JOB Now Delete New Stock')
-        codes = [i for i in codes if i not in new_code.code.tolist()]
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
@@ -50,9 +47,7 @@ def get_quant_data_realtime(start_date, end_date, type = 'model', block = False,
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
         codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
-        new_code = QA_fetch_code_new(90, end_date)
-        QA_util_log_info('##JOB Now Delete New Stock')
-        codes = [i for i in codes if i not in new_code.code.tolist()]
+
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
@@ -106,9 +101,7 @@ def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
         codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
-        new_code = QA_fetch_code_new(90, end_date)
-        QA_util_log_info('##JOB Now Delete New Stock')
-        codes = [i for i in codes if i not in new_code.code.tolist()]
+
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
@@ -136,9 +129,7 @@ def get_hedge_data_train(start_date, end_date, type = 'crawl', block = True, sub
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
         codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
-        new_code = QA_fetch_code_new(90, end_date)
-        QA_util_log_info('##JOB Now Delete New Stock')
-        codes = [i for i in codes if i not in new_code.code.tolist()]
+
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
@@ -166,9 +157,7 @@ def get_hedge_data_realtime(start_date, end_date, type = 'model', block = True, 
         codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
         codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
         codes = list(codes['code'])
-        new_code = QA_fetch_code_new(90, end_date)
-        QA_util_log_info('##JOB Now Delete New Stock')
-        codes = [i for i in codes if i not in new_code.code.tolist()]
+
         QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
         codes = [i for i in codes if i.startswith('688') == False]
         codes = [i for i in codes if i.startswith('787') == False]
