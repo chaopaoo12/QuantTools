@@ -705,7 +705,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
                                           #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
                                           ]]
         pe_res = pe_res.groupby('code').fillna(method='ffill')
-        pe_res = pe_res.loc[(rng,code),:]
+        pe_res = pe_res.loc[(rng,code),:].fillna(0)
         financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[(rng,code),:]
         financial_res = financial_res[financial_res.DAYS >= 150]
 
