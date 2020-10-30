@@ -25,7 +25,7 @@ def train(date, working_dir=working_dir):
     save_report(stock_model, 'stock_xg_real', working_dir)
 
     stock_model = QAStockModelHedgeReal()
-    stock_model = prepare_train(stock_model, date, col = 'TARGET',k = 3, start = "-01-01", shift=5)
+    stock_model = prepare_train(stock_model, date, col = 'TARGET5',k = 3, start = "-01-01", shift=5)
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
