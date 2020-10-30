@@ -704,10 +704,9 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
                                           #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
                                           #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
                                           ]]
-        pe_res = pe_res.groupby('code').fillna(method='ffill')
-        pe_res = pe_res.loc[(rng,code),:].fillna(0)
+        pe_res = pe_res.groupby('code').fillna(method='ffill').loc[(rng,code),:].fillna(0)
         financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[(rng,code),:]
-        financial_res = financial_res[financial_res.DAYS >= 150]
+        financial_res = financial_res[financial_res.DAYS >= 90]
 
         QA_util_log_info(
             'JOB Get Stock Tech Index train data start=%s end=%s' % (start, end))
@@ -735,7 +734,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
 
         QA_util_log_info(
             'JOB Get Stock Base Half train data start=%s end=%s' % (start, sec_end))
-        basehalf_res = base_half(start_date,end_date).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[(rng,code),:]
+        basehalf_res = base_half(start_date,end_date).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[(rng,code),:].fillna(0)
 
         try:
             res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(alpha101half_res).join(alpha191half_res).join(pe_res).join(basehalf_res)
@@ -832,7 +831,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
                                           #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
                                           ]].groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
         financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
-        financial_res = financial_res[financial_res.DAYS >= 150]
+        financial_res = financial_res[financial_res.DAYS >= 90]
 
         QA_util_log_info(
             'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
@@ -2977,3 +2976,40 @@ def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, type=
     else:
         QA_util_log_info(
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
+
+def QA_fetch_stock_base_real(code, start, end=None, format='pd', collections=DATABASE.stock_basereal):
+    '获取股票日线'
+    #code= [code] if isinstance(code,str) else code
+    # code checking
+    code = QA_util_code_tolist(code)
+
+    if QA_util_date_valid(end):
+
+        __data = []
+        cursor = collections.find({
+            'code': {'$in': code}, "date_stamp": {
+                "$lte": QA_util_date_stamp(end),
+                "$gte": QA_util_date_stamp(start)}}, {"_id": 0}, batch_size=10000)
+        #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
+
+        res = pd.DataFrame([item for item in cursor])
+        try:
+            res = res.drop_duplicates(
+                (['code', 'date'])).drop(['date_stamp'],axis=1).set_index(['date','code'])
+        except:
+            res = None
+        if format in ['P', 'p', 'pandas', 'pd']:
+            return res
+        elif format in ['json', 'dict']:
+            return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+        elif format in ['n', 'N', 'numpy']:
+            return numpy.asarray(res)
+        elif format in ['list', 'l', 'L']:
+            return numpy.asarray(res).tolist()
+        else:
+            QA_util_log_info("QA Error QA_fetch_stock_base_real format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            return None
+    else:
+        QA_util_log_info(
+            'QA Error QA_fetch_stock_base_real data parameter start=%s end=%s is not right' % (start, end))
