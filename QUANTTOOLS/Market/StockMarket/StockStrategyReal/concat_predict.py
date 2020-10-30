@@ -4,24 +4,24 @@ from QUANTTOOLS.Model.StockModel.StrategyXgboostReal import QAStockXGBoostReal
 from QUANTTOOLS.Model.StockModel.StrategyXgboostHedge import QAStockXGBoostHedge
 from QUANTTOOLS.Market.MarketTools import make_prediction,make_stockprediction,make_indexprediction
 
-def concat_predict(trading_date, working_dir, type = 'crawl', model_name = 'stock_xg'):
+def concat_predict(trading_date, working_dir, type = 'crawl', model_name = 'stock_xg', norm_type=None):
     Stock = QAStockXGBoost()
-    target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, type)
+    target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, type, norm_type)
     return(target_pool,prediction,start,end,Model_Date)
 
-def concat_predict_real(trading_date, working_dir, type = 'model', model_name = 'stock_xg_real'):
+def concat_predict_real(trading_date, working_dir, type = 'model', model_name = 'stock_xg_real', norm_type=None):
     Stock = QAStockXGBoostReal()
-    target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, type)
+    target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, type, norm_type)
     return(target_pool,prediction,start,end,Model_Date)
 
-def concat_predict_crawl(trading_date, working_dir, type = 'crawl', model_name = 'stock_xg_real'):
+def concat_predict_crawl(trading_date, working_dir, type = 'crawl', model_name = 'stock_xg_real', norm_type=None):
     Stock = QAStockXGBoostReal()
-    target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, type)
+    target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, type, norm_type)
     return(target_pool,prediction,start,end,Model_Date)
 
-def concat_predict_hedge(trading_date, working_dir, type = 'model', model_name = 'hedge_xg'):
+def concat_predict_hedge(trading_date, working_dir, type = 'model', model_name = 'hedge_xg', norm_type=None):
     Stock = QAStockXGBoostHedge()
-    target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, type)
+    target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, type, norm_type)
     return(target_pool,prediction,start,end,Model_Date)
 
 def concat_predict_index(trading_date, working_dir, model_name = 'index_xg'):
