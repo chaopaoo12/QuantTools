@@ -27,7 +27,7 @@ def train(date, working_dir=working_dir):
     hedge_model = QAStockModelHedgeReal()
     hedge_model = load_data(hedge_model, date, k = 3, start = "-01-01", shift=5, norm_type=None)
 
-    hedge_model = prepare_data(hedge_model, date, col = 'TARGET5', k = 3, start = "-01-01", shift=5)
+    hedge_model = prepare_data(hedge_model, date, col = 'TARGET', k = 3, start = "-01-01", shift=1)
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
@@ -39,7 +39,7 @@ def train_hedge(date, working_dir=working_dir):
     hedge_model = QAStockModelHedgeReal()
     hedge_model = load_data(hedge_model, date, k = 3, start = "-01-01", shift=5, norm_type=None)
 
-    hedge_model = prepare_data(hedge_model, date, col = 'TARGET5', k = 3, start = "-01-01", shift=5)
+    hedge_model = prepare_data(hedge_model, date, col = 'TARGET', k = 3, start = "-01-01", shift=1)
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
