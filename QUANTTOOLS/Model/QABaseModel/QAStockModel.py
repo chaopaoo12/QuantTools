@@ -12,6 +12,9 @@ class QAStockModel(QAModel):
         self.data = get_quant_data_train(start, end, code=code, type = type, block = block, sub_block = sub_block, norm_type=norm_type)
         self.data = self.data[(self.data.next_date == self.data.PRE_DATE)]
         self.info['code'] = code
+        self.info['norm_type'] = norm_type
+        self.info['block'] = block
+        self.info['sub_block'] = sub_block
         QA_util_log_info(self.data.shape)
 
     def model_predict(self, start, end, type='crawl'):
