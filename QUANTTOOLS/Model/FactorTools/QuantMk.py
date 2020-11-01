@@ -8,8 +8,13 @@ import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
 
-def get_quant_data_train(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
-    codes = QA_fetch_stock_all()
+def get_quant_data_train(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
+    code_list = QA_fetch_stock_all()
+    if code is None:
+        codes = code_list
+    else:
+        codes = code_list[code_list.code.isin(code)]
+
     if block is True:
         data = QA.QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
@@ -38,8 +43,14 @@ def get_quant_data_train(start_date, end_date, type = 'crawl', block = False, su
     #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
-def get_quant_data_realtime(start_date, end_date, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
-    codes = QA_fetch_stock_all()
+def get_quant_data_realtime(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
+
+    code_list = QA_fetch_stock_all()
+    if code is None:
+        codes = code_list
+    else:
+        codes = code_list[code_list.code.isin(code)]
+
     if block is True:
         data = QA.QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
@@ -94,8 +105,14 @@ def get_index_quant_data_norm(start_date, end_date, type = 'crawl', method = 'va
         res = res.join(target)
     return(pd.get_dummies(res))
 
-def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
-    codes = QA_fetch_stock_all()
+def get_quant_data_norm(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
+
+    code_list = QA_fetch_stock_all()
+    if code is None:
+        codes = code_list
+    else:
+        codes = code_list[code_list.code.isin(code)]
+
     if block is True:
         data = QA.QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
@@ -124,8 +141,13 @@ def get_quant_data_norm(start_date, end_date, type = 'crawl', block = False, sub
     #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
-def get_hedge_data_train(start_date, end_date, type = 'crawl', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
-    codes = QA_fetch_stock_all()
+def get_hedge_data_train(start_date, end_date, code=None, type = 'crawl', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
+    code_list = QA_fetch_stock_all()
+    if code is None:
+        codes = code_list
+    else:
+        codes = code_list[code_list.code.isin(code)]
+
     if block is True:
         data = QA.QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['沪深300'])]['code'].drop_duplicates())
@@ -154,8 +176,13 @@ def get_hedge_data_train(start_date, end_date, type = 'crawl', block = True, sub
     #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
-def get_hedge_data_realtime(start_date, end_date, type = 'model', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
-    codes = QA_fetch_stock_all()
+def get_hedge_data_realtime(start_date, end_date, code=None, type = 'model', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
+    code_list = QA_fetch_stock_all()
+    if code is None:
+        codes = code_list
+    else:
+        codes = code_list[code_list.code.isin(code)]
+
     if block is True:
         data = QA.QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['沪深300'])]['code'].drop_duplicates())

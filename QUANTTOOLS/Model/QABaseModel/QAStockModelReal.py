@@ -3,24 +3,35 @@ from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_train,get_quant_
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAModel import QAModel
 from QUANTTOOLS.Message import send_email, send_actionnotice
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old,QA_fetch_get_stockcode_real,QA_fetch_stock_all,QA_fetch_code_new,QA_fetch_stock_om_all
 
 class QAStockModelReal(QAModel):
 
-    def get_data(self, start, end, block=False, sub_block=False, type ='crawl', norm_type='normalization'):
+    def get_data(self, start, end, code=None, block=False, sub_block=False, type ='crawl', norm_type='normalization'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-        self.data = get_quant_data_train(start, end, type = type, block = block, sub_block = sub_block, norm_type=norm_type)
+        self.data = get_quant_data_train(start, end, code=code, type = type, block = block, sub_block = sub_block, norm_type=norm_type)
         self.data = self.data[(self.data.next_date == self.data.PRE_DATE)]
+        self.info['code'] = code
+        self.info['norm_type'] = norm_type
+        self.info['block'] = block
+        self.info['sub_block'] = sub_block
+        QA_util_log_info(self.data.shape)
 
-    def model_predict(self, start, end, block = False, sub_block= False, type='model', norm_type='normalization'):
-        QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-        data = get_quant_data_realtime(start, end, type= type,block = block, sub_block=sub_block, norm_type=norm_type)
+    def model_predict(self, start, end, type='model'):
+        QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=self.block,sub_block=self.sub_block, _from=start, _to=end), ui_log = None)
+
+        data = get_quant_data_realtime(start, end, self.code, type= type, block = self.block, sub_block=self.sub_block, norm_type=self.norm_type)
+
         code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all().code.unique().tolist())
         code_old = QA_fetch_code_old().code.unique().tolist()
         code_new = QA_fetch_code_new().code.unique().tolist()
 
         codes = QA_fetch_stock_om_all()
+        if self.code is None:
+            codes = codes
+        else:
+            codes = codes[codes.code.isin(self.code)]
+
         ST = list(codes[codes.name.apply(lambda x:x.count('ST')) == 1]['code']) + list(codes[codes.name.apply(lambda x:x.count('退')) == 1]['code'])
         codes = list(codes['code'])
         code_688 = [i for i in codes if i.startswith('688') == True] + [i for i in codes if i.startswith('787') == True] + [i for i in codes if i.startswith('789') == True]

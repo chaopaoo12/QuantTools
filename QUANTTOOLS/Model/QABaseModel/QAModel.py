@@ -88,6 +88,7 @@ class QAModel():
 
     def copy_model(self, object):
         self.data = object.data
+        self.info = object.info
 
     def save_model(self, name, working_dir = 'D:\\model\\current'):
         self.info['cols'] = self.cols
@@ -110,6 +111,11 @@ class QAModel():
         self.cols = self.info['cols']
         self.thresh = self.info['thresh']
         self.drop = self.info['drop']
+        self.code = self.info['code']
+        self.norm_type = self.info['norm_type']
+        self.block = self.info['block']
+        self.sub_block = self.info['sub_block']
+
         return(self)
 
 if __name__ == 'main':
