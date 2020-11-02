@@ -35,15 +35,15 @@ def trading_summary(trading_date,percent = percent, account= 'name:client-1',exc
     model_name = 'stock_xg'
     print(r_tar)
     print(trading_date)
-    buy_code = []
-    for i in list(r_tar.index):
-        if QA_fetch_get_stock_realtm_ask(i) > 0:
-            buy_code = buy_code.append(i)
+    #buy_code = []
+    #for i in list(r_tar.index):
+    #    if QA_fetch_get_stock_realtm_ask(i) > 0:
+    #        buy_code = buy_code.append(i)
 
-    if buy_code is None or len(buy_code) == 0:
-        r_tar, prediction_tar = load_data(concat_predict, trading_date, working_dir, 'stock_xg_real', 'prediction_real')
-        model_name = 'stock_xg_real'
-        percent = 0.2
+    #if buy_code is None or len(buy_code) == 0:
+    #    r_tar, prediction_tar = load_data(concat_predict, trading_date, working_dir, 'stock_xg_real', 'prediction_real')
+    #    model_name = 'stock_xg_real'
+    #    percent = 0.2
 
     res = trading_base(trading_date, r_tar, prediction_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
 
