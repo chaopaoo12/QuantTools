@@ -56,6 +56,7 @@ if __name__ == '__main__':
     res = check_stock_quant(mark_day)
     while res is None or (len(res[0]) + len(res[1])) > 10:
         time.sleep(180)
+        res = check_stock_quant(mark_day)
 
     daily_run(mark_day)
 
@@ -65,4 +66,4 @@ if __name__ == '__main__':
         res = check_stock_alpha191half(mark_day)
 
     daily_run_crawl(check_day)
-    #daily_run_hedge(check_day)
+    daily_run_hedge(check_day)
