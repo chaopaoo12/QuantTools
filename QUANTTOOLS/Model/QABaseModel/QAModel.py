@@ -23,9 +23,9 @@ class QAModel():
         self.data['sun'] = self.data[self.target].apply(lambda x : 1 if x > 0 else 0)
 
         if type == 'value':
-            self.data['star'] = self.data['TARGET'].apply(lambda x : 1 if x >= mark else 0)
+            self.data['star'] = self.data[self.target].apply(lambda x : 1 if x >= mark else 0)
         elif type == 'percent':
-            self.data['star'] = self.data['TARGET'].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
+            self.data['star'] = self.data[self.target].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
         else:
             QA_util_log_info('##target type must be in [value,percent] ===== {}'.format(self.info['date']), ui_log = None)
         self.info['target'] = self.target
