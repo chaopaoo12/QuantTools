@@ -1666,12 +1666,12 @@ def QA_SU_save_stock_basereal(client=DATABASE, ui_log=None, ui_progress=None):
                       unique=True)
     err = []
 
-    def __saving_work(stock_list, coll):
+    def __saving_work(code, coll):
         QA_util_log_info(
-            '##JOB10 Now Saving STOCK BASE REAL ==== ',
+            '##JOB10 Now Saving STOCK BASE REAL ==== {}'.format(str(code)),
             ui_log=ui_log
         )
-        data = QA_fetch_get_stock_etlreal(stock_list)
+        data = QA_fetch_get_stock_etlreal(code)
         try:
             coll.insert_many(
                 QA_util_to_json_from_pandas(data)
@@ -1680,7 +1680,15 @@ def QA_SU_save_stock_basereal(client=DATABASE, ui_log=None, ui_progress=None):
         except Exception as error0:
             print(error0)
             err.append(error0)
-    __saving_work(stock_list, coll)
+
+    for code in stock_list:
+        QA_util_log_info('The {} of Total {}'.format
+                         ((stock_list.index(code) +1), len(stock_list)))
+
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((stock_list.index(code) +1) / len(stock_list) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((stock_list.index(code) +1) / len(stock_list) * 100))
+        QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+        __saving_work(code, coll)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS', ui_log=ui_log)
