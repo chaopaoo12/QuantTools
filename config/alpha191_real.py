@@ -13,7 +13,7 @@ if __name__ == '__main__':
             res = check_stock_real(mark_day)
 
         res = check_stock_alpha191real(mark_day)
-        while res is None or  (len(res[0]) + len(res[1])) > 0:
+        while res is None or len(res[2]) > 0:
             QA_SU_save_stock_alpha191half_real()
             res = check_stock_alpha191real(mark_day)
 
