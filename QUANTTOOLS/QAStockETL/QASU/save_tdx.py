@@ -29,7 +29,8 @@ from QUANTAXIS.QAUtil import (
     QA_util_to_json_from_pandas,
     QA_util_today_str,
     trade_date_sse,
-    QA_util_date_stamp
+    QA_util_date_stamp,
+    QA_util_code_tolist
 )
 
 
@@ -1649,14 +1650,16 @@ def QA_SU_save_stock_aklist(client=DATABASE, ui_log=None, ui_progress=None):
 
         pass
 
-def QA_SU_save_stock_basereal(client=DATABASE, ui_log=None, ui_progress=None):
+def QA_SU_save_stock_basereal(code =None, start_date = None, end_date = None, client=DATABASE, ui_log=None, ui_progress=None):
     """save stock_info
 
     Keyword Arguments:
         client {[type]} -- [description] (default: {DATABASE})
     """
-
-    stock_list = QA_fetch_stock_all().code.unique().tolist()
+    if code is None:
+        stock_list = QA_fetch_stock_all().code.unique().tolist()
+    else:
+        stock_list = QA_util_code_tolist(code)
     stock_basereal = client.stock_basereal
     stock_basereal.create_index([('code',
                         pymongo.ASCENDING),
@@ -1665,12 +1668,12 @@ def QA_SU_save_stock_basereal(client=DATABASE, ui_log=None, ui_progress=None):
                       unique=True)
     err = []
 
-    def __saving_work(code):
+    def __saving_work(code, start_date, end_date):
         QA_util_log_info(
             '##JOB10 Now Saving STOCK BASE REAL ==== {}'.format(str(code)),
             ui_log=ui_log
         )
-        data = QA_fetch_get_stock_etlreal(code)
+        data = QA_fetch_get_stock_etlreal(code, start_date, end_date)
         try:
             stock_basereal.insert_many(
                 QA_util_to_json_from_pandas(data)
@@ -1687,7 +1690,7 @@ def QA_SU_save_stock_basereal(client=DATABASE, ui_log=None, ui_progress=None):
         strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((stock_list.index(code) +1) / len(stock_list) * 100))[0:4] + '%', ui_log)
         intProgressToLog = int(float((stock_list.index(code) +1) / len(stock_list) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
-        __saving_work(code)
+        __saving_work(code, start_date, end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS', ui_log=ui_log)

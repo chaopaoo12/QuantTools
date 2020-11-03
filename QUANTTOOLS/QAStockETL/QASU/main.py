@@ -250,8 +250,8 @@ def QA_SU_save_usstock_pe():
 def QA_SU_save_stock_real():
     save_tdx.QA_SU_save_stock_real()
 
-def QA_SU_save_stock_basereal():
-    save_tdx.QA_SU_save_stock_basereal()
+def QA_SU_save_stock_basereal(code = None, start_date = QA_util_today_str(), end_date = QA_util_today_str()):
+    save_tdx.QA_SU_save_stock_basereal(code = code, start_date = start_date, end_date = end_date)
 
 def QA_SU_save_usstock_xq_day():
     save_tdx.QA_SU_save_usstock_xq_day()

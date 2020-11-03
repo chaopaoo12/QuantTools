@@ -1,7 +1,11 @@
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_alpha191real_adv,QA_fetch_get_stock_half_realtime,
                                            QA_fetch_stock_alpha101real_adv,QA_fetch_stock_real,
-                                           QA_fetch_stock_technical_half_adv)
+                                           QA_fetch_stock_technical_half_adv,
+                                           QA_fetch_stock_base_real_adv)
 from QUANTTOOLS.QAStockETL.Check.check_base import check_stock_base
+
+def QA_fetch_stock_basereal(code, start, end):
+    return(QA_fetch_stock_base_real_adv(code, start, end).data)
 
 def QA_fetch_stock_alpha191real(code, start, end):
     return(QA_fetch_stock_alpha191real_adv(code, start, end).data)
@@ -14,6 +18,9 @@ def QA_fetch_stock_techreal(code, start, end):
 
 def QA_fetch_stock_half_realtime(code, start, end):
     return(QA_fetch_get_stock_half_realtime(code))
+
+def check_stock_basereal(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_basereal, func2=QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Base RealTime'))
 
 def check_stock_alpha191real(mark_day = None):
     return(check_stock_base(func1 = QA_fetch_stock_alpha191real, func2=QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock ALPHA191 RealTime'))
