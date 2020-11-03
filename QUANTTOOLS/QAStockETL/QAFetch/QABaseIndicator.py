@@ -202,7 +202,7 @@ def QA_fetch_get_stock_etlreal(codes, start=None, end=None):
                                                                 'RNG_L','RNG_5','RNG_10','RNG_20','RNG_30','RNG_60','RNG_90',
                                                                 'AMT_L','AMT_5','AMT_10','AMT_20','AMT_30','AMT_60','AMT_90',
                                                                 'MAMT_5','MAMT_10','MAMT_20','MAMT_30','MAMT_60','MAMT_90']]
-        data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
+        res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     except:
         res=None
     return(res)
