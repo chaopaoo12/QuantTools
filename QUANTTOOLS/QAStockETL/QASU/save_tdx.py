@@ -1660,7 +1660,7 @@ def QA_SU_save_stock_basereal(code =None, start_date = None, end_date = None, cl
         stock_list = QA_fetch_stock_all().code.unique().tolist()
     else:
         stock_list = QA_util_code_tolist(code)
-    stock_basereal = client.stock_basereal111
+    stock_basereal = client.stock_basereal
     stock_basereal.create_index([('code',
                         pymongo.ASCENDING),
                        ('date_stamp',
