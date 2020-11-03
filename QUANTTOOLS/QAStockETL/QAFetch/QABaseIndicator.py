@@ -1,6 +1,6 @@
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_day_adv)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_usstock_xq_day_adv,QA_fetch_stock_half_adv,QA_fetch_stock_real
-from QUANTAXIS.QAUtil import (QA_util_today_str)
+from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_date_stamp)
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_get_pre_trade_date,QA_util_get_trade_range
 from QUANTTOOLS.QAStockETL.QAUtil.base_func import uspct
 import numpy as np
@@ -202,6 +202,7 @@ def QA_fetch_get_stock_etlreal(codes, start=None, end=None):
                                                                 'RNG_L','RNG_5','RNG_10','RNG_20','RNG_30','RNG_60','RNG_90',
                                                                 'AMT_L','AMT_5','AMT_10','AMT_20','AMT_30','AMT_60','AMT_90',
                                                                 'MAMT_5','MAMT_10','MAMT_20','MAMT_30','MAMT_60','MAMT_90']]
+        data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     except:
         res=None
     return(res)
