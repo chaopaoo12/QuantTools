@@ -65,6 +65,6 @@ if __name__ == '__main__':
             res = check_stock_alpha191half(mark_day)
         check_sinastock_alpha191half(mark_day)
 
-        QA_etl_stock_half(mark_day, mark_day)
+        QA_etl_stock_half(mark_day)
         QA_etl_stock_alpha101half_day(mark_day, mark_day)
         QA_etl_stock_alpha191half_day(mark_day, mark_day)
