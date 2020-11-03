@@ -19,5 +19,6 @@ if __name__ == '__main__':
 
         res = check_stock_basereal(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 0:
-            QA_SU_save_stock_basereal(code=res[0] + res[1])
+            QA_SU_save_stock_basereal()
             res = check_stock_basereal(mark_day)
+
