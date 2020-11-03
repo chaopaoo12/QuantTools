@@ -142,13 +142,16 @@ def QA_etl_stock_half(type = "day", mark_day = str(datetime.date.today()),ui_log
                 QA_util_log_info(
                     '##JOB ETL STOCK HALF HAS BEEN SAVED ==== {}'.format(i), ui_log)
     elif type == "day":
-        data = QA_fetch_get_stock_etlhalf(codes, mark_day, mark_day)
-        if data is None:
-            QA_util_log_info("We have no MARKET data for the day {}".format(mark_day))
-        else:
-            QA_util_sql_store_mysql(data, "stock_market_half",if_exists='append')
-            QA_util_log_info(
-                '##JOB ETL STOCK HALF HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+        for i in codes:
+            QA_util_log_info('The {} of Total {}====={}'.format
+                             ((codes.index(i) +1), len(codes), i))
+            data = QA_fetch_get_stock_etlhalf(i, mark_day, mark_day)
+            if data is None:
+                QA_util_log_info("We have no MARKET data for the code {}".format(i))
+            else:
+                QA_util_sql_store_mysql(data, "stock_market_half",if_exists='append')
+                QA_util_log_info(
+                    '##JOB ETL STOCK HALF HAS BEEN SAVED ==== {}'.format(i), ui_log)
 
 def QA_etl_stock_financial(type = "crawl", start_date = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
