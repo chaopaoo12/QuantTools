@@ -25,7 +25,7 @@ def train(date, working_dir=working_dir):
     save_report(stock_model, 'stock_xg_real', working_dir)
 
     hedge_model = QAStockModelHedgeReal()
-    hedge_model = load_data(hedge_model, date, k = 3, start = "-01-01", shift=5, norm_type=None)
+    hedge_model = load_data(hedge_model, date, k = 3, start = "-01-01", shift=1, norm_type=None)
 
     hedge_model = prepare_data(hedge_model, date, col = 'TARGET', k = 3, start = "-01-01", shift=1)
 
