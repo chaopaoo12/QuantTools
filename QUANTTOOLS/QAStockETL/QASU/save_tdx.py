@@ -1656,24 +1656,23 @@ def QA_SU_save_stock_basereal(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
 
-    #client.drop_collection('stock_real')
     stock_list = QA_fetch_stock_all().code.unique().tolist()
-    coll = client.stock_basereal
-    coll.create_index([('code',
+    stock_basereal = client.stock_basereal
+    stock_basereal.create_index([('code',
                         pymongo.ASCENDING),
                        ('date_stamp',
                         pymongo.ASCENDING)],
                       unique=True)
     err = []
 
-    def __saving_work(code, coll):
+    def __saving_work(code):
         QA_util_log_info(
             '##JOB10 Now Saving STOCK BASE REAL ==== {}'.format(str(code)),
             ui_log=ui_log
         )
         data = QA_fetch_get_stock_etlreal(code)
         try:
-            coll.insert_many(
+            stock_basereal.insert_many(
                 QA_util_to_json_from_pandas(data)
             )
 
@@ -1688,7 +1687,7 @@ def QA_SU_save_stock_basereal(client=DATABASE, ui_log=None, ui_progress=None):
         strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((stock_list.index(code) +1) / len(stock_list) * 100))[0:4] + '%', ui_log)
         intProgressToLog = int(float((stock_list.index(code) +1) / len(stock_list) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
-        __saving_work(code, coll)
+        __saving_work(code)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS', ui_log=ui_log)
