@@ -420,7 +420,7 @@ def QA_SU_save_stock_alpha101half_his(code = None, start_date = None, end_date =
     else:
         codes = QA_util_code_tolist(codes)
 
-    stock_alpha = client.stock_alpha101_half1
+    stock_alpha = client.stock_alpha101_half
     stock_alpha.create_index([("code", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
 
