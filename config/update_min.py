@@ -37,11 +37,6 @@ if __name__ == '__main__':
             QA_SU_save_stock_half()
             res = check_sinastock_half(mark_day)
 
-        res = check_stock_adj(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 20:
-            QA_SU_save_stock_xdxr()
-            res = check_stock_adj(mark_day)
-
         res = check_sinastock_adj(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 0:
             for i in res[0] + res[1]:
