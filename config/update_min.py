@@ -11,6 +11,7 @@ from QUANTTOOLS.QAStockETL.QASU import (QA_SU_save_stock_min,QA_SU_save_single_s
 from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_alpha101half_day,QA_SU_save_stock_alpha191half_day,
                                    QA_etl_stock_alpha101half_day,QA_etl_stock_alpha191half_day,
                                    QA_etl_stock_half)
+import time
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
@@ -39,8 +40,7 @@ if __name__ == '__main__':
 
         res = check_sinastock_adj(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 0:
-            for i in res[0] + res[1]:
-                QA_SU_save_single_stock_xdxr(i)
+            time.sleep(180)
             res = check_sinastock_adj(mark_day)
 
         res = check_stock_alpha101half(mark_day)
