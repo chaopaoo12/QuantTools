@@ -115,6 +115,7 @@ def stock_alpha101_half(code, start=None, end = None):
         data['prev_close'] = day['close'].groupby('code').shift()
         data['avg_price'] = data['amount']/data['volume']*data['adj']
         data = data.assign(pctchange=data.close/data.prev_close-1)
+        data = data.reset_index()[['date','code','open','high','low','close','volume','amount','avg_price','prev_close','pctchange']]
         data = data.dropna(axis=0, how='any')
         price = get_alpha(data).reset_index()
         price = price[price.date.isin(deal_date_list)]
@@ -167,7 +168,8 @@ def stock_alpha191_half(code, date=None):
         price['prev_close'] = day['close'].groupby('code').shift()
         #price['prev_close'] = price['close']*(1+price['pctchange'])
         price['avg_price'] = price['amount']/price['volume']*price['adj']
-        price = price.reset_index().dropna(axis=0, how='any')
+        price = price.reset_index()[['date','code','open','high','low','close','volume','amount','avg_price','prev_close']]
+        price = price.dropna(axis=0, how='any')
         return(Alpha_191(price, date).alpha())
     except:
         return(None)
