@@ -991,7 +991,7 @@ def QA_SU_save_stock_xdxr(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
     stock_list = QA_fetch_stock_all().code.unique().tolist()
-    client.drop_collection('stock_xdxr')
+    # client.drop_collection('stock_xdxr')
 
     try:
         coll = client.stock_xdxr
