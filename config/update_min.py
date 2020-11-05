@@ -24,7 +24,7 @@ if __name__ == '__main__':
             QA_SU_save_stock_min()
 
         res = check_sinastock_60min(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 0:
+        while res is None or (len(res[0]) + len(res[1])) > 1:
             for i in res[0] + res[1]:
                 QA_SU_save_single_stock_min(i)
             res = check_sinastock_60min(mark_day)
