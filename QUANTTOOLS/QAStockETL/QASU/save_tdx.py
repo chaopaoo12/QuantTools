@@ -392,7 +392,7 @@ def QA_SU_save_usstock_adj(client=DATABASE, ui_log=None, ui_progress=None):
         )
     except:
         client.drop_collection('usstock_adj')
-        coll_adj = client.stock_adj
+        coll_adj = client.usstock_adj
         coll_adj.create_index(
             [('code',
               pymongo.ASCENDING),
@@ -1010,6 +1010,10 @@ def QA_SU_save_stock_xdxr(client=DATABASE, ui_log=None, ui_progress=None):
               pymongo.ASCENDING)],
             unique=True
         )
+        QA_util_log_info(
+            '##JOB01 Now XDXR INFO Create ==== ',
+            ui_log=ui_log
+        )
     except:
         client.drop_collection('stock_xdxr')
         coll = client.stock_xdxr
@@ -1028,6 +1032,10 @@ def QA_SU_save_stock_xdxr(client=DATABASE, ui_log=None, ui_progress=None):
              ('date',
               pymongo.ASCENDING)],
             unique=True
+        )
+        QA_util_log_info(
+            '##JOB01 Now XDXR INFO Rebuild ==== ',
+            ui_log=ui_log
         )
 
     err = []
@@ -1054,7 +1062,10 @@ def QA_SU_save_stock_xdxr(client=DATABASE, ui_log=None, ui_progress=None):
                 coll_adj.delete_many({'code': code})
                 #print(adjdata)
                 coll_adj.insert_many(adjdata)
-
+                QA_util_log_info(
+                    '##JOB03 Now Saving XDXR INFO SUCCESS ==== {}'.format(str(code)),
+                    ui_log=ui_log
+                )
 
             except Exception as e:
                 print(e)
