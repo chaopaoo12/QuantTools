@@ -1,13 +1,13 @@
 #coding=utf-8
 
-from QUANTTOOLS.Model.StockModel.StrategyXgboostReal import QAStockXGBoostReal
+from QUANTTOOLS.Model.StockModel.StrategyXgboost import QAStockXGBoost
 from QUANTTOOLS.Model.StockModel.StrategyXgboostHedge import QAStockXGBoostHedge
 from QUANTTOOLS.Model.IndexModel.IndexXGboost import QAIndexXGBoost
 from .setting import working_dir, data_set, datareal_set
 from QUANTTOOLS.Market.MarketTools.train_tools import prepare_train, start_train, save_report, load_data, prepare_data
 
 def train(date, working_dir=working_dir):
-    stock_model = QAStockXGBoostReal()
+    stock_model = QAStockXGBoost()
 
     stock_model = load_data(stock_model, date, k = 3, start = "-01-01", shift=5, norm_type=None)
 
@@ -21,8 +21,8 @@ def train(date, working_dir=working_dir):
     stock_model = start_train(stock_model, data_set, other_params, 0, 0.99)
     save_report(stock_model, 'stock_xg', working_dir)
 
-    stock_model = start_train(stock_model, datareal_set,  other_params, 0, 0.99)
-    save_report(stock_model, 'stock_xg_real', working_dir)
+    #stock_model = start_train(stock_model, datareal_set,  other_params, 0, 0.99)
+    #save_report(stock_model, 'stock_xg_real', working_dir)
 
     hedge_model = QAStockXGBoostHedge()
     hedge_model = load_data(hedge_model, date, k = 3, start = "-01-01", shift=1, norm_type=None)
