@@ -4,7 +4,7 @@ from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAModel import QAModel
 from QUANTTOOLS.Message import send_email, send_actionnotice
 
-class QAStockModelHedgeReal(QAModel):
+class QAStockModelHedge(QAModel):
 
     def get_data(self, start, end, code =None, block=False, sub_block=False, type ='crawl', norm_type='normalization'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
@@ -18,7 +18,7 @@ class QAStockModelHedgeReal(QAModel):
 
     def model_predict(self, start, end, type='model'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=self.block,sub_block=self.sub_block, _from=start, _to=end), ui_log = None)
-        data = get_hedge_data_realtime(start, end, self.code, type= type,block = self.block, sub_block=self.sub_block, norm_type=self.norm_type)
+        data = get_hedge_data(start, end, self.code, type= type,block = self.block, sub_block=self.sub_block, norm_type=self.norm_type)
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK',

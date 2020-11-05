@@ -1,19 +1,8 @@
 
-import numpy
-import pandas as pd
-import datetime
-import math
 import QUANTAXIS as QA
-from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
-                              QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_int2str,
-                              QA_util_to_json_from_pandas, QA_util_today_str, QA_util_get_pre_trade_date,
-                              QA_util_add_months,QA_util_get_next_trade_date)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_future_list_adv,QA_fetch_index_list_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare,QA_fetch_stock_list
-from QUANTTOOLS.QAStockETL.QAData.financial_mean import financial_dict, dict2
-from QUANTTOOLS.QAStockETL.FuncTools.base_func import time_this_function
-from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,index_pct_log,pct_log
-from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade, QA_util_get_next_datetime,QA_util_get_real_date,QA_util_get_trade_range
+
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_delist
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex import QA_Sql_Stock_Index
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexWeek import QA_Sql_Stock_IndexWeek
@@ -38,7 +27,23 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockAlpha101 import QA_Sql_USStock_Alp
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockAlpha191 import QA_Sql_USStock_Alpha191
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockFinancialPE import QA_Sql_USStock_FinancialPercent
 
+from QUANTAXIS.QAUtil import (DATABASE, QA_util_date_stamp,
+                              QA_util_date_valid, QA_util_log_info, QA_util_code_tolist, QA_util_date_int2str,
+                              QA_util_to_json_from_pandas, QA_util_today_str,
+                              QA_util_add_months)
+
+from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import (QA_util_if_trade, QA_util_get_next_datetime,QA_util_get_real_date,
+                                           QA_util_get_trade_range, QA_util_get_pre_trade_date,QA_util_get_next_trade_date)
+
+from QUANTTOOLS.QAStockETL.QAData.financial_mean import financial_dict, dict2
+from QUANTTOOLS.QAStockETL.FuncTools.base_func import time_this_function
+from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,index_pct_log,pct_log
+
 from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
+import numpy
+import pandas as pd
+import datetime
+import math
 
 def QA_fetch_stock_industry(stock_code):
     '''
@@ -789,7 +794,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
 @time_this_function
-def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normalization', format='pd', collections=DATABASE.stock_quant_data):
+def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normalization', format='pd'):
     '获取股票日线'
     start_date = QA_util_get_pre_trade_date(start,15)
     end_date = end
@@ -2862,10 +2867,10 @@ def QA_fetch_usstock_financial_percent(code, start, end=None, format='pd', colle
 @time_this_function
 def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, type='normalization', format='pd', collections=DATABASE.stock_quant_data):
     '获取股票日线'
-    start_date = QA_util_get_pre_trade_date(start,15)
+    start_date = QA_util_get_pre_trade_date(start, 15, 'us')
     end_date = end
-    sec_end = QA_util_get_next_trade_date(end)
-    rng = QA_util_get_trade_range(start, end)
+    sec_end = QA_util_get_next_trade_date(end, 'us')
+    rng = QA_util_get_trade_range(start, end, 'us')
 
     code = QA_util_code_tolist(code)
     index = QA_Sql_USStock_Index
@@ -2873,7 +2878,7 @@ def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, type=
     alpha = QA_Sql_USStock_Alpha191
     alpha101 = QA_Sql_USStock_Alpha101
     pe = QA_Sql_USStock_FinancialPercent
-    base_half = QA_Sql_USStock_Base
+    base = QA_Sql_USStock_Base
 
     if QA_util_date_valid(end):
 
@@ -2923,10 +2928,10 @@ def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, type=
 
         QA_util_log_info(
             'JOB Get Stock Base Half train data start=%s end=%s' % (start, sec_end))
-        basehalf_res = base_half(start_date,end_date).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[(rng,code),:]
+        base_res = base(start_date,end_date).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[(rng,code),:]
 
         try:
-            res = pe_res.join(basehalf_res).join(index_res).join(week_res).join(alpha_res).join(alpha101_res)
+            res = pe_res.join(base_res).join(index_res).join(week_res).join(alpha_res).join(alpha101_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':

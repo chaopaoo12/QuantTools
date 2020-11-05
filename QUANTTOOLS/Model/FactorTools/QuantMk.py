@@ -105,7 +105,7 @@ def get_index_quant_data_norm(start_date, end_date, type = 'crawl', method = 'va
         res = res.join(target)
     return(pd.get_dummies(res))
 
-def get_quant_data_norm(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
+def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
 
     code_list = QA_fetch_stock_all()
     if code is None:
@@ -141,7 +141,7 @@ def get_quant_data_norm(start_date, end_date, code=None, type = 'crawl', block =
     #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
-def get_hedge_data_train(start_date, end_date, code=None, type = 'crawl', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
+def get_hedge_data(start_date, end_date, code=None, type = 'crawl', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
     code_list = QA_fetch_stock_all()
     if code is None:
         codes = code_list
@@ -165,9 +165,9 @@ def get_hedge_data_train(start_date, end_date, code=None, type = 'crawl', block 
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
-        res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
+        res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     if type == 'model':
-        res = QA_fetch_get_quant_data_train(codes, start_date, end_date, norm_type =norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
+        res = QA_fetch_get_quant_data(codes, start_date, end_date, norm_type =norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
         res = res.join(target)
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
