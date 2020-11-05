@@ -1554,6 +1554,10 @@ def QA_SU_save_single_stock_xdxr(code : str, client=DATABASE, ui_log=None, ui_pr
               pymongo.ASCENDING)],
             unique=True
         )
+        QA_util_log_info(
+            '##JOB01 Now Saving XDXR INFO Create ====',
+            ui_log=ui_log
+        )
     except:
         #client.drop_collection('stock_xdxr')
         coll = client.stock_xdxr
@@ -1572,6 +1576,10 @@ def QA_SU_save_single_stock_xdxr(code : str, client=DATABASE, ui_log=None, ui_pr
              ('date',
               pymongo.ASCENDING)],
             unique=True
+        )
+        QA_util_log_info(
+            '##JOB01 Now Saving XDXR INFO Rebuild ====',
+            ui_log=ui_log
         )
 
     err = []
@@ -1599,7 +1607,10 @@ def QA_SU_save_single_stock_xdxr(code : str, client=DATABASE, ui_log=None, ui_pr
                 coll_adj.delete_many({'code': code})
                 #print(adjdata)
                 coll_adj.insert_many(adjdata)
-
+                QA_util_log_info(
+                    '##JOB03 Now Saving XDXR INFO SUCCESS ==== {}'.format(str(code)),
+                    ui_log=ui_log
+                )
 
             except Exception as e:
                 print(e)
