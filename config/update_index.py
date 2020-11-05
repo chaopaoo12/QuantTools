@@ -58,9 +58,12 @@ if __name__ == '__main__':
             res = check_index_day(mark_day)
 
         res = check_index_alpha101(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 10:
+        if res is None or (len(res[0]) + len(res[1])) > 10:
             QA_SU_save_index_alpha101_day(start_date = mark_day, end_date = mark_day)
-            res = check_index_alpha101(mark_day)
+
+        res = check_index_alpha101(mark_day)
+        for i in res[0] + res[1]:
+            QA_SU_save_index_alpha101_day(code =i, start_date = mark_day, end_date = mark_day)
 
         res = check_index_alpha191(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 10:
