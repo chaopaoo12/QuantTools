@@ -852,7 +852,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
 
         QA_util_log_info(
             'JOB Get Stock Alpha101 data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
 
         try:
             res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(pe_res)
