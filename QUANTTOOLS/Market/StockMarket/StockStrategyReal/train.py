@@ -9,7 +9,7 @@ from QUANTTOOLS.Market.MarketTools.train_tools import prepare_train, start_train
 def train(date, working_dir=working_dir):
     stock_model = QAStockXGBoost()
 
-    stock_model = load_data(stock_model, date, k = 3, start = "-01-01", shift=5)
+    stock_model = load_data(stock_model, date, k = 3, start = "-01-01", shift=5, norm_type='normalization')
 
     stock_model = prepare_data(stock_model, date, col = 'TARGET5', k = 3, start = "-01-01", shift=5)
 
@@ -25,7 +25,7 @@ def train(date, working_dir=working_dir):
     #save_report(stock_model, 'stock_xg_real', working_dir)
 
     hedge_model = QAStockXGBoostHedge()
-    hedge_model = load_data(hedge_model, date, k = 3, start = "-01-01", shift=1)
+    hedge_model = load_data(hedge_model, date, k = 3, start = "-01-01", shift=1, norm_type='normalization')
 
     hedge_model = prepare_data(hedge_model, date, col = 'TARGET', k = 3, start = "-01-01", shift=1)
 
