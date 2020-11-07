@@ -24,10 +24,7 @@ def make_prediction(Model, trading_date, name, working_dir, type='model', ui_log
                           offset='HOLD',
                           volume=None
                           )
-    if datetime.strptime(trading_date, "%Y-%m-%d").weekday() >= 4:
-        start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-1))).strftime('%Y-%m-%d')
-    else:
-        start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-2))).strftime('%Y-%m-%d')
+    start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-2))).strftime('%Y-%m-%d')
     end = trading_date
     QA_util_log_info('##JOB Now Model Predict from {start} to {end} ==== {s}'.format(start = start, end = end, s = str(trading_date)), ui_log)
     target_pool, prediction = Model.model_predict(start, end, type=type)
