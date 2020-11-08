@@ -1,5 +1,5 @@
 
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_interest_rate_adv,
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_interest_rate_adv,QA_fetch_xqblock_day_adv,
 
                                                            QA_fetch_financial_report_adv, QA_fetch_stock_financial_calendar_adv,
                                                            QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,
@@ -30,7 +30,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_interest_rat
                                                            QA_fetch_usstock_technical_index_adv,
                                                            QA_fetch_usstock_financial_percent_adv)
 
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_interest_rate,
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_interest_rate,QA_fetch_xqblock_day,
 
                                                    QA_fetch_stock_real,
                                                    QA_fetch_stock_alpha101_real,QA_fetch_stock_alpha_real,
