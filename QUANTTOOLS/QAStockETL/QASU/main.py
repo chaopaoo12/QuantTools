@@ -42,9 +42,13 @@ from QUANTTOOLS.QAStockETL.QASU import \
     save_usstock_alpha as usstock_alpha,\
     save_stock_technical_real as technical_real, \
     save_usstock_technical_index as usstock_index, \
-    save_usstock_finper as usstock_finper
+    save_usstock_finper as usstock_finper, \
+    crawl_xq_block as xq_block
 
 from QUANTAXIS.QAUtil import QA_util_today_str
+
+def QA_SU_save_block_xq_day():
+    xq_block.QA_SU_save_block_xq_day()
 
 def QA_SU_save_report_calendar_day():
     save_financial_calendar.QA_SU_save_report_calendar_day()
