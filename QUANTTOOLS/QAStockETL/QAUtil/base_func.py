@@ -13,16 +13,16 @@ def rolling_ols(y):
     return(round(model.slope,2))
 
 def rolling_count1(data):
-    return(data[data > 0].count())
+    return(data[data< 0].count())
 
 def rolling_count2(data):
-    return(data[data < 0].count())
+    return(data[data> 0].count())
 
 def rolling_mean1(data):
-    return(data[data > 0].mean())
+    return(data[data< 0].mean())
 
 def rolling_mean2(data):
-    return(data[data < 0].mean())
+    return(data[data> 0].mean())
 
 def uspct(data):
     res=data
@@ -37,12 +37,12 @@ def uspct(data):
     res[['LAG60_MARKET','AVG_LAG60_MARKET','LAG60_HIGH','LAG60_LOW']]= data.shift(60)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
     res[['LAG90_MARKET','AVG_LAG90_MARKET','LAG90_HIGH','LAG90_LOW']]= data.shift(90)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
 
-    res[['AVG5_T_MARKET','AVG5_A_MARKET','HIGH_5','LOW_5','AMOUNT_5','MAMOUNT_5','NEGRT_CNT5','POSRT_CNT5','NEGRT_MEAN5','POSRT_MEAN5']] = res.rolling(window=5).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':['rolling_count1','rolling_count2','rolling_mean1','rolling_mean2']})
-    res[['AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10','AMOUNT_10','MAMOUNT_10','NEGRT_CNT10','POSRT_CNT10','NEGRT_MEAN10','POSRT_MEAN10']] = res.rolling(window=10).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':['rolling_count1','rolling_count2','rolling_mean1','rolling_mean2']})
-    res[['AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20','AMOUNT_20','MAMOUNT_20','NEGRT_CNT20','POSRT_CNT20','NEGRT_MEAN20','POSRT_MEAN20']] = res.rolling(window=20).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':['rolling_count1','rolling_count2','rolling_mean1','rolling_mean2']})
-    res[['AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30','AMOUNT_30','MAMOUNT_30','NEGRT_CNT30','POSRT_CNT30','NEGRT_MEAN30','POSRT_MEAN30']] = res.rolling(window=30).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':['rolling_count1','rolling_count2','rolling_mean1','rolling_mean2']})
-    res[['AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60','AMOUNT_60','MAMOUNT_60','NEGRT_CNT60','POSRT_CNT60','NEGRT_MEAN60','POSRT_MEAN60']] = res.rolling(window=60).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':['rolling_count1','rolling_count2','rolling_mean1','rolling_mean2']})
-    res[['AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90','AMOUNT_90','MAMOUNT_90','NEGRT_CNT90','POSRT_CNT90','NEGRT_MEAN90','POSRT_MEAN90']] = res.rolling(window=90).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':['rolling_count1','rolling_count2','rolling_mean1','rolling_mean2']})
+    res[['AVG5_T_MARKET','AVG5_A_MARKET','HIGH_5','LOW_5','AMOUNT_5','MAMOUNT_5','NEGRT_CNT5','POSRT_CNT5','NEGRT_MEAN5','POSRT_MEAN5']] = res.rolling(window=5).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':[rolling_count1,rolling_count2,rolling_mean1,rolling_mean2]})
+    res[['AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10','AMOUNT_10','MAMOUNT_10','NEGRT_CNT10','POSRT_CNT10','NEGRT_MEAN10','POSRT_MEAN10']] = res.rolling(window=10).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':[rolling_count1,rolling_count2,rolling_mean1,rolling_mean2]})
+    res[['AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20','AMOUNT_20','MAMOUNT_20','NEGRT_CNT20','POSRT_CNT20','NEGRT_MEAN20','POSRT_MEAN20']] = res.rolling(window=20).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':[rolling_count1,rolling_count2,rolling_mean1,rolling_mean2]})
+    res[['AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30','AMOUNT_30','MAMOUNT_30','NEGRT_CNT30','POSRT_CNT30','NEGRT_MEAN30','POSRT_MEAN30']] = res.rolling(window=30).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':[rolling_count1,rolling_count2,rolling_mean1,rolling_mean2]})
+    res[['AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60','AMOUNT_60','MAMOUNT_60','NEGRT_CNT60','POSRT_CNT60','NEGRT_MEAN60','POSRT_MEAN60']] = res.rolling(window=60).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':[rolling_count1,rolling_count2,rolling_mean1,rolling_mean2]})
+    res[['AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90','AMOUNT_90','MAMOUNT_90','NEGRT_CNT90','POSRT_CNT90','NEGRT_MEAN90','POSRT_MEAN90']] = res.rolling(window=90).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':[rolling_count1,rolling_count2,rolling_mean1,rolling_mean2]})
 
     res[[ 'AVG5_C_MARKET','AVG10_C_MARKET',
           'AVG20_C_MARKET','AVG30_C_MARKET',
@@ -52,6 +52,7 @@ def uspct(data):
                                                                             'AVG30_T_MARKET':rolling_ols,
                                                                             'AVG60_T_MARKET':rolling_ols,
                                                                             'AVG90_T_MARKET':rolling_ols})
+
     res['RNG_L']= (res['LAG_HIGH']/res['LAG_LOW']-1).apply(lambda x:round(x ,4))
     res['RNG_5']= (res['HIGH_5']/res['LOW_5']-1).apply(lambda x:round(x ,4))
     res['RNG_10']= (res['HIGH_10']/res['LOW_10']-1).apply(lambda x:round(x ,4))
