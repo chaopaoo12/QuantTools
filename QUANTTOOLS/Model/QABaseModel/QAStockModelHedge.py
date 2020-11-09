@@ -6,7 +6,7 @@ from QUANTTOOLS.Message import send_email, send_actionnotice
 
 class QAStockModelHedge(QAModel):
 
-    def get_data(self, start, end, code =None, block=True, sub_block=True, type ='crawl', norm_type='normalization'):
+    def get_data(self, start, end, code =None, block=True, sub_block=False, type ='crawl', norm_type='normalization'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
         self.data = get_hedge_data(start, end, code=code, type = type, block = block, sub_block = sub_block, norm_type=norm_type)
         self.data = self.data[(self.data.next_date == self.data.PRE_DATE)]
