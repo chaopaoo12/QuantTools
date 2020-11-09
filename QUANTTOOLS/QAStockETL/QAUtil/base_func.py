@@ -13,16 +13,16 @@ def rolling_ols(y):
     return(round(model.slope,2))
 
 def rolling_count1(data):
-    return(data[data > 0].count().fillna(0))
+    return(data[data > 0].count())
 
 def rolling_count2(data):
-    return(data[data < 0].count().fillna(0))
+    return(data[data < 0].count())
 
 def rolling_mean1(data):
-    return(data[data > 0].mean().fillna(0))
+    return(data[data > 0].mean())
 
 def rolling_mean2(data):
-    return(data[data > 0].mean().fillna(0))
+    return(data[data < 0].mean())
 
 def uspct(data):
     res=data
