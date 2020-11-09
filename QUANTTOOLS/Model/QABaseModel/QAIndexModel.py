@@ -21,7 +21,7 @@ class QAIndexModel(QAModel):
                                                        'OPEN_MARK','PASS_MARK','TARGET','TARGET3',
                                                        'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
                                                        'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
-                                                       'INDEX_TARGET10','date_stamp','PRE_DATE','next_date']]
+                                                       'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]
         train = pd.DataFrame()
         n_cols = []
         for i in self.cols:

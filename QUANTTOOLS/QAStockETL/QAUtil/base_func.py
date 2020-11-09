@@ -12,9 +12,22 @@ def rolling_ols(y):
     model = stats.linregress(pd.Series(range(1,len(y)+1)),y)
     return(round(model.slope,2))
 
+def rolling_count1(data):
+    return(data[data > 0].count().fillna(0))
+
+def rolling_count2(data):
+    return(data[data < 0].count().fillna(0))
+
+def rolling_mean1(data):
+    return(data[data > 0].mean().fillna(0))
+
+def rolling_mean2(data):
+    return(data[data > 0].mean().fillna(0))
+
 def uspct(data):
     res=data
     res[['LAG_MARKET','AVG_LAG_MARKET','LAG_HIGH','LAG_LOW','LAG_AMOUNT']]= data.shift(1)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq','amount']]
+    res['returns'] = res['close_qfq']/res['LAG_MARKET'] - 1
     res[['LAG2_MARKET','AVG_LAG2_MARKET']]= data.shift(2)[['close_qfq','AVG_TOTAL_MARKET']]
     res[['LAG3_MARKET','AVG_LAG3_MARKET']]= data.shift(3)[['close_qfq','AVG_TOTAL_MARKET']]
     res[['LAG5_MARKET','AVG_LAG5_MARKET']]= data.shift(5)[['close_qfq','AVG_TOTAL_MARKET']]
@@ -24,12 +37,12 @@ def uspct(data):
     res[['LAG60_MARKET','AVG_LAG60_MARKET','LAG60_HIGH','LAG60_LOW']]= data.shift(60)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
     res[['LAG90_MARKET','AVG_LAG90_MARKET','LAG90_HIGH','LAG90_LOW']]= data.shift(90)[['close_qfq','AVG_TOTAL_MARKET','high_qfq','low_qfq']]
 
-    res[['AVG5_T_MARKET','AVG5_A_MARKET','HIGH_5','LOW_5','AMOUNT_5','MAMOUNT_5']] = data.rolling(window=5).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
-    res[['AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10','AMOUNT_10','MAMOUNT_10']] = data.rolling(window=10).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
-    res[['AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20','AMOUNT_20','MAMOUNT_20']] = data.rolling(window=20).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
-    res[['AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30','AMOUNT_30','MAMOUNT_30']] = data.rolling(window=30).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
-    res[['AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60','AMOUNT_60','MAMOUNT_60']] = data.rolling(window=60).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
-    res[['AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90','AMOUNT_90','MAMOUNT_90']] = data.rolling(window=90).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max']})
+    res[['AVG5_T_MARKET','AVG5_A_MARKET','HIGH_5','LOW_5','AMOUNT_5','MAMOUNT_5','NEGRT_CNT5','POSRT_CNT5','NEGRT_MEAN5','POSRT_MEAN5']] = data.rolling(window=5).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':['rolling_count1','rolling_count2','rolling_mean1','rolling_mean2']})
+    res[['AVG10_T_MARKET','AVG10_A_MARKET','HIGH_10','LOW_10','AMOUNT_10','MAMOUNT_10','NEGRT_CNT10','POSRT_CNT10','NEGRT_MEAN10','POSRT_MEAN10']] = data.rolling(window=10).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':['rolling_count1','rolling_count2','rolling_mean1','rolling_mean2']})
+    res[['AVG20_T_MARKET','AVG20_A_MARKET','HIGH_20','LOW_20','AMOUNT_20','MAMOUNT_20','NEGRT_CNT20','POSRT_CNT20','NEGRT_MEAN20','POSRT_MEAN20']] = data.rolling(window=20).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':['rolling_count1','rolling_count2','rolling_mean1','rolling_mean2']})
+    res[['AVG30_T_MARKET','AVG30_A_MARKET','HIGH_30','LOW_30','AMOUNT_30','MAMOUNT_30','NEGRT_CNT30','POSRT_CNT30','NEGRT_MEAN30','POSRT_MEAN30']] = data.rolling(window=30).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':['rolling_count1','rolling_count2','rolling_mean1','rolling_mean2']})
+    res[['AVG60_T_MARKET','AVG60_A_MARKET','HIGH_60','LOW_60','AMOUNT_60','MAMOUNT_60','NEGRT_CNT60','POSRT_CNT60','NEGRT_MEAN60','POSRT_MEAN60']] = data.rolling(window=60).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':['rolling_count1','rolling_count2','rolling_mean1','rolling_mean2']})
+    res[['AVG90_T_MARKET','AVG90_A_MARKET','HIGH_90','LOW_90','AMOUNT_90','MAMOUNT_90','NEGRT_CNT90','POSRT_CNT90','NEGRT_MEAN90','POSRT_MEAN90']] = data.rolling(window=90).agg({'close_qfq':'mean','AVG_TOTAL_MARKET':'mean','high_qfq':'max','low_qfq':'min','amount':['mean','max'],'returns':['rolling_count1','rolling_count2','rolling_mean1','rolling_mean2']})
 
     res[[ 'AVG5_C_MARKET','AVG10_C_MARKET',
           'AVG20_C_MARKET','AVG30_C_MARKET',
@@ -73,6 +86,7 @@ def pct(data, type = 'close'):
         data[['PRE4_MARKET','AVG_PRE4_MARKET']]= data.shift(-4)[['close_qfq','AVG_TOTAL_MARKET']]
         data[['PRE5_MARKET','AVG_PRE5_MARKET']]= data.shift(-5)[['close_qfq','AVG_TOTAL_MARKET']]
         data[['PRE10_MARKET','AVG_PRE10_MARKET']]= data.shift(-10)[['close_qfq','AVG_TOTAL_MARKET']]
+        data[['PRE20_MARKET','AVG_PRE20_MARKET']]= data.shift(-20)[['close_qfq','AVG_TOTAL_MARKET']]
         data['OPEN_MARK'] = (data['high_mark'] == data['low_mark']) * 1
         data['UP_PRICE'] = data['close_qfq'] + (data['close_qfq'] * data['up_rate']).apply(lambda x:round(x,2))
         data['DW_PRICE'] = data['close_qfq'] - (data['close_qfq'] * data['up_rate']).apply(lambda x:round(x,2))
@@ -83,6 +97,7 @@ def pct(data, type = 'close'):
         data['TARGET4'] = (data['PRE4_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
         data['TARGET5'] = (data['PRE5_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
         data['TARGET10'] = (data['PRE10_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+        data['TARGET20'] = (data['PRE20_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
         data['AVG_TARGET'] = (data['AVG_PRE_MARKET']/data['AVG_TOTAL_MARKET']-1).apply(lambda x:round(x * 100,2))
     elif type == 'high':
         data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
@@ -92,11 +107,13 @@ def pct(data, type = 'close'):
         data[['PRE4_MARKET','AVG_PRE4_MARKET']]= data.shift(-4)[['high_qfq','AVG_TOTAL_MARKET']]
         data[['PRE5_MARKET','AVG_PRE5_MARKET']]= data.shift(-5)[['high_qfq','AVG_TOTAL_MARKET']]
         data[['PRE10_MARKET','AVG_PRE10_MARKET']]= data.shift(-10)[['high_qfq','AVG_TOTAL_MARKET']]
+        data[['PRE20_MARKET','AVG_PRE20_MARKET']]= data.shift(-20)[['high_qfq','AVG_TOTAL_MARKET']]
         data['TARGET'] = (data['PRE2_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
         data['TARGET3'] = (data['PRE3_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
         data['TARGET4'] = (data['PRE4_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
         data['TARGET5'] = (data['PRE5_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
         data['TARGET10'] = (data['PRE10_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+        data['TARGET20'] = (data['PRE20_MARKET']/data['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
         data['AVG_TARGET'] = (data['AVG_PRE_MARKET']/data['AVG_TOTAL_MARKET']-1).apply(lambda x:round(x * 100,2))
     else:
         data=None
@@ -110,11 +127,13 @@ def index_pct(market):
     market['PRE4_MARKET']= market.shift(-4)['close']
     market['PRE5_MARKET']= market.shift(-5)['close']
     market['PRE10_MARKET']= market.shift(-10)['close']
+    market['PRE10_MARKET']= market.shift(-20)['close']
     market['INDEX_TARGET'] = (market['PRE2_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     market['INDEX_TARGET3'] = (market['PRE3_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     market['INDEX_TARGET4'] = (market['PRE4_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     market['INDEX_TARGET5'] = (market['PRE5_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     market['INDEX_TARGET10'] = (market['PRE10_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
+    market['INDEX_TARGET20'] = (market['PRE20_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     return(market)
 
 def pct_log(data, type = 'close'):
@@ -128,6 +147,7 @@ def pct_log(data, type = 'close'):
         data[['PRE4_MARKET','AVG_PRE4_MARKET']]= data.shift(-4)[['close_qfq','AVG_TOTAL_MARKET']]
         data[['PRE5_MARKET','AVG_PRE5_MARKET']]= data.shift(-5)[['close_qfq','AVG_TOTAL_MARKET']]
         data[['PRE10_MARKET','AVG_PRE10_MARKET']]= data.shift(-10)[['close_qfq','AVG_TOTAL_MARKET']]
+        data[['PRE20_MARKET','AVG_PRE20_MARKET']]= data.shift(-20)[['close_qfq','AVG_TOTAL_MARKET']]
         data['OPEN_MARK'] = (data['high_mark'] == data['low_mark']) * 1
         data['UP_PRICE'] = data['close_qfq'] + (data['close_qfq'] * data['up_rate']).apply(lambda x:round(x,2))
         data['DW_PRICE'] = data['close_qfq'] - (data['close_qfq'] * data['up_rate']).apply(lambda x:round(x,2))
@@ -138,6 +158,7 @@ def pct_log(data, type = 'close'):
         data['TARGET4'] = np.log(data['PRE4_MARKET']/data['PRE_MARKET'])
         data['TARGET5'] = np.log(data['PRE5_MARKET']/data['PRE_MARKET'])
         data['TARGET10'] = np.log(data['PRE10_MARKET']/data['PRE_MARKET'])
+        data['TARGET20'] = np.log(data['PRE20_MARKET']/data['PRE_MARKET'])
         data['AVG_TARGET'] = np.log(data['AVG_PRE_MARKET']/data['AVG_TOTAL_MARKET'])
     elif type == 'high':
         data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
@@ -147,11 +168,13 @@ def pct_log(data, type = 'close'):
         data[['PRE4_MARKET','AVG_PRE4_MARKET']]= data.shift(-4)[['high_qfq','AVG_TOTAL_MARKET']]
         data[['PRE5_MARKET','AVG_PRE5_MARKET']]= data.shift(-5)[['high_qfq','AVG_TOTAL_MARKET']]
         data[['PRE10_MARKET','AVG_PRE10_MARKET']]= data.shift(-10)[['high_qfq','AVG_TOTAL_MARKET']]
+        data[['PRE20_MARKET','AVG_PRE20_MARKET']]= data.shift(-20)[['high_qfq','AVG_TOTAL_MARKET']]
         data['TARGET'] = np.log(data['PRE2_MARKET']/data['PRE_MARKET'])
         data['TARGET3'] = np.log(data['PRE3_MARKET']/data['PRE_MARKET'])
         data['TARGET4'] = np.log(data['PRE4_MARKET']/data['PRE_MARKET'])
         data['TARGET5'] = np.log(data['PRE5_MARKET']/data['PRE_MARKET'])
         data['TARGET10'] = np.log(data['PRE10_MARKET']/data['PRE_MARKET'])
+        data['TARGET20'] = np.log(data['PRE20_MARKET']/data['PRE_MARKET'])
         data['AVG_TARGET'] = np.log(data['AVG_PRE_MARKET']/data['AVG_TOTAL_MARKET'])
     else:
         data=None

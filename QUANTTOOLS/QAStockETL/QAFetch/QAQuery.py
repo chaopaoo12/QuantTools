@@ -916,9 +916,9 @@ def QA_fetch_stock_target(codes, start_date, end_date, index='000300', type='clo
     data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
     market = QA.QA_fetch_index_day(index,start_date,end,format='pd')['close'].reset_index()
     if method == 'value':
-        market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+        market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10','INDEX_TARGET20']]
     elif method == 'log':
-        market = index_pct_log(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+        market = index_pct_log(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10','INDEX_TARGET20']]
     else:
         market = None
     res1 = data.to_qfq().data
@@ -927,11 +927,11 @@ def QA_fetch_stock_target(codes, start_date, end_date, index='000300', type='clo
     if method == 'value':
         res = data.groupby('code').apply(pct, type=type)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
                                                                           'TARGET','TARGET3','TARGET4','TARGET5',
-                                                                          'TARGET10','AVG_TARGET']]
+                                                                          'TARGET10','TARGET20','AVG_TARGET']]
     elif method == 'log':
         res = data.groupby('code').apply(pct_log, type=type)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
                                                                           'TARGET','TARGET3','TARGET4','TARGET5',
-                                                                          'TARGET10','AVG_TARGET']]
+                                                                          'TARGET10','TARGET20','AVG_TARGET']]
     else:
         res = None
 
@@ -945,6 +945,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, index='000300', type='clo
     res['INDEX_TARGET4'] = res['TARGET4'] - res['INDEX_TARGET4']
     res['INDEX_TARGET5'] = res['TARGET5'] - res['INDEX_TARGET5']
     res['INDEX_TARGET10'] = res['TARGET10'] - res['INDEX_TARGET10']
+    res['INDEX_TARGET20'] = res['TARGET20'] - res['INDEX_TARGET20']
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':
             res[columnname]=res[columnname].astype('float16')
