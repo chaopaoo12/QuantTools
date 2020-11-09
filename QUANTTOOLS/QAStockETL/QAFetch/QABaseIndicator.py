@@ -48,7 +48,13 @@ def QA_fetch_get_stock_etlday(codes, start=None, end=None):
                                                                 'AVG20_C_MARKET','AVG30_C_MARKET','AVG60_C_MARKET','AVG90_C_MARKET',
                                                                 'RNG_L','RNG_5','RNG_10','RNG_20','RNG_30','RNG_60','RNG_90',
                                                                 'AMT_L','AMT_5','AMT_10','AMT_20','AMT_30','AMT_60','AMT_90',
-                                                                'MAMT_5','MAMT_10','MAMT_20','MAMT_30','MAMT_60','MAMT_90']]
+                                                                'MAMT_5','MAMT_10','MAMT_20','MAMT_30','MAMT_60','MAMT_90',
+                                                                'NEGRT_CNT5','POSRT_CNT5','NEGRT_MEAN5','POSRT_MEAN5',
+                                                                'NEGRT_CNT10','POSRT_CNT10','NEGRT_MEAN10','POSRT_MEAN10',
+                                                                'NEGRT_CNT20','POSRT_CNT20','NEGRT_MEAN20','POSRT_MEAN20',
+                                                                'NEGRT_CNT30','POSRT_CNT30','NEGRT_MEAN30','POSRT_MEAN30',
+                                                                'NEGRT_CNT60','POSRT_CNT60','NEGRT_MEAN60','POSRT_MEAN60',
+                                                                'NEGRT_CNT90','POSRT_CNT90','NEGRT_MEAN90','POSRT_MEAN90']]
     except:
         res=None
     return(res)
@@ -95,7 +101,13 @@ def QA_fetch_get_usstock_etlday(codes, start=None, end=None):
                                                                 'AVG20_C_MARKET','AVG30_C_MARKET','AVG60_C_MARKET','AVG90_C_MARKET',
                                                                 'RNG_L','RNG_5','RNG_10','RNG_20','RNG_30','RNG_60','RNG_90',
                                                                 'AMT_L','AMT_5','AMT_10','AMT_20','AMT_30','AMT_60','AMT_90',
-                                                                'MAMT_5','MAMT_10','MAMT_20','MAMT_30','MAMT_60','MAMT_90']]
+                                                                'MAMT_5','MAMT_10','MAMT_20','MAMT_30','MAMT_60','MAMT_90',
+                                                                'NEGRT_CNT5','POSRT_CNT5','NEGRT_MEAN5','POSRT_MEAN5',
+                                                                'NEGRT_CNT10','POSRT_CNT10','NEGRT_MEAN10','POSRT_MEAN10',
+                                                                'NEGRT_CNT20','POSRT_CNT20','NEGRT_MEAN20','POSRT_MEAN20',
+                                                                'NEGRT_CNT30','POSRT_CNT30','NEGRT_MEAN30','POSRT_MEAN30',
+                                                                'NEGRT_CNT60','POSRT_CNT60','NEGRT_MEAN60','POSRT_MEAN60',
+                                                                'NEGRT_CNT90','POSRT_CNT90','NEGRT_MEAN90','POSRT_MEAN90']]
     except:
         res=None
     return(res)
