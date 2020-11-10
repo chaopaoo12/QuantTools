@@ -128,7 +128,7 @@ def index_pct(market):
     market['PRE4_MARKET']= market.shift(-4)['close']
     market['PRE5_MARKET']= market.shift(-5)['close']
     market['PRE10_MARKET']= market.shift(-10)['close']
-    market['PRE10_MARKET']= market.shift(-20)['close']
+    market['PRE20_MARKET']= market.shift(-20)['close']
     market['INDEX_TARGET'] = (market['PRE2_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     market['INDEX_TARGET3'] = (market['PRE3_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
     market['INDEX_TARGET4'] = (market['PRE4_MARKET']/market['PRE_MARKET']-1).apply(lambda x:round(x * 100,2))
