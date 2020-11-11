@@ -94,6 +94,10 @@ def get_top(res, num = 5):
     else:
         target_code = list(set(list(other.index)))
     res = res.loc[target_code]
+    #check
+    if res[res.RANK > 0].shape[0] > top_num:
+        print(res[res.RANK > 0])
+
     return(res)
 
 def caculate_position(res, percent, sub_accounts):
