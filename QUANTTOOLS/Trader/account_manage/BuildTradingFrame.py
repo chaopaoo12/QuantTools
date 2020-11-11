@@ -97,7 +97,7 @@ def get_top(res, num = 5):
     #check
     if res[res.RANK > 0].shape[0] > top_num:
         top_code = res.sort_values('RANK').head(top_num)
-        print(top_code)
+        print(top_code[['NAME','INDUSTRY','close','mark','RANK','买卖价','ask1','bid1']])
     return(res)
 
 def caculate_position(res, percent, sub_accounts):
