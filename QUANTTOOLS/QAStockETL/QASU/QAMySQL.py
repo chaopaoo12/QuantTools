@@ -437,7 +437,9 @@ def QA_etl_stock_financial_day(start_date = QA_util_today_str(), end_date= None,
                                                                             'AVG5_CR', 'AVG10_CR','AVG20_CR','AVG30_CR','AVG60_CR',
                                                                             'AVG5_TR','AVG10_TR','AVG20_TR','AVG30_TR','AVG60_TR','TOTALPROFITINRATE',
                                                                             'AMT_L','AMT_5','AMT_10','AMT_20','AMT_30','AMT_60','AMT_90',
-                                                                            'MAMT_5','MAMT_10','MAMT_20','MAMT_30','MAMT_60','MAMT_90']]
+                                                                            'MAMT_5','MAMT_10','MAMT_20','MAMT_30','MAMT_60','MAMT_90',
+                                                                            'NEG5_RT','NEG5_RATE','NEG10_RT','NEG10_RATE','NEG20_RT','NEG20_RATE',
+                                                                            'NEG30_RT','NEG30_RATE','NEG60_RT','NEG60_RATE','NEG90_RT','NEG90_RATE']]
     if data is None:
         QA_util_log_info(
             '##JOB NO STOCK QUANT FINANCIAL HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
