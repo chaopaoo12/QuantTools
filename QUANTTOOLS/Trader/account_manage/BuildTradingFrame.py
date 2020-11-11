@@ -90,10 +90,14 @@ def get_top(res, num = 5):
     up_top = res[(res.mark == 0) & (res.RANK > 0) & (res.RANK <= top_num) & (res['市值'] > 0)]
     if up_top.shape[0] < top_num:
         hold = res[(res.mark == 1) & (res.RANK > 0)].sort_values('RANK').head(top_num-up_top.shape[0])
+        a1 = list(set(list(hold.index) + list(up_top.index)))
         target_code = list(set(list(hold.index) + list(other.index)))
     else:
         target_code = list(set(list(other.index)))
+        a1 = None
     res = res.loc[target_code]
+    if a1 is not None:
+        res.loc[(a1),'position'] = 0
     return(res)
 
 def caculate_position(res, percent, sub_accounts):
