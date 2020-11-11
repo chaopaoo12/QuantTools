@@ -86,10 +86,13 @@ def get_top(res, num = 5):
     res['mark'] = res.ask1.apply(lambda x: 0 if x ==0 else 1)
     top_num = num
     QA_util_log_info(res[['NAME','INDUSTRY','close','mark','RANK','买卖价','ask1','bid1']])
-    up_top = res[(res.mark == 0 & res.RANK > 0 & res.RANK <= top_num & res['市值'] > 0)].shape[0]
-    hold = res[(res.mark == 1 & res.RANK > 0)].sort_values('RANK').head(top_num-up_top)
     other = res[res['市值'] > 0]
-    target_code = list(set(list(hold.index) + list(other.index)))
+    up_top = res[(res.mark == 0 & res.RANK > 0 & res.RANK <= top_num & res['市值'] > 0)]
+    if up_top.shape[0] < top_num:
+        hold = res[(res.mark == 1 & res.RANK > 0)].sort_values('RANK').head(top_num-up_top.shape[0])
+        target_code = list(set(list(hold.index) + list(other.index)))
+    else:
+        target_code = list(set(list(other.index)))
     res = res.loc[target_code]
     return(res)
 
