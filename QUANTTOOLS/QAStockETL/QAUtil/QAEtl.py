@@ -941,7 +941,31 @@ into stock_analysis_data
                                  MAX(MAMT_20) as MAMT_20,
                                  MAX(MAMT_30) as MAMT_30,
                                  MAX(MAMT_60) as MAMT_60,
-                                 MAX(MAMT_90) as MAMT_90
+                                 MAX(MAMT_90) as MAMT_90,
+                                 MAX(NEGRT_CNT5) as NEGRT_CNT5,
+                                 MAX(POSRT_CNT5) as POSRT_CNT5,
+                                 MAX(NEGRT_MEAN5) as NEGRT_MEAN5,
+                                 MAX(POSRT_MEAN5) as POSRT_MEAN5,
+                                 MAX(NEGRT_CNT10) as NEGRT_CNT10,
+                                 MAX(POSRT_CNT10) as POSRT_CNT10,
+                                 MAX(NEGRT_MEAN10) as NEGRT_MEAN10,
+                                 MAX(POSRT_MEAN10) as POSRT_MEAN10,
+                                 MAX(NEGRT_CNT20) as NEGRT_CNT20,
+                                 MAX(POSRT_CNT20) as POSRT_CNT20,
+                                 MAX(NEGRT_MEAN20) as NEGRT_MEAN20,
+                                 MAX(POSRT_MEAN20) as POSRT_MEAN20,
+                                 MAX(NEGRT_CNT30) as NEGRT_CNT30,
+                                 MAX(POSRT_CNT30) as POSRT_CNT30,
+                                 MAX(NEGRT_MEAN30) as NEGRT_MEAN30,
+                                 MAX(POSRT_MEAN30) as POSRT_MEAN30,
+                                 MAX(NEGRT_CNT60) as NEGRT_CNT60,
+                                 MAX(POSRT_CNT60) as POSRT_CNT60,
+                                 MAX(NEGRT_MEAN60) as NEGRT_MEAN60,
+                                 MAX(POSRT_MEAN60) as POSRT_MEAN60,
+                                 MAX(NEGRT_CNT90) as NEGRT_CNT90,
+                                 MAX(POSRT_CNT90) as POSRT_CNT90,
+                                 MAX(NEGRT_MEAN90) as NEGRT_MEAN90,
+                                 MAX(POSRT_MEAN90) as POSRT_MEAN90
                                 from stock_market_day
                                WHERE order_date >=
                                      to_date('{deal_date}','yyyy-mm-dd') - 90
