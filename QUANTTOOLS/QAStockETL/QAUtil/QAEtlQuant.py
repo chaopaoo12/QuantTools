@@ -486,18 +486,53 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
        AVG30_TR,
        AVG60_TR,
        AVG90_TR,
-       NEGRT_CNT5 / (POSRT_CNT5 + NEGRT_CNT5) as neg5_rate,
-       NEGRT_MEAN5 / (POSRT_MEAN5 + 1) as neg5_rt,
+       case
+         when POSRT_CNT5 + NEGRT_CNT5 = 0 then
+          0
+         else
+          NEGRT_CNT5 / (POSRT_CNT5 + NEGRT_CNT5)
+       end as neg5_rate,
+       case
+         when POSRT_MEAN5 = 0 or POSRT_MEAN5 is null then
+          0
+         else
+          NEGRT_MEAN5 / POSRT_MEAN5
+       end as neg5_rt,
        NEGRT_CNT10 / (POSRT_CNT10 + NEGRT_CNT10) as neg10_rate,
-       NEGRT_MEAN10 / (POSRT_MEAN10 + 1) as neg10_rt,
+       case
+         when POSRT_MEAN10 = 0 or POSRT_MEAN10 is null then
+          0
+         else
+          NEGRT_MEAN10 / POSRT_MEAN10
+       end as neg10_rt,
        NEGRT_CNT20 / (POSRT_CNT20 + NEGRT_CNT20) as neg20_rate,
-       NEGRT_MEAN20 / (POSRT_MEAN20 + 1) as neg20_rt,
+       case
+         when POSRT_MEAN20 = 0 or POSRT_MEAN20 is null then
+          0
+         else
+          NEGRT_MEAN20 / POSRT_MEAN20
+       end as neg20_rt,
        NEGRT_CNT30 / (POSRT_CNT30 + NEGRT_CNT30) as neg30_rate,
-       NEGRT_MEAN30 / (POSRT_MEAN30 + 1) as neg30_rt,
+       case
+         when POSRT_MEAN30 = 0 or POSRT_MEAN30 is null then
+          0
+         else
+          NEGRT_MEAN30 / POSRT_MEAN30
+       end as neg30_rt,
        NEGRT_CNT60 / (POSRT_CNT60 + NEGRT_CNT60) as neg60_rate,
-       NEGRT_MEAN60 / (POSRT_MEAN60 + 1) as neg60_rt,
+       case
+         when POSRT_MEAN60 = 0 or POSRT_MEAN60 is null then
+          0
+         else
+          NEGRT_MEAN60 / POSRT_MEAN60
+       end as neg60_rt,
        NEGRT_CNT90 / (POSRT_CNT90 + NEGRT_CNT90) as neg90_rate,
-       NEGRT_MEAN90 / (POSRT_MEAN90 + 1) as neg90_rt,
+       case
+         when POSRT_MEAN90 = 0 or POSRT_MEAN90 is null then
+          0
+         else
+          NEGRT_MEAN90 / POSRT_MEAN90
+       end as neg90_rt,
        to_number(avg5_c_market) as avg5_c_market,
        to_number(avg10_c_market) as avg10_c_market,
        to_number(avg20_c_market) as avg20_c_market,
