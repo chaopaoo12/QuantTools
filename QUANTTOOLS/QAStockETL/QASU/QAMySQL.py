@@ -122,6 +122,7 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log=
             QA_util_log_info('The {} of Total {}====={}'.format
                              ((codes.index(i) +1), len(codes), i))
             data = QA_fetch_get_stock_etlday(codes, mark_day, mark_day)
+            QA_util_log_info("Got MARKET data for the day {}".format(mark_day))
             if data is None:
                 QA_util_log_info("We have no MARKET data for the day {}".format(mark_day))
             else:
