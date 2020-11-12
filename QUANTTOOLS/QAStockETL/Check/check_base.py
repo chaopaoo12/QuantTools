@@ -112,7 +112,7 @@ def check_stock_data(func = None, mark_day = None, title = None):
     except:
         data2 = None
 
-    if data1 is None:
+    if data1 is None or data2 is None:
         QA_util_log_info(
             '##JOB Now Check {title} Failed ============== {deal_date} to {to_date} '.format(title = title,
                                                                                              deal_date=mark_day,
