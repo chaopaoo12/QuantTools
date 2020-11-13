@@ -219,7 +219,6 @@ def QA_fetch_get_stock_etlreal(codes, start=None, end=None):
         res=None
     return(res)
 
-
 def QA_fetch_get_index_etlday(codes, start=None, end=None):
     if start is None:
         start = '2008-01-01'
@@ -235,7 +234,7 @@ def QA_fetch_get_index_etlday(codes, start=None, end=None):
     start_date = QA_util_get_pre_trade_date(start,100)
     data = QA_fetch_index_day_adv(codes,start_date,end)
     try:
-        res1 = data.data
+        res1 = data.data[['open','high','low','close','amount','volume']]
         res1.columns = [x + '_qfq' for x in res1.columns]
         data = data.data.join(res1).fillna(0).reset_index()
         data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
