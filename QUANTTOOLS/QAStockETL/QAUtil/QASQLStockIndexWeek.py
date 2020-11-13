@@ -232,7 +232,7 @@ def QA_Sql_Stock_IndexWeek(from_ , to_, sql_text = sql_text, ui_log= None):
     data.loc[data.CCI_JC_WK==1,'CCI_JC_WK'] = 2
     data.loc[data.CCI_SC_WK==2,'CCI_SC_WK'] = 1
     data['CCI_TR_WK'] = data['CCI_JC_WK'] + data['CCI_SC_WK']
-    data.loc[(data.CCI_TR_WK == 0),'CCI_TR'] = np.nan
+    data.loc[(data.CCI_TR_WK == 0),'CCI_TR_WK'] = np.nan
     data[['CCI_CROSS1_WK','CCI_CROSS2_WK','CCI_CROSS3_WK','CCI_CROSS4_WK','CCI_JC_WK','CCI_SC_WK','CCI_TR_WK']] = data[['CCI_CROSS1_WK','CCI_CROSS2_WK','CCI_CROSS3_WK','CCI_CROSS4_WK','CCI_JC_WK','CCI_SC_WK','CCI_TR_WK']].groupby('code').fillna(method='ffill')
     data['CCI_TR_WK'] = data['CCI_TR_WK'] -1
     return(data)
