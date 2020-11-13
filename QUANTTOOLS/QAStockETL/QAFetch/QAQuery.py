@@ -1237,7 +1237,7 @@ def QA_fetch_index_quant_data(code, start, end = None, norm_type = 'normalizatio
         base_res = fbase(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         try:
-            res = index_res.join(week_res).join(base_res)
+            res = base_res.join(week_res).join(index_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
