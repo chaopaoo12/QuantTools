@@ -1,9 +1,7 @@
 import cx_Oracle
 import pandas as pd
-import datetime
+import numpy as np
 from QUANTAXIS.QAUtil import QA_util_log_info
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
-                               QA_util_if_trade,QA_util_get_pre_trade_date)
 from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Oracle_User, Oracle_Password, Oralce_Server, MongoDB_Server, MongoDB_Database)
 
 ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
@@ -218,4 +216,13 @@ def QA_Sql_Index_Index(from_ , to_, sql_text = sql_text, ui_log= None):
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
-    return(data.drop_duplicates((['code', 'date'])).set_index(['date','code']))
+    data = data.drop_duplicates((['code', 'date'])).set_index(['date','code'])
+    data['CCI_JC'] = data['CCI_CROSS1'] + data['CCI_CROSS3']
+    data['CCI_SC'] = data['CCI_CROSS2'] + data['CCI_CROSS4']
+    data.loc[data.CCI_JC==1,'CCI_JC'] = 2
+    data.loc[data.CCI_SC==2,'CCI_SC'] = 1
+    data['CCI_TR'] = data['CCI_JC'] + data['CCI_SC']
+    data.loc[(data.CCI_TR == 0),'CCI_TR'] = np.nan
+    data[['CCI_CROSS1','CCI_CROSS2','CCI_CROSS3','CCI_CROSS4','CCI_JC','CCI_SC','CCI_TR']] = data[['CCI_CROSS1','CCI_CROSS2','CCI_CROSS3','CCI_CROSS4','CCI_JC','CCI_SC','CCI_TR']].groupby('code').fillna(method='ffill')
+    data['CCI_TR'] = data['CCI_TR'] -1
+    return(data)

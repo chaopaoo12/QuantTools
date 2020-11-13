@@ -64,7 +64,7 @@ def indicator_ATR(DataFrame, N=14):
     atrc = atr / REF(C, 1)
     return pd.DataFrame({'TR': TR, 'ATR': atr, 'ATRR':atrc})
 
-def function(a, b):
+def function1(a, b):
     if a > b:
         return 1
     elif a < b:
@@ -228,7 +228,7 @@ def get_indicator(data):
         MACD = data.add_func(QA.QA_indicator_MACD)
         MACD['CROSS_JC'] = QA.CROSS(MACD['DIF'], MACD['DEA'])
         MACD['CROSS_SC'] = QA.CROSS(MACD['DEA'], MACD['DIF'])
-        MACD['MACD_TR'] = MACD.apply(lambda x: function(x.DEA,x.DIF), axis = 1)
+        MACD['MACD_TR'] = MACD.apply(lambda x: function1(x.DEA,x.DIF), axis = 1)
     except:
         MACD = data.data.assign(DIF=None,DEA=None,MACD=None,
                                 CROSS_JC=0,CROSS_SC=0,)[['DIF','DEA','MACD','CROSS_JC','CROSS_SC','MACD_TR']]

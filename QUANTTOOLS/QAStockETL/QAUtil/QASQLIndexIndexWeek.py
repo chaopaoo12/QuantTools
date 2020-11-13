@@ -1,9 +1,7 @@
 import cx_Oracle
 import pandas as pd
-import datetime
+import numpy as np
 from QUANTAXIS.QAUtil import QA_util_log_info
-from  QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_today_str,
-                               QA_util_if_trade,QA_util_get_pre_trade_date)
 from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Oracle_User, Oracle_Password, Oralce_Server, MongoDB_Server, MongoDB_Database)
 
 ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
@@ -218,4 +216,13 @@ def QA_Sql_Index_IndexWeek(from_ , to_, sql_text = sql_text, ui_log= None):
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
-    return(data.drop_duplicates((['code', 'date'])).set_index(['date','code']))
+    data = data.drop_duplicates((['code', 'date'])).set_index(['date','code'])
+    data['CCI_JC_WK'] = data['CCI_CROSS1_WK'] + data['CCI_CROSS3_WK']
+    data['CCI_SC_WK'] = data['CCI_CROSS2_WK'] + data['CCI_CROSS4_WK']
+    data.loc[data.CCI_JC==1,'CCI_JC_WK'] = 2
+    data.loc[data.CCI_SC==2,'CCI_SC_WK'] = 1
+    data['CCI_TR_WK'] = data['CCI_JC_WK'] + data['CCI_SC_WK']
+    data.loc[(data.CCI_TR == 0),'CCI_TR'] = np.nan
+    data[['CCI_CROSS1_WK','CCI_CROSS2_WK','CCI_CROSS3_WK','CCI_CROSS4_WK','CCI_JC_WK','CCI_SC_WK','CCI_TR_WK']] = data[['CCI_CROSS1_WK','CCI_CROSS2_WK','CCI_CROSS3_WK','CCI_CROSS4_WK','CCI_JC_WK','CCI_SC_WK','CCI_TR_WK']].groupby('code').fillna(method='ffill')
+    data['CCI_TR_WK'] = data['CCI_TR_WK'] -1
+    return(data)
