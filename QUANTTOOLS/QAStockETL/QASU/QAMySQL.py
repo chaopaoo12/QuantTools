@@ -16,7 +16,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetc
                                            QA_fetch_stock_technical_index_adv,
                                            QA_fetch_stock_fianacial_adv,QA_fetch_stock_financial_percent_adv,
 
-                                           QA_fetch_index_info,
+                                           QA_fetch_index_info,QA_fetch_get_index_etlday,
                                            QA_fetch_index_alpha_adv,QA_fetch_index_alpha101_adv,
                                            QA_fetch_index_technical_index_adv,
 
@@ -101,6 +101,36 @@ def QA_etl_usstock_day(type = "day", mark_day = str(datetime.date.today()),ui_lo
             QA_util_sql_store_mysql(data, "usstock_market_day",if_exists='append')
             QA_util_log_info(
                 '##JOB ETL USSTOCK DAY HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
+
+def QA_etl_index_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
+    QA_util_log_info(
+        '##JOB Now ETL INDEX DAY ==== {}'.format(mark_day), ui_log)
+    codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
+    codes = list(codes[codes.cate != '5'].code)
+    codes.extend(['000001','399001','399006'])
+    if type == "all":
+        for i in codes:
+            QA_util_log_info('The {} of Total {}====={}'.format
+                             ((codes.index(i) +1), len(codes), i))
+            data = QA_fetch_get_index_etlday(i)
+            if data is None:
+                QA_util_log_info("We have no MARKET data for the ======= {}".format(i))
+            else:
+                QA_util_sql_store_mysql(data, "index_market_day",if_exists='append')
+                QA_util_log_info(
+                    '##JOB ETL INDEX DAY HAS BEEN SAVED ==== {}'.format(i), ui_log)
+    elif type == "day":
+        for i in codes:
+            QA_util_log_info('The {} of Total {}====={}'.format
+                             ((codes.index(i) +1), len(codes), i))
+            data = QA_fetch_get_index_etlday(i, mark_day, mark_day)
+            QA_util_log_info("Got MARKET data for the day {}".format(mark_day))
+            if data is None:
+                QA_util_log_info("We have no MARKET data for the day {}".format(mark_day))
+            else:
+                QA_util_sql_store_mysql(data, "index_market_day",if_exists='append')
+                QA_util_log_info(
+                    '##JOB ETL INDEX DAY HAS BEEN SAVED ==== {}'.format(mark_day), ui_log)
 
 def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(

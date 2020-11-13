@@ -95,7 +95,7 @@ from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (
                                                 QA_etl_stock_financial_percent_day
                                                 )
 
-from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (
+from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (QA_etl_index_day,
                                                 QA_etl_index_alpha_day,
                                                 QA_etl_index_alpha101_day,
                                                 QA_etl_index_technical_day,
