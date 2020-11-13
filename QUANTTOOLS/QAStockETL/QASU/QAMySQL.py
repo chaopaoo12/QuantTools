@@ -105,9 +105,7 @@ def QA_etl_usstock_day(type = "day", mark_day = str(datetime.date.today()),ui_lo
 def QA_etl_index_day(type = "day", mark_day = str(datetime.date.today()),ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL INDEX DAY ==== {}'.format(mark_day), ui_log)
-    codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
-    codes = list(codes[codes.cate != '5'].code)
-    codes.extend(['000001','399001','399006'])
+    codes = QA_fetch_index_list_adv().code.unique().tolist()
     if type == "all":
         for i in codes:
             QA_util_log_info('The {} of Total {}====={}'.format
