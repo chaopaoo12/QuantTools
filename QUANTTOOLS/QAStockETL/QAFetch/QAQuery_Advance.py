@@ -350,7 +350,7 @@ def QA_fetch_index_quant_data_adv(code, start="all", end=None, collections=DATAB
         data = QA_fetch_index_quant_data(code, start, end, format='pd')
         return QA_DataStruct_Index_day(data)
 
-def QA_fetch_index_quant_pre_adv(code, start="all", end=None, method='value'):
+def QA_fetch_index_quant_pre_adv(code, start="all", end=None, method='value', norm_type=None):
     '获取股票量化机器学习数据查询接口'
     end = start if end is None else end
     start = str(start)[0:10]
@@ -360,10 +360,10 @@ def QA_fetch_index_quant_pre_adv(code, start="all", end=None, method='value'):
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_index_quant_pre(code, start, end, method=method, format='pd')
+        data = QA_fetch_index_quant_pre(code, start, end, method=method,norm_type=norm_type, format='pd')
         return QA_DataStruct_Index_day(data)
     else:
-        data = QA_fetch_index_quant_pre(code, start, end, method=method, format='pd')
+        data = QA_fetch_index_quant_pre(code, start, end, method=method,norm_type=norm_type, format='pd')
         return QA_DataStruct_Index_day(data)
 
 def QA_fetch_stock_alpha101_adv(code, start="all", end=None, collections=DATABASE.stock_alpha):

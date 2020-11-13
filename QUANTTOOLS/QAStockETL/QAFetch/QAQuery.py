@@ -15,6 +15,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockBaseHalf import QA_Sql_Stock_BaseHal
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101Half import QA_Sql_Stock_Alpha101Half
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191Half import QA_Sql_Stock_Alpha191Half
 
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexBase import QA_Sql_Index_Base
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndex import QA_Sql_Index_Index
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexWeek import QA_Sql_Index_IndexWeek
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha101 import QA_Sql_Index_Alpha101
@@ -1208,7 +1209,7 @@ def QA_fetch_index_target(codes, start_date, end_date, method = 'value'):
     return(res)
 
 @time_this_function
-def QA_fetch_index_quant_data(code, start, end = None, type = 'normalization', format='pd'):
+def QA_fetch_index_quant_data(code, start, end = None, norm_type = 'normalization', format='pd'):
     '获取股票日线'
     start_date = QA_util_get_pre_trade_date(start,15)
     end_date = end
@@ -1217,8 +1218,7 @@ def QA_fetch_index_quant_data(code, start, end = None, type = 'normalization', f
     code = QA_util_code_tolist(code)
     index = QA_Sql_Index_Index
     week = QA_Sql_Index_IndexWeek
-    alpha = QA_Sql_Index_Alpha191
-    alpha101 = QA_Sql_Index_Alpha101
+    fbase = QA_Sql_Index_Base
 
     if QA_util_date_valid(end):
 
@@ -1233,15 +1233,11 @@ def QA_fetch_index_quant_data(code, start, end = None, type = 'normalization', f
         week_res = week(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
-            'JOB Get Index Alpha191 data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
-
-        QA_util_log_info(
-            'JOB Get Index Alpha101 data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').fillna(0).loc[((rng,code),)]
+            'JOB Get Index Base data start=%s end=%s' % (start, end))
+        base_res = fbase(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         try:
-            res = index_res.join(week_res).join(alpha_res).join(alpha101_res)
+            res = index_res.join(week_res).join(base_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
@@ -1258,13 +1254,13 @@ def QA_fetch_index_quant_data(code, start, end = None, type = 'normalization', f
         except:
             res = None
 
-        if type == 'standardize':
+        if norm_type == 'standardize':
             res = res.groupby('date').apply(standardize)
-        elif type == 'normalization':
+        elif norm_type == 'normalization':
             res = res.groupby('date').apply(normalization)
         else:
             res = res
-            QA_util_log_info('##JOB type must be in [standardize, normalization]')
+            QA_util_log_info('##JOB norm_type must be in [standardize, normalization]')
 
         if format in ['P', 'p', 'pandas', 'pd']:
             return res
@@ -1282,10 +1278,10 @@ def QA_fetch_index_quant_data(code, start, end = None, type = 'normalization', f
         QA_util_log_info(
             'QA Error QA_fetch_index_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
-def QA_fetch_index_quant_pre(code, start, end=None, method='value', format='pd'):
+def QA_fetch_index_quant_pre(code, start, end=None, method='value', norm_type=None, format='pd'):
     QA_util_log_info(
         'JOB Get Index Quant data start=%s end=%s' % (start, end))
-    res = QA_fetch_index_quant_data(code, start, end)
+    res = QA_fetch_index_quant_data(code, start, end, norm_type)
     QA_util_log_info(
         'JOB Get Index Target data start=%s end=%s' % (start, end))
     target = QA_fetch_index_target(code, start, end, method=method)
