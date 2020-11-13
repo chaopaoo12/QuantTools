@@ -39,6 +39,7 @@ from QUANTTOOLS.QAStockETL.Check import (check_index_alpha101, check_index_alpha
                                                     check_index_techindex, check_index_techweek)
 from QUANTTOOLS.QAStockETL import (QA_etl_index_alpha_day,
                                    QA_etl_index_alpha101_day,
+                                   QA_etl_index_day,
                                    QA_etl_index_technical_day,
                                    QA_etl_index_technical_week)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
@@ -56,6 +57,8 @@ if __name__ == '__main__':
         while res is None or (len(res[0]) + len(res[1])) > 10:
             QA_SU_save_index_day('tdx')
             res = check_index_day(mark_day)
+
+        QA_etl_index_day('day',mark_day)
 
         res = check_index_techindex(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 10:

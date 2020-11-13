@@ -74,7 +74,8 @@ from QUANTTOOLS.QAStockETL.QASU import (
                                         )
 
 ###Index Save Result
-from QUANTTOOLS.QAStockETL.QASU import (QA_etl_index_alpha_day,
+from QUANTTOOLS.QAStockETL.QASU import (QA_etl_index_day,
+                                        QA_etl_index_alpha_day,
                                         QA_etl_index_alpha101_day,
                                         QA_etl_index_technical_day,
                                         QA_etl_index_technical_week
