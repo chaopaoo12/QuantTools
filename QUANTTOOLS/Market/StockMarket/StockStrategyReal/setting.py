@@ -1321,6 +1321,15 @@ data_set = ['TOTAL_MARKET'
     ,'CDLUNIQUE3RIVER'
     ,'CDLUPSIDEGAP2CROWS'
     ,'CDLXSIDEGAP3METHODS'
+     ,'SHORT10',
+            'SHORT20',
+            'SHORT60',
+            'SHORT_CROSS1',
+            'SHORT_CROSS2',
+            'LONG60',
+            'LONG120',
+            'LONG_CROSS1',
+            'LONG_CROSS2'
     ,'VR_WK'
     ,'VRSI_WK'
     ,'VRSI_C_WK'
@@ -1516,6 +1525,14 @@ data_set = ['TOTAL_MARKET'
     ,'CDLUNIQUE3RIVER_WK'
     ,'CDLUPSIDEGAP2CROWS_WK'
     ,'CDLXSIDEGAP3METHODS_WK'
+    ,'SHORT20_WK'
+    ,'SHORT60_WK'
+    ,'SHORT_CROSS2_WK'
+    ,'SHORT_CROSS1_WK'
+    ,'LONG60_WK'
+    ,'LONG120_WK'
+    ,'LONG_CROSS1_WK'
+    ,'LONG_CROSS2_WK'
     ,'ALPHA_001'
     ,'ALPHA_002'
     ,'ALPHA_003'
