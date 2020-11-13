@@ -128,7 +128,9 @@ from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_stock_close,fetch_
                                                  QA_fetch_get_usstock_pe,QA_fetch_get_usstock_pb)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QABaseIndicator import (QA_fetch_get_stock_etlday,
-                                                           QA_fetch_get_stock_etlhalf,QA_fetch_get_stock_etlreal,
-                                                           QA_fetch_get_usstock_etlday)
+                                                           QA_fetch_get_stock_etlhalf,
+                                                           QA_fetch_get_stock_etlreal,
+                                                           QA_fetch_get_usstock_etlday,
+                                                           QA_fetch_get_index_etlday)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QABlock import (QA_fetch_get_block_day_xq)
