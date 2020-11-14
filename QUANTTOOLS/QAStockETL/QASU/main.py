@@ -319,3 +319,15 @@ def QA_SU_save_usstock_fianacial_percent_day(code = None, start_date = None, end
 
 def QA_SU_save_usstock_fianacial_percent_his(code = None, start_date = '2008-01-01', end_date = None):
     usstock_finper.QA_SU_save_usstock_fianacial_percent_his(code = code, start_date = start_date ,end_date = end_date)
+
+def QA_SU_save_stock_technical_hour_day(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_stock_technical_hour_day(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_stock_technical_hour_his(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_stock_technical_hour_his(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_index_technical_hour_day(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_index_technical_hour_day(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_index_technical_hour_his(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_index_technical_hour_his(codes = code,start_date=start_date,end_date=end_date)

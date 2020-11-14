@@ -72,7 +72,7 @@ def function1(a, b):
     else:
         return 0
 
-def get_indicator(data):
+def get_indicator(data, type='day'):
     try:
         # todo
         #A.低价区域：70~40——为可买进区域
@@ -602,7 +602,13 @@ def get_indicator(data):
     res['MA60'] = data['close']/res['MA60']-1
     res['MA120'] = data['close']/res['MA120']-1
     res['MA180'] = data['close']/res['MA180']-1
-    res = res.reset_index()
-    res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
-    res = res.set_index(['date','code']).dropna(how='all')
+
+    if type in ['day','week','month']:
+        res = res.reset_index()
+        res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
+        res = res.set_index(['date','code']).dropna(how='all')
+    elif type == 'hour':
+        res = res.reset_index()
+        res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
+        res = res.set_index(['date','code']).dropna(how='all')
     return(res)

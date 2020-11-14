@@ -63,6 +63,7 @@ from QUANTTOOLS.QAStockETL.QASU import (
 
                                         QA_etl_stock_financial_day,QA_etl_stock_financial_percent_day,
 
+                                        QA_etl_stock_technical_hour,
                                         QA_etl_stock_technical_day,QA_etl_stock_technical_week,
                                         QA_etl_stock_alpha101_day,QA_etl_stock_alpha101half_day,
                                         QA_etl_stock_alpha_day,QA_etl_stock_alpha191half_day,
@@ -77,6 +78,7 @@ from QUANTTOOLS.QAStockETL.QASU import (
 from QUANTTOOLS.QAStockETL.QASU import (QA_etl_index_day,
                                         QA_etl_index_alpha_day,
                                         QA_etl_index_alpha101_day,
+                                        QA_etl_index_technical_hour,
                                         QA_etl_index_technical_day,
                                         QA_etl_index_technical_week
                                         )

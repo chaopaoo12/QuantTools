@@ -26,6 +26,7 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_fianacialTTM_momgo,QA_SU
                                              QA_SU_save_stock_fianacial_momgo, QA_SU_save_stock_fianacial_momgo_his,
                                              QA_SU_save_stock_alpha_day, QA_SU_save_stock_alpha_his,
                                              QA_SU_save_stock_alpha101_day,QA_SU_save_stock_alpha101_his,
+                                             QA_SU_save_stock_technical_hour_day,QA_SU_save_stock_technical_hour_his,
                                              QA_SU_save_stock_technical_index_day,QA_SU_save_stock_technical_index_his,
                                              QA_SU_save_stock_fianacial_percent_day,QA_SU_save_stock_fianacial_percent_his,
                                              QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_week_his,
@@ -43,6 +44,7 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_fianacialTTM_momgo,QA_SU
 ###Index indicator
 from QUANTTOOLS.QAStockETL.QASU.main import (
                                              QA_SU_save_index_alpha_day,QA_SU_save_index_alpha_his,
+                                             QA_SU_save_index_technical_hour_day,QA_SU_save_index_technical_hour_his,
                                              QA_SU_save_index_technical_index_day,QA_SU_save_index_technical_index_his,
                                              QA_SU_save_index_technical_week_day,QA_SU_save_index_technical_week_his,
                                              QA_SU_save_index_technical_month_day,QA_SU_save_index_technical_month_his,
@@ -89,6 +91,7 @@ from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (
                                                 QA_etl_stock_technical_day,
                                                 QA_etl_stock_financial_day,
                                                 QA_etl_stock_technical_week,
+                                                QA_etl_stock_technical_hour,
                                                 QA_etl_stock_alpha101_day,
                                                 QA_etl_stock_alpha101half_day,
                                                 QA_etl_stock_alpha191half_day,
@@ -99,5 +102,6 @@ from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (QA_etl_index_day,
                                                 QA_etl_index_alpha_day,
                                                 QA_etl_index_alpha101_day,
                                                 QA_etl_index_technical_day,
-                                                QA_etl_index_technical_week
+                                                QA_etl_index_technical_week,
+                                                QA_etl_index_technical_hour
                                                 )
