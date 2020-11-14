@@ -84,6 +84,7 @@ def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method
     code_list = QA.QA_fetch_index_list_adv()
 
     if code is None:
+        code_list = QA_fetch_index_info(list(code_list.code))
         codes = list(code_list[code_list.cate != '5'].code)
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
@@ -101,6 +102,7 @@ def get_index_quant_data_norm(start_date, end_date, code=None, type = 'crawl', m
     code_list = QA.QA_fetch_index_list_adv()
 
     if code is None:
+        code_list = QA_fetch_index_info(list(code_list.code))
         codes = list(code_list[code_list.cate != '5'].code)
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
