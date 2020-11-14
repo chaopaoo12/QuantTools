@@ -16,6 +16,7 @@ from QUANTTOOLS.QAStockETL.QASU import (
                                         QA_SU_save_fianacialTTM_momgo,
                                         QA_SU_save_stock_fianacial_percent_day,QA_SU_save_stock_fianacial_percent_his,
                                         QA_SU_save_stock_alpha_day,QA_SU_save_stock_alpha_his,
+                                        QA_SU_save_stock_technical_hour_day,QA_SU_save_stock_technical_hour_his,
                                         QA_SU_save_stock_technical_index_day,QA_SU_save_stock_technical_index_his,
                                         QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_week_his,
                                         QA_SU_save_stock_technical_month_day,QA_SU_save_stock_technical_month_his,
@@ -28,14 +29,14 @@ from QUANTTOOLS.QAStockETL.QASU import (
                                         )
 
 ###Index Indicator
-from QUANTTOOLS.QAStockETL.QASU import (
+from QUANTTOOLS.QAStockETL.QASU import (QA_SU_save_index_technical_hour_day,QA_SU_save_index_technical_hour_his,
                                         QA_SU_save_index_technical_index_day,QA_SU_save_index_technical_index_his,
                                         QA_SU_save_index_technical_week_day,QA_SU_save_index_technical_week_his,
                                         QA_SU_save_index_technical_month_day,QA_SU_save_index_technical_month_his,
                                         QA_SU_save_index_alpha_day,QA_SU_save_index_alpha_his,
                                         QA_SU_save_index_alpha101_day,QA_SU_save_index_alpha101_his,
                                         QA_SU_save_index_quant_data_day,QA_SU_save_index_quant_data_his,
-
+                                        QA_SU_save_index_min,QA_SU_save_single_index_min,
                                         QA_SU_save_index_info,QA_SU_save_stock_industryinfo,QA_SU_save_stock_delist,
                                         QA_SU_save_index_week,QA_SU_save_index_month,QA_SU_save_index_year
                                         )

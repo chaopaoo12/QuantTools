@@ -1,4 +1,4 @@
-from QUANTAXIS import QA_fetch_stock_day_adv, QA_fetch_index_day_adv,QA_fetch_stock_min_adv, QA_fetch_stock_adj
+from QUANTAXIS import QA_fetch_stock_day_adv,QA_fetch_stock_min_adv, QA_fetch_index_day_adv, QA_fetch_index_min_adv, QA_fetch_stock_adj
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianacial_adv,
                                                            QA_fetch_stock_quant_data_adv,
                                                            QA_fetch_index_quant_data_adv,
@@ -124,6 +124,11 @@ def QA_fetch_stock_alpha191_real_model(code, start, end):
 def check_realstock_alpha191half(mark_day = None):
     return(check_stock_base(func1 = QA_fetch_stock_alpha191_real_model, func2 = QA_fetch_stock_alpha_real, mark_day = mark_day, title = 'Stock Alpha191 Half Real'))
 
+def QA_fetch_stock_techhour(code, start, end):
+    return(QA_fetch_stock_technical_index_adv(code, start, end, type='hour').data)
+
+def check_stock_techhour(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_techhour, mark_day = mark_day, title = 'Stock TechHour'))
 
 def QA_fetch_stock_techindex(code, start, end):
     return(QA_fetch_stock_technical_index_adv(code, start, end, type='day').data)
@@ -157,6 +162,11 @@ def QA_fetch_stock_quant_data(code, start, end):
 def check_stock_quant(mark_day = None):
     return(check_stock_data(func = QA_fetch_stock_quant_data, mark_day = mark_day, title = 'Stock Quant'))
 
+def QA_fetch_index_60min(code, start, end):
+    return(QA_fetch_index_min_adv(code, start, end, frequence='60min').data)
+
+def check_index_60min(mark_day = None):
+    return(check_stock_data(func = QA_fetch_index_60min, mark_day = mark_day, title = 'Index 60Min'))
 
 def QA_fetch_index_day(code, start, end):
     return(QA_fetch_index_day_adv(code, start, end).data)
@@ -176,6 +186,11 @@ def QA_fetch_index_alpha101(code, start, end):
 def check_index_alpha101(mark_day = None):
     return(check_index_data(func = QA_fetch_index_alpha101, mark_day = mark_day, title = 'Index Alpha101'))
 
+def QA_fetch_index_techhour(code, start, end):
+    return(QA_fetch_index_technical_index_adv(code, start, end, type='hour').data)
+
+def check_index_techhour(mark_day = None):
+    return(check_index_data(func = QA_fetch_index_techhour, mark_day = mark_day, title = 'Index TechHour'))
 
 def QA_fetch_index_techindex(code, start, end):
     return(QA_fetch_index_technical_index_adv(code, start, end, type='day').data)

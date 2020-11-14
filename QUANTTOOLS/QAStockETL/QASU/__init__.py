@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_stock_day,QA_SU_save_sto
                                              QA_SU_save_stock_xdxr,QA_SU_save_single_stock_xdxr)
 
 ###index basic data
-from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_index_info,
+from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_index_info,QA_SU_save_index_min,QA_SU_save_single_index_min,
                                              QA_SU_save_index_week,QA_SU_save_index_month,QA_SU_save_index_year)
 
 ###Stock crawl
@@ -28,9 +28,9 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_fianacialTTM_momgo,QA_SU
                                              QA_SU_save_stock_alpha101_day,QA_SU_save_stock_alpha101_his,
                                              QA_SU_save_stock_technical_hour_day,QA_SU_save_stock_technical_hour_his,
                                              QA_SU_save_stock_technical_index_day,QA_SU_save_stock_technical_index_his,
-                                             QA_SU_save_stock_fianacial_percent_day,QA_SU_save_stock_fianacial_percent_his,
                                              QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_week_his,
                                              QA_SU_save_stock_technical_month_day,QA_SU_save_stock_technical_month_his,
+                                             QA_SU_save_stock_fianacial_percent_day,QA_SU_save_stock_fianacial_percent_his,
                                              QA_SU_save_stock_quant_data_day,QA_SU_save_stock_quant_data_his,
                                              QA_SU_save_stock_alpha101half_day,QA_SU_save_stock_alpha101half_his,
                                              QA_SU_save_stock_alpha191half_day,QA_SU_save_stock_alpha191half_his,
@@ -88,10 +88,10 @@ from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (
 
 from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (
                                                 QA_etl_stock_alpha_day,
-                                                QA_etl_stock_technical_day,
                                                 QA_etl_stock_financial_day,
-                                                QA_etl_stock_technical_week,
                                                 QA_etl_stock_technical_hour,
+                                                QA_etl_stock_technical_day,
+                                                QA_etl_stock_technical_week,
                                                 QA_etl_stock_alpha101_day,
                                                 QA_etl_stock_alpha101half_day,
                                                 QA_etl_stock_alpha191half_day,

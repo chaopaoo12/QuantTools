@@ -1,7 +1,7 @@
 from QUANTAXIS import (QA_fetch_get_usstock_list,QA_fetch_get_index_list,QA_fetch_get_index_day,
                        QA_fetch_get_stock_day,QA_fetch_get_stock_xdxr,QA_fetch_get_stock_info,
                        )
-from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_list, QA_fetch_get_stock_min
+from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_list, QA_fetch_get_stock_min, QA_fetch_get_index_min
 
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_usstock_adj,QA_fetch_get_usstock_day,QA_fetch_get_usstock_cik,
                                                  QA_fetch_get_usstock_financial, QA_fetch_get_usstock_financial_calendar,
@@ -1714,6 +1714,257 @@ def QA_SU_save_stock_basereal(code =None, start_date = None, end_date = None, cl
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
         __saving_work(code, start_date, end_date)
 
+    if len(err) < 1:
+        QA_util_log_info('SUCCESS', ui_log=ui_log)
+    else:
+        QA_util_log_info(' ERROR CODE \n ', ui_log=ui_log)
+        QA_util_log_info(err, ui_log=ui_log)
+
+def QA_SU_save_index_min(client=DATABASE, ui_log=None, ui_progress=None):
+    """save index_min
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+
+    __index_list = QA_fetch_get_stock_list('index')
+    coll = client.index_min
+    coll.create_index(
+        [
+            ('code',
+             pymongo.ASCENDING),
+            ('time_stamp',
+             pymongo.ASCENDING),
+            ('date_stamp',
+             pymongo.ASCENDING)
+        ]
+    )
+    err = []
+
+    def __saving_work(code, coll):
+
+        QA_util_log_info(
+            '##JOB05 Now Saving Index_MIN ==== {}'.format(str(code)),
+            ui_log=ui_log
+        )
+        try:
+
+            for type in ['60min']:
+                ref_ = coll.find({'code': str(code)[0:6], 'type': type})
+                end_time = str(now_time())[0:19]
+                if ref_.count() > 0:
+                    start_time = ref_[ref_.count() - 1]['datetime']
+
+                    QA_util_log_info(
+                        '##JOB05.{} Now Saving {} from {} to {} =={} '.format(
+                            ['1min',
+                             '5min',
+                             '15min',
+                             '30min',
+                             '60min'].index(type),
+                            str(code),
+                            start_time,
+                            end_time,
+                            type
+                        ),
+                        ui_log=ui_log
+                    )
+
+                    if start_time != end_time:
+                        __data = QA_fetch_get_index_min(
+                            str(code),
+                            start_time,
+                            end_time,
+                            type
+                        )
+                        if len(__data) > 1:
+                            coll.insert_many(
+                                QA_util_to_json_from_pandas(__data[1::])
+                            )
+                else:
+                    start_time = '2015-01-01'
+
+                    QA_util_log_info(
+                        '##JOB05.{} Now Saving {} from {} to {} =={} '.format(
+                            ['1min',
+                             '5min',
+                             '15min',
+                             '30min',
+                             '60min'].index(type),
+                            str(code),
+                            start_time,
+                            end_time,
+                            type
+                        ),
+                        ui_log=ui_log
+                    )
+
+                    if start_time != end_time:
+                        __data = QA_fetch_get_index_min(
+                            str(code),
+                            start_time,
+                            end_time,
+                            type
+                        )
+                        if len(__data) > 1:
+                            coll.insert_many(
+                                QA_util_to_json_from_pandas(__data)
+                            )
+        except:
+            err.append(code)
+
+    executor = ThreadPoolExecutor(max_workers=4)
+
+    res = {
+        executor.submit(__saving_work,
+                        __index_list.index[i_][0],
+                        coll)
+        for i_ in range(len(__index_list))
+    }  # multi index ./.
+    count = 0
+    for i_ in concurrent.futures.as_completed(res):
+        strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
+            str(float(count / len(__index_list) * 100))[0:4] + '%'
+        )
+        intLogProgress = int(float(count / len(__index_list) * 10000.0))
+        QA_util_log_info(
+            'The {} of Total {}'.format(count,
+                                        len(__index_list)),
+            ui_log=ui_log
+        )
+        QA_util_log_info(
+            strLogProgress,
+            ui_log=ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=intLogProgress
+        )
+        count = count + 1
+    if len(err) < 1:
+        QA_util_log_info('SUCCESS', ui_log=ui_log)
+    else:
+        QA_util_log_info(' ERROR CODE \n ', ui_log=ui_log)
+        QA_util_log_info(err, ui_log=ui_log)
+
+def QA_SU_save_single_index_min(code : str, client=DATABASE, ui_log=None, ui_progress=None):
+    """save single index_min
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+
+    #__index_list = QA_fetch_get_stock_list('index')
+    __index_list = [code]
+    coll = client.index_min
+    coll.create_index(
+        [
+            ('code',
+             pymongo.ASCENDING),
+            ('time_stamp',
+             pymongo.ASCENDING),
+            ('date_stamp',
+             pymongo.ASCENDING)
+        ]
+    )
+    err = []
+
+    def __saving_work(code, coll):
+
+        QA_util_log_info(
+            '##JOB05 Now Saving Index_MIN ==== {}'.format(str(code)),
+            ui_log=ui_log
+        )
+        try:
+
+            for type in ['60min']:
+                ref_ = coll.find({'code': str(code)[0:6], 'type': type})
+                end_time = str(now_time())[0:19]
+                if ref_.count() > 0:
+                    start_time = ref_[ref_.count() - 1]['datetime']
+
+                    QA_util_log_info(
+                        '##JOB05.{} Now Saving {} from {} to {} =={} '.format(
+                            ['1min',
+                             '5min',
+                             '15min',
+                             '30min',
+                             '60min'].index(type),
+                            str(code),
+                            start_time,
+                            end_time,
+                            type
+                        ),
+                        ui_log=ui_log
+                    )
+
+                    if start_time != end_time:
+                        __data = QA_fetch_get_index_min(
+                            str(code),
+                            start_time,
+                            end_time,
+                            type
+                        )
+                        if len(__data) > 1:
+                            coll.insert_many(
+                                QA_util_to_json_from_pandas(__data[1::])
+                            )
+                else:
+                    start_time = '2015-01-01'
+
+                    QA_util_log_info(
+                        '##JOB05.{} Now Saving {} from {} to {} =={} '.format(
+                            ['1min',
+                             '5min',
+                             '15min',
+                             '30min',
+                             '60min'].index(type),
+                            str(code),
+                            start_time,
+                            end_time,
+                            type
+                        ),
+                        ui_log=ui_log
+                    )
+
+                    if start_time != end_time:
+                        __data = QA_fetch_get_index_min(
+                            str(code),
+                            start_time,
+                            end_time,
+                            type
+                        )
+                        if len(__data) > 1:
+                            coll.insert_many(
+                                QA_util_to_json_from_pandas(__data)
+                            )
+        except:
+            err.append(code)
+
+    executor = ThreadPoolExecutor(max_workers=4)
+
+    res = {
+        executor.submit(__saving_work,
+                        __index_list[i_],
+                        coll)
+        for i_ in range(len(__index_list))
+    }  # multi index ./.
+    count = 1
+    for i_ in concurrent.futures.as_completed(res):
+        strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
+            str(float(count / len(__index_list) * 100))[0:4] + '%'
+        )
+        intLogProgress = int(float(count / len(__index_list) * 10000.0))
+        QA_util_log_info(
+            'The {} of Total {}'.format(count,
+                                        len(__index_list)),
+            ui_log=ui_log
+        )
+        QA_util_log_info(
+            strLogProgress,
+            ui_log=ui_log,
+            ui_progress=ui_progress,
+            ui_progress_int_value=intLogProgress
+        )
+        count = count + 1
     if len(err) < 1:
         QA_util_log_info('SUCCESS', ui_log=ui_log)
     else:
