@@ -42,7 +42,7 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
         except:
             QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
 
-    if data == None:
+    if data is None:
         return None
     else:
         data = get_indicator(data, type)
@@ -57,7 +57,6 @@ def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA_fetch_index_min_adv(code,start,end_date,'60min')
-            data = QA_DataStruct_Index_min(data)
         except:
             QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'day':
@@ -87,7 +86,7 @@ def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
             QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
             data = None
 
-    if data == None:
+    if data is None:
         return None
     else:
         data = get_indicator(data, type)
@@ -125,7 +124,7 @@ def QA_fetch_get_stock_indicator_half(code, start_date, end_date, type = 'day'):
         except:
             QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
             data = None
-    if data == None:
+    if data is None:
         return None
     else:
         data = get_indicator(data)
@@ -163,7 +162,7 @@ def QA_fetch_get_stock_indicator_halfreal(code, start_date, end_date, type = 'da
         except:
             QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
 
-    if data == None:
+    if data is None:
         return None
     else:
         data = get_indicator(data)
