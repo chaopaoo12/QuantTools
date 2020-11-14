@@ -720,7 +720,7 @@ def QA_etl_index_technical_hour(start_date = QA_util_today_str(), end_date= None
         end_date = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL INDEX TECHNICAL HOUR ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
     codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
-    data = QA_fetch_index_technical_index_adv(codes, start_date, end_date).data
+    data = QA_fetch_index_technical_index_adv(codes, start_date, end_date,type='hour').data
     if data is None:
         QA_util_log_info(
             '##JOB NO INDEX TECHNICAL HOUR HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
@@ -735,7 +735,7 @@ def QA_etl_stock_technical_hour(start_date = QA_util_today_str(), end_date= None
         end_date = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL STOCK TECHNICAL HOUR ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
     codes = list(QA_fetch_stock_all()['code'])
-    data = QA_fetch_stock_technical_index_adv(codes, start_date, end_date).data
+    data = QA_fetch_stock_technical_index_adv(codes, start_date, end_date,type='hour').data
     if data is None:
         QA_util_log_info(
             '##JOB NO STOCK TECHNICAL HOUR HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
