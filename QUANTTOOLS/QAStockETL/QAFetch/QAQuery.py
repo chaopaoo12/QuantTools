@@ -585,7 +585,9 @@ def QA_fetch_stock_technical_index(code, start, end=None, type='day', format='pd
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
-    if type == 'day':
+    if type == 'hour':
+        collections=DATABASE.stock_technical_hour
+    elif type == 'day':
         collections=DATABASE.stock_technical_index
     elif type == 'week':
         collections=DATABASE.stock_technical_week
@@ -1137,7 +1139,9 @@ def QA_fetch_index_technical_index(code, start, end=None, type='day', format='pd
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
-    if type == 'day':
+    if type == 'hour':
+        collections=DATABASE.index_technical_hour
+    elif type == 'day':
         collections=DATABASE.index_technical_index
     elif type == 'week':
         collections=DATABASE.index_technical_week
