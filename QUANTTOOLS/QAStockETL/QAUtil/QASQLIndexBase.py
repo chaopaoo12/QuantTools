@@ -100,7 +100,7 @@ sql_text = '''select to_char(order_date, 'yyyy-mm-dd') as "date",
        to_number(avg30_c_market) as avg30_c_market,
        to_number(avg60_c_market) as avg60_c_market,
        to_number(avg90_c_market) as avg90_c_market
-from usstock_market_day
+from index_market_day
 where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
 and order_Date <=
