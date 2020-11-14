@@ -623,5 +623,6 @@ def get_indicator(data, type='day'):
     elif type == 'hour':
         res = res.reset_index()
         res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
+        res = res.assign(datetime=res['datetime'].apply(lambda x: str(x)))
         res = res.set_index(['date','code']).dropna(how='all')
     return(res)

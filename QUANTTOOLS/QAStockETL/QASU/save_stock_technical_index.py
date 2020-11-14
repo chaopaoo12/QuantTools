@@ -703,7 +703,12 @@ def QA_SU_save_stock_technical_hour_day(codes=None, start_date=None,end_date=Non
         codes = QA_util_code_tolist(codes)
 
     stock_technical_hour = client.stock_technical_hour
-    stock_technical_hour.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
+    stock_technical_hour.create_index([('code',
+                                        pymongo.ASCENDING),
+                                       ('time_stamp',
+                                        pymongo.ASCENDING),
+                                       ('date_stamp',
+                                        pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(code,start_date,end_date):
@@ -760,7 +765,12 @@ def QA_SU_save_stock_technical_hour_his(codes=None, start_date=None,end_date=Non
         codes = QA_util_code_tolist(codes)
 
     stock_technical_hour = client.stock_technical_hour
-    stock_technical_hour.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
+    stock_technical_hour.create_index([('code',
+                                        pymongo.ASCENDING),
+                                       ('time_stamp',
+                                        pymongo.ASCENDING),
+                                       ('date_stamp',
+                                        pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(code,start_date,end_date):
@@ -815,7 +825,12 @@ def QA_SU_save_index_technical_hour_day(codes = None,start_date=None,end_date=No
         codes = QA_util_code_tolist(codes)
 
     index_technical_hour = client.index_technical_hour
-    index_technical_hour.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
+    index_technical_hour.create_index([('code',
+                                        pymongo.ASCENDING),
+                                       ('time_stamp',
+                                        pymongo.ASCENDING),
+                                       ('date_stamp',
+                                        pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(code,start_date,end_date):
@@ -872,7 +887,12 @@ def QA_SU_save_index_technical_hour_his(codes = None,start_date=None,end_date=No
         codes = QA_util_code_tolist(codes)
 
     index_technical_hour = client.index_technical_hour
-    index_technical_hour.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
+    index_technical_hour.create_index([('code',
+                                        pymongo.ASCENDING),
+                                       ('time_stamp',
+                                        pymongo.ASCENDING),
+                                       ('date_stamp',
+                                        pymongo.ASCENDING)], unique=True)
     err = []
 
     def __saving_work(code,start_date,end_date):
