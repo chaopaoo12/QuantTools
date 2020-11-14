@@ -79,10 +79,14 @@ def get_quant_data_realtime(start_date, end_date, code=None, type = 'model', blo
     #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
-def get_index_quant_data(start_date, end_date, type = 'crawl', method = 'value',norm_type=None):
+def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
 
-    codes = QA_fetch_index_info(list(QA.QA_fetch_index_list_adv().code))
-    codes = list(codes[codes.cate != '5'].code)
+    code_list = QA.QA_fetch_index_list_adv()
+
+    if code is None:
+        codes = list(code_list[code_list.cate != '5'].code)
+    else:
+        codes = list(code_list[code_list.code.isin(code)].code)
 
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date, method=method,norm_type=norm_type).data
@@ -92,10 +96,14 @@ def get_index_quant_data(start_date, end_date, type = 'crawl', method = 'value',
         res = res.join(target)
     return(pd.get_dummies(res))
 
-def get_index_quant_data_norm(start_date, end_date, type = 'crawl', method = 'value',norm_type=None):
+def get_index_quant_data_norm(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
 
-    codes = QA_fetch_index_info(list(QA.QA_fetch_index_list_adv().code))
-    codes = list(codes[codes.cate != '5'].code)
+    code_list = QA.QA_fetch_index_list_adv()
+
+    if code is None:
+        codes = list(code_list[code_list.cate != '5'].code)
+    else:
+        codes = list(code_list[code_list.code.isin(code)].code)
 
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date, method=method,norm_type=norm_type).data

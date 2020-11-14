@@ -1214,7 +1214,6 @@ def QA_fetch_index_quant_data(code, start, end = None, norm_type = 'normalizatio
     start_date = QA_util_get_pre_trade_date(start,15)
     end_date = end
     rng = QA_util_get_trade_range(start, end)
-
     code = QA_util_code_tolist(code)
     index = QA_Sql_Index_Index
     week = QA_Sql_Index_IndexWeek
