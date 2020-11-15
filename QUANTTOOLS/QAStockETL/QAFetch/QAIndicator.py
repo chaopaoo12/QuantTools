@@ -610,12 +610,12 @@ def get_indicator(data, type='day'):
     res['MS'] = data['close']/res['MS'] - 1
     res['SS'] = data['close']/res['SS'] - 1
     res = res.groupby('code').apply(spc)
-    #res['MA5'] = data['close']/res['MA5']-1
-    #res['MA10'] = data['close']/res['MA10']-1
-    #res['MA20'] = data['close']/res['MA20']-1
-    #res['MA60'] = data['close']/res['MA60']-1
-    #res['MA120'] = data['close']/res['MA120']-1
-    #res['MA180'] = data['close']/res['MA180']-1
+    res['MA5'] = data['close']/res['MA5']-1
+    res['MA10'] = data['close']/res['MA10']-1
+    res['MA20'] = data['close']/res['MA20']-1
+    res['MA60'] = data['close']/res['MA60']-1
+    res['MA120'] = data['close']/res['MA120']-1
+    res['MA180'] = data['close']/res['MA180']-1
 
     if type in ['day','week','month']:
         res = res.reset_index()
