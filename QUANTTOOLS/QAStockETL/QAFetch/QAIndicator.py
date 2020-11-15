@@ -32,6 +32,14 @@ def spc(data):
                                                                 'MA180':rolling_ols})
     return(data)
 
+def spc_short(data):
+    data[[ 'MA5_C','MA10_C',
+           'MA20_C','MA60_C']] = data.rolling(window=5).agg({ 'MA5':rolling_ols,
+                                                                'MA10':rolling_ols,
+                                                                'MA20':rolling_ols,
+                                                                'MA60':rolling_ols})
+    return(data)
+
 def MIKE_NEW(DataFrame,MIKE_N=12,MA_N=5):
     HIGH = DataFrame.high
     LOW = DataFrame.low
@@ -616,6 +624,83 @@ def get_indicator(data, type='day'):
     res['MA60'] = data['close']/res['MA60']-1
     res['MA120'] = data['close']/res['MA120']-1
     res['MA180'] = data['close']/res['MA180']-1
+
+    if type in ['day','week','month']:
+        res = res.reset_index()
+        res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
+        res = res.set_index(['date','code']).dropna(how='all')
+    elif type == 'hour':
+        res = res.reset_index()
+        res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
+        res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
+        res = res.set_index(['date','code']).dropna(how='all')
+    return(res)
+
+
+def get_indicator_short(data, type='day'):
+
+    try:
+        BOLL = data.add_func(QA.QA_indicator_BOLL)
+        BOLL['WIDTH'] = (BOLL['UB']-BOLL['LB'])/BOLL['BOLL']
+        BOLL['BOLL'] = data['close'] / BOLL['BOLL'] - 1
+        BOLL['UB'] = data['close'] / BOLL['UB'] - 1
+        BOLL['LB'] = data['close'] / BOLL['LB'] - 1
+    except:
+        BOLL = data.data.assign(BOLL=None,UB=None,LB=None,WIDTH=None,
+                                BOLL_CROSS1=0,BOLL_CROSS2=0,BOLL_CROSS3=0,
+                                BOLL_CROSS4=0)[['BOLL','UB','LB','WIDTH']]
+
+    try:
+        MA = data.add_func(QA.QA_indicator_MA,5,10,20,60)
+        MA['SHORT10'] = MA['MA5']/MA['MA10']-1
+        MA['SHORT20'] = MA['MA5']/MA['MA20']-1
+        MA['SHORT60'] = MA['MA5']/MA['MA60']-1
+        MA['LONG60'] = MA['MA20']/MA['MA60']-1
+        MA['SHORT_CROSS1'] = QA.CROSS(MA['MA5'], MA['MA20'])
+        MA['SHORT_CROSS2'] = QA.CROSS(MA['MA20'], MA['MA5'])
+        MA['LONG_CROSS1'] = QA.CROSS(MA['MA20'], MA['MA60'])
+        MA['LONG_CROSS2'] = QA.CROSS(MA['MA60'], MA['MA20'])
+    except:
+        MA = data.data.assign(MA5=None,MA10=None,MA20=None,MA60=None
+                              )[['MA5','MA10','MA20','MA60']]
+        MA['SHORT10'] = MA['MA5']/MA['MA10']-1
+        MA['SHORT20'] = MA['MA5']/MA['MA20']-1
+        MA['SHORT60'] = MA['MA5']/MA['MA60']-1
+        MA['LONG60'] = MA['MA20']/MA['MA60']-1
+        MA['SHORT_CROSS1'] = QA.CROSS(MA['MA5'], MA['MA20'])
+        MA['SHORT_CROSS2'] = QA.CROSS(MA['MA20'], MA['MA5'])
+        MA['LONG_CROSS1'] = QA.CROSS(MA['MA20'], MA['MA60'])
+        MA['LONG_CROSS2'] = QA.CROSS(MA['MA60'], MA['MA20'])
+
+    try:
+        CCI = data.add_func(QA.QA_indicator_CCI)
+        CCI['CCI_CROSS1'] = QA.CROSS(CCI['CCI'], CCI['a'])
+        CCI['CCI_CROSS2'] = QA.CROSS(CCI['a'], CCI['CCI'])
+        CCI['CCI_CROSS3'] = QA.CROSS(CCI['CCI'], CCI['b'])
+        CCI['CCI_CROSS4'] = QA.CROSS(CCI['b'], CCI['CCI'])
+    except:
+        CCI = data.data.assign(CCI=None,
+                               CCI_CROSS1=0,CCI_CROSS2=0,
+                               CCI_CROSS3=0,CCI_CROSS4=0)[['CCI','CCI_CROSS1','CCI_CROSS2',
+                                                           'CCI_CROSS3','CCI_CROSS4']]
+
+    try:
+        MACD = data.add_func(QA.QA_indicator_MACD)
+        MACD['CROSS_JC'] = QA.CROSS(MACD['DIF'], MACD['DEA'])
+        MACD['CROSS_SC'] = QA.CROSS(MACD['DEA'], MACD['DIF'])
+        MACD['MACD_TR'] = MACD.apply(lambda x: function1(x.DEA,x.DIF), axis = 1)
+    except:
+        MACD = data.data.assign(DIF=None,DEA=None,MACD=None,
+                                CROSS_JC=0,CROSS_SC=0,)[['DIF','DEA','MACD','CROSS_JC','CROSS_SC','MACD_TR']]
+
+
+    res =pd.concat([BOLL,CCI,MACD,MA],
+                   axis=1).dropna(how='all')
+    res = res.groupby('code').apply(spc_short)
+    res['MA5'] = data['close']/res['MA5']-1
+    res['MA10'] = data['close']/res['MA10']-1
+    res['MA20'] = data['close']/res['MA20']-1
+    res['MA60'] = data['close']/res['MA60']-1
 
     if type in ['day','week','month']:
         res = res.reset_index()

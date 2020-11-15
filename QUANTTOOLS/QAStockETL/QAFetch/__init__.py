@@ -94,7 +94,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAUSAlpha import (QA_fetch_get_usstock_alpha,
 from QUANTTOOLS.QAStockETL.QAFetch.QAShares import QA_fetch_get_stock_shares_sina
 
 from QUANTTOOLS.QAStockETL.QAFetch.QATIndicator import (QA_fetch_get_stock_indicator,QA_fetch_get_index_indicator,
-                                                        QA_fetch_get_stock_indicator_half,QA_fetch_get_stock_indicator_halfreal
+                                                        QA_fetch_get_stock_indicator_half,QA_fetch_get_stock_indicator_halfreal,
+                                                        QA_fetch_get_index_indicator_short,QA_fetch_get_stock_indicator_short
                                                         )
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAUSIndicator import (QA_fetch_get_usstock_indicator)
