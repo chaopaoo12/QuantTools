@@ -212,6 +212,12 @@ CODE AS "code",VR
 ,CDLUNIQUE3RIVER
 ,CDLUPSIDEGAP2CROWS
 ,CDLXSIDEGAP3METHODS
+,MA5_C
+,MA10_C
+,MA20_C
+,MA60_C
+,MA120_C
+,MA180_C
 from STOCK_TECHNICAL
 where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')

@@ -35,6 +35,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import (QA_util_date_gap,
 
 #Fetch
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex import QA_Sql_Stock_Index
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexHour import QA_Sql_Stock_IndexHour
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexWeek import QA_Sql_Stock_IndexWeek
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101 import QA_Sql_Stock_Alpha101
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191 import QA_Sql_Stock_Alpha191
@@ -46,12 +47,14 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockBaseHalf import QA_Sql_Stock_BaseHal
 
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexBase import QA_Sql_Index_Base
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndex import QA_Sql_Index_Index
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexHour import QA_Sql_Stock_IndexHour
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexWeek import QA_Sql_Index_IndexWeek
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha101 import QA_Sql_Index_Alpha101
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha191 import QA_Sql_Index_Alpha191
 
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockBase import QA_Sql_USStock_Base
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockIndex import QA_Sql_USStock_Index
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockIndexHour import QA_Sql_USStock_IndexHour
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockIndexWeek import QA_Sql_USStock_IndexWeek
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockAlpha101 import QA_Sql_USStock_Alpha101
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockAlpha191 import QA_Sql_USStock_Alpha191
