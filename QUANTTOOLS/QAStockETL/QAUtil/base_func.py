@@ -1,16 +1,15 @@
 import numpy as np
 import pandas as pd
 from scipy import stats
+from math import degrees,atan
 
 def rolling_ols(y):
     '''
     滚动回归，返回滚动回归后的回归系数
     rb: 因变量序列
     '''
-    #slope = np.diff(y)/np.diff(pd.Series(range(1,len(y)+1)))
-    #return(slope)
-    model = stats.linregress(pd.Series(range(1,len(y)+1)),y)
-    return(round(model.slope,2))
+    model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
+    return(round(degrees(atan(model.slope)),4))
 
 def rolling_count1(data):
     return(data[data< 0].count())

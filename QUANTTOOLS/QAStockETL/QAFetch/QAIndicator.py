@@ -2,6 +2,7 @@ import QUANTAXIS as QA
 from QUANTAXIS.QAIndicator.base import *
 from scipy import stats
 import pandas as pd
+from math import degrees,atan
 
 def ohlc(data,N=7):
     data['open'] = data['open'].rolling(window=N).apply(lambda x:x[0],raw=True)
@@ -18,7 +19,7 @@ def rolling_ols(y):
     rb: 因变量序列
     '''
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
-    return(round(model.slope,4))
+    return(round(degrees(atan(model.slope)),4))
 
 def spc(data):
     data[[ 'MA5_C','MA10_C',
@@ -609,12 +610,12 @@ def get_indicator(data, type='day'):
     res['MS'] = data['close']/res['MS'] - 1
     res['SS'] = data['close']/res['SS'] - 1
     res = res.groupby('code').apply(spc)
-    res['MA5'] = data['close']/res['MA5']-1
-    res['MA10'] = data['close']/res['MA10']-1
-    res['MA20'] = data['close']/res['MA20']-1
-    res['MA60'] = data['close']/res['MA60']-1
-    res['MA120'] = data['close']/res['MA120']-1
-    res['MA180'] = data['close']/res['MA180']-1
+    #res['MA5'] = data['close']/res['MA5']-1
+    #res['MA10'] = data['close']/res['MA10']-1
+    #res['MA20'] = data['close']/res['MA20']-1
+    #res['MA60'] = data['close']/res['MA60']-1
+    #res['MA120'] = data['close']/res['MA120']-1
+    #res['MA180'] = data['close']/res['MA180']-1
 
     if type in ['day','week','month']:
         res = res.reset_index()
