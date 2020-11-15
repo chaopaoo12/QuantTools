@@ -505,7 +505,7 @@ def QA_etl_index_alpha_day(start_date = QA_util_today_str(), end_date= None, ui_
         end_date = QA_util_today_str()
     QA_util_log_info(
         '##JOB Now ETL INDEX ALPHA191 ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
-    codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
+    codes = list(QA_fetch_index_list_adv().code)
     data = QA_fetch_index_alpha_adv(codes, start_date, end_date).data[["alpha_001","alpha_002","alpha_003","alpha_004","alpha_005","alpha_006","alpha_007","alpha_008",
                                                                        "alpha_009","alpha_010","alpha_011","alpha_012","alpha_013","alpha_014","alpha_015","alpha_016",
                                                                        "alpha_018","alpha_019","alpha_020","alpha_021","alpha_022","alpha_023","alpha_024",
@@ -543,7 +543,7 @@ def QA_etl_index_alpha101_day(start_date = QA_util_today_str(), end_date= None, 
         end_date = QA_util_today_str()
     QA_util_log_info(
         '##JOB Now ETL INDEX ALPHA101 ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
-    codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
+    codes = list(QA_fetch_index_list_adv().code)
     data = QA_fetch_index_alpha101_adv(codes, start_date, end_date).data[['alpha001','alpha002','alpha003','alpha004','alpha005','alpha006',
                                                                 'alpha007','alpha008','alpha009','alpha010','alpha011','alpha012',
                                                                 'alpha013','alpha014','alpha015','alpha016','alpha017','alpha018',
@@ -572,7 +572,7 @@ def QA_etl_index_technical_day(start_date = QA_util_today_str(), end_date= None,
     if end_date is None:
         end_date = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL INDEX TECHNICAL ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
-    codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
+    codes = list(QA_fetch_index_list_adv().code)
     data = QA_fetch_index_technical_index_adv(codes, start_date, end_date).data
     if data is None:
         QA_util_log_info(
@@ -587,7 +587,7 @@ def QA_etl_index_technical_week(start_date = QA_util_today_str(), end_date= None
     if end_date is None:
         end_date = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL INDEX TECHNICAL WEEK ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
-    codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
+    codes = list(QA_fetch_index_list_adv().code)
     data = QA_fetch_index_technical_index_adv(codes, start_date, end_date, type='week').data
     if data is None:
         QA_util_log_info(
@@ -719,7 +719,7 @@ def QA_etl_index_technical_hour(start_date = QA_util_today_str(), end_date= None
     if end_date is None:
         end_date = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL INDEX TECHNICAL HOUR ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
-    codes = QA_fetch_index_info(list(QA_fetch_index_list_adv().code))
+    codes = list(QA_fetch_index_list_adv().code)
     data = QA_fetch_index_technical_index_adv(codes, start_date, end_date,type='hour').data
     if data is None:
         QA_util_log_info(
