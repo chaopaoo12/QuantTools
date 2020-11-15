@@ -3,7 +3,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_half_adv
 from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator,ohlc,get_indicator_short
 import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range
-from QUANTAXIS.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
+from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
 
 def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
     if type == 'hour':
