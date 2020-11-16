@@ -28,24 +28,12 @@
 """对应于save x
 """
 from QUANTTOOLS.QAStockETL import (QA_SU_save_index_min,
-                                   QA_SU_save_single_index_min,
-                                   QA_SU_save_index_alpha_day,
                                    QA_SU_save_index_technical_hour_day,
-                                   QA_SU_save_index_technical_index_day,
-                                   QA_SU_save_index_technical_week_day,
-                                   QA_SU_save_index_technical_month_day,
-                                   QA_SU_save_index_alpha101_day,
                                    QA_SU_save_index_info)
 from QUANTAXIS.QASU.main import (QA_SU_save_index_day,QA_SU_save_index_list)
 from QUANTTOOLS.QAStockETL.Check import (check_index_day,check_index_60min)
-from QUANTTOOLS.QAStockETL.Check import (check_index_alpha101, check_index_alpha191,
-                                         check_index_techhour, check_index_techindex, check_index_techweek)
-from QUANTTOOLS.QAStockETL import (QA_etl_index_alpha_day,
-                                   QA_etl_index_alpha101_day,
-                                   QA_etl_index_day,
-                                   QA_etl_index_technical_hour,
-                                   QA_etl_index_technical_day,
-                                   QA_etl_index_technical_week)
+from QUANTTOOLS.QAStockETL.Check import (check_index_techhour)
+from QUANTTOOLS.QAStockETL import (QA_etl_index_technical_hour)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 
 if __name__ == '__main__':
@@ -57,24 +45,14 @@ if __name__ == '__main__':
         QA_SU_save_index_day('tdx')
         QA_SU_save_index_info()
 
-        res = check_index_day(mark_day)
+        res = check_index_60min(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 10:
-            QA_SU_save_index_day('tdx')
-            res = check_index_day(mark_day)
+            QA_SU_save_index_min()
+            res = check_index_60min(mark_day)
 
-        QA_etl_index_day('day',mark_day)
-
-        res = check_index_techindex(mark_day)
+        res = check_index_techhour(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 10:
-            QA_SU_save_index_technical_index_day(start_date = mark_day, end_date = mark_day)
-            res = check_index_techindex(mark_day)
+            QA_SU_save_index_technical_hour_day(start_date = mark_day, end_date = mark_day)
+            res = check_index_techhour(mark_day)
 
-        res = check_index_techweek(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 10:
-            QA_SU_save_index_technical_week_day(start_date = mark_day, end_date = mark_day)
-            res = check_index_techweek(mark_day)
-
-        QA_etl_index_technical_day(mark_day, mark_day)
-        QA_etl_index_technical_week(mark_day,  mark_day)
-
-        QA_SU_save_index_technical_month_day(start_date = mark_day, end_date = mark_day)
+        QA_etl_index_technical_hour(mark_day, mark_day)
