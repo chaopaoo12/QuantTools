@@ -38,7 +38,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import (QA_util_if_trade, QA_util
 
 from QUANTTOOLS.QAStockETL.QAData.financial_mean import financial_dict, dict2
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import time_this_function
-from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,index_pct_log,pct_log
+from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,index_pct_log,pct_log,min_pct,min_index_pct,min_index_pct_log,min_pct_log
 
 from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
 import numpy
@@ -607,8 +607,6 @@ def QA_fetch_stock_technical_index(code, start, end=None, type='day', format='pd
 
         res = pd.DataFrame([item for item in cursor])
         try:
-            res = res.drop_duplicates(
-                (['code', 'date']))
             res['date'] = res['date'].apply(lambda x: str(x)[0:10])
             if type == 'hour':
                 res = res.drop(['time_stamp'],axis=1)
@@ -911,46 +909,53 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
         QA_util_log_info(
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
-def QA_fetch_stock_target(codes, start_date, end_date, index='000300', type='close', method = 'value'):
+def QA_fetch_stock_target(codes, start_date, end_date, type='day', close_type='close', method = 'value'):
     if QA_util_if_trade(end_date):
         pass
     else:
         end_date = QA_util_get_real_date(end_date)
     end = QA_util_get_next_datetime(end_date,10)
     rng1 = QA_util_get_trade_range(start_date, end_date)
-    data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
-    market = QA.QA_fetch_index_day(index,start_date,end,format='pd')['close'].reset_index()
-    if method == 'value':
-        market = index_pct(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10','INDEX_TARGET20']]
-    elif method == 'log':
-        market = index_pct_log(market)[['date','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10','INDEX_TARGET20']]
+    if type=='day':
+        data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
+        func1 = pct
+        func2 = pct_log
+        chan_col = 'date'
+        chan_date = '2020-08-24'
     else:
-        market = None
+        start_date = start_date + ' 09:30:00'
+        end = end + ' 15:00:00'
+        data = QA.QA_fetch_stock_min_adv(codes,start_date,end,type)
+        func1 = min_pct
+        func2 = min_pct_log
+        chan_col = 'datetime'
+        chan_date = '2020-08-24 09:00:00'
+
     res1 = data.to_qfq().data
     res1.columns = [x + '_qfq' for x in res1.columns]
-    data = data.data.join(res1).fillna(0).reset_index()
+    data = data.data.join(res1).reset_index()
+
+    if type=='day':
+        cols = ['date','code','PRE_DATE','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']
+    else:
+        cols = ['datetime','code','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']
+
+    data['up_rate'] = data.apply(lambda x : 0.2 if str(x[chan_col]) >= chan_date and str(x['code']).startswith('300') == True else 0.1,axis=1)
+
     if method == 'value':
-        res = data.groupby('code').apply(pct, type=type)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
-                                                                          'TARGET','TARGET3','TARGET4','TARGET5',
-                                                                          'TARGET10','TARGET20','AVG_TARGET']]
+        res = data.groupby('code').apply(func1, type=close_type)[cols]
     elif method == 'log':
-        res = data.groupby('code').apply(pct_log, type=type)[['date','code','PRE_DATE','OPEN_MARK','PASS_MARK',
-                                                                          'TARGET','TARGET3','TARGET4','TARGET5',
-                                                                          'TARGET10','TARGET20','AVG_TARGET']]
+        res = data.groupby('code').apply(func2, type=close_type)[cols]
     else:
         res = None
+    if type == 'day':
+        res['date'] = res['date'].apply(lambda x: str(x)[0:10])
+        res['next_date'] = res['date'].apply(lambda x: QA_util_get_pre_trade_date(x, -2))
+        res = res.set_index(['date','code']).loc[rng1]
+    else:
+        res['date'] = res['datetime'].apply(lambda x: str(x)[0:10])
+        res = res.set_index(['date','code']).loc[rng1].reset_index().set_index(['datetime','code'])
 
-    res = pd.merge(res,market,on='date')
-    res['date'] = res['date'].apply(lambda x: str(x)[0:10])
-    res['next_date'] = res['date'].apply(lambda x: QA_util_get_pre_trade_date(x, -2))
-    res['PRE_DATE'] = res['PRE_DATE'].apply(lambda x: str(x)[0:10])
-    res = res.set_index(['date','code']).loc[rng1]
-    res['INDEX_TARGET'] = res['TARGET'] - res['INDEX_TARGET']
-    res['INDEX_TARGET3'] = res['TARGET3'] - res['INDEX_TARGET3']
-    res['INDEX_TARGET4'] = res['TARGET4'] - res['INDEX_TARGET4']
-    res['INDEX_TARGET5'] = res['TARGET5'] - res['INDEX_TARGET5']
-    res['INDEX_TARGET10'] = res['TARGET10'] - res['INDEX_TARGET10']
-    res['INDEX_TARGET20'] = res['TARGET20'] - res['INDEX_TARGET20']
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':
             res[columnname]=res[columnname].astype('float16')
@@ -1163,8 +1168,6 @@ def QA_fetch_index_technical_index(code, start, end=None, type='day', format='pd
 
         res = pd.DataFrame([item for item in cursor])
         try:
-            res = res.drop_duplicates(
-                (['code', 'date']))
             res['date'] = res['date'].apply(lambda x: str(x)[0:10])
             if type == 'hour':
                 res = res.drop(['time_stamp'],axis=1)
@@ -1187,28 +1190,44 @@ def QA_fetch_index_technical_index(code, start, end=None, type='day', format='pd
         QA_util_log_info(
             'QA Error QA_fetch_index_technical_index data parameter start=%s end=%s is not right' % (start, end))
 
-def QA_fetch_index_target(codes, start_date, end_date, method = 'value'):
+def QA_fetch_index_target(codes, start_date, end_date,type='day', method = 'value'):
     if QA_util_if_trade(end_date):
         pass
     else:
         end_date = QA_util_get_real_date(end_date)
     end = QA_util_get_next_datetime(end_date,10)
     rng1 = QA_util_get_trade_range(start_date, end_date)
-    data = QA.QA_fetch_index_day_adv(codes,start_date,end).data.fillna(0).reset_index()
+
+    if type=='day':
+        data = QA.QA_fetch_index_day_adv(codes,start_date,end).data.reset_index()
+        func1 = index_pct
+        func2 = index_pct_log
+    else:
+        start_date = start_date + ' 09:30:00'
+        end = end + ' 15:00:00'
+        data = QA.QA_fetch_index_min_adv(codes,start_date,end,type).data.reset_index()
+        func1 = min_index_pct
+        func2 = min_index_pct_log
+
+    if type=='day':
+        cols = ['date','code','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']
+    else:
+        cols = ['datetime','code','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']
+
     if method == 'value':
-        res = data.groupby('code').apply(index_pct)[['date','code',
-                                                    'INDEX_TARGET','INDEX_TARGET3',
-                                                    'INDEX_TARGET4','INDEX_TARGET5',
-                                                    'INDEX_TARGET10']]
+        res = data.groupby('code').apply(func1)[cols]
     elif method == 'log':
-        res = data.groupby('code').apply(index_pct_log)[['date','code',
-                                                        'INDEX_TARGET','INDEX_TARGET3',
-                                                        'INDEX_TARGET4','INDEX_TARGET5',
-                                                        'INDEX_TARGET10']]
+        res = data.groupby('code').apply(func2)[cols]
     else:
         res = None
-    res['date'] = res['date'].apply(lambda x: str(x)[0:10])
-    res = res.set_index(['date','code']).loc[rng1]
+
+    if type == 'day':
+        res['date'] = res['date'].apply(lambda x: str(x)[0:10])
+        res = res.set_index(['date','code']).loc[rng1]
+    else:
+        res['date'] = res['datetime'].apply(lambda x: str(x)[0:10])
+        res = res.set_index(['date','code']).loc[rng1].reset_index().set_index(['datetime','code'])
+
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':
             res[columnname]=res[columnname].astype('float16')

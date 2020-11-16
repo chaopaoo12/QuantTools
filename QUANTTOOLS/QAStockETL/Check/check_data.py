@@ -166,7 +166,7 @@ def QA_fetch_index_60min(code, start, end):
     return(QA_fetch_index_min_adv(code, start, end, frequence='60min').data)
 
 def check_index_60min(mark_day = None):
-    return(check_stock_data(func = QA_fetch_index_60min, mark_day = mark_day, title = 'Index 60Min'))
+    return(check_index_data(func = QA_fetch_index_60min, mark_day = mark_day, title = 'Index 60Min'))
 
 def QA_fetch_index_day(code, start, end):
     return(QA_fetch_index_day_adv(code, start, end).data)
