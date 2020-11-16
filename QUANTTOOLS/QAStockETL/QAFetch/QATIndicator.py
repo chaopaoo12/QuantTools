@@ -10,7 +10,7 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
         start = QA_util_get_pre_trade_date(start_date,200)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Stock_min(QA_fetch_stock_min(code,start,end_date,frequence='60min',format='pd').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol'])).to_qfq()
+            data = QA_DataStruct_Stock_min(QA_fetch_stock_min(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='60min',format='pd').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol'])).to_qfq()
         except:
             QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'day':
@@ -52,7 +52,7 @@ def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
         start = QA_util_get_pre_trade_date(start_date,200)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Index_min(QA_fetch_index_min(code,start,end_date,frequence='60min',format='pd').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol']))
+            data = QA_DataStruct_Index_min(QA_fetch_index_min(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='60min',format='pd').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol']))
         except:
             QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'day':
@@ -166,7 +166,7 @@ def QA_fetch_get_stock_indicator_short(code, start_date, end_date, type = 'day')
         start = QA_util_get_pre_trade_date(start_date,80)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Stock_min(QA_fetch_stock_min(code,start,end_date,frequence='60min',format='pd').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol'])).to_qfq()
+            data = QA_DataStruct_Stock_min(QA_fetch_stock_min(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='60min',format='pd').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol'])).to_qfq()
         except:
             QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'day':
@@ -208,7 +208,7 @@ def QA_fetch_get_index_indicator_short(code, start_date, end_date, type = 'day')
         start = QA_util_get_pre_trade_date(start_date,80)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Index_min(QA_fetch_index_min(code,start,end_date,frequence='60min',format='pd').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol']))
+            data = QA_DataStruct_Index_min(QA_fetch_index_min(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='60min',format='pd').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol']))
         except:
             QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'day':
