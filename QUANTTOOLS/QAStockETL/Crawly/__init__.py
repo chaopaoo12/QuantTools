@@ -7,6 +7,6 @@ from QUANTTOOLS.QAStockETL.Crawly.ths_financial_report_simulation_web import get
 from QUANTTOOLS.QAStockETL.Crawly.wy_financial_report_simulation_web import get_stock_report_wy,read_stock_report_wy
 from QUANTTOOLS.QAStockETL.Crawly.usstock_canlander import get_usstock_canlander
 from QUANTTOOLS.QAStockETL.Crawly.xq_simulation_web import read_financial_report,read_stock_day
-
+from QUANTTOOLS.QAStockETL.Crawly.ifzq_simulation_web import read_data_ifzq
 
 
