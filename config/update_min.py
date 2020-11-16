@@ -31,15 +31,6 @@ if __name__ == '__main__':
                 QA_SU_save_single_stock_min(i)
             res = check_sinastock_60min(mark_day)
 
-        res = check_stock_half(mark_day)
-        if res is None or (len(res[0]) + len(res[1])) > 20:
-            QA_SU_save_stock_half()
-
-        res = check_sinastock_half(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 0:
-            QA_SU_save_stock_half()
-            res = check_sinastock_half(mark_day)
-
         res = check_sinastock_adj(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 0:
             time.sleep(180)
@@ -49,6 +40,17 @@ if __name__ == '__main__':
         if res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_technical_hour_day(start_date = mark_day,  end_date = mark_day)
             res =check_stock_techhour(mark_day)
+
+        QA_etl_stock_technical_hour(mark_day, mark_day)
+
+        res = check_stock_half(mark_day)
+        if res is None or (len(res[0]) + len(res[1])) > 20:
+            QA_SU_save_stock_half()
+
+        res = check_sinastock_half(mark_day)
+        while res is None or (len(res[0]) + len(res[1])) > 0:
+            QA_SU_save_stock_half()
+            res = check_sinastock_half(mark_day)
 
         res = check_stock_alpha101half(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 20:
@@ -67,7 +69,5 @@ if __name__ == '__main__':
             res = check_stock_alpha191half(mark_day)
         check_sinastock_alpha191half(mark_day)
 
-        QA_etl_stock_half(mark_day=mark_day)
-        QA_etl_stock_technical_hour(mark_day, mark_day)
         QA_etl_stock_alpha101half_day(mark_day, mark_day)
         QA_etl_stock_alpha191half_day(mark_day, mark_day)
