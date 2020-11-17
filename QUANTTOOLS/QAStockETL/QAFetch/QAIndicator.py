@@ -2,7 +2,6 @@ import QUANTAXIS as QA
 from QUANTAXIS.QAIndicator.base import *
 from scipy import stats
 import pandas as pd
-from math import degrees,atan
 
 def ohlc(data,N=7):
     data['open'] = data['open'].rolling(window=N).apply(lambda x:x[0],raw=True)
@@ -19,25 +18,28 @@ def rolling_ols(y):
     rb: 因变量序列
     '''
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
-    return(round(degrees(atan(model.slope)),4))
+    return(round(model.slope,4))
 
 def spc(data):
-    data[[ 'MA5_C','MA10_C',
-           'MA20_C','MA60_C',
-           'MA120_C','MA180_C']] = data.rolling(window=5).agg({ 'MA5':rolling_ols,
+    data[['MA5_C','MA10_C','MA20_C','MA60_C',
+          'MA120_C','MA180_C','LONG_AMOUNT','SHORT_AMOUNT']] = data.rolling(window=5).agg({ 'MA5':rolling_ols,
                                                                 'MA10':rolling_ols,
                                                                 'MA20':rolling_ols,
                                                                 'MA60':rolling_ols,
                                                                 'MA120':rolling_ols,
-                                                                'MA180':rolling_ols})
+                                                                'MA180':rolling_ols,
+                                                                'LONG_AMOUNT':rolling_ols,
+                                                                'SHORT_AMOUNT':rolling_ols
+                                                                })
     return(data)
 
 def spc_short(data):
-    data[[ 'MA5_C','MA10_C',
-           'MA20_C','MA60_C']] = data.rolling(window=5).agg({ 'MA5':rolling_ols,
+    data[['MA5_C','MA10_C','MA20_C','MA60_C','LONG_AMOUNT','SHORT_AMOUNT']] = data.rolling(window=5).agg({'MA5':rolling_ols,
                                                                 'MA10':rolling_ols,
                                                                 'MA20':rolling_ols,
-                                                                'MA60':rolling_ols})
+                                                                'MA60':rolling_ols,
+                                                              'LONG_AMOUNT':rolling_ols,
+                                                              'SHORT_AMOUNT':rolling_ols})
     return(data)
 
 def MIKE_NEW(DataFrame,MIKE_N=12,MA_N=5):
@@ -145,6 +147,8 @@ def get_indicator(data, type='day'):
         MA['SHORT_CROSS2'] = QA.CROSS(MA['MA20'], MA['MA5'])
         MA['LONG_CROSS1'] = QA.CROSS(MA['MA20'], MA['MA60'])
         MA['LONG_CROSS2'] = QA.CROSS(MA['MA60'], MA['MA20'])
+        MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
+        MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
     except:
         MA = data.data.assign(MA5=None,MA10=None,MA20=None,MA60=None,
                               MA120=None,MA180=None)[['MA5','MA10','MA20','MA60','MA120','MA180']]
@@ -154,6 +158,8 @@ def get_indicator(data, type='day'):
         MA['LONG60'] = MA['MA20']/MA['MA60']-1
         MA['LONG120'] = MA['MA20']/MA['MA120']-1
         MA['LONG180'] = MA['MA20']/MA['MA180']-1
+        MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
+        MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
 
     try:
         ASI = data.add_func(QA.QA_indicator_ASI)
@@ -611,12 +617,12 @@ def get_indicator(data, type='day'):
                     CDLSPINNINGTOP,CDLSTALLEDPATTERN,CDLSTICKSANDWICH,CDLTAKURI,CDLTASUKIGAP,
                     CDLTHRUSTING,CDLTRISTAR,CDLUNIQUE3RIVER,CDLUPSIDEGAP2CROWS,CDLXSIDEGAP3METHODS],
                    axis=1).dropna(how='all')
-    res['WR'] = data['close']/res['WR']  - 1
-    res['MR'] = data['close']/res['MR'] - 1
-    res['SR'] = data['close']/res['SR'] - 1
-    res['WS'] = data['close']/res['WS'] - 1
-    res['MS'] = data['close']/res['MS'] - 1
-    res['SS'] = data['close']/res['SS'] - 1
+    res['WR'] = res['close']/res['WR']  - 1
+    res['MR'] = res['close']/res['MR'] - 1
+    res['SR'] = res['close']/res['SR'] - 1
+    res['WS'] = res['close']/res['WS'] - 1
+    res['MS'] = res['close']/res['MS'] - 1
+    res['SS'] = res['close']/res['SS'] - 1
     res = res.groupby('code').apply(spc)
     res['MA5'] = data['close']/res['MA5']-1
     res['MA10'] = data['close']/res['MA10']-1
@@ -656,8 +662,10 @@ def get_indicator_short(data, type='day'):
         MA['SHORT20'] = MA['MA5']/MA['MA20']-1
         MA['SHORT60'] = MA['MA5']/MA['MA60']-1
         MA['LONG60'] = MA['MA20']/MA['MA60']-1
-        MA['SHORT_CROSS1'] = QA.CROSS(MA['MA5'], MA['MA20'])
-        MA['SHORT_CROSS2'] = QA.CROSS(MA['MA20'], MA['MA5'])
+        MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
+        MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
+        MA['SHORT_CROSS1'] = QA.CROSS(MA['MA10'], MA['MA20'])
+        MA['SHORT_CROSS2'] = QA.CROSS(MA['MA20'], MA['MA10'])
         MA['LONG_CROSS1'] = QA.CROSS(MA['MA20'], MA['MA60'])
         MA['LONG_CROSS2'] = QA.CROSS(MA['MA60'], MA['MA20'])
     except:
@@ -667,8 +675,10 @@ def get_indicator_short(data, type='day'):
         MA['SHORT20'] = MA['MA5']/MA['MA20']-1
         MA['SHORT60'] = MA['MA5']/MA['MA60']-1
         MA['LONG60'] = MA['MA20']/MA['MA60']-1
-        MA['SHORT_CROSS1'] = QA.CROSS(MA['MA5'], MA['MA20'])
-        MA['SHORT_CROSS2'] = QA.CROSS(MA['MA20'], MA['MA5'])
+        MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
+        MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
+        MA['SHORT_CROSS1'] = QA.CROSS(MA['MA10'], MA['MA20'])
+        MA['SHORT_CROSS2'] = QA.CROSS(MA['MA20'], MA['MA10'])
         MA['LONG_CROSS1'] = QA.CROSS(MA['MA20'], MA['MA60'])
         MA['LONG_CROSS2'] = QA.CROSS(MA['MA60'], MA['MA20'])
 
