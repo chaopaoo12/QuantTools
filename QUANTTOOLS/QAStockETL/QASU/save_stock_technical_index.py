@@ -26,7 +26,7 @@ def QA_SU_save_stock_technical_index_day(codes=None, start_date=None,end_date=No
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_stock_om_all()['code'])
+        codes = QA_fetch_stock_om_all().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -83,7 +83,7 @@ def QA_SU_save_stock_technical_index_his(codes=None, start_date=None,end_date=No
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_stock_all()['code'])
+        codes = QA_fetch_stock_all().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -138,7 +138,7 @@ def QA_SU_save_stock_technical_week_day(codes = None,start_date=None,end_date=No
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_stock_om_all()['code'])
+        codes = QA_fetch_stock_om_all().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -195,7 +195,7 @@ def QA_SU_save_stock_technical_week_his(codes = None,start_date=None,end_date=No
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_stock_all()['code'])
+        codes = QA_fetch_stock_all().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -250,7 +250,7 @@ def QA_SU_save_stock_technical_month_day(codes = None,start_date=None,end_date=N
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_stock_om_all()['code'])
+        codes = QA_fetch_stock_om_all().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -307,7 +307,7 @@ def QA_SU_save_stock_technical_month_his(codes = None,start_date=None,end_date=N
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_stock_all()['code'])
+        codes = QA_fetch_stock_all().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -363,7 +363,7 @@ def QA_SU_save_index_technical_index_day(codes = None,start_date=None,end_date=N
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_index_list_adv()['code'])
+        codes = QA_fetch_index_list_adv().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -420,7 +420,7 @@ def QA_SU_save_index_technical_index_his(codes = None,start_date=None,end_date=N
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_index_list_adv()['code'])
+        codes = QA_fetch_index_list_adv().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -474,7 +474,7 @@ def QA_SU_save_index_technical_week_day(codes = None,start_date=None,end_date=No
         if end_date == None:
             end_date = QA_util_today_str()
     if codes is None:
-        codes = list(QA_fetch_index_list_adv()['code'])
+        codes = QA_fetch_index_list_adv().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -531,7 +531,7 @@ def QA_SU_save_index_technical_week_his(codes = None,start_date=None,end_date=No
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_index_list_adv()['code'])
+        codes = QA_fetch_index_list_adv().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -585,7 +585,7 @@ def QA_SU_save_index_technical_month_day(codes = None,start_date=None,end_date=N
         if end_date == None:
             end_date = QA_util_today_str()
     if codes is None:
-        codes = list(QA_fetch_index_list_adv()['code'])
+        codes = QA_fetch_index_list_adv().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -642,7 +642,7 @@ def QA_SU_save_index_technical_month_his(codes = None,start_date=None,end_date=N
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_index_list_adv()['code'])
+        codes = QA_fetch_index_list_adv().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -698,7 +698,7 @@ def QA_SU_save_stock_technical_hour_day(codes=None, start_date=None,end_date=Non
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_stock_om_all()['code'])
+        codes = QA_fetch_stock_om_all().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -760,7 +760,7 @@ def QA_SU_save_stock_technical_hour_his(codes=None, start_date=None,end_date=Non
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_stock_all()['code'])
+        codes = QA_fetch_stock_all().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -820,7 +820,7 @@ def QA_SU_save_index_technical_hour_day(codes = None,start_date=None,end_date=No
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_index_list_adv()['code'])
+        codes = QA_fetch_index_list_adv().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
@@ -882,7 +882,7 @@ def QA_SU_save_index_technical_hour_his(codes = None,start_date=None,end_date=No
             end_date = QA_util_today_str()
 
     if codes is None:
-        codes = list(QA_fetch_index_list_adv()['code'])
+        codes = QA_fetch_index_list_adv().code.unique().tolist()
     else:
         codes = QA_util_code_tolist(codes)
 
