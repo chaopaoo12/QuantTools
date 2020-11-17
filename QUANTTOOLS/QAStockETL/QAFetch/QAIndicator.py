@@ -617,12 +617,12 @@ def get_indicator(data, type='day'):
                     CDLSPINNINGTOP,CDLSTALLEDPATTERN,CDLSTICKSANDWICH,CDLTAKURI,CDLTASUKIGAP,
                     CDLTHRUSTING,CDLTRISTAR,CDLUNIQUE3RIVER,CDLUPSIDEGAP2CROWS,CDLXSIDEGAP3METHODS],
                    axis=1).dropna(how='all')
-    res['WR'] = res['close']/res['WR']  - 1
-    res['MR'] = res['close']/res['MR'] - 1
-    res['SR'] = res['close']/res['SR'] - 1
-    res['WS'] = res['close']/res['WS'] - 1
-    res['MS'] = res['close']/res['MS'] - 1
-    res['SS'] = res['close']/res['SS'] - 1
+    res['WR'] = data['close']/res['WR']  - 1
+    res['MR'] = data['close']/res['MR'] - 1
+    res['SR'] = data['close']/res['SR'] - 1
+    res['WS'] = data['close']/res['WS'] - 1
+    res['MS'] = data['close']/res['MS'] - 1
+    res['SS'] = data['close']/res['SS'] - 1
     res = res.groupby('code').apply(spc)
     res['MA5'] = data['close']/res['MA5']-1
     res['MA10'] = data['close']/res['MA10']-1
