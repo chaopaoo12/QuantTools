@@ -80,36 +80,48 @@ def halflife_ic(IC_data, halflife_weight,name, T):
     return pd.DataFrame(ic, index=IC_data.index[T:], columns=[name])
 
 def find_stock(index_code):
+    index_info = QA_fetch_index_info(index_code)
+    stock_industry =QA_fetch_stock_industryinfo(list(QA_fetch_stock_all().code))
+    block_name = QA.QA_fetch_stock_block()
+    gn = block_name[(block_name.type == 'gn') & (block_name.source == 'tdx')]
+    info = pd.DataFrame(QA.QAFetch.QAQuery.QA_fetch_stock_basic_info_tushare())
+
     try:
-        index_info = QA_fetch_index_info(index_code)
-        cate = index_info.cate.values[0]
-        HY = index_info.HY.values[0]
-        index_name = index_info.index_name.values[0]
-
-        stock_industry =QA_fetch_stock_industryinfo(list(QA_fetch_stock_all().code))
-        block_name = QA.QA_fetch_stock_block()
-        gn = block_name[(block_name.type == 'gn') & (block_name.source == 'tdx')]
-        info = pd.DataFrame(QA.QAFetch.QAQuery.QA_fetch_stock_basic_info_tushare())
-
-        if cate == '2':
-            ##TDX行业
-            stock_code = list(stock_industry[stock_industry['TDXHY'].str[0:len(HY)] == HY]['code'])
-        elif cate == '3':
-            ##地域
-            index_name = index_name.replace('板块', '')
-            stock_code = list(info[info['area'] == index_name]['code'])
-        elif cate == '4':
-            ##概念
-            stock_code = list(gn[gn['blockname'] == index_name]['code'])
-        elif cate == '8' and HY[4:6] == '00':
-            ##申万行业
-            stock_code = list(stock_industry[stock_industry['SWHY'].str[0:4] == HY[0:4]]['code'])
-        elif cate == '8':
-            stock_code = list(stock_industry[stock_industry['SWHY'] == HY]['code'])
-        else:
-            stock_code = []
+        a_list = list(index_info[index_info.cate == '2'].index)
+        HY = list(index_info.loc[a_list]['HY'])
+        HY_code = list(stock_industry[stock_industry['TDXHY'].str[0:len(HY)].isin(HY)]['code'])
     except:
-        stock_code = []
+        HY_code = []
+
+    try:
+        a_list = list(index_info[index_info.cate == '3'].index)
+        index_name = list(index_info.loc[a_list]['index_name'].apply(lambda x:x.replace('板块', '')))
+        area_code = list(info[info['area'].isin(index_name)]['code'])
+    except:
+        area_code = []
+
+    try:
+        a_list = list(index_info[index_info.cate == '4'].index)
+        index_name = list(index_info.loc[a_list]['index_name'])
+        gn_code = list(gn[gn['blockname'].isin(index_name)]['code'])
+    except:
+        gn_code = []
+
+    try:
+        a_list = list(index_info[index_info.cate == '8'].index)
+        HY = list(index_info.loc[a_list]['HY'])
+        SWHY1 = list(stock_industry[stock_industry['SWHY'].isin(HY)]['code'])
+    except:
+        SWHY1 = []
+
+    try:
+        a_list = list(index_info[(index_info.cate == '8' ) & (index_info.HY.str[4:6] == '00')].index)
+        HY = list(index_info.loc[a_list]['HY'])
+        SWHY2 = list(stock_industry[stock_industry['SWHY'].isin(HY)]['code'])
+    except:
+        SWHY2 = []
+
+    stock_code = HY_code + area_code + gn_code + SWHY1 + SWHY2
     return(stock_code)
 
 def combine_model(index_d, stock_d, safe_d, start, end):
