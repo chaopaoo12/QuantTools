@@ -117,7 +117,7 @@ def find_stock(index_code):
     try:
         a_list = list(index_info[(index_info.cate == '8' ) & (index_info.HY.str[4:6] == '00')].index)
         HY = list(index_info.loc[a_list]['HY'])
-        SWHY2 = list(stock_industry[stock_industry['SWHY'].isin(HY)]['code'])
+        SWHY2 = list(stock_industry[stock_industry['SWHY'].isin([i[0:4]+'01' for i in HY])]['code'])
     except:
         SWHY2 = []
 
