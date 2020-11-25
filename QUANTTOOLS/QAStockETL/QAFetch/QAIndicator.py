@@ -137,6 +137,12 @@ def get_indicator(data, type='day'):
                                                                                             'MIKE_WRSC','MIKE_WRJC','MIKE_WSSC','MIKE_WSJC','MIKE_TR']]
     try:
         MA = data.add_func(QA.QA_indicator_MA,5,10,20,60,120,180)
+        MA['MC5'] = MA['MA5']/QA.REF(MA['MA5'],1)-1
+        MA['MC10'] = MA['MA10']/QA.REF(MA['MA10'],1)-1
+        MA['MC20'] = MA['MA20']/QA.REF(MA['MA20'],1)-1
+        MA['MC60'] = MA['MA60']/QA.REF(MA['MA60'],1)-1
+        MA['MC120'] = MA['MA120']/QA.REF(MA['MA120'],1)-1
+        MA['MC180'] = MA['MA180']/QA.REF(MA['MA180'],1)-1
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
@@ -152,6 +158,12 @@ def get_indicator(data, type='day'):
     except:
         MA = data.data.assign(MA5=None,MA10=None,MA20=None,MA60=None,
                               MA120=None,MA180=None)[['MA5','MA10','MA20','MA60','MA120','MA180']]
+        MA['MC5'] = MA['MA5']/QA.REF(MA['MA5'],1)-1
+        MA['MC10'] = MA['MA10']/QA.REF(MA['MA10'],1)-1
+        MA['MC20'] = MA['MA20']/QA.REF(MA['MA20'],1)-1
+        MA['MC60'] = MA['MA60']/QA.REF(MA['MA60'],1)-1
+        MA['MC120'] = MA['MA120']/QA.REF(MA['MA120'],1)-1
+        MA['MC180'] = MA['MA180']/QA.REF(MA['MA180'],1)-1
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
@@ -658,6 +670,10 @@ def get_indicator_short(data, type='day'):
 
     try:
         MA = data.add_func(QA.QA_indicator_MA,5,10,20,60)
+        MA['MC5'] = MA['MA5']/QA.REF(MA['MA5'],1)-1
+        MA['MC10'] = MA['MA10']/QA.REF(MA['MA10'],1)-1
+        MA['MC20'] = MA['MA20']/QA.REF(MA['MA20'],1)-1
+        MA['MC60'] = MA['MA60']/QA.REF(MA['MA60'],1)-1
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
@@ -671,6 +687,10 @@ def get_indicator_short(data, type='day'):
     except:
         MA = data.data.assign(MA5=None,MA10=None,MA20=None,MA60=None
                               )[['MA5','MA10','MA20','MA60']]
+        MA['MC5'] = MA['MA5']/QA.REF(MA['MA5'],1)-1
+        MA['MC10'] = MA['MA10']/QA.REF(MA['MA10'],1)-1
+        MA['MC20'] = MA['MA20']/QA.REF(MA['MA20'],1)-1
+        MA['MC60'] = MA['MA60']/QA.REF(MA['MA60'],1)-1
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
