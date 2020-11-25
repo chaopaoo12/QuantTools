@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
         QA_SU_save_stock_aklist()
         QA_SU_save_stock_list('tdx')
-        QA_SU_save_stock_info_tushare()
+        #QA_SU_save_stock_info_tushare()
         QA_SU_save_stock_industryinfo()
         print("download day data")
 
