@@ -245,10 +245,10 @@ def QA_fetch_stock_quant_pre_adv(code, start="all", end=None, block=True, type='
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_quant_pre(code, start, end, block, type=type, method=method, norm_type=norm_type, format='pd')
+        data = QA_fetch_stock_quant_pre(code, start, end, block, close_type=type, method=method, norm_type=norm_type, format='pd')
         return QA_DataStruct_Financial(data)
     else:
-        data = QA_fetch_stock_quant_pre(code, start, end, block, type=type, method=method, norm_type=norm_type, format='pd')
+        data = QA_fetch_stock_quant_pre(code, start, end, block, close_type=type, method=method, norm_type=norm_type, format='pd')
         return QA_DataStruct_Financial(data)
 
 def QA_fetch_stock_quant_pre_train_adv(code, start="all", end=None, block=True, type='close', method= 'value', norm_type='normalization'):
@@ -261,10 +261,10 @@ def QA_fetch_stock_quant_pre_train_adv(code, start="all", end=None, block=True, 
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_quant_pre_train(code, start, end, block, type=type, method=method, norm_type=norm_type, format='pd')
+        data = QA_fetch_stock_quant_pre_train(code, start, end, block, close_type=type, method=method, norm_type=norm_type, format='pd')
         return QA_DataStruct_Financial(data)
     else:
-        data = QA_fetch_stock_quant_pre_train(code, start, end, block, type=type, method=method, norm_type=norm_type, format='pd')
+        data = QA_fetch_stock_quant_pre_train(code, start, end, block, close_type=type, method=method, norm_type=norm_type, format='pd')
         return QA_DataStruct_Financial(data)
 
 def QA_fetch_stock_target_adv(code, start="all", end=None, type='close', method= 'value'):
