@@ -8,7 +8,7 @@ ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Or
 
 sql_text = '''select to_char(ORDER_DATE, 'yyyy-mm-dd') as "date",
 CODE AS "code"
-,datatime
+,datetime
 ,VR as VR_HR
 ,VRSI as VRSI_HR
 ,VRSI_C as VRSI_C_HR
@@ -227,6 +227,7 @@ where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
 and order_Date <=
 to_date('{to_}', 'yyyy-mm-dd')
+and substr(datetime, 12, 20) = '15:00:00'
 '''
 
 def QA_Sql_Index_IndexHour(from_ , to_, sql_text = sql_text, ui_log= None):
