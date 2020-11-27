@@ -5,6 +5,7 @@ from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare,QA_fetch
 
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_delist
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex import QA_Sql_Stock_Index
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexHour import QA_Sql_Stock_IndexHour
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexWeek import QA_Sql_Stock_IndexWeek
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101 import QA_Sql_Stock_Alpha101
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191 import QA_Sql_Stock_Alpha191
@@ -17,9 +18,8 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191Half import QA_Sql_Stock_Alp
 
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexBase import QA_Sql_Index_Base
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndex import QA_Sql_Index_Index
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexHour import QA_Sql_Index_IndexHour
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexWeek import QA_Sql_Index_IndexWeek
-from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha101 import QA_Sql_Index_Alpha101
-from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha191 import QA_Sql_Index_Alpha191
 
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockBase import QA_Sql_USStock_Base
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockIndex import QA_Sql_USStock_Index
@@ -806,6 +806,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
     code = QA_util_code_tolist(code)
     financial = QA_Sql_Stock_Financial
     index = QA_Sql_Stock_Index
+    hour = QA_Sql_Stock_IndexHour
     week = QA_Sql_Stock_IndexWeek
     alpha = QA_Sql_Stock_Alpha191
     alpha101 = QA_Sql_Stock_Alpha101
@@ -846,6 +847,10 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
         index_res = index(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
+            'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
+        hour_res = hour(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+
+        QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
         week_res = week(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
@@ -858,7 +863,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
         alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
 
         try:
-            res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(pe_res)
+            res = financial_res.join(index_res).join(hour_res).join(week_res).join(alpha_res).join(alpha101_res).join(pe_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':

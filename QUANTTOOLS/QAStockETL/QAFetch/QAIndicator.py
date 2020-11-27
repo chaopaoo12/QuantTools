@@ -17,6 +17,7 @@ def rolling_ols(y):
     滚动回归，返回滚动回归后的回归系数
     rb: 因变量序列
     '''
+    y = pd.DataFrame.ewm(y,alpha=1.0/24,ignore_na=True).mean().values
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
     return(round(model.slope,4))
 
