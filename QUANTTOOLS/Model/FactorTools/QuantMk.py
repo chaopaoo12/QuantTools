@@ -88,6 +88,9 @@ def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method
         codes = list(code_list[code_list.cate != '5'].code)
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
+    codes = codes + ['000001','399001','399006']
+
+    codes = [i for i in codes if i not in ['880602','880604']]
 
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date, method=method,norm_type=norm_type).data
@@ -106,7 +109,8 @@ def get_index_quant_data_norm(start_date, end_date, code=None, type = 'crawl', m
         codes = list(code_list[code_list.cate != '5'].code)
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
-
+    codes = codes + ['000001','399001','399006']
+    codes = [i for i in codes if i not in ['880602','880604']]
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date, method=method,norm_type=norm_type).data
     if type == 'model':
