@@ -135,3 +135,10 @@ from QUANTTOOLS.QAStockETL.QAFetch.QABaseIndicator import (QA_fetch_get_stock_et
                                                            QA_fetch_get_index_etlday)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QABlock import (QA_fetch_get_block_day_xq)
+
+from QUANTTOOLS.QAStockETL.QAFetch.QABtc import QA_fetch_get_btc_day,QA_fetch_get_btc_min
+
+from QUANTTOOLS.QAStockETL.QAFetch.QAGold import QA_fetch_get_gold_day,QA_fetch_get_gold_min
+
+from QUANTTOOLS.QAStockETL.QAFetch.QAMoney import QA_fetch_get_money_day,QA_fetch_get_money_min,QA_fetch_get_diniw_min
+
