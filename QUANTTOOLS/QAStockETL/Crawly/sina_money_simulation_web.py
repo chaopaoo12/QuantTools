@@ -47,7 +47,7 @@ def get_money_min_sina(symbol, scala, lens):
                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
                'Connection': 'keep-alive'
                }
-    url = 'https://vip.stock.finance.sina.com.cn/forex/api/jsonp.php/var1=/NewForexService.getMinKline?symbol=fx_s{symbol}&scale={scale}&datalen={lens}'
+    url = 'https://vip.stock.finance.sina.com.cn/forex/api/jsonp.php/var1=/NewForexService.getMinKline?symbol=fx_s{symbol}&scale={scala}&datalen={lens}'
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
