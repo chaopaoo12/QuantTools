@@ -8,7 +8,7 @@ ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Or
 
 sql_text = '''select to_char(ORDER_DATE, 'yyyy-mm-dd') as "date",
 CODE AS "code"
-,datetime
+,datetime as "datetime"
 ,VR as VR_HR
 ,VRSI as VRSI_HR
 ,VRSI_C as VRSI_C_HR
