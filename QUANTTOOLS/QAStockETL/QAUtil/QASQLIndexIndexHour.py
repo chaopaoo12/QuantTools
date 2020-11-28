@@ -238,7 +238,6 @@ def QA_Sql_Index_IndexHour(from_ , to_, type = 'day', sql_text = sql_text, ui_lo
         sql_text = sql_text + " and substr(datetime, 12, 20) = '15:00:00'"
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
-    print(data.head())
     data = data.drop_duplicates((['code', 'datetime'])).set_index(['datetime','code'])
     data['CCI_JC_HR'] = data['CCI_CROSS1_HR'] + data['CCI_CROSS3_HR']
     data['CCI_SC_HR'] = data['CCI_CROSS2_HR'] + data['CCI_CROSS4_HR']
