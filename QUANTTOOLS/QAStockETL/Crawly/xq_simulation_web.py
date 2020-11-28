@@ -62,7 +62,23 @@ def read_financial_report(code, exchange, report_type):
     res = res.assign(report_date = res.report_date.apply(lambda x:str(datetime.datetime.fromtimestamp(x))[0:10]))
     return(res)
 
-def read_stock_day(code, start_date, end_date):
+def read_stock_day(code, start_date, end_date, period='day', type='normal'):
+    start_date = datetime.datetime.strptime(str(start_date),"%Y-%m-%d")
+    end_date = datetime.datetime.strptime(str(end_date),"%Y-%m-%d")
+
+    cnt = (end_date-start_date).days
+    if cnt < 284:
+        cnt = 284
+    else:
+        cnt = cnt
+    stockday_url = 'https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol={code}&begin={timestamp}&period={period}&type={type}&count=-{cnt}&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance'.format(code=code, cnt = cnt,period=period,type=type,timestamp= int(time.mktime(datetime.datetime.now().timetuple())*1000))
+    data = read_data_from_xueqiu(stockday_url)
+    data = pd.DataFrame(data['data']['item'],columns=data['data']['column']).assign(code = data['data']['symbol'])
+    data = data.assign(timestamp = data.timestamp.apply(lambda x:x/1000))
+    data = data.assign(date = pd.to_datetime(data.timestamp.apply(lambda x:str(datetime.datetime.fromtimestamp(x))[0:10])))
+    return(data)
+
+def read_stock_week(code, start_date, end_date):
     start_date = datetime.datetime.strptime(str(start_date),"%Y-%m-%d")
     end_date = datetime.datetime.strptime(str(end_date),"%Y-%m-%d")
 
@@ -77,4 +93,3 @@ def read_stock_day(code, start_date, end_date):
     data = data.assign(timestamp = data.timestamp.apply(lambda x:x/1000))
     data = data.assign(date = pd.to_datetime(data.timestamp.apply(lambda x:str(datetime.datetime.fromtimestamp(x))[0:10])))
     return(data)
-

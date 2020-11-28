@@ -51,7 +51,7 @@ def QA_fetch_get_usstock_report_xq(code):
     #data = data.assign(crawl_date=data['crawl_date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(data)
 
-def QA_fetch_get_usstock_day_xq(code, start_date, end_date):
-    data = read_stock_day(code, start_date, end_date)
+def QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='day', type='normal'):
+    data = read_stock_day(code, start_date, end_date, period, type)
     data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(data)
