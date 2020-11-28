@@ -35,7 +35,7 @@ def get_gold_day_sina(symbol, date):
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
     options.add_argument('headless')
-    res = read_data_from_sina(url.format(symbol, date), options)
+    res = read_data_from_sina(url.format(symbol=symbol, date=date), options)
     data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
     data = pd.DataFrame(data)
     if data is None:
@@ -56,7 +56,7 @@ def get_gold_min_sina(symbol, scala):
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
     options.add_argument('headless')
-    res = read_data_from_sina(url.format(symbol, scala), options)
+    res = read_data_from_sina(url.format(symbol=symbol, scala=scala), options)
     data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
     data = pd.DataFrame(data).rename(columns={'d':'datetime','o':'open','h':'high','l':'low','c':'close','v':'vol'})
     if data is None:

@@ -28,7 +28,7 @@ def get_btc_day_sina(symbol):
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
     options.add_argument('headless')
-    res = read_data_from_sina(url.format(symbol), options)
+    res = read_data_from_sina(url.format(symbol=symbol), options)
     data = json.loads(res.text.split('var1=')[1].replace('(','').replace(')',''))['result']['data']
     data = pd.DataFrame([i.split(',') for i in data.split('|')], columns = ['date','open','low','high','close','vol'])
     if data is None:
@@ -49,7 +49,7 @@ def get_btc_min_sina(symbol, scala, lens):
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
     options.add_argument('headless')
-    res = read_data_from_sina(url.format(symbol, scala, lens), options)
+    res = read_data_from_sina(url.format(symbol=symbol, scala=scala, lens=lens), options)
     data = json.loads(res.text.split('var1')[1].replace('(','').replace(')',''))['result']['data']
     data = pd.DataFrame(data).rename(columns={'d':'datetime','o':'open','h':'high','l':'low','c':'close','v':'vol'})
     if data is None:

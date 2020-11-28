@@ -32,7 +32,7 @@ def get_money_day_sina(symbol, date):
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
     options.add_argument('headless')
-    res = read_data_from_sina(url.format(symbol, date), options)
+    res = read_data_from_sina(url.format(symbol=symbol, date=date), options)
     data = pd.DataFrame([i.split(',') for i in res.text.split('var1=')[1].replace('("','').replace('");','').split(',|')], columns = ['date','open','low','high','close'])
     if data is None:
         return None
@@ -52,7 +52,7 @@ def get_money_min_sina(symbol, scala, lens):
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
     options.add_argument('headless')
-    res = read_data_from_sina(url.format(symbol, scala, lens), options)
+    res = read_data_from_sina(url.format(symbol=symbol, scala=scala, lens=lens), options)
     data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
     data = pd.DataFrame(data).rename(columns={'d':'datetime','o':'open','h':'high','l':'low','c':'close'})
     if data is None:
@@ -73,7 +73,7 @@ def get_diniw_min_sina(scala, lens):
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
     options.add_argument('headless')
-    res = read_data_from_sina(url.format(scala, lens), options)
+    res = read_data_from_sina(url.format(scala=scala, lens=lens), options)
     data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
     data = pd.DataFrame(data).rename(columns={'d':'datetime','o':'open','h':'high','l':'low','c':'close','v':'vol'})
     if data is None:
