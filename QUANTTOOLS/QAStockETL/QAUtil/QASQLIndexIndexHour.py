@@ -226,14 +226,15 @@ where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
 and order_Date <=
 to_date('{to_}', 'yyyy-mm-dd')
-and substr(datetime, 12, 20) = '15:00:00'
 '''
 
-def QA_Sql_Index_IndexHour(from_ , to_, sql_text = sql_text, ui_log= None):
+def QA_Sql_Index_IndexHour(from_ , to_, sql_text = sql_text, type = 'day', ui_log= None):
     QA_util_log_info(
         '##JOB01 Now Fetch Index QuantData Index Hour ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     sql_text = sql_text.format(from_=from_,to_=to_)
     conn = cx_Oracle.connect(ORACLE_PATH2)
+    if type == 'hour':
+        sql_text = sql_text + " and substr(datetime, 12, 20) = '15:00:00'"
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
     data = data.drop_duplicates((['code', 'date'])).set_index(['date','code'])
