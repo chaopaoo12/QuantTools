@@ -1250,6 +1250,7 @@ def QA_fetch_index_quant_data(code, start, end = None, norm_type = 'normalizatio
     index = QA_Sql_Index_Index
     week = QA_Sql_Index_IndexWeek
     fbase = QA_Sql_Index_Base
+    hour = QA_Sql_Index_IndexHour
 
     if QA_util_date_valid(end):
 
@@ -1264,11 +1265,15 @@ def QA_fetch_index_quant_data(code, start, end = None, norm_type = 'normalizatio
         week_res = week(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
+            'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
+        hour_res = hour(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+
+        QA_util_log_info(
             'JOB Get Index Base data start=%s end=%s' % (start, end))
         base_res = fbase(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         try:
-            res = base_res.join(week_res).join(index_res)
+            res = base_res.join(week_res).join(index_res).join(hour_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':

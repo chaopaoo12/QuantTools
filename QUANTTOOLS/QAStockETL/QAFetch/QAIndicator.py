@@ -21,9 +21,9 @@ def rolling_ols(y):
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
     return(round(model.slope,4))
 
-def spc(data):
+def spc(data, N= 5):
     data[['MA5_C','MA10_C','MA20_C','MA60_C',
-          'MA120_C','MA180_C','LONG_AMOUNT','SHORT_AMOUNT']] = data.rolling(window=5).agg({ 'MA5':rolling_ols,
+          'MA120_C','MA180_C','LONG_AMOUNT','SHORT_AMOUNT']] = data.rolling(window=N).agg({ 'MA5':rolling_ols,
                                                                 'MA10':rolling_ols,
                                                                 'MA20':rolling_ols,
                                                                 'MA60':rolling_ols,
@@ -34,8 +34,8 @@ def spc(data):
                                                                 })
     return(data)
 
-def spc_short(data):
-    data[['MA5_C','MA10_C','MA20_C','MA60_C','LONG_AMOUNT','SHORT_AMOUNT']] = data.rolling(window=5).agg({'MA5':rolling_ols,
+def spc_short(data, N= 5):
+    data[['MA5_C','MA10_C','MA20_C','MA60_C','LONG_AMOUNT','SHORT_AMOUNT']] = data.rolling(window=N).agg({'MA5':rolling_ols,
                                                                 'MA10':rolling_ols,
                                                                 'MA20':rolling_ols,
                                                                 'MA60':rolling_ols,
