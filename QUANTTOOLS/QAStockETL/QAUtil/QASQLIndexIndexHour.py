@@ -228,7 +228,7 @@ and order_Date <=
 to_date('{to_}', 'yyyy-mm-dd')
 '''
 
-def QA_Sql_Index_IndexHour(from_ , to_, sql_text = sql_text, type = 'day', ui_log= None):
+def QA_Sql_Index_IndexHour(from_ , to_, type = 'day', sql_text = sql_text, ui_log= None):
     QA_util_log_info(
         '##JOB01 Now Fetch Index QuantData Index Hour ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     sql_text = sql_text.format(from_=from_,to_=to_)
