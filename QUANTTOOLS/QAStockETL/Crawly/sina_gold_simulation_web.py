@@ -38,6 +38,8 @@ def get_gold_day_sina(symbol, date):
     res = read_data_from_sina(url.format(symbol=symbol, date=date), options)
     data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
     data = pd.DataFrame(data)
+    data = data.assign(date = data.date.apply(lambda x:pd.to_datetime(x)))
+    data[['open','close','high','low','volume']] = data[['open','close','high','low','volume']].apply(pd.to_numeric)
     if data is None:
         return None
     else:
@@ -59,6 +61,8 @@ def get_gold_min_sina(symbol, scala):
     res = read_data_from_sina(url.format(symbol=symbol, scala=scala), options)
     data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
     data = pd.DataFrame(data).rename(columns={'d':'datetime','o':'open','h':'high','l':'low','c':'close','v':'vol'})
+    data = data.assign(datetime = data.datetime.apply(lambda x:pd.to_datetime(x)))
+    data[['open','close','high','low','vol']] = data[['open','close','high','low','vol']].apply(pd.to_numeric)
     if data is None:
         return None
     else:

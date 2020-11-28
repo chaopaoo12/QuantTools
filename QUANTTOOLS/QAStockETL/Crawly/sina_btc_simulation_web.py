@@ -31,6 +31,8 @@ def get_btc_day_sina(symbol):
     res = read_data_from_sina(url.format(symbol=symbol), options)
     data = json.loads(res.text.split('var1=')[1].replace('(','').replace(')',''))['result']['data']
     data = pd.DataFrame([i.split(',') for i in data.split('|')], columns = ['date','open','low','high','close','vol'])
+    data = data.assign(date = data.date.apply(lambda x:pd.to_datetime(x)))
+    data[['open','close','high','low','vol']] = data[['open','close','high','low','vol']].apply(pd.to_numeric)
     if data is None:
         return None
     else:
@@ -52,6 +54,8 @@ def get_btc_min_sina(symbol, scala, lens):
     res = read_data_from_sina(url.format(symbol=symbol, scala=scala, lens=lens), options)
     data = json.loads(res.text.split('var1=')[1].replace('(','').replace(')',''))['result']['data']
     data = pd.DataFrame(data).rename(columns={'d':'datetime','o':'open','h':'high','l':'low','c':'close','v':'vol'})
+    data = data.assign(datetime = data.datetime.apply(lambda x:pd.to_datetime(x)))
+    data[['open','close','high','low','vol']] = data[['open','close','high','low','vol']].apply(pd.to_numeric)
     if data is None:
         return None
     else:
