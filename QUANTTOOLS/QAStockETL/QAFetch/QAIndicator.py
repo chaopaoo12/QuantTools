@@ -640,7 +640,7 @@ def get_indicator(data, type='day'):
         res = res.reset_index()
         res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
         res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
-        res = res.set_index(['date','code']).dropna(how='all')
+        res = res.set_index(['datetime','code']).dropna(how='all')
     return(res)
 
 
@@ -721,5 +721,5 @@ def get_indicator_short(data, type='day'):
         res = res.reset_index()
         res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
         res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
-        res = res.set_index(['date','code']).dropna(how='all')
+        res = res.set_index(['datetime','code']).dropna(how='all')
     return(res)

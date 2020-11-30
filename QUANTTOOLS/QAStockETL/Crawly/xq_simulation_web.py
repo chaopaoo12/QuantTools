@@ -65,10 +65,9 @@ def read_financial_report(code, exchange, report_type):
 def read_stock_day(code, start_date, end_date, period='day', type='normal'):
     start_date = datetime.datetime.strptime(str(start_date),"%Y-%m-%d")
     end_date = datetime.datetime.strptime(str(end_date),"%Y-%m-%d")
-
     cnt = (end_date-start_date).days
-    if cnt < 284:
-        cnt = 284
+    if cnt < 350:
+        cnt = 350
     else:
         cnt = cnt
     stockday_url = 'https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol={code}&begin={timestamp}&period={period}&type={type}&count=-{cnt}&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance'.format(code=code, cnt = cnt,period=period,type=type,timestamp= int(time.mktime(datetime.datetime.now().timetuple())*1000))
@@ -81,7 +80,6 @@ def read_stock_day(code, start_date, end_date, period='day', type='normal'):
 def read_stock_week(code, start_date, end_date):
     start_date = datetime.datetime.strptime(str(start_date),"%Y-%m-%d")
     end_date = datetime.datetime.strptime(str(end_date),"%Y-%m-%d")
-
     cnt = (end_date-start_date).days
     if cnt < 284:
         cnt = 284
