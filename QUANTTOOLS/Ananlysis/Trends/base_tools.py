@@ -10,6 +10,10 @@ def check(data):
     res = data.iloc[-1:].reset_index().set_index('code')
     return((res.SHORT20> 0)&(res.LONG60> 0)&(res.LONG_AMOUNT> 0))
 
+def check_hour(data, date):
+    res = data.loc[date].reset_index().set_index('code')
+    return((res.SHORT20> 0)&(res.LONG60> 0)&(res.LONG_AMOUNT> 0))
+
 def trends_money(MONEY, date):
     day = QA_fetch_get_money_day(MONEY,date)
     week = day.drop('date_stamp',axis=1).set_index(['date']).resample('W').agg({'code':'last','open':'first','high':'max','low':'min','close':'last'})

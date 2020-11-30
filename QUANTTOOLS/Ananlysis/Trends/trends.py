@@ -1,5 +1,5 @@
 
-from .base_tools import trends_money, trends_btc, trends_gold, trends_stock, check, trends_stock_hour
+from .base_tools import trends_money, trends_btc, trends_gold, trends_stock, check, trends_stock_hour, check_hour
 
 def btc_daily(BTC):
     day, week = trends_btc(BTC)
@@ -25,7 +25,8 @@ def stock_daily(stock, start_date, end_date):
     week_check = check(week).loc[stock]
     return(day_check, week_check)
 
-def stock_hourly(stock, start_date, end_date):
+def stock_hourly(stock, start_date, end_date, date_type):
     hour = trends_stock_hour(stock,start_date,end_date)
-    hour_check = check(hour).loc[stock]
+    date = end_date + ' ' + date_type
+    hour_check = check_hour(hour, date).loc[stock]
     return(hour_check)

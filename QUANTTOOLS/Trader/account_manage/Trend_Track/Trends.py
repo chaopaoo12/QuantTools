@@ -3,7 +3,7 @@ from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_Client,check_Client
 
-def daily(trading_date, account, strategy_id, exceptions = None):
+def daily(trading_date, hour, account, strategy_id, exceptions = None):
     client = get_Client()
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
@@ -21,7 +21,7 @@ def daily(trading_date, account, strategy_id, exceptions = None):
             send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'日线趋势下跌',direction = 'SELL',offset='SELL',volume=None)
         if res[1] == False:
             send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'周线趋势下跌',direction = 'SELL',offset='SELL',volume=None)
-        res = stock_hourly(code,trading_date,trading_date)
+        res = stock_hourly(code,trading_date,trading_date, hour)
         QA_util_log_info('{code}{name}-{trading_date}:hourly: {hourly}'.format(code=code,name=name,trading_date=trading_date,hourly=res))
         if res == False:
             send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'60min线趋势下跌',direction = 'SELL',offset='SELL',volume=None)
