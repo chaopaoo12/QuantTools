@@ -454,7 +454,7 @@ def QA_etl_stock_financial_day(start_date = QA_util_today_str(), end_date= None,
     codes = list(QA_fetch_stock_all()['code'])
     data = QA_fetch_stock_fianacial_adv(codes, start_date, end_date).data[[ 'INDUSTRY','TOTAL_MARKET', 'TRA_RATE', 'DAYS',
                                                                             'AVG5','AVG10','AVG20','AVG30','AVG60',
-                                                                            'LAG','LAG5','LAG10','LAG20','LAG30','LAG60',
+                                                                            'LAG','LAG2','LAG3','LAG5','LAG10','LAG20','LAG30','LAG60',
                                                                             'AVG5_TOR', 'AVG20_TOR','AVG30_TOR','AVG60_TOR',
                                                                             'GROSSMARGIN','NETPROFIT_INRATE','OPERATINGRINRATE','NETCASHOPERATINRATE',
                                                                             'PB', 'PBG', 'PC', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PM', 'PS','PSG','PT',
