@@ -7,14 +7,14 @@ def btc_daily(BTC):
     week_check = check(week).loc[BTC]
     return(day_check, week_check)
 
-def money_daily(MONEY):
-    day, week = trends_money(MONEY)
+def money_daily(MONEY, date):
+    day, week = trends_money(MONEY, date)
     day_check = check(day).loc[MONEY]
     week_check = check(week).loc[MONEY]
     return(day_check, week_check)
 
-def gold_daily(GOLD):
-    day, week = trends_gold(GOLD)
+def gold_daily(GOLD, date):
+    day, week = trends_gold(GOLD, date)
     day_check = check(day).loc[GOLD]
     week_check = check(week).loc[GOLD]
     return(day_check, week_check)

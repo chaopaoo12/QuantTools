@@ -3,7 +3,6 @@ from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_Client,check_Client
 
-
 def daily(trading_date, account, strategy_id, exceptions = None):
     client = get_Client()
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
