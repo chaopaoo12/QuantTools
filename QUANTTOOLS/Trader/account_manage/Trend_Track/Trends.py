@@ -9,8 +9,9 @@ def daily(trading_date, account, strategy_id, exceptions = None):
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
     positions = positions[positions['可用余额'] > 0]
-
+    print(positions)
     for code in list(positions.index):
+        print(code)
         res = stock_daily(code,trading_date,trading_date)
         if res[0] is False:
             send_actionnotice(strategy_id,'{code}:{trading_date}'.format(code=code,trading_date=trading_date),'日线趋势下跌',direction = 'SELL',offset='SELL',volume=None)
