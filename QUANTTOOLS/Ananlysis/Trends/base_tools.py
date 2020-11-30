@@ -49,6 +49,6 @@ def trends_stock(code, start_date, end_date, period='day', type='before'):
 def trends_stock_hour(code, start_date, end_date, period='60m', type='before'):
     hour = QA_fetch_get_usstock_day_xq(code, start_date, end_date, period=period, type=type)
     hour = hour.assign(datetime = hour.timestamp.apply(lambda x:str(datetime.datetime.fromtimestamp(x))[0:19]))
-    data_index = QA_DataStruct_Stock_min(hour.drop('date_stamp',axis=1).set_index(['datetime','code']))
+    data_index = QA_DataStruct_Stock_day(hour.drop('date_stamp',axis=1).set_index(['datetime','code']))
     data_index = get_indicator(data_index,'hour')
     return(data_index)
