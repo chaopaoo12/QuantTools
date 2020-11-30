@@ -53,7 +53,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_interest_rate,QA_fet
                                                    QA_fetch_stock_technical_half,QA_fetch_stock_base_real,
 
                                                    QA_fetch_stock_quant_data,QA_fetch_stock_quant_pre,QA_fetch_stock_quant_pre_train,
-                                                   QA_fetch_stock_target,
+                                                   QA_fetch_stock_target,QA_fetch_stock_quant_hour,QA_fetch_stock_hour_pre,
 
                                                    QA_fetch_index_name,QA_fetch_index_cate,QA_fetch_index_info,QA_fetch_stock_industryinfo,
 
@@ -62,7 +62,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_interest_rate,QA_fet
                                                    QA_fetch_index_alpha,QA_fetch_index_alpha101,QA_fetch_index_technical_index,
 
                                                    QA_fetch_index_quant_data,QA_fetch_index_quant_pre,
-                                                   QA_fetch_index_target,
+                                                   QA_fetch_index_target,QA_fetch_index_quant_hour,QA_fetch_index_hour_pre,
 
                                                    QA_fetch_usstock_list,QA_fetch_usstock_adj,
                                                    QA_fetch_usstock_day,QA_fetch_usstock_xq_day,
