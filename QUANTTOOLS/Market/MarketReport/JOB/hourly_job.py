@@ -29,27 +29,33 @@ def daily_job(trading_date, account = 'name:client-1', strategy_id = '趋势跟�
     target_ae = int(time.strftime("%H%M%S", time.strptime("13:00:00", "%H:%M:%S")))
     target_af = int(time.strftime("%H%M%S", time.strptime("15:00:00", "%H:%M:%S")))
     while tm < target_tm:
-        tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         while tm <= int(time.strftime("%H%M%S", time.strptime("10:30:00", "%H:%M:%S"))):
             time.sleep(15)
+            tm = int(datetime.datetime.now().strftime("%H%M%S"))
         daily(trading_date, "10:30:00", account, strategy_id)
 
         while tm <= int(time.strftime("%H%M%S", time.strptime("11:30:00", "%H:%M:%S"))):
             time.sleep(15)
+            tm = int(datetime.datetime.now().strftime("%H%M%S"))
         daily(trading_date, "11:30:00", account, strategy_id)
 
         if tm > target_ea and tm < target_ae:
             time.sleep(600)
+            tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         while tm <= int(time.strftime("%H%M%S", time.strptime("14:00:00", "%H:%M:%S"))):
             time.sleep(15)
+            tm = int(datetime.datetime.now().strftime("%H%M%S"))
+
         daily(trading_date, "14:00:00", account, strategy_id)
 
         while tm <= int(time.strftime("%H%M%S", time.strptime("14:50:00", "%H:%M:%S"))):
             time.sleep(15)
+            tm = int(datetime.datetime.now().strftime("%H%M%S"))
         daily(trading_date, "15:00:00", account, strategy_id)
 
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
         if tm > target_af:
             break
 
