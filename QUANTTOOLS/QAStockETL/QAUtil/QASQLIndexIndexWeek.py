@@ -243,5 +243,5 @@ def QA_Sql_Index_IndexWeek(from_ , to_, sql_text = sql_text, ui_log= None):
     data.loc[(data.CCI_TR_WK == 0),'CCI_TR_WK'] = np.nan
     data[['CCI_CROSS1_WK','CCI_CROSS2_WK','CCI_CROSS3_WK','CCI_CROSS4_WK','CCI_JC_WK','CCI_SC_WK','CCI_TR_WK']] = data[['CCI_CROSS1_WK','CCI_CROSS2_WK','CCI_CROSS3_WK','CCI_CROSS4_WK','CCI_JC_WK','CCI_SC_WK','CCI_TR_WK']].groupby('code').fillna(method='ffill')
     data['CCI_TR_WK'] = data['CCI_TR_WK'] -1
-    data['TERNS_WK'] = data.apply(lambda x: (x.SHORT20_WK > 0) * (x.LONG60_WK > 0) * (x.LONG_AMOUNT_WK > 0) * 1, axis=1)
+    data['TERNS_WK'] = data.apply(lambda x: (x.SHORT20_WK > 0) * (x.LONG60_WK > 0) * 1, axis=1)
     return(data)
