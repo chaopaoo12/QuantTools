@@ -243,5 +243,5 @@ def QA_Sql_Stock_Index(from_ , to_, sql_text = sql_text, ui_log= None):
     data.loc[(data.CCI_TR == 0),'CCI_TR'] = np.nan
     data[['CCI_CROSS1','CCI_CROSS2','CCI_CROSS3','CCI_CROSS4','CCI_JC','CCI_SC','CCI_TR']] = data[['CCI_CROSS1','CCI_CROSS2','CCI_CROSS3','CCI_CROSS4','CCI_JC','CCI_SC','CCI_TR']].groupby('code').fillna(method='ffill')
     data['CCI_TR'] = data['CCI_TR'] -1
-    data['TERNS'] = data.apply(lambda x: (x.SHORT20 > 0) * (x.LONG60 > 0) * 1, axis=1)
+    data['TERNS'] = data.apply(lambda x: (x.SHORT20 > 0) * (x.LONG60 > 0) * (x.LONG_AMOUNT > 0) * 1, axis=1)
     return(data)
