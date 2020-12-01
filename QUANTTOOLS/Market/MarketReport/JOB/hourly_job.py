@@ -28,6 +28,7 @@ def daily_job(trading_date, account = 'name:client-1', strategy_id = '趋势跟�
     target_ea = int(time.strftime("%H%M%S", time.strptime("11:30:00", "%H:%M:%S")))
     target_ae = int(time.strftime("%H%M%S", time.strptime("13:00:00", "%H:%M:%S")))
     target_af = int(time.strftime("%H%M%S", time.strptime("15:00:00", "%H:%M:%S")))
+    print(tm)
     while tm < target_tm:
 
         while tm <= int(time.strftime("%H%M%S", time.strptime("10:30:00", "%H:%M:%S"))):
