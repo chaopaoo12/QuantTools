@@ -681,9 +681,6 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
     alpha = QA_Sql_Stock_Alpha191
     alpha101 = QA_Sql_Stock_Alpha101
     pe = QA_Sql_Stock_FinancialPercent
-    alpha101_half = QA_Sql_Stock_Alpha101Half
-    alpha191_half = QA_Sql_Stock_Alpha191Half
-    base_half = QA_Sql_Stock_BaseHalf
 
     if QA_util_date_valid(end):
 
@@ -732,20 +729,8 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
             'JOB Get Stock Alpha101 train data start=%s end=%s' % (start, end))
         alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
 
-        QA_util_log_info(
-            'JOB Get Stock Alpha101 Half train data start=%s end=%s' % (start, sec_end))
-        alpha101half_res = alpha101_half(start_date,sec_end).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)].fillna(0)
-
-        QA_util_log_info(
-            'JOB Get Stock Alpha191 Half train data start=%s end=%s' % (start, sec_end))
-        alpha191half_res = alpha191_half(start_date,sec_end).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[((rng,code),)]
-
-        QA_util_log_info(
-            'JOB Get Stock Base Half train data start=%s end=%s' % (start, sec_end))
-        basehalf_res = base_half(start_date,end_date).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[(rng,code),:].fillna(0)
-
         try:
-            res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(alpha101half_res).join(alpha191half_res).join(pe_res).join(basehalf_res)
+            res = financial_res.join(index_res).join(week_res).join(alpha_res).join(alpha101_res).join(pe_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
