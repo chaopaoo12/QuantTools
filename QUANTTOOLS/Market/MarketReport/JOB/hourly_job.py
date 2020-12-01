@@ -28,43 +28,42 @@ def daily_job(trading_date, account = 'name:client-1', strategy_id = '趋势跟�
     target_ea = int(time.strftime("%H%M%S", time.strptime("11:30:00", "%H:%M:%S")))
     target_ae = int(time.strftime("%H%M%S", time.strptime("13:00:00", "%H:%M:%S")))
     target_af = int(time.strftime("%H%M%S", time.strptime("15:00:00", "%H:%M:%S")))
-    print(tm)
+
     while tm < target_tm:
-
-        while tm <= int(time.strftime("%H%M%S", time.strptime("10:30:00", "%H:%M:%S"))):
-            time.sleep(15)
-            tm = int(datetime.datetime.now().strftime("%H%M%S"))
-            print('a')
-        daily(trading_date, "10:30:00", account, strategy_id)
-
-        while tm <= int(time.strftime("%H%M%S", time.strptime("11:30:00", "%H:%M:%S"))):
-            time.sleep(15)
-            tm = int(datetime.datetime.now().strftime("%H%M%S"))
-            print('b')
-        daily(trading_date, "11:30:00", account, strategy_id)
-
-        while tm > target_ea and tm < target_ae:
-            time.sleep(600)
-            tm = int(datetime.datetime.now().strftime("%H%M%S"))
-            print('c')
-
-        while tm <= int(time.strftime("%H%M%S", time.strptime("14:00:00", "%H:%M:%S"))):
-            time.sleep(15)
-            tm = int(datetime.datetime.now().strftime("%H%M%S"))
-            print('d')
-
-        daily(trading_date, "14:00:00", account, strategy_id)
-
-        while tm <= int(time.strftime("%H%M%S", time.strptime("14:50:00", "%H:%M:%S"))):
-            time.sleep(15)
-            tm = int(datetime.datetime.now().strftime("%H%M%S"))
-            print('e')
-        daily(trading_date, "15:00:00", account, strategy_id)
-
+        time.sleep(15)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
-        if tm > target_af:
-            print('d')
-            break
+        print(tm)
+
+    while tm <= int(time.strftime("%H%M%S", time.strptime("10:30:00", "%H:%M:%S"))):
+        time.sleep(15)
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
+        print('a')
+    daily(trading_date, "10:30:00", account, strategy_id)
+
+    while tm <= int(time.strftime("%H%M%S", time.strptime("11:30:00", "%H:%M:%S"))):
+        time.sleep(15)
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
+        print('b')
+    daily(trading_date, "11:30:00", account, strategy_id)
+
+    while tm > target_ea and tm < target_ae:
+        time.sleep(600)
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
+        print('c')
+
+    while tm <= int(time.strftime("%H%M%S", time.strptime("14:00:00", "%H:%M:%S"))):
+        time.sleep(15)
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
+        print('d')
+
+    daily(trading_date, "14:00:00", account, strategy_id)
+
+    while tm <= int(time.strftime("%H%M%S", time.strptime("14:50:00", "%H:%M:%S"))):
+        time.sleep(15)
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
+        print('e')
+    daily(trading_date, "15:00:00", account, strategy_id)
+
 
 def index_job(trading_date, strategy_id = '趋势跟踪'):
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
