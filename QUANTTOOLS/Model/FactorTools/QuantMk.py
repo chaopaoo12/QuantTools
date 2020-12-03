@@ -311,7 +311,7 @@ def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method
         res = QA_fetch_index_quant_hour(codes, start_date, end_date, norm_type =norm_type).drop(['date'], axis=1)
         target = QA_fetch_index_target(codes, start_date, end_date, type='60min', method=method)
         res = res.join(target)
-    return(pd.get_dummies(res))
+    return(res)
 
 if __name__ == 'main':
     pass
