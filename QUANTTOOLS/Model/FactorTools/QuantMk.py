@@ -98,7 +98,7 @@ def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method
         res = QA_fetch_index_quant_data(codes, start_date, end_date)
         target = QA_fetch_index_target(codes, start_date, end_date, method=method)
         res = res.join(target)
-    return(pd.get_dummies(res))
+    return(res)
 
 def get_index_quant_data_norm(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
 
@@ -117,7 +117,7 @@ def get_index_quant_data_norm(start_date, end_date, code=None, type = 'crawl', m
         res = QA_fetch_get_index_quant_data(codes, start_date, end_date, type='normalization').set_index(['date','code']).drop(['date_stamp'], axis=1)
         target = QA_fetch_index_target(codes, start_date, end_date, method=method)
         res = res.join(target)
-    return(pd.get_dummies(res))
+    return(res)
 
 def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
 
