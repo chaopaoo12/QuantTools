@@ -3205,7 +3205,7 @@ def QA_fetch_index_quant_hour(code, start, end = None, norm_type = 'normalizatio
 def QA_fetch_index_hour_pre(code, start, end=None, method='value', norm_type=None, format='pd'):
     QA_util_log_info(
         'JOB Get Index Quant data start=%s end=%s' % (start, end))
-    res = QA_fetch_index_quant_hour(code, start, end, norm_type)
+    res = QA_fetch_index_quant_hour(code, start, end, norm_type).drop(['date'], axis=1)
     QA_util_log_info(
         'JOB Get Index Target data start=%s end=%s' % (start, end))
     target = QA_fetch_index_target(code, start, end, type='60min', method=method)
