@@ -3128,7 +3128,7 @@ def QA_fetch_stock_quant_hour(code, start, end=None, block = True, norm_type='no
 def QA_fetch_stock_hour_pre(code, start, end=None, block = True, close_type='close', method='value', norm_type='normalization', format='pd'):
     QA_util_log_info(
         'JOB Get Stock Quant data start=%s end=%s' % (start, end))
-    res = QA_fetch_stock_quant_hour(code, start, end, block, norm_type=norm_type)
+    res = QA_fetch_stock_quant_hour(code, start, end, block, norm_type=norm_type).drop(['date'], axis=1)
     QA_util_log_info(
         'JOB Get Stock Target data start=%s end=%s' % (start, end))
     target = QA_fetch_stock_target(code, start, end, type='60min', close_type=close_type, method=method)
