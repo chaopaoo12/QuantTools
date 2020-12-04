@@ -27,7 +27,7 @@
 
 """对应于save x
 """
-from QUANTTOOLS.QAStockETL import (QA_SU_save_index_min,
+from QUANTTOOLS.QAStockETL import (QA_SU_save_index_hour,
                                    QA_SU_save_index_technical_hour_day,
                                    QA_SU_save_index_info)
 from QUANTAXIS.QASU.main import (QA_SU_save_index_day,QA_SU_save_index_list)
@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
         res = check_index_60min(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 10:
-            QA_SU_save_index_min()
+            QA_SU_save_index_hour()
             res = check_index_60min(mark_day)
 
         res = check_index_techhour(mark_day)

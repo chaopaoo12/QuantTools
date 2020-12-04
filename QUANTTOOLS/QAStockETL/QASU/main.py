@@ -284,17 +284,29 @@ def QA_SU_save_usstock_technical_week_day(code = None,start_date=None,end_date=N
 def QA_SU_save_usstock_technical_week_his(code = None,start_date=None,end_date=None):
     usstock_index.QA_SU_save_usstock_technical_week_his(codes = code,start_date=start_date,end_date=end_date)
 
-def QA_SU_save_stock_min():
-    save_tdx.QA_SU_save_stock_min()
+def QA_SU_save_stock_hour():
+    save_tdx.QA_SU_save_stock_hour()
 
-def QA_SU_save_single_stock_min(code):
-    save_tdx.QA_SU_save_single_stock_min(code)
+def QA_SU_save_single_stock_hour(code):
+    save_tdx.QA_SU_save_single_stock_hour(code)
 
-def QA_SU_save_index_min():
-    save_tdx.QA_SU_save_index_min()
+def QA_SU_save_stock_15min():
+    save_tdx.QA_SU_save_stock_15min()
 
-def QA_SU_save_single_index_min(code):
-    save_tdx.QA_SU_save_single_index_min(code)
+def QA_SU_save_single_stock_15min(code):
+    save_tdx.QA_SU_save_single_stock_15min(code)
+
+def QA_SU_save_index_hour():
+    save_tdx.QA_SU_save_index_hour()
+
+def QA_SU_save_single_index_hour(code):
+    save_tdx.QA_SU_save_single_index_hour(code)
+
+def QA_SU_save_index_15min():
+    save_tdx.QA_SU_save_index_15min()
+
+def QA_SU_save_single_index_15min(code):
+    save_tdx.QA_SU_save_single_index_15min(code)
 
 def QA_SU_save_single_stock_xdxr(code):
     save_tdx.QA_SU_save_single_stock_xdxr(code)

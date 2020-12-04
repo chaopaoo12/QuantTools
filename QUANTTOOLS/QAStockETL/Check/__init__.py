@@ -1,5 +1,8 @@
-from QUANTTOOLS.QAStockETL.Check.check_data import (check_stock_day,check_stock_60min,check_stock_adj, check_stock_half,
-                                                    check_sinastock_day, check_sinastock_60min,check_sinastock_adj, check_sinastock_half,
+from QUANTTOOLS.QAStockETL.Check.check_data import (check_stock_day,check_sinastock_day,
+                                                    check_stock_60min,check_sinastock_60min,
+                                                    check_stock_15min,check_sinastock_15min,
+                                                    check_stock_half,check_sinastock_half,
+                                                    check_stock_adj, check_sinastock_adj,
 
                                                     check_stock_fianacial,check_stock_finper,
                                                     check_stock_alpha191, check_stock_alpha191half,

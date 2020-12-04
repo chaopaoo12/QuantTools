@@ -22,6 +22,15 @@ from QUANTTOOLS.QAStockETL.Check.check_base import check_stock_data, check_index
 def QA_fetch_stock_half_realtime(code, start, end):
     return(QA_fetch_get_stock_half_realtime(code, start))
 
+def QA_fetch_stock_15min(code, start, end):
+    return(QA_fetch_stock_min_adv(code, start, end, frequence='15min').data)
+
+def check_stock_15min(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_60min, mark_day = mark_day, title = 'Stock 15Min'))
+
+def check_sinastock_15min(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_15min, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock 15Min sina'))
+
 def QA_fetch_stock_60min(code, start, end):
     return(QA_fetch_stock_min_adv(code, start, end, frequence='60min').data)
 

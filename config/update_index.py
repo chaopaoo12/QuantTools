@@ -27,8 +27,8 @@
 
 """对应于save x
 """
-from QUANTTOOLS.QAStockETL import (QA_SU_save_index_min,
-                                   QA_SU_save_single_index_min,
+from QUANTTOOLS.QAStockETL import (QA_SU_save_index_hour,
+                                   QA_SU_save_single_index_hour,
                                    QA_SU_save_index_alpha_day,
                                    QA_SU_save_index_technical_hour_day,
                                    QA_SU_save_index_technical_index_day,
@@ -62,8 +62,6 @@ if __name__ == '__main__':
             QA_SU_save_index_day('tdx')
             res = check_index_day(mark_day)
 
-        QA_etl_index_day('day',mark_day)
-
         res = check_index_techindex(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_index_technical_index_day(start_date = mark_day, end_date = mark_day)
@@ -76,5 +74,5 @@ if __name__ == '__main__':
 
         QA_etl_index_technical_day(mark_day, mark_day)
         QA_etl_index_technical_week(mark_day,  mark_day)
-
+        QA_etl_index_day('day',mark_day)
         QA_SU_save_index_technical_month_day(start_date = mark_day, end_date = mark_day)
