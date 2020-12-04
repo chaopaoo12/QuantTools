@@ -349,3 +349,15 @@ def QA_SU_save_index_technical_hour_day(code = None,start_date=None,end_date=Non
 
 def QA_SU_save_index_technical_hour_his(code = None,start_date=None,end_date=None):
     save_stock_technical_index.QA_SU_save_index_technical_hour_his(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_stock_technical_15min_day(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_stock_technical_15min_day(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_stock_technical_15min_his(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_stock_technical_15min_his(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_index_technical_15min_day(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_index_technical_15min_day(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_index_technical_15min_his(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_index_technical_15min_his(codes = code,start_date=start_date,end_date=end_date)

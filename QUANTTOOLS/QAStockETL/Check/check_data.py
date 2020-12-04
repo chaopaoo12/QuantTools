@@ -133,6 +133,12 @@ def QA_fetch_stock_alpha191_real_model(code, start, end):
 def check_realstock_alpha191half(mark_day = None):
     return(check_stock_base(func1 = QA_fetch_stock_alpha191_real_model, func2 = QA_fetch_stock_alpha_real, mark_day = mark_day, title = 'Stock Alpha191 Half Real'))
 
+def QA_fetch_stock_tech15min(code, start, end):
+    return(QA_fetch_stock_technical_index_adv(code, start, end, type='15min').data)
+
+def check_stock_tech15min(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_tech15min, mark_day = mark_day, title = 'Stock Tech15min'))
+
 def QA_fetch_stock_techhour(code, start, end):
     return(QA_fetch_stock_technical_index_adv(code, start, end, type='hour').data)
 
