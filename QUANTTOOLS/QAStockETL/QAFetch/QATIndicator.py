@@ -277,28 +277,28 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
         start = QA_util_get_pre_trade_date(start_date,80)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Stock_min(QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='15m', type='before').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol'])).to_qfq()
+            data = QA_DataStruct_Stock_min(QA_fetch_get_usstock_day_xq(code, start, end_date, period='15m', type='before').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol'])).to_qfq()
         except:
             QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'hour':
         start = QA_util_get_pre_trade_date(start_date,80)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Stock_min(QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='60m', type='before').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol'])).to_qfq()
+            data = QA_DataStruct_Stock_min(QA_fetch_get_usstock_day_xq(code, start, end_date, period='60m', type='before').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol'])).to_qfq()
         except:
             QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'day':
         start = QA_util_get_pre_trade_date(start_date,80)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Stock_day(QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='day', type='before').reset_index(drop=True).set_index(['date','code']))
+            data = QA_DataStruct_Stock_day(QA_fetch_get_usstock_day_xq(code, start, end_date, period='day', type='before').reset_index(drop=True).set_index(['date','code']))
         except:
             QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'week':
         start = QA_util_get_pre_trade_date(start_date,80)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Stock_day(QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='day', type='before').reset_index(drop=True).set_index(['date','code']))
+            data = QA_DataStruct_Stock_day(QA_fetch_get_usstock_day_xq(code, start, end_date, period='day', type='before').reset_index(drop=True).set_index(['date','code']))
             data = QA_DataStruct_Stock_day(data.data.groupby('code',sort=True).apply(ohlc,7))
         except:
             QA_util_log_info("JOB No Week data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
@@ -307,7 +307,7 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
         start = QA_util_get_pre_trade_date(start_date,80)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Stock_day(QA_fetch_stock_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code'])).to_qfq()
+            data = QA_DataStruct_Stock_day(QA_fetch_get_usstock_day_xq(code, start, end_date, period='day', type='before').reset_index(drop=True).set_index(['date','code'])).to_qfq()
             data = QA_DataStruct_Stock_day(data.data.groupby('code',sort=True).apply(ohlc,30))
         except:
             QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
