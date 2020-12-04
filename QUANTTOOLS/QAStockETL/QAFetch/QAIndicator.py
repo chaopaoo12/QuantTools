@@ -636,7 +636,7 @@ def get_indicator(data, type='day'):
         res = res.reset_index()
         res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
         res = res.set_index(['date','code']).dropna(how='all')
-    elif type == 'hour':
+    elif type in ['min','hour']:
         res = res.reset_index()
         res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
         res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
@@ -717,7 +717,7 @@ def get_indicator_short(data, type='day'):
         res = res.reset_index()
         res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
         res = res.set_index(['date','code']).dropna(how='all')
-    elif type == 'hour':
+    elif type in ['min','hour']:
         res = res.reset_index()
         res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
         res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
