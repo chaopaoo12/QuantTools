@@ -7,14 +7,14 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day
 
 def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
     if type == 'min':
-        start = QA_util_get_pre_trade_date(start_date,200)
+        start = QA_util_get_pre_trade_date(start_date,10)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA_DataStruct_Stock_min(QA_fetch_stock_min(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='15min',format='pd').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol'])).to_qfq()
         except:
             QA_util_log_info("JOB No Minly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'hour':
-        start = QA_util_get_pre_trade_date(start_date,200)
+        start = QA_util_get_pre_trade_date(start_date,60)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA_DataStruct_Stock_min(QA_fetch_stock_min(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='60min',format='pd').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp','time_stamp','vol'])).to_qfq()
