@@ -945,7 +945,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='day', close_type='c
 
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':
-            res[columnname]=res[columnname].astype('float16')
+            res[columnname]=res[columnname].astype('float32')
         if res[columnname].dtype == 'int64':
             res[columnname]=res[columnname].astype('int8')
     return(res)
@@ -1219,7 +1219,7 @@ def QA_fetch_index_target(codes, start_date, end_date,type='day', method = 'valu
 
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':
-            res[columnname]=res[columnname].astype('float16')
+            res[columnname]=res[columnname].astype('float32')
         if res[columnname].dtype == 'int64':
             res[columnname]=res[columnname].astype('int8')
     return(res)
@@ -1240,20 +1240,20 @@ def QA_fetch_index_quant_data(code, start, end = None, norm_type = 'normalizatio
 
         QA_util_log_info(
             'JOB Get Index Tech Index data start=%s end=%s' % (start, end))
-        index_res = index(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        index_res = index(start_date,end_date).loc[((slice(None),code),)]
 
         QA_util_log_info(
             'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        hour_res = hour(start_date,end_date).loc[((slice(None),code),)]
 
         try:
-            res = index_res.join(hour_res)
+            res = index_res.join(hour_res).replace([numpy.inf, -numpy.inf], numpy.nan).groupby('code').fillna(method='ffill').loc[rng]
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
-                    res[columnname]=res[columnname].astype('float16')
+                    res[columnname]=res[columnname].astype('float32')
                 if res[columnname].dtype == 'float32':
-                    res[columnname]=res[columnname].astype('float16')
+                    res[columnname]=res[columnname].astype('float32')
                 if res[columnname].dtype == 'int64':
                     res[columnname]=res[columnname].astype('int8')
                 if res[columnname].dtype == 'int32':
@@ -3075,7 +3075,7 @@ def QA_fetch_stock_quant_hour(code, start, end=None, block = True, norm_type='no
         __data = []
         QA_util_log_info(
             'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start, end,'hour').loc[(slice(None),code),]
+        hour_res = hour(start, end,'hour').groupby('code').fillna(method='ffill').loc[(slice(None),code),]
 
         try:
             res = hour_res
@@ -3162,16 +3162,16 @@ def QA_fetch_index_quant_hour(code, start, end = None, norm_type = 'normalizatio
 
         QA_util_log_info(
             'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start, end,'hour').loc[(slice(None),code),]
-
+        hour_res = hour(start, end,'hour')
+        hour_res = hour_res.replace([numpy.inf, -numpy.inf], numpy.nan).groupby('code').fillna(method='ffill').loc[(slice(None),code),]
         try:
             res = hour_res
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
-                    res[columnname]=res[columnname].astype('float16')
+                    res[columnname]=res[columnname].astype('float32')
                 if res[columnname].dtype == 'float32':
-                    res[columnname]=res[columnname].astype('float16')
+                    res[columnname]=res[columnname].astype('float32')
                 if res[columnname].dtype == 'int64':
                     res[columnname]=res[columnname].astype('int8')
                 if res[columnname].dtype == 'int32':
