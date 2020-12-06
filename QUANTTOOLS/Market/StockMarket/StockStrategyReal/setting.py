@@ -3,7 +3,7 @@ percent = 1
 exceptions = None
 top = 5
 
-datareal_set = ['ALPHA_067',
+stock_day_set = ['ALPHA_067',
                 'MA180_HR',
                 'MACD_TR',
                 'DIF',
@@ -24,7 +24,7 @@ datareal_set = ['ALPHA_067',
                 'ADX',
                 'RSI1']
 
-data_set = ['RSI2',
+stock_hour_set = ['RSI2',
             'MACD_TR',
             'MA120_HR',
             'DIF',
@@ -44,3 +44,6 @@ data_set = ['RSI2',
             'LONG60',
             'RSI3',
             'SHORT60']
+
+index_day_set = []
+index_hour_set = []

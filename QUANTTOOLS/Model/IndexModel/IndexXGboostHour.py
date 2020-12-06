@@ -4,7 +4,7 @@ from QUANTTOOLS.Model.QABaseModel.QAIndexModelHour import QAIndexModelHour
 from sklearn.metrics import (accuracy_score,classification_report,precision_score)
 from QUANTAXIS.QAUtil import QA_util_log_info
 
-class QAIndexXGBoost(QAIndexModelHour):
+class QAIndexXGBoostHour(QAIndexModelHour):
 
     def build_model(self, other_params):
         QA_util_log_info('##JOB Set Index Model Params ===== {}'.format(self.info['date']), ui_log = None)
