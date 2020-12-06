@@ -38,7 +38,7 @@ class QAModel():
     def prepare_data(self,thresh = None, drop = 0, cols= None):
 
         if cols is None:
-            self.cols = [i for i in self.data.columns if i not in ['moon','star','mars','venus','sun','MARK',
+            self.cols = [i for i in self.data.columns if i not in ['moon','star','mars','venus','sun','MARK','date','datetime',
                                                                    'OPEN_MARK','PASS_MARK','TARGET','TARGET3',
                                                                    'TARGET4','TARGET5','TARGET10','TARGET20','AVG_TARGET','INDEX_TARGET',
                                                                    'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
@@ -81,7 +81,12 @@ class QAModel():
                 train_data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh)).join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
 
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
-        self.X_train, self.Y_train = shuffle(train_data.loc[self.TR_RNG][self.cols],train_data.loc[self.TR_RNG]['star'])
+
+        if 'date' in list(self.data.columns):
+            self.X_train, self.Y_train = shuffle(train_data[train_data.date.isin(self.TR_RNG)][self.cols],train_data[train_data.date.isin(self.TR_RNG)]['star'])
+        else:
+            self.X_train, self.Y_train = shuffle(train_data.loc[self.TR_RNG][self.cols],train_data.loc[self.TR_RNG]['star'])
+
         self.info['thresh'] = thresh
         self.info['drop'] = drop
 
