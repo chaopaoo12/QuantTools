@@ -6,9 +6,9 @@ from QUANTTOOLS.Message import send_email, send_actionnotice
 
 class QAIndexModel(QAModel):
 
-    def get_data(self, start, end, type ='crawl'):
+    def get_data(self, start, end, type ='crawl', norm_type=None):
         QA_util_log_info('##JOB Got Index Data by {type} ==== from {_from} to {_to}'.format(type=type, _from=start, _to=end), ui_log = None)
-        self.data = get_index_quant_data(start, end, type = type)
+        self.data = get_index_quant_data(start, end, type = type, norm_type=norm_type)
         self.data = self.data[(self.data.next_date == self.data.PRE_DATE)]
         print(self.data.shape)
 
