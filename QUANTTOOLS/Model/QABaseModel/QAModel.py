@@ -19,9 +19,6 @@ class QAModel():
                                                                                                          col =col,date = self.info['date']),
                          ui_log = None)
 
-        self.data['moon'] = self.data['TARGET5'].apply(lambda x : 1 if x > 0 else 0)
-        self.data['sun'] = self.data['TARGET'].apply(lambda x : 1 if x > 0 else 0)
-
         if type == 'value':
             self.data['star'] = self.data[self.target].apply(lambda x : 1 if x >= mark else 0)
         elif type == 'percent':
