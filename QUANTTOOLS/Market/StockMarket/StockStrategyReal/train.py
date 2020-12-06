@@ -10,7 +10,7 @@ from QUANTTOOLS.Market.MarketTools.train_tools import prepare_train, start_train
 def train(date, working_dir=working_dir):
     stock_model = QAStockXGBoost()
 
-    stock_model = load_data(stock_model, date, k = 3, start = "-01-01", shift=5, norm_type=None)
+    stock_model = load_data(stock_model, date, k = 3, start = "-01-01", norm_type=None)
 
     stock_model = prepare_data(stock_model, date, mark = -5, col = 'TERNS', type='shift', k = 3, start = "-01-01", shift=5)
 
@@ -25,7 +25,7 @@ def train(date, working_dir=working_dir):
     #save_report(stock_model, 'stock_xg_real', working_dir)
 
     hour_model = QAStockXGBoostHour()
-    hour_model = load_data(hour_model, date, k = 1, start = "-01-01", shift=1, norm_type=None)
+    hour_model = load_data(hour_model, date, k = 1, start = "-01-01", norm_type=None)
 
     hour_model = prepare_data(hour_model, date, mark = -5, col = 'TERNS', type='shift', k = 3, start = "-01-01", shift=2)
 
@@ -37,7 +37,7 @@ def train(date, working_dir=working_dir):
 
 def train_hedge(date, working_dir=working_dir):
     hedge_model = QAStockXGBoost()
-    hedge_model = load_data(hedge_model, date, k = 3, start = "-01-01", shift=5)
+    hedge_model = load_data(hedge_model, date, k = 3, start = "-01-01")
 
     hedge_model = prepare_data(hedge_model, date, col = 'TARGET', k = 3, start = "-01-01", shift=1)
 
@@ -49,7 +49,7 @@ def train_hedge(date, working_dir=working_dir):
 
 def train_index(date, working_dir=working_dir):
     index_model = QAIndexXGBoost()
-    index_model = load_data(index_model, date, k = 3, start = "-05-01", shift=5, norm_type=None)
+    index_model = load_data(index_model, date, k = 3, start = "-05-01", norm_type=None)
 
     index_model = prepare_data(index_model, date, mark = -5, col = 'TERNS', type='shift', k = 3, start = "-05-01", shift=5)
 
@@ -60,7 +60,7 @@ def train_index(date, working_dir=working_dir):
     save_report(index_model, 'index_mars_day', working_dir)
 
     hour_model = QAIndexXGBoostHour()
-    hour_model = load_data(hour_model, date, k = 3, start = "-05-01", shift=5, norm_type=None)
+    hour_model = load_data(hour_model, date, k = 3, start = "-05-01", norm_type=None)
 
     hour_model = prepare_data(hour_model, date, mark = -5, col = 'TERNS', type='shift', k = 3, start = "-05-01", shift=2)
 
