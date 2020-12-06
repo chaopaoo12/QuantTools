@@ -20,7 +20,8 @@ def train_base(trading_date, train_func, pred_func):
         pass
 
 def daily_train(trading_date):
-    train_base(trading_date, train, predict)
+    #train_base(trading_date, train, predict)
+    train_base(trading_date, train_index, predict_index)
 
 def hedge_train(trading_date):
     train_base(trading_date, train_hedge, predict_hedge)
