@@ -12,9 +12,9 @@ def load_data(model, date, k = 3, start = "-01-01", shift = 5, norm_type=None, u
     model.get_data(start=str(int(date[0:4])-k)+start, end= QA_util_get_last_day(QA_util_get_real_date(date), shift), norm_type=norm_type )
     return(model)
 
-def prepare_data(model, date, col = 'TARGET5', k = 3, start = "-01-01", shift = 5, ui_log = None ):
+def prepare_data(model, date, col = 'TARGET5', type = 'percent', k = 3, start = "-01-01", shift = 5, ui_log = None ):
     QA_util_log_info('##JOB03 Now Set Stock Model Target ==== {}'.format(str(date)), ui_log)
-    model.set_target(col = col, mark = 0.3, type = 'percent')
+    model.set_target(col = col, mark = 0.3, type = type)
     QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(date)), ui_log)
     model.set_train_rng(train_start=str(int(date[0:4])-k)+start,
                         train_end=QA_util_get_last_day(QA_util_get_real_date(date), shift))

@@ -1,10 +1,10 @@
 import pandas as pd
 from xgboost import XGBClassifier
-from QUANTTOOLS.Model.QABaseModel.QAIndexModel import QAIndexModel
+from QUANTTOOLS.Model.QABaseModel.QAIndexModelHour import QAIndexModelHour
 from sklearn.metrics import (accuracy_score,classification_report,precision_score)
 from QUANTAXIS.QAUtil import QA_util_log_info
 
-class QAIndexXGBoost(QAIndexModel):
+class QAIndexXGBoost(QAIndexModelHour):
 
     def build_model(self, other_params):
         QA_util_log_info('##JOB Set Index Model Params ===== {}'.format(self.info['date']), ui_log = None)
