@@ -6,9 +6,11 @@ from QUANTTOOLS.Message import send_email, send_actionnotice
 
 class QAIndexModelHour(QAModel):
 
-    def get_data(self, start, end, type ='crawl'):
+    def get_data(self, start, end, code=None, type ='crawl', norm_type=None):
         QA_util_log_info('##JOB Got Index Data by {type} ==== from {_from} to {_to}'.format(type=type, _from=start, _to=end), ui_log = None)
-        self.data = get_index_quant_hour(start, end, type = type)
+        self.data = get_index_quant_hour(start, end, code=code, type = type, norm_type=norm_type)
+        self.info['code'] = code
+        self.info['norm_type'] = norm_type
         print(self.data.shape)
 
     def model_predict(self, start, end, type='crawl'):
