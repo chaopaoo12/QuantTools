@@ -115,9 +115,11 @@ class QAModel():
         self.drop = self.info['drop']
         self.code = self.info['code']
         self.norm_type = self.info['norm_type']
-        self.block = self.info['block']
-        self.sub_block = self.info['sub_block']
-
+        try:
+            self.block = self.info['block']
+            self.sub_block = self.info['sub_block']
+        except:
+            pass
         return(self)
 
 if __name__ == 'main':
