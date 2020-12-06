@@ -24,7 +24,7 @@ class QAModel():
         elif type == 'percent':
             self.data['star'] = self.data[self.target].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
         elif type == 'shift':
-            self.data['star'] = self.data[self.target].groupby('code').shift(mark)
+            self.data['star'] = self.data[self.target].groupby('code').shift((mark-1))
         else:
             QA_util_log_info('##target type must be in [value,percent] ===== {}'.format(self.info['date']), ui_log = None)
         self.info['target'] = self.target
