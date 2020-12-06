@@ -1,9 +1,13 @@
-from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_get_quant_data,QA_fetch_index_target,
-                                           QA_fetch_index_quant_data,QA_fetch_get_index_quant_data,
-                                           QA_fetch_stock_quant_pre_adv,QA_fetch_index_quant_pre_adv,QA_fetch_stock_all,
-                                           QA_fetch_index_info,QA_fetch_stock_om_all,QA_fetch_stock_quant_pre_train_adv,
-                                           QA_fetch_get_quant_data_train,QA_fetch_get_quant_data_realtime,
-                                           QA_fetch_code_new,QA_fetch_index_quant_hour,QA_fetch_index_hour_pre,QA_fetch_stock_quant_hour,QA_fetch_stock_hour_pre)
+from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_index_target,
+                                           QA_fetch_get_quant_data,QA_fetch_get_index_quant_data,
+                                           QA_fetch_index_info,QA_fetch_stock_om_all,QA_fetch_code_new,QA_fetch_stock_all,
+                                           QA_fetch_get_quant_data_train,QA_fetch_stock_quant_pre_train_adv,QA_fetch_get_quant_data_realtime,
+                                           QA_fetch_stock_quant_pre_adv,
+                                           QA_fetch_index_quant_data,QA_fetch_index_quant_pre_adv,
+                                           QA_fetch_index_quant_hour,QA_fetch_index_hour_pre,
+                                           QA_fetch_stock_quant_hour,QA_fetch_stock_hour_pre,
+                                           QA_fetch_index_quant_min,QA_fetch_index_min_pre,
+                                           QA_fetch_stock_quant_min,QA_fetch_stock_min_pre)
 import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
@@ -338,7 +342,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
-        res = QA_fetch_stock_hour_pre(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type)
+        res = QA_fetch_stock_min_pre(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type)
     if type == 'model':
         res = QA_fetch_stock_quant_hour(codes, start_date, end_date, norm_type =norm_type).drop(['date'], axis=1)
         target = QA_fetch_stock_target(codes, start_date, end_date, type='60min', method=method)
@@ -359,7 +363,7 @@ def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', metho
     codes = [i for i in codes if i not in ['880602','880604', '880650', '880608']]
 
     if type == 'crawl':
-        res = QA_fetch_index_hour_pre(codes,start_date,end_date, method=method,norm_type=norm_type)
+        res = QA_fetch_index_min_pre(codes,start_date,end_date, method=method,norm_type=norm_type)
     if type == 'model':
         res = QA_fetch_index_quant_hour(codes, start_date, end_date, norm_type =norm_type).drop(['date'], axis=1)
         target = QA_fetch_index_target(codes, start_date, end_date, type='60min', method=method)

@@ -5,6 +5,7 @@ from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare,QA_fetch
 
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_delist
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex import QA_Sql_Stock_Index
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex15min import QA_Sql_Stock_Index15min
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexHour import QA_Sql_Stock_IndexHour
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexWeek import QA_Sql_Stock_IndexWeek
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101 import QA_Sql_Stock_Alpha101
@@ -18,6 +19,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191Half import QA_Sql_Stock_Alp
 
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexBase import QA_Sql_Index_Base
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndex import QA_Sql_Index_Index
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndex15min import QA_Sql_Index_Index15min
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexHour import QA_Sql_Index_IndexHour
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexWeek import QA_Sql_Index_IndexWeek
 
@@ -3231,7 +3233,7 @@ def QA_fetch_index_hour_pre(code, start, end=None, method='value', norm_type=Non
 def QA_fetch_index_quant_min(code, start, end = None, norm_type = 'normalization', format='pd'):
     '获取股票日线'
     code = QA_util_code_tolist(code)
-    hour = QA_Sql_Index_IndexHour
+    hour = QA_Sql_Index_Index15min
 
     if QA_util_date_valid(end):
 
@@ -3302,4 +3304,90 @@ def QA_fetch_index_min_pre(code, start, end=None, method='value', norm_type=None
         return numpy.asarray(res).tolist()
     else:
         QA_util_log_info("QA Error QA_fetch_index_hour_pre format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+        return None
+
+def QA_fetch_stock_quant_min(code, start, end=None, block = True, norm_type='normalization', format='pd'):
+    '获取股票日线'
+
+    code = QA_util_code_tolist(code)
+    hour = QA_Sql_Stock_Index15min
+
+    if QA_util_date_valid(end):
+
+        __data = []
+        QA_util_log_info(
+            'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
+        hour_res = hour(start, end,'hour').groupby('code').fillna(method='ffill').loc[(slice(None),code),]
+
+        try:
+            res = hour_res
+
+            for columnname in res.columns:
+                if res[columnname].dtype == 'float64':
+                    res[columnname]=res[columnname].astype('float32')
+                if res[columnname].dtype == 'float32':
+                    res[columnname]=res[columnname].astype('float32')
+                if res[columnname].dtype == 'int64':
+                    res[columnname]=res[columnname].astype('int8')
+                if res[columnname].dtype == 'int32':
+                    res[columnname]=res[columnname].astype('int8')
+                if res[columnname].dtype == 'int16':
+                    res[columnname]=res[columnname].astype('int8')
+
+            if block is True:
+                block = QA.QA_fetch_stock_block(code).reset_index(drop=True).drop_duplicates(['blockname','code'])
+                block = pd.crosstab(block['code'],block['blockname'])
+                block.columns = ['S_' + i for i  in  list(block.columns)]
+                res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
+            else:
+                pass
+
+            col_tar = ['INDUSTRY']
+            if norm_type == 'standardize':
+                QA_util_log_info('##JOB stock quant data standardize trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
+                res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
+            elif norm_type == 'normalization':
+                QA_util_log_info('##JOB stock quant data normalization trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
+                res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
+            else:
+                QA_util_log_info('##JOB norm_type must be in [standardize, normalization]')
+                pass
+        except:
+            res = None
+
+        if format in ['P', 'p', 'pandas', 'pd']:
+            return res
+        elif format in ['json', 'dict']:
+            return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+        elif format in ['n', 'N', 'numpy']:
+            return numpy.asarray(res)
+        elif format in ['list', 'l', 'L']:
+            return numpy.asarray(res).tolist()
+        else:
+            QA_util_log_info("QA Error QA_fetch_stock_quant_hour format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            return None
+    else:
+        QA_util_log_info(
+            'QA Error QA_fetch_stock_quant_hour date parameter start=%s end=%s is not right' % (start, end))
+
+def QA_fetch_stock_min_pre(code, start, end=None, block = True, close_type='close', method='value', norm_type='normalization', format='pd'):
+    QA_util_log_info(
+        'JOB Get Stock Quant data start=%s end=%s' % (start, end))
+    res = QA_fetch_stock_quant_min(code, start, end, block, norm_type=norm_type).drop(['date'], axis=1)
+    QA_util_log_info(
+        'JOB Get Stock Target data start=%s end=%s' % (start, end))
+    target = QA_fetch_stock_target(code, start, end, type='15min', close_type=close_type, method=method)
+    res = res.join(target)
+    if format in ['P', 'p', 'pandas', 'pd']:
+        return res
+    elif format in ['json', 'dict']:
+        return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+    elif format in ['n', 'N', 'numpy']:
+        return numpy.asarray(res)
+    elif format in ['list', 'l', 'L']:
+        return numpy.asarray(res).tolist()
+    else:
+        QA_util_log_info("QA Error QA_fetch_stock_hour_pre format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
         return None
