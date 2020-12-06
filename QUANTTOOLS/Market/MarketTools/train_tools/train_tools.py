@@ -17,7 +17,7 @@ def prepare_data(model, date, mark = 0.3, col = 'TARGET5', type = 'percent', k =
     model.set_target(col = col, mark = mark, type = type)
     QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(date)), ui_log)
     model.set_train_rng(train_start=str(int(date[0:4])-k)+start,
-                        train_end=QA_util_get_last_day(QA_util_get_real_date(date), shift))
+                        train_end=QA_util_get_last_day(QA_util_get_real_date(date), shift+1))
     return(model)
 
 def prepare_train(model, date, col = 'TARGET5', k = 3, start = "-01-01", shift = 5, ui_log = None):
