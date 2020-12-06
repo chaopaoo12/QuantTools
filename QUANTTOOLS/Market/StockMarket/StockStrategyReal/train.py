@@ -67,5 +67,5 @@ def train_index(date, working_dir=working_dir):
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
-    hour_model = start_train(hour_model, index_day_set, other_params, 0, 0.99)
+    hour_model = start_train(hour_model, index_hour_set, other_params, 0, 0.99)
     save_report(hour_model, 'index_mars_hour', working_dir)
