@@ -3226,3 +3226,80 @@ def QA_fetch_index_hour_pre(code, start, end=None, method='value', norm_type=Non
     else:
         QA_util_log_info("QA Error QA_fetch_index_hour_pre format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
         return None
+
+@time_this_function
+def QA_fetch_index_quant_min(code, start, end = None, norm_type = 'normalization', format='pd'):
+    '获取股票日线'
+    code = QA_util_code_tolist(code)
+    hour = QA_Sql_Index_IndexHour
+
+    if QA_util_date_valid(end):
+
+        __data = []
+
+        QA_util_log_info(
+            'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
+        hour_res = hour(start, end,'hour')
+        hour_res = hour_res.replace([numpy.inf, -numpy.inf], numpy.nan).groupby('code').fillna(method='ffill').loc[(slice(None),code),]
+        try:
+            res = hour_res
+
+            for columnname in res.columns:
+                if res[columnname].dtype == 'float64':
+                    res[columnname]=res[columnname].astype('float32')
+                if res[columnname].dtype == 'float32':
+                    res[columnname]=res[columnname].astype('float32')
+                if res[columnname].dtype == 'int64':
+                    res[columnname]=res[columnname].astype('int8')
+                if res[columnname].dtype == 'int32':
+                    res[columnname]=res[columnname].astype('int8')
+                if res[columnname].dtype == 'int16':
+                    res[columnname]=res[columnname].astype('int8')
+
+        except:
+            res = None
+
+        if norm_type == 'standardize':
+            res = res.groupby('date').apply(standardize)
+        elif norm_type == 'normalization':
+            res = res.groupby('date').apply(normalization)
+        else:
+            res = res
+            QA_util_log_info('##JOB norm_type must be in [standardize, normalization]')
+
+        if format in ['P', 'p', 'pandas', 'pd']:
+            return res
+        elif format in ['json', 'dict']:
+            return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+        elif format in ['n', 'N', 'numpy']:
+            return numpy.asarray(res)
+        elif format in ['list', 'l', 'L']:
+            return numpy.asarray(res).tolist()
+        else:
+            QA_util_log_info("QA Error QA_fetch_index_quant_hour format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            return None
+    else:
+        QA_util_log_info(
+            'QA Error QA_fetch_index_quant_hour date parameter start=%s end=%s is not right' % (start, end))
+
+def QA_fetch_index_min_pre(code, start, end=None, method='value', norm_type=None, format='pd'):
+    QA_util_log_info(
+        'JOB Get Index Quant data start=%s end=%s' % (start, end))
+    res = QA_fetch_index_quant_min(code, start, end, norm_type).drop(['date'], axis=1)
+    QA_util_log_info(
+        'JOB Get Index Target data start=%s end=%s' % (start, end))
+    target = QA_fetch_index_target(code, start, end, type='15min', method=method)
+    res = res.join(target)
+    if format in ['P', 'p', 'pandas', 'pd']:
+        return res
+    elif format in ['json', 'dict']:
+        return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+    elif format in ['n', 'N', 'numpy']:
+        return numpy.asarray(res)
+    elif format in ['list', 'l', 'L']:
+        return numpy.asarray(res).tolist()
+    else:
+        QA_util_log_info("QA Error QA_fetch_index_hour_pre format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+        return None

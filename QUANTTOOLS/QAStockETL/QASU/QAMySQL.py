@@ -766,7 +766,7 @@ def QA_etl_index_technical_15min(start_date = QA_util_today_str(), end_date= Non
         end_date = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL INDEX TECHNICAL 15min ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
     codes = list(QA_fetch_index_list_adv().code)
-    data = QA_fetch_index_technical_index_adv(codes, start_date, end_date,type='hour').data
+    data = QA_fetch_index_technical_index_adv(codes, start_date, end_date,type='15min').data
     if data is None:
         QA_util_log_info(
             '##JOB NO INDEX TECHNICAL 15min HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)

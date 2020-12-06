@@ -313,5 +313,58 @@ def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method
         res = res.join(target)
     return(res)
 
+def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
+
+    code_list = QA_fetch_stock_all()
+    if code is None:
+        codes = code_list
+    else:
+        codes = code_list[code_list.code.isin(code)]
+
+    if block is True:
+        data = QA.QA_fetch_stock_block()
+        block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
+        #codes = [i for i in codes if i.startswith('300') == False]
+        codes = codes[codes.code.isin(block)]
+    else:
+        pass
+    QA_util_log_info('##JOB Now Delete ST Stock')
+    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
+    codes = list(codes['code'])
+
+    QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
+    codes = [i for i in codes if i.startswith('688') == False]
+    codes = [i for i in codes if i.startswith('787') == False]
+    codes = [i for i in codes if i.startswith('789') == False]
+    if type == 'crawl':
+        res = QA_fetch_stock_hour_pre(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type)
+    if type == 'model':
+        res = QA_fetch_stock_quant_hour(codes, start_date, end_date, norm_type =norm_type).drop(['date'], axis=1)
+        target = QA_fetch_stock_target(codes, start_date, end_date, type='60min', method=method)
+        res = res.join(target)
+    return(res)
+
+def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
+
+    code_list = QA.QA_fetch_index_list_adv()
+
+    if code is None:
+        code_list = QA_fetch_index_info(list(code_list.code))
+        codes = list(code_list[code_list.cate != '5'].code)
+    else:
+        codes = list(code_list[code_list.code.isin(code)].code)
+    codes = codes + ['000001','399001','399006']
+
+    codes = [i for i in codes if i not in ['880602','880604', '880650', '880608']]
+
+    if type == 'crawl':
+        res = QA_fetch_index_hour_pre(codes,start_date,end_date, method=method,norm_type=norm_type)
+    if type == 'model':
+        res = QA_fetch_index_quant_hour(codes, start_date, end_date, norm_type =norm_type).drop(['date'], axis=1)
+        target = QA_fetch_index_target(codes, start_date, end_date, type='60min', method=method)
+        res = res.join(target)
+    return(res)
+
 if __name__ == 'main':
     pass
