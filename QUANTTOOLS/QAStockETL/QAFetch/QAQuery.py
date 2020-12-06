@@ -1242,14 +1242,14 @@ def QA_fetch_index_quant_data(code, start, end = None, norm_type = 'normalizatio
 
         QA_util_log_info(
             'JOB Get Index Tech Index data start=%s end=%s' % (start, end))
-        index_res = index(start_date,end_date).loc[((slice(None),code),)]
+        index_res = index(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start_date,end_date).loc[((slice(None),code),)]
+        hour_res = hour(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         try:
-            res = index_res.join(hour_res).replace([numpy.inf, -numpy.inf], numpy.nan).groupby('code').fillna(method='ffill').loc[rng]
+            res = index_res.join(hour_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
@@ -3164,8 +3164,7 @@ def QA_fetch_index_quant_hour(code, start, end = None, norm_type = 'normalizatio
 
         QA_util_log_info(
             'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start, end,'hour')
-        hour_res = hour_res.replace([numpy.inf, -numpy.inf], numpy.nan).groupby('code').fillna(method='ffill').loc[(slice(None),code),]
+        hour_res = hour(start, end,'hour').groupby('code').fillna(method='ffill').loc[(slice(None),code),]
         try:
             res = hour_res
 
@@ -3241,8 +3240,7 @@ def QA_fetch_index_quant_min(code, start, end = None, norm_type = 'normalization
 
         QA_util_log_info(
             'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start, end,'hour')
-        hour_res = hour_res.replace([numpy.inf, -numpy.inf], numpy.nan).groupby('code').fillna(method='ffill').loc[(slice(None),code),]
+        hour_res = hour(start, end,'hour').groupby('code').fillna(method='ffill').loc[(slice(None),code),]
         try:
             res = hour_res
 
