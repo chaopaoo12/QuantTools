@@ -9,7 +9,6 @@ class QAIndexModelHour(QAModel):
     def get_data(self, start, end, type ='crawl'):
         QA_util_log_info('##JOB Got Index Data by {type} ==== from {_from} to {_to}'.format(type=type, _from=start, _to=end), ui_log = None)
         self.data = get_index_quant_hour(start, end, type = type)
-        self.data = self.data[(self.data.next_date == self.data.PRE_DATE)]
         print(self.data.shape)
 
     def model_predict(self, start, end, type='crawl'):
