@@ -1,7 +1,7 @@
 #coding=utf-8
 
 from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
-from QUANTAXIS.QAUtil.QADate_trade import QA_util_get_real_date,QA_util_get_last_day
+from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import QA_util_get_real_date,QA_util_get_last_day
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 import pandas as pd
 

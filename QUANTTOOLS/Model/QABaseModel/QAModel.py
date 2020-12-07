@@ -1,5 +1,6 @@
 
-from QUANTAXIS.QAUtil import (QA_util_log_info, QA_util_today_str,QA_util_get_trade_range)
+from QUANTAXIS.QAUtil import (QA_util_log_info, QA_util_today_str)
+from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import QA_util_get_trade_range
 import joblib
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
 from sklearn.utils import shuffle
