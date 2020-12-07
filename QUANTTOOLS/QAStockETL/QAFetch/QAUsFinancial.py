@@ -53,12 +53,12 @@ def QA_fetch_get_usstock_report_xq(code):
 
 def QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='day', type='normal'):
     if code[0:2] == '60' and len(code) == 6:
-        code = 'SH'+code
+        code1 = 'SH'+code
     elif code[0:3] in ['000','002','300'] and len(code) == 6:
-        code = 'SZ'+code
+        code1 = 'SZ'+code
     else:
-        code = code
-    data = read_stock_day(code, start_date, end_date, period, type)
+        code1 = code
+    data = read_stock_day(code1, start_date, end_date, period, type)
     data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
-    data = data.assign(code=data['code'].apply(lambda x: str(x)[2:]))
+    data = data.assign(code=code)
     return(data)
