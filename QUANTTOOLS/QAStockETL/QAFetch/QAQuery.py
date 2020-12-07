@@ -671,7 +671,7 @@ def QA_fetch_stock_financial_percent(code, start, end=None, format='pd', collect
             'QA Error QA_fetch_stock_financial_percent data parameter start=%s end=%s is not right' % (start, end))
 
 @time_this_function
-def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='normalization', format='pd', collections=DATABASE.stock_quant_data):
+def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, norm_type='normalization', format='pd', collections=DATABASE.stock_quant_data):
     '获取股票日线'
     start_date = QA_util_get_pre_trade_date(start,15)
     end_date = end
@@ -757,14 +757,14 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
                 pass
 
             col_tar = ['INDUSTRY']
-            if type == 'standardize':
+            if norm_type == 'standardize':
                 QA_util_log_info('##JOB stock quant train data standardize trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
                 res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
-            elif type == 'normalization':
+            elif norm_type == 'normalization':
                 QA_util_log_info('##JOB stock quant train data normalization trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
                 res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
             else:
-                QA_util_log_info('##JOB type must be in [standardize, normalization]')
+                QA_util_log_info('##JOB norm_type must be in [standardize, normalization]')
                 pass
         except:
             res = None
@@ -786,7 +786,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, type='n
             'QA Error QA_fetch_stock_quant_data date parameter start=%s end=%s is not right' % (start, end))
 
 @time_this_function
-def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normalization', format='pd'):
+def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='normalization', format='pd'):
     '获取股票日线'
     start_date = QA_util_get_pre_trade_date(start,15)
     end_date = end
@@ -870,14 +870,14 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, type='normali
                 pass
 
             col_tar = ['INDUSTRY']
-            if type == 'standardize':
+            if norm_type == 'standardize':
                 QA_util_log_info('##JOB stock quant data standardize trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
                 res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
-            elif type == 'normalization':
+            elif norm_type == 'normalization':
                 QA_util_log_info('##JOB stock quant data normalization trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
                 res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
             else:
-                QA_util_log_info('##JOB type must be in [standardize, normalization]')
+                QA_util_log_info('##JOB norm_type must be in [standardize, normalization]')
                 pass
         except:
             res = None
@@ -2874,7 +2874,7 @@ def QA_fetch_usstock_financial_percent(code, start, end=None, format='pd', colle
             'QA Error QA_fetch_usstock_financial_percent data parameter start=%s end=%s is not right' % (start, end))
 
 @time_this_function
-def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, type='normalization', format='pd', collections=DATABASE.stock_quant_data):
+def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, norm_type='normalization', format='pd', collections=DATABASE.stock_quant_data):
     '获取股票日线'
     start_date = QA_util_get_pre_trade_date(start, 15, 'us')
     end_date = end
@@ -2885,7 +2885,6 @@ def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, type=
     index = QA_Sql_USStock_Index
     week = QA_Sql_USStock_IndexWeek
     alpha = QA_Sql_USStock_Alpha191
-    alpha101 = QA_Sql_USStock_Alpha101
     pe = QA_Sql_USStock_FinancialPercent
     base = QA_Sql_USStock_Base
 
@@ -2932,15 +2931,11 @@ def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, type=
         alpha_res = alpha(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
-            'JOB Get Stock Alpha101 train data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').fillna(0).loc[((rng,code),)]
-
-        QA_util_log_info(
             'JOB Get Stock Base Half train data start=%s end=%s' % (start, sec_end))
         base_res = base(start_date,end_date).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[(rng,code),:]
 
         try:
-            res = pe_res.join(base_res).join(index_res).join(week_res).join(alpha_res).join(alpha101_res)
+            res = pe_res.join(base_res).join(index_res).join(week_res).join(alpha_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
@@ -2963,10 +2958,10 @@ def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, type=
                 pass
 
             col_tar = ['INDUSTRY']
-            if type == 'standardize':
+            if norm_type == 'standardize':
                 QA_util_log_info('##JOB stock quant train data standardize trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
                 res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
-            elif type == 'normalization':
+            elif norm_type == 'normalization':
                 QA_util_log_info('##JOB stock quant train data normalization trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
                 res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
             else:
