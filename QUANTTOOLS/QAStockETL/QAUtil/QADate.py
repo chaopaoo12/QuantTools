@@ -69,10 +69,10 @@ def QA_util_getBetweenMonth(from_date, to_date):
 
 
     date_list = {}
-    begin_date = datetime.datetime.strptime(from_date, "%Y-%M-%d")
-    end_date = datetime.datetime.strptime(to_date, "%Y-%M-%d")
+    begin_date = datetime.datetime.strptime(from_date, "%Y-%m-%d")
+    end_date = datetime.datetime.strptime(to_date, "%Y-%m-%d")
     while begin_date <= end_date:
-        date_str = begin_date.strftime("%Y-%M")
+        date_str = begin_date.strftime("%Y-%m")
         date_list[date_str] = [date_str + '-01',
                                date_str + '-%d'%(calendar.monthrange(begin_date.year, begin_date.month)[1])]
         begin_date = QA_util_get_1st_of_next_month(begin_date)
