@@ -42,9 +42,7 @@ def trends_gold(GOLD, date):
     return(data_gold, week_gold)
 
 def trends_stock(code, start_date, end_date, period='day', type='before'):
-    print(code)
     day = QA_fetch_get_usstock_day_xq(code, start_date, end_date, period=period, type=type)
-    print(day.head())
     week = day.drop('date_stamp',axis=1).set_index(['date']).resample('W').agg({'code':'last','open':'first','high':'max','low':'min','close':'last'})
     data_index = QA_DataStruct_Stock_day(day.drop('date_stamp',axis=1).set_index(['date','code']))
     week_index = QA_DataStruct_Stock_day(week.reset_index().set_index(['date','code']))
