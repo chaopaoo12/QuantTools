@@ -1,8 +1,8 @@
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_index_target,
                                            QA_fetch_get_quant_data,QA_fetch_get_index_quant_data,
                                            QA_fetch_index_info,QA_fetch_stock_om_all,QA_fetch_code_new,QA_fetch_stock_all,
-                                           QA_fetch_get_quant_data_train,QA_fetch_stock_quant_pre_train_adv,QA_fetch_get_quant_data_realtime,
-                                           QA_fetch_stock_quant_pre_adv,
+                                           QA_fetch_stock_quant_data_train,QA_fetch_stock_quant_pre_train_adv,QA_fetch_get_quant_data_realtime,
+                                           QA_fetch_stock_quant_data,QA_fetch_stock_quant_pre_adv,
                                            QA_fetch_index_quant_data,QA_fetch_index_quant_pre_adv,
                                            QA_fetch_index_quant_hour,QA_fetch_index_hour_pre,
                                            QA_fetch_stock_quant_hour,QA_fetch_stock_hour_pre,
@@ -37,10 +37,10 @@ def get_quant_data_train(start_date, end_date, code=None, type = 'crawl', block 
     codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
-    if type == 'model':
-        res = QA_fetch_get_quant_data_train(codes, start_date, end_date, norm_type=norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
-        target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
-        res = res.join(target)
+    elif type == 'model':
+        res = QA_fetch_stock_quant_data_train(codes, start_date, end_date, block = sub_block, norm_type=norm_type)
+    elif type == 'real':
+        pass
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
     #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
     #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
@@ -73,10 +73,10 @@ def get_quant_data_realtime(start_date, end_date, code=None, type = 'model', blo
     codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
-    if type == 'model':
-        res = QA_fetch_get_quant_data_realtime(codes, start_date, end_date, norm_type =norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
-        target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
-        res = res.join(target)
+    elif type == 'model':
+        res = QA_fetch_stock_quant_data_train(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
+    elif type == 'real':
+        pass
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
     #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
     #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
@@ -98,10 +98,10 @@ def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method
 
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date, method=method,norm_type=norm_type).data
-    if type == 'model':
-        res = QA_fetch_index_quant_data(codes, start_date, end_date)
-        target = QA_fetch_index_target(codes, start_date, end_date, method=method)
-        res = res.join(target)
+    elif type == 'model':
+        res = QA_fetch_index_quant_data(codes, start_date, end_date, norm_type=norm_type)
+    elif type == 'real':
+        pass
     return(res)
 
 def get_index_quant_data_norm(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
@@ -117,10 +117,10 @@ def get_index_quant_data_norm(start_date, end_date, code=None, type = 'crawl', m
     codes = [i for i in codes if i not in ['880602','880604', '880650', '880608']]
     if type == 'crawl':
         res = QA_fetch_index_quant_pre_adv(codes,start_date,end_date, method=method,norm_type=norm_type).data
-    if type == 'model':
-        res = QA_fetch_get_index_quant_data(codes, start_date, end_date, type='normalization').set_index(['date','code']).drop(['date_stamp'], axis=1)
-        target = QA_fetch_index_target(codes, start_date, end_date, method=method)
-        res = res.join(target)
+    elif type == 'model':
+        res = QA_fetch_index_quant_data(codes, start_date, end_date, norm_type=norm_type)
+    elif type == 'real':
+        pass
     return(res)
 
 def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
@@ -149,10 +149,10 @@ def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = Fals
     codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
-    if type == 'model':
-        res = QA_fetch_get_quant_data(codes, start_date, end_date, norm_type =norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
-        target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
-        res = res.join(target)
+    elif type == 'model':
+        res = QA_fetch_stock_quant_data(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
+    elif type == 'real':
+        pass
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
     #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
     #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
@@ -184,10 +184,10 @@ def get_hedge_data(start_date, end_date, code=None, type = 'crawl', block = True
     codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
-    if type == 'model':
-        res = QA_fetch_get_quant_data(codes, start_date, end_date, norm_type =norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
-        target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
-        res = res.join(target)
+    elif type == 'model':
+        res = QA_fetch_stock_quant_data(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
+    elif type == 'real':
+        pass
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
     #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
     #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
@@ -219,10 +219,10 @@ def get_hedge_data_realtime(start_date, end_date, code=None, type = 'model', blo
     codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
-    if type == 'model':
-        res = QA_fetch_get_quant_data_realtime(codes, start_date, end_date, norm_type =norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
-        target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
-        res = res.join(target)
+    elif type == 'model':
+        res = QA_fetch_stock_quant_data_train(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
+    elif type == 'real':
+        pass
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
     #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
     #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
@@ -254,10 +254,10 @@ def get_500hedge_data(start_date, end_date, code=None, type = 'crawl', block = T
     codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
-    if type == 'model':
-        res = QA_fetch_get_quant_data(codes, start_date, end_date, norm_type =norm_type).set_index(['date','code']).drop(['date_stamp'], axis=1)
-        target = QA_fetch_stock_target(codes, start_date, end_date, method=method)
-        res = res.join(target)
+    elif type == 'model':
+        res = QA_fetch_stock_quant_data(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
+    elif type == 'real':
+        pass
     #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
     #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
     #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
@@ -290,10 +290,10 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
     codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_hour_pre(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type)
-    if type == 'model':
-        res = QA_fetch_stock_quant_hour(codes, start_date, end_date, norm_type =norm_type).drop(['date'], axis=1)
-        target = QA_fetch_stock_target(codes, start_date, end_date, type='60min', method=method)
-        res = res.join(target)
+    elif type == 'model':
+        res = QA_fetch_stock_quant_hour(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
+    elif type == 'real':
+        pass
     return(res)
 
 def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
@@ -311,10 +311,9 @@ def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method
 
     if type == 'crawl':
         res = QA_fetch_index_hour_pre(codes,start_date,end_date, method=method,norm_type=norm_type)
-    if type == 'model':
-        res = QA_fetch_index_quant_hour(codes, start_date, end_date, norm_type =norm_type).drop(['date'], axis=1)
-        target = QA_fetch_index_target(codes, start_date, end_date, type='60min', method=method)
-        res = res.join(target)
+    elif type == 'model':
+        res = QA_fetch_index_quant_hour(codes, start_date, end_date, norm_type =norm_type)
+        pass
     return(res)
 
 def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
@@ -343,10 +342,10 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
     codes = [i for i in codes if i.startswith('789') == False]
     if type == 'crawl':
         res = QA_fetch_stock_min_pre(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type)
-    if type == 'model':
-        res = QA_fetch_stock_quant_hour(codes, start_date, end_date, norm_type =norm_type).drop(['date'], axis=1)
-        target = QA_fetch_stock_target(codes, start_date, end_date, type='60min', method=method)
-        res = res.join(target)
+    elif type == 'model':
+        res = QA_fetch_stock_quant_hour(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
+    elif type == 'real':
+        pass
     return(res)
 
 def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
@@ -364,10 +363,10 @@ def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', metho
 
     if type == 'crawl':
         res = QA_fetch_index_min_pre(codes,start_date,end_date, method=method,norm_type=norm_type)
-    if type == 'model':
-        res = QA_fetch_index_quant_hour(codes, start_date, end_date, norm_type =norm_type).drop(['date'], axis=1)
-        target = QA_fetch_index_target(codes, start_date, end_date, type='60min', method=method)
-        res = res.join(target)
+    elif type == 'model':
+        res = QA_fetch_index_quant_hour(codes, start_date, end_date, norm_type =norm_type)
+    elif type == 'real':
+        pass
     return(res)
 
 if __name__ == 'main':
