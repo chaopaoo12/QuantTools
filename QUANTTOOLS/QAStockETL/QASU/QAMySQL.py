@@ -745,7 +745,6 @@ def QA_etl_stock_technical_hour(start_date = QA_util_today_str(), end_date= None
         QA_util_sql_store_mysql(data, "stock_technical_hour",if_exists='append')
         QA_util_log_info('##JOB ETL STOCK TECHNICAL HOUR HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
 
-
 def QA_etl_stock_technical_15min(start_date = QA_util_today_str(), end_date= None, ui_log= None):
     if end_date is None:
         end_date = QA_util_today_str()
