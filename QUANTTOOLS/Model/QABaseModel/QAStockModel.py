@@ -60,7 +60,7 @@ class QAStockModel(QAModel):
                               )
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
-        cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK',
+        cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','date','datetime',
                                                        'OPEN_MARK','PASS_MARK','TARGET','TARGET3',
                                                        'TARGET4','TARGET5','TARGET10','TARGET20','AVG_TARGET','INDEX_TARGET',
                                                        'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',

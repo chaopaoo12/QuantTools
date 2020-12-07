@@ -18,7 +18,7 @@ class QAIndexModel(QAModel):
         data = get_index_quant_data(start, end, self.code, type= type, norm_type=self.norm_type)
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
-        cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK',
+        cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','date','datetime','TARGET20',
                                                        'OPEN_MARK','PASS_MARK','TARGET','TARGET3',
                                                        'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
                                                        'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
