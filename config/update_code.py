@@ -1,4 +1,4 @@
-from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
+from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 from QUANTTOOLS.QAStockETL.Check import check_stock_code
 from QUANTTOOLS.QAStockETL.QASU import QA_SU_save_stock_aklist
 from QUANTAXIS.QASU.main import (QA_SU_save_stock_list)

@@ -20,6 +20,7 @@ def gold_daily(GOLD, date):
     return(day_check, week_check)
 
 def stock_daily(stock, start_date, end_date):
+    print(stock)
     day, week = trends_stock(stock,start_date,end_date)
     day_check = check(day).loc[stock]
     week_check = check(week).loc[stock]
