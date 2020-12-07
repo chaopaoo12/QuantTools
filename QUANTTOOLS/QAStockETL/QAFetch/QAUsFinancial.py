@@ -52,9 +52,9 @@ def QA_fetch_get_usstock_report_xq(code):
     return(data)
 
 def QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='day', type='normal'):
-    if code[0:2] == '60':
+    if code[0:2] == '60' and len(code) == 6:
         code = 'SH'+code
-    elif code[0:3] in ['000','002','300']:
+    elif code[0:3] in ['000','002','300'] and len(code) == 6:
         code = 'SZ'+code
     else:
         code = code
