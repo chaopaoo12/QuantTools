@@ -74,6 +74,7 @@ def read_stock_day(code, start_date, end_date, period='day', type='normal'):
     data = read_data_from_xueqiu(stockday_url)
     data = pd.DataFrame(data['data']['item'],columns=data['data']['column']).assign(code = data['data']['symbol'])
     data = data.assign(timestamp = data.timestamp.apply(lambda x:x/1000))
+    data = data.assign(datetime = pd.to_datetime(data.timestamp.apply(lambda x:str(datetime.datetime.fromtimestamp(x)))))
     data = data.assign(date = pd.to_datetime(data.timestamp.apply(lambda x:str(datetime.datetime.fromtimestamp(x))[0:10])))
     return(data)
 
