@@ -16,7 +16,6 @@ def train(date, working_dir=working_dir):
 
     stock_model = prepare_data(stock_model, date, mark = -5, col = 'TERNS', type='shift', k = 3, start = "-01-01", shift=5)
 
-
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
