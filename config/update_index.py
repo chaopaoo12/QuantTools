@@ -27,24 +27,13 @@
 
 """对应于save x
 """
-from QUANTTOOLS.QAStockETL import (QA_SU_save_index_hour,
-                                   QA_SU_save_single_index_hour,
-                                   QA_SU_save_index_alpha_day,
-                                   QA_SU_save_index_technical_hour_day,
-                                   QA_SU_save_index_technical_index_day,
+from QUANTTOOLS.QAStockETL import (QA_SU_save_index_technical_index_day,
                                    QA_SU_save_index_technical_week_day,
-                                   QA_SU_save_index_technical_month_day,
-                                   QA_SU_save_index_alpha101_day,
                                    QA_SU_save_index_info)
 from QUANTAXIS.QASU.main import (QA_SU_save_index_day,QA_SU_save_index_list)
-from QUANTTOOLS.QAStockETL.Check import (check_index_day,check_index_60min)
-from QUANTTOOLS.QAStockETL.Check import (check_index_alpha101, check_index_alpha191,
-                                         check_index_techhour, check_index_techindex, check_index_techweek)
-from QUANTTOOLS.QAStockETL import (QA_etl_index_alpha_day,
-                                   QA_etl_index_alpha101_day,
-                                   QA_etl_index_day,
-                                   QA_etl_index_technical_hour,
-                                   QA_etl_index_technical_day,
+from QUANTTOOLS.QAStockETL.Check import (check_index_day)
+from QUANTTOOLS.QAStockETL.Check import (check_index_techindex, check_index_techweek)
+from QUANTTOOLS.QAStockETL import (QA_etl_index_technical_day,
                                    QA_etl_index_technical_week)
 from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 

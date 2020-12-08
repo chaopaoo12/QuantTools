@@ -1,18 +1,12 @@
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 from QUANTTOOLS.QAStockETL.Check import (check_stock_60min, check_sinastock_60min,
-                                         check_stock_half, check_sinastock_half,
-                                         check_stock_adj,check_sinastock_adj,
-                                         check_stock_alpha101half,check_sinastock_alpha101half,
-                                         check_stock_alpha191half,check_sinastock_alpha191half,
+                                         check_sinastock_adj,
                                          check_stock_techhour
                                          )
 from QUANTTOOLS.QAStockETL.QASU import (QA_SU_save_stock_hour,QA_SU_save_single_stock_hour,
-                                        QA_SU_save_stock_half,QA_SU_save_stock_aklist,
-                                        QA_SU_save_stock_xdxr,QA_SU_save_single_stock_xdxr)
-from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_alpha101half_day,QA_SU_save_stock_alpha191half_day,
-                                   QA_SU_save_stock_technical_hour_day,
-                                   QA_etl_stock_alpha101half_day,QA_etl_stock_alpha191half_day,
-                                   QA_etl_stock_half,QA_etl_stock_technical_hour)
+                                        QA_SU_save_stock_aklist)
+from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_technical_hour_day,
+                                   QA_etl_stock_technical_hour)
 import time
 
 if __name__ == '__main__':
