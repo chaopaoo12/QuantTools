@@ -9,7 +9,7 @@ from QUANTTOOLS.Model.IndexModel.IndexXGboost15Min import QAIndexXGBoost15Min
 from .setting import working_dir, stock_day_set, stock_hour_set, stock_min_set, index_day_set, index_hour_set
 from QUANTTOOLS.Market.MarketTools.train_tools import prepare_train, start_train, save_report, load_data, prepare_data
 
-def train(date, working_dir=working_dir):
+def daymodel_train(date, working_dir=working_dir):
     stock_model = QAStockXGBoost()
     stock_model = load_data(stock_model, date, k = 3, start = "-01-01", norm_type=None)
 
@@ -21,6 +21,7 @@ def train(date, working_dir=working_dir):
     stock_model = start_train(stock_model, stock_day_set, other_params, 0, 0.99)
     save_report(stock_model, 'stock_mars_day', working_dir)
 
+def minmodel_train(date, working_dir=working_dir):
     min_model = QAStockXGBoost15Min()
     min_model = load_data(min_model, date, k = 0, start = "-01-01", norm_type=None)
 
@@ -32,6 +33,7 @@ def train(date, working_dir=working_dir):
     min_model = start_train(min_model, stock_min_set, other_params, 0, 0.99)
     save_report(min_model, 'stock_mars_min', working_dir)
 
+def hourmodel_train(date, working_dir=working_dir):
     hour_model = QAStockXGBoostHour()
     hour_model = load_data(hour_model, date, k = 1, start = "-01-01", norm_type=None)
 
