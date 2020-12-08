@@ -78,14 +78,3 @@ def train_index(date, working_dir=working_dir):
 
     hour_model = start_train(hour_model, index_hour_set, other_params, 0, 0.99)
     save_report(hour_model, 'index_mars_hour', working_dir)
-
-    min_model = QAIndexXGBoost15Min()
-    min_model = load_data(min_model, date, k = 3, start = "-05-01", norm_type=None)
-
-    min_model = prepare_data(min_model, date, mark = -5, col = 'TERNS_15M', type='shift', k = 3, start = "-05-01", shift=2)
-
-    other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
-                    'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
-
-    min_model = start_train(min_model, index_hour_set, other_params, 0, 0.99)
-    save_report(min_model, 'index_mars_min', working_dir)
