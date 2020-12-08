@@ -34,9 +34,9 @@ def train(date, working_dir=working_dir):
     save_report(min_model, 'stock_mars_min', working_dir)
 
     hour_model = QAStockXGBoostHour()
-    hour_model = load_data(hour_model, date, k = 1, start = "-01-01", norm_type=None)
+    hour_model = load_data(hour_model, date, k = 2, start = "-01-01", norm_type=None)
 
-    hour_model = prepare_data(hour_model, date, mark = -5, col = 'TERNS_HR', type='shift', k = 3, start = "-01-01", shift=2)
+    hour_model = prepare_data(hour_model, date, mark = -5, col = 'TERNS_HR', type='shift', k = 2, start = "-01-01", shift=2)
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
