@@ -11,7 +11,6 @@ from QUANTTOOLS.Market.MarketTools.train_tools import prepare_train, start_train
 
 def train(date, working_dir=working_dir):
     stock_model = QAStockXGBoost()
-
     stock_model = load_data(stock_model, date, k = 3, start = "-01-01", norm_type=None)
 
     stock_model = prepare_data(stock_model, date, mark = -5, col = 'TERNS', type='shift', k = 3, start = "-01-01", shift=5)
