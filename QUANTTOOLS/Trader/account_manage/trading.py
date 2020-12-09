@@ -4,7 +4,7 @@ from QUANTTOOLS.Trader.account_manage.base_func.Client import get_Client,check_C
 from QUANTTOOLS.Trader.account_manage.TradAction.BUY import BUY
 from QUANTTOOLS.Trader.account_manage.TradAction.SELL import SELL
 from QUANTTOOLS.Trader.account_manage.TradAction.HOLD import HOLD
-from QUANTTOOLS.Trader.account_manage.BuildTradingFrame import build
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.BuildTradingFrame import build
 import time
 import datetime
 

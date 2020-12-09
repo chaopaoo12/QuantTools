@@ -3,7 +3,7 @@ from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_Client,check_Client
 from QUANTTOOLS.Trader.account_manage.TrackAction.BuyTrack import BuyTrack
 from QUANTTOOLS.Trader.account_manage.TrackAction.SellTrack import SellTrack
-from QUANTTOOLS.Trader.account_manage.BuildTradingFrame import build
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.BuildTradingFrame import build
 import time
 import datetime
 

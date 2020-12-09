@@ -683,7 +683,6 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, norm_ty
     index = QA_Sql_Stock_Index
     hour = QA_Sql_Stock_IndexHour
     alpha = QA_Sql_Stock_Alpha191
-    alpha101 = QA_Sql_Stock_Alpha101
     pe = QA_Sql_Stock_FinancialPercent
 
     if QA_util_date_valid(end):
@@ -729,12 +728,8 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, norm_ty
             'JOB Get Stock Alpha191 train data start=%s end=%s' % (start, end))
         alpha_res = alpha(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
-        QA_util_log_info(
-            'JOB Get Stock Alpha101 train data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
-
         try:
-            res = financial_res.join(index_res).join(hour_res).join(alpha_res).join(alpha101_res).join(pe_res)
+            res = financial_res.join(index_res).join(hour_res).join(alpha_res).join(pe_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
@@ -797,7 +792,6 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
     index = QA_Sql_Stock_Index
     hour = QA_Sql_Stock_IndexHour
     alpha = QA_Sql_Stock_Alpha191
-    alpha101 = QA_Sql_Stock_Alpha101
     pe = QA_Sql_Stock_FinancialPercent
 
     if QA_util_date_valid(end):
@@ -842,12 +836,8 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
             'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
         alpha_res = alpha(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
-        QA_util_log_info(
-            'JOB Get Stock Alpha101 data start=%s end=%s' % (start, end))
-        alpha101_res = alpha101(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
-
         try:
-            res = financial_res.join(index_res).join(hour_res).join(alpha_res).join(alpha101_res).join(pe_res)
+            res = financial_res.join(index_res).join(hour_res).join(alpha_res).join(pe_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
