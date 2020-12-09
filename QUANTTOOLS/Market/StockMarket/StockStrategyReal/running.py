@@ -16,7 +16,7 @@ def predict_hedge(trading_date, top_num=top, working_dir=working_dir, exceptions
     predict_base(trading_date, concat_predict_hedge, model_name = 'hedge_xg', file_name = 'prediction_hedge', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_index(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
-    predict_base(trading_date, concat_predict_index, model_name = 'index_mars_day', file_name = 'prediction_index', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+    predict_base(trading_date, concat_predict_index, model_name = 'index_mars_day', file_name = 'prediction_index', top_num=10, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_daily(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
