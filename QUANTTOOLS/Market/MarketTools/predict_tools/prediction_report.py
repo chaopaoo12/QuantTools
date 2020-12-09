@@ -166,7 +166,7 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
     target_fd = current_details.loc[trading_date].sort_values('RANK')
 
     ####大盘情况预测
-    market_fd = prediction.loc[(slice(None),['000001','399001','399006']),][['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    market_fd = prediction.loc[(slice(None),['000001','399001','399006']),][['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']].sort_values('NAME')
 
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)), ui_log)
 
