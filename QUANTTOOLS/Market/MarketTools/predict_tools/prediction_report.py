@@ -166,7 +166,7 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
     top_score, top_details = Index_Reporter(trading_date, prediction, top_num)
 
     ####预测的最终结果
-    target_fd = current_details.loc[trading_date]
+    target_fd = current_details.loc[trading_date].sort_value('RANK')
 
     ####大盘情况预测
     market_fd = current_details.loc[(slice(None),['000001','399001','399006']),]
