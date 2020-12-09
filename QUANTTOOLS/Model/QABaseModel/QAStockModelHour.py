@@ -74,7 +74,7 @@ class QAStockModelHour(QAModel):
         bina = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
         bina.index = b.index
         b[['Z_PROB','O_PROB']] = bina
-        b.loc[:,'RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
+        b.loc[:,'RANK'] = b['O_PROB'].groupby('datetime').rank(ascending=False)
         return(b[b['y_pred']==1], b)
 
 if __name__ == 'main':

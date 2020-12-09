@@ -62,7 +62,7 @@ class QAIndexModel15Min(QAModel):
         b = train[['PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
         b = b.assign(y_pred = self.model.predict(train[self.cols]))
         b[['Z_PROB','O_PROB']] = self.model.predict_proba(train[self.cols])
-        b.loc[:,'RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
+        b.loc[:,'RANK'] = b['O_PROB'].groupby('datetime').rank(ascending=False)
         return(b[b['y_pred']==1], b)
 
 if __name__ == 'main':
