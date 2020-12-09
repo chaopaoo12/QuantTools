@@ -166,9 +166,9 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
     target_fd = current_details.loc[trading_date].sort_values('DAY_RANK')
 
     ####大盘情况预测
-    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','MIN_PROB','MIN_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
-    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','MIN_PROB','MIN_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
-    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','MIN_PROB','MIN_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
 
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)), ui_log)
 
