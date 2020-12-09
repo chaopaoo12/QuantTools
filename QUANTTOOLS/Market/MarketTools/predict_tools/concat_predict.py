@@ -48,7 +48,7 @@ def make_indexprediction(Index, trading_date, name, working_dir, ui_log = None):
     Model, target_pool, prediction, start, end, Model_date = make_prediction(Index, trading_date, name, working_dir)
 
     QA_util_log_info(
-        '##JOB Now Add info to Predictions ==== {}'.format(str(trading_date)), ui_log)
+        '##JOB Now Add info to Predictions ==== {trading_date}'.format(trading_date=trading_date), ui_log)
 
     NAME = QA_fetch_index_name(prediction.reset_index()['code'].unique().tolist())
 
