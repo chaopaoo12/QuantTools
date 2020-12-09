@@ -168,6 +168,9 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
     ####预测的最终结果
     target_fd = current_details.loc[trading_date]
 
+    ####大盘情况预测
+    market_fd = current_details.loc[(slice(None),['000001','399001','399006']),]
+
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)), ui_log)
 
     try:
@@ -179,6 +182,11 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
         target_body = build_table(target_fd, '目标持仓')
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:目标持仓", trading_date)
+
+    try:
+        market_body = build_table(market_fd, '大盘情况汇总')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:大盘情况汇总", trading_date)
 
     #########
     try:
@@ -209,13 +217,13 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
 
 
     if target_fd is not None:
-        title = '交易报告'
+        title = '市场状态报告'
     else:
         title = '空仓交易报告'
 
     try:
         msg = build_email(build_head(),err_msg,
-                          target_body,
+                          target_body,market_body,
                           model_score,  stock_socre, allstock_socre,
                           modelhis_body, modeltophis_body)
         send_actionnotice("prediction_report",
