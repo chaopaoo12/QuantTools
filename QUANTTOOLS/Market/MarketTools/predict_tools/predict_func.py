@@ -2,7 +2,6 @@
 
 import joblib
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
-import pandas as pd
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_name,QA_fetch_stock_name
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Message import send_actionnotice, send_email

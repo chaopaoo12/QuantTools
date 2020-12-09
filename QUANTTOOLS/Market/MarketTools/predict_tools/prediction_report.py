@@ -142,9 +142,9 @@ def Index_Reporter(trading_date, target_pool, top_num=5):
     QA_util_log_info('##JOB## Now Current Report ==== {}'.format(str(trading_date)))
     if target_pool is not None and target_pool.shape[0] > 0:
         if top_num is None or top_num == 0:
-            current_details = target_pool[['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+            current_details = target_pool[['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','MIN_PROB','MIN_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
         else:
-            current_details = target_pool[target_pool['RANK'] <= top_num][['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+            current_details = target_pool[target_pool['RANK'] <= top_num][['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','MIN_PROB','MIN_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
     else:
         current_details = pd.DataFrame()
 
@@ -163,12 +163,12 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
     top_details = Index_Reporter(trading_date, prediction, top_num)
 
     ####预测的最终结果
-    target_fd = current_details.loc[trading_date].sort_values('RANK')
+    target_fd = current_details.loc[trading_date].sort_values('DAY_RANK')
 
     ####大盘情况预测
-    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
-    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
-    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','MIN_PROB','MIN_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','MIN_PROB','MIN_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','MIN_PROB','MIN_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
 
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)), ui_log)
 
