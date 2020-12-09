@@ -77,9 +77,9 @@ class QAModel():
             send_email('模型训练报告:'+ self.info['date'], "数据损失比例 {}".format(nan_num/self.data.shape[0]), self.info['date'])
 
             if thresh == 0:
-                train_data = self.data[self.cols].dropna().join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
+                train_data = self.data[self.cols + ['star']].dropna().join(self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
             else:
-                train_data = self.data[self.cols].dropna(thresh=(len(self.cols) - thresh)).join(self.data[[i for i in list(self.data.columns) if i not in self.cols]])
+                train_data = self.data[self.cols + ['star']].dropna(thresh=(len(self.cols) - thresh)).join(self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
 
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
 
