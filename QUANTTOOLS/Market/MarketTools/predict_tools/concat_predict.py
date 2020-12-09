@@ -49,7 +49,7 @@ def make_indexprediction(Index, trading_date, name, working_dir, ui_log = None):
 
     QA_util_log_info(
         '##JOB Now Add info to Predictions ==== {trading_date}'.format(trading_date=trading_date), ui_log)
-
+    print(prediction)
     NAME = QA_fetch_index_name(prediction.reset_index()['code'].unique().tolist())
 
     target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index(['date','code']).sort_index().rename(columns={'name':'NAME'})
