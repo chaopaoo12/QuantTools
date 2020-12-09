@@ -32,29 +32,29 @@ def make_prediction(Model, trading_date, name, working_dir, type='crawl'):
     target_pool, prediction = Model.model_predict(start, end, type=type)
     return(Model, target_pool, prediction, start, end, Model.info['date'])
 
-def make_stockprediction(Stock, trading_date, name, working_dir, type='crawl'):
+def make_stockprediction(Stock, trading_date, name, working_dir, index = 'date', type='crawl'):
     Model, target_pool, prediction, start, end, Model_date = make_prediction(Stock, trading_date, name, working_dir, type)
 
     QA_util_log_info('##JOB Now Add info to Predictions')
 
     NAME = QA_fetch_stock_name(prediction.reset_index()['code'].unique().tolist())
 
-    target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index(['date','code']).sort_index().rename(columns={'name':'NAME'})
+    target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME'})
 
-    prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().set_index(['date','code']).sort_index().rename(columns={'name':'NAME'})
+    prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME'})
 
     return(target_pool, prediction, start, end, Model_date)
 
-def make_indexprediction(Index, trading_date, name, working_dir, type='crawl'):
+def make_indexprediction(Index, trading_date, name, working_dir, index = 'date', type='crawl'):
     Model, target_pool, prediction, start, end, Model_date = make_prediction(Index, trading_date, name, working_dir, type)
 
     QA_util_log_info('##JOB Now Add info to Predictions')
 
     NAME = QA_fetch_index_name(prediction.reset_index()['code'].unique().tolist())
 
-    target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index(['date','code']).sort_index().rename(columns={'name':'NAME'})
+    target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME'})
 
-    prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().set_index(['date','code']).sort_index().rename(columns={'name':'NAME'})
+    prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME'})
 
     return(target_pool, prediction, start, end, Model_date)
 
