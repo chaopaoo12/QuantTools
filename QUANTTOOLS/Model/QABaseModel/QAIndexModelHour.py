@@ -61,7 +61,7 @@ class QAIndexModelHour(QAModel):
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         b = train[['PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
         b = b.assign(y_pred = self.model.predict(train[self.cols]))
-        b['O_PROB'] = self.model.predict_proba(train[self.cols])
+        b[['Z_PROB','O_PROB']] = self.model.predict_proba(train[self.cols])
         b.loc[:,'RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
         return(b[b['y_pred']==1], b)
 
