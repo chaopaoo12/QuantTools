@@ -45,8 +45,8 @@ def make_stockprediction(Stock, trading_date, name, working_dir, type='crawl'):
 
     return(target_pool, prediction, start, end, Model_date)
 
-def make_indexprediction(Index, trading_date, name, working_dir):
-    Model, target_pool, prediction, start, end, Model_date = make_prediction(Index, trading_date, name, working_dir)
+def make_indexprediction(Index, trading_date, name, working_dir, type='crawl'):
+    Model, target_pool, prediction, start, end, Model_date = make_prediction(Index, trading_date, name, working_dir, type)
 
     QA_util_log_info('##JOB Now Add info to Predictions')
 
