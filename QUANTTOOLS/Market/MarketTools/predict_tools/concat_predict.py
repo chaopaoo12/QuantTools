@@ -11,10 +11,10 @@ from dateutil.relativedelta import relativedelta
 from dateutil.rrule import *
 delta3 = timedelta(days=7)
 
-def make_prediction(Model, trading_date, name, working_dir, type='crawl', ui_log = None):
+def make_prediction(Model, trading_date, name, working_dir, type='crawl'):
     try:
         QA_util_log_info(
-            '##JOB Now Load Model ==== {}'.format(str(trading_date)), ui_log)
+            '##JOB Now Load Model ==== {}'.format(str(trading_date)))
 
         Model = Model.load_model(name,working_dir = working_dir)
     except:
@@ -28,14 +28,14 @@ def make_prediction(Model, trading_date, name, working_dir, type='crawl', ui_log
                           )
     start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-2))).strftime('%Y-%m-%d')
     end = trading_date
-    QA_util_log_info('##JOB Now Model Predict from {start} to {end} ==== {s}'.format(start = start, end = end, s = str(trading_date)), ui_log)
+    QA_util_log_info('##JOB Now Model Predict from {start} to {end} ==== {s}'.format(start = start, end = end, s = str(trading_date)))
     target_pool, prediction = Model.model_predict(start, end, type=type)
     return(Model, target_pool, prediction, start, end, Model.info['date'])
 
-def make_stockprediction(Stock, trading_date, name, working_dir, type='crawl', ui_log = None):
+def make_stockprediction(Stock, trading_date, name, working_dir, type='crawl'):
     Model, target_pool, prediction, start, end, Model_date = make_prediction(Stock, trading_date, name, working_dir, type)
 
-    QA_util_log_info('##JOB Now Add info to Predictions', ui_log)
+    QA_util_log_info('##JOB Now Add info to Predictions')
 
     NAME = QA_fetch_stock_name(prediction.reset_index()['code'].unique().tolist())
 
@@ -45,10 +45,10 @@ def make_stockprediction(Stock, trading_date, name, working_dir, type='crawl', u
 
     return(target_pool, prediction, start, end, Model_date)
 
-def make_indexprediction(Index, trading_date, name, working_dir, ui_log = None):
+def make_indexprediction(Index, trading_date, name, working_dir):
     Model, target_pool, prediction, start, end, Model_date = make_prediction(Index, trading_date, name, working_dir)
 
-    QA_util_log_info('##JOB Now Add info to Predictions', ui_log)
+    QA_util_log_info('##JOB Now Add info to Predictions')
 
     NAME = QA_fetch_index_name(prediction.reset_index()['code'].unique().tolist())
 
