@@ -1,7 +1,13 @@
 
 from QUANTTOOLS.Model.StockModel.StrategyXgboost import QAStockXGBoost
+from QUANTTOOLS.Model.StockModel.StrategyXgboostHour import QAStockXGBoostHour
+from QUANTTOOLS.Model.StockModel.StrategyXgboost15Min import QAStockXGBoost15Min
 from QUANTTOOLS.Model.StockModel.StrategyXgboostReal import QAStockXGBoostReal
 from QUANTTOOLS.Model.StockModel.StrategyXgboostHedge import QAStockXGBoostHedge
+from QUANTTOOLS.Model.IndexModel.IndexXGboost import QAIndexXGBoost
+from QUANTTOOLS.Model.IndexModel.IndexXGboostHour import QAIndexXGBoostHour
+from QUANTTOOLS.Model.IndexModel.IndexXGboost15Min import QAIndexXGBoost15Min
+
 from QUANTTOOLS.Market.MarketTools import make_prediction,make_stockprediction,make_indexprediction
 
 def concat_predict(trading_date, working_dir, type = 'crawl', model_name = 'stock_xg'):
@@ -25,6 +31,6 @@ def concat_predict_hedge(trading_date, working_dir, type = 'model', model_name =
     return(target_pool,prediction,start,end,Model_Date)
 
 def concat_predict_index(trading_date, working_dir, model_name = 'index_xg'):
-    Stock = QAStockXGBoostHedge()
+    Stock = QAIndexXGBoost()
     target_pool,prediction,start,end,Model_Date= make_indexprediction(Stock, trading_date, model_name, working_dir)
     return(target_pool,prediction,start,end,Model_Date)
