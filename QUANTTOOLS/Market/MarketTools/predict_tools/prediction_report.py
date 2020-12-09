@@ -142,34 +142,31 @@ def Index_Reporter(trading_date, target_pool, top_num=5):
     QA_util_log_info('##JOB## Now Current Report ==== {}'.format(str(trading_date)))
     if target_pool is not None and target_pool.shape[0] > 0:
         if top_num is None or top_num == 0:
-            current_score = target_pool.groupby('date').mean()[['Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
             current_details = target_pool[['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
         else:
-            current_score = target_pool[target_pool['RANK'] <= top_num].groupby('date').mean()[['Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
             current_details = target_pool[target_pool['RANK'] <= top_num][['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
     else:
-        current_score = pd.DataFrame()
         current_details = pd.DataFrame()
 
-    return(current_score, current_details)
+    return(current_details)
 
 def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui_log = None):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
 
     ###预测为正TOP
-    current_score, current_details = Index_Reporter(trading_date, target_pool, top_num)
+    current_details = Index_Reporter(trading_date, target_pool, top_num)
 
     ###预测为正T
-    currentall_score, currentall_details = Index_Reporter(trading_date, target_pool)
+    currentall_details = Index_Reporter(trading_date, target_pool)
 
     ###预测TOP
-    top_score, top_details = Index_Reporter(trading_date, prediction, top_num)
+    top_details = Index_Reporter(trading_date, prediction, top_num)
 
     ####预测的最终结果
     target_fd = current_details.loc[trading_date].sort_values('RANK')
 
     ####大盘情况预测
-    market_fd = prediction.loc[(slice(None),['000001','399001','399006']),].reset_index().set_index(['code','date'])[['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    market_fd = prediction.loc[(slice(None),['000001','399001','399006']),][['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
 
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)), ui_log)
 
@@ -190,25 +187,9 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
 
     #########
     try:
-        model_score = build_table(current_score, '模型周期内交易成绩')
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内交易成绩", trading_date)
-
-    try:
-        stock_socre = build_table(currentall_score, '选股模型周期内交易成绩')
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:选股模型周期内交易成绩", trading_date)
-
-    #########
-    try:
         modelhis_body = build_table(current_details, '模型周期内选股记录')
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内选股记录", trading_date)
-
-    try:
-        allstock_socre = build_table(top_score, '选股模型周期内TOP交易成绩')
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:选股模型周期内TOP交易成绩", trading_date)
 
     try:
         modeltophis_body = build_table(top_details, '模型周期内TOP选股记录')
@@ -224,7 +205,6 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
     try:
         msg = build_email(build_head(),err_msg,
                           target_body,market_body,
-                          model_score,  stock_socre, allstock_socre,
                           modelhis_body, modeltophis_body)
         send_actionnotice("prediction_report",
                           '交易报告:{}'.format(trading_date),
