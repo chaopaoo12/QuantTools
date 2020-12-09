@@ -169,7 +169,7 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
     target_fd = current_details.loc[trading_date].sort_values('RANK')
 
     ####大盘情况预测
-    market_fd = current_details.loc[(slice(None),['000001','399001','399006']),]
+    market_fd = prediction.loc[(slice(None),['000001','399001','399006']),]
 
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)), ui_log)
 
