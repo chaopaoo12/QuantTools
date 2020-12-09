@@ -31,9 +31,9 @@
 from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_code,
                                          check_stock_finper,check_stock_alpha191,
                                          check_stock_techweek,
-                                         check_stock_alpha191half,check_stock_alpha101half)
+                                         check_index_techindex,check_index_techhour)
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade,QA_util_get_pre_trade_date,QA_util_get_real_date
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.daily_job import daily_run, daily_run_hedge, daily_run_crawl
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.daily_job import daily_run, index_run
 from QUANTAXIS.QASU.main import (QA_SU_save_stock_list,QA_SU_save_stock_info_tushare)
 from QUANTTOOLS.QAStockETL import QA_SU_save_stock_aklist
 import time
@@ -56,6 +56,18 @@ if __name__ == '__main__':
         #QA_SU_save_stock_industryinfo()
         res = check_stock_code()
 
+    res = check_index_techindex(mark_day)
+    while res is None or (len(res[0]) + len(res[1])) > 20:
+        time.sleep(180)
+        res = check_index_techindex(mark_day)
+
+    res = check_index_techhour(mark_day)
+    while res is None or (len(res[0]) + len(res[1])) > 20:
+        time.sleep(180)
+        res = check_index_techhour(mark_day)
+
+    index_run(mark_day)
+
     res = check_stock_quant(mark_day)
     while res is None or (len(res[0]) + len(res[1])) > 10:
         time.sleep(180)
@@ -77,16 +89,3 @@ if __name__ == '__main__':
         res = check_stock_finper(mark_day)
 
     daily_run(mark_day)
-
-    #res = check_stock_alpha191half(mark_day)
-    #while res is None or (len(res[0]) + len(res[1])) > 20:
-    #    time.sleep(180)
-    #    res = check_stock_alpha191half(mark_day)
-
-    #res = check_stock_alpha101half(mark_day)
-    #while res is None or (len(res[0]) + len(res[1])) > 20:
-    #    time.sleep(180)
-    #    res = check_stock_alpha101half(mark_day)
-
-    #daily_run_crawl(check_day)
-    #daily_run_hedge(check_day)
