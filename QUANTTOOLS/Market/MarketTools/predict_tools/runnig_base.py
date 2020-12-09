@@ -26,21 +26,21 @@ def predict_index_dev(trading_date, predict_func1, predict_func2, predict_func3,
         rrr1 = hour_tar.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        stock_tar[['HOUR_PROB','HOUR_RANK']] = rrr1[['O_PROB','RANK']]
+        stock_tar[['HOUR_PROB']] = rrr1[['O_PROB']]
         rrr1 = hour_b.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        stock_b[['HOUR_PROB','HOUR_RANK']] = rrr1[['O_PROB','RANK']]
+        stock_b[['HOUR_PROB']] = rrr1[['O_PROB']]
     if predict_func3 is not None:
         min_tar, min_b, start, end, model_date = predict_func3(trading_date, model_name = min_model,  working_dir=working_dir)
         rrr1 = min_tar.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        stock_tar[['MIN_PROB','MIN_RANK']] = rrr1[['O_PROB','RANK']]
+        stock_tar[['MIN_PROB']] = rrr1[['O_PROB']]
         rrr1 = min_b.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        stock_b[['MIN_PROB','MIN_RANK']] = rrr1[['O_PROB','RANK']]
+        stock_b[['MIN_PROB']] = rrr1[['O_PROB']]
 
     save_prediction({'date': trading_date, 'target_pool':stock_tar, 'prediction':stock_b}, file_name, working_dir)
     Index_Report(QA_util_get_real_date(trading_date), stock_tar, stock_b, model_date, top_num)
@@ -58,17 +58,17 @@ def predict_stock_dev(trading_date, predict_func1, predict_func2, predict_func3,
         rrr1 = hour_tar.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        stock_tar[['HOUR_PROB','HOUR_RANK']] = rrr1[['O_PROB','RANK']]
+        stock_tar[['HOUR_PROB']] = rrr1[['O_PROB']]
         rrr1 = hour_b.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        stock_b[['HOUR_PROB','HOUR_RANK']] = rrr1[['O_PROB','RANK']]
+        stock_b[['HOUR_PROB']] = rrr1[['O_PROB']]
     if predict_func3 is not None:
         min_tar, min_b, start, end, model_date = predict_func3(trading_date, model_name = min_model,  working_dir=working_dir)
         rrr1 = min_tar.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        stock_tar[['MIN_PROB','MIN_RANK']] = rrr1[['O_PROB','RANK']]
+        stock_tar[['MIN_PROB']] = rrr1[['O_PROB']]
         rrr1 = min_b.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
