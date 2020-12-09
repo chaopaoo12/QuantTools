@@ -291,7 +291,7 @@ def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method
     codes = [i for i in codes if i not in ['880602','880604', '880650', '880608']]
 
     if type == 'crawl':
-        res = QA_fetch_index_hour_pre(codes,start_date,end_date, method=method,norm_type=norm_type)
+        res = QA_fetch_index_hour_pre(codes,start_date, end_date, method=method,norm_type=norm_type)
     elif type == 'model':
         res = QA_fetch_index_quant_hour(codes, start_date, end_date, norm_type =norm_type)
         pass
