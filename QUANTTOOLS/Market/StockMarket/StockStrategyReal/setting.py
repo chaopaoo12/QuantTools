@@ -1,7 +1,7 @@
 working_dir = 'D:\\model\\current'
 percent = 1
 exceptions = None
-top = 5
+top = 20
 
 stock_day_set = ['ALPHA_067',
                  'MA180_HR',
