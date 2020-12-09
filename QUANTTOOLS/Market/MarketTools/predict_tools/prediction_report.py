@@ -166,7 +166,9 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
     target_fd = current_details.loc[trading_date].sort_values('RANK')
 
     ####大盘情况预测
-    market_fd = prediction.loc[(slice(None),['000001','399001','399006']),][['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']].sort_values('NAME')
+    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
 
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)), ui_log)
 
@@ -181,9 +183,19 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
         send_email('交易报告:'+ trading_date, "消息组件运算失败:目标持仓", trading_date)
 
     try:
-        market_body = build_table(market_fd, '大盘情况汇总')
+        market_000001 = build_table(market_000001, '上证指数情况')
     except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:大盘情况汇总", trading_date)
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:上证指数情况", trading_date)
+
+    try:
+        market_399001 = build_table(market_399001, '深证指数情况')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:深证指数情况", trading_date)
+
+    try:
+        market_399006 = build_table(market_399006, '创业指数情况')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:创业指数情况", trading_date)
 
     #########
     try:
@@ -204,7 +216,7 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
 
     try:
         msg = build_email(build_head(),err_msg,
-                          target_body,market_body,
+                          target_body,market_000001,market_399001,market_399006,
                           modelhis_body, modeltophis_body)
         send_actionnotice("prediction_report",
                           '交易报告:{}'.format(trading_date),
