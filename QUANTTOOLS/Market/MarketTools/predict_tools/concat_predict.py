@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 from dateutil.rrule import *
 delta3 = timedelta(days=7)
 
-def make_prediction(Model, trading_date, name, working_dir, type='model', ui_log = None):
+def make_prediction(Model, trading_date, name, working_dir, type='crawl', ui_log = None):
     try:
         QA_util_log_info(
             '##JOB Now Load Model ==== {}'.format(str(trading_date)), ui_log)
@@ -30,7 +30,7 @@ def make_prediction(Model, trading_date, name, working_dir, type='model', ui_log
     target_pool, prediction = Model.model_predict(start, end, type=type)
     return(Model, target_pool, prediction, start, end, Model.info['date'])
 
-def make_stockprediction(Stock, trading_date, name, working_dir, type='model', ui_log = None):
+def make_stockprediction(Stock, trading_date, name, working_dir, type='crawl', ui_log = None):
     Model, target_pool, prediction, start, end, Model_date = make_prediction(Stock, trading_date, name, working_dir, type)
 
     QA_util_log_info(
