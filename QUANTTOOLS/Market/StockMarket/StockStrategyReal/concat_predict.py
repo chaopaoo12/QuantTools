@@ -1,3 +1,4 @@
+#coding :utf-8
 
 from QUANTTOOLS.Model.StockModel.StrategyXgboost import QAStockXGBoost
 from QUANTTOOLS.Model.StockModel.StrategyXgboostHour import QAStockXGBoostHour

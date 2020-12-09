@@ -1,3 +1,4 @@
+#coding :utf-8
 
 from .concat_predict import concat_predict,concat_predict_real,concat_predict_crawl,concat_predict_hedge,concat_predict_index
 from .setting import working_dir, percent, exceptions, top
