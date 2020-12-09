@@ -144,7 +144,7 @@ def Index_Reporter(trading_date, target_pool, top_num=5):
         if top_num is None or top_num == 0:
             current_details = target_pool[['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','MIN_PROB','MIN_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
         else:
-            current_details = target_pool[target_pool['RANK'] <= top_num][['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','MIN_PROB','MIN_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+            current_details = target_pool[target_pool['DAY_RANK'] <= top_num][['NAME','DAY_PROB','DAY_RANK','HOUR_PROB','HOUR_RANK','MIN_PROB','MIN_RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
     else:
         current_details = pd.DataFrame()
 
