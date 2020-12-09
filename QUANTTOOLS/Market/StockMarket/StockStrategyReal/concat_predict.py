@@ -30,7 +30,7 @@ def concat_predict_hedge(trading_date, working_dir, type = 'model', model_name =
     target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, type)
     return(target_pool,prediction,start,end,Model_Date)
 
-def concat_predict_index(trading_date, working_dir, model_name = 'index_xg'):
+def concat_predict_index(trading_date, working_dir, type = 'crawl', model_name = 'index_xg'):
     Stock = QAIndexXGBoost()
-    target_pool,prediction,start,end,Model_Date= make_indexprediction(Stock, trading_date, model_name, working_dir)
+    target_pool,prediction,start,end,Model_Date= make_indexprediction(Stock, trading_date, model_name, working_dir, type)
     return(target_pool,prediction,start,end,Model_Date)
