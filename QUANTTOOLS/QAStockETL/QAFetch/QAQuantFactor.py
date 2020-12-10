@@ -5,9 +5,11 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_stock_alpha101real_adv,QA_fetch_stock_alpha191real_adv,
                                                            QA_fetch_stock_base_real_adv)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_info
+from QUANTTOOLS.QAStockETL.QAFetch.QATIndicator import QA_fetch_get_stock_indicator_realtime
 from QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,QA_util_get_trade_range,QA_util_get_next_trade_date,QA_util_code_tolist,
                                QA_util_get_pre_trade_date)
 import math
+import pandas as pd
 from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import time_this_function
 
@@ -482,4 +484,18 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, norm_type='norm
         '##JOB got Data stock industry info ============== from {from_} to {to_} '.format(from_= start_date,to_=end_date), ui_log)
     res = res.reset_index()
     res = res.assign(date_stamp=res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
+    return(res)
+
+def QA_fetch_get_stock_quant_hour(code, start_date, end_date):
+    res = pd.DataFrame()
+    for i in code:
+        res = res.append(QA_fetch_get_stock_indicator_realtime(i, start_date, end_date, type = 'hour'))
+    res = res.set_index(['datetime','code'])
+    return(res)
+
+def QA_fetch_get_stock_quant_min(code, start_date, end_date):
+    res = pd.DataFrame()
+    for i in code:
+        res = res.append(QA_fetch_get_stock_indicator_realtime(i, start_date, end_date, type = 'min'))
+    res = res.set_index(['datetime','code'])
     return(res)

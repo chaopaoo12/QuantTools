@@ -8,6 +8,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_index_
                                            QA_fetch_stock_quant_hour,QA_fetch_stock_hour_pre,
                                            QA_fetch_index_quant_min,QA_fetch_index_min_pre,
                                            QA_fetch_stock_quant_min,QA_fetch_stock_min_pre)
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_quant_hour,QA_fetch_get_stock_quant_min
 import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
@@ -274,7 +275,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
     elif type == 'model':
         res = QA_fetch_stock_quant_hour(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
-        pass
+        res = QA_fetch_get_stock_quant_hour(codes, start_date, end_date)
     return(res)
 
 def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
@@ -326,7 +327,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
     elif type == 'model':
         res = QA_fetch_stock_quant_min(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
-        pass
+        res = QA_fetch_get_stock_quant_min(codes, start_date, end_date)
     return(res)
 
 def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
