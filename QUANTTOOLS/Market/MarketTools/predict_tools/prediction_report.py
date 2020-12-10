@@ -7,7 +7,22 @@ from QUANTTOOLS.Trader import get_Client,check_Client
 
 import pandas as pd
 
-def Funding_Decision(trading_date, target_pool, sub_accounts, frozen, percent):
+def Current_Report(trading_date, target_pool, top_num=5, name_list = None, value_ist = None, sort_mark = None):
+    QA_util_log_info('##JOB## Now Current Report ==== {}'.format(str(trading_date)))
+    if target_pool is not None and target_pool.shape[0] > 0:
+        if top_num is None or top_num == 0:
+            current_score = target_pool.groupby('date').mean()[value_ist]
+            current_details = target_pool[name_list + value_ist]
+        else:
+            current_score = target_pool[(target_pool[sort_mark] <= top_num)].groupby('date').mean()[value_ist]
+            current_details = target_pool[(target_pool[sort_mark] <= top_num)][name_list + value_ist]
+    else:
+        current_score = pd.DataFrame()
+        current_details = pd.DataFrame()
+
+    return(current_score, current_details)
+
+def Funding_Decision(trading_date, target_pool, sub_accounts, frozen, percent, selec_list = None):
     QA_util_log_info('##JOB## Now Funding Decision ==== {}'.format(str(trading_date)))
     try:
         target = target_pool.loc[trading_date]
@@ -17,7 +32,7 @@ def Funding_Decision(trading_date, target_pool, sub_accounts, frozen, percent):
     if target is None:
         target = None
     else:
-        target = target[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']].reset_index()
+        target = target[selec_list].reset_index()
         target = target.assign(close= target['code'].apply(lambda x:float(QA_fetch_stock_day_adv(str(x),trading_date,trading_date).data['close'].values))).set_index('code')
 
         avg_account = (sub_accounts - frozen)/target.shape[0]
@@ -26,37 +41,28 @@ def Funding_Decision(trading_date, target_pool, sub_accounts, frozen, percent):
         target['real'] = target['cnt'] * target['close']
     return(target)
 
-def Current_Report(trading_date, target_pool, top_num=5):
-    QA_util_log_info('##JOB## Now Current Report ==== {}'.format(str(trading_date)))
-    if target_pool is not None and target_pool.shape[0] > 0:
-        if top_num is None or top_num == 0:
-            current_score = target_pool.groupby('date').mean()[['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
-            current_details = target_pool[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
-        else:
-            current_score = target_pool[(target_pool['RANK'] <= top_num)].groupby('date').mean()[['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
-            current_details = target_pool[(target_pool['RANK'] <= top_num)][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
-    else:
-        current_score = pd.DataFrame()
-        current_details = pd.DataFrame()
 
-    return(current_score, current_details)
-
-def prediction_report(trading_date, target_pool, prediction, model_date, top_num, exceptions, percent, account='name:client-1',  ui_log = None):
+def prediction_report(trading_date, target_pool, prediction, model_date, top_num, exceptions, percent,
+                      name_list = ['NAME','INDUSTRY'],
+                      value_ist = ['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
+                      sort_mark ='RANK',
+                      selec_list=['NAME','INDUSTRY','Z_PROB','O_PROB','RANK'],
+                      account='name:client-1',  ui_log = None):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
     client = get_Client()
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, "prediction_report", trading_date, exceptions=exceptions)
 
     ###预测为正TOP
-    current_score, current_details = Current_Report(trading_date, target_pool, top_num)
+    current_score, current_details = Current_Report(trading_date, target_pool, top_num, name_list = name_list, value_ist = value_ist, sort_mark =sort_mark)
 
     ###预测为正T
-    currentall_score, currentall_details = Current_Report(trading_date, target_pool)
+    currentall_score, currentall_details = Current_Report(trading_date, target_pool, name_list = name_list, value_ist = value_ist, sort_mark =sort_mark)
 
     ###预测TOP
-    top_score, top_details = Current_Report(trading_date, prediction, top_num)
+    top_score, top_details = Current_Report(trading_date, prediction, top_num, name_list = name_list, value_ist = value_ist, sort_mark =sort_mark)
 
     ####预测的最终结果
-    target_fd = Funding_Decision(trading_date, current_details, sub_accounts, frozen, percent)
+    target_fd = Funding_Decision(trading_date, current_details, sub_accounts, frozen, percent, selec_list = selec_list)
 
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)), ui_log)
 
