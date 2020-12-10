@@ -252,7 +252,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
     if code is None:
         codes = code_list
     else:
-        codes = code_list[code_list.code.isin(code)]
+        codes = code_list[code_list.code.isin(code)].drop_duplicates()
     print(codes)
     if block is True:
         data = QA.QA_fetch_stock_block()
