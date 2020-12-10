@@ -37,7 +37,6 @@ class QAStockModel15Min(QAModel):
                 n_cols.append(i)
         train.index = data.index
         QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
-        QA_util_log_info(n_cols)
         QA_util_log_info(train.shape[0])
 
         s_res = train[self.cols].describe().T
@@ -75,12 +74,12 @@ class QAStockModel15Min(QAModel):
         train.loc[:,'RANK'] = train['O_PROB'].groupby('datetime').rank(ascending=False)
 
         if type == 'crawl':
-            train = train.join(data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
-            b = train[['y_pred','Z_PROB','O_PROB','RANK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
+            train = train.join(data[['TERNS_15M','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
+            b = train[['TERNS_15M','y_pred','Z_PROB','O_PROB','RANK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
         elif type == 'model':
-            b = train[['y_pred','Z_PROB','O_PROB','RANK']]
+            b = train[['TERNS_15M','y_pred','Z_PROB','O_PROB','RANK']]
         elif type == 'real':
-            b = train[['y_pred','Z_PROB','O_PROB','RANK']]
+            b = train[['TERNS_15M','y_pred','Z_PROB','O_PROB','RANK']]
         return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
