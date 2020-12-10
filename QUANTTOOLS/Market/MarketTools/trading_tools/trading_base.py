@@ -1,6 +1,7 @@
 from QUANTTOOLS.Market.MarketTools.trading_tools import load_data
 from QUANTTOOLS.Message import send_actionnotice
-from QUANTTOOLS.Trader import trade_roboot,get_Client,check_Client
+from QUANTTOOLS.Trader import get_Client,check_Client
+from QUANTTOOLS.Market.MarketTools.trading_tools.trading import trade_roboot
 from QUANTAXIS.QAUtil import QA_util_log_info
 import time
 import datetime
