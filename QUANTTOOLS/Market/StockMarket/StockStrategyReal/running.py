@@ -47,6 +47,6 @@ def predict_index_summary(trading_date, top_num=top, working_dir=working_dir):
 
 def predict_stock_summary(trading_date, top_num=top, working_dir=working_dir):
     predict_index_dev(trading_date,
-                      predict_func1 =concat_predict, predict_func2 =concat_predict_hour, predict_func3 =concat_predict_15min,
-                      day_moel = 'stock_mars_day', hour_model='stock_mars_hour', min_model='stock_mars_min',
+                      predict_func1 =concat_predict, predict_func2 =concat_predict_hour, predict_func3 =None,
+                      day_moel = 'stock_mars_day', hour_model='stock_mars_hour', min_model=None,
                       file_name = 'prediction_stock_summary', top_num=top_num, working_dir=working_dir)
