@@ -31,10 +31,10 @@ def Current_Report(trading_date, target_pool, top_num=5):
     if target_pool is not None and target_pool.shape[0] > 0:
         if top_num is None or top_num == 0:
             current_score = target_pool[target_pool.OPEN_MARK == 0].groupby('date').mean()[['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
-            current_details = target_pool[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','OPEN_MARK','PASS_MARK']]
+            current_details = target_pool[['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
         else:
-            current_score = target_pool[(target_pool['RANK'] <= top_num) & (target_pool.OPEN_MARK == 0)].groupby('date').mean()[['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
-            current_details = target_pool[(target_pool['RANK'] <= top_num) & (target_pool.OPEN_MARK == 0)][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','OPEN_MARK','PASS_MARK']]
+            current_score = target_pool[(target_pool['RANK'] <= top_num)].groupby('date').mean()[['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
+            current_details = target_pool[(target_pool['RANK'] <= top_num)][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
     else:
         current_score = pd.DataFrame()
         current_details = pd.DataFrame()
