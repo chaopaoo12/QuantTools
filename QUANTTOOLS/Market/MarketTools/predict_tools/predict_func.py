@@ -37,11 +37,11 @@ def make_stockprediction(Stock, trading_date, name, working_dir, index = 'date',
     QA_util_log_info('##JOB Now Add info to Predictions')
 
     NAME = QA_fetch_stock_name(prediction.reset_index()['code'].unique().tolist())
-    INDUSTRY = QA_fetch_stock_industry(prediction.reset_index()['code'].unique().tolist())
+    #INDUSTRY = QA_fetch_stock_industry(prediction.reset_index()['code'].unique().tolist())
 
-    target_pool = target_pool.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME','industry':'INDUSTRY'})
+    target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME',})
 
-    prediction = prediction.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME','industry':'INDUSTRY'})
+    prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME'})
 
     return(target_pool, prediction, start, end, Model_date)
 

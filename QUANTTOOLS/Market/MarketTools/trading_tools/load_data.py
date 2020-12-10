@@ -13,8 +13,8 @@ def load_data(predict_func, trading_date, working_dir, model_name, file_name):
         target_pool, prediction, start, end, model_date = predict_func(trading_date, model_name=model_name,  working_dir=working_dir)
 
     try:
-        r_tar = target_pool.loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
-        prediction_tar = prediction.loc[trading_date][['NAME','INDUSTRY','Z_PROB','O_PROB','RANK']]
+        r_tar = target_pool.loc[trading_date]
+        prediction_tar = prediction.loc[trading_date]
     except:
         r_tar = None
         prediction_tar =  None
