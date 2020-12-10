@@ -1,6 +1,7 @@
 
 from .setting import working_dir, percent, exceptions
 from .concat_predict import concat_predict,concat_predict_real,concat_predict_hedge
+from .running import predict_stock_summary
 from QUANTTOOLS.Market.MarketTools import trading_base, load_data
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask
 
@@ -31,7 +32,7 @@ def trading_hedge(trading_date, func = concat_predict, model_name = 'hedge_xg', 
 
 def trading_summary(trading_date,percent = percent, account= 'name:client-1',exceptions = exceptions):
 
-    r_tar, prediction_tar = load_data(concat_predict, trading_date, working_dir, 'stock_xg', 'prediction')
+    r_tar, prediction_tar = load_data(predict_stock_summary, trading_date, working_dir, 'stock_xg', 'prediction_stock_summary')
     model_name = 'stock_xg'
 
     #buy_code = []
