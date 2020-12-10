@@ -8,12 +8,19 @@ from QUANTTOOLS.Model.IndexModel.IndexXGboostHour import QAIndexXGBoostHour
 from QUANTTOOLS.Model.IndexModel.IndexXGboost15Min import QAIndexXGBoost15Min
 from .setting import working_dir, stock_day_set, stock_hour_set, stock_min_set, index_day_set, index_hour_set
 from QUANTTOOLS.Market.MarketTools.train_tools import prepare_train, start_train, save_report, load_data, prepare_data
+from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import QA_util_get_real_date,QA_util_get_last_day
+from QUANTAXIS.QAUtil import QA_util_add_months
+import datetime
 
 def daymodel_train(date, working_dir=working_dir):
     stock_model = QAStockXGBoost()
-    stock_model = load_data(stock_model, date, k = 3, start = "-01-01", norm_type=None)
 
-    stock_model = prepare_data(stock_model, date, mark = -5, col = 'TERNS', type='shift', k = 3, start = "-01-01", shift=5)
+    start_date = str(int(date[0:4])-3)+'-01-01'
+    end_date = QA_util_get_last_day(QA_util_get_real_date(date), 6)
+
+    stock_model = load_data(stock_model, start_date, end_date, norm_type=None)
+
+    stock_model = prepare_data(stock_model, start_date, end_date, mark = -5, col = 'TERNS', type='shift')
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
@@ -23,9 +30,13 @@ def daymodel_train(date, working_dir=working_dir):
 
 def minmodel_train(date, working_dir=working_dir):
     min_model = QAStockXGBoost15Min()
-    min_model = load_data(min_model, date, k = 0, start = "-01-01", norm_type=None)
 
-    min_model = prepare_data(min_model, date, mark = -5, col = 'TERNS_15M', type='shift', k = 0, start = "-01-01", shift=2)
+    start_date = datetime.datetime.strftime(QA_util_add_months('2020-12-08',-4), "%Y-%m") +'-01'
+    end_date = QA_util_get_last_day(QA_util_get_real_date(date), 6)
+
+    min_model = load_data(min_model, start_date, end_date, norm_type=None)
+
+    min_model = prepare_data(min_model, start_date, end_date, mark = -5, col = 'TERNS_15M', type='shift')
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
@@ -35,9 +46,13 @@ def minmodel_train(date, working_dir=working_dir):
 
 def hourmodel_train(date, working_dir=working_dir):
     hour_model = QAStockXGBoostHour()
-    hour_model = load_data(hour_model, date, k = 1, start = "-01-01", norm_type=None)
 
-    hour_model = prepare_data(hour_model, date, mark = -5, col = 'TERNS_HR', type='shift', k = 1, start = "-01-01", shift=2)
+    start_date = str(int(date[0:4])-1)+'-01-01'
+    end_date = QA_util_get_last_day(QA_util_get_real_date(date), 6)
+
+    hour_model = load_data(hour_model, start_date, end_date, norm_type=None)
+
+    hour_model = prepare_data(hour_model, start_date, end_date, mark = -5, col = 'TERNS_HR', type='shift')
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
@@ -47,9 +62,13 @@ def hourmodel_train(date, working_dir=working_dir):
 
 def train_hedge(date, working_dir=working_dir):
     hedge_model = QAStockXGBoost()
-    hedge_model = load_data(hedge_model, date, k = 3, start = "-01-01")
 
-    hedge_model = prepare_data(hedge_model, date, col = 'TARGET', k = 3, start = "-01-01", shift=1)
+    start_date = str(int(date[0:4])-3)+'-01-01'
+    end_date = QA_util_get_last_day(QA_util_get_real_date(date), 6)
+
+    hedge_model = load_data(hedge_model, start_date, end_date)
+
+    hedge_model = prepare_data(hedge_model, start_date, end_date, col = 'TARGET')
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
@@ -59,9 +78,13 @@ def train_hedge(date, working_dir=working_dir):
 
 def train_index(date, working_dir=working_dir):
     index_model = QAIndexXGBoost()
-    index_model = load_data(index_model, date, k = 3, start = "-05-01", norm_type=None)
 
-    index_model = prepare_data(index_model, date, mark = -5, col = 'TERNS', type='shift', k = 3, start = "-05-01", shift=5)
+    start_date = str(int(date[0:4])-3)+'-01-01'
+    end_date = QA_util_get_last_day(QA_util_get_real_date(date), 6)
+
+    index_model = load_data(index_model, start_date, end_date, norm_type=None)
+
+    index_model = prepare_data(index_model, start_date, end_date, mark = -5, col = 'TERNS', type='shift')
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
@@ -70,9 +93,10 @@ def train_index(date, working_dir=working_dir):
     save_report(index_model, 'index_mars_day', working_dir)
 
     hour_model = QAIndexXGBoostHour()
-    hour_model = load_data(hour_model, date, k = 3, start = "-05-01", norm_type=None)
 
-    hour_model = prepare_data(hour_model, date, mark = -5, col = 'TERNS_HR', type='shift', k = 3, start = "-05-01", shift=2)
+    hour_model = load_data(hour_model, start_date, end_date, norm_type=None)
+
+    hour_model = prepare_data(hour_model, start_date, end_date, mark = -5, col = 'TERNS_HR', type='shift')
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}

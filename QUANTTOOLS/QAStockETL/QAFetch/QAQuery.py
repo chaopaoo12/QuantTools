@@ -945,7 +945,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='day', close_type='c
 def QA_fetch_stock_quant_pre(code, start, end=None, block = True, close_type='close', method='value', norm_type='normalization', format='pd'):
     QA_util_log_info(
         'JOB Get Stock Quant data start=%s end=%s' % (start, end))
-    res = QA_fetch_stock_quant_data(code, start, end, block, type=norm_type)
+    res = QA_fetch_stock_quant_data(code, start, end, block, norm_type=norm_type)
     QA_util_log_info(
         'JOB Get Stock Target data start=%s end=%s' % (start, end))
     target = QA_fetch_stock_target(code, start, end, close_type=close_type, method=method)
@@ -966,7 +966,7 @@ def QA_fetch_stock_quant_pre(code, start, end=None, block = True, close_type='cl
 def QA_fetch_stock_quant_pre_train(code, start, end=None, block = True, close_type='close', method='value', norm_type='normalization', format='pd'):
     QA_util_log_info(
         'JOB Get Stock Quant data start=%s end=%s' % (start, end))
-    res = QA_fetch_stock_quant_data_train(code, start, end, block, type=norm_type)
+    res = QA_fetch_stock_quant_data_train(code, start, end, block, norm_type=norm_type)
     QA_util_log_info(
         'JOB Get Stock Target data start=%s end=%s' % (start, end))
     target = QA_fetch_stock_target(code, start, end, type='day', close_type=close_type, method=method)

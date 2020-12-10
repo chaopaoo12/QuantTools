@@ -77,18 +77,3 @@ def QA_util_getBetweenMonth(from_date, to_date):
                                date_str + '-%d'%(calendar.monthrange(begin_date.year, begin_date.month)[1])]
         begin_date = QA_util_get_1st_of_next_month(begin_date)
     return(date_list)
-
-def QA_util_get_1st_of_next_month(dt):
-    """
-    获取下个月第一天的日期
-    :return: 返回日期
-    """
-    year = dt.year
-    month = dt.month
-    if month == 12:
-        month = 1
-        year += 1
-    else:
-        month += 1
-    res = datetime.datetime(year, month, 1)
-    return res
