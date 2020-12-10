@@ -4,6 +4,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator,ohlc,get_ind
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
 from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq
+import numpy as np
 
 def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
     if type == 'min':
@@ -319,8 +320,17 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
     if data is None:
         return None
     else:
-        data = get_indicator_short(data, type)
+        data = get_indicator(data, type)
         data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]].reset_index()
         data = data[data.date.isin(rng1)]
+        data['CCI_JC'] = data['CCI_CROSS1'] + data['CCI_CROSS3']
+        data['CCI_SC'] = data['CCI_CROSS2'] + data['CCI_CROSS4']
+        data.loc[data.CCI_JC==1,'CCI_JC'] = 2
+        data.loc[data.CCI_SC==2,'CCI_SC'] = 1
+        data['CCI_TR'] = data['CCI_JC'] + data['CCI_SC']
+        data.loc[(data.CCI_TR == 0),'CCI_TR'] = np.nan
+        data[['CCI_CROSS1','CCI_CROSS2','CCI_CROSS3','CCI_CROSS4','CCI_JC','CCI_SC','CCI_TR']] = data[['CCI_CROSS1','CCI_CROSS2','CCI_CROSS3','CCI_CROSS4','CCI_JC','CCI_SC','CCI_TR']].groupby('code').fillna(method='ffill')
+        data['CCI_TR'] = data['CCI_TR'] -1
+        data['TERNS'] = data.apply(lambda x: (x.SHORT20 > 0) * (x.LONG60 > 0) * (x.LONG_AMOUNT > 0) * 1, axis=1)
         data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
