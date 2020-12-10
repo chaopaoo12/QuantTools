@@ -69,7 +69,9 @@ class QAStockModel15Min(QAModel):
 
         QA_util_log_info(train.shape[0])
         train = train.assign(y_pred = self.model.predict(train[self.cols]))
-        train[['Z_PROB','O_PROB']] = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
+        bina = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
+        bina.index = train.index
+        train[['Z_PROB','O_PROB']] = bina
         train.loc[:,'RANK'] = train['O_PROB'].groupby('datetime').rank(ascending=False)
 
         if type == 'crawl':
