@@ -253,7 +253,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
         codes = code_list
     else:
         codes = code_list[code_list.code.isin(code)]
-
+    print(codes)
     if block is True:
         data = QA.QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
@@ -261,11 +261,12 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
         codes = codes[codes.code.isin(block)]
     else:
         pass
+    print(codes)
     QA_util_log_info('##JOB Now Delete ST Stock')
     codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
     codes = list(codes['code'])
-
+    print(codes)
     QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
