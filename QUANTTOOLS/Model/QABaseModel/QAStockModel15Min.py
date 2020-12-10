@@ -68,16 +68,18 @@ class QAStockModel15Min(QAModel):
                 train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
 
         QA_util_log_info(train.shape[0])
-        train = train.join(data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
+        train = train.assign(y_pred = self.model.predict(train[self.cols]))
+        train[['Z_PROB','O_PROB']] = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
+        train.loc[:,'RANK'] = train['O_PROB'].groupby('datetime').rank(ascending=False)
 
-        QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
-        b = train[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
-        b = b.assign(y_pred = self.model.predict(train[self.cols]))
-        bina = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
-        bina.index = b.index
-        b[['Z_PROB','O_PROB']] = bina
-        b.loc[:,'RANK'] = b['O_PROB'].groupby('datetime').rank(ascending=False)
-        return(b[b['y_pred']==1], b)
+        if type == 'crawl':
+            train = train.join(data[['INDUSTRY','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
+            b = train[['INDUSTRY','y_pred','Z_PROB','O_PROB','RANK','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
+        elif type == 'model':
+            b = train[['INDUSTRY','y_pred','Z_PROB','O_PROB','RANK']]
+        elif type == 'real':
+            b = train[['y_pred','Z_PROB','O_PROB','RANK']]
+        return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
     pass

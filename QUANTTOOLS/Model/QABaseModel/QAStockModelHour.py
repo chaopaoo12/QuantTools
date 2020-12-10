@@ -70,7 +70,9 @@ class QAStockModelHour(QAModel):
 
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         train = train.assign(y_pred = self.model.predict(train[self.cols]))
-        train[['Z_PROB','O_PROB']] = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
+        bina = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
+        bina.index = train.index
+        train[['Z_PROB','O_PROB']] = bina
         train.loc[:,'RANK'] = train['O_PROB'].groupby('datetime').rank(ascending=False)
 
         if type == 'crawl':
