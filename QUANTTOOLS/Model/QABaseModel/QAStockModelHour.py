@@ -72,7 +72,7 @@ class QAStockModelHour(QAModel):
             train = train.join(data[['INDUSTRY','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
             b = train[['INDUSTRY','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
         else:
-            b = train[['INDUSTRY']]
+            b = pd.DataFrame()
 
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         b = b.assign(y_pred = self.model.predict(train[self.cols]))
