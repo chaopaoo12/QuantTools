@@ -80,7 +80,7 @@ class QAStockModelHour(QAModel):
             b = [['INDUSTRY','y_pred','Z_PROB','O_PROB','RANK']]
         elif type == 'real':
             b = [['y_pred','Z_PROB','O_PROB','RANK']]
-        return(b[b['y_pred']==1], b)
+        return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
     pass
