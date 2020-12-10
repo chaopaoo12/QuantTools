@@ -43,7 +43,7 @@ def predict_stock_dev(trading_date, predict_func1, predict_func2, predict_func3,
     stock_b = pd.DataFrame()
     if predict_func1 is not None:
         day_tar, day_b, start, end, model_date = predict_func1(trading_date, model_name = day_moel,  working_dir=working_dir)
-        print(day_tar)
+        print(day_b.head())
         stock_b[['NAME','INDUSTRY','DAY_PROB','DAY_RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']] = day_b[['NAME','INDUSTRY','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
     if predict_func2 is not None:
         hour_tar, hour_b, start, end, model_date = predict_func2(trading_date, model_name = hour_model,  working_dir=working_dir)
