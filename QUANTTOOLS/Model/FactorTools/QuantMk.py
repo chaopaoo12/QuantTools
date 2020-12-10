@@ -30,13 +30,12 @@ def get_quant_data_train(start_date, end_date, code=None, type = 'crawl', block 
     QA_util_log_info('##JOB Now Delete ST Stock')
     codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-    codes = list(codes['code'])
+    codes = list(set(codes['code']))
 
     QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
-    codes = list(set(codes['code']))
 
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
@@ -68,13 +67,12 @@ def get_quant_data_realtime(start_date, end_date, code=None, type = 'model', blo
     QA_util_log_info('##JOB Now Delete ST Stock')
     codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-    codes = list(codes['code'])
+    codes = list(set(codes['code']))
 
     QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
-    codes = list(set(codes['code']))
 
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
@@ -128,13 +126,12 @@ def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = Fals
     QA_util_log_info('##JOB Now Delete ST Stock')
     codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-    codes = list(codes['code'])
+    codes = list(set(codes['code']))
 
     QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
-    codes = list(set(codes['code']))
 
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
@@ -165,13 +162,12 @@ def get_hedge_data(start_date, end_date, code=None, type = 'crawl', block = True
     QA_util_log_info('##JOB Now Delete ST Stock')
     codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-    codes = list(codes['code'])
+    codes = list(set(codes['code']))
 
     QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
-    codes = list(set(codes['code']))
 
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
@@ -202,13 +198,12 @@ def get_hedge_data_realtime(start_date, end_date, code=None, type = 'model', blo
     QA_util_log_info('##JOB Now Delete ST Stock')
     codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-    codes = list(codes['code'])
+    codes = list(set(codes['code']))
 
     QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
-    codes = list(set(codes['code']))
 
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
@@ -245,6 +240,7 @@ def get_500hedge_data(start_date, end_date, code=None, type = 'crawl', block = T
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
+
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     elif type == 'model':
@@ -276,13 +272,12 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
     QA_util_log_info('##JOB Now Delete ST Stock')
     codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-    codes = list(codes['code'])
+    codes = list(set(codes['code']))
 
     QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
-    codes = list(set(codes['code']))
 
     if type == 'crawl':
         res = QA_fetch_stock_hour_pre(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type)
