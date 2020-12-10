@@ -20,7 +20,7 @@ class QAStockModelHour(QAModel):
             self.code = code
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=self.block,sub_block=self.sub_block, _from=start, _to=end), ui_log = None)
         data = get_quant_data_hour(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, norm_type=self.norm_type)
-
+        print(data)
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','date','datetime',
                                                        'OPEN_MARK','PASS_MARK','TARGET','TARGET3',
@@ -66,7 +66,7 @@ class QAStockModelHour(QAModel):
                 train = train[self.cols].dropna()
             else:
                 train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
-
+        print(train)
         QA_util_log_info(train.shape[0])
         if type == 'crawl':
             train = train.join(data[['INDUSTRY','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
