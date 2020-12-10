@@ -41,9 +41,13 @@ def make_stockprediction(Stock, trading_date, name, working_dir, code = None, in
 
     NAME = QA_fetch_stock_name(prediction.reset_index()['code'].unique().tolist())
 
-    target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME',})
-
-    prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME'})
+    if 'INDUSTRY' in list(prediction.columns) or 'industry' in list(prediction.columns):
+        target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME',})
+        prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME'})
+    else:
+        INDUSTRY = QA_fetch_stock_industry(prediction.reset_index()['code'].unique().tolist())
+        target_pool = target_pool.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME','industry':'INDUSTRY'})
+        prediction = prediction.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME','industry':'INDUSTRY'})
 
     return(target_pool, prediction, start, end, Model_date)
 
