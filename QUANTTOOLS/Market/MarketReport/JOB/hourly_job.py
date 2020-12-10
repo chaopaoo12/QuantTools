@@ -36,13 +36,13 @@ def daily_job(trading_date, account = 'name:client-1', strategy_id = '趋势跟�
     while tm <= int(time.strftime("%H%M%S", time.strptime("10:30:00", "%H:%M:%S"))):
         time.sleep(15)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    print("10:30:00")
+    QA_util_log_info("10:30:00")
     daily(trading_date, "10:30:00", account, strategy_id)
 
     while tm <= int(time.strftime("%H%M%S", time.strptime("11:30:00", "%H:%M:%S"))):
         time.sleep(15)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    print("11:30:00")
+    QA_util_log_info("11:30:00")
     daily(trading_date, "11:30:00", account, strategy_id)
 
     while tm > target_ea and tm < target_ae:
@@ -52,13 +52,13 @@ def daily_job(trading_date, account = 'name:client-1', strategy_id = '趋势跟�
     while tm <= int(time.strftime("%H%M%S", time.strptime("14:00:00", "%H:%M:%S"))):
         time.sleep(15)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    print("14:00:00")
+    QA_util_log_info("14:00:00")
     daily(trading_date, "14:00:00", account, strategy_id)
 
     while tm <= int(time.strftime("%H%M%S", time.strptime("14:50:00", "%H:%M:%S"))):
         time.sleep(15)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    print("15:00:00")
+    QA_util_log_info("15:00:00")
     daily(trading_date, "15:00:00", account, strategy_id)
 
 
