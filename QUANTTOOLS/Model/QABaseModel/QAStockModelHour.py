@@ -65,7 +65,7 @@ class QAStockModelHour(QAModel):
                 train = train[self.cols].dropna()
             else:
                 train = train[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
-        print(train)
+
         QA_util_log_info(train.shape[0])
 
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
@@ -77,9 +77,9 @@ class QAStockModelHour(QAModel):
             train = train.join(data[['INDUSTRY','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
             b = train[['INDUSTRY','y_pred','Z_PROB','O_PROB','RANK','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
         elif type == 'model':
-            b = [['INDUSTRY','y_pred','Z_PROB','O_PROB','RANK']]
+            b = train[['INDUSTRY','y_pred','Z_PROB','O_PROB','RANK']]
         elif type == 'real':
-            b = [['y_pred','Z_PROB','O_PROB','RANK']]
+            b = train[['y_pred','Z_PROB','O_PROB','RANK']]
         return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
