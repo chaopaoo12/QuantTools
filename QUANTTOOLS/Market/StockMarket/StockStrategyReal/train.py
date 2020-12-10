@@ -31,7 +31,7 @@ def daymodel_train(date, working_dir=working_dir):
 def minmodel_train(date, working_dir=working_dir):
     min_model = QAStockXGBoost15Min()
 
-    start_date = datetime.datetime.strftime(QA_util_add_months('2020-12-08',-4), "%Y-%m") +'-01'
+    start_date = datetime.datetime.strftime(QA_util_add_months(date,-6), "%Y-%m") +'-01'
     end_date = QA_util_get_last_day(QA_util_get_real_date(date), 6)
 
     min_model = load_data(min_model, start_date, end_date, norm_type=None)
