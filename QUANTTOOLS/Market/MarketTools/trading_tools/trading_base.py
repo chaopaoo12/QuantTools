@@ -1,4 +1,3 @@
-from QUANTTOOLS.Market.MarketTools.trading_tools import load_data
 from QUANTTOOLS.Message import send_actionnotice
 from QUANTTOOLS.Trader import get_Client,check_Client
 from QUANTTOOLS.Market.MarketTools.trading_tools.trading import trade_roboot
@@ -7,8 +6,6 @@ import time
 import datetime
 
 def trading_base(trading_date, r_tar, prediction_tar, percent, account, title, exceptions, test = False):
-
-    #r_tar, prediction_tar = load_data(func, trading_date, working_dir, model_name, file_name)
 
     QA_util_log_info(
         '##JOB## Now Chect Account Server ==== {}'.format(str(trading_date)))

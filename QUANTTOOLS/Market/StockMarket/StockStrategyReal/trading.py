@@ -32,7 +32,7 @@ def trading_hedge(trading_date, func = concat_predict, model_name = 'hedge_xg', 
 
 def trading_summary(trading_date,percent = percent, account= 'name:client-1',exceptions = exceptions):
 
-    r_tar, prediction_tar = load_data(predict_stock_summary, trading_date, working_dir, 'stock_xg', 'prediction_stock_summary')
+    r_tar, prediction_tar = load_data(predict_stock_summary, trading_date, working_dir, 'prediction_stock_summary')
     model_name = 'stock_xg'
 
     #buy_code = []

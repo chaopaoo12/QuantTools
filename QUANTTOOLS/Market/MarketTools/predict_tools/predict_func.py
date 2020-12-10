@@ -10,7 +10,7 @@ from dateutil.relativedelta import relativedelta
 from dateutil.rrule import *
 delta3 = timedelta(days=7)
 
-def make_prediction(Model, trading_date, name, working_dir, type='crawl'):
+def make_prediction(Model, trading_date, name, working_dir, code = None, type='crawl'):
     try:
         QA_util_log_info(
             '##JOB Now Load Model ==== {}'.format(str(trading_date)))
@@ -28,16 +28,18 @@ def make_prediction(Model, trading_date, name, working_dir, type='crawl'):
     start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-2))).strftime('%Y-%m-%d')
     end = trading_date
     QA_util_log_info('##JOB Now Model Predict from {start} to {end} ==== {s}'.format(start = start, end = end, s = str(trading_date)))
-    target_pool, prediction = Model.model_predict(start, end, type=type)
+    if code is None:
+        target_pool, prediction = Model.model_predict(start, end, type=type)
+    else:
+        target_pool, prediction = Model.model_predict(start, end, code, type=type)
     return(Model, target_pool, prediction, start, end, Model.info['date'])
 
-def make_stockprediction(Stock, trading_date, name, working_dir, index = 'date', type='crawl'):
-    Model, target_pool, prediction, start, end, Model_date = make_prediction(Stock, trading_date, name, working_dir, type)
+def make_stockprediction(Stock, trading_date, name, working_dir, code = None, index = 'date', type='crawl'):
+    Model, target_pool, prediction, start, end, Model_date = make_prediction(Stock, trading_date, name, working_dir, code, type)
 
     QA_util_log_info('##JOB Now Add info to Predictions')
 
     NAME = QA_fetch_stock_name(prediction.reset_index()['code'].unique().tolist())
-    #INDUSTRY = QA_fetch_stock_industry(prediction.reset_index()['code'].unique().tolist())
 
     target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME',})
 
@@ -45,8 +47,8 @@ def make_stockprediction(Stock, trading_date, name, working_dir, index = 'date',
 
     return(target_pool, prediction, start, end, Model_date)
 
-def make_indexprediction(Index, trading_date, name, working_dir, index = 'date', type='crawl'):
-    Model, target_pool, prediction, start, end, Model_date = make_prediction(Index, trading_date, name, working_dir, type)
+def make_indexprediction(Index, trading_date, name, working_dir, code = None, index = 'date', type='crawl'):
+    Model, target_pool, prediction, start, end, Model_date = make_prediction(Index, trading_date, name, working_dir, code, type)
 
     QA_util_log_info('##JOB Now Add info to Predictions')
 

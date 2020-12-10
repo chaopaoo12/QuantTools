@@ -13,9 +13,11 @@ class QAIndexModelHour(QAModel):
         self.info['norm_type'] = norm_type
         print(self.data.shape)
 
-    def model_predict(self, start, end, type='crawl'):
+    def model_predict(self, start, end, code = None, type='crawl'):
+        if code is not None:
+            self.code = code
         QA_util_log_info('##JOB Got Data by {type}==== from {_from} to {_to}'.format(type=type, _from=start, _to=end), ui_log = None)
-        data = get_index_quant_hour(start, end, type= type)
+        data = get_index_quant_hour(start, end, code = self.code, type= type)
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','date','datetime','TARGET20',
