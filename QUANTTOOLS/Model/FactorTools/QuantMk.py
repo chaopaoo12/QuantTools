@@ -36,6 +36,8 @@ def get_quant_data_train(start_date, end_date, code=None, type = 'crawl', block 
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
+    codes = list(set(codes['code']))
+
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     elif type == 'model':
@@ -72,6 +74,8 @@ def get_quant_data_realtime(start_date, end_date, code=None, type = 'model', blo
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
+    codes = list(set(codes['code']))
+
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     elif type == 'model':
@@ -94,6 +98,7 @@ def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
     codes = codes + ['000001','399001','399006']
+    codes = list(set(codes))
 
     codes = [i for i in codes if i not in ['880602','880604', '880650', '880608']]
 
@@ -129,6 +134,8 @@ def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = Fals
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
+    codes = list(set(codes['code']))
+
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     elif type == 'model':
@@ -164,6 +171,8 @@ def get_hedge_data(start_date, end_date, code=None, type = 'crawl', block = True
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
+    codes = list(set(codes['code']))
+
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     elif type == 'model':
@@ -199,6 +208,8 @@ def get_hedge_data_realtime(start_date, end_date, code=None, type = 'model', blo
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
+    codes = list(set(codes['code']))
+
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_train_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
     elif type == 'model':
@@ -216,7 +227,7 @@ def get_500hedge_data(start_date, end_date, code=None, type = 'crawl', block = T
     if code is None:
         codes = code_list
     else:
-        codes = code_list[code_list.code.isin(code)]
+        codes = code_list[code_list.code.isin(code)].drop_duplicates()
 
     if block is True:
         data = QA.QA_fetch_stock_block()
@@ -228,7 +239,7 @@ def get_500hedge_data(start_date, end_date, code=None, type = 'crawl', block = T
     QA_util_log_info('##JOB Now Delete ST Stock')
     codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-    codes = list(codes['code'])
+    codes = list(set(codes['code']))
 
     QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
     codes = [i for i in codes if i.startswith('688') == False]
@@ -253,7 +264,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
         codes = code_list
     else:
         codes = code_list[code_list.code.isin(code)].drop_duplicates()
-    print(codes)
+
     if block is True:
         data = QA.QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
@@ -261,17 +272,18 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
         codes = codes[codes.code.isin(block)]
     else:
         pass
-    print(codes)
+
     QA_util_log_info('##JOB Now Delete ST Stock')
     codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
     codes = list(codes['code'])
-    print(codes)
+
     QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
-    print(codes)
+    codes = list(set(codes['code']))
+
     if type == 'crawl':
         res = QA_fetch_stock_hour_pre(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type)
     elif type == 'model':
@@ -291,6 +303,7 @@ def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
     codes = codes + ['000001','399001','399006']
+    codes = list(set(codes))
 
     codes = [i for i in codes if i not in ['880602','880604', '880650', '880608']]
 
@@ -319,7 +332,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
     QA_util_log_info('##JOB Now Delete ST Stock')
     codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-    codes = list(codes['code'])
+    codes = list(set(codes['code']))
 
     QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
     codes = [i for i in codes if i.startswith('688') == False]
@@ -344,6 +357,7 @@ def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', metho
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
     codes = codes + ['000001','399001','399006']
+    codes = list(set(codes))
 
     codes = [i for i in codes if i not in ['880602','880604', '880650', '880608']]
 
