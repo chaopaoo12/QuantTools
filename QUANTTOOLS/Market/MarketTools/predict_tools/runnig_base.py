@@ -62,7 +62,7 @@ def predict_stock_dev(trading_date, predict_func1, predict_func2, predict_func3,
     save_prediction({'date': trading_date, 'target_pool':stock_tar, 'prediction':stock_b}, file_name, working_dir)
     prediction_report(QA_util_get_real_date(trading_date), stock_tar, stock_b, model_date, top_num, exceptions, percent,
                       name_list = ['NAME','INDUSTRY'],
-                      value_ist = ['DAY_PROB','DAY_RANK','HOUR_PROB','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
+                      value_ist = ['DAY_PROB','DAY_RANK','HOUR_PROB','MIN_PROB','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
                       sort_mark ='DAY_RANK',
-                      selec_list=['NAME','INDUSTRY','DAY_PROB','HOUR_PROB','DAY_RANK'],
+                      selec_list=['NAME','INDUSTRY','DAY_PROB','HOUR_PROB','MIN_PROB','DAY_RANK'],
                       account='name:client-1', ui_log = None)
