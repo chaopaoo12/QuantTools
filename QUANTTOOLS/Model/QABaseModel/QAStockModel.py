@@ -126,7 +126,7 @@ class QAStockModel(QAModel):
         train.loc[:,'RANK'] = train['O_PROB'].groupby('date').rank(ascending=False)
 
         if type == 'crawl':
-            train = train.join(data[['INDUSTRY','TERNS','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
+            train = train.join(data[['INDUSTRY','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
             b = train[['INDUSTRY','TERNS','y_pred','Z_PROB','O_PROB','RANK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
         elif type == 'model':
             b = train[['INDUSTRY','TERNS','y_pred','Z_PROB','O_PROB','RANK']]
