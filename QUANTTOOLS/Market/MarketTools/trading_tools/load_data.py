@@ -17,7 +17,7 @@ def load_data(func, trading_date, working_dir, file_name):
 
     try:
         r_tar = target_pool.loc[trading_date]
-        prediction_tar = prediction.loc[trading_date]
+        prediction_tar = prediction
     except:
         r_tar = None
         prediction_tar =  None
