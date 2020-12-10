@@ -9,6 +9,8 @@ def load_data(trading_date, working_dir, file_name):
         check_prediction(prediction, trading_date)
         target_pool = prediction['target_pool']
         prediction = prediction['prediction']
+        print(target_pool)
+        print(prediction)
     except:
         pass
 
