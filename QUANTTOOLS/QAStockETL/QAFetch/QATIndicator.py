@@ -321,7 +321,7 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
         return None
     else:
         data = get_indicator(data, type)
-        data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]].reset_index()
+        data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]]
         data = data[data.date.isin(rng1)]
         data['CCI_JC'] = data['CCI_CROSS1'] + data['CCI_CROSS3']
         data['CCI_SC'] = data['CCI_CROSS2'] + data['CCI_CROSS4']

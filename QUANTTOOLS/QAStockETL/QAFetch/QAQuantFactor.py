@@ -490,12 +490,10 @@ def QA_fetch_get_stock_quant_hour(code, start_date, end_date):
     res = pd.DataFrame()
     for i in code:
         res = res.append(QA_fetch_get_stock_indicator_realtime(i, start_date, end_date, type = 'hour'))
-    res = res.set_index(['datetime','code'])
     return(res)
 
 def QA_fetch_get_stock_quant_min(code, start_date, end_date):
     res = pd.DataFrame()
     for i in code:
         res = res.append(QA_fetch_get_stock_indicator_realtime(i, start_date, end_date, type = 'min'))
-    res = res.set_index(['datetime','code'])
     return(res)
