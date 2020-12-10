@@ -75,10 +75,10 @@ class QAStockModel15Min(QAModel):
         train.loc[:,'RANK'] = train['O_PROB'].groupby('datetime').rank(ascending=False)
 
         if type == 'crawl':
-            train = train.join(data[['INDUSTRY','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
-            b = train[['INDUSTRY','y_pred','Z_PROB','O_PROB','RANK','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
+            train = train.join(data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
+            b = train[['y_pred','Z_PROB','O_PROB','RANK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
         elif type == 'model':
-            b = train[['INDUSTRY','y_pred','Z_PROB','O_PROB','RANK']]
+            b = train[['y_pred','Z_PROB','O_PROB','RANK']]
         elif type == 'real':
             b = train[['y_pred','Z_PROB','O_PROB','RANK']]
         return(b[b.y_pred==1], b)
