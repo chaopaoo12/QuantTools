@@ -4,7 +4,7 @@ from .concat_predict import (concat_predict,concat_predict_hour,concat_predict_1
                              concat_predict_real,concat_predict_crawl,concat_predict_hedge,
                              concat_predict_index,concat_predict_indexhour,concat_predict_index15min)
 from .setting import working_dir, percent, exceptions, top
-from QUANTTOOLS.Market.MarketTools import predict_base, predict_index_base, predict_index_dev
+from QUANTTOOLS.Market.MarketTools import predict_base, predict_index_base, predict_index_dev, predict_stock_dev
 
 def predict(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict, model_name = 'stock_xg', file_name = 'prediction', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
@@ -46,7 +46,7 @@ def predict_index_summary(trading_date, top_num=top, working_dir=working_dir):
                       file_name = 'prediction_index_summary', top_num=top_num, working_dir=working_dir)
 
 def predict_stock_summary(trading_date, top_num=top, working_dir=working_dir):
-    predict_index_dev(trading_date,
+    predict_stock_dev(trading_date,
                       predict_func1 =concat_predict, predict_func2 =concat_predict_hour, predict_func3 =None,
                       day_moel = 'stock_mars_day', hour_model='stock_mars_hour', min_model=None,
                       file_name = 'prediction_stock_summary', top_num=top_num, working_dir=working_dir)
