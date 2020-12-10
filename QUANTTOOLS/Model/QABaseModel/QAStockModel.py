@@ -123,7 +123,7 @@ class QAStockModel(QAModel):
         bina = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
         bina.index = train.index
         train[['Z_PROB','O_PROB']] = bina
-        train.loc[:,'RANK'] = train['O_PROB'].groupby('datetime').rank(ascending=False)
+        train.loc[:,'RANK'] = train['O_PROB'].groupby('date').rank(ascending=False)
 
         if type == 'crawl':
             train = train.join(data[['INDUSTRY','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
