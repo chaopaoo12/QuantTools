@@ -489,11 +489,13 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, norm_type='norm
 def QA_fetch_get_stock_quant_hour(code, start_date, end_date):
     res = pd.DataFrame()
     for i in code:
+        print(i)
         res = res.append(QA_fetch_get_stock_indicator_realtime(i, start_date, end_date, type = 'hour'))
     return(res)
 
 def QA_fetch_get_stock_quant_min(code, start_date, end_date):
     res = pd.DataFrame()
     for i in code:
+        print(i)
         res = res.append(QA_fetch_get_stock_indicator_realtime(i, start_date, end_date, type = 'min'))
     return(res)
