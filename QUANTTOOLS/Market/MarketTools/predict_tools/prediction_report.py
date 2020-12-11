@@ -156,20 +156,24 @@ def Index_Reporter(trading_date, target_pool, top_num=5):
 
     return(current_details)
 
-def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui_log = None):
+def Index_Report(trading_date, prediction, hour_prediction, model_date, ui_log = None):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
 
     ###目前趋势中的指数
-    current_details = prediction[(prediction.TERNS_HR == 1)]
+    terns_index = prediction[(prediction.TERNS_HR == 1)].loc[trading_date]
 
-    ###预测为正T
-    currentall_details = Index_Reporter(trading_date, target_pool)
+    ###近期强势趋势可能延续的指数
+    terns_fulture = prediction[(prediction.TERNS_HR == 1) & (prediction.HOUR_PROB >= 0.95)].loc[trading_date]
 
-    ###预测TOP
-    top_details = Index_Reporter(trading_date, prediction, top_num)
+    ###近期表现强势的指数
+    top_index = prediction[prediction.INDEX_TARGET5 > 5].loc[trading_date]
 
-    ####预测的最终结果
-    target_fd = current_details.loc[trading_date].sort_values('DAY_RANK')
+    ####今日转好趋势的指数
+    hour_prediction['SHIFT_O_PROB'] = hour_prediction['O_PROB'].groupby('code').shift()
+    target_fd = hour_prediction[(hour_prediction.O_PROB - hour_prediction.SHIFT_O_PROB >= 0.5) & (hour_prediction.O_PROB > 0.95)].reset_index()
+    target_fd = target_fd.assign(date = target_fd.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code']).loc[trading_date]
+
+    ###小时级趋势延续至日线 不需要
 
     ####大盘情况预测
     market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
@@ -184,9 +188,9 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
         send_email('交易报告:'+ trading_date, "模型训练日期获取运算失败", trading_date)
 
     try:
-        target_body = build_table(target_fd, '目标持仓')
+        terns_body = build_table(terns_index, '目前趋势中的指数')
     except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:目标持仓", trading_date)
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:目前趋势中的指数", trading_date)
 
     try:
         market_000001 = build_table(market_000001, '上证指数情况')
@@ -205,15 +209,19 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
 
     #########
     try:
-        modelhis_body = build_table(current_details, '模型周期内选股记录')
+        terns_ful_body = build_table(terns_fulture, '近期强势趋势可能延续的指数')
     except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内选股记录", trading_date)
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:近期强势趋势可能延续的指数", trading_date)
 
     try:
-        modeltophis_body = build_table(top_details, '模型周期内TOP选股记录')
+        terns_his_body = build_table(top_index, '近期表现强势的指数')
     except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:模型周期内选股记录", trading_date)
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:近期表现强势的指数", trading_date)
 
+    try:
+        terns_t_body = build_table(target_fd, '今日转好趋势的指数')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:今日转好趋势的指数", trading_date)
 
     if target_fd is not None:
         title = '市场状态报告'
@@ -222,8 +230,8 @@ def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui
 
     try:
         msg = build_email(build_head(),err_msg,
-                          target_body,market_000001,market_399001,market_399006,
-                          modelhis_body, modeltophis_body)
+                          terns_body,terns_ful_body,market_000001,market_399001,market_399006,
+                          terns_his_body, terns_t_body)
         send_actionnotice("prediction_report",
                           '交易报告:{}'.format(trading_date),
                           '模型运行完毕',
