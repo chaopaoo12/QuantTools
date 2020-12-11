@@ -36,7 +36,7 @@ def minmodel_train(date, working_dir=working_dir):
 
     min_model = load_data(min_model, start_date, end_date, norm_type=None)
 
-    min_model = prepare_data(min_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 1), mark = -5, col = 'TERNS_15M', type='shift')
+    min_model = prepare_data(min_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 1), mark = -15, col = 'TERNS_15M', type='shift')
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
