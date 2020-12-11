@@ -20,18 +20,6 @@ def prepare_data(model, start_date, end_date, mark = 0.3, col = 'TARGET5', type 
                         train_end=end_date)
     return(model)
 
-def prepare_train(model, date, col = 'TARGET5', k = 3, start = "-01-01", shift = 5, ui_log = None):
-    QA_util_log_info('##JOB01 Now Model Init ==== {}'.format(str(date)), ui_log)
-
-    QA_util_log_info('##JOB02 Now Stock Prepare Model Data ==== {}'.format(str(date)), ui_log)
-    model.get_data(start=str(int(date[0:4])-k)+start, end= QA_util_get_last_day(QA_util_get_real_date(date), shift))
-    QA_util_log_info('##JOB03 Now Set Stock Model Target ==== {}'.format(str(date)), ui_log)
-    model.set_target(col = col, mark = 0.3, type = 'percent')
-    QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(date)), ui_log)
-    model.set_train_rng(train_start=str(int(date[0:4])-k)+start,
-                              train_end=QA_util_get_last_day(QA_util_get_real_date(date), shift))
-    return(model)
-
 def start_train(model, cols, other_params, thresh=0, drop=0.99):
 
     model.prepare_data(thresh=thresh, drop=drop, cols = cols)
@@ -63,3 +51,16 @@ def save_report(model, name, working_dir=None):
     except:
         pass
     return(0)
+
+
+def prepare_train(model, date, col = 'TARGET5', k = 3, start = "-01-01", shift = 5, ui_log = None):
+    QA_util_log_info('##JOB01 Now Model Init ==== {}'.format(str(date)), ui_log)
+
+    QA_util_log_info('##JOB02 Now Stock Prepare Model Data ==== {}'.format(str(date)), ui_log)
+    model.get_data(start=str(int(date[0:4])-k)+start, end= QA_util_get_last_day(QA_util_get_real_date(date), shift))
+    QA_util_log_info('##JOB03 Now Set Stock Model Target ==== {}'.format(str(date)), ui_log)
+    model.set_target(col = col, mark = 0.3, type = 'percent')
+    QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(date)), ui_log)
+    model.set_train_rng(train_start=str(int(date[0:4])-k)+start,
+                        train_end=QA_util_get_last_day(QA_util_get_real_date(date), shift))
+    return(model)

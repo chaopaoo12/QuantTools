@@ -36,7 +36,7 @@ class QAModel():
         self.TR_RNG = QA_util_get_trade_range(train_start, train_end)
         self.info['train_rng'] = [train_start,train_end]
 
-    def prepare_data(self,thresh = None, drop = 0, cols= None):
+    def prepare_data(self, thresh = None, drop = 0, cols= None):
 
         if cols is None:
             self.cols = [i for i in self.data.columns if i not in ['moon','star','mars','venus','sun','MARK','date','datetime',
@@ -90,13 +90,13 @@ class QAModel():
 
         self.info['thresh'] = thresh
         self.info['drop'] = drop
+        self.info['cols'] = self.cols
 
     def copy_model(self, object):
         self.data = object.data
         self.info = object.info
 
     def save_model(self, name, working_dir = 'D:\\model\\current'):
-        self.info['cols'] = self.cols
         QA_util_log_info('##JOB Now Model Saving ===== {}'.format(self.info['date']), ui_log = None)
 
         if mkdir(working_dir):
