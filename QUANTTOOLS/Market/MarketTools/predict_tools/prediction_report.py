@@ -184,9 +184,9 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     ###小时级趋势延续至日线 不需要
 
     ####大盘情况预测
-    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
-    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
-    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET']]
+    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET']]
+    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET']]
 
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)))
 
