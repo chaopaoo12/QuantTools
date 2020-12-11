@@ -160,15 +160,13 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)))
 
     ###目前趋势中的指数
-    print(prediction)
-    print(hour_prediction)
     terns_index = prediction[(prediction.TERNS_HR == 1)].loc[trading_date]
 
     ###近期强势趋势可能延续的指数
     terns_fulture = prediction[(prediction.TERNS_HR == 1) & (prediction.HOUR_PROB >= 0.95)].loc[trading_date]
 
     ###近期表现强势的指数
-    top_index = prediction[prediction.INDEX_TARGET5 > 5].loc[trading_date]
+    top_index = prediction[prediction.INDEX_TARGET5 > 5]
 
     ####今日转好趋势的指数
     hour_prediction['SHIFT_O_PROB'] = hour_prediction['O_PROB'].groupby('code').shift()
