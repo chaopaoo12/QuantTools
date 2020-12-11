@@ -53,6 +53,7 @@ def predict_stock_dev(trading_date, predict_func1, predict_func2, predict_func3,
         day_tar, day_b, start, end, model_date = predict_func1(trading_date, model_name = day_moel,  working_dir=working_dir)
         stock_b[['NAME','INDUSTRY','TERNS','DAY_PROB','DAY_RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']] = day_b[['NAME','INDUSTRY','TERNS','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
         res['date'] = trading_date
+        res['day_prediction'] = day_b
 
     if predict_func2 is not None:
         hour_tar, hour_b, start, end, model_date = predict_func2(trading_date, model_name = hour_model,  working_dir=working_dir)

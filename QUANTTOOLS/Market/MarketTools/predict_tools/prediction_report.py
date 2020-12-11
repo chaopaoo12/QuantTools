@@ -159,8 +159,8 @@ def Index_Reporter(trading_date, target_pool, top_num=5):
 def Index_Report(trading_date, target_pool, prediction, model_date, top_num,  ui_log = None):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
 
-    ###预测为正TOP
-    current_details = Index_Reporter(trading_date, target_pool, top_num)
+    ###目前趋势中的指数
+    current_details = prediction[(prediction.TERNS_HR == 1)]
 
     ###预测为正T
     currentall_details = Index_Reporter(trading_date, target_pool)
