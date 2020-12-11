@@ -43,7 +43,7 @@ def predict_index_dev(trading_date, predict_func1, predict_func2, predict_func3,
     res['prediction'] = stock_b
 
     save_prediction(res, file_name, working_dir)
-    Index_Report(QA_util_get_real_date(trading_date), stock_tar, stock_b, model_date, top_num)
+    Index_Report(QA_util_get_real_date(trading_date), res['prediction'], res['hour_prediction'], model_date, )
 
 
 def predict_stock_dev(trading_date, predict_func1, predict_func2, predict_func3, day_moel, hour_model, min_model, file_name, top_num, percent, working_dir, exceptions):
