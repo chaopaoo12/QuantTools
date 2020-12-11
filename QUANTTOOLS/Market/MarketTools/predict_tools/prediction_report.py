@@ -171,7 +171,9 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     ####今日转好趋势的指数
     hour_prediction['SHIFT_O_PROB'] = hour_prediction['O_PROB'].groupby('code').shift()
     target_fd = hour_prediction[(hour_prediction.O_PROB - hour_prediction.SHIFT_O_PROB >= 0.5) & (hour_prediction.O_PROB > 0.95)].reset_index()
-    target_fd = target_fd.assign(date = target_fd.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code']).loc[trading_date]
+    target_fd = target_fd.assign(date = target_fd.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
+    print(target_fd)
+    target_fd = target_fd.loc[trading_date]
 
     ###小时级趋势延续至日线 不需要
 
