@@ -77,11 +77,13 @@ class QAStockModelHour(QAModel):
 
         if type == 'crawl':
             train = train.join(data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
-            b = train[['y_pred','TERNS_HR','Z_PROB','O_PROB','RANK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
+            b = train[['y_pred','Z_PROB','O_PROB','RANK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
         elif type == 'model':
-            b = train[['TERNS_HR','y_pred','Z_PROB','O_PROB','RANK']]
+            b = train[['y_pred','Z_PROB','O_PROB','RANK']]
         elif type == 'real':
-            b = train[['TERNS_HR','y_pred','Z_PROB','O_PROB','RANK']]
+            b = train[['y_pred','Z_PROB','O_PROB','RANK'] ]
+
+        b = b.join(data[['TERNS_HR']])
         return(b[b.y_pred==1], b)
 
 if __name__ == 'main':

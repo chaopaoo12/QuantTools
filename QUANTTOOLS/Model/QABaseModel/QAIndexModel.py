@@ -66,11 +66,13 @@ class QAIndexModel(QAModel):
 
         if type == 'crawl':
             train = train.join(data[['PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']])
-            b = train[['TERNS','y_pred','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+            b = train[['y_pred','Z_PROB','O_PROB','RANK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
         elif type == 'model':
-            b = train[['TERNS','y_pred','Z_PROB','O_PROB','RANK']]
+            b = train[['y_pred','Z_PROB','O_PROB','RANK']]
         elif type == 'real':
-            b = train[['TERNS','y_pred','Z_PROB','O_PROB','RANK']]
+            b = train[['y_pred','Z_PROB','O_PROB','RANK']]
+
+        b = b.join(data[['TERNS']])
         return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
