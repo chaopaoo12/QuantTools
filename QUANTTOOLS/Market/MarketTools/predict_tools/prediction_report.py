@@ -163,18 +163,24 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     terns_index = prediction[(prediction.TERNS_HR == 1)].loc[trading_date]
 
     ###近期强势趋势可能延续的指数
-    terns_fulture = prediction[(prediction.TERNS_HR == 1) & (prediction.HOUR_PROB >= 0.95)].loc[trading_date]
-
+    try:
+        terns_fulture = prediction[(prediction.TERNS_HR == 1) & (prediction.HOUR_PROB >= 0.95)].loc[trading_date]
+    except:
+        terns_fulture = None
     ###近期表现强势的指数
-    top_index = prediction[prediction.INDEX_TARGET5 > 5]
+    try:
+        top_index = prediction[prediction.INDEX_TARGET5 > 5]
+    except:
+        top_index = None
 
     ####今日转好趋势的指数
     hour_prediction['SHIFT_O_PROB'] = hour_prediction['O_PROB'].groupby('code').shift()
     target_fd = hour_prediction[(hour_prediction.O_PROB - hour_prediction.SHIFT_O_PROB >= 0.5) & (hour_prediction.O_PROB > 0.95)].reset_index()
     target_fd = target_fd.assign(date = target_fd.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-    print(target_fd)
-    target_fd = target_fd.loc[trading_date]
-
+    try:
+        target_fd = target_fd.loc[trading_date]
+    except:
+        target_fd = None
     ###小时级趋势延续至日线 不需要
 
     ####大盘情况预测
@@ -225,10 +231,8 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:今日转好趋势的指数", trading_date)
 
-    if target_fd is not None:
-        title = '市场状态报告'
-    else:
-        title = '空仓交易报告'
+    title = '市场状态报告'
+
 
     try:
         msg = build_email(build_head(),err_msg,
