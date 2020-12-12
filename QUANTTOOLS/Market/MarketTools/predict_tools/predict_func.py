@@ -2,7 +2,8 @@
 
 import joblib
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_name,QA_fetch_stock_name,QA_fetch_stock_industry
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_name,QA_fetch_stock_name
+from QUANTAXIS import QA_fetch_stock_info
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Message import send_actionnotice, send_email
 from datetime import datetime,timedelta
@@ -45,7 +46,7 @@ def make_stockprediction(Stock, trading_date, name, working_dir, code = None, in
         target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME',})
         prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME'})
     else:
-        INDUSTRY = QA_fetch_stock_industry(prediction.reset_index()['code'].unique().tolist())
+        INDUSTRY = QA_fetch_stock_info(prediction.reset_index()['code'].unique().tolist())
         target_pool = target_pool.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME','industry':'INDUSTRY'})
         prediction = prediction.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME','industry':'INDUSTRY'})
 
