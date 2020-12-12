@@ -47,9 +47,6 @@ def make_stockprediction(Stock, trading_date, name, working_dir, code = None, in
         prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME'})
     else:
         INDUSTRY = QA_fetch_stock_info(prediction.reset_index()['code'].unique().tolist())[['industry']]
-        print(INDUSTRY)
-        print(target_pool)
-        print(NAME)
         target_pool = target_pool.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME','industry':'INDUSTRY'})
         prediction = prediction.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME','industry':'INDUSTRY'})
 
