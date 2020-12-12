@@ -1,6 +1,6 @@
 
 from .train import daymodel_train, train_hedge, train_index, minmodel_train, hourmodel_train
-from .running import predict, predict_real, predict_hedge, predict_index, predict_daily, predict_hourly, predict_minly
+from .running import predict, predict_real, predict_hedge, predict_index, predict_daily, predict_hourly, predict_minly,predict_index_summary
 
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date
 
@@ -32,4 +32,4 @@ def hedge_train(trading_date):
     train_base(trading_date, train_hedge, predict_hedge)
 
 def index_train(trading_date):
-    train_base(trading_date, train_index, predict_index)
+    train_base(trading_date, train_index, predict_index_summary)
