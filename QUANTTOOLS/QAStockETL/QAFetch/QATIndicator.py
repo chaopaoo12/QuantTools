@@ -331,6 +331,9 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
         data.loc[(data.CCI_TR == 0),'CCI_TR'] = np.nan
         data[['CCI_CROSS1','CCI_CROSS2','CCI_CROSS3','CCI_CROSS4','CCI_JC','CCI_SC','CCI_TR']] = data[['CCI_CROSS1','CCI_CROSS2','CCI_CROSS3','CCI_CROSS4','CCI_JC','CCI_SC','CCI_TR']].groupby('code').fillna(method='ffill')
         data['CCI_TR'] = data['CCI_TR'] -1
-        data['TERNS'] = data.apply(lambda x: (x.SHORT20 > 0) * (x.LONG60 > 0) * (x.LONG_AMOUNT > 0) * 1, axis=1)
+        if type == 'min':
+            data['TERNS'] = data.apply(lambda x: (x.SHORT20 > 0) * (x.LONG60 > 0) * 1, axis=1)
+        else:
+            data['TERNS'] = data.apply(lambda x: (x.SHORT20 > 0) * (x.LONG60 > 0) * (x.LONG_AMOUNT > 0) * 1, axis=1)
         data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
