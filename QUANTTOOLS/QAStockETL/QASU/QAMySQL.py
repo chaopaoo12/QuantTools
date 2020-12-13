@@ -784,7 +784,7 @@ def QA_etl_index_to_stock(ui_log= None):
     res = res.assign(stock = res.code.apply(lambda x:find_stock(x)))
     res = res.explode('stock')
     QA_util_log_info(
-        '##JOB Now ETL STOCK LIST ==== {}'.format(str(datetime.date.today())), ui_log)
+        '##JOB Now ETL INDEX TO STOCK ==== {}'.format(str(datetime.date.today())), ui_log)
     QA_util_sql_store_mysql(res, "index_stock",if_exists='replace')
     QA_util_log_info(
-        '##JOB ETL STOCK LIST HAS BEEN SAVED ==== {}'.format(str(datetime.date.today())), ui_log)
+        '##JOB ETL INDEX TO STOCK HAS BEEN SAVED ==== {}'.format(str(datetime.date.today())), ui_log)
