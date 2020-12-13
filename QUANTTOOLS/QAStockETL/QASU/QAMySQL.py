@@ -2,6 +2,7 @@
 
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_block_adv,QA_fetch_index_list_adv,
                                                QA_fetch_stock_day_adv)
+from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_usstock_xq_day_adv,QA_fetch_usstock_list
 from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_log_info)
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,
@@ -774,3 +775,16 @@ def QA_etl_index_technical_15min(start_date = QA_util_today_str(), end_date= Non
         data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
         QA_util_sql_store_mysql(data, "index_technical_15min",if_exists='append')
         QA_util_log_info('##JOB ETL INDEX TECHNICAL 15min HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+
+def QA_etl_index_to_stock(ui_log= None):
+    index_list = QA_fetch_index_list_adv()
+    code_list = QA_fetch_index_info(list(index_list.code))
+    codes = list(code_list[code_list.cate != '5'].code)
+    res= pd.DataFrame({'code' : codes})
+    res = res.assign(stock = res.code.apply(lambda x:find_stock(x)))
+    res = res.explode('stock')
+    QA_util_log_info(
+        '##JOB Now ETL STOCK LIST ==== {}'.format(str(datetime.date.today())), ui_log)
+    QA_util_sql_store_mysql(res, "index_stock",if_exists='replace')
+    QA_util_log_info(
+        '##JOB ETL STOCK LIST HAS BEEN SAVED ==== {}'.format(str(datetime.date.today())), ui_log)
