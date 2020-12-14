@@ -493,7 +493,7 @@ def QA_fetch_get_stock_quant_hour(code, start_date, end_date):
         QA_util_log_info('The {} of Total {} Stock Tech Indicator Hourly ==== {}'.format
                          ((code.index(i) +1), len(code), i))
         res = res.append(QA_fetch_get_stock_indicator_realtime(i, start_date, end_date, type = 'hour'))
-        time.sleep(0.5)
+        time.sleep(1.5)
     return(res)
 
 def QA_fetch_get_stock_quant_min(code, start_date, end_date):
@@ -502,5 +502,5 @@ def QA_fetch_get_stock_quant_min(code, start_date, end_date):
         QA_util_log_info('The {} of Total {} Stock Tech Indicator Minly ==== {}'.format
                          ((code.index(i) +1), len(code), i))
         res = res.append(QA_fetch_get_stock_indicator_realtime(i, start_date, end_date, type = 'min'))
-        time.sleep(0.5)
+        time.sleep(1)
     return(res)
