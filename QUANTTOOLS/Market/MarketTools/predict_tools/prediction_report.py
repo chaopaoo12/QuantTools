@@ -160,7 +160,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)))
 
     ###目前趋势中的指数
-    terns_index = prediction[(prediction.TERNS_HR == 1)].loc[trading_date][['NAME','TERNS','TERNS_HR','TERNS_15M','DAY_PROB','HOUR_PROB','MIN_PROB','SHIFT_DAY_PROB','SHIFT_HOUR_PROB']]
+    terns_index = prediction[(prediction.TERNS_HR == 1)].loc[trading_date][['NAME','TERNS','TERNS_HR','DAY_PROB','HOUR_PROB']]
 
     ###近期强势趋势可能延续的指数
     try:
