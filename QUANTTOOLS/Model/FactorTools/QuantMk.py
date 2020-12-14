@@ -43,10 +43,6 @@ def get_quant_data_train(start_date, end_date, code=None, type = 'crawl', block 
         res = QA_fetch_stock_quant_data_train(codes, start_date, end_date, block = sub_block, norm_type=norm_type)
     elif type == 'real':
         pass
-    #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
-    #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
-    #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
-    #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
 def get_quant_data_realtime(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
@@ -80,10 +76,6 @@ def get_quant_data_realtime(start_date, end_date, code=None, type = 'model', blo
         res = QA_fetch_stock_quant_data_train(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
         pass
-    #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
-    #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
-    #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
-    #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
 def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
@@ -139,10 +131,6 @@ def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = Fals
         res = QA_fetch_stock_quant_data(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
         pass
-    #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
-    #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
-    #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
-    #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
 def get_hedge_data(start_date, end_date, code=None, type = 'crawl', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
@@ -175,10 +163,6 @@ def get_hedge_data(start_date, end_date, code=None, type = 'crawl', block = True
         res = QA_fetch_stock_quant_data(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
         pass
-    #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
-    #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
-    #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
-    #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
 def get_hedge_data_realtime(start_date, end_date, code=None, type = 'model', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
@@ -211,10 +195,6 @@ def get_hedge_data_realtime(start_date, end_date, code=None, type = 'model', blo
         res = QA_fetch_stock_quant_data_train(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
         pass
-    #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
-    #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
-    #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
-    #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
 def get_500hedge_data(start_date, end_date, code=None, type = 'crawl', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
@@ -247,10 +227,6 @@ def get_500hedge_data(start_date, end_date, code=None, type = 'crawl', block = T
         res = QA_fetch_stock_quant_data(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
         pass
-    #res = res[(res['RNG_L_O'] <= 5 & res['LAG_TOR_O'] < 1)]
-    #dummy_industry = pd.get_dummies(res['INDUSTRY']).astype(float)
-    #dummy_industry.columns = ['I_' + i for i in list(dummy_industry.columns)]
-    #res = pd.concat([res[[col for col in list(res.columns) if col != 'INDUSTRY']],dummy_industry],axis = 1)
     return(res)
 
 def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):

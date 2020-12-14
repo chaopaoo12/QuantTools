@@ -2,6 +2,7 @@
 from .running import predict_index,predict,predict_hourly,predict_index_summary,predict_stock_summary
 
 def daily_run(trading_date):
+    predict(trading_date)
     predict_stock_summary(trading_date)
 
 def index_run(trading_date):
