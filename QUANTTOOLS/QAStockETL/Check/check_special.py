@@ -61,7 +61,11 @@ def check_wy_financial(mark_day=None, type='day', ui_log = None):
         mark_day = QA_util_today_str()
 
     data = QA_fetch_financial_code_wy()
-    res = data[data.real_date < mark_day]
+    if data is not None:
+        res = data[data.real_date < mark_day]
+    else:
+        res = None
+
     if res is None or res.shape[0] == 0:
         QA_util_log_info(
             '##JOB Now Check WY Financial Reports data Success ============== {deal_date}'.format(deal_date=mark_day), ui_log)
