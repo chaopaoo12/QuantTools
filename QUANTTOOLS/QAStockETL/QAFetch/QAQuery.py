@@ -1040,15 +1040,18 @@ def QA_fetch_financial_code_tdx(ndays=30):
 
 def QA_fetch_financial_code_ttm(ndays=30):
     start = str(QA_util_get_pre_trade_date(QA_util_today_str(),ndays))
-    data = QA_fetch_stock_financial_calendar(QA.QA_fetch_stock_list_adv().code.tolist(),start = start)[['code','real_date','report_date']]
-    data = data.assign(report_date= data.report_date.apply(lambda x:str(x)[0:10]))
-    data = data.assign(real_date= data.real_date.apply(lambda x:str(x)[0:10]))
-    start_date = str(data['report_date'].min())[0:10]
-    end_date = str(data['report_date'].max())[0:10]
-    code = list(set(data['code']))
-    ttm = QA_fetch_financial_TTM(code,start_date,end_date)[['CODE','REPORT_DATE']].reset_index(drop=True)
-    ttm = ttm.assign(report_date= ttm.REPORT_DATE.apply(lambda x:str(x)[0:10]))
-    return(data[~(data['code'].isin(ttm['CODE']) & data['report_date'].isin(ttm['REPORT_DATE']))])
+    try:
+        data = QA_fetch_stock_financial_calendar(QA.QA_fetch_stock_list_adv().code.tolist(),start = start)[['code','real_date','report_date']]
+        data = data.assign(report_date= data.report_date.apply(lambda x:str(x)[0:10]))
+        data = data.assign(real_date= data.real_date.apply(lambda x:str(x)[0:10]))
+        start_date = str(data['report_date'].min())[0:10]
+        end_date = str(data['report_date'].max())[0:10]
+        code = list(set(data['code']))
+        ttm = QA_fetch_financial_TTM(code,start_date,end_date)[['CODE','REPORT_DATE']].reset_index(drop=True)
+        ttm = ttm.assign(report_date= ttm.REPORT_DATE.apply(lambda x:str(x)[0:10]))
+        return(data[~(data['code'].isin(ttm['CODE']) & data['report_date'].isin(ttm['REPORT_DATE']))])
+    except:
+        return(None)
 
 def QA_fetch_interest_rate(start, end=None, format='pd', collections=DATABASE.interest_rate):
     '获取股票日线'
