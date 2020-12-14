@@ -1022,15 +1022,18 @@ def QA_fetch_code_old(ndays=90,date=QA_util_today_str()):
 
 def QA_fetch_financial_code_tdx(ndays=30):
     start = str(QA_util_get_pre_trade_date(QA_util_today_str(),ndays))
-    data = QA_fetch_stock_financial_calendar(QA.QA_fetch_stock_list_adv().code.tolist(),start = start)[['code','real_date','report_date']]
-    data = data.assign(report_date= data.report_date.apply(lambda x:str(x)[0:10]))
-    data = data.assign(real_date= data.real_date.apply(lambda x:str(x)[0:10]))
-    start_date = str(data['report_date'].min())[0:10]
-    end_date = str(data['report_date'].max())[0:10]
-    code = list(set(data['code']))
-    tdx = QA_fetch_financial_report(code,start_date,end_date)[['code','report_date']].reset_index(drop=True)
-    tdx = tdx.assign(report_date= tdx.report_date.apply(lambda x:str(x)[0:10]))
-    return(data[~(data['code'].isin(tdx['code']) & data['report_date'].isin(tdx['report_date']))])
+    try:
+        data = QA_fetch_stock_financial_calendar(QA.QA_fetch_stock_list_adv().code.tolist(),start = start)[['code','real_date','report_date']]
+        data = data.assign(report_date= data.report_date.apply(lambda x:str(x)[0:10]))
+        data = data.assign(real_date= data.real_date.apply(lambda x:str(x)[0:10]))
+        start_date = str(data['report_date'].min())[0:10]
+        end_date = str(data['report_date'].max())[0:10]
+        code = list(set(data['code']))
+        tdx = QA_fetch_financial_report(code,start_date,end_date)[['code','report_date']].reset_index(drop=True)
+        tdx = tdx.assign(report_date= tdx.report_date.apply(lambda x:str(x)[0:10]))
+        return(data[~(data['code'].isin(tdx['code']) & data['report_date'].isin(tdx['report_date']))])
+    except:
+        return(None)
 
 def QA_fetch_financial_code_ttm(ndays=30):
     start = str(QA_util_get_pre_trade_date(QA_util_today_str(),ndays))
