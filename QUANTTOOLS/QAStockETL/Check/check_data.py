@@ -172,7 +172,7 @@ def check_sinastock_techweek(mark_day = None):
 
 
 def QA_fetch_stock_quant_data(code, start, end):
-    return(QA_fetch_stock_quant_data_adv(code, start, end).data)
+    return(QA_fetch_stock_quant_data_adv(code, start, end, norm_type=None).data)
 
 def check_stock_quant(mark_day = None):
     return(check_stock_data(func = QA_fetch_stock_quant_data, mark_day = mark_day, title = 'Stock Quant'))
