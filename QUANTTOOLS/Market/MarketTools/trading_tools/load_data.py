@@ -10,7 +10,7 @@ def load_data(func, trading_date, working_dir, file_name):
         target_pool = prediction['target_pool']
         prediction_tar = prediction['prediction']
     except:
-        func(trading_date, top_num=10, working_dir=working_dir)
+        func(trading_date, working_dir=working_dir)
         prediction = load_prediction(file_name, working_dir)
         target_pool = prediction['target_pool']
         prediction_tar = prediction['prediction']

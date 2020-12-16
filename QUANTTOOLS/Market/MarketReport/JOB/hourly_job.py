@@ -24,55 +24,46 @@ def INDEX_hourly(trading_date, hour, strategy_id):
 
 def daily_job(trading_date, account = 'name:client-1', strategy_id = '趋势跟踪'):
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    target_tm = int(time.strftime("%H%M%S", time.strptime("09:30:00", "%H:%M:%S")))
-    target_ea = int(time.strftime("%H%M%S", time.strptime("11:30:00", "%H:%M:%S")))
-    target_ae = int(time.strftime("%H%M%S", time.strptime("13:00:00", "%H:%M:%S")))
-    target_af = int(time.strftime("%H%M%S", time.strptime("15:00:00", "%H:%M:%S")))
 
-    while tm < target_tm:
+    morning_begin = "09:30:00"
+    morning_end = "11:30:00"
+    afternoon_begin = "13:00:00"
+    afternoon_end = "15:00:00"
+
+    while tm < int(time.strftime(morning_begin, time.strptime("09:30:00", "%H:%M:%S"))):
         time.sleep(15)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
-    while tm <= int(time.strftime("%H%M%S", time.strptime("10:30:00", "%H:%M:%S"))):
-        time.sleep(15)
-        tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    QA_util_log_info("10:30:00")
-    daily(trading_date, "10:30:00", account, strategy_id)
+    mark = 0
+    mark_tm = morning_begin
 
-    while tm <= int(time.strftime("%H%M%S", time.strptime("11:30:00", "%H:%M:%S"))):
-        time.sleep(15)
-        tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    QA_util_log_info("11:30:00")
-    daily(trading_date, "11:30:00", account, strategy_id)
+    while tm < int(time.strftime("%H%M%S", time.strptime(afternoon_end, "%H:%M:%S"))):
 
-    while tm > target_ea and tm < target_ae:
-        time.sleep(600)
+        if tm >= int(time.strftime("%H%M%S", time.strptime(mark_tm))):
+
+            if mark_tm in ["10:30:00", "11:30:00", "14:00:00", "14:50:00"]:
+                ####job1 小时级报告 指数小时级跟踪
+                daily(trading_date, mark_tm, account, strategy_id)
+                INDEX_hourly(trading_date, strategy_id)
+                pass
+
+            time.sleep(5)
+            ###15分钟级程序 1 爬虫 2 分析
+
+            if tm > int(time.strftime("%H%M%S", time.strptime(morning_end, "%H:%M:%S"))):
+                mark = 0
+                mark_tm = (datetime.datetime.strptime(afternoon_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
+            else:
+                mark += 1
+                mark_tm = (datetime.datetime.strptime(morning_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
+
+        while tm > int(time.strftime("%H%M%S", time.strptime(morning_end, "%H:%M:%S"))) and tm < int(time.strftime("%H%M%S", time.strptime(afternoon_begin, "%H:%M:%S"))):
+            time.sleep(60)
+            tm = int(datetime.datetime.now().strftime("%H%M%S"))
+
+        time.sleep(60)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
-    while tm <= int(time.strftime("%H%M%S", time.strptime("14:00:00", "%H:%M:%S"))):
-        time.sleep(15)
-        tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    QA_util_log_info("14:00:00")
-    daily(trading_date, "14:00:00", account, strategy_id)
-
-    while tm <= int(time.strftime("%H%M%S", time.strptime("14:50:00", "%H:%M:%S"))):
-        time.sleep(15)
-        tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    QA_util_log_info("15:00:00")
-    daily(trading_date, "15:00:00", account, strategy_id)
-
-
-def index_job(trading_date, strategy_id = '趋势跟踪'):
-    tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    target_tm = int(time.strftime("%H%M%S", time.strptime("09:30:00", "%H:%M:%S")))
-    target_ea = int(time.strftime("%H%M%S", time.strptime("11:30:00", "%H:%M:%S")))
-    target_ae = int(time.strftime("%H%M%S", time.strptime("11:30:00", "%H:%M:%S")))
-    target_af = int(time.strftime("%H%M%S", time.strptime("11:30:00", "%H:%M:%S")))
-    while tm < target_tm:
-        tm = int(datetime.datetime.now().strftime("%H%M%S"))
-        INDEX_hourly(trading_date, strategy_id)
-        time.sleep(15)
-        if tm > target_ea and tm < target_ae:
-            time.sleep(600)
-        if tm > target_af:
-            break
+    if tm > int(time.strftime("%H%M%S", time.strptime(afternoon_begin, "%H:%M:%S"))):
+        ###time out
+        pass
