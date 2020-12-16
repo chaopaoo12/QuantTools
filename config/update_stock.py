@@ -57,8 +57,6 @@ if __name__ == '__main__':
             time.sleep(180)
             res = check_sinastock_adj(mark_day)
 
-        time.sleep(60)
-
         res = check_stock_techindex(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_technical_index_day(start_date=mark_day, end_date = mark_day)
