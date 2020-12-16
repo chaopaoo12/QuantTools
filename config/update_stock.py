@@ -66,6 +66,8 @@ if __name__ == '__main__':
 
         check_sinastock_techindex(mark_day)
 
+        QA_etl_stock_technical_day(mark_day, mark_day)
+
         res = check_stock_techweek(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 20:
             QA_SU_save_stock_technical_week_day(start_date=mark_day, end_date = mark_day)
@@ -73,7 +75,6 @@ if __name__ == '__main__':
 
         check_sinastock_techweek(mark_day)
 
-        QA_etl_stock_technical_day(mark_day, mark_day)
         QA_etl_stock_technical_week(mark_day, mark_day)
 
         #QA_SU_save_stock_technical_month_day(start_date = mark_day, end_date = mark_day)
