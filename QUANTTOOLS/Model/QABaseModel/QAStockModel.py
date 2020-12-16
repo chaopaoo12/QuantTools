@@ -76,6 +76,7 @@ class QAStockModel(QAModel):
                 train[i] = 0
                 n_cols.append(i)
         train.index = data.index
+        print(train)
         QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         QA_util_log_info(n_cols)
         QA_util_log_info(train.shape[0])
