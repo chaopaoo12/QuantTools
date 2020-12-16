@@ -58,7 +58,7 @@ if __name__ == '__main__':
             time.sleep(180)
             res = check_sinastock_adj(mark_day)
 
-        time.sleep(600)
+        time.sleep(60)
 
         #res = check_stock_alpha101(mark_day)
         #while res is None or (len(res[0]) + len(res[1])) > 20:
