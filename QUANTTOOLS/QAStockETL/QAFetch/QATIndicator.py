@@ -275,7 +275,7 @@ def QA_fetch_get_index_indicator_short(code, start_date, end_date, type = 'day')
 
 def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'day'):
     if type == 'min':
-        start = QA_util_get_pre_trade_date(start_date,12)
+        start = QA_util_get_pre_trade_date(start_date,20)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA_fetch_get_usstock_day_xq(code, start, end_date, period='15m', type='before').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp'])
@@ -322,7 +322,10 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
     else:
         data = get_indicator(data, type)
         data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]]
-        data = data[data.date.isin(rng1)]
+        if type in ['min','hour']:
+            data = data[data.date.isin(rng1)]
+        else:
+            data=data.loc[rng1]
         data['CCI_JC'] = data['CCI_CROSS1'] + data['CCI_CROSS3']
         data['CCI_SC'] = data['CCI_CROSS2'] + data['CCI_CROSS4']
         data.loc[data.CCI_JC==1,'CCI_JC'] = 2
@@ -335,5 +338,4 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
             data['TERNS'] = data.apply(lambda x: (x.SHORT20 > 0) * (x.LONG60 > 0) * 1, axis=1)
         else:
             data['TERNS'] = data.apply(lambda x: (x.SHORT20 > 0) * (x.LONG60 > 0) * (x.LONG_AMOUNT > 0) * 1, axis=1)
-        data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
