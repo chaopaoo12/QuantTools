@@ -106,6 +106,7 @@ class QAStockModel(QAModel):
                                   offset='WARNING',
                                   volume=None
                                   )
+        print(train)
         short_of_data = [i for i in target_code if i not in train.loc[end].reset_index().code.unique().tolist()]
 
         if len(short_of_data) > 0:
