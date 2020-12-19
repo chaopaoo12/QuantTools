@@ -1200,9 +1200,9 @@ def QA_fetch_index_target(codes, start_date, end_date,type='day', method = 'valu
         func2 = min_index_pct_log
 
     if type=='day':
-        cols = ['date','code','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']
+        cols = ['date','code','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10','INDEX_TARGET20']
     else:
-        cols = ['datetime','code','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']
+        cols = ['datetime','code','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10','INDEX_TARGET20']
 
     if method == 'value':
         res = data.groupby('code').apply(func1)[cols]
