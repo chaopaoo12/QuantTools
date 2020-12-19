@@ -3,6 +3,18 @@ from QUANTAXIS.QAIndicator.base import *
 from scipy import stats
 import pandas as pd
 
+def QA_indicator_MACD1(DataFrame, short=12, long=26, mid=9):
+    """
+    MACD CALC
+    """
+    CLOSE = DataFrame['close']
+
+    DIF = (EMA(CLOSE, short)-EMA(CLOSE, long))/(EMA(CLOSE, short)+EMA(CLOSE, long)/2)
+    DEA = EMA(DIF, mid)
+    MACD = (DIF-DEA)*2
+
+    return pd.DataFrame({'DIF': DIF, 'DEA': DEA, 'MACD': MACD})
+
 def ohlc(data,N=7):
     data['open'] = data['open'].rolling(window=N).apply(lambda x:x[0],raw=True)
     data['high'] = data['high'].rolling(window=N).apply(lambda x:x.max(),raw=True)
@@ -253,7 +265,7 @@ def get_indicator(data, type='day'):
         ADTM = data.data.assign(ADTM=None,MAADTM=None,
                                 ADTM_CROSS1=0,ADTM_CROSS2=0,)[['ADTM','MAADTM','ADTM_CROSS1','ADTM_CROSS2']]
     try:
-        MACD = data.add_func(QA.QA_indicator_MACD)
+        MACD = data.add_func(QA.QA_indicator_MACD1)
         MACD['CROSS_JC'] = QA.CROSS(MACD['DIF'], MACD['DEA'])
         MACD['CROSS_SC'] = QA.CROSS(MACD['DEA'], MACD['DIF'])
         MACD['MACD_TR'] = MACD.apply(lambda x: function1(x.DEA,x.DIF), axis = 1)
