@@ -9,7 +9,7 @@ def QA_indicator_MACD1(DataFrame, short=12, long=26, mid=9):
     """
     CLOSE = DataFrame['close']
 
-    DIF = (EMA(CLOSE, short)-EMA(CLOSE, long))/(EMA(CLOSE, short)+EMA(CLOSE, long)/2)
+    DIF = (EMA(CLOSE, short)-EMA(CLOSE, long))/(EMA(CLOSE, short)+EMA(CLOSE, long)/2)*100
     DEA = EMA(DIF, mid)
     MACD = (DIF-DEA)*2
 
@@ -265,7 +265,7 @@ def get_indicator(data, type='day'):
         ADTM = data.data.assign(ADTM=None,MAADTM=None,
                                 ADTM_CROSS1=0,ADTM_CROSS2=0,)[['ADTM','MAADTM','ADTM_CROSS1','ADTM_CROSS2']]
     try:
-        MACD = data.add_func(QA.QA_indicator_MACD1)
+        MACD = data.add_func(QA_indicator_MACD1)
         MACD['CROSS_JC'] = QA.CROSS(MACD['DIF'], MACD['DEA'])
         MACD['CROSS_SC'] = QA.CROSS(MACD['DEA'], MACD['DIF'])
         MACD['MACD_TR'] = MACD.apply(lambda x: function1(x.DEA,x.DIF), axis = 1)
