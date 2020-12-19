@@ -3,7 +3,7 @@ from QUANTAXIS.QAIndicator.base import *
 from scipy import stats
 import pandas as pd
 
-def QA_indicator_MACD1(DataFrame, short=12, long=26, mid=9):
+def QA_indicator_MACD(DataFrame, short=12, long=26, mid=9):
     """
     MACD CALC
     """
@@ -14,6 +14,57 @@ def QA_indicator_MACD1(DataFrame, short=12, long=26, mid=9):
     MACD = (DIF-DEA)*2
 
     return pd.DataFrame({'DIF': DIF, 'DEA': DEA, 'MACD': MACD})
+
+def QA_indicator_DMA(DataFrame, M1=10, M2=50, M3=10):
+    """
+    平均线差 DMA
+    """
+    CLOSE = DataFrame.close
+    DDD = MA(CLOSE, M1) / MA(CLOSE, M2) - 1
+    AMA = MA(DDD, M3)
+    return pd.DataFrame({
+        'DDD': DDD, 'AMA': AMA
+    })
+
+def QA_indicator_MTM(DataFrame, N=12, M=6):
+    '动量线'
+    C = DataFrame.close
+    mtm = C / REF(C, N) - 1
+    MTMMA = MA(mtm, M)
+    DICT = {'MTM': mtm, 'MTMMA': MTMMA}
+
+    return pd.DataFrame(DICT)
+
+def QA_indicator_CHO(DataFrame, N1=10, N2=20, M=6):
+    """
+    佳庆指标 CHO
+    """
+    HIGH = DataFrame.high
+    LOW = DataFrame.low
+    CLOSE = DataFrame.close
+    VOL = DataFrame.volume
+    MID = SUM(VOL*(2*CLOSE-HIGH-LOW)/(HIGH+LOW), 0)
+    CHO = MA(MID, N1)/MA(MID, N2)-1
+    MACHO = MA(CHO, M)
+    return pd.DataFrame({
+        'CHO': CHO, 'MACHO': MACHO
+    })
+
+def QA_indicator_OSC(DataFrame, N=20, M=6):
+    """变动速率线
+
+    震荡量指标OSC，也叫变动速率线。属于超买超卖类指标,是从移动平均线原理派生出来的一种分析指标。
+
+    它反应当日收盘价与一段时间内平均收盘价的差离值,从而测出股价的震荡幅度。
+
+    按照移动平均线原理，根据OSC的值可推断价格的趋势，如果远离平均线，就很可能向平均线回归。
+    """
+    C = DataFrame['close']
+    OS = (C / MA(C, N) - 1)
+    MAOSC = EMA(OS, M)
+    DICT = {'OSC': OS, 'MAOSC': MAOSC}
+
+    return pd.DataFrame(DICT)
 
 def ohlc(data,N=7):
     data['open'] = data['open'].rolling(window=N).apply(lambda x:x[0],raw=True)
@@ -247,7 +298,7 @@ def get_indicator(data, type='day'):
         BIAS = data.data.assign(BIAS1=None,BIAS2=None,BIAS3=None,
                                 BIAS_CROSS1=0,BIAS_CROSS2=0)[['BIAS1','BIAS2','BIAS3', 'BIAS_CROSS1','BIAS_CROSS2']]
     try:
-        OSC = data.add_func(QA.QA_indicator_OSC)
+        OSC = data.add_func(QA_indicator_OSC)
         OSC['MARK'] = 0
         OSC['OSC_CROSS1'] = QA.CROSS(OSC['OSC'], OSC['MARK'])
         OSC['OSC_CROSS2'] = QA.CROSS(OSC['MARK'], OSC['OSC'])
@@ -265,7 +316,7 @@ def get_indicator(data, type='day'):
         ADTM = data.data.assign(ADTM=None,MAADTM=None,
                                 ADTM_CROSS1=0,ADTM_CROSS2=0,)[['ADTM','MAADTM','ADTM_CROSS1','ADTM_CROSS2']]
     try:
-        MACD = data.add_func(QA_indicator_MACD1)
+        MACD = data.add_func(QA_indicator_MACD)
         MACD['CROSS_JC'] = QA.CROSS(MACD['DIF'], MACD['DEA'])
         MACD['CROSS_SC'] = QA.CROSS(MACD['DEA'], MACD['DIF'])
         MACD['MACD_TR'] = MACD.apply(lambda x: function1(x.DEA,x.DIF), axis = 1)
@@ -285,7 +336,7 @@ def get_indicator(data, type='day'):
                                DI_CROSS1=0,DI_CROSS2=0,ADX_CROSS1=0,ADX_CROSS2=0)[['DI1','DI2','ADX','ADXR','ADX_C','DI_M',
                                                                                    'DI_CROSS1','DI_CROSS2','ADX_CROSS1','ADX_CROSS2']]
     try:
-        DMA = data.add_func(QA.QA_indicator_DMA)
+        DMA = data.add_func(QA_indicator_DMA)
         DMA['DMA_CROSS1'] = QA.CROSS(DMA['AMA'], DMA['DDD'])
         DMA['DMA_CROSS2'] = QA.CROSS(DMA['DDD'], DMA['AMA'])
     except:
@@ -308,7 +359,7 @@ def get_indicator(data, type='day'):
                                               'PBX1_C','PBX2_C','PBX3_C','PBX4_C','PBX5_C','PBX6_C',
                                               'PBX_STD']]
     try:
-        MTM = data.add_func(QA.QA_indicator_MTM)
+        MTM = data.add_func(QA_indicator_MTM)
         MTM['MARK'] = 0
         MTM['MTM_CROSS1'] = QA.CROSS(MTM['MTM'], MTM['MARK'])
         MTM['MTM_CROSS2'] = QA.CROSS(MTM['MARK'], MTM['MTM'])
@@ -327,7 +378,7 @@ def get_indicator(data, type='day'):
     except:
         EXPMA = data.data.assign(MA1=None,MA2=None,MA3=None,MA4=None)[['MA1','MA2','MA3','MA4']]
     try:
-        CHO = data.add_func(QA.QA_indicator_CHO)
+        CHO = data.add_func(QA_indicator_CHO)
         CHO['MARK'] = 0
         CHO['CHO_CROSS1'] = QA.CROSS(CHO['CHO'], CHO['CHO'])
         CHO['CHO_CROSS2'] = QA.CROSS(CHO['CHO'], CHO['CHO'])
@@ -708,7 +759,7 @@ def get_indicator_short(data, type='day'):
                                                            'CCI_CROSS3','CCI_CROSS4']]
 
     try:
-        MACD = data.add_func(QA.QA_indicator_MACD)
+        MACD = data.add_func(QA_indicator_MACD)
         MACD['CROSS_JC'] = QA.CROSS(MACD['DIF'], MACD['DEA'])
         MACD['CROSS_SC'] = QA.CROSS(MACD['DEA'], MACD['DIF'])
         MACD['MACD_TR'] = MACD.apply(lambda x: function1(x.DEA,x.DIF), axis = 1)
