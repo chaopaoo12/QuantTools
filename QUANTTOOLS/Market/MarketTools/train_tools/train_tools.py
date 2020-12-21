@@ -12,9 +12,9 @@ def load_data(model, start_date, end_date, type ='model', norm_type=None, ui_log
     model.get_data(start=start_date, end= end_date, type =type, norm_type=norm_type)
     return(model)
 
-def prepare_data(model, start_date, end_date, mark = 0.3, col = 'TARGET5', type = 'percent', ui_log = None ):
+def prepare_data(model, start_date, end_date, mark = 0.3, col = 'TARGET5', type = 'percent', shift = None, ui_log = None ):
     QA_util_log_info('##JOB03 Now Set Stock Model Target ==== {}'.format(str(end_date)), ui_log)
-    model.set_target(col = col, mark = mark, type = type)
+    model.set_target(col = col, mark = mark, type = type, shift = shift)
     QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(end_date)), ui_log)
     model.set_train_rng(train_start=start_date,
                         train_end=end_date)
