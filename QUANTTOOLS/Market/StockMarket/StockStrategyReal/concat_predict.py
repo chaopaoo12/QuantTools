@@ -13,6 +13,7 @@ from QUANTTOOLS.Market.MarketTools import make_prediction,make_stockprediction,m
 def concat_predict(trading_date, working_dir, code = None, type = 'crawl', model_name = 'stock_mars_day'):
     Stock = QAStockXGBoost()
     target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, code, index='date', type=type)
+    print(target_pool)
     return(target_pool,prediction,start,end,Model_Date)
 
 def concat_predict_hour(trading_date, working_dir, code = None, type = 'crawl', model_name = 'stock_mars_hour'):
