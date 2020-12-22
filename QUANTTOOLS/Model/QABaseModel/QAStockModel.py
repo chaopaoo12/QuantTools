@@ -133,6 +133,7 @@ class QAStockModel(QAModel):
             b = train[['y_pred','Z_PROB','O_PROB','RANK']]
 
         b = b.join(data[['TERNS','TERNS_HR']])
+        print(b)
         return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
