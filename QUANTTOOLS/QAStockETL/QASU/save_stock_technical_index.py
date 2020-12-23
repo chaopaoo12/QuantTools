@@ -6,6 +6,7 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_i
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_stock_om_all
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_indicator,QA_fetch_get_index_indicator
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_index_list_adv
+from QUANTTOOLS.QAStockETL.QAUtil import QA_util_get_trade_range
 
 def QA_SU_save_stock_technical_index_day(codes=None, start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
     '''
@@ -475,6 +476,8 @@ def QA_SU_save_index_technical_week_day(codes = None,start_date=None,end_date=No
         start_date = QA_util_get_pre_trade_date(start_date,1)
         if end_date == None:
             end_date = QA_util_today_str()
+
+    rng = QA_util_get_trade_range(start_date, end_date)
     if codes is None:
         codes = QA_fetch_index_list_adv().code.unique().tolist()
     else:
@@ -505,7 +508,8 @@ def QA_SU_save_index_technical_week_day(codes = None,start_date=None,end_date=No
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date)
+        for i in rng:
+            __saving_work( item,i,i)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save index_technical_week ^_^',  ui_log)
@@ -532,6 +536,8 @@ def QA_SU_save_index_technical_week_his(codes = None,start_date=None,end_date=No
         if end_date == None:
             end_date = QA_util_today_str()
 
+    rng = QA_util_get_trade_range(start_date, end_date)
+
     if codes is None:
         codes = QA_fetch_index_list_adv().code.unique().tolist()
     else:
@@ -562,7 +568,8 @@ def QA_SU_save_index_technical_week_his(codes = None,start_date=None,end_date=No
         intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
-        __saving_work( item,start_date,end_date)
+        for i in rng:
+            __saving_work( item,i,i)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save index_technical_week ^_^',  ui_log)
