@@ -713,28 +713,27 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, norm_ty
                                           #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
                                           #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
                                           ]]
-        pe_res = pe_res.groupby('code').fillna(method='ffill').loc[(rng,code),:].fillna(0)
-        financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[(rng,code),:]
+        financial_res = financial(start_date,end_date)
         financial_res = financial_res[financial_res.DAYS >= 90]
 
         QA_util_log_info(
             'JOB Get Stock Tech Index train data start=%s end=%s' % (start, end))
-        index_res = index(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        index_res = index(start_date,end_date)
 
         QA_util_log_info(
             'JOB Get Stock Tech Week train data start=%s end=%s' % (start, end))
-        week_res = week(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        week_res = week(start_date,end_date)
 
         QA_util_log_info(
             'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        hour_res = hour(start_date,end_date)
 
         QA_util_log_info(
             'JOB Get Stock Alpha191 train data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        alpha_res = alpha(start_date,end_date)
 
         try:
-            res = financial_res.join(index_res).join(hour_res).join(week_res).join(alpha_res).join(pe_res)
+            res = financial_res.join(index_res).join(hour_res).join(week_res).join(alpha_res).join(pe_res).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
@@ -826,28 +825,28 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
                                           'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
                                           #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
                                           #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
-                                          ]].groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
-        financial_res = financial(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+                                          ]]
+        financial_res = financial(start_date,end_date)
         financial_res = financial_res[financial_res.DAYS >= 90]
 
         QA_util_log_info(
             'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
-        index_res = index(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        index_res = index(start_date,end_date)
 
         QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
-        week_res = week(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        week_res = week(start_date,end_date)
 
         QA_util_log_info(
             'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        hour_res = hour(start_date,end_date)
 
         QA_util_log_info(
             'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        alpha_res = alpha(start_date,end_date)
 
         try:
-            res = financial_res.join(index_res).join(week_res).join(hour_res).join(alpha_res).join(pe_res)
+            res = financial_res.join(index_res).join(week_res).join(hour_res).join(alpha_res).join(pe_res).groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
@@ -1252,18 +1251,18 @@ def QA_fetch_index_quant_data(code, start, end = None, norm_type = 'normalizatio
 
         QA_util_log_info(
             'JOB Get Index Tech Index data start=%s end=%s' % (start, end))
-        index_res = index(start_date, end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        index_res = index(start_date, end_date)
 
         QA_util_log_info(
             'JOB Get Index Tech Index data start=%s end=%s' % (start, end))
-        week_res = week(start_date, end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        week_res = week(start_date, end_date)
 
         QA_util_log_info(
             'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start_date, end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        hour_res = hour(start_date, end_date)
 
         try:
-            res = index_res.join(hour_res).join(week_res)
+            res = index_res.join(hour_res).join(week_res).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
@@ -2900,7 +2899,6 @@ def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, norm_
     week = QA_Sql_USStock_IndexWeek
     alpha = QA_Sql_USStock_Alpha191
     pe = QA_Sql_USStock_FinancialPercent
-    base = QA_Sql_USStock_Base
 
     if QA_util_date_valid(end):
 
@@ -2929,27 +2927,21 @@ def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, norm_
                                           #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
                                           #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
                                           ]]
-        pe_res = pe_res.groupby('code').fillna(method='ffill')
-        pe_res = pe_res.loc[(rng,code),:].fillna(0)
 
         QA_util_log_info(
             'JOB Get Stock Tech Index train data start=%s end=%s' % (start, end))
-        index_res = index(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        index_res = index(start_date,end_date)
 
         QA_util_log_info(
             'JOB Get Stock Tech Week train data start=%s end=%s' % (start, end))
-        week_res = week(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+        week_res = week(start_date,end_date)
 
         QA_util_log_info(
             'JOB Get Stock Alpha191 train data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start_date,end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
-
-        QA_util_log_info(
-            'JOB Get Stock Base Half train data start=%s end=%s' % (start, sec_end))
-        base_res = base(start_date,end_date).groupby('code').apply(lambda x:x.fillna(method='ffill').shift(-1)).loc[(rng,code),:]
+        alpha_res = alpha(start_date,end_date)
 
         try:
-            res = pe_res.join(base_res).join(index_res).join(week_res).join(alpha_res)
+            res = pe_res.join(index_res).join(week_res).join(alpha_res).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
