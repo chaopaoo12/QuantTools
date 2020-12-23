@@ -67,12 +67,12 @@ def QA_indicator_OSC(DataFrame, N=20, M=6):
     return pd.DataFrame(DICT)
 
 def ohlc(data,N=7):
-    data['open'] = data['open'].rolling(window=N).apply(lambda x:x[0],raw=True)
-    data['high'] = data['high'].rolling(window=N).apply(lambda x:x.max(),raw=True)
-    data['low'] = data['low'].rolling(window=N).apply(lambda x:x.min(),raw=True)
-    data['close'] = data['close'].rolling(window=N).apply(lambda x:x[-1],raw=True)
-    data['volume'] = data['volume'].rolling(window=N).apply(lambda x:x.sum(),raw=True)
-    data['amount'] = data['amount'].rolling(window=N).apply(lambda x:x.sum(),raw=True)
+    data['open'] = data['open'].rolling(window=N,min_periods=1).apply(lambda x:x[0],raw=True)
+    data['high'] = data['high'].rolling(window=N,min_periods=1).apply(lambda x:x.max(),raw=True)
+    data['low'] = data['low'].rolling(window=N,min_periods=1).apply(lambda x:x.min(),raw=True)
+    data['close'] = data['close'].rolling(window=N,min_periods=1).apply(lambda x:x[-1],raw=True)
+    data['volume'] = data['volume'].rolling(window=N,min_periods=1).apply(lambda x:x.sum(),raw=True)
+    data['amount'] = data['amount'].rolling(window=N,min_periods=1).apply(lambda x:x.sum(),raw=True)
     return(data)
 
 def rolling_ols(y):
