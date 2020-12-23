@@ -84,7 +84,8 @@ def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method
 
     if code is None:
         code_list = QA_fetch_index_info(list(code_list.code))
-        codes = list(code_list[~code_list.cate.isin(['5','3'])].code)
+        code_list = code_list[~code_list.cate.isin(['5','3','8'])]
+        codes = list(code_list[code_list.HY.apply(lambda x:len(x) != 5)].code)
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
     codes = codes + ['000001','399001','399006']
@@ -270,7 +271,8 @@ def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method
 
     if code is None:
         code_list = QA_fetch_index_info(list(code_list.code))
-        codes = list(code_list[~code_list.cate.isin(['5','3'])].code)
+        code_list = code_list[~code_list.cate.isin(['5','3','8'])]
+        codes = list(code_list[code_list.HY.apply(lambda x:len(x) != 5)].code)
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
     codes = codes + ['000001','399001','399006']
@@ -324,7 +326,8 @@ def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', metho
 
     if code is None:
         code_list = QA_fetch_index_info(list(code_list.code))
-        codes = list(code_list[~code_list.cate.isin(['5','3'])].code)
+        code_list = code_list[~code_list.cate.isin(['5','3','8'])]
+        codes = list(code_list[code_list.HY.apply(lambda x:len(x) != 5)].code)
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
     codes = codes + ['000001','399001','399006']
