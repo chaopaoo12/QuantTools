@@ -9,7 +9,7 @@ def QA_indicator_MACD(DataFrame, short=12, long=26, mid=9):
     """
     CLOSE = DataFrame['close']
 
-    DIF = (EMA(CLOSE, short)-EMA(CLOSE, long))/(EMA(CLOSE, short)+EMA(CLOSE, long)/2)*100
+    DIF = (EMA(CLOSE, short)-EMA(CLOSE, long))/((EMA(CLOSE, short)+EMA(CLOSE, long))/2)*100
     DEA = EMA(DIF, mid)
     MACD = (DIF-DEA)*2
 
