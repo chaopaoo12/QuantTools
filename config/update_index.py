@@ -35,7 +35,8 @@ from QUANTTOOLS.QAStockETL.Check import (check_index_day)
 from QUANTTOOLS.QAStockETL.Check import (check_index_techindex, check_index_techweek)
 from QUANTTOOLS.QAStockETL import (QA_etl_index_technical_day,
                                    QA_etl_index_technical_week)
-from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
+from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
+from datetime import datetime
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
@@ -56,12 +57,11 @@ if __name__ == '__main__':
             QA_SU_save_index_technical_index_day(start_date = mark_day, end_date = mark_day)
             res = check_index_techindex(mark_day)
 
-        res = check_index_techweek(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 20:
-            QA_SU_save_index_technical_week_day(start_date = mark_day, end_date = mark_day)
-            res = check_index_techweek(mark_day)
-
         QA_etl_index_technical_day(mark_day, mark_day)
-        QA_etl_index_technical_week(mark_day,  mark_day)
+
+        if datetime.strptime(mark_day,'%y-%m-%d').weekday() + 1 == 5:
+            QA_SU_save_index_technical_week_day()
+            QA_etl_index_technical_week(mark_day,  mark_day)
+
         #QA_etl_index_day('day',mark_day)
         #QA_SU_save_index_technical_month_day(start_date = mark_day, end_date = mark_day)

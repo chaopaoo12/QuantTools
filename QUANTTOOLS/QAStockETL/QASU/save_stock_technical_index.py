@@ -141,6 +141,7 @@ def QA_SU_save_stock_technical_week_day(codes = None,start_date=None,end_date=No
     else:
         codes = QA_util_code_tolist(codes)
 
+    client.drop_collection('stock_technical_week')
     stock_technical_week = client.stock_technical_week
     stock_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -198,6 +199,7 @@ def QA_SU_save_stock_technical_week_his(codes = None,start_date=None,end_date=No
     else:
         codes = QA_util_code_tolist(codes)
 
+    client.drop_collection('stock_technical_week')
     stock_technical_week = client.stock_technical_week
     stock_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -253,6 +255,7 @@ def QA_SU_save_stock_technical_month_day(codes = None,start_date=None,end_date=N
     else:
         codes = QA_util_code_tolist(codes)
 
+    client.drop_collection('stock_technical_month')
     stock_technical_month = client.stock_technical_month
     stock_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -310,6 +313,7 @@ def QA_SU_save_stock_technical_month_his(codes = None,start_date=None,end_date=N
     else:
         codes = QA_util_code_tolist(codes)
 
+    client.drop_collection('stock_technical_month')
     stock_technical_month = client.stock_technical_month
     stock_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -476,6 +480,7 @@ def QA_SU_save_index_technical_week_day(codes = None,start_date=None,end_date=No
     else:
         codes = QA_util_code_tolist(codes)
 
+    client.drop_collection('index_technical_week')
     index_technical_week = client.index_technical_week
     index_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -532,6 +537,7 @@ def QA_SU_save_index_technical_week_his(codes = None,start_date=None,end_date=No
     else:
         codes = QA_util_code_tolist(codes)
 
+    client.drop_collection('index_technical_week')
     index_technical_week = client.index_technical_week
     index_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -586,6 +592,7 @@ def QA_SU_save_index_technical_month_day(codes = None,start_date=None,end_date=N
     else:
         codes = QA_util_code_tolist(codes)
 
+    client.drop_collection('index_technical_month')
     index_technical_month = client.index_technical_month
     index_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -642,6 +649,7 @@ def QA_SU_save_index_technical_month_his(codes = None,start_date=None,end_date=N
     else:
         codes = QA_util_code_tolist(codes)
 
+    client.drop_collection('index_technical_month')
     index_technical_month = client.index_technical_month
     index_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []

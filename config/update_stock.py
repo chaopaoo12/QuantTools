@@ -34,7 +34,8 @@ from QUANTTOOLS.QAStockETL import (QA_etl_stock_technical_day,
                                    QA_etl_stock_technical_week)
 from QUANTTOOLS.QAStockETL.Check import (check_stock_day, check_stock_adj, check_stock_techindex, check_stock_techweek,
                                          check_sinastock_day, check_sinastock_adj,check_sinastock_techindex,check_sinastock_techweek)
-from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
+from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
+from datetime import datetime
 import time
 
 if __name__ == '__main__':
@@ -63,16 +64,9 @@ if __name__ == '__main__':
             res = check_stock_techindex(mark_day)
 
         check_sinastock_techindex(mark_day)
-
         QA_etl_stock_technical_day(mark_day, mark_day)
 
-        res = check_stock_techweek(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 20:
-            QA_SU_save_stock_technical_week_day(start_date=mark_day, end_date = mark_day)
-            res = check_stock_techweek(mark_day)
-
         check_sinastock_techweek(mark_day)
-
-        QA_etl_stock_technical_week(mark_day, mark_day)
-
-        #QA_SU_save_stock_technical_month_day(start_date = mark_day, end_date = mark_day)
+        if datetime.strptime(mark_day,'%y-%m-%d').weekday() + 1 == 5:
+            QA_SU_save_stock_technical_week_day()
+            QA_etl_stock_technical_week()
