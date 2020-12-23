@@ -63,5 +63,3 @@ if __name__ == '__main__':
             QA_SU_save_index_technical_week_day()
             QA_etl_index_technical_week(mark_day,  mark_day)
 
-        #QA_etl_index_day('day',mark_day)
-        #QA_SU_save_index_technical_month_day(start_date = mark_day, end_date = mark_day)

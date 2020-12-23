@@ -66,7 +66,7 @@ if __name__ == '__main__':
         check_sinastock_techindex(mark_day)
         QA_etl_stock_technical_day(mark_day, mark_day)
 
-        check_sinastock_techweek(mark_day)
         if datetime.strptime(mark_day,'%y-%m-%d').weekday() + 1 == 5:
             QA_SU_save_stock_technical_week_day()
             QA_etl_stock_technical_week()
+        check_sinastock_techweek(mark_day)
