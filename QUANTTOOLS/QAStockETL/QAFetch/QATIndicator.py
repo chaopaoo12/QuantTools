@@ -73,14 +73,14 @@ def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
         start = QA_util_get_pre_trade_date(start_date,180)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Index_day(QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code']).drop(columns=['date_stamp','vol']))
+            data = QA_fetch_index_day_adv(code,start,end_date)
         except:
             QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'week':
         start = QA_util_get_pre_trade_date(start_date,187)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Index_day(QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code']).drop(columns=['date_stamp','vol']).groupby('code',sort=True).apply(ohlc,7))
+            data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).week)
         except:
             QA_util_log_info("JOB No Week data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
 
@@ -88,7 +88,7 @@ def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
         start = QA_util_get_pre_trade_date(start_date,210)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Index_day(QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code']).drop(columns=['date_stamp','vol']).groupby('code',sort=True).apply(ohlc,30))
+            data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).month)
         except:
             QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
 
@@ -241,22 +241,23 @@ def QA_fetch_get_index_indicator_short(code, start_date, end_date, type = 'day')
         start = QA_util_get_pre_trade_date(start_date,80)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Index_day(QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code']).drop(columns=['date_stamp','vol']))
+            data = QA_fetch_index_day_adv(code,start,end_date)
         except:
             QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'week':
         start = QA_util_get_pre_trade_date(start_date,80)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Index_day(QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code']).drop(columns=['date_stamp','vol']).groupby('code',sort=True).apply(ohlc,7))
+            data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).week)
         except:
             QA_util_log_info("JOB No Week data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
+            data=None
 
     elif type == 'month':
         start = QA_util_get_pre_trade_date(start_date,80)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_DataStruct_Index_day(QA_fetch_index_day(code,start,end_date,format='pd').reset_index(drop=True).set_index(['date','code']).drop(columns=['date_stamp','vol']).groupby('code',sort=True).apply(ohlc,30))
+            data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).month)
         except:
             QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
             data = None
