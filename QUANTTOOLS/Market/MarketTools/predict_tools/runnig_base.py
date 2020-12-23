@@ -80,5 +80,5 @@ def predict_stock_dev(trading_date, predict_func1, predict_func2, predict_func3,
                       name_list = ['NAME','INDUSTRY','TERNS','TERNS_HR'],
                       value_ist = ['DAY_PROB','DAY_RANK','HOUR_PROB','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
                       sort_mark ='DAY_RANK',
-                      selec_list=['NAME','INDUSTRY','TERNS','TERNS_HR','TERNS_15M','DAY_PROB','HOUR_PROB','DAY_RANK'],
+                      selec_list=['NAME','INDUSTRY','TERNS','TERNS_HR','DAY_PROB','HOUR_PROB','DAY_RANK'],
                       account='name:client-1', ui_log = None)
