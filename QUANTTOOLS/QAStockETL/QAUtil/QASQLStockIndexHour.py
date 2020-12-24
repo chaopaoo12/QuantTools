@@ -239,5 +239,5 @@ def QA_Sql_Stock_IndexHour(from_ , to_, type = 'day', sql_text = sql_text, ui_lo
     else:
         data = data.assign(datetime = data.datetime.apply(lambda x:pd.to_datetime(x))).set_index(['datetime','code'])
     data = data.assign(SKDJ_TR_HR = (data.SKDJ_K_HR > data.SKDJ_D_HR)*1,
-                       TERNS_HR = (data.SHORT20_HR > 0) * (data.LONG60_HR > 0) * (data.LONG_AMOUNT_HR > 0) * 1)
+                       TERNS_HR = ((data.SHORT20_HR > 0) & (data.LONG60_HR > 0) & (data.LONG_AMOUNT_HR > 0)) * 1)
     return(data)
