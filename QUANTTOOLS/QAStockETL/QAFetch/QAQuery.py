@@ -846,7 +846,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
         alpha_res = alpha(start_date,end_date)
 
         try:
-            res = financial_res.join(index_res).join(week_res).join(hour_res).join(alpha_res).join(pe_res).groupby('code').fillna(method='ffill').loc[((rng,code),)].fillna(0)
+            res = financial_res.join(index_res).join(week_res).join(hour_res).join(alpha_res).join(pe_res).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
