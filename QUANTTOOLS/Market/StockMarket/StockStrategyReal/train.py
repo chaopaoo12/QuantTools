@@ -20,7 +20,7 @@ def choose_model(date, working_dir=working_dir):
 
     stock_model = load_data(stock_model, start_date, end_date, type ='crawl')
 
-    stock_model = prepare_data(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = -5, col = 'TARGET5', type='percent')
+    stock_model = prepare_data(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET5', type='percent')
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
@@ -44,6 +44,14 @@ def daymodel_train(date, working_dir=working_dir):
     stock_model = start_train(stock_model, stock_xg_set, other_params, 0, 0.99)
     save_report(stock_model, 'stock_xg', working_dir)
 
+    stock_model = prepare_data(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 1, col = 'SKDJ_TR', type='value', shift=-2)
+
+    other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
+                    'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
+
+    stock_model = start_train(stock_model, stock_xg_set, other_params, 0, 0.99)
+    save_report(stock_model, 'stock_mars_day', working_dir)
+
 def minmodel_train(date, working_dir=working_dir):
     min_model = QAStockXGBoost15Min()
 
@@ -52,7 +60,7 @@ def minmodel_train(date, working_dir=working_dir):
 
     min_model = load_data(min_model, start_date, end_date, norm_type=None)
 
-    min_model = prepare_data(min_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 1), mark = 0, col = 'SKDJ_TR_15M', type='value', shift = -5)
+    min_model = prepare_data(min_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 1), mark = 1, col = 'SKDJ_TR_15M', type='value', shift = -2)
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
@@ -68,7 +76,7 @@ def hourmodel_train(date, working_dir=working_dir):
 
     hour_model = load_data(hour_model, start_date, end_date, norm_type=None)
 
-    hour_model = prepare_data(hour_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 3), mark = 0, col = 'SKDJ_TR_HR', type='value', shift = -5)
+    hour_model = prepare_data(hour_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 3), mark = 1, col = 'SKDJ_TR_HR', type='value', shift = -2)
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
