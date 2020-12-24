@@ -238,14 +238,6 @@ def QA_Sql_Stock_Index15min(from_ , to_, type = 'day', sql_text = sql_text, ui_l
         data = data.drop_duplicates((['code', 'date'])).set_index(['date','code']).drop('datetime',axis=1)
     else:
         data = data.assign(datetime = data.datetime.apply(lambda x:pd.to_datetime(x))).set_index(['datetime','code'])
-    data['CCI_JC_15M'] = data['CCI_CROSS1_15M'] + data['CCI_CROSS3_15M']
-    data['CCI_SC_15M'] = data['CCI_CROSS2_15M'] + data['CCI_CROSS4_15M']
-    data.loc[data.CCI_JC_15M==1,'CCI_JC_15M'] = 2
-    data.loc[data.CCI_SC_15M==2,'CCI_SC_15M'] = 1
-    data['CCI_TR_15M'] = data['CCI_JC_15M'] + data['CCI_SC_15M']
-    data.loc[(data.CCI_TR_15M == 0),'CCI_TR_15M'] = np.nan
-    data[['CCI_CROSS1_15M','CCI_CROSS2_15M','CCI_CROSS3_15M','CCI_CROSS4_15M','CCI_JC_15M','CCI_SC_15M','CCI_TR_15M']] = data[['CCI_CROSS1_15M','CCI_CROSS2_15M','CCI_CROSS3_15M','CCI_CROSS4_15M','CCI_JC_15M','CCI_SC_15M','CCI_TR_15M']].groupby('code').fillna(method='ffill')
-    data['CCI_TR_15M'] = data['CCI_TR_15M'] -1
     data['SKDJ_TR_15M'] = data.apply(lambda x: (x.SKDJ_K_15M > x.SKDJ_D_15M) * 1, axis=1)
     data['TERNS_15M'] = data.apply(lambda x: (x.SHORT20_15M > 0) * (x.LONG60_15M > 0) * 1, axis=1)
     return(data)

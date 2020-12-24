@@ -239,14 +239,6 @@ def QA_Sql_Index_IndexHour(from_ , to_, type = 'day', sql_text = sql_text, ui_lo
     else:
         data = data.drop_duplicates((['code', 'datetime']))
         data = data.assign(datetime = data.datetime.apply(lambda x:pd.to_datetime(x))).set_index(['datetime','code'])
-    data['CCI_JC_HR'] = data['CCI_CROSS1_HR'] + data['CCI_CROSS3_HR']
-    data['CCI_SC_HR'] = data['CCI_CROSS2_HR'] + data['CCI_CROSS4_HR']
-    data.loc[data.CCI_JC_HR==1,'CCI_JC_HR'] = 2
-    data.loc[data.CCI_SC_HR==2,'CCI_SC_HR'] = 1
-    data['CCI_TR_HR'] = data['CCI_JC_HR'] + data['CCI_SC_HR']
-    data.loc[(data.CCI_TR_HR == 0),'CCI_TR_HR'] = np.nan
-    data[['CCI_CROSS1_HR','CCI_CROSS2_HR','CCI_CROSS3_HR','CCI_CROSS4_HR','CCI_JC_HR','CCI_SC_HR','CCI_TR_HR']] = data[['CCI_CROSS1_HR','CCI_CROSS2_HR','CCI_CROSS3_HR','CCI_CROSS4_HR','CCI_JC_HR','CCI_SC_HR','CCI_TR_HR']].groupby('code').fillna(method='ffill')
-    data['CCI_TR_HR'] = data['CCI_TR_HR'] -1
     data['SKDJ_TR_HR'] = data.apply(lambda x: (x.SKDJ_K_HR > x.SKDJ_D_HR) * 1, axis=1)
     data['TERNS_HR'] = data.apply(lambda x: (x.SHORT20_HR > 0) * (x.LONG60_HR > 0) * (x.LONG_AMOUNT_HR > 0) * 1, axis=1)
     return(data)
