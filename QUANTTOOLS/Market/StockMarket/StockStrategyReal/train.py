@@ -113,7 +113,7 @@ def train_index(date, working_dir=working_dir):
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
-    index_model = start_train(index_model, index_day_set, other_params, 0, 0.95)
+    index_model = start_train(index_model, index_day_set, other_params, 0, 0.99)
     save_report(index_model, 'index_mars_day', working_dir)
 
     hour_model = QAIndexXGBoostHour()
