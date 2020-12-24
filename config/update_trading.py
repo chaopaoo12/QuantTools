@@ -67,11 +67,6 @@ if __name__ == '__main__':
         time.sleep(180)
         res = check_index_techhour(mark_day)
 
-    res = check_index_tech15min(mark_day)
-    while res is None or (len(res[0]) + len(res[1])) > 20:
-        time.sleep(180)
-        res = check_index_tech15min(mark_day)
-
     index_run(mark_day)
 
     res = check_stock_alpha191(mark_day)
@@ -93,11 +88,6 @@ if __name__ == '__main__':
     while res is None or (len(res[0]) + len(res[1])) > 20:
         time.sleep(180)
         res = check_stock_finper(mark_day)
-
-    res = check_stock_tech15min(mark_day)
-    while res is None or (len(res[0]) + len(res[1])) > 20:
-        time.sleep(180)
-        res = check_stock_tech15min(mark_day)
 
     res = check_stock_quant(mark_day)
     while res is None or (len(res[0]) + len(res[1])) > 10:
