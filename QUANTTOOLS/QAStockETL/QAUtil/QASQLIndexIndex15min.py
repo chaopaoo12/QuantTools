@@ -239,6 +239,6 @@ def QA_Sql_Index_Index15min(from_ , to_, type = 'day', sql_text = sql_text, ui_l
     else:
         data = data.drop_duplicates((['code', 'datetime']))
         data = data.assign(datetime = data.datetime.apply(lambda x:pd.to_datetime(x))).set_index(['datetime','code'])
-    data['SKDJ_TR_15M'] = data.apply(lambda x: (x.SKDJ_K_15M > x.SKDJ_D_15M) * 1, axis=1)
-    data['TERNS_15M'] = data.apply(lambda x: (x.SHORT20_15M > 0) * (x.LONG60_15M > 0) * 1, axis=1)
+    data = data.assign(SKDJ_TR_15M = (data.SKDJ_K_15M > data.SKDJ_D_15M)*1,
+                       TERNS_15M = (data.SHORT20_15M > 0) * (data.LONG60_15M > 0) * (data.LONG_AMOUNT_15M > 0) * 1)
     return(data)
