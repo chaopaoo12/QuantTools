@@ -445,7 +445,7 @@ def QA_etl_stock_technical_week(start_date = QA_util_today_str(), end_date= None
     else:
         data = data.reset_index()
         data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
-        QA_util_sql_store_mysql(data, "stock_technical_week",if_exists='replace')
+        QA_util_sql_store_mysql(data, "stock_technical_week",if_exists='append')
         QA_util_log_info('##JOB ETL STOCK TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
 
 def QA_etl_stock_financial_day(start_date = QA_util_today_str(), end_date= None,ui_log= None):
@@ -596,7 +596,7 @@ def QA_etl_index_technical_week(start_date = QA_util_today_str(), end_date= None
     else:
         data = data.reset_index()
         data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
-        QA_util_sql_store_mysql(data, "index_technical_week",if_exists='replace')
+        QA_util_sql_store_mysql(data, "index_technical_week",if_exists='append')
         QA_util_log_info('##JOB ETL INDEX TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
 
 def QA_etl_usstock_alpha_day(start_date = QA_util_today_str(), end_date= None, ui_log= None):
@@ -696,7 +696,7 @@ def QA_etl_usstock_technical_week(start_date = QA_util_today_str(), end_date= No
     else:
         data = data.reset_index()
         data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
-        QA_util_sql_store_mysql(data, "usstock_technical_week",if_exists='replace')
+        QA_util_sql_store_mysql(data, "usstock_technical_week",if_exists='append')
         QA_util_log_info('##JOB ETL USSTOCK TECHNICAL WEEK HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
 
 def QA_etl_usstock_financial_percent_day(start_date = QA_util_today_str(), end_date= None, ui_log= None):
