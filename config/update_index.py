@@ -62,4 +62,6 @@ if __name__ == '__main__':
         if datetime.strptime(mark_day,'%y-%m-%d').weekday() + 1 == 5:
             QA_SU_save_index_technical_week_day()
             QA_etl_index_technical_week(mark_day,  mark_day)
+        else:
+            pass
 
