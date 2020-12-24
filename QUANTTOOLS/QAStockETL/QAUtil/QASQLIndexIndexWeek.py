@@ -231,6 +231,5 @@ def QA_Sql_Index_IndexWeek(from_ , to_, sql_text = sql_text, ui_log= None):
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
     data = data.drop_duplicates((['code', 'date'])).set_index(['date','code'])
-    data = data.assign(SKDJ_TR_WK = (data.SKDJ_K_WK > data.SKDJ_D_WK)*1,
-                       TERNS_WK = ((data.SHORT20_WK > 0) & (data.LONG60_WK > 0) & (data.LONG_AMOUNT_WK > 0)) * 1)
+    data = data.assign(SKDJ_TR_WK = (data.SKDJ_K_WK > data.SKDJ_D_WK)*1)
     return(data)
