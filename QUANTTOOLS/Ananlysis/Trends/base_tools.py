@@ -8,11 +8,11 @@ import datetime
 
 def check(data):
     res = data.iloc[-1:].reset_index().set_index('code')
-    return((res.SHORT20> 0)&(res.LONG60> 0)&(res.LONG_AMOUNT> 0))
+    return(res.SKDJ_K> res.SKDJ_D)
 
 def check_hour(data, date):
     res = data.loc[date].reset_index().set_index('code')
-    return((res.SHORT20> 0)&(res.LONG60> 0)&(res.LONG_AMOUNT> 0))
+    return(res.SKDJ_K> res.SKDJ_D)
 
 def trends_money(MONEY, date):
     day = QA_fetch_get_money_day(MONEY,date)
