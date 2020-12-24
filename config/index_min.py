@@ -58,15 +58,15 @@ if __name__ == '__main__':
 
         QA_etl_index_technical_hour(mark_day, mark_day)
 
-        res = check_index_15min(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 10:
-            QA_SU_save_index_15min()
-            res = check_index_15min(mark_day)
+        #res = check_index_15min(mark_day)
+        #while res is None or (len(res[0]) + len(res[1])) > 10:
+        #    QA_SU_save_index_15min()
+        #    res = check_index_15min(mark_day)
 
-        res = check_index_tech15min(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 10:
-            QA_SU_save_index_technical_15min_day(start_date = mark_day, end_date = mark_day)
-            res = check_index_tech15min(mark_day)
+        #res = check_index_tech15min(mark_day)
+        #while res is None or (len(res[0]) + len(res[1])) > 10:
+        #    QA_SU_save_index_technical_15min_day(start_date = mark_day, end_date = mark_day)
+        #    res = check_index_tech15min(mark_day)
 
-        QA_etl_index_technical_15min(mark_day, mark_day)
+        #QA_etl_index_technical_15min(mark_day, mark_day)
 
