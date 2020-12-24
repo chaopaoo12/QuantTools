@@ -44,7 +44,6 @@ if __name__ == '__main__':
     if QA_util_if_trade(mark_day):
 
         QA_SU_save_index_list('tdx')
-        QA_SU_save_index_day('tdx')
         QA_SU_save_index_info()
 
         res = check_index_day(mark_day)
