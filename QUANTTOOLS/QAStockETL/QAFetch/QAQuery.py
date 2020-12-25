@@ -1250,14 +1250,14 @@ def QA_fetch_index_quant_data(code, start, end = None, norm_type = 'normalizatio
 
         QA_util_log_info(
             'JOB Get Index Tech Index data start=%s end=%s' % (start, end))
-        index_res = index(start_date, end_date)
+        index_res = index(start_date, end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         QA_util_log_info(
             'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start_date, end_date)
+        hour_res = hour(start_date, end_date).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
         try:
-            res = index_res.join(hour_res).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+            res = index_res.join(hour_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
