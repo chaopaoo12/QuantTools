@@ -712,7 +712,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, norm_ty
                                           'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
                                           #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
                                           #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
-                                          ]]
+                                          ]].groupby('code').fillna(method='ffill').fillna(0)
         financial_res = financial(start_date,end_date)
         financial_res = financial_res[financial_res.DAYS >= 90]
 
@@ -825,7 +825,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
                                           'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
                                           #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
                                           #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
-                                          ]]
+                                          ]].groupby('code').fillna(method='ffill').fillna(0)
         financial_res = financial(start_date,end_date)
         financial_res = financial_res[financial_res.DAYS >= 90]
 
@@ -2921,7 +2921,7 @@ def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, norm_
                                           'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
                                           #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
                                           #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
-                                          ]]
+                                          ]].groupby('code').fillna(method='ffill').fillna(0)
 
         QA_util_log_info(
             'JOB Get Stock Tech Index train data start=%s end=%s' % (start, end))
