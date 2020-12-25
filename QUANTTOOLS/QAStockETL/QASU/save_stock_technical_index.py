@@ -128,11 +128,11 @@ def QA_SU_save_stock_technical_week_day(codes = None,start_date=None,end_date=No
     if start_date == None:
         if end_date == None:
             end_date = QA_util_today_str()
-            start_date = QA_util_get_pre_trade_date(QA_util_today_str(),1)
+            start_date = end_date
         else:
-            start_date = QA_util_get_pre_trade_date(end_date,1)
+            start_date = end_date
     else:
-        start_date = QA_util_get_pre_trade_date(start_date,1)
+        start_date = start_date
         if end_date == None:
             end_date = QA_util_today_str()
 
@@ -141,7 +141,7 @@ def QA_SU_save_stock_technical_week_day(codes = None,start_date=None,end_date=No
     else:
         codes = QA_util_code_tolist(codes)
 
-    client.drop_collection('stock_technical_week')
+    #client.drop_collection('stock_technical_week')
     stock_technical_week = client.stock_technical_week
     stock_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -188,9 +188,9 @@ def QA_SU_save_stock_technical_week_his(codes = None,start_date=None,end_date=No
             end_date = QA_util_today_str()
             start_date = "2006-01-01"
         else:
-            start_date = QA_util_get_pre_trade_date(end_date,1)
+            start_date = end_date
     else:
-        start_date = QA_util_get_pre_trade_date(start_date,1)
+        start_date = start_date
         if end_date == None:
             end_date = QA_util_today_str()
 
@@ -199,7 +199,7 @@ def QA_SU_save_stock_technical_week_his(codes = None,start_date=None,end_date=No
     else:
         codes = QA_util_code_tolist(codes)
 
-    client.drop_collection('stock_technical_week')
+    #client.drop_collection('stock_technical_week')
     stock_technical_week = client.stock_technical_week
     stock_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -242,11 +242,11 @@ def QA_SU_save_stock_technical_month_day(codes = None,start_date=None,end_date=N
     if start_date == None:
         if end_date == None:
             end_date = QA_util_today_str()
-            start_date = QA_util_get_pre_trade_date(QA_util_today_str(),1)
+            start_date = end_date
         else:
-            start_date = QA_util_get_pre_trade_date(end_date,1)
+            start_date = end_date
     else:
-        start_date = QA_util_get_pre_trade_date(start_date,1)
+        start_date = start_date
         if end_date == None:
             end_date = QA_util_today_str()
 
@@ -255,7 +255,7 @@ def QA_SU_save_stock_technical_month_day(codes = None,start_date=None,end_date=N
     else:
         codes = QA_util_code_tolist(codes)
 
-    client.drop_collection('stock_technical_month')
+    #client.drop_collection('stock_technical_month')
     stock_technical_month = client.stock_technical_month
     stock_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -302,9 +302,9 @@ def QA_SU_save_stock_technical_month_his(codes = None,start_date=None,end_date=N
             end_date = QA_util_today_str()
             start_date = "2006-01-01"
         else:
-            start_date = QA_util_get_pre_trade_date(end_date,1)
+            start_date = end_date
     else:
-        start_date = QA_util_get_pre_trade_date(start_date,1)
+        start_date = start_date
         if end_date == None:
             end_date = QA_util_today_str()
 
@@ -313,7 +313,7 @@ def QA_SU_save_stock_technical_month_his(codes = None,start_date=None,end_date=N
     else:
         codes = QA_util_code_tolist(codes)
 
-    client.drop_collection('stock_technical_month')
+    #client.drop_collection('stock_technical_month')
     stock_technical_month = client.stock_technical_month
     stock_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -468,11 +468,11 @@ def QA_SU_save_index_technical_week_day(codes = None,start_date=None,end_date=No
     if start_date == None:
         if end_date == None:
             end_date = QA_util_today_str()
-            start_date = QA_util_get_pre_trade_date(QA_util_today_str(),1)
+            start_date = end_date
         else:
-            start_date = QA_util_get_pre_trade_date(end_date,1)
+            start_date = end_date
     else:
-        start_date = QA_util_get_pre_trade_date(start_date,1)
+        start_date = start_date
         if end_date == None:
             end_date = QA_util_today_str()
     if codes is None:
@@ -480,7 +480,7 @@ def QA_SU_save_index_technical_week_day(codes = None,start_date=None,end_date=No
     else:
         codes = QA_util_code_tolist(codes)
 
-    client.drop_collection('index_technical_week')
+    #client.drop_collection('index_technical_week')
     index_technical_week = client.index_technical_week
     index_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -526,9 +526,9 @@ def QA_SU_save_index_technical_week_his(codes = None,start_date=None,end_date=No
             end_date = QA_util_today_str()
             start_date = "2006-01-01"
         else:
-            start_date = QA_util_get_pre_trade_date(end_date,1)
+            start_date = end_date
     else:
-        start_date = QA_util_get_pre_trade_date(start_date,1)
+        start_date = start_date
         if end_date == None:
             end_date = QA_util_today_str()
 
@@ -537,7 +537,7 @@ def QA_SU_save_index_technical_week_his(codes = None,start_date=None,end_date=No
     else:
         codes = QA_util_code_tolist(codes)
 
-    client.drop_collection('index_technical_week')
+    #client.drop_collection('index_technical_week')
     index_technical_week = client.index_technical_week
     index_technical_week.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -580,11 +580,11 @@ def QA_SU_save_index_technical_month_day(codes = None,start_date=None,end_date=N
     if start_date == None:
         if end_date == None:
             end_date = QA_util_today_str()
-            start_date = QA_util_get_pre_trade_date(QA_util_today_str(),1)
+            start_date = end_date
         else:
-            start_date = QA_util_get_pre_trade_date(end_date,1)
+            start_date = end_date
     else:
-        start_date = QA_util_get_pre_trade_date(start_date,1)
+        start_date = start_date
         if end_date == None:
             end_date = QA_util_today_str()
     if codes is None:
@@ -592,7 +592,7 @@ def QA_SU_save_index_technical_month_day(codes = None,start_date=None,end_date=N
     else:
         codes = QA_util_code_tolist(codes)
 
-    client.drop_collection('index_technical_month')
+    #client.drop_collection('index_technical_month')
     index_technical_month = client.index_technical_month
     index_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
@@ -638,9 +638,9 @@ def QA_SU_save_index_technical_month_his(codes = None,start_date=None,end_date=N
             end_date = QA_util_today_str()
             start_date = "2006-01-01"
         else:
-            start_date = QA_util_get_pre_trade_date(end_date,1)
+            start_date = end_date
     else:
-        start_date = QA_util_get_pre_trade_date(start_date,1)
+        start_date = start_date
         if end_date == None:
             end_date = QA_util_today_str()
 
@@ -649,7 +649,7 @@ def QA_SU_save_index_technical_month_his(codes = None,start_date=None,end_date=N
     else:
         codes = QA_util_code_tolist(codes)
 
-    client.drop_collection('index_technical_month')
+    #client.drop_collection('index_technical_month')
     index_technical_month = client.index_technical_month
     index_technical_month.create_index([("code", pymongo.ASCENDING),("date_stamp", pymongo.ASCENDING)], unique=True)
     err = []
