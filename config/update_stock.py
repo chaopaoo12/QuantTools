@@ -68,5 +68,5 @@ if __name__ == '__main__':
 
         if datetime.strptime(mark_day,'%Y-%m-%d').weekday() + 1 == 5:
             QA_SU_save_stock_technical_week_day()
-            QA_etl_stock_technical_week()
+            QA_etl_stock_technical_week(mark_day, mark_day)
             check_sinastock_techweek(mark_day)
