@@ -4,4 +4,4 @@ from .running import predict, predict_real, predict_hedge
 from .Tracking import Tracking
 from .trading import trading, trading_real, trading_hedge, trading_summary
 from .train import daymodel_train, train_hedge, hourmodel_train, train_index
-from .train_job import daily_train, hourly_train, minly_train, hedge_train, index_train
+from .train_job import daily_train, hourly_train, hedge_train, index_train
