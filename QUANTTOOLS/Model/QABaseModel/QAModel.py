@@ -16,23 +16,22 @@ class QAModel():
 
     def set_target(self, col, mark, type = 'value', shift= None):
         self.target = col
-        QA_util_log_info('##JOB Set Train Target by {type} at {mark} in column {col} ==== {date}'.format(type = type, mark=mark,
-                                                                                                         col =col,date = self.info['date']),
+        QA_util_log_info('##JOB Set Train Target by {type} at {mark} in column {col} ==== {date}'.format(type=type, mark= mark,
+                                                                                                         col=col, date= self.info['date']),
                          ui_log = None)
-
-        if shift is not None:
-            self.data['star'] = self.data[self.target].groupby('code').shift(shift) + self.data[self.target].groupby('code').shift(shift-1)
 
         if type == 'value':
             if shift is not None:
-                self.data['star'] = self.data['star'].apply(lambda x : 1 if x >= mark else 0)
+                self.data['star'] = self.data['star'].apply(lambda x: 1 if x >= mark else 0)
             else:
-                self.data['star'] = self.data[self.target].apply(lambda x : 1 if x >= mark else 0)
+                self.data['star'] = self.data[self.target].apply(lambda x: 1 if x >= mark else 0)
         elif type == 'percent':
-            self.data['star'] = self.data[self.target].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
+            self.data['star'] = self.data[self.target].groupby('date').apply(lambda x: x.rank(ascending=False, pct=True)).apply(lambda x :1 if x <= mark else 0)
         else:
             QA_util_log_info('##target type must be in [value,percent] ===== {}'.format(self.info['date']), ui_log = None)
 
+        if shift is not None:
+            self.data['star'] = (self.data['star'].groupby('code').shift(shift) + self.data['star'].groupby('code').shift(shift-1)).groupby('code').apply(lambda x: 1 if x >= mark + mark else 0)
 
         self.info['target'] = self.target
         QA_util_log_info('##save used columns ==== {}'.format(self.info['date']), ui_log = None)
