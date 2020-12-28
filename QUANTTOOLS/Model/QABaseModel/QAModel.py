@@ -20,15 +20,19 @@ class QAModel():
                                                                                                          col =col,date = self.info['date']),
                          ui_log = None)
 
+        if shift is not None:
+            self.data['star'] = self.data[self.target].groupby('code').shift(shift) + self.data[self.target].groupby('code').shift(shift-1)
+
         if type == 'value':
-            self.data['star'] = self.data[self.target].apply(lambda x : 1 if x >= mark else 0)
+            if shift is not None:
+                self.data['star'] = self.data['star'].apply(lambda x : 1 if x >= mark else 0)
+            else:
+                self.data['star'] = self.data[self.target].apply(lambda x : 1 if x >= mark else 0)
         elif type == 'percent':
             self.data['star'] = self.data[self.target].groupby('date').apply(lambda x: x.rank(ascending=False,pct=True)).apply(lambda x :1 if x <= mark else 0)
         else:
             QA_util_log_info('##target type must be in [value,percent] ===== {}'.format(self.info['date']), ui_log = None)
 
-        if shift is not None:
-            self.data['star'] = self.data['star'].groupby('code').shift(shift)
 
         self.info['target'] = self.target
         QA_util_log_info('##save used columns ==== {}'.format(self.info['date']), ui_log = None)
