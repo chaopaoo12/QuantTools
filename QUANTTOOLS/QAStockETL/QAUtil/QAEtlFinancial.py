@@ -659,7 +659,7 @@ res as
       ON C.REPORT_DATE = A.REPORT_DATE
      AND A.CODE = C.CODE
     LEFT JOIN (SELECT CODE,
-                     MAX(INDUSTRY) as INDUSTRY,
+                     MAX(TDX) as INDUSTRY,
                      MAX(NAME) as NAME,
                      MAX(AREA) as AREA
                 from STOCK_INFO
