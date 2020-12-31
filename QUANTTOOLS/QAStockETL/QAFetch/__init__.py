@@ -127,6 +127,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_stock_close,fetch_
                                                  QA_fetch_get_stock_realtm_askvol5,QA_fetch_get_stock_realtm_bidvol5,
 
                                                  QA_fetch_get_stock_industryinfo,QA_fetch_get_index_info,
+                                                 QA_fetch_get_stock_industry,
 
                                                  QA_fetch_get_stock_delist,QA_fetch_get_stockcode_real,
 

@@ -7,6 +7,7 @@ from QUANTAXIS.QAUtil import (QA_util_today_str, QA_util_get_pre_trade_date, QA_
 from akshare import stock_info_a_code_name
 import easyquotation
 import pandas as pd
+import numpy as np
 import akshare as ak
 
 def QA_fetch_get_usstock_day(code, start, end):
@@ -83,6 +84,13 @@ def QA_fetch_get_usstock_financial():
 
 def QA_fetch_get_usstock_financial_calendar():
     pass
+
+def QA_fetch_get_stock_industry():
+    stock_industry = QA_fetch_get_stock_industryinfo()
+    index_info = QA_fetch_get_index_info()
+    stock_industry =  stock_industry.assign(TDX=stock_industry.TDXHY.apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)),
+                                            SW=stock_industry.SWHY.apply(lambda x:str(x[0:4]+'00') if x is not None and x is not np.nan and len(x) >= 4 else None).apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)))
+    return(stock_industry)
 
 def QA_fetch_get_stock_industryinfo(file_name='tdxhy.cfg'):
     return(pd.read_csv(tdx_dir+file_name,

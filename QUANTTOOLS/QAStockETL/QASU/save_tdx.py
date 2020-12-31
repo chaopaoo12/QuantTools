@@ -6,6 +6,7 @@ from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_list, QA_fetch_get_stock_
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_usstock_adj,QA_fetch_get_usstock_day,QA_fetch_get_usstock_cik,
                                                  QA_fetch_get_usstock_financial, QA_fetch_get_usstock_financial_calendar,
                                                  QA_fetch_get_stock_industryinfo,QA_fetch_get_index_info,
+                                                 QA_fetch_get_stock_industry,
                                                  QA_fetch_get_stock_delist,QA_fetch_get_stock_half,
 
                                                  QA_fetch_get_usstock_pe,QA_fetch_get_usstock_pb)
@@ -642,7 +643,7 @@ def QA_SU_save_stock_industryinfo(client=DATABASE, ui_log=None, ui_progress=None
             ui_progress_int_value=5000
         )
         coll.insert_many(
-            QA_util_to_json_from_pandas(QA_fetch_get_stock_industryinfo())
+            QA_util_to_json_from_pandas(QA_fetch_get_stock_industry())
         )
 
     except Exception as e:
