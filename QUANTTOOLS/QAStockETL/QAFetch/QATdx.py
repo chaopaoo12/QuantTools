@@ -85,11 +85,13 @@ def QA_fetch_get_usstock_financial():
 def QA_fetch_get_usstock_financial_calendar():
     pass
 
-def QA_fetch_get_stock_industry():
+def QA_fetch_get_stock_industry(stock_all):
+    stock_all = stock_all.drop_duplicates('code')
     stock_industry = QA_fetch_get_stock_industryinfo()
     index_info = QA_fetch_get_index_info()
     stock_industry =  stock_industry.assign(TDX=stock_industry.TDXHY.apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)),
-                                            SW=stock_industry.SWHY.apply(lambda x:str(x[0:4]+'00') if x is not None and x is not np.nan and len(x) >= 4 else None).apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)))
+                                            SW=stock_industry.SWHY.apply(lambda x:str(x[0:4]+'00') if x is not None and x is not np.nan and len(x) >= 4 else None).apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)),
+                                            name=stock_industry.code.apply(lambda x:stock_all[stock_all.code==x].name.reset_index(drop=True)))
     return(stock_industry)
 
 def QA_fetch_get_stock_industryinfo(file_name='tdxhy.cfg'):
