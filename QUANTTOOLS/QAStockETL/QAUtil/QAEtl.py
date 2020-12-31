@@ -221,7 +221,7 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
             from (select a.order_date,
                          a.code,
                          report_date,
-                         market_day,
+                         to_date(IPO, 'yyyymmdd') as market_day,
                          lastyear,
                          last2year,
                          last3year,
@@ -963,12 +963,7 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
                         left join stock_financial_analysis c
                           on a.code = c.code
                          and c.send_date < a.order_date
-                         and c.end_date >= a.order_date
-                         left join (select code,
-                                     to_date(timetomarket, 'yyyymmdd') as market_day
-                                from stock_info
-                               where length(timetomarket) = 8) d
-                      on a.code = d.code) h) g
+                         and c.end_date >= a.order_date h) g
        where order_date = to_date('{deal_date}','yyyy-mm-dd')
             """.format(deal_date=deal_date)
         conn = cx_Oracle.connect(ORACLE_PATH2)
