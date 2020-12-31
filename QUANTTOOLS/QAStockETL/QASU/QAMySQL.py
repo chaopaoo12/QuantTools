@@ -61,7 +61,6 @@ def QA_etl_stock_info(ui_log= None):
         '##JOB Now ETL STOCK INFO ==== {}'.format(str(datetime.date.today())), ui_log)
     codes = list(QA_fetch_stock_all().code.unique().tolist())
     data = pd.DataFrame(QA_fetch_stock_industryinfo(codes))
-    data = data.drop("_id", axis=1)
     QA_util_sql_store_mysql(data, "stock_info",if_exists='replace')
     QA_util_log_info(
         '##JOB ETL STOCK INFO HAS BEEN SAVED ==== {}'.format(str(datetime.date.today())), ui_log)
