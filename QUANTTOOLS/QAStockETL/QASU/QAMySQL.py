@@ -9,6 +9,8 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetc
                                            QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,
                                            QA_fetch_financial_report_wy_adv,
 
+                                           QA_fetch_stock_industryinfo,
+
                                            QA_fetch_get_stock_etlday, QA_fetch_get_usstock_etlday,
                                            QA_fetch_get_stock_etlhalf,
 
@@ -25,7 +27,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetc
                                            QA_fetch_usstock_technical_index_adv,
                                            QA_fetch_usstock_financial_percent_adv
                                            )
-from QUANTAXIS.QAFetch.QAQuery import ( QA_fetch_stock_basic_info_tushare, QA_fetch_stock_xdxr)
+from QUANTAXIS.QAFetch.QAQuery import (QA_fetch_stock_xdxr)
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_list_adv
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_sql_store_mysql
 from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_process_financial)
@@ -57,7 +59,7 @@ def QA_etl_stock_shares(ui_log= None):
 def QA_etl_stock_info(ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK INFO ==== {}'.format(str(datetime.date.today())), ui_log)
-    data = pd.DataFrame(QA_fetch_stock_basic_info_tushare())
+    data = pd.DataFrame(QA_fetch_stock_industryinfo())
     data = data.drop("_id", axis=1)
     QA_util_sql_store_mysql(data, "stock_info",if_exists='replace')
     QA_util_log_info(
