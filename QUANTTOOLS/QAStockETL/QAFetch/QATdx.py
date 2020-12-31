@@ -1,5 +1,4 @@
-from QUANTAXIS import QA_fetch_get_future_day, QA_fetch_stock_min_adv
-from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_info
+from QUANTAXIS import QA_fetch_get_future_day, QA_fetch_stock_min_adv, QA_fetch_stock_info
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import QA_fetch_index_info
 from QUANTTOOLS.QAStockETL.QAData.database_settings import tdx_dir
 from QUANTAXIS.QAUtil import (QA_util_today_str, QA_util_get_pre_trade_date, QA_util_get_pre_trade_date,
@@ -89,16 +88,11 @@ def QA_fetch_get_usstock_financial_calendar():
 
 def QA_fetch_get_stock_industry(stock_all):
     stock_all = stock_all.drop_duplicates('code')
-    stock_info = QA_fetch_stock_info(stock_all.code.tolist())[['code','province','ipo_date']]
-    stock_info = stock_info.assign(AREA= stock_info.province.apply(lambda x:'8802'+str(x) if len(str(x)) ==2 else '88020'+str(x)).apply(lambda x:QA_fetch_index_info(x).index_name.reset_index(drop=True)))
-
     stock_industry = QA_fetch_get_stock_industryinfo()
     index_info = QA_fetch_get_index_info()
-    stock_industry =  stock_industry.assign(TDX=stock_industry.TDXHY.apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)),
+    stock_industry = stock_industry.assign(TDX=stock_industry.TDXHY.apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)),
                                             SW=stock_industry.SWHY.apply(lambda x:str(x[0:4]+'00') if x is not None and x is not np.nan and len(x) >= 4 else None).apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)),
-                                            NAME=stock_industry.code.apply(lambda x:stock_all[stock_all.code==x].name.reset_index(drop=True)),
-                                            AREA=stock_industry.code.apply(lambda x:stock_info[stock_info.code==x].AREA.reset_index(drop=True)),
-                                            IPO=stock_industry.code.apply(lambda x:stock_info[stock_info.code==x].ipo_date.reset_index(drop=True)))
+                                            NAME=stock_industry.code.apply(lambda x:stock_all[stock_all.code==x].name.reset_index(drop=True)))
     return(stock_industry)
 
 def QA_fetch_get_stock_industryinfo(file_name='tdxhy.cfg'):

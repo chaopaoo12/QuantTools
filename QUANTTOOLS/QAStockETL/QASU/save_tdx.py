@@ -1,5 +1,5 @@
 from QUANTAXIS import (QA_fetch_get_usstock_list,QA_fetch_get_index_list,QA_fetch_get_index_day,
-                       QA_fetch_get_stock_day,QA_fetch_get_stock_xdxr,QA_fetch_get_stock_info,
+                       QA_fetch_get_stock_day,QA_fetch_get_stock_xdxr,QA_fetch_get_stock_info,QA_fetch_stock_info
                        )
 from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_list, QA_fetch_get_stock_min, QA_fetch_get_index_min
 
@@ -13,7 +13,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_usstock_adj,QA_fet
 from QUANTTOOLS.QAStockETL.QAFetch import (fetch_get_stock_code_all,QA_fetch_get_stock_etlreal,
                                            QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare,
                                            QA_fetch_get_stock_half_realtime, QA_fetch_get_usstock_day_xq,
-
+                                           QA_fetch_index_info,
                                            QA_fetch_stock_om_all,QA_fetch_stock_all,QA_fetch_usstock_day,)
 from QUANTAXIS.QAData.data_fq import _QA_data_stock_to_fq
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_day
@@ -636,6 +636,10 @@ def QA_SU_save_stock_industryinfo(client=DATABASE, ui_log=None, ui_progress=None
     coll.create_index('code')
 
     stock_all = QA_fetch_get_stock_list()[['code','name']]
+    stock_info = QA_fetch_stock_info(stock_all.code.tolist())[['code','province','ipo_date']]
+    stock_info = stock_info.assign(AREA=stock_info.province.apply(lambda x:'8802'+str(x) if len(str(x)) ==2 else '88020'+str(x)).apply(lambda x:QA_fetch_index_info(x).index_name.reset_index(drop=True)))
+    stock_all = stock_all.assign(AREA=stock_all.code.apply(lambda x:stock_info[stock_info.code==x].AREA.reset_index(drop=True)),
+                                 IPO=stock_all.code.apply(lambda x:stock_info[stock_info.code==x].ipo_date.reset_index(drop=True)))
     try:
         QA_util_log_info(
             '##JOB09 Now Saving STOCK_INDUSTRY_INFO ====',
