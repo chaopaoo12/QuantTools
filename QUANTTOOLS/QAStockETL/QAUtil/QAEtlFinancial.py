@@ -582,6 +582,7 @@ res as
          INDUSTRY,
          NAME,
          AREA,
+         IPO,
          A.REPORT_DATE,
          ADD_MONTHS(A.REPORT_DATE, -12) AS LASTYEAR,
          ADD_MONTHS(A.REPORT_DATE, -3) AS LAG1,
@@ -661,7 +662,8 @@ res as
     LEFT JOIN (SELECT CODE,
                      MAX(TDX) as INDUSTRY,
                      MAX(NAME) as NAME,
-                     MAX(AREA) as AREA
+                     MAX(AREA) as AREA,
+                     MAX(IPO) as IPO
                 from STOCK_INFO
                GROUP BY CODE) F
       ON A.CODE = F.CODE)
@@ -669,6 +671,7 @@ SELECT A.CODE,
        A.INDUSTRY,
        A.NAME,
        A.AREA,
+       A.IPO
        A.REPORT_DATE,
        ADD_MONTHS(A.REPORT_DATE, -12) AS LASTYEAR,
        ADD_MONTHS(A.REPORT_DATE, -3) AS LAG1,
