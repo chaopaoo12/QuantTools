@@ -26,6 +26,9 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
        round(pb, 2) AS pb,
        round(i_PB, 2) AS i_pb,
        round(roe * 100, 2) AS roe,
+       round(roe_ttm * 100, 2) AS roe_ttm,
+       round(netroe * 100, 2) AS netroe,
+       round(netroe_ttm * 100, 2) AS netroe_ttm,
        round(case
                when i_PE = 0 then
                 0
@@ -55,13 +58,6 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
              end,
              2) as roe_rate,
        round(case
-               when i_ROE_total = 0 then
-                0
-               else
-                roe / i_ROE_total
-             end,
-             2) as roe_ratet,
-       round(case
                when i_ROA = 0 then
                 0
                else
@@ -69,154 +65,145 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
              end,
              2) as roa_rate,
        round(case
-               when i_ROA_total = 0 then
-                0
-               else
-                roa / i_ROA_total
-             end,
-             2) as roa_ratet,
-       round(case
                when i_grossMargin = 0 then
                 0
                else
                 grossMargin / i_grossMargin
              end,
              2) as gross_rate,
-       round((roe_ly + roe_l2y + roe_l3y + roe_l4y) / 5, 2) as roe_avg5,
-       round((roa_ly + roa_l2y + roa_l3y + roa_l4y) / 5, 2) as roa_avg5,
-       round((grossMargin_ly + grossMargin_l2y + grossMargin_l3y +
+       round((roe_yoy + roe_l2y + roe_l3y + roe_l4y) / 5, 2) as roe_avg5,
+       round((roa_yoy + roa_l2y + roa_l3y + roa_l4y) / 5, 2) as roa_avg5,
+       round((grossMargin_yoy + grossMargin_l2y + grossMargin_l3y +
              grossMargin_l4y) / 5,
              2) as gross_avg5,
-       round(least(roe_ly + roe_l2y + roe_l3y + roe_l4y), 2) as roe_min,
-       round(least(roa_ly + roa_l2y + roa_l3y + roa_l4y), 2) as roa_min,
-       round(least(grossMargin_ly + grossMargin_l2y + grossMargin_l3y +
+       round(least(roe_yoy + roe_l2y + roe_l3y + roe_l4y), 2) as roe_min,
+       round(least(roa_yoy + roa_l2y + roa_l3y + roa_l4y), 2) as roa_min,
+       round(least(grossMargin_yoy + grossMargin_l2y + grossMargin_l3y +
                    grossMargin_l4y),
              2) as gross_min,
        round(case
-               when roe_ly + roe_l2y + roe_l3y + roe_l4y = 0 then
+               when roe_yoy + roe_l2y + roe_l3y + roe_l4y = 0 then
                 0
                else
-                roe / (roe_ly + roe_l2y + roe_l3y + roe_l4y)
+                roe / (roe_yoy + roe_l2y + roe_l3y + roe_l4y)
              end,
              2) as roe_ch,
        round(case
-               when roa_ly + roa_l2y + roa_l3y + roa_l4y = 0 then
+               when roa_yoy + roa_l2y + roa_l3y + roa_l4y = 0 then
                 0
                else
-                roa / (roa_ly + roa_l2y + roa_l3y + roa_l4y)
+                roa / (roa_yoy + roa_l2y + roa_l3y + roa_l4y)
              end,
              2) as roa_ch,
        round(case
-               when grossMargin_ly + grossMargin_l2y + grossMargin_l3y +
+               when grossMargin_yoy + grossMargin_l2y + grossMargin_l3y +
                     grossMargin_l4y = 0 then
                 0
                else
-                grossMargin / (grossMargin_ly + grossMargin_l2y + grossMargin_l3y +
+                grossMargin / (grossMargin_yoy + grossMargin_l2y + grossMargin_l3y +
                 grossMargin_l4y)
              end,
              2) as gross_ch,
-       round(i_ROE_total * 100, 2) AS i_roe_total,
        round(i_ROE * 100, 2) AS i_roe,
-       round(roe_ly * 100, 2) AS roe_ly,
+       round(roe_yoy * 100, 2) AS roe_yoy,
        round(roe_l2y * 100, 2) AS roe_l2y,
        round(roe_l3y * 100, 2) AS roe_l3y,
        round(roe_l4y * 100, 2) AS roe_l4y,
        round(roa * 100, 2) AS roa,
-       round(i_ROA_total * 100, 2) AS i_roa_total,
        round(i_ROA * 100, 2) AS i_roa,
-       round(roa_ly * 100, 2) AS roa_ly,
+       round(roa_yoy * 100, 2) AS roa_yoy,
        round(roa_l2y * 100, 2) AS roa_l2y,
        round(roa_l3y * 100, 2) AS roa_l3y,
        round(roa_l4y * 100, 2) AS roa_l4y,
        round(grossMargin * 100, 2) AS grossMargin,
        round(i_grossMargin * 100, 2) AS i_grossMargin,
-       round(grossMargin_ly * 100, 2) AS grossMargin_ly,
+       round(grossMargin_yoy * 100, 2) AS grossMargin_yoy,
        round(grossMargin_l2y * 100, 2) AS grossMargin_l2y,
        round(grossMargin_l3y * 100, 2) AS grossMargin_l3y,
        round(grossMargin_l4y * 100, 2) AS grossMargin_l4y,
        round(assetsLiabilitiesRatio * 100, 2) AS assetsLiabilitiesRatio,
-       round(assetsLiabilitiesRatio_ly * 100, 2) AS assetsLiabilitiesRatio_ly,
+       round(assetsLiabilitiesRatio_yoy * 100, 2) AS assetsLiabilitiesRatio_yoy,
        round(assetsLiabilitiesRatio_l2y * 100, 2) AS assetsLiabilitiesRatio_l2y,
        round(assetsLiabilitiesRatio_l3y * 100, 2) AS assetsLiabilitiesRatio_l3y,
        round(assetsLiabilitiesRatio_l4y * 100, 2) AS assetsLiabilitiesRatio_l4y,
        round(cashRatio * 100, 2) AS cashRatio,
-       round(cashRatio_ly * 100, 2) AS cashRatio_ly,
+       round(cashRatio_yoy * 100, 2) AS cashRatio_yoy,
        round(cashRatio_l2y * 100, 2) AS cashRatio_l2y,
        round(cashRatio_l3y * 100, 2) AS cashRatio_l3y,
        round(cashRatio_l4y * 100, 2) AS cashRatio_l4y,
        round(tangibleAssetDebtRatio * 100, 2) AS tangibleAssetDebtRatio,
-       round(tangibleAssetDebtRatio_ly * 100, 2) AS tangibleAssetDebtRatio_ly,
+       round(tangibleAssetDebtRatio_yoy * 100, 2) AS tangibleAssetDebtRatio_yoy,
        round(tangibleAssetDebtRatio_l2y * 100, 2) AS tangibleAssetDebtRatio_l2y,
        round(tangibleAssetDebtRatio_l3y * 100, 2) AS tangibleAssetDebtRatio_l3y,
        round(tangibleAssetDebtRatio_l4y * 100, 2) AS tangibleAssetDebtRatio_l4y,
        
        round(turnoverRatioOfTotalAssets * 100, 2) AS turnoverRatioOfTotalAssets,
-       round((turnoverRatioOfTotalAssets_ly +
+       round((turnoverRatioOfTotalAssets_yoy +
              turnoverRatioOfTotalAssets_l2y +
              turnoverRatioOfTotalAssets_l3y +
              turnoverRatioOfTotalAssets_l4y) / 4 * 100,
              2) AS turnoverRatioOfTotalAssets_avg,
        
        round(turnoverRatioOfReceivable * 100, 2) AS turnoverRatioOfReceivable,
-       round(turnoverRatioOfReceivable_ly * 100, 2) AS turnoverRatioOfReceivable_ly,
+       round(turnoverRatioOfReceivable_yoy * 100, 2) AS turnoverRatioOfReceivable_yoy,
        round(turnoverRatioOfReceivable_l2y * 100, 2) AS turnoverRatioOfReceivable_l2y,
        round(turnoverRatioOfReceivable_l3y * 100, 2) AS turnoverRatioOfReceivable_l3y,
        round(turnoverRatioOfReceivable_l4y * 100, 2) AS turnoverRatioOfReceivable_l4y,
        
-       round(cashOfnetProfit_TTM * 100, 2) AS cashOfnetProfit_TTM,
-       round(cashOfnetProfit_TTM_ly * 100, 2) AS cashOfnetProfit_TTM_ly,
-       round(cashOfnetProfit_TTM_l2y * 100, 2) AS cashOfnetProfit_TTM_l2y,
-       round(cashOfnetProfit_TTM_l3y * 100, 2) AS cashOfnetProfit_TTM_l3y,
-       round(cashOfnetProfit_TTM_l4y * 100, 2) AS cashOfnetProfit_TTM_l4y,
+       round(cashOfnetProfit * 100, 2) AS cashOfnetProfit,
+       round(cashOfnetProfit_yoy * 100, 2) AS cashOfnetProfit_yoy,
+       round(cashOfnetProfit_l2y * 100, 2) AS cashOfnetProfit_l2y,
+       round(cashOfnetProfit_l3y * 100, 2) AS cashOfnetProfit_l3y,
+       round(cashOfnetProfit_l4y * 100, 2) AS cashOfnetProfit_l4y,
        
        round(cashOfnetProfit * 100, 2) AS cashOfnetProfit,
-       round(cashOfnetProfit_ly * 100, 2) AS cashOfnetProfit_ly,
+       round(cashOfnetProfit_yoy * 100, 2) AS cashOfnetProfit_yoy,
        round(cashOfnetProfit_l2y * 100, 2) AS cashOfnetProfit_l2y,
        round(cashOfnetProfit_l3y * 100, 2) AS cashOfnetProfit_l3y,
        round(cashOfnetProfit_l4y * 100, 2) AS cashOfnetProfit_l4y,
        
        round(case
-               when operatingRevenue_TTM_ly = 0 then
+               when operatingRevenue_yoy = 0 then
                 0
                else
-                operatingRevenue_TTM / operatingRevenue_TTM_ly - 1
+                operatingRevenue / operatingRevenue_yoy - 1
              end * 100,
              2) AS operatingRinrate,
        round(case
-               when operatingRevenue_TTM_l2y = 0 then
+               when operatingRevenue_l2y = 0 then
                 0
                else
-                operatingRevenue_TTM_ly / operatingRevenue_TTM_l2y - 1
+                operatingRevenue_yoy / operatingRevenue_l2y - 1
              end * 100,
-             2) AS operatingRinrate_ly,
+             2) AS operatingRinrate_yoy,
        round(case
-               when operatingRevenue_TTM_l3y = 0 then
+               when operatingRevenue_l3y = 0 then
                 0
                else
-                operatingRevenue_TTM_l2y / operatingRevenue_TTM_l3y - 1
+                operatingRevenue_l2y / operatingRevenue_l3y - 1
              end * 100,
              2) AS operatingRinrate_l2y,
        round(case
-               when operatingRevenue_TTM_l4y = 0 then
+               when operatingRevenue_l4y = 0 then
                 0
                else
-                operatingRevenue_TTM_l3y / operatingRevenue_TTM_l4y - 1
+                operatingRevenue_l3y / operatingRevenue_l4y - 1
              end * 100,
              2) AS operatingRinrate_l3y,
        round(case
-               when netProfit_TTM_ly = 0 then
+               when netProfit_TTM_yoy = 0 then
                 0
                else
-                netProfit_TTM / netProfit_TTM_ly - 1
+                netProfit_TTM / netProfit_TTM_yoy - 1
              end * 100,
              2) as netProfit_inrate,
        round(case
                when netProfit_TTM_l2y = 0 then
                 0
                else
-                netProfit_TTM_ly / netProfit_TTM_l2y - 1
+                netProfit_TTM_yoy / netProfit_TTM_l2y - 1
              end * 100,
-             2) as netProfit_inrate_ly,
+             2) as netProfit_inrate_yoy,
        round(case
                when netProfit_TTM_l3y = 0 then
                 0
@@ -232,59 +219,59 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
              end * 100,
              2) as netProfit_inrate_l3y,
        round(case
-               when netCashOperatActiv_TTM_ly = 0 then
+               when netCashOperatActiv_yoy = 0 then
                 0
                else
-                netCashOperatActiv_TTM / netCashOperatActiv_TTM_ly - 1
+                netCashOperatActiv / netCashOperatActiv_yoy - 1
              end * 100,
              2) as netCashOperatinrate,
        round(case
-               when netCashOperatActiv_TTM_l2y = 0 then
+               when netCashOperatActiv_l2y = 0 then
                 0
                else
-                netCashOperatActiv_TTM_ly / netCashOperatActiv_TTM_l2y - 1
+                netCashOperatActiv_yoy / netCashOperatActiv_l2y - 1
              end * 100,
-             2) as netCashOperatinrate_ly,
+             2) as netCashOperatinrate_yoy,
        round(case
-               when netCashOperatActiv_TTM_l3y = 0 then
+               when netCashOperatActiv_l3y = 0 then
                 0
                else
-                netCashOperatActiv_TTM_l2y / netCashOperatActiv_TTM_l3y - 1
+                netCashOperatActiv_l2y / netCashOperatActiv_l3y - 1
              end * 100,
              2) as netCashOperatinrate_l2y,
        round(case
-               when netCashOperatActiv_TTM_l4y = 0 then
+               when netCashOperatActiv_l4y = 0 then
                 0
                else
-                netCashOperatActiv_TTM_l3y / netCashOperatActiv_TTM_l4y - 1
+                netCashOperatActiv_l3y / netCashOperatActiv_l4y - 1
              end * 100,
              2) as netCashOperatinrate_l3y,
        round(case
-               when totalProfit_TTM_ly = 0 then
+               when totalProfit_yoy = 0 then
                 0
                else
-                totalProfit_TTM / totalProfit_TTM_ly - 1
+                totalProfit / totalProfit_yoy - 1
              end * 100,
              2) as totalProfitinrate,
        round(case
-               when totalProfit_TTM_l2y = 0 then
+               when totalProfit_l2y = 0 then
                 0
                else
-                totalProfit_TTM_ly / totalProfit_TTM_l2y - 1
+                totalProfit_yoy / totalProfit_l2y - 1
              end * 100,
-             2) as totalProfitinrate_ly,
+             2) as totalProfitinrate_yoy,
        round(case
-               when totalProfit_TTM_l3y = 0 then
+               when totalProfit_l3y = 0 then
                 0
                else
-                totalProfit_TTM_l2y / totalProfit_TTM_l3y - 1
+                totalProfit_l2y / totalProfit_l3y - 1
              end * 100,
              2) as totalProfitinrate_l2y,
        round(case
-               when totalProfit_TTM_l4y = 0 then
+               when totalProfit_l4y = 0 then
                 0
                else
-                totalProfit_TTM_l3y / totalProfit_TTM_l4y - 1
+                totalProfit_l3y / totalProfit_l4y - 1
              end * 100,
              2) as totalProfitinrate_l3y,
        round(case
@@ -302,39 +289,39 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
              end * 100,
              2) as PM,
        round(case
-               when OPERATINGREVENUE_TTM <= 0 then
+               when OPERATINGREVENUE <= 0 then
                 0
                else
-                total_market / OPERATINGREVENUE_TTM
+                total_market / OPERATINGREVENUE
              end * 100,
              2) as PS,
        round(case
-               when NETCASHOPERATACTIV_TTM <= 0 then
+               when NETCASHOPERATACTIV <= 0 then
                 0
                else
-                total_market / NETCASHOPERATACTIV_TTM
+                total_market / NETCASHOPERATACTIV
              end * 100,
              2) as PC,
        round(case
-               when NETPROFIT_TTM_LY <= 0 or NETPROFIT_TTM = NETPROFIT_TTM_LY then
+               when NETPROFIT_TTM_yoy <= 0 or NETPROFIT_TTM = NETPROFIT_TTM_yoy then
                 0
                else
-                pe_ttm / (NETPROFIT_TTM / NETPROFIT_TTM_LY - 1) / 100
+                pe_ttm / (NETPROFIT_TTM / NETPROFIT_TTM_yoy - 1) / 100
              end * 100,
              2) as PEG,
        round(case
-               when OPERATINGREVENUE_TTM_LY <= 0 or
-                    OPERATINGREVENUE_TTM = OPERATINGREVENUE_TTM_LY then
+               when OPERATINGREVENUE_yoy <= 0 or
+                    OPERATINGREVENUE = OPERATINGREVENUE_yoy then
                 0
                else
-                pe_ttm / (OPERATINGREVENUE_TTM / OPERATINGREVENUE_TTM_LY - 1) / 100
+                pe_ttm / (OPERATINGREVENUE / OPERATINGREVENUE_yoy - 1) / 100
              end * 100,
              2) as PSG,
        round(case
-               when totalassets_LY = 0 or totalassets = totalassets_LY then
+               when totalassets_yoy = 0 or totalassets = totalassets_yoy then
                 0
                else
-                pe_ttm / (totalassets / totalassets_LY - 1) / 100
+                pe_ttm / (totalassets / totalassets_yoy - 1) / 100
              end * 100,
              2) as PBG,
        round(LAG_TOR * 100, 2) as LAG_TOR,
@@ -542,7 +529,7 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
        pe_rank,
        pb_rank
   from stock_analysis_data a
- where order_date = to_date('{start_date}', 'yyyy-mm-dd')
+ where order_date = to_date('2020-12-30', 'yyyy-mm-dd')
  and (turnoverRatio * 1000 >= 10 or order_Date - market_day >= 15)
 '''
     if deal_date is None:
