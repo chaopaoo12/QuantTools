@@ -782,8 +782,7 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
                          financialCosts_l5y,
                          operatingProfit_l5y,
                          totalProfit_l5y,
-                         incomeTax_l5y
-                         NETPROFIT_L5Y,
+                         incomeTax_l5y NETPROFIT_L5Y,
                          NETPROFIT_TTM_L5Y,
                          NETPROAFTEXTRGAINLOSS_L5Y,
                          NETPROAFTEXTRGAINLOSS_TTM_L5Y,
@@ -924,14 +923,13 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
                                  MAX(POSRT_CNT90) as POSRT_CNT90,
                                  MAX(NEGRT_MEAN90) as NEGRT_MEAN90,
                                  MAX(POSRT_MEAN90) as POSRT_MEAN90
-                                from stock_market_day
-                               WHERE order_date >=
+                            from stock_market_day
+                           WHERE order_date >=
                                      to_date('{deal_date}','yyyy-mm-dd') - 90
                                 and  order_date <=
                                      to_date('{deal_date}','yyyy-mm-dd')
-                                     group by order_date, code
-                                 ) a
-                        left join (select code,
+                           group by order_date, code) a
+                    left join (select code,
                                      order_date,
                                      end_date,
                                      shares_after,
@@ -957,14 +955,14 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
                                                      max(tra_ashares) as tra_ashares
                                                 from stock_shares
                                                group by code, begin_date) h) g) b
-                          on a.code = b.code
-                         and a.order_date >= b.order_date
-                         and a.order_date < b.end_date
-                        left join stock_financial_analysis c
-                          on a.code = c.code
-                         and c.send_date < a.order_date
-                         and c.end_date >= a.order_date h) g
-       where order_date = to_date('{deal_date}','yyyy-mm-dd')
+                      on a.code = b.code
+                     and a.order_date >= b.order_date
+                     and a.order_date < b.end_date
+                    left join stock_financial_analysis c
+                      on a.code = c.code
+                     and c.send_date < a.order_date
+                     and c.end_date >= a.order_date) h) g
+   where order_date = to_date('{deal_date}','yyyy-mm-dd');
             """.format(deal_date=deal_date)
         conn = cx_Oracle.connect(ORACLE_PATH2)
         cursor = conn.cursor()
