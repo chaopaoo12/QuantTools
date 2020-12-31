@@ -91,7 +91,7 @@ def QA_fetch_get_stock_industry(stock_all):
     index_info = QA_fetch_get_index_info()
     stock_info = QA_fetch_stock_info(stock_all.code.tolist())[['code','province','ipo_date']]
     stock_info = stock_info.assign(AREA= stock_info.province.apply(lambda x:'8802'+str(x) if len(str(x)) ==2 else '88020'+str(x)).apply(lambda x:index_info[index_info.code==x].index_name.reset_index(drop=True)),
-                                   IPO= stock_info.ipo_date.apply(lambda x:str(x)))
+                                   ipo_date= stock_info.ipo_date.apply(lambda x:str(x)))
     stock_industry = stock_industry.assign(TDX=stock_industry.TDXHY.apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)),
                                             SW=stock_industry.SWHY.apply(lambda x:str(x[0:4]+'00') if x is not None and x is not np.nan and len(x) >= 4 else None).apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)),
                                             NAME=stock_industry.code.apply(lambda x:stock_all[stock_all.code==x].name.reset_index(drop=True)),
