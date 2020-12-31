@@ -634,6 +634,7 @@ def QA_SU_save_stock_industryinfo(client=DATABASE, ui_log=None, ui_progress=None
     client.drop_collection('stock_industryinfo')
     coll = client.stock_industryinfo
     coll.create_index('code')
+
     stock_all = QA_fetch_get_stock_list()[['code','name']]
     try:
         QA_util_log_info(
