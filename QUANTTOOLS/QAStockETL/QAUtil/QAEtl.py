@@ -962,7 +962,7 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
                       on a.code = c.code
                      and c.send_date < a.order_date
                      and c.end_date >= a.order_date) h) g
-   where order_date = to_date('{deal_date}','yyyy-mm-dd');
+   where order_date = to_date('{deal_date}','yyyy-mm-dd')
             """.format(deal_date=deal_date)
         conn = cx_Oracle.connect(ORACLE_PATH2)
         cursor = conn.cursor()
