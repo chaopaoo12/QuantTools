@@ -544,26 +544,26 @@ rp as
                   union all
                   select code,
                          CASE
-                           WHEN to_char(to_date(timetomarket, 'yyyymmdd'), 'Q') = 1 THEN
-                            to_char(trunc(to_date(timetomarket, 'yyyymmdd'),
+                           WHEN to_char(to_date(ipo, 'yyyymmdd'), 'Q') = 1 THEN
+                            to_char(trunc(to_date(ipo, 'yyyymmdd'),
                                           'year') - 1,
                                     'yyyy-mm-dd')
-                           when to_char(to_date(timetomarket, 'yyyymmdd'), 'Q') = 2 then
-                            to_char(to_date(concat(to_char(to_date(timetomarket,
+                           when to_char(to_date(ipo, 'yyyymmdd'), 'Q') = 2 then
+                            to_char(to_date(concat(to_char(to_date(ipo,
                                                                    'yyyymmdd'),
                                                            'yyyy'),
                                                    '0331'),
                                             'yyyymmdd'),
                                     'yyyy-mm-dd')
-                           when to_char(to_date(timetomarket, 'yyyymmdd'), 'Q') = 3 then
-                            to_char(to_date(concat(to_char(to_date(timetomarket,
+                           when to_char(to_date(ipo, 'yyyymmdd'), 'Q') = 3 then
+                            to_char(to_date(concat(to_char(to_date(ipo,
                                                                    'yyyymmdd'),
                                                            'yyyy'),
                                                    '0630'),
                                             'yyyymmdd'),
                                     'yyyy-mm-dd')
-                           when to_char(to_date(timetomarket, 'yyyymmdd'), 'Q') = 4 then
-                            to_char(to_date(concat(to_char(to_date(timetomarket,
+                           when to_char(to_date(ipo, 'yyyymmdd'), 'Q') = 4 then
+                            to_char(to_date(concat(to_char(to_date(ipo,
                                                                    'yyyymmdd'),
                                                            'yyyy'),
                                                    '0930'),
@@ -572,10 +572,10 @@ rp as
                            else
                             null
                          end as report_date,
-                         to_char(to_date(timetomarket, 'yyyymmdd') - 1,
+                         to_char(to_date(ipo, 'yyyymmdd') - 1,
                                  'yyyy-mm-dd') as send_date
                     from stock_info
-                   where length(timetomarket) = 8) h) g
+                   where length(ipo) = 8) h) g
    group by code, report_date),
 res as
  (SELECT A.CODE,
@@ -671,7 +671,7 @@ SELECT A.CODE,
        A.INDUSTRY,
        A.NAME,
        A.AREA,
-       A.IPO
+       A.IPO,
        A.REPORT_DATE,
        ADD_MONTHS(A.REPORT_DATE, -12) AS LASTYEAR,
        ADD_MONTHS(A.REPORT_DATE, -3) AS LAG1,
