@@ -94,8 +94,8 @@ def QA_fetch_get_stock_industry(stock_all):
     stock_industry =  stock_industry.assign(TDX=stock_industry.TDXHY.apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)),
                                             SW=stock_industry.SWHY.apply(lambda x:str(x[0:4]+'00') if x is not None and x is not np.nan and len(x) >= 4 else None).apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)),
                                             NAME=stock_industry.code.apply(lambda x:stock_all[stock_all.code==x].name.reset_index(drop=True)),
-                                            AREA=stock_industry.code.apply(lambda x:stock_info[stock_info.code==x].AREA.reset_index(drop=True)),
-                                            IPO=stock_industry.code.apply(lambda x:stock_info[stock_info.code==x].ipo_date.reset_index(drop=True)))
+                                            AREA=stock_industry.code.apply(lambda x:stock_info[stock_info.code==x].AREA.reset_index(drop=True).replace('板块','')),
+                                            IPO=stock_industry.code.apply(lambda x:str(stock_info[stock_info.code==x].ipo_date.reset_index(drop=True))))
     return(stock_industry)
 
 def QA_fetch_get_stock_industryinfo(file_name='tdxhy.cfg'):
