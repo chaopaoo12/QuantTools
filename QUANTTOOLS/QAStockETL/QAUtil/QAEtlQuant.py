@@ -529,7 +529,7 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
        pe_rank,
        pb_rank
   from stock_analysis_data a
- where order_date = to_date('2020-12-30', 'yyyy-mm-dd')
+ where order_date = to_date({start_date}, 'yyyy-mm-dd')
  and (turnoverRatio * 1000 >= 10 or order_Date - market_day >= 15)
 '''
     if deal_date is None:
