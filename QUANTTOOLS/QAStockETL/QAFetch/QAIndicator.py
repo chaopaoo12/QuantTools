@@ -2,6 +2,7 @@ import QUANTAXIS as QA
 from QUANTAXIS.QAIndicator.base import *
 from scipy import stats
 import pandas as pd
+import math
 
 def QA_indicator_MACD(DataFrame, short=12, long=26, mid=9):
     """
@@ -80,28 +81,22 @@ def rolling_ols(y):
     滚动回归，返回滚动回归后的回归系数
     rb: 因变量序列
     '''
-    y = pd.DataFrame.ewm(y,alpha=1.0/24,ignore_na=True).mean().values
+    #y = pd.DataFrame.ewm(y,alpha=1.0/24,ignore_na=True).mean().values
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
-    return(round(model.slope,4))
+    return(math.atan(model.slope)*10)
 
 def spc(data, N= 5):
-    data[['MA5_C','MA10_C','MA20_C','MA60_C',
-          'LONG_AMOUNT','SHORT_AMOUNT']] = data.rolling(window=N).agg({ 'MA5':rolling_ols,
-                                                                'MA10':rolling_ols,
-                                                                'MA20':rolling_ols,
-                                                                'MA60':rolling_ols,
-                                                                'LONG_AMOUNT':rolling_ols,
-                                                                'SHORT_AMOUNT':rolling_ols
-                                                                })
-    return(data)
-
-def spc_short(data, N= 5):
-    data[['MA5_C','MA10_C','MA20_C','MA60_C','LONG_AMOUNT','SHORT_AMOUNT']] = data.rolling(window=N).agg({'MA5':rolling_ols,
-                                                                'MA10':rolling_ols,
-                                                                'MA20':rolling_ols,
-                                                                'MA60':rolling_ols,
-                                                              'LONG_AMOUNT':rolling_ols,
-                                                              'SHORT_AMOUNT':rolling_ols})
+    data[['MA5_C','MA60_C','GMMA5_C',
+          'MA_VOL5_C','MA_VOL60_C',
+          'GMMA_VOL5_C','GMMA30_C','GMMA_VOL30_C']]= data.rolling(window=N).agg({'MA5':rolling_ols,
+                                   'MA60':rolling_ols,
+                                   'GMMA5_A':rolling_ols,
+                                   'MA_VOL5':rolling_ols,
+                                   'MA_VOL60':rolling_ols,
+                                   'GMMA_VOL5_A':rolling_ols,
+                                   'GMMA30_A':rolling_ols,
+                                   'GMMA_VOL30_A':rolling_ols,
+    })
     return(data)
 
 def MIKE_NEW(DataFrame,MIKE_N=12,MA_N=5):
@@ -209,11 +204,13 @@ def get_indicator(data, type='day'):
         MA['LONG_CROSS2'] = QA.CROSS(MA['MA60'], MA['MA20'])
         MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
         MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
-        MA['GMMA5_A'] = MA['MA5']/MA['MA30']-1
-        MA['GMMA10_A'] = MA['MA10']/MA['MA45']-1
-        MA['GMMA15_A'] = MA['MA15']/MA['MA60']-1
 
-        MA['GMMA3'] = MA['MA8']/MA['MA15']-1
+        MA['GMMA5_A'] = MA['MA5']/MA['MA60']-1
+        MA['GMMA10_A'] = MA['MA10']/MA['MA60']-1
+        MA['GMMA15_A'] = MA['MA15']/MA['MA60']-1
+        MA['GMMA30_A'] = MA['MA30']/MA['MA60']-1
+
+        MA['GMMA3'] = MA['MA3']/MA['MA15']-1
         MA['GMMA5'] = MA['MA5']/MA['MA15']-1
         MA['GMMA8'] = MA['MA8']/MA['MA15']-1
         MA['GMMA10'] = MA['MA10']/MA['MA15']-1
@@ -232,13 +229,19 @@ def get_indicator(data, type='day'):
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
         MA['LONG60'] = MA['MA20']/MA['MA60']-1
+        MA['SHORT_CROSS1'] = QA.CROSS(MA['MA10'], MA['MA20'])
+        MA['SHORT_CROSS2'] = QA.CROSS(MA['MA20'], MA['MA10'])
+        MA['LONG_CROSS1'] = QA.CROSS(MA['MA20'], MA['MA60'])
+        MA['LONG_CROSS2'] = QA.CROSS(MA['MA60'], MA['MA20'])
         MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
         MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
+
         MA['GMMA5_A'] = MA['MA5']/MA['MA30']-1
         MA['GMMA10_A'] = MA['MA10']/MA['MA45']-1
         MA['GMMA15_A'] = MA['MA15']/MA['MA60']-1
+        MA['GMMA30_A'] = MA['MA30']/MA['MA60']-1
 
-        MA['GMMA3'] = MA['MA8']/MA['MA15']-1
+        MA['GMMA3'] = MA['MA3']/MA['MA15']-1
         MA['GMMA5'] = MA['MA5']/MA['MA15']-1
         MA['GMMA8'] = MA['MA8']/MA['MA15']-1
         MA['GMMA10'] = MA['MA10']/MA['MA15']-1
@@ -249,6 +252,67 @@ def get_indicator(data, type='day'):
         MA['GMMA40'] = MA['MA40']/MA['MA60']-1
         MA['GMMA45'] = MA['MA45']/MA['MA60']-1
         MA['GMMA50'] = MA['MA50']/MA['MA60']-1
+
+    try:
+        MA_VOL = data.add_func(QA.QA_indicator_MA_VOL,3,5,8,10,12,15,20,30,35,40,45,50,60)
+        MA_VOL['SHORT10V'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL10']-1
+        MA_VOL['SHORT20V'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL20']-1
+        MA_VOL['SHORT60V'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL60']-1
+        MA_VOL['LONG60V'] = MA_VOL['MA_VOL20']/MA_VOL['MA_VOL60']-1
+        MA_VOL['SHORTV_CROSS1'] = QA.CROSS(MA_VOL['MA_VOL10'], MA_VOL['MA_VOL20'])
+        MA_VOL['SHORTV_CROSS2'] = QA.CROSS(MA_VOL['MA_VOL20'], MA_VOL['MA_VOL10'])
+        MA_VOL['LONGV_CROSS1'] = QA.CROSS(MA_VOL['MA_VOL20'], MA_VOL['MA_VOL60'])
+        MA_VOL['LONGV_CROSS2'] = QA.CROSS(MA_VOL['MA_VOL60'], MA_VOL['MA_VOL20'])
+        MA_VOL['LONGV_AMOUNT'] = MA_VOL['MA_VOL20']-MA_VOL['MA_VOL60']
+        MA_VOL['SHORTV_AMOUNT'] = MA_VOL['MA_VOL10']-MA_VOL['MA_VOL20']
+
+        MA_VOL['GMMA_VOL5_A'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL10_A'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL15_A'] = MA_VOL['MA_VOL15']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL30_A'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
+
+        MA_VOL['GMMA_VOL3'] = MA_VOL['MA_VOL3']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL5'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL8'] = MA_VOL['MA_VOL8']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL10'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL12'] = MA_VOL['MA_VOL12']/MA_VOL['MA_VOL15']-1
+
+        MA_VOL['GMMA_VOL30'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL35'] = MA_VOL['MA_VOL35']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL40'] = MA_VOL['MA_VOL40']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL45'] = MA_VOL['MA_VOL45']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL50'] = MA_VOL['MA_VOL50']/MA_VOL['MA_VOL60']-1
+
+    except:
+        MA_VOL = data.data.assign(MA_VOL3=None,MA_VOL5=None,MA_VOL8=None,MA_VOL10=None,MA_VOL12=None,MA_VOL15=None,MA_VOL20=None,
+                                  MA_VOL30=None,MA_VOL35=None,MA_VOL40=None,MA_VOL45=None,MA_VOL50=None,MA_VOL60=None)[['MA_VOL3','MA_VOL5','MA_VOL8','MA_VOL10','MA_VOL12','MA_VOL15','MA_VOL20','MA_VOL30','MA_VOL35','MA_VOL40','MA_VOL45','MA_VOL50','MA_VOL60']]
+        MA_VOL['SHORT10V'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL10']-1
+        MA_VOL['SHORT20V'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL20']-1
+        MA_VOL['SHORT60V'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL60']-1
+        MA_VOL['LONG60V'] = MA_VOL['MA_VOL20']/MA_VOL['MA_VOL60']-1
+        MA_VOL['SHORTV_CROSS1'] = QA.CROSS(MA_VOL['MA_VOL10'], MA_VOL['MA_VOL20'])
+        MA_VOL['SHORTV_CROSS2'] = QA.CROSS(MA_VOL['MA_VOL20'], MA_VOL['MA_VOL10'])
+        MA_VOL['LONGV_CROSS1'] = QA.CROSS(MA_VOL['MA_VOL20'], MA_VOL['MA_VOL60'])
+        MA_VOL['LONGV_CROSS2'] = QA.CROSS(MA_VOL['MA_VOL60'], MA_VOL['MA_VOL20'])
+        MA_VOL['LONGV_AMOUNT'] = MA_VOL['MA_VOL20']-MA_VOL['MA_VOL60']
+        MA_VOL['SHORTV_AMOUNT'] = MA_VOL['MA_VOL10']-MA_VOL['MA_VOL20']
+
+        MA_VOL['GMMA_VOL5_A'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL10_A'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL15_A'] = MA_VOL['MA_VOL15']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL30_A'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
+
+        MA_VOL['GMMA_VOL3'] = MA_VOL['MA_VOL3']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL5'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL8'] = MA_VOL['MA_VOL8']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL10'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL12'] = MA_VOL['MA_VOL12']/MA_VOL['MA_VOL15']-1
+
+        MA_VOL['GMMA_VOL30'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL35'] = MA_VOL['MA_VOL35']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL40'] = MA_VOL['MA_VOL40']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL45'] = MA_VOL['MA_VOL45']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL50'] = MA_VOL['MA_VOL50']/MA_VOL['MA_VOL60']-1
 
     try:
         ASI = data.add_func(QA.QA_indicator_ASI)
@@ -683,7 +747,7 @@ def get_indicator(data, type='day'):
         CDLXSIDEGAP3METHODS = data.data.assign(CDLXSIDEGAP3METHODS=0)['CDLXSIDEGAP3METHODS']
 
     res =pd.concat([VR,VRSI,VSTD,BOLL,MIKE,ASI,OBV,PVT,VPT,KDJ,WR,ROC,RSI,CCI,BIAS,OSC,
-                    ADTM,MACD,DMI,DMA,PBX,MTM,CHO,BBI,MFI,ATR,SKDJ,DDI,shadow,MA,
+                    ADTM,MACD,DMI,DMA,PBX,MTM,CHO,BBI,MFI,ATR,SKDJ,DDI,shadow,MA,MA_VOL,
                     CDL2CROWS,CDL3BLACKCROWS,CDL3INSIDE,CDL3LINESTRIKE,CDL3OUTSIDE,
                     CDL3STARSINSOUTH,CDL3WHITESOLDIERS,CDLABANDONEDBABY,CDLADVANCEBLOCK,
                     CDLBELTHOLD,CDLBREAKAWAY,CDLCLOSINGMARUBOZU,CDLCONCEALBABYSWALL,
@@ -709,6 +773,10 @@ def get_indicator(data, type='day'):
     res['MA10_D'] = data['close']/res['MA10']-1
     res['MA20_D'] = data['close']/res['MA20']-1
     res['MA60_D'] = data['close']/res['MA60']-1
+    res['GMMA5_D'] = res['GMMA5_C'] - res.groupby('code')['GMMA5_C'].shift(1)
+    res['GMMA_VOL5_D'] = res['GMMA_VOL5_C'] - res.groupby('code')['GMMA_VOL5_C'].shift(1)
+    res['GMMA30_D'] = res['GMMA30_C'] - res.groupby('code')['GMMA30_C'].shift(1)
+    res['GMMA_VOL30_D'] = res['GMMA_VOL30_C'] - res.groupby('code')['GMMA_VOL30_C'].shift(1)
 
     if type in ['day','week','month']:
         res = res.reset_index()
@@ -741,17 +809,19 @@ def get_indicator_short(data, type='day'):
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
         MA['LONG60'] = MA['MA20']/MA['MA60']-1
-        MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
-        MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
         MA['SHORT_CROSS1'] = QA.CROSS(MA['MA10'], MA['MA20'])
         MA['SHORT_CROSS2'] = QA.CROSS(MA['MA20'], MA['MA10'])
         MA['LONG_CROSS1'] = QA.CROSS(MA['MA20'], MA['MA60'])
         MA['LONG_CROSS2'] = QA.CROSS(MA['MA60'], MA['MA20'])
-        MA['GMMA5_A'] = MA['MA5']/MA['MA30']-1
-        MA['GMMA10_A'] = MA['MA10']/MA['MA45']-1
-        MA['GMMA15_A'] = MA['MA15']/MA['MA60']-1
+        MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
+        MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
 
-        MA['GMMA3'] = MA['MA8']/MA['MA15']-1
+        MA['GMMA5_A'] = MA['MA5']/MA['MA60']-1
+        MA['GMMA10_A'] = MA['MA10']/MA['MA60']-1
+        MA['GMMA15_A'] = MA['MA15']/MA['MA60']-1
+        MA['GMMA30_A'] = MA['MA30']/MA['MA60']-1
+
+        MA['GMMA3'] = MA['MA3']/MA['MA15']-1
         MA['GMMA5'] = MA['MA5']/MA['MA15']-1
         MA['GMMA8'] = MA['MA8']/MA['MA15']-1
         MA['GMMA10'] = MA['MA10']/MA['MA15']-1
@@ -762,6 +832,7 @@ def get_indicator_short(data, type='day'):
         MA['GMMA40'] = MA['MA40']/MA['MA60']-1
         MA['GMMA45'] = MA['MA45']/MA['MA60']-1
         MA['GMMA50'] = MA['MA50']/MA['MA60']-1
+
     except:
         MA = data.data.assign(MA3=None,MA5=None,MA8=None,MA10=None,MA12=None,MA15=None,MA20=None,
                               MA30=None,MA35=None,MA40=None,MA45=None,MA50=None,MA60=None)[['MA3','MA5','MA8','MA10','MA12','MA15','MA20','MA30','MA35','MA40','MA45','MA50','MA60']]
@@ -769,17 +840,19 @@ def get_indicator_short(data, type='day'):
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
         MA['LONG60'] = MA['MA20']/MA['MA60']-1
-        MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
-        MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
         MA['SHORT_CROSS1'] = QA.CROSS(MA['MA10'], MA['MA20'])
         MA['SHORT_CROSS2'] = QA.CROSS(MA['MA20'], MA['MA10'])
         MA['LONG_CROSS1'] = QA.CROSS(MA['MA20'], MA['MA60'])
         MA['LONG_CROSS2'] = QA.CROSS(MA['MA60'], MA['MA20'])
+        MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
+        MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
+
         MA['GMMA5_A'] = MA['MA5']/MA['MA30']-1
         MA['GMMA10_A'] = MA['MA10']/MA['MA45']-1
         MA['GMMA15_A'] = MA['MA15']/MA['MA60']-1
+        MA['GMMA30_A'] = MA['MA30']/MA['MA60']-1
 
-        MA['GMMA3'] = MA['MA8']/MA['MA15']-1
+        MA['GMMA3'] = MA['MA3']/MA['MA15']-1
         MA['GMMA5'] = MA['MA5']/MA['MA15']-1
         MA['GMMA8'] = MA['MA8']/MA['MA15']-1
         MA['GMMA10'] = MA['MA10']/MA['MA15']-1
@@ -790,6 +863,67 @@ def get_indicator_short(data, type='day'):
         MA['GMMA40'] = MA['MA40']/MA['MA60']-1
         MA['GMMA45'] = MA['MA45']/MA['MA60']-1
         MA['GMMA50'] = MA['MA50']/MA['MA60']-1
+
+    try:
+        MA_VOL = data.add_func(QA.QA_indicator_MA_VOL,3,5,8,10,12,15,20,30,35,40,45,50,60)
+        MA_VOL['SHORT10V'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL10']-1
+        MA_VOL['SHORT20V'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL20']-1
+        MA_VOL['SHORT60V'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL60']-1
+        MA_VOL['LONG60V'] = MA_VOL['MA_VOL20']/MA_VOL['MA_VOL60']-1
+        MA_VOL['SHORTV_CROSS1'] = QA.CROSS(MA_VOL['MA_VOL10'], MA_VOL['MA_VOL20'])
+        MA_VOL['SHORTV_CROSS2'] = QA.CROSS(MA_VOL['MA_VOL20'], MA_VOL['MA_VOL10'])
+        MA_VOL['LONGV_CROSS1'] = QA.CROSS(MA_VOL['MA_VOL20'], MA_VOL['MA_VOL60'])
+        MA_VOL['LONGV_CROSS2'] = QA.CROSS(MA_VOL['MA_VOL60'], MA_VOL['MA_VOL20'])
+        MA_VOL['LONGV_AMOUNT'] = MA_VOL['MA_VOL20']-MA_VOL['MA_VOL60']
+        MA_VOL['SHORTV_AMOUNT'] = MA_VOL['MA_VOL10']-MA_VOL['MA_VOL20']
+
+        MA_VOL['GMMA_VOL5_A'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL10_A'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL15_A'] = MA_VOL['MA_VOL15']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL30_A'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
+
+        MA_VOL['GMMA_VOL3'] = MA_VOL['MA_VOL3']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL5'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL8'] = MA_VOL['MA_VOL8']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL10'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL12'] = MA_VOL['MA_VOL12']/MA_VOL['MA_VOL15']-1
+
+        MA_VOL['GMMA_VOL30'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL35'] = MA_VOL['MA_VOL35']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL40'] = MA_VOL['MA_VOL40']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL45'] = MA_VOL['MA_VOL45']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL50'] = MA_VOL['MA_VOL50']/MA_VOL['MA_VOL60']-1
+
+    except:
+        MA_VOL = data.data.assign(MA_VOL3=None,MA_VOL5=None,MA_VOL8=None,MA_VOL10=None,MA_VOL12=None,MA_VOL15=None,MA_VOL20=None,
+                                  MA_VOL30=None,MA_VOL35=None,MA_VOL40=None,MA_VOL45=None,MA_VOL50=None,MA_VOL60=None)[['MA_VOL3','MA_VOL5','MA_VOL8','MA_VOL10','MA_VOL12','MA_VOL15','MA_VOL20','MA_VOL30','MA_VOL35','MA_VOL40','MA_VOL45','MA_VOL50','MA_VOL60']]
+        MA_VOL['SHORT10V'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL10']-1
+        MA_VOL['SHORT20V'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL20']-1
+        MA_VOL['SHORT60V'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL60']-1
+        MA_VOL['LONG60V'] = MA_VOL['MA_VOL20']/MA_VOL['MA_VOL60']-1
+        MA_VOL['SHORTV_CROSS1'] = QA.CROSS(MA_VOL['MA_VOL10'], MA_VOL['MA_VOL20'])
+        MA_VOL['SHORTV_CROSS2'] = QA.CROSS(MA_VOL['MA_VOL20'], MA_VOL['MA_VOL10'])
+        MA_VOL['LONGV_CROSS1'] = QA.CROSS(MA_VOL['MA_VOL20'], MA_VOL['MA_VOL60'])
+        MA_VOL['LONGV_CROSS2'] = QA.CROSS(MA_VOL['MA_VOL60'], MA_VOL['MA_VOL20'])
+        MA_VOL['LONGV_AMOUNT'] = MA_VOL['MA_VOL20']-MA_VOL['MA_VOL60']
+        MA_VOL['SHORTV_AMOUNT'] = MA_VOL['MA_VOL10']-MA_VOL['MA_VOL20']
+
+        MA_VOL['GMMA_VOL5_A'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL10_A'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL15_A'] = MA_VOL['MA_VOL15']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL30_A'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
+
+        MA_VOL['GMMA_VOL3'] = MA_VOL['MA_VOL3']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL5'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL8'] = MA_VOL['MA_VOL8']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL10'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL12'] = MA_VOL['MA_VOL12']/MA_VOL['MA_VOL15']-1
+
+        MA_VOL['GMMA_VOL30'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL35'] = MA_VOL['MA_VOL35']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL40'] = MA_VOL['MA_VOL40']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL45'] = MA_VOL['MA_VOL45']/MA_VOL['MA_VOL60']-1
+        MA_VOL['GMMA_VOL50'] = MA_VOL['MA_VOL50']/MA_VOL['MA_VOL60']-1
 
     try:
         CCI = data.add_func(QA.QA_indicator_CCI)
@@ -813,13 +947,17 @@ def get_indicator_short(data, type='day'):
                                 CROSS_JC=0,CROSS_SC=0,)[['DIF','DEA','MACD','CROSS_JC','CROSS_SC','MACD_TR']]
 
 
-    res =pd.concat([BOLL,CCI,MACD,MA],
+    res =pd.concat([BOLL,CCI,MACD,MA,MA_VOL],
                    axis=1).dropna(how='all')
-    res = res.groupby('code').apply(spc_short)
+    res = res.groupby('code').apply(spc)
     res['MA5_D'] = data['close']/res['MA5']-1
     res['MA10_D'] = data['close']/res['MA10']-1
     res['MA20_D'] = data['close']/res['MA20']-1
     res['MA60_D'] = data['close']/res['MA60']-1
+    res['GMMA5_D'] = res['GMMA5_C'] - res.groupby('code')['GMMA5_C'].shift(1)
+    res['GMMA_VOL5_D'] = res['GMMA_VOL5_C'] - res.groupby('code')['GMMA_VOL5_C'].shift(1)
+    res['GMMA30_D'] = res['GMMA30_C'] - res.groupby('code')['GMMA30_C'].shift(1)
+    res['GMMA_VOL30_D'] = res['GMMA_VOL30_C'] - res.groupby('code')['GMMA_VOL30_C'].shift(1)
 
     if type in ['day','week','month']:
         res = res.reset_index()
