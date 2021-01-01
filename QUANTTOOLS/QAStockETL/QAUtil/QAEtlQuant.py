@@ -156,12 +156,6 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
        round(cashOfnetProfit_l3y * 100, 2) AS cashOfnetProfit_l3y,
        round(cashOfnetProfit_l4y * 100, 2) AS cashOfnetProfit_l4y,
        
-       round(cashOfnetProfit * 100, 2) AS cashOfnetProfit,
-       round(cashOfnetProfit_yoy * 100, 2) AS cashOfnetProfit_yoy,
-       round(cashOfnetProfit_l2y * 100, 2) AS cashOfnetProfit_l2y,
-       round(cashOfnetProfit_l3y * 100, 2) AS cashOfnetProfit_l3y,
-       round(cashOfnetProfit_l4y * 100, 2) AS cashOfnetProfit_l4y,
-       
        round(case
                when operatingRevenue_yoy = 0 then
                 0
