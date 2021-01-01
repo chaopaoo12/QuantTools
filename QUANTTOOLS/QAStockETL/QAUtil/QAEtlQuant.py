@@ -546,8 +546,9 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
             QA_util_log_info("No data For {start_date}".format(start_date=deal_date))
             return None
         else:
+            data = data.assign(NETCASHOPERATINRATE_AVG3 = (data.NETCASHOPERATINRATE_YOY + data.NETCASHOPERATINRATE_L2Y + data.NETCASHOPERATINRATE_L3Y)/3)
             data = data.assign(NETPRTAX_RATE = data.NETPROFIT_INRATE / data.TOTALPROFITINRATE)
-            data = data.assign(OPINRATE_AVG3 = (data.OPERATINGRINRATE_LY + data.OPERATINGRINRATE_L2Y + data.OPERATINGRINRATE_L3Y)/3)
-            data = data.assign(NETPINRATE_AVG3 = (data.NETPROFIT_INRATE_LY + data.NETPROFIT_INRATE_L2Y + data.NETPROFIT_INRATE_L3Y)/3)
+            data = data.assign(OPINRATE_AVG3 = (data.OPERATINGRINRATE_YOY + data.OPERATINGRINRATE_L2Y + data.OPERATINGRINRATE_L3Y)/3)
+            data = data.assign(NETPINRATE_AVG3 = (data.NETPROFIT_INRATE_YOY + data.NETPROFIT_INRATE_L2Y + data.NETPROFIT_INRATE_L3Y)/3)
             data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
             return(data.drop_duplicates((['CODE', 'date_stamp'])))
