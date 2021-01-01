@@ -86,12 +86,10 @@ def rolling_ols(y):
 
 def spc(data, N= 5):
     data[['MA5_C','MA10_C','MA20_C','MA60_C',
-          'MA120_C','MA180_C','LONG_AMOUNT','SHORT_AMOUNT']] = data.rolling(window=N).agg({ 'MA5':rolling_ols,
+          'LONG_AMOUNT','SHORT_AMOUNT']] = data.rolling(window=N).agg({ 'MA5':rolling_ols,
                                                                 'MA10':rolling_ols,
                                                                 'MA20':rolling_ols,
                                                                 'MA60':rolling_ols,
-                                                                'MA120':rolling_ols,
-                                                                'MA180':rolling_ols,
                                                                 'LONG_AMOUNT':rolling_ols,
                                                                 'SHORT_AMOUNT':rolling_ols
                                                                 })
@@ -200,13 +198,11 @@ def get_indicator(data, type='day'):
                                 MIKE_WRSC=0,MIKE_WRJC=0,MIKE_WSSC=0,MIKE_WSJC=0,MIKE_TR=0)[['WR','MR','SR','WS','MS','SS',
                                                                                             'MIKE_WRSC','MIKE_WRJC','MIKE_WSSC','MIKE_WSJC','MIKE_TR']]
     try:
-        MA = data.add_func(QA.QA_indicator_MA,3,5,8,10,12,15,20,30,35,40,45,50,60,120,180)
+        MA = data.add_func(QA.QA_indicator_MA,3,5,8,10,12,15,20,30,35,40,45,50,60)
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
         MA['LONG60'] = MA['MA20']/MA['MA60']-1
-        MA['LONG120'] = MA['MA20']/MA['MA120']-1
-        MA['LONG180'] = MA['MA20']/MA['MA180']-1
         MA['SHORT_CROSS1'] = QA.CROSS(MA['MA10'], MA['MA20'])
         MA['SHORT_CROSS2'] = QA.CROSS(MA['MA20'], MA['MA10'])
         MA['LONG_CROSS1'] = QA.CROSS(MA['MA20'], MA['MA60'])
@@ -231,14 +227,11 @@ def get_indicator(data, type='day'):
 
     except:
         MA = data.data.assign(MA3=None,MA5=None,MA8=None,MA10=None,MA12=None,MA15=None,MA20=None,
-                              MA30=None,MA35=None,MA40=None,MA45=None,MA50=None,MA60=None,
-                              MA120=None,MA180=None)[['MA3','MA5','MA8','MA10','MA12','MA15','MA20','MA30','MA35','MA40','MA45','MA50','MA60','MA120','MA180']]
+                              MA30=None,MA35=None,MA40=None,MA45=None,MA50=None,MA60=None)[['MA3','MA5','MA8','MA10','MA12','MA15','MA20','MA30','MA35','MA40','MA45','MA50','MA60']]
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
         MA['LONG60'] = MA['MA20']/MA['MA60']-1
-        MA['LONG120'] = MA['MA20']/MA['MA120']-1
-        MA['LONG180'] = MA['MA20']/MA['MA180']-1
         MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
         MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
         MA['GMMA5_A'] = MA['MA5']/MA['MA30']-1
@@ -716,8 +709,6 @@ def get_indicator(data, type='day'):
     res['MA10_D'] = data['close']/res['MA10']-1
     res['MA20_D'] = data['close']/res['MA20']-1
     res['MA60_D'] = data['close']/res['MA60']-1
-    res['MA120_D'] = data['close']/res['MA120']-1
-    res['MA180_D'] = data['close']/res['MA180']-1
 
     if type in ['day','week','month']:
         res = res.reset_index()
