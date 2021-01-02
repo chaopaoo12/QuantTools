@@ -691,27 +691,25 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, norm_ty
         __data = []
         QA_util_log_info(
             'JOB Get Stock Financial train data start=%s end=%s' % (start, end))
-        pe_res = pe(start_date,end_date)[['PE_10PCT','PE_10VAL','PEEGL_10PCT','PEEGL_10VAL','PB_10PCT','PB_10VAL',
-                                          #'PEG_10PCT','PEG_10VAL',
-                                          'PS_10PCT','PS_10VAL',
-                                          'PE_20PCT','PE_20VAL','PEEGL_20PCT','PEEGL_20VAL','PB_20PCT','PB_20VAL',
-                                          #'PEG_20PCT','PEG_20VAL',
-                                          'PS_20PCT','PS_20VAL',
-                                          'PE_30PCT','PE_30VAL','PE_30DN','PE_30UP',
-                                          'PEEGL_30PCT','PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
-                                          'PB_30PCT','PB_30VAL','PB_30DN','PB_30UP',
-                                          #'PEG_30PCT','PEG_30VAL','PEG_30DN','PEG_30UP',
-                                          'PS_30PCT','PS_30VAL','PS_30DN','PS_30UP',
-                                          'PE_60PCT','PE_60VAL','PE_60DN','PE_60UP',
-                                          'PEEGL_60PCT','PEEGL_60VAL','PEEGL_60DN','PEEGL_60UP',
-                                          'PB_60PCT','PB_60VAL','PB_60DN','PB_60UP',
-                                          #'PEG_60PCT','PEG_60VAL','PEG_60DN','PEG_60UP',
-                                          'PS_60PCT','PS_60VAL','PS_60DN','PS_60UP',
-                                          'PE_90PCT','PE_90VAL','PE_90DN','PE_90UP',
-                                          'PEEGL_90PCT','PEEGL_90VAL','PEEGL_90DN','PEEGL_90UP',
-                                          'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
-                                          #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
-                                          #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
+        pe_res = pe(start_date,end_date)[['PE_10VAL','PEEGL_10VAL','PB_10VAL',
+                                          #'PEG_10VAL',
+                                          'PS_10VAL','PE_20VAL','PEEGL_20VAL','PB_20VAL',
+                                          #'PEG_20VAL',
+                                          'PS_20VAL','PE_30VAL','PE_30DN','PE_30UP',
+                                          'PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
+                                          'PB_30VAL','PB_30DN','PB_30UP',
+                                          #'PEG_30VAL','PEG_30DN','PEG_30UP',
+                                          'PS_30VAL','PS_30DN','PS_30UP',
+                                          'PE_60VAL','PE_60DN','PE_60UP',
+                                          'PEEGL_60VAL','PEEGL_60DN','PEEGL_60UP',
+                                          'PB_60VAL','PB_60DN','PB_60UP',
+                                          #'PEG_60VAL','PEG_60DN','PEG_60UP',
+                                          'PS_60VAL','PS_60DN','PS_60UP',
+                                          'PE_90VAL','PE_90DN','PE_90UP',
+                                          'PEEGL_90VAL','PEEGL_90DN','PEEGL_90UP',
+                                          'PB_90VAL','PB_90DN','PB_90UP'
+                                          #'PEG_90VAL','PEG_90DN','PEG_90UP',
+                                          #'PS_90VAL','PS_90DN','PS_90UP'
                                           ]].groupby('code').fillna(method='ffill').fillna(0)
         financial_res = financial(start_date,end_date)
         financial_res = financial_res[financial_res.DAYS >= 90]
@@ -804,27 +802,25 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
         __data = []
         QA_util_log_info(
             'JOB Get Stock Financial data start=%s end=%s' % (start, end))
-        pe_res = pe(start_date,end_date)[['PE_10PCT','PE_10VAL','PEEGL_10PCT','PEEGL_10VAL','PB_10PCT','PB_10VAL',
-                                          #'PEG_10PCT','PEG_10VAL',
-                                          'PS_10PCT','PS_10VAL',
-                                          'PE_20PCT','PE_20VAL','PEEGL_20PCT','PEEGL_20VAL','PB_20PCT','PB_20VAL',
-                                          #'PEG_20PCT','PEG_20VAL',
-                                          'PS_20PCT','PS_20VAL',
-                                          'PE_30PCT','PE_30VAL','PE_30DN','PE_30UP',
-                                          'PEEGL_30PCT','PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
-                                          'PB_30PCT','PB_30VAL','PB_30DN','PB_30UP',
-                                          #'PEG_30PCT','PEG_30VAL','PEG_30DN','PEG_30UP',
-                                          'PS_30PCT','PS_30VAL','PS_30DN','PS_30UP',
-                                          'PE_60PCT','PE_60VAL','PE_60DN','PE_60UP',
-                                          'PEEGL_60PCT','PEEGL_60VAL','PEEGL_60DN','PEEGL_60UP',
-                                          'PB_60PCT','PB_60VAL','PB_60DN','PB_60UP',
-                                          #'PEG_60PCT','PEG_60VAL','PEG_60DN','PEG_60UP',
-                                          'PS_60PCT','PS_60VAL','PS_60DN','PS_60UP',
-                                          'PE_90PCT','PE_90VAL','PE_90DN','PE_90UP',
-                                          'PEEGL_90PCT','PEEGL_90VAL','PEEGL_90DN','PEEGL_90UP',
-                                          'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
-                                          #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
-                                          #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
+        pe_res = pe(start_date,end_date)[['PE_10VAL','PEEGL_10VAL','PB_10VAL',
+                                          #'PEG_10VAL',
+                                          'PS_10VAL','PE_20VAL','PEEGL_20VAL','PB_20VAL',
+                                          #'PEG_20VAL',
+                                          'PS_20VAL','PE_30VAL','PE_30DN','PE_30UP',
+                                          'PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
+                                          'PB_30VAL','PB_30DN','PB_30UP',
+                                          #'PEG_30VAL','PEG_30DN','PEG_30UP',
+                                          'PS_30VAL','PS_30DN','PS_30UP',
+                                          'PE_60VAL','PE_60DN','PE_60UP',
+                                          'PEEGL_60VAL','PEEGL_60DN','PEEGL_60UP',
+                                          'PB_60VAL','PB_60DN','PB_60UP',
+                                          #'PEG_60VAL','PEG_60DN','PEG_60UP',
+                                          'PS_60VAL','PS_60DN','PS_60UP',
+                                          'PE_90VAL','PE_90DN','PE_90UP',
+                                          'PEEGL_90VAL','PEEGL_90DN','PEEGL_90UP',
+                                          'PB_90VAL','PB_90DN','PB_90UP'
+                                          #'PEG_90VAL','PEG_90DN','PEG_90UP',
+                                          #'PS_90VAL','PS_90DN','PS_90UP'
                                           ]].groupby('code').fillna(method='ffill').fillna(0)
         financial_res = financial(start_date,end_date)
         financial_res = financial_res[financial_res.DAYS >= 90]
@@ -2905,27 +2901,24 @@ def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, norm_
         __data = []
         QA_util_log_info(
             'JOB Get Stock Financial train data start=%s end=%s' % (start, end))
-        pe_res = pe(start_date,end_date)[['PE_10PCT','PE_10VAL','PEEGL_10PCT','PEEGL_10VAL','PB_10PCT','PB_10VAL',
-                                          #'PEG_10PCT','PEG_10VAL',
-                                          'PS_10PCT','PS_10VAL',
-                                          'PE_20PCT','PE_20VAL','PEEGL_20PCT','PEEGL_20VAL','PB_20PCT','PB_20VAL',
-                                          #'PEG_20PCT','PEG_20VAL',
-                                          'PS_20PCT','PS_20VAL',
-                                          'PE_30PCT','PE_30VAL','PE_30DN','PE_30UP',
-                                          'PEEGL_30PCT','PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
-                                          'PB_30PCT','PB_30VAL','PB_30DN','PB_30UP',
-                                          #'PEG_30PCT','PEG_30VAL','PEG_30DN','PEG_30UP',
-                                          'PS_30PCT','PS_30VAL','PS_30DN','PS_30UP',
-                                          'PE_60PCT','PE_60VAL','PE_60DN','PE_60UP',
-                                          'PEEGL_60PCT','PEEGL_60VAL','PEEGL_60DN','PEEGL_60UP',
-                                          'PB_60PCT','PB_60VAL','PB_60DN','PB_60UP',
-                                          #'PEG_60PCT','PEG_60VAL','PEG_60DN','PEG_60UP',
-                                          'PS_60PCT','PS_60VAL','PS_60DN','PS_60UP',
-                                          'PE_90PCT','PE_90VAL','PE_90DN','PE_90UP',
-                                          'PEEGL_90PCT','PEEGL_90VAL','PEEGL_90DN','PEEGL_90UP',
-                                          'PB_90PCT','PB_90VAL','PB_90DN','PB_90UP'
-                                          #'PEG_90PCT','PEG_90VAL','PEG_90DN','PEG_90UP',
-                                          #'PS_90PCT','PS_90VAL','PS_90DN','PS_90UP'
+        pe_res = pe(start_date,end_date)[['PE_10VAL','PEEGL_10VAL','PB_10VAL','PS_10VAL',
+                                          'PE_20VAL','PEEGL_20VAL','PB_20VAL',
+                                          #,'PEG_20VAL',
+                                          'PS_20VAL','PE_30VAL','PE_30DN','PE_30UP',
+                                          'PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
+                                          'PB_30VAL','PB_30DN','PB_30UP',
+                                          #'PEG_30VAL','PEG_30DN','PEG_30UP',
+                                          'PS_30VAL','PS_30DN','PS_30UP',
+                                          'PE_60VAL','PE_60DN','PE_60UP',
+                                          'PEEGL_60VAL','PEEGL_60DN','PEEGL_60UP',
+                                          'PB_60VAL','PB_60DN','PB_60UP',
+                                          #'PEG_60VAL','PEG_60DN','PEG_60UP',
+                                          'PS_60VAL','PS_60DN','PS_60UP',
+                                          'PE_90VAL','PE_90DN','PE_90UP',
+                                          'PEEGL_90VAL','PEEGL_90DN','PEEGL_90UP',
+                                          'PB_90VAL','PB_90DN','PB_90UP'
+                                          #'PEG_90VAL','PEG_90DN','PEG_90UP',
+                                          #,'PS_90VAL','PS_90DN','PS_90UP'
                                           ]].groupby('code').fillna(method='ffill').fillna(0)
 
         QA_util_log_info(
