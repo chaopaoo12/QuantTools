@@ -57,7 +57,6 @@ def perank(data):
 def QA_fetch_get_stock_financial_percent(code,start_date,end_date):
     start = QA_util_get_pre_trade_date(start_date,91)
     fianacial = QA_fetch_stock_fianacial_adv(code,start,end_date).data[['PB', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PS','PB_RANK','PE_RANK']]
-    print(fianacial)
     try:
         fianacial = fianacial.groupby('code').apply(perank).loc[(QA_util_get_trade_range(start_date, end_date),slice(None)),].reset_index()
         fianacial = fianacial[[x for x in list(fianacial.columns) if x not in ['PB', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PS','PB_RANK','PE_RANK']]]
