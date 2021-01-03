@@ -86,8 +86,10 @@ def rolling_ols(y):
     return(model.slope*10)
 
 def spc(data, N= 5):
-    data[['MA5_C','MA60_C','GMMA3_C','GMMA15_C','GMMA30_C',
+    data[['MA5_C','MA15_C','MA30_C','MA60_C','GMMA3_C','GMMA15_C','GMMA30_C',
           'MA_VOL5_C','MA_VOL60_C','GMMA_VOL3_C','GMMA_VOL15_C','GMMA_VOL30_C']]= data.rolling(window=N).agg({'MA5':rolling_ols,
+                                                                                                              'MA15':rolling_ols,
+                                                                                                              'MA30':rolling_ols,
                                    'MA60':rolling_ols,
                                    'GMMA3':rolling_ols,
                                    'GMMA15':rolling_ols,
@@ -783,6 +785,10 @@ def get_indicator(data, type='day'):
     res['MA_VOL50'] = data['volume'] / res['MA_VOL50'] - 1
     res['MA_VOL60'] = data['volume'] / res['MA_VOL60'] - 1
 
+    res['MA5_D'] = res['MA5_C'] - res.groupby('code')['MA5_C'].shift(1)
+    res['MA15_D'] = res['MA15_C'] - res.groupby('code')['MA15_C'].shift(1)
+    res['MA30_D'] = res['MA30_C'] - res.groupby('code')['MA30_C'].shift(1)
+    res['MA60_D'] = res['MA60_C'] - res.groupby('code')['MA60_C'].shift(1)
     res['GMMA3_D'] = res['GMMA3_C'] - res.groupby('code')['GMMA3_C'].shift(1)
     res['GMMA_VOL3_D'] = res['GMMA_VOL3_C'] - res.groupby('code')['GMMA_VOL3_C'].shift(1)
     res['GMMA15_D'] = res['GMMA15_C'] - res.groupby('code')['GMMA15_C'].shift(1)
@@ -975,6 +981,10 @@ def get_indicator_short(data, type='day'):
     res['MA_VOL50'] = data['volume'] / res['MA_VOL50'] - 1
     res['MA_VOL60'] = data['volume'] / res['MA_VOL60'] - 1
 
+    res['MA5_D'] = res['MA5_C'] - res.groupby('code')['MA5_C'].shift(1)
+    res['MA15_D'] = res['MA15_C'] - res.groupby('code')['MA15_C'].shift(1)
+    res['MA30_D'] = res['MA30_C'] - res.groupby('code')['MA30_C'].shift(1)
+    res['MA60_D'] = res['MA60_C'] - res.groupby('code')['MA60_C'].shift(1)
     res['GMMA3_D'] = res['GMMA3_C'] - res.groupby('code')['GMMA3_C'].shift(1)
     res['GMMA_VOL3_D'] = res['GMMA_VOL3_C'] - res.groupby('code')['GMMA_VOL3_C'].shift(1)
     res['GMMA15_D'] = res['GMMA15_C'] - res.groupby('code')['GMMA15_C'].shift(1)
