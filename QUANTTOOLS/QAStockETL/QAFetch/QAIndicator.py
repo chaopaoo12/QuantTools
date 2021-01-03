@@ -83,7 +83,7 @@ def rolling_ols(y):
     '''
     #y = pd.DataFrame.ewm(y,alpha=1.0/24,ignore_na=True).mean().values
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
-    return(model.slope)
+    return(model.slope*10)
 
 def spc(data, N= 5):
     data[['MA5_C','MA60_C','GMMA3_C','GMMA15_C','GMMA30_C',
@@ -773,7 +773,7 @@ def get_indicator(data, type='day'):
 
     res['GMMA3_D'] = res['GMMA3_C'] - res.groupby('code')['GMMA3_C'].shift(1)
     res['GMMA_VOL3_D'] = res['GMMA_VOL3_C'] - res.groupby('code')['GMMA_VOL3_C'].shift(1)
-    res['GMMA15_D'] = res['GMMA15_C'] - res.groupby('code')['GMMA5_C'].shift(1)
+    res['GMMA15_D'] = res['GMMA15_C'] - res.groupby('code')['GMMA15_C'].shift(1)
     res['GMMA_VOL15_D'] = res['GMMA_VOL15_C'] - res.groupby('code')['GMMA_VOL5_C'].shift(1)
     res['GMMA30_D'] = res['GMMA30_C'] - res.groupby('code')['GMMA30_C'].shift(1)
     res['GMMA_VOL30_D'] = res['GMMA_VOL30_C'] - res.groupby('code')['GMMA_VOL30_C'].shift(1)
@@ -953,7 +953,7 @@ def get_indicator_short(data, type='day'):
 
     res['GMMA3_D'] = res['GMMA3_C'] - res.groupby('code')['GMMA3_C'].shift(1)
     res['GMMA_VOL3_D'] = res['GMMA_VOL3_C'] - res.groupby('code')['GMMA_VOL3_C'].shift(1)
-    res['GMMA15_D'] = res['GMMA15_C'] - res.groupby('code')['GMMA5_C'].shift(1)
+    res['GMMA15_D'] = res['GMMA15_C'] - res.groupby('code')['GMMA15_C'].shift(1)
     res['GMMA_VOL15_D'] = res['GMMA_VOL15_C'] - res.groupby('code')['GMMA_VOL5_C'].shift(1)
     res['GMMA30_D'] = res['GMMA30_C'] - res.groupby('code')['GMMA30_C'].shift(1)
     res['GMMA_VOL30_D'] = res['GMMA_VOL30_C'] - res.groupby('code')['GMMA_VOL30_C'].shift(1)
