@@ -756,6 +756,18 @@ def get_indicator(data, type='day'):
     res = res.groupby('code').apply(spc)
 
     res['MA3'] = data['close'] / res['MA3'] - 1
+    res['MA5'] = data['close'] / res['MA5'] - 1
+    res['MA8'] = data['close'] / res['MA8'] - 1
+    res['MA10'] = data['close'] / res['MA10'] - 1
+    res['MA12'] = data['close'] / res['MA12'] - 1
+    res['MA15'] = data['close'] / res['MA15'] - 1
+    res['MA20'] = data['close'] / res['MA20'] - 1
+    res['MA30'] = data['close'] / res['MA30'] - 1
+    res['MA35'] = data['close'] / res['MA35'] - 1
+    res['MA40'] = data['close'] / res['MA40'] - 1
+    res['MA45'] = data['close'] / res['MA45'] - 1
+    res['MA50'] = data['close'] / res['MA50'] - 1
+    res['MA60'] = data['close'] / res['MA60'] - 1
 
     res['MA_VOL3'] = data['volume'] / res['MA_VOL3'] - 1
     res['MA_VOL5'] = data['volume'] / res['MA_VOL5'] - 1
@@ -936,6 +948,18 @@ def get_indicator_short(data, type='day'):
     res = res.groupby('code').apply(spc)
 
     res['MA3'] = data['close'] / res['MA3'] - 1
+    res['MA5'] = data['close'] / res['MA5'] - 1
+    res['MA8'] = data['close'] / res['MA8'] - 1
+    res['MA10'] = data['close'] / res['MA10'] - 1
+    res['MA12'] = data['close'] / res['MA12'] - 1
+    res['MA15'] = data['close'] / res['MA15'] - 1
+    res['MA20'] = data['close'] / res['MA20'] - 1
+    res['MA30'] = data['close'] / res['MA30'] - 1
+    res['MA35'] = data['close'] / res['MA35'] - 1
+    res['MA40'] = data['close'] / res['MA40'] - 1
+    res['MA45'] = data['close'] / res['MA45'] - 1
+    res['MA50'] = data['close'] / res['MA50'] - 1
+    res['MA60'] = data['close'] / res['MA60'] - 1
 
     res['MA_VOL3'] = data['volume'] / res['MA_VOL3'] - 1
     res['MA_VOL5'] = data['volume'] / res['MA_VOL5'] - 1
