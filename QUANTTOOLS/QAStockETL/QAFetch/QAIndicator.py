@@ -83,19 +83,20 @@ def rolling_ols(y):
     '''
     #y = pd.DataFrame.ewm(y,alpha=1.0/24,ignore_na=True).mean().values
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
-    return(math.atan(model.slope)*10)
+    return(model.slope)
 
 def spc(data, N= 5):
-    data[['MA5_C','MA60_C','GMMA5_C',
-          'MA_VOL5_C','MA_VOL60_C',
-          'GMMA_VOL5_C','GMMA30_C','GMMA_VOL30_C']]= data.rolling(window=N).agg({'MA5':rolling_ols,
+    data[['MA5_C','MA60_C','GMMA3_C','GMMA15_C','GMMA30_C',
+          'MA_VOL5_C','MA_VOL60_C','GMMA_VOL3_C','GMMA_VOL15_C','GMMA_VOL30_C']]= data.rolling(window=N).agg({'MA5':rolling_ols,
                                    'MA60':rolling_ols,
-                                   'GMMA5_A':rolling_ols,
+                                   'GMMA3':rolling_ols,
+                                   'GMMA15':rolling_ols,
+                                   'GMMA30':rolling_ols,
                                    'MA_VOL5':rolling_ols,
                                    'MA_VOL60':rolling_ols,
-                                   'GMMA_VOL5_A':rolling_ols,
-                                   'GMMA30_A':rolling_ols,
-                                   'GMMA_VOL30_A':rolling_ols,
+                                   'GMMA_VOL5':rolling_ols,
+                                   'GMMA_VOL15':rolling_ols,
+                                   'GMMA_VOL30':rolling_ols,
     })
     return(data)
 
@@ -205,16 +206,12 @@ def get_indicator(data, type='day'):
         MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
         MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
 
-        MA['GMMA5_A'] = MA['MA5']/MA['MA60']-1
-        MA['GMMA10_A'] = MA['MA10']/MA['MA60']-1
-        MA['GMMA15_A'] = MA['MA15']/MA['MA60']-1
-        MA['GMMA30_A'] = MA['MA30']/MA['MA60']-1
-
         MA['GMMA3'] = MA['MA3']/MA['MA15']-1
         MA['GMMA5'] = MA['MA5']/MA['MA15']-1
         MA['GMMA8'] = MA['MA8']/MA['MA15']-1
         MA['GMMA10'] = MA['MA10']/MA['MA15']-1
         MA['GMMA12'] = MA['MA12']/MA['MA15']-1
+        MA['GMMA15'] = MA['MA15']/MA['MA30']-1
 
         MA['GMMA30'] = MA['MA30']/MA['MA60']-1
         MA['GMMA35'] = MA['MA35']/MA['MA60']-1
@@ -236,16 +233,12 @@ def get_indicator(data, type='day'):
         MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
         MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
 
-        MA['GMMA5_A'] = MA['MA5']/MA['MA30']-1
-        MA['GMMA10_A'] = MA['MA10']/MA['MA45']-1
-        MA['GMMA15_A'] = MA['MA15']/MA['MA60']-1
-        MA['GMMA30_A'] = MA['MA30']/MA['MA60']-1
-
         MA['GMMA3'] = MA['MA3']/MA['MA15']-1
         MA['GMMA5'] = MA['MA5']/MA['MA15']-1
         MA['GMMA8'] = MA['MA8']/MA['MA15']-1
         MA['GMMA10'] = MA['MA10']/MA['MA15']-1
         MA['GMMA12'] = MA['MA12']/MA['MA15']-1
+        MA['GMMA15'] = MA['MA15']/MA['MA30']-1
 
         MA['GMMA30'] = MA['MA30']/MA['MA60']-1
         MA['GMMA35'] = MA['MA35']/MA['MA60']-1
@@ -266,16 +259,12 @@ def get_indicator(data, type='day'):
         MA_VOL['LONGV_AMOUNT'] = MA_VOL['MA_VOL20']-MA_VOL['MA_VOL60']
         MA_VOL['SHORTV_AMOUNT'] = MA_VOL['MA_VOL10']-MA_VOL['MA_VOL20']
 
-        MA_VOL['GMMA_VOL5_A'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL60']-1
-        MA_VOL['GMMA_VOL10_A'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL60']-1
-        MA_VOL['GMMA_VOL15_A'] = MA_VOL['MA_VOL15']/MA_VOL['MA_VOL60']-1
-        MA_VOL['GMMA_VOL30_A'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
-
         MA_VOL['GMMA_VOL3'] = MA_VOL['MA_VOL3']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL5'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL8'] = MA_VOL['MA_VOL8']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL10'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL12'] = MA_VOL['MA_VOL12']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL15'] = MA_VOL['MA_VOL15']/MA_VOL['MA_VOL30']-1
 
         MA_VOL['GMMA_VOL30'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
         MA_VOL['GMMA_VOL35'] = MA_VOL['MA_VOL35']/MA_VOL['MA_VOL60']-1
@@ -297,16 +286,12 @@ def get_indicator(data, type='day'):
         MA_VOL['LONGV_AMOUNT'] = MA_VOL['MA_VOL20']-MA_VOL['MA_VOL60']
         MA_VOL['SHORTV_AMOUNT'] = MA_VOL['MA_VOL10']-MA_VOL['MA_VOL20']
 
-        MA_VOL['GMMA_VOL5_A'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL60']-1
-        MA_VOL['GMMA_VOL10_A'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL60']-1
-        MA_VOL['GMMA_VOL15_A'] = MA_VOL['MA_VOL15']/MA_VOL['MA_VOL60']-1
-        MA_VOL['GMMA_VOL30_A'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
-
         MA_VOL['GMMA_VOL3'] = MA_VOL['MA_VOL3']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL5'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL8'] = MA_VOL['MA_VOL8']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL10'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL12'] = MA_VOL['MA_VOL12']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL15'] = MA_VOL['MA_VOL15']/MA_VOL['MA_VOL30']-1
 
         MA_VOL['GMMA_VOL30'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
         MA_VOL['GMMA_VOL35'] = MA_VOL['MA_VOL35']/MA_VOL['MA_VOL60']-1
@@ -770,19 +755,7 @@ def get_indicator(data, type='day'):
     res['SS'] = data['close']/res['SS'] - 1
     res = res.groupby('code').apply(spc)
 
-    res['MA3'] = data['close'] / res['MA5'] - 1
-    res['MA5'] = data['close'] / res['MA5'] - 1
-    res['MA8'] = data['close'] / res['MA8'] - 1
-    res['MA10'] = data['close'] / res['MA10'] - 1
-    res['MA12'] = data['close'] / res['MA12'] - 1
-    res['MA15'] = data['close'] / res['MA15'] - 1
-    res['MA20'] = data['close'] / res['MA20'] - 1
-    res['MA30'] = data['close'] / res['MA30'] - 1
-    res['MA35'] = data['close'] / res['MA35'] - 1
-    res['MA40'] = data['close'] / res['MA40'] - 1
-    res['MA45'] = data['close'] / res['MA45'] - 1
-    res['MA50'] = data['close'] / res['MA50'] - 1
-    res['MA60'] = data['close'] / res['MA60'] - 1
+    res['MA3'] = data['close'] / res['MA3'] - 1
 
     res['MA_VOL3'] = data['volume'] / res['MA_VOL3'] - 1
     res['MA_VOL5'] = data['volume'] / res['MA_VOL5'] - 1
@@ -798,8 +771,10 @@ def get_indicator(data, type='day'):
     res['MA_VOL50'] = data['volume'] / res['MA_VOL50'] - 1
     res['MA_VOL60'] = data['volume'] / res['MA_VOL60'] - 1
 
-    res['GMMA5_D'] = res['GMMA5_C'] - res.groupby('code')['GMMA5_C'].shift(1)
-    res['GMMA_VOL5_D'] = res['GMMA_VOL5_C'] - res.groupby('code')['GMMA_VOL5_C'].shift(1)
+    res['GMMA3_D'] = res['GMMA3_C'] - res.groupby('code')['GMMA3_C'].shift(1)
+    res['GMMA_VOL3_D'] = res['GMMA_VOL3_C'] - res.groupby('code')['GMMA_VOL3_C'].shift(1)
+    res['GMMA15_D'] = res['GMMA15_C'] - res.groupby('code')['GMMA5_C'].shift(1)
+    res['GMMA_VOL15_D'] = res['GMMA_VOL15_C'] - res.groupby('code')['GMMA_VOL5_C'].shift(1)
     res['GMMA30_D'] = res['GMMA30_C'] - res.groupby('code')['GMMA30_C'].shift(1)
     res['GMMA_VOL30_D'] = res['GMMA_VOL30_C'] - res.groupby('code')['GMMA_VOL30_C'].shift(1)
 
@@ -841,16 +816,12 @@ def get_indicator_short(data, type='day'):
         MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
         MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
 
-        MA['GMMA5_A'] = MA['MA5']/MA['MA60']-1
-        MA['GMMA10_A'] = MA['MA10']/MA['MA60']-1
-        MA['GMMA15_A'] = MA['MA15']/MA['MA60']-1
-        MA['GMMA30_A'] = MA['MA30']/MA['MA60']-1
-
         MA['GMMA3'] = MA['MA3']/MA['MA15']-1
         MA['GMMA5'] = MA['MA5']/MA['MA15']-1
         MA['GMMA8'] = MA['MA8']/MA['MA15']-1
         MA['GMMA10'] = MA['MA10']/MA['MA15']-1
         MA['GMMA12'] = MA['MA12']/MA['MA15']-1
+        MA['GMMA15'] = MA['MA15']/MA['MA30']-1
 
         MA['GMMA30'] = MA['MA30']/MA['MA60']-1
         MA['GMMA35'] = MA['MA35']/MA['MA60']-1
@@ -872,16 +843,12 @@ def get_indicator_short(data, type='day'):
         MA['LONG_AMOUNT'] = MA['MA20']-MA['MA60']
         MA['SHORT_AMOUNT'] = MA['MA10']-MA['MA20']
 
-        MA['GMMA5_A'] = MA['MA5']/MA['MA30']-1
-        MA['GMMA10_A'] = MA['MA10']/MA['MA45']-1
-        MA['GMMA15_A'] = MA['MA15']/MA['MA60']-1
-        MA['GMMA30_A'] = MA['MA30']/MA['MA60']-1
-
         MA['GMMA3'] = MA['MA3']/MA['MA15']-1
         MA['GMMA5'] = MA['MA5']/MA['MA15']-1
         MA['GMMA8'] = MA['MA8']/MA['MA15']-1
         MA['GMMA10'] = MA['MA10']/MA['MA15']-1
         MA['GMMA12'] = MA['MA12']/MA['MA15']-1
+        MA['GMMA15'] = MA['MA15']/MA['MA30']-1
 
         MA['GMMA30'] = MA['MA30']/MA['MA60']-1
         MA['GMMA35'] = MA['MA35']/MA['MA60']-1
@@ -902,16 +869,12 @@ def get_indicator_short(data, type='day'):
         MA_VOL['LONGV_AMOUNT'] = MA_VOL['MA_VOL20']-MA_VOL['MA_VOL60']
         MA_VOL['SHORTV_AMOUNT'] = MA_VOL['MA_VOL10']-MA_VOL['MA_VOL20']
 
-        MA_VOL['GMMA_VOL5_A'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL60']-1
-        MA_VOL['GMMA_VOL10_A'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL60']-1
-        MA_VOL['GMMA_VOL15_A'] = MA_VOL['MA_VOL15']/MA_VOL['MA_VOL60']-1
-        MA_VOL['GMMA_VOL30_A'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
-
         MA_VOL['GMMA_VOL3'] = MA_VOL['MA_VOL3']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL5'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL8'] = MA_VOL['MA_VOL8']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL10'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL12'] = MA_VOL['MA_VOL12']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL15'] = MA_VOL['MA_VOL15']/MA_VOL['MA_VOL30']-1
 
         MA_VOL['GMMA_VOL30'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
         MA_VOL['GMMA_VOL35'] = MA_VOL['MA_VOL35']/MA_VOL['MA_VOL60']-1
@@ -933,16 +896,12 @@ def get_indicator_short(data, type='day'):
         MA_VOL['LONGV_AMOUNT'] = MA_VOL['MA_VOL20']-MA_VOL['MA_VOL60']
         MA_VOL['SHORTV_AMOUNT'] = MA_VOL['MA_VOL10']-MA_VOL['MA_VOL20']
 
-        MA_VOL['GMMA_VOL5_A'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL60']-1
-        MA_VOL['GMMA_VOL10_A'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL60']-1
-        MA_VOL['GMMA_VOL15_A'] = MA_VOL['MA_VOL15']/MA_VOL['MA_VOL60']-1
-        MA_VOL['GMMA_VOL30_A'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
-
         MA_VOL['GMMA_VOL3'] = MA_VOL['MA_VOL3']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL5'] = MA_VOL['MA_VOL5']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL8'] = MA_VOL['MA_VOL8']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL10'] = MA_VOL['MA_VOL10']/MA_VOL['MA_VOL15']-1
         MA_VOL['GMMA_VOL12'] = MA_VOL['MA_VOL12']/MA_VOL['MA_VOL15']-1
+        MA_VOL['GMMA_VOL15'] = MA_VOL['MA_VOL15']/MA_VOL['MA_VOL30']-1
 
         MA_VOL['GMMA_VOL30'] = MA_VOL['MA_VOL30']/MA_VOL['MA_VOL60']-1
         MA_VOL['GMMA_VOL35'] = MA_VOL['MA_VOL35']/MA_VOL['MA_VOL60']-1
@@ -976,19 +935,7 @@ def get_indicator_short(data, type='day'):
                    axis=1).dropna(how='all')
     res = res.groupby('code').apply(spc)
 
-    res['MA3'] = data['close'] / res['MA5'] - 1
-    res['MA5'] = data['close'] / res['MA5'] - 1
-    res['MA8'] = data['close'] / res['MA8'] - 1
-    res['MA10'] = data['close'] / res['MA10'] - 1
-    res['MA12'] = data['close'] / res['MA12'] - 1
-    res['MA15'] = data['close'] / res['MA15'] - 1
-    res['MA20'] = data['close'] / res['MA20'] - 1
-    res['MA30'] = data['close'] / res['MA30'] - 1
-    res['MA35'] = data['close'] / res['MA35'] - 1
-    res['MA40'] = data['close'] / res['MA40'] - 1
-    res['MA45'] = data['close'] / res['MA45'] - 1
-    res['MA50'] = data['close'] / res['MA50'] - 1
-    res['MA60'] = data['close'] / res['MA60'] - 1
+    res['MA3'] = data['close'] / res['MA3'] - 1
 
     res['MA_VOL3'] = data['volume'] / res['MA_VOL3'] - 1
     res['MA_VOL5'] = data['volume'] / res['MA_VOL5'] - 1
@@ -1004,8 +951,10 @@ def get_indicator_short(data, type='day'):
     res['MA_VOL50'] = data['volume'] / res['MA_VOL50'] - 1
     res['MA_VOL60'] = data['volume'] / res['MA_VOL60'] - 1
 
-    res['GMMA5_D'] = res['GMMA5_C'] - res.groupby('code')['GMMA5_C'].shift(1)
-    res['GMMA_VOL5_D'] = res['GMMA_VOL5_C'] - res.groupby('code')['GMMA_VOL5_C'].shift(1)
+    res['GMMA3_D'] = res['GMMA3_C'] - res.groupby('code')['GMMA3_C'].shift(1)
+    res['GMMA_VOL3_D'] = res['GMMA_VOL3_C'] - res.groupby('code')['GMMA_VOL3_C'].shift(1)
+    res['GMMA15_D'] = res['GMMA15_C'] - res.groupby('code')['GMMA5_C'].shift(1)
+    res['GMMA_VOL15_D'] = res['GMMA_VOL15_C'] - res.groupby('code')['GMMA_VOL5_C'].shift(1)
     res['GMMA30_D'] = res['GMMA30_C'] - res.groupby('code')['GMMA30_C'].shift(1)
     res['GMMA_VOL30_D'] = res['GMMA_VOL30_C'] - res.groupby('code')['GMMA_VOL30_C'].shift(1)
 
