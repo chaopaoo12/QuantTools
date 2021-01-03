@@ -774,7 +774,7 @@ def get_indicator(data, type='day'):
     res['GMMA3_D'] = res['GMMA3_C'] - res.groupby('code')['GMMA3_C'].shift(1)
     res['GMMA_VOL3_D'] = res['GMMA_VOL3_C'] - res.groupby('code')['GMMA_VOL3_C'].shift(1)
     res['GMMA15_D'] = res['GMMA15_C'] - res.groupby('code')['GMMA15_C'].shift(1)
-    res['GMMA_VOL15_D'] = res['GMMA_VOL15_C'] - res.groupby('code')['GMMA_VOL5_C'].shift(1)
+    res['GMMA_VOL15_D'] = res['GMMA_VOL15_C'] - res.groupby('code')['GMMA_VOL15_C'].shift(1)
     res['GMMA30_D'] = res['GMMA30_C'] - res.groupby('code')['GMMA30_C'].shift(1)
     res['GMMA_VOL30_D'] = res['GMMA_VOL30_C'] - res.groupby('code')['GMMA_VOL30_C'].shift(1)
 
@@ -954,7 +954,7 @@ def get_indicator_short(data, type='day'):
     res['GMMA3_D'] = res['GMMA3_C'] - res.groupby('code')['GMMA3_C'].shift(1)
     res['GMMA_VOL3_D'] = res['GMMA_VOL3_C'] - res.groupby('code')['GMMA_VOL3_C'].shift(1)
     res['GMMA15_D'] = res['GMMA15_C'] - res.groupby('code')['GMMA15_C'].shift(1)
-    res['GMMA_VOL15_D'] = res['GMMA_VOL15_C'] - res.groupby('code')['GMMA_VOL5_C'].shift(1)
+    res['GMMA_VOL15_D'] = res['GMMA_VOL15_C'] - res.groupby('code')['GMMA_VOL15_C'].shift(1)
     res['GMMA30_D'] = res['GMMA30_C'] - res.groupby('code')['GMMA30_C'].shift(1)
     res['GMMA_VOL30_D'] = res['GMMA_VOL30_C'] - res.groupby('code')['GMMA_VOL30_C'].shift(1)
 
