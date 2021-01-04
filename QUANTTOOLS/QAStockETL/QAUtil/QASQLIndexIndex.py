@@ -290,6 +290,9 @@ def QA_Sql_Index_Index(from_ , to_, sql_text = sql_text, ui_log= None):
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
     data = data.drop_duplicates((['code', 'date'])).set_index(['date','code'])
+    for columnname in data.columns:
+        if data[columnname].dtype == 'object':
+            data[columnname]=data[columnname].astype('float32')
     data = data.assign(SKDJ_TR = (data.SKDJ_K > data.SKDJ_D)*1
                        )
     return(data)

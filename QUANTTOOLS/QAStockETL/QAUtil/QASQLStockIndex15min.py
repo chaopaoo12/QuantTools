@@ -305,5 +305,8 @@ def QA_Sql_Stock_Index15min(from_ , to_, type = 'day', sql_text = sql_text, ui_l
         data = data.drop_duplicates((['code', 'date'])).set_index(['date','code']).drop('datetime',axis=1)
     else:
         data = data.assign(datetime = data.datetime.apply(lambda x:pd.to_datetime(x))).drop_duplicates((['code', 'datetime'])).set_index(['datetime','code'])
+    for columnname in data.columns:
+        if data[columnname].dtype == 'object':
+            data[columnname]=data[columnname].astype('float32')
     data = data.assign(SKDJ_TR_15M = (data.SKDJ_K_15M > data.SKDJ_D_15M)*1)
     return(data)
