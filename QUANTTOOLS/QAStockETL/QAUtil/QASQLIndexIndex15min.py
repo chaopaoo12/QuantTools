@@ -267,7 +267,7 @@ MA5_C as MA5_C_15M,
 MA15_C as MA15_C_15M,
 MA30_C as MA30_C_15M,
 MA60_C as MA60_C_15M,
-GMMA5_C as GMMA5_C_15M,
+GMMA3_C as GMMA3_C_15M,
 GMMA15_C as GMMA15_C_15M,
 GMMA30_C as GMMA30_C_15M,
 MA_VOL5_C as MA_VOL5_C_15M,
@@ -306,6 +306,5 @@ def QA_Sql_Index_Index15min(from_ , to_, type = 'day', sql_text = sql_text, ui_l
     else:
         data = data.drop_duplicates((['code', 'datetime']))
         data = data.assign(datetime = data.datetime.apply(lambda x:pd.to_datetime(x))).drop_duplicates((['code', 'datetime'])).set_index(['datetime','code'])
-    data = data.assign(SKDJ_TR_15M = (data.SKDJ_K_15M > data.SKDJ_D_15M) * 1,
-                       TERNS_15M = ((data.SHORT20_15M > 0) & (data.LONG60_15M > 0) & (data.LONG_AMOUNT_15M > 0)) * 1)
+    data = data.assign(SKDJ_TR_15M = (data.SKDJ_K_15M > data.SKDJ_D_15M) * 1)
     return(data)

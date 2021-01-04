@@ -290,6 +290,6 @@ def QA_Sql_Index_Index(from_ , to_, sql_text = sql_text, ui_log= None):
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
     data = data.drop_duplicates((['code', 'date'])).set_index(['date','code'])
-    data = data.assign(SKDJ_TR = (data.SKDJ_K > data.SKDJ_D)*1,
-                       TERNS = ((data.SHORT20 > 0) & (data.LONG60 > 0) & (data.LONG_AMOUNT > 0)) * 1)
+    data = data.assign(SKDJ_TR = (data.SKDJ_K > data.SKDJ_D)*1
+                       )
     return(data)
