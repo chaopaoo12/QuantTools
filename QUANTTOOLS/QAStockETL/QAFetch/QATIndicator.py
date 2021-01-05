@@ -48,6 +48,7 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
     if data is None:
         return None
     else:
+        print(data.data)
         data = get_indicator(data, type)
         data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]].reset_index()
         data = data[data.date.isin(rng1)]
