@@ -771,19 +771,23 @@ def get_indicator(data, type='day'):
     res['MA50'] = data['close'] / res['MA50'] - 1
     res['MA60'] = data['close'] / res['MA60'] - 1
 
-    res['MA_VOL3'] = data['volume'] / res['MA_VOL3'] - 1
-    res['MA_VOL5'] = data['volume'] / res['MA_VOL5'] - 1
-    res['MA_VOL8'] = data['volume'] / res['MA_VOL8'] - 1
-    res['MA_VOL10'] = data['volume'] / res['MA_VOL10'] - 1
-    res['MA_VOL12'] = data['volume'] / res['MA_VOL12'] - 1
-    res['MA_VOL15'] = data['volume'] / res['MA_VOL15'] - 1
-    res['MA_VOL20'] = data['volume'] / res['MA_VOL20'] - 1
-    res['MA_VOL30'] = data['volume'] / res['MA_VOL30'] - 1
-    res['MA_VOL35'] = data['volume'] / res['MA_VOL35'] - 1
-    res['MA_VOL40'] = data['volume'] / res['MA_VOL40'] - 1
-    res['MA_VOL45'] = data['volume'] / res['MA_VOL45'] - 1
-    res['MA_VOL50'] = data['volume'] / res['MA_VOL50'] - 1
-    res['MA_VOL60'] = data['volume'] / res['MA_VOL60'] - 1
+    try:
+        vol = data['volume']
+    except:
+        vol = data['vol']
+    res['MA_VOL3'] = vol / res['MA_VOL3'] - 1
+    res['MA_VOL5'] = vol / res['MA_VOL5'] - 1
+    res['MA_VOL8'] = vol / res['MA_VOL8'] - 1
+    res['MA_VOL10'] = vol / res['MA_VOL10'] - 1
+    res['MA_VOL12'] = vol / res['MA_VOL12'] - 1
+    res['MA_VOL15'] = vol / res['MA_VOL15'] - 1
+    res['MA_VOL20'] = vol / res['MA_VOL20'] - 1
+    res['MA_VOL30'] = vol / res['MA_VOL30'] - 1
+    res['MA_VOL35'] = vol / res['MA_VOL35'] - 1
+    res['MA_VOL40'] = vol / res['MA_VOL40'] - 1
+    res['MA_VOL45'] = vol / res['MA_VOL45'] - 1
+    res['MA_VOL50'] = vol / res['MA_VOL50'] - 1
+    res['MA_VOL60'] = vol / res['MA_VOL60'] - 1
 
     res['MA5_D'] = res['MA5_C'] - res.groupby('code')['MA5_C'].shift(1)
     res['MA15_D'] = res['MA15_C'] - res.groupby('code')['MA15_C'].shift(1)
@@ -967,19 +971,24 @@ def get_indicator_short(data, type='day'):
     res['MA50'] = data['close'] / res['MA50'] - 1
     res['MA60'] = data['close'] / res['MA60'] - 1
 
-    res['MA_VOL3'] = data['volume'] / res['MA_VOL3'] - 1
-    res['MA_VOL5'] = data['volume'] / res['MA_VOL5'] - 1
-    res['MA_VOL8'] = data['volume'] / res['MA_VOL8'] - 1
-    res['MA_VOL10'] = data['volume'] / res['MA_VOL10'] - 1
-    res['MA_VOL12'] = data['volume'] / res['MA_VOL12'] - 1
-    res['MA_VOL15'] = data['volume'] / res['MA_VOL15'] - 1
-    res['MA_VOL20'] = data['volume'] / res['MA_VOL20'] - 1
-    res['MA_VOL30'] = data['volume'] / res['MA_VOL30'] - 1
-    res['MA_VOL35'] = data['volume'] / res['MA_VOL35'] - 1
-    res['MA_VOL40'] = data['volume'] / res['MA_VOL40'] - 1
-    res['MA_VOL45'] = data['volume'] / res['MA_VOL45'] - 1
-    res['MA_VOL50'] = data['volume'] / res['MA_VOL50'] - 1
-    res['MA_VOL60'] = data['volume'] / res['MA_VOL60'] - 1
+    try:
+        vol = data['volume']
+    except:
+        vol = data['vol']
+
+    res['MA_VOL3'] = vol / res['MA_VOL3'] - 1
+    res['MA_VOL5'] = vol / res['MA_VOL5'] - 1
+    res['MA_VOL8'] = vol / res['MA_VOL8'] - 1
+    res['MA_VOL10'] = vol / res['MA_VOL10'] - 1
+    res['MA_VOL12'] = vol / res['MA_VOL12'] - 1
+    res['MA_VOL15'] = vol / res['MA_VOL15'] - 1
+    res['MA_VOL20'] = vol / res['MA_VOL20'] - 1
+    res['MA_VOL30'] = vol / res['MA_VOL30'] - 1
+    res['MA_VOL35'] = vol / res['MA_VOL35'] - 1
+    res['MA_VOL40'] = vol / res['MA_VOL40'] - 1
+    res['MA_VOL45'] = vol / res['MA_VOL45'] - 1
+    res['MA_VOL50'] = vol / res['MA_VOL50'] - 1
+    res['MA_VOL60'] = vol / res['MA_VOL60'] - 1
 
     res['MA5_D'] = res['MA5_C'] - res.groupby('code')['MA5_C'].shift(1)
     res['MA15_D'] = res['MA15_C'] - res.groupby('code')['MA15_C'].shift(1)
