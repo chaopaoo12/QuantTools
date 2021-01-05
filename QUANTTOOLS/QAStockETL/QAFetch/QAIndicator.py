@@ -772,6 +772,7 @@ def get_indicator(data, type='day'):
     res['MA60'] = data['close'] / res['MA60'] - 1
 
     print(data)
+    print(data['volume'])
     try:
         vol = data['volume']
     except:
