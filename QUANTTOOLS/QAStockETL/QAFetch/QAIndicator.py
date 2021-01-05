@@ -826,6 +826,14 @@ def get_indicator_short(data, type='day'):
                                 BOLL_CROSS4=0)[['BOLL','UB','LB','WIDTH']]
 
     try:
+        SKDJ = data.add_func(QA.QA_indicator_SKDJ)
+        SKDJ['SKDJ_CROSS1'] = QA.CROSS(SKDJ['SKDJ_D'], SKDJ['SKDJ_K'])
+        SKDJ['SKDJ_CROSS2'] = QA.CROSS(SKDJ['SKDJ_K'], SKDJ['SKDJ_D'])
+    except:
+        SKDJ = data.data.assign(SKDJ_K=None,SKDJ_D=None,RSV=None,SKDJ_CROSS1=0,
+                                SKDJ_CROSS2=0)[['SKDJ_K','SKDJ_D','RSV','SKDJ_CROSS1','SKDJ_CROSS2']]
+
+    try:
         MA = data.add_func(QA.QA_indicator_MA,3,5,8,10,12,15,20,30,35,40,45,50,60)
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
