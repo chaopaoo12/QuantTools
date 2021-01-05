@@ -961,7 +961,7 @@ def get_indicator_short(data, type='day'):
                                 CROSS_JC=0,CROSS_SC=0,)[['DIF','DEA','MACD','CROSS_JC','CROSS_SC','MACD_TR']]
 
 
-    res =pd.concat([BOLL,CCI,MACD,MA,MA_VOL],
+    res =pd.concat([BOLL,CCI,MACD,MA,MA_VOL,SKDJ],
                    axis=1).dropna(how='all')
     res = res.groupby('code').apply(spc)
 
