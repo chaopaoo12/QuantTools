@@ -971,35 +971,13 @@ def get_indicator_short(data, type='day'):
     res['MA50'] = data['close'] / res['MA50'] - 1
     res['MA60'] = data['close'] / res['MA60'] - 1
 
-    try:
-        vol = data['volume']
-    except:
-        vol = data['vol']
-
-    res['MA_VOL3'] = vol / res['MA_VOL3'] - 1
-    res['MA_VOL5'] = vol / res['MA_VOL5'] - 1
-    res['MA_VOL8'] = vol / res['MA_VOL8'] - 1
-    res['MA_VOL10'] = vol / res['MA_VOL10'] - 1
-    res['MA_VOL12'] = vol / res['MA_VOL12'] - 1
-    res['MA_VOL15'] = vol / res['MA_VOL15'] - 1
-    res['MA_VOL20'] = vol / res['MA_VOL20'] - 1
-    res['MA_VOL30'] = vol / res['MA_VOL30'] - 1
-    res['MA_VOL35'] = vol / res['MA_VOL35'] - 1
-    res['MA_VOL40'] = vol / res['MA_VOL40'] - 1
-    res['MA_VOL45'] = vol / res['MA_VOL45'] - 1
-    res['MA_VOL50'] = vol / res['MA_VOL50'] - 1
-    res['MA_VOL60'] = vol / res['MA_VOL60'] - 1
-
     res['MA5_D'] = res['MA5_C'] - res.groupby('code')['MA5_C'].shift(1)
     res['MA15_D'] = res['MA15_C'] - res.groupby('code')['MA15_C'].shift(1)
     res['MA30_D'] = res['MA30_C'] - res.groupby('code')['MA30_C'].shift(1)
     res['MA60_D'] = res['MA60_C'] - res.groupby('code')['MA60_C'].shift(1)
     res['GMMA3_D'] = res['GMMA3_C'] - res.groupby('code')['GMMA3_C'].shift(1)
-    res['GMMA_VOL3_D'] = res['GMMA_VOL3_C'] - res.groupby('code')['GMMA_VOL3_C'].shift(1)
     res['GMMA15_D'] = res['GMMA15_C'] - res.groupby('code')['GMMA15_C'].shift(1)
-    res['GMMA_VOL15_D'] = res['GMMA_VOL15_C'] - res.groupby('code')['GMMA_VOL15_C'].shift(1)
     res['GMMA30_D'] = res['GMMA30_C'] - res.groupby('code')['GMMA30_C'].shift(1)
-    res['GMMA_VOL30_D'] = res['GMMA_VOL30_C'] - res.groupby('code')['GMMA_VOL30_C'].shift(1)
 
     if type in ['day','week','month']:
         res = res.reset_index()
