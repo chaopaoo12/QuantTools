@@ -10,8 +10,8 @@ def QA_indicator_MACD(DataFrame, short=12, long=26, mid=9):
     """
     CLOSE = DataFrame['close']
 
-    DIF = (EMA(CLOSE, short)-EMA(CLOSE, long))/((EMA(CLOSE, short)+EMA(CLOSE, long))/2)*100
-    DEA = EMA(DIF, mid)
+    DIF = (MA(CLOSE, short)-MA(CLOSE, long))/((MA(CLOSE, short)+MA(CLOSE, long))/2)*100
+    DEA = MA(DIF, mid)
     MACD = (DIF-DEA)*2
 
     return pd.DataFrame({'DIF': DIF, 'DEA': DEA, 'MACD': MACD})
@@ -62,8 +62,26 @@ def QA_indicator_OSC(DataFrame, N=20, M=6):
     """
     C = DataFrame['close']
     OS = (C / MA(C, N) - 1)
-    MAOSC = EMA(OS, M)
+    MAOSC = MA(OS, M)
     DICT = {'OSC': OS, 'MAOSC': MAOSC}
+
+    return pd.DataFrame(DICT)
+
+def QA_indicator_SKDJ(DataFrame, N=9, M=3):
+    """
+    1.指标>80 时，回档机率大；指标<20 时，反弹机率大；
+    2.K在20左右向上交叉D时，视为买进信号参考；
+    3.K在80左右向下交叉D时，视为卖出信号参考；
+    4.SKDJ波动于50左右的任何讯号，其作用不大。
+
+    """
+    CLOSE = DataFrame['close']
+    LOWV = LLV(DataFrame['low'], N)
+    HIGHV = HHV(DataFrame['high'], N)
+    RSV = MA((CLOSE - LOWV) / (HIGHV - LOWV) * 100, M)
+    K = MA(RSV, M)
+    D = MA(K, M)
+    DICT = {'RSV': RSV, 'SKDJ_K': K, 'SKDJ_D': D}
 
     return pd.DataFrame(DICT)
 
@@ -469,7 +487,7 @@ def get_indicator(data, type='day'):
     except:
         ATR = data.data.assign(TR=None,ATR=None,ATRR=None)[['TR','ATR','ATRR']]
     try:
-        SKDJ = data.add_func(QA.QA_indicator_SKDJ)
+        SKDJ = data.add_func(QA_indicator_SKDJ)
         SKDJ['SKDJ_CROSS1'] = QA.CROSS(SKDJ['SKDJ_D'], SKDJ['SKDJ_K'])
         SKDJ['SKDJ_CROSS2'] = QA.CROSS(SKDJ['SKDJ_K'], SKDJ['SKDJ_D'])
     except:
@@ -827,7 +845,7 @@ def get_indicator_short(data, type='day'):
                                 BOLL_CROSS4=0)[['BOLL','UB','LB','WIDTH']]
 
     try:
-        SKDJ = data.add_func(QA.QA_indicator_SKDJ)
+        SKDJ = data.add_func(QA_indicator_SKDJ)
         SKDJ['SKDJ_CROSS1'] = QA.CROSS(SKDJ['SKDJ_D'], SKDJ['SKDJ_K'])
         SKDJ['SKDJ_CROSS2'] = QA.CROSS(SKDJ['SKDJ_K'], SKDJ['SKDJ_D'])
     except:
