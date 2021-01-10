@@ -301,5 +301,7 @@ def QA_Sql_Index_IndexHour(from_ , to_, type = 'day', sql_text = sql_text, ui_lo
     for columnname in data.columns:
         if data[columnname].dtype == 'object' and columnname not in ['date','datetime','code']:
             data[columnname]=data[columnname].astype('float32')
-    data = data.assign(SKDJ_TR_HR = (data.SKDJ_K_HR > data.SKDJ_D_HR)*1)
+    data = data.assign(SKDJ_TR_HR = (data.SKDJ_K_HR > data.SKDJ_D_HR)*1,
+                       SHORT_HR = (data.SHORT20_HR > 0)*1,
+                       LONG_HR = (data.LONG60_HR > 0)*1)
     return(data)

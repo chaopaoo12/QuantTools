@@ -293,5 +293,7 @@ def QA_Sql_Stock_Index(from_ , to_, sql_text = sql_text, ui_log= None):
     for columnname in data.columns:
         if data[columnname].dtype == 'object':
             data[columnname]=data[columnname].astype('float32')
-    data = data.assign(SKDJ_TR = (data.SKDJ_K > data.SKDJ_D)*1)
+    data = data.assign(SKDJ_TR = (data.SKDJ_K > data.SKDJ_D)*1,
+                       SHORT_TR = (data.SHORT20 > 0)*1,
+                       LONG_TR = (data.LONG60 > 0)*1)
     return(data)
