@@ -8,23 +8,23 @@ def aotu_report(trading_date):
     BTC_RES = pd.DataFrame(columns=('code', 'daily', 'weekly'))
     for code in BTC:
         res = btc_daily(code)
-        BTC_RES = BTC_RES.append({'code':code, 'daily':res[0], 'weekly':res[1], 'speed':res[2], 'chg':res[3]}, ignore_index=True)
+        BTC_RES = BTC_RES.append({'标的':code, '日线走势':res[0], '周线走势':res[1], '日线斜率':res[2], '斜率变动':res[3], '五日线偏离幅度':res[4], '十五日线偏离幅度':res[5]}, ignore_index=True)
 
     for code in GOLD:
         res = gold_daily(code, trading_date)
-        BTC_RES = BTC_RES.append({'code':code, 'daily':res[0], 'weekly':res[1], 'speed':res[2], 'chg':res[3]}, ignore_index=True)
+        BTC_RES = BTC_RES.append({'标的':code, '日线走势':res[0], '周线走势':res[1], '日线斜率':res[2], '斜率变动':res[3], '五日线偏离幅度':res[4], '十五日线偏离幅度':res[5]}, ignore_index=True)
 
     for code in MONEY:
         res = money_daily(code, trading_date)
-        BTC_RES = BTC_RES.append({'code':code, 'daily':res[0], 'weekly':res[1], 'speed':res[2], 'chg':res[3]}, ignore_index=True)
+        BTC_RES = BTC_RES.append({'标的':code, '日线走势':res[0], '周线走势':res[1], '日线斜率':res[2], '斜率变动':res[3], '五日线偏离幅度':res[4], '十五日线偏离幅度':res[5]}, ignore_index=True)
 
     for code in CN_INDEX:
         res = stock_daily(code, trading_date, trading_date)
-        BTC_RES = BTC_RES.append({'code':code, 'daily':res[0], 'weekly':res[1], 'speed':res[2], 'chg':res[3]}, ignore_index=True)
+        BTC_RES = BTC_RES.append({'标的':code, '日线走势':res[0], '周线走势':res[1], '日线斜率':res[2], '斜率变动':res[3], '五日线偏离幅度':res[4], '十五日线偏离幅度':res[5]}, ignore_index=True)
 
     for code in US_INDEX:
         res = stock_daily(code, trading_date, trading_date)
-        BTC_RES = BTC_RES.append({'code':code, 'daily':res[0], 'weekly':res[1], 'speed':res[2], 'chg':res[3]}, ignore_index=True)
+        BTC_RES = BTC_RES.append({'标的':code, '日线走势':res[0], '周线走势':res[1], '日线斜率':res[2], '斜率变动':res[3], '五日线偏离幅度':res[4], '十五日线偏离幅度':res[5]}, ignore_index=True)
     target_body = build_table(BTC_RES, '目标持仓')
     msg = build_email(build_head(),target_body)
     send_email('金融产品价格趋势' + trading_date, msg, trading_date)
