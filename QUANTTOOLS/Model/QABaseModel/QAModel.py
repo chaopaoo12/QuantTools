@@ -22,7 +22,7 @@ class QAModel():
 
         if type == 'value':
             if shift is not None:
-                self.data['star'] = self.data['star'].apply(lambda x: 1 if x >= mark else 0)
+                self.data['star'] = self.data[self.target].apply(lambda x: 1 if x >= mark else 0)
             else:
                 self.data['star'] = self.data[self.target].apply(lambda x: 1 if x >= mark else 0)
         elif type == 'percent':
