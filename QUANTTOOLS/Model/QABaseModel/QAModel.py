@@ -31,7 +31,7 @@ class QAModel():
             QA_util_log_info('##target type must be in [value,percent] ===== {}'.format(self.info['date']), ui_log = None)
 
         if shift is not None:
-            self.data['star'] = (self.data['star'].groupby('code').shift(shift) + self.data['star'].groupby('code').shift(shift-1)).groupby('code').apply(lambda x: 1 if x >= mark + mark else 0)
+            self.data['star'] = self.data['star'].groupby('code').shift(shift)
 
         self.info['target'] = self.target
         QA_util_log_info('##save used columns ==== {}'.format(self.info['date']), ui_log = None)
