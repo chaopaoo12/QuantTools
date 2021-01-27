@@ -788,6 +788,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
     financial = QA_Sql_Stock_Financial
     index = QA_Sql_Stock_Index
     hour = QA_Sql_Stock_IndexHour
+    week = QA_Sql_Stock_IndexWeek
     alpha = QA_Sql_Stock_Alpha191
     pe = QA_Sql_Stock_FinancialPercent
 
@@ -828,12 +829,15 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
         hour_res = hour(start_date,end_date)
 
         QA_util_log_info(
+            'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
+        week_res = week(start_date,end_date)
+
+        QA_util_log_info(
             'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
         alpha_res = alpha(start_date,end_date)
 
         try:
-            res = financial_res.join(index_res).join(hour_res).join(alpha_res).join(pe_res).groupby('code').fillna(method='ffill').loc[((rng,code),)]
-
+            res = financial_res.join(index_res).join(week_res).join(alpha_res).join(hour_res).join(pe_res).groupby('code').fillna(method='ffill').loc[(rng,code),]
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
                     res[columnname]=res[columnname].astype('float32')
@@ -1238,12 +1242,12 @@ def QA_fetch_index_quant_data(code, start, end = None, norm_type = 'normalizatio
             'JOB Get Index Tech Index data start=%s end=%s' % (start, end))
         index_res = index(start_date, end_date)
 
-        QA_util_log_info(
-            'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start_date, end_date)
+        #QA_util_log_info(
+        #    'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
+        #hour_res = hour(start_date, end_date)
 
         try:
-            res = index_res.join(hour_res).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+            res = index_res.groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
