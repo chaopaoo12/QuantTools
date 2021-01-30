@@ -18,6 +18,10 @@ def aotu_report(trading_date):
         res = money_daily(code, trading_date)
         BTC_RES = BTC_RES.append({'code':code, 'daily':res[0], 'weekly':res[1], '日线斜率':res[2], '斜率变动':res[3], '五日线偏离幅度':res[4], '十五日线偏离幅度':res[5]}, ignore_index=True)
 
+    for code in CN_INDEX:
+        res = stock_daily(code, trading_date, trading_date)
+        BTC_RES = BTC_RES.append({'code':code, 'daily':res[0], 'weekly':res[1], '日线斜率':res[2], '斜率变动':res[3], '五日线偏离幅度':res[4], '十五日线偏离幅度':res[5]}, ignore_index=True)
+
     for code in US_INDEX:
         res = stock_daily(code, trading_date, trading_date)
         BTC_RES = BTC_RES.append({'code':code, 'daily':res[0], 'weekly':res[1], '日线斜率':res[2], '斜率变动':res[3], '五日线偏离幅度':res[4], '十五日线偏离幅度':res[5]}, ignore_index=True)
