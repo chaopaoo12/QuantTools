@@ -17,9 +17,11 @@ class QAStockModel(QAModel):
         QA_util_log_info(self.data.shape)
 
     def model_predict(self, start, end, code = None, type='crawl'):
-        print(1)
+
         if code is not None:
+            print(1)
             self.code = code
+        print(2)
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=self.block,sub_block=self.sub_block, _from=start, _to=end), ui_log = None)
         data = get_quant_data(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, norm_type=self.norm_type)
         code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all().code.unique().tolist())
