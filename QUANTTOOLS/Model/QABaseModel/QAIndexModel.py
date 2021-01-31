@@ -14,6 +14,7 @@ class QAIndexModel(QAModel):
         print(self.data.shape)
 
     def model_predict(self, start, end, code = None, type='crawl'):
+        print(2)
         if code is not None:
             self.code = code
         QA_util_log_info('##JOB Got Data by {type} ==== from {_from} to {_to}'.format(type=type, _from=start, _to=end), ui_log = None)
