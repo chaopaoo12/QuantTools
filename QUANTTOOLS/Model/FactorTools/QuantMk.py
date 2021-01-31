@@ -103,7 +103,7 @@ def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method
 
 def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
 
-    code_list = QA_fetch_stock_all()
+    code_list = QA_fetch_stock_om_all()
     if code is None:
         codes = code_list
     else:
@@ -117,14 +117,13 @@ def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = Fals
     else:
         pass
     QA_util_log_info('##JOB Now Delete ST Stock')
-    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
-    codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
-    codes = list(set(codes['code']))
+    ST = list(codes[codes.name.apply(lambda x:x.count('ST')) == 1]['code']) + list(codes[codes.name.apply(lambda x:x.count('退')) == 1]['code'])
 
+    code_all = list(set(codes['code']))
     QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
-    codes = [i for i in codes if i.startswith('688') == False]
-    codes = [i for i in codes if i.startswith('787') == False]
-    codes = [i for i in codes if i.startswith('789') == False]
+    code_688 = [i for i in codes if i.startswith('688') == True] + [i for i in codes if i.startswith('787') == True] + [i for i in codes if i.startswith('789') == True]
+
+    codes = [i for i in code_all if i not in ST + code_688]
 
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
