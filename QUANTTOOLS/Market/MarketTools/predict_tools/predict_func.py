@@ -31,10 +31,8 @@ def make_prediction(Model, trading_date, name, working_dir, code = None, type='c
     QA_util_log_info('##JOB Now Model Predict from {start} to {end} ==== {s}'.format(start = start, end = end, s = str(trading_date)))
     if code is None:
         target_pool, prediction = Model.model_predict(start, end, type=type)
-        print('a')
     else:
         target_pool, prediction = Model.model_predict(start, end, code, type=type)
-        print('b')
     return(Model, target_pool, prediction, start, end, Model.info['date'])
 
 def make_stockprediction(Stock, trading_date, name, working_dir, code = None, index = 'date', type='crawl'):
