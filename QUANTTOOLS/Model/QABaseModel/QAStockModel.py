@@ -19,15 +19,12 @@ class QAStockModel(QAModel):
     def model_predict(self, start, end, code = None, type='crawl'):
 
         if code is not None:
-            print(1)
             self.code = code
-        print(2)
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=self.block,sub_block=self.sub_block, _from=start, _to=end), ui_log = None)
         data = get_quant_data(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, norm_type=self.norm_type)
         code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all().code.unique().tolist())
         code_old = QA_fetch_code_old().code.unique().tolist()
         code_new = QA_fetch_code_new().code.unique().tolist()
-
         codes = QA_fetch_stock_om_all()
         if self.code is None:
             codes = codes
@@ -35,7 +32,6 @@ class QAStockModel(QAModel):
             codes = codes[codes.code.isin(self.code)]
 
         ST = list(codes[codes.name.apply(lambda x:x.count('ST')) == 1]['code']) + list(codes[codes.name.apply(lambda x:x.count('退')) == 1]['code'])
-        print(ST)
         codes = list(codes['code'])
         code_688 = [i for i in codes if i.startswith('688') == True] + [i for i in codes if i.startswith('787') == True] + [i for i in codes if i.startswith('789') == True]
 
