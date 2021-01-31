@@ -7,7 +7,8 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask
 
 def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_name = 'prediction', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
-    r_tar, prediction_tar = load_data(func, trading_date, working_dir, model_name, file_name)
+    r_tar, prediction_tar, prediction = load_data(func, trading_date, working_dir, model_name, file_name)
+    r_tar = prediction_tar[(prediction_tar.RANK <= 20)&(prediction_tar.TARGET5.isnull())].reset_index(level=0, drop=True).drop_duplicates(subset='NAME')
 
     res = trading_base(trading_date, r_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
 
@@ -15,7 +16,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
 
 def trading_real(trading_date, func = concat_predict, model_name = 'stock_xg_real', file_name = 'prediction_real', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
-    r_tar, prediction_tar = load_data(func, trading_date, working_dir, model_name, file_name)
+    r_tar, prediction_tar, prediction = load_data(func, trading_date, working_dir, model_name, file_name)
 
     res = trading_base(trading_date, r_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
 
@@ -23,7 +24,7 @@ def trading_real(trading_date, func = concat_predict, model_name = 'stock_xg_rea
 
 def trading_hedge(trading_date, func = concat_predict, model_name = 'hedge_xg', file_name = 'prediction_hedge', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
-    r_tar, prediction_tar = load_data(func, trading_date, working_dir, model_name, file_name)
+    r_tar, prediction_tar, prediction = load_data(func, trading_date, working_dir, model_name, file_name)
 
     res = trading_base(trading_date, r_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
 
@@ -32,7 +33,7 @@ def trading_hedge(trading_date, func = concat_predict, model_name = 'hedge_xg', 
 
 def trading_summary(trading_date,percent = percent, account= 'name:client-1',exceptions = exceptions):
 
-    r_tar, prediction_tar = load_data(predict_stock_summary, trading_date, working_dir, 'prediction_stock_summary')
+    r_tar, prediction_tar, prediction = load_data(predict_stock_summary, trading_date, working_dir, 'prediction_stock_summary')
     model_name = 'stock_xg'
 
     #buy_code = []
