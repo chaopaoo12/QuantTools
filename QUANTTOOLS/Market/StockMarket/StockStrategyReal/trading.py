@@ -9,7 +9,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
 
     r_tar, prediction_tar = load_data(func, trading_date, working_dir, model_name, file_name)
 
-    res = trading_base(trading_date, r_tar, prediction_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
+    res = trading_base(trading_date, r_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
 
     return(res)
 
@@ -17,7 +17,7 @@ def trading_real(trading_date, func = concat_predict, model_name = 'stock_xg_rea
 
     r_tar, prediction_tar = load_data(func, trading_date, working_dir, model_name, file_name)
 
-    res = trading_base(trading_date, r_tar, prediction_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
+    res = trading_base(trading_date, r_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
 
     return(res)
 
@@ -25,7 +25,7 @@ def trading_hedge(trading_date, func = concat_predict, model_name = 'hedge_xg', 
 
     r_tar, prediction_tar = load_data(func, trading_date, working_dir, model_name, file_name)
 
-    res = trading_base(trading_date, r_tar, prediction_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
+    res = trading_base(trading_date, r_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
 
     return(res)
 
@@ -45,7 +45,7 @@ def trading_summary(trading_date,percent = percent, account= 'name:client-1',exc
     #    model_name = 'stock_xg_real'
     #    percent = 0.2
 
-    res = trading_base(trading_date, r_tar, prediction_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
+    res = trading_base(trading_date, r_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
 
     return(res)
 

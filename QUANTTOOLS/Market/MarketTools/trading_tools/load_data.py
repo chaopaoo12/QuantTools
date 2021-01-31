@@ -2,7 +2,7 @@ from QUANTTOOLS.Market.MarketTools import load_prediction,check_prediction
 from QUANTTOOLS.Message import send_email
 from QUANTAXIS.QAUtil import QA_util_log_info
 
-def load_data(func, trading_date, working_dir, file_name):
+def load_data(func, trading_date, working_dir, file_name, model_name):
     QA_util_log_info('##JOB## Now Predict ==== {}'.format(str(trading_date)))
     try:
         prediction = load_prediction(file_name, working_dir)
@@ -10,7 +10,7 @@ def load_data(func, trading_date, working_dir, file_name):
         target_pool = prediction['target_pool']
         prediction_tar = prediction['prediction']
     except:
-        func(trading_date, working_dir=working_dir)
+        func(trading_date, working_dir=working_dir, model_name=model_name)
         prediction = load_prediction(file_name, working_dir)
         target_pool = prediction['target_pool']
         prediction_tar = prediction['prediction']

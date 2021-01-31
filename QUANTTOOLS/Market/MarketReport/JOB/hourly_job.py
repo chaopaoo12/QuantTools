@@ -44,7 +44,7 @@ def daily_job(trading_date, account = 'name:client-1', strategy_id = '趋势跟�
             if mark_tm in ["10:30:00", "11:30:00", "14:00:00", "14:50:00"]:
                 ####job1 小时级报告 指数小时级跟踪
                 daily(trading_date, mark_tm, account, strategy_id)
-                INDEX_hourly(trading_date, strategy_id)
+                INDEX_hourly(trading_date, mark_tm, strategy_id)
                 pass
 
             time.sleep(5)
