@@ -33,6 +33,7 @@ class QAStockModel(QAModel):
             codes = codes[codes.code.isin(self.code)]
 
         ST = list(codes[codes.name.apply(lambda x:x.count('ST')) == 1]['code']) + list(codes[codes.name.apply(lambda x:x.count('退')) == 1]['code'])
+        print(ST)
         codes = list(codes['code'])
         code_688 = [i for i in codes if i.startswith('688') == True] + [i for i in codes if i.startswith('787') == True] + [i for i in codes if i.startswith('789') == True]
 
