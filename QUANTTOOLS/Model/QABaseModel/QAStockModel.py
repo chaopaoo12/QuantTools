@@ -21,6 +21,7 @@ class QAStockModel(QAModel):
             self.code = code
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=self.block,sub_block=self.sub_block, _from=start, _to=end), ui_log = None)
         data = get_quant_data(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, norm_type=self.norm_type)
+        print(1)
         code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all().code.unique().tolist())
         code_old = QA_fetch_code_old().code.unique().tolist()
         code_new = QA_fetch_code_new().code.unique().tolist()
