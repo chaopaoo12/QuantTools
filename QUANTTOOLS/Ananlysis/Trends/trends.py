@@ -39,7 +39,7 @@ def stock_daily(stock, start_date, end_date):
     incr15 = day.iloc[-1:]['MA15'].values[0]
     incr = day.iloc[-1:]['MA15_C'].values[0]
     incrs = day.iloc[-1:]['MA15_D'].values[0]
-    return(day_check, week_check, incr, incrs,incr5,incr15)
+    return(day_check, week_check, incr, incrs, incr5, incr15)
 
 def stock_hourly(stock, start_date, end_date, date_type):
     hour = trends_stock_hour(stock,start_date,end_date)
