@@ -50,6 +50,6 @@ def trends_stock(code, start_date, end_date, period='day', type='before'):
     week_index = get_indicator(week_index,'week')
     return(data_index, week_index)
 
-def trends_stock_hour(code, start_date, end_date, period='60m', type='before'):
-    hour = QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, period=period, type=type)
+def trends_stock_hour(code, start_date, end_date, type='hour'):
+    hour = QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type=type)
     return(hour)
