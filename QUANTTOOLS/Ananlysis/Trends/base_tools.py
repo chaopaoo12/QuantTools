@@ -8,7 +8,7 @@ import datetime
 
 def check(data):
     res = data.iloc[-1:].reset_index().set_index('code')
-    return(res[['SKDJ_TR','SKDJ_CROSS1','SKDJ_CROSS2']])
+    return(res.SKDJ_K > res.SKDJ_D)
 
 def check_hour(data, date):
     res = data.loc[date].reset_index().set_index('code')
