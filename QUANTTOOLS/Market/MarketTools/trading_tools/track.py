@@ -4,67 +4,83 @@ from QUANTTOOLS.Trader.account_manage.base_func.Client import get_Client,check_C
 from QUANTTOOLS.Trader.account_manage.TrackAction.BuyTrack import BuyTrack
 from QUANTTOOLS.Trader.account_manage.TrackAction.SellTrack import SellTrack
 from QUANTTOOLS.Market.MarketTools.trading_tools.BuildTradingFrame import build
+from QUANTTOOLS.Ananlysis.Trends.trends import stock_daily, stock_hourly
+
 import time
 import datetime
 
-def track_roboot(target_tar, account, trading_date, percent, strategy_id, begin_time, stop_time, exceptions = None):
-    QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
-    client = get_Client()
-    sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
+def track_roboot(target_tar, account, trading_date, percent, strategy_id,  exceptions = None):
+    QA_util_log_info('##JOB Now Check Timing ==== {}'.format(str(trading_date)), ui_log = None)
 
-    QA_util_log_info('##JOB Now Build Tracking Frame ==== {}'.format(str(trading_date)), ui_log = None)
-    res = build(target_tar, positions, sub_accounts, percent)
+    tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
-    if res is not None:
+    morning_begin = "09:30:00"
+    morning_end = "11:30:00"
+    afternoon_begin = "13:00:00"
+    afternoon_end = "15:00:00"
 
-        QA_util_log_info('##JOB Now Check Timing ==== {}'.format(str(trading_date)), ui_log = None)
-
-        begin_time = int(time.strftime("%H%M%S", time.strptime(begin_time, "%H:%M:%S")))
-        stop_time = int(time.strftime("%H%M%S", time.strptime(stop_time, "%H:%M:%S")))
-
-        target_ea = int(time.strftime("%H%M%S", time.strptime("09:25:00", "%H:%M:%S")))
-        target_af = int(time.strftime("%H%M%S", time.strptime("15:00:00", "%H:%M:%S")))
+    while tm < int(time.strftime(morning_begin, time.strptime("09:30:00", "%H:%M:%S"))):
+        time.sleep(15)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
-        if tm < target_ea or tm >= target_af:
-            QA_util_log_info('已过交易时段 {hour} ==================== {date}'.format(hour = tm, date = trading_date), ui_log=None)
-            send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'已过交易时段',direction = 'HOLD',offset='HOLD',volume=None)
 
-        QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
-        while tm >= begin_time  and  tm <= stop_time:
+    QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
+    mark = 0
+    mark_tm = morning_begin
 
-            QA_util_log_info('##JOB Now Tracking Selling ==== {}'.format(str(trading_date)), ui_log = None)
-            if res[res['deal']<0].shape[0] == 0:
-                QA_util_log_info('##JOB None Selling Tracking ==================== {}'.format(trading_date), ui_log=None)
-            else:
-                for code in res[res['deal'] < 0].index:
-                    name = res.loc[code]['NAME']
-                    industry = res.loc[code]['INDUSTRY']
-                    close = float(res.loc[code]['close'])
+    while tm < int(time.strftime("%H%M%S", time.strptime(afternoon_end, "%H:%M:%S"))):
+        QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
+        client = get_Client()
+        sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
-                    QA_util_log_info('##JOB Now Start Tracking Selling {code} ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
-                    SellTrack(strategy_id, trading_date, code, name, industry, close)
+        QA_util_log_info('##JOB Now Build Tracking Frame ==== {}'.format(str(trading_date)), ui_log = None)
+        res = build(target_tar, positions, sub_accounts, percent)
 
-            QA_util_log_info('##JOB Now Tracking Buying ==== {}'.format(str(trading_date)), ui_log = None)
-            if res[res['deal'] > 0].shape[0] == 0:
-                QA_util_log_info('##JOB None Buying Tracking ==================== {}'.format(trading_date), ui_log=None)
-            else:
-                for code in res[res['deal'] > 0].index:
-                    name = res.loc[code]['NAME']
-                    industry = res.loc[code]['INDUSTRY']
-                    close = float(res.loc[code]['close'])
+        if res is not None:
+            if tm >= int(time.strftime("%H%M%S", time.strptime(mark_tm))):
 
-                    QA_util_log_info('##JOB Now Start Tracking Buying {code} ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
-                    BuyTrack(strategy_id, trading_date, code, name, industry, close)
+                if mark_tm in ["10:30:00", "11:30:00", "14:00:00", "14:50:00"]:
+                    ####job1 小时级报告 指数小时级跟踪
+                    for code in res.code.tolist():
+                        name = positions[positions.code == code]['证券名称']
 
-            time.sleep(300)
+                    if code[0:2] == '60':
+                        code = 'SH' + code
+                    elif code[0:3] in ['000','002','300']:
+                        code = 'SZ' + code
+
+                    res1 = stock_daily(code, trading_date, trading_date)
+                    QA_util_log_info('{code}{name}-{trading_date}:daily: {daily}; weekly: {weekly}'.format(code=code,name=name,trading_date=trading_date,daily=res1[0],weekly=res[1]))
+                    if res1[0] == False:
+                        send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'日线趋势下跌',direction = 'SELL',offset='SELL',volume=None)
+                    if res1[1] == False:
+                        send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'周线趋势下跌',direction = 'SELL',offset='SELL',volume=None)
+                    res2 = stock_hourly(code, trading_date, trading_date, mark_tm)
+                    QA_util_log_info('{code}{name}-{trading_date}:hourly: {hourly}'.format(code=code,name=name,trading_date=trading_date,hourly=res2))
+                    if res2 == False:
+                        send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'60min线趋势下跌',direction = 'SELL',offset='SELL',volume=None)
+                    pass
+
+                time.sleep(5)
+                ###15分钟级程序 1 爬虫 2 分析
+
+        if tm > int(time.strftime("%H%M%S", time.strptime(morning_end, "%H:%M:%S"))):
+            mark = 0
+            mark_tm = (datetime.datetime.strptime(afternoon_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
+        else:
+            mark += 1
+            mark_tm = (datetime.datetime.strptime(morning_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
+
+        while tm > int(time.strftime("%H%M%S", time.strptime(morning_end, "%H:%M:%S"))) and tm < int(time.strftime("%H%M%S", time.strptime(afternoon_begin, "%H:%M:%S"))):
+            time.sleep(60)
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
+        time.sleep(60)
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
+
+    if tm > int(time.strftime("%H%M%S", time.strptime(afternoon_begin, "%H:%M:%S"))):
+        ###time out
         QA_util_log_info('##JOB Tracking Finished ==================== {}'.format(trading_date), ui_log=None)
         send_actionnotice(strategy_id,'Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)
-    else:
-        QA_util_log_info('JOB None Tracking Target ==================== {}'.format(trading_date), ui_log=None)
-        send_actionnotice(strategy_id,'None Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)
-
 
 if __name__ == '__main__':
     pass

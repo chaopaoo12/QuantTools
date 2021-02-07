@@ -1,5 +1,6 @@
 from QUANTAXIS.QAUtil import  QA_util_log_info
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtime
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask, QA_fetch_get_stock_indicator_realtime
 import easyquotation
 import pandas as pd
 import math
@@ -100,12 +101,15 @@ def get_top(res, num = 5):
         res.loc[([i for i in list(res.index) if i not in list(top_code.index)]),'position'] = 0
     return(res)
 
-def caculate_position(res, percent, sub_accounts):
+def caculate_position(res, percent, sub_accounts, avg_account = None):
 
     QA_util_log_info('##Today Position {}'.format(percent), ui_log = None)
     ###初步资金分配
-    if res['position'].sum() > 0:
-        avg_account = (sub_accounts * percent)/res['position'].sum()
+    if res['position'].sum() > 0 :
+        if avg_account is None:
+            avg_account = (sub_accounts * percent)/res['position'].sum()
+        else:
+            avg_account = avg_account
     else:
         avg_account = 0
     res = res.assign(target=avg_account)
@@ -195,6 +199,35 @@ def build(target, positions, sub_accounts, percent, k=100):
         #QA_util_log_info(res)
         if res is not None and res.shape[0] > 0:
             res = caculate_position(res, percent, sub_accounts)
+            #QA_util_log_info(res[['NAME','INDUSTRY','deal','close','目标持股数','股票余额','可用余额','冻结数量','买卖价']])
+            res = balance(res, k = k)
+            QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
+            res = res[(res.deal> 0) | (res.deal < 0)]
+
+    if res is None or res.shape[0] == 0:
+        if res is None:
+            QA_util_log_info('##JOB Target is None', ui_log = None)
+            res = pd.DataFrame()
+
+        for i in [i for i in ['NAME','INDUSTRY','deal','close','目标持股数','股票余额','可用余额','冻结数量'] if i not in list(res.columns)]:
+            res[i] = None
+        res = res.dropna()
+
+    return(res)
+
+def build2(target, positions, sub_accounts, percent, k=100):
+    QA_util_log_info('##JOB Now Check Sub Accounts', ui_log = None)
+    sub_accounts = float(sub_accounts) - 10000
+
+    res = merge_table(target, positions)
+
+    if res is not None and res.shape[0] > 0:
+        res = get_top(res , 5)
+
+        QA_util_log_info('##JOB Refreash Result Frame', ui_log = None)
+        #QA_util_log_info(res)
+        if res is not None and res.shape[0] > 0:
+            res = caculate_position(res, percent, sub_accounts, avg_account=50000)
             #QA_util_log_info(res[['NAME','INDUSTRY','deal','close','目标持股数','股票余额','可用余额','冻结数量','买卖价']])
             res = balance(res, k = k)
             QA_util_log_info('##JOB Dislodge Holding Position', ui_log = None)
