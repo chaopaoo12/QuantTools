@@ -55,8 +55,8 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                     if res1[1] == False:
                         send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'周线趋势下跌',direction = 'SELL',offset='SELL',volume=None)
                     res2 = stock_hourly(code, trading_date, trading_date, mark_tm)
-                    QA_util_log_info('{code}{name}-{trading_date}:hourly: {hourly}'.format(code=code,name=name,trading_date=trading_date,hourly=res2))
-                    if res2 == False:
+                    QA_util_log_info('{code}{name}-{trading_date}:hourly: {hourly}'.format(code=code,name=name,trading_date=trading_date,hourly=res2[0]))
+                    if res2[0] == False:
                         send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'60min线趋势下跌',direction = 'SELL',offset='SELL',volume=None)
                     pass
 
