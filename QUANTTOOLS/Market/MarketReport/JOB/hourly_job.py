@@ -76,7 +76,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
     morning_begin = "00:00:00"
     morning_end = "13:00:00"
     afternoon_begin = "13:00:00"
-    afternoon_end = "00:00:00"
+    afternoon_end = "23:45:00"
 
     QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
     mark = 0
@@ -126,7 +126,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
         time.sleep(300)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
-    if tm < int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
+    if tm > int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         ###time out
         QA_util_log_info('##JOB Tracking Finished ==================== {}'.format(trading_date), ui_log=None)
         send_actionnotice(strategy_id,'Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)
