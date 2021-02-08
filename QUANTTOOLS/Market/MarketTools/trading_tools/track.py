@@ -40,7 +40,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
 
                 if mark_tm in ["10:30:00", "11:30:00", "14:00:00", "14:50:00"]:
                     ####job1 小时级报告 指数小时级跟踪
-                    for code in res.code.tolist():
+                    for code in res:
                         name = QA_fetch_stock_name(code)
 
                         if code[0:2] == '60':
