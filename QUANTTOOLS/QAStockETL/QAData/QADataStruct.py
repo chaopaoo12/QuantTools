@@ -309,8 +309,7 @@ class QA_DataStruct_Stock_min(_quotation_base):
                                 'volume',
                                 'amount',
                                 'preclose',
-                                'type'
-                            ]]
+                                'type']]
             else:
                 self.data = DataFrame.loc[:,
                             [
@@ -320,8 +319,7 @@ class QA_DataStruct_Stock_min(_quotation_base):
                                 'close',
                                 'volume',
                                 'amount',
-                                'type'
-                            ]]
+                                'type']]
         except Exception as e:
             raise e
 
