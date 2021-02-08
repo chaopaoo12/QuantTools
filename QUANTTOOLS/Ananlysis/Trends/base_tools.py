@@ -53,3 +53,12 @@ def trends_stock(code, start_date, end_date, period='day', type='before'):
 def trends_stock_hour(code, start_date, end_date, type='hour'):
     hour = QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type=type)
     return(hour)
+
+def trends_btc_hour(BTC):
+    day = QA_fetch_get_btc_min(BTC, type=15)
+    data_btc = QA_DataStruct_Stock_min(day.assign(datetime=day.datetime.apply(lambda x:str(x))).set_index(['datetime','code']))
+    data_btc = get_indicator(data_btc,'min')
+    data_btc = data_btc.assign(SKDJ_TR = (data_btc.SKDJ_K > data_btc.SKDJ_D)*1,
+                       SHORT_TR = (data_btc.SHORT20 > 0)*1,
+                       LONG_TR = (data_btc.LONG60 > 0)*1)
+    return(data_btc)
