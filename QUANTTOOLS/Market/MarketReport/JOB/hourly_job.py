@@ -92,7 +92,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
             if mark_tm[3:] in ["00:00", "15:00", "30:00", "45:00"]:
                 QA_util_log_info('##JOB Now Time ==== {}'.format(str(mark_tm)), ui_log = None)
                 ####job1 小时级报告 指数小时级跟踪
-                name = 'BTC'
+                name = 'btcbtcusd'
                 QA_util_log_info('##JOB Now Code ==== {}'.format(str(name)), ui_log = None)
 
                 res2 = btc_hourly(name, trading_date, mark_tm)
