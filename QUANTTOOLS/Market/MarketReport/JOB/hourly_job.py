@@ -76,7 +76,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
     morning_begin = "00:00:00"
     morning_end = "13:00:00"
     afternoon_begin = "13:00:00"
-    afternoon_end = "23:45:00"
+    afternoon_end = "23:55:00"
 
     QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
     mark = 0
