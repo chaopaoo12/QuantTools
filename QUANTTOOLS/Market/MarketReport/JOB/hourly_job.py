@@ -95,7 +95,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
                 name = 'BTC'
                 QA_util_log_info('##JOB Now Code ==== {}'.format(str(name)), ui_log = None)
 
-                res2 = btc_hourly(name, trading_date, trading_date, mark_tm)
+                res2 = btc_hourly(name, trading_date, mark_tm)
                 QA_util_log_info(res2, ui_log = None)
                 QA_util_log_info('{name}-{trading_date}:hourly: {hourly}'.format(name=name,trading_date=trading_date,hourly=res2[0]))
                 if res2[1] == True:
