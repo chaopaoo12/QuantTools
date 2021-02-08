@@ -78,15 +78,11 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
     afternoon_begin = "13:00:00"
     afternoon_end = "00:00:00"
 
-    while tm < int(time.strftime("%H%M%S",time.strptime("09:30:00", "%H:%M:%S"))):
-        time.sleep(15)
-        tm = int(datetime.datetime.now().strftime("%H%M%S"))
-
     QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
     mark = 0
     mark_tm = morning_begin
 
-    while tm < int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
+    while tm > int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
 
         QA_util_log_info('##JOB Now Build Tracking Frame ==== {}'.format(str(trading_date)), ui_log = None)
@@ -130,7 +126,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
         time.sleep(300)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
-    if tm > int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))):
+    if tm < int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         ###time out
         QA_util_log_info('##JOB Tracking Finished ==================== {}'.format(trading_date), ui_log=None)
         send_actionnotice(strategy_id,'Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)

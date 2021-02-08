@@ -84,7 +84,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
         time.sleep(300)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
-    if tm > int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))):
+    if tm > int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         ###time out
         QA_util_log_info('##JOB Tracking Finished ==================== {}'.format(trading_date), ui_log=None)
         send_actionnotice(strategy_id,'Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)
