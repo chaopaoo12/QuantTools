@@ -82,7 +82,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
     mark = 0
     mark_tm = morning_begin
 
-    while tm > int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
+    while tm < int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
 
         QA_util_log_info('##JOB Now Build Tracking Frame ==== {}'.format(str(trading_date)), ui_log = None)
