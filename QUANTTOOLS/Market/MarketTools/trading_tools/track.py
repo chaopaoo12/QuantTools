@@ -39,9 +39,12 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
             if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
 
                 if mark_tm in ["10:30:00", "11:30:00", "14:00:00", "14:50:00"]:
+                    QA_util_log_info('##JOB Now Time ==== {}'.format(str(mark_tm)), ui_log = None)
                     ####job1 小时级报告 指数小时级跟踪
                     for code in res:
+
                         name = QA_fetch_stock_name(code)
+                        QA_util_log_info('##JOB Now Code ==== {} {}'.format(str(code),str(name)), ui_log = None)
 
                         if code[0:2] == '60':
                             code = 'SH' + code
@@ -51,6 +54,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                         res1 = stock_daily(code, trading_date, trading_date)
                         QA_util_log_info('{code}{name}-{trading_date}:daily: {daily}; weekly: {weekly}'.format(code=code,name=name,trading_date=trading_date,daily=res1[0],weekly=res[1]))
                         res2 = stock_hourly(code, trading_date, trading_date, mark_tm)
+                        QA_util_log_info(res2, ui_log = None)
                         QA_util_log_info('{code}{name}-{trading_date}:hourly: {hourly}'.format(code=code,name=name,trading_date=trading_date,hourly=res2[0]))
                         if res2[1] == True:
                             ###卖出信号
