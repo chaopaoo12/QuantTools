@@ -12,7 +12,7 @@ def check(data):
 
 def check_hour(data, date):
     res = data.loc[date].reset_index().set_index('code')
-    return(res[['SKDJ_TR','SKDJ_CROSS1','SKDJ_CROSS2']])
+    return(res[['SKDJ_TR','SKDJ_CROSS1','SKDJ_CROSS2','MA5']])
 
 def trends_money(MONEY, date):
     day = QA_fetch_get_money_day(MONEY,date)
