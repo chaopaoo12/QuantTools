@@ -5,7 +5,7 @@ from QUANTTOOLS.Trader.account_manage.TrackAction.BuyTrack import BuyTrack
 from QUANTTOOLS.Trader.account_manage.TrackAction.SellTrack import SellTrack
 from QUANTTOOLS.Market.MarketTools.trading_tools.BuildTradingFrame import build
 from QUANTTOOLS.Ananlysis.Trends.trends import stock_daily, stock_hourly
-
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import QA_fetch_stock_name
 import time
 import datetime
 
@@ -33,7 +33,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
         sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
         QA_util_log_info('##JOB Now Build Tracking Frame ==== {}'.format(str(trading_date)), ui_log = None)
-        res = build(target_tar, positions, sub_accounts, percent)
+        res = list(target_tar.index) + list(positions.index)
 
         if res is not None:
             if tm >= int(time.strptime(mark_tm, "%H:%M:%S")):
@@ -41,27 +41,27 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                 if mark_tm in ["10:30:00", "11:30:00", "14:00:00", "14:50:00"]:
                     ####job1 小时级报告 指数小时级跟踪
                     for code in res.code.tolist():
-                        name = positions[positions.code == code]['证券名称']
+                        name = QA_fetch_stock_name(code)
 
-                    if code[0:2] == '60':
-                        code = 'SH' + code
-                    elif code[0:3] in ['000','002','300']:
-                        code = 'SZ' + code
+                        if code[0:2] == '60':
+                            code = 'SH' + code
+                        elif code[0:3] in ['000','002','300']:
+                            code = 'SZ' + code
 
-                    res1 = stock_daily(code, trading_date, trading_date)
-                    QA_util_log_info('{code}{name}-{trading_date}:daily: {daily}; weekly: {weekly}'.format(code=code,name=name,trading_date=trading_date,daily=res1[0],weekly=res[1]))
-                    res2 = stock_hourly(code, trading_date, trading_date, mark_tm)
-                    QA_util_log_info('{code}{name}-{trading_date}:hourly: {hourly}'.format(code=code,name=name,trading_date=trading_date,hourly=res2[0]))
-                    if res2[1] == True:
-                        ###卖出信号
-                        send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'卖出信号',direction = 'SELL',offset='SELL',volume=None)
-                    elif res2[2] == True:
-                        ###买入信号
-                        send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'买入信号',direction = 'BUY',offset='BUY',volume=None)
+                        res1 = stock_daily(code, trading_date, trading_date)
+                        QA_util_log_info('{code}{name}-{trading_date}:daily: {daily}; weekly: {weekly}'.format(code=code,name=name,trading_date=trading_date,daily=res1[0],weekly=res[1]))
+                        res2 = stock_hourly(code, trading_date, trading_date, mark_tm)
+                        QA_util_log_info('{code}{name}-{trading_date}:hourly: {hourly}'.format(code=code,name=name,trading_date=trading_date,hourly=res2[0]))
+                        if res2[1] == True:
+                            ###卖出信号
+                            send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'卖出信号',direction = 'SELL',offset='SELL',volume=None)
+                        elif res2[2] == True:
+                            ###买入信号
+                            send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'买入信号',direction = 'BUY',offset='BUY',volume=None)
 
-                    if res2[0] == False:
-                        send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'60min线趋势下跌',direction = 'SELL',offset='SELL',volume=None)
-                    pass
+                        if res2[0] == False:
+                            send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'60min线趋势下跌',direction = 'SELL',offset='SELL',volume=None)
+                        pass
 
                 time.sleep(5)
                 ###15分钟级程序 1 爬虫 2 分析
