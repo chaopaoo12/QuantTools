@@ -10,5 +10,6 @@ def QA_fetch_get_gold_day(code, date):
 def QA_fetch_get_gold_min(code, type):
     data = get_gold_min_sina(code, type)
     data = data.assign(time_stamp=data['datetime'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])),
-                       code=code)
+                       code=code,
+                       type=type)
     return(data)

@@ -56,7 +56,7 @@ def trends_stock_hour(code, start_date, end_date, type='hour'):
 
 def trends_btc_hour(BTC):
     day = QA_fetch_get_btc_min(BTC, type=15)
-    data_btc = day.assign(datetime=day.datetime.apply(lambda x:str(x))).set_index(['datetime','code'])
+    data_btc = day.set_index(['datetime','code'])
     data_btc = QA_DataStruct_Stock_min(data_btc)
     data_btc = get_indicator(data_btc,'min')
     data_btc = data_btc.assign(SKDJ_TR = (data_btc.SKDJ_K > data_btc.SKDJ_D)*1,
