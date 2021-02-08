@@ -33,10 +33,8 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
         sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
         QA_util_log_info('##JOB Now Build Tracking Frame ==== {}'.format(str(trading_date)), ui_log = None)
-        res = list(target_tar.index) + list(positions.index)
+        res = list(target_tar.index) + positions.code.tolist()
 
-        print(res)
-        print(mark_tm, tm)
         if res is not None:
             if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
 
