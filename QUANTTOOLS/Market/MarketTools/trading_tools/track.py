@@ -42,7 +42,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                     QA_util_log_info('##JOB Now Time ==== {}'.format(str(mark_tm)), ui_log = None)
                     ####job1 小时级报告 指数小时级跟踪
                     for code in res:
-
+                        QA_util_log_info(code)
                         name = QA_fetch_stock_name(code)
                         QA_util_log_info('##JOB Now Code ==== {} {}'.format(str(code),str(name)), ui_log = None)
 
