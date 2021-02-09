@@ -50,8 +50,9 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                             code = 'SH' + code
                         elif code[0:3] in ['000','002','300']:
                             code = 'SZ' + code
-
+                        print('ssss')
                         res1 = stock_daily(code, trading_date, trading_date)
+                        print('ssss')
                         QA_util_log_info('{code}{name}-{trading_date}:daily: {daily}; weekly: {weekly}'.format(code=code,name=name,trading_date=trading_date,daily=res1[0],weekly=res[1]))
                         res2 = stock_hourly(code, trading_date, trading_date, mark_tm)
                         QA_util_log_info(res2, ui_log = None)
@@ -81,7 +82,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
         while tm > int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))) and tm < int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))):
             time.sleep(60)
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
-        print('ssss')
+
         time.sleep(300)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
