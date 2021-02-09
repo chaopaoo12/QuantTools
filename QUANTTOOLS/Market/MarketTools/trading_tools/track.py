@@ -85,7 +85,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
             time.sleep(60)
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
-        time.sleep(300)
+        time.sleep(1)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
     if tm > int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
