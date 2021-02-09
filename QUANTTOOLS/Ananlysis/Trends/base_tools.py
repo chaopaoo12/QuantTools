@@ -4,6 +4,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_btc_day,QA_fetch_get_btc
                                            QA_fetch_get_usstock_day_xq,QA_fetch_get_stock_indicator_realtime)
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
 from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator_short,get_indicator
+import numpy as np
 import datetime
 
 def check(data):
@@ -59,7 +60,7 @@ def trends_btc_hour(BTC):
     data_btc = day.set_index(['datetime','code']).rename(columns={'vol':'volume'}).assign(amount=0)
     data_btc = QA_DataStruct_Stock_min(data_btc)
     data_btc = get_indicator(data_btc,'min')
-    data_btc = data_btc.assign(SKDJ_TR = (data_btc.SKDJ_K > data_btc.SKDJ_D)*1,
+    data_btc = data_btc.assign(SKDJ_TR = (data_btc.SKDJ_K - data_btc.SKDJ_D).apply(lambda x:np.sign(x)),
                        SHORT_TR = (data_btc.SHORT20 > 0)*1,
                        LONG_TR = (data_btc.LONG60 > 0)*1)
     return(data_btc)
