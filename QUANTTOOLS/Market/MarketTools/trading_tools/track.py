@@ -34,7 +34,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
 
         QA_util_log_info('##JOB Now Build Tracking Frame ==== {}'.format(str(trading_date)), ui_log = None)
         res = list(target_tar.index) + positions.code.tolist()
-
+        QA_util_log_info(res)
         if res is not None:
             if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
 
@@ -56,6 +56,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                         res2 = stock_hourly(code, trading_date, trading_date, mark_tm)
                         QA_util_log_info(res2, ui_log = None)
                         QA_util_log_info('{code}{name}-{trading_date}:hourly: {hourly}'.format(code=code,name=name,trading_date=trading_date,hourly=res2[0]))
+
                         if res2[1] == True:
                             ###卖出信号
                             send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'卖出信号',direction = 'SELL',offset='SELL',volume=None)
