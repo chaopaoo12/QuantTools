@@ -36,6 +36,8 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
         res = list(target_tar.index) + positions.code.tolist()
         QA_util_log_info(res)
         if res is not None:
+            print(tm)
+            print(int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))))
             if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
 
                 if mark_tm in ["10:30:00", "11:30:00", "14:00:00", "14:50:00"]:
