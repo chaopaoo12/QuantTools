@@ -17,7 +17,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
     morning_begin = "09:30:00"
     morning_end = "11:30:00"
     afternoon_begin = "13:00:00"
-    afternoon_end = "19:00:00"
+    afternoon_end = "15:00:00"
 
     while tm < int(time.strftime("%H%M%S",time.strptime("09:30:00", "%H:%M:%S"))):
         time.sleep(15)
