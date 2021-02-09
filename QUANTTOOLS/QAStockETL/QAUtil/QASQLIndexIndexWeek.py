@@ -294,7 +294,7 @@ def QA_Sql_Index_IndexWeek(from_ , to_, sql_text = sql_text, ui_log= None):
     for columnname in data.columns:
         if data[columnname].dtype == 'object':
             data[columnname]=data[columnname].astype('float32')
-    data = data.assign(SKDJ_TR_WK = (data.SKDJ_K_WK > data.SKDJ_D_WK)*1,
+    data = data.assign(SKDJ_TR_WK = (data.SKDJ_K_WK - data.SKDJ_D_WK).apply(lambda x:np.sign(x)),
                        SHORT_WK = (data.SHORT20_WK > 0)*1,
                        LONG_WK = (data.LONG60_WK > 0)*1)
     return(data)

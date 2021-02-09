@@ -300,7 +300,7 @@ def QA_Sql_Stock_Index15min(from_ , to_, type = 'day', sql_text = sql_text, ui_l
     for columnname in data.columns:
         if data[columnname].dtype == 'object' and columnname not in ['date','datetime','code']:
             data[columnname]=data[columnname].astype('float32')
-    data = data.assign(SKDJ_TR_15M = (data.SKDJ_K_15M > data.SKDJ_D_15M)*1,
+    data = data.assign(SKDJ_TR_15M = (data.SKDJ_K_15M - data.SKDJ_D_15M).apply(lambda x:np.sign(x)),
                        SHORT_TR_15M = (data.SHORT20_15M > 0)*1,
                        LONG_TR_15M = (data.LONG60_15M > 0)*1)
     return(data)
