@@ -54,7 +54,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                         QA_util_log_info(res2, ui_log = None)
                         QA_util_log_info('{code}{name}-{trading_date}:hourly: {hourly}'.format(code=code,name=name,trading_date=trading_date,hourly=res2[0]))
 
-                        if res2[1] == True:
+                        if res2[1] == True and res2[3] <= 0:
                             ###卖出信号
                             send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'卖出信号',direction = 'SELL',offset='SELL',volume=None)
                         elif res2[2] == True:

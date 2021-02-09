@@ -98,7 +98,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
                 res2 = btc_hourly(name, trading_date, mark_tm)
                 QA_util_log_info(res2, ui_log = None)
                 QA_util_log_info('{name}-{trading_date}:hourly: {hourly}'.format(name=name,trading_date=trading_date,hourly=res2[0]))
-                if res2[1] == True:
+                if res2[1] == True and res2[3] <= 0:
                     ###卖出信号
                     send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'卖出信号',direction = 'SELL',offset='SELL',volume=None)
                 elif res2[2] == True:
