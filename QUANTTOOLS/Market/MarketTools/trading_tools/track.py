@@ -25,7 +25,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
 
     QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
     mark = 0
-    mark_tm = morning_begin
+    mark_tm = '14:00:00'
 
     while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
