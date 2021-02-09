@@ -12,8 +12,7 @@ import datetime
 def track_roboot(target_tar, account, trading_date, percent, strategy_id,  exceptions = None):
     QA_util_log_info('##JOB Now Check Timing ==== {}'.format(str(trading_date)), ui_log = None)
 
-    #tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    tm = int(140000)
+    tm = int(datetime.datetime.now().strftime("%H%M%S"))
     morning_begin = "09:30:00"
     morning_end = "11:30:00"
     afternoon_begin = "13:00:00"
@@ -25,7 +24,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
 
     QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
     mark = 0
-    mark_tm = '14:00:00'
+    mark_tm = morning_begin
 
     while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
@@ -36,8 +35,6 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
         res = list(target_tar.index) + positions.code.tolist()
         QA_util_log_info(res)
         if res is not None:
-            print(tm)
-            print(int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))))
             if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
 
                 if mark_tm in ["10:30:00", "11:30:00", "14:00:00", "14:50:00"]:
@@ -52,9 +49,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                             code = 'SH' + code
                         elif code[0:3] in ['000','002','300']:
                             code = 'SZ' + code
-                        print('ssss')
                         res1 = stock_daily(code, trading_date, trading_date)
-                        print('ssss')
                         QA_util_log_info('{code}{name}-{trading_date}:daily: {daily}; weekly: {weekly}'.format(code=code,name=name,trading_date=trading_date,daily=res1[0],weekly=res[1]))
                         res2 = stock_hourly(code, trading_date, trading_date, mark_tm)
                         QA_util_log_info(res2, ui_log = None)
