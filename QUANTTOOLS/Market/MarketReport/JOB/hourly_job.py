@@ -89,8 +89,8 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
 
         if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
             print(mark_tm)
-            print(mark_tm[4:])
-            if mark_tm[4:] in ["00:00", "15:00", "30:00", "45:00"]:
+            print(mark_tm[3:])
+            if mark_tm[3:] in ["00:00", "15:00", "30:00", "45:00"]:
                 QA_util_log_info('##JOB Now Time ==== {}'.format(str(mark_tm)), ui_log = None)
                 ####job1 小时级报告 指数小时级跟踪
                 name = 'btcbtcusd'
