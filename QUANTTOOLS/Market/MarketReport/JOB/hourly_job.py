@@ -106,7 +106,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
                     send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
 
                 if res2[0] == -1:
-                    send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'60min线趋势下跌',direction = 'SELL',offset=mark_tm,volume=None)
+                    send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'15min线趋势下跌',direction = 'SELL',offset=mark_tm,volume=None)
                 pass
 
             time.sleep(5)
