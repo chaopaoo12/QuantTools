@@ -65,7 +65,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                             send_actionnotice(strategy_id,'{code}{name}:{trading_date}'.format(code=code,name=name,trading_date=trading_date),'60min线趋势下跌',direction = 'SELL',offset=mark_tm,volume=None)
                         pass
 
-                time.sleep(5)
+                time.sleep(1)
                 ###15分钟级程序 1 爬虫 2 分析
 
             if tm > int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))):
