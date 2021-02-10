@@ -34,9 +34,9 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
         QA_util_log_info('##JOB Now Build Tracking Frame ==== {}'.format(str(trading_date)), ui_log = None)
         res = list(target_tar.index) + positions.code.tolist()
         QA_util_log_info(res)
-        if res is not None:
-            if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
 
+        if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
+            if res is not None:
                 if mark_tm in ["10:30:00", "11:30:00", "14:00:00", "14:50:00"]:
                     QA_util_log_info('##JOB Now Time ==== {}'.format(str(mark_tm)), ui_log = None)
                     ####job1 小时级报告 指数小时级跟踪
@@ -68,12 +68,12 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                 time.sleep(5)
                 ###15分钟级程序 1 爬虫 2 分析
 
-        if tm > int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))):
-            mark = 0
-            mark_tm = (datetime.datetime.strptime(afternoon_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
-        else:
-            mark += 1
-            mark_tm = (datetime.datetime.strptime(morning_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
+            if tm > int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))):
+                mark = 0
+                mark_tm = (datetime.datetime.strptime(afternoon_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
+            else:
+                mark += 1
+                mark_tm = (datetime.datetime.strptime(morning_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
 
         while tm > int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))) and tm < int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))):
             time.sleep(60)
