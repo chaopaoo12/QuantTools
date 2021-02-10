@@ -114,12 +114,8 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
             time.sleep(5)
             ###15分钟级程序 1 爬虫 2 分析
 
-        if tm > int(time.strftime("%M%S",time.strptime(morning_end, "%H:%M:%S"))):
-            mark = 0
-            mark_tm = (datetime.datetime.strptime(afternoon_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
-        else:
-            mark += 1
-            mark_tm = (datetime.datetime.strptime(morning_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
+        mark += 1
+        mark_tm = (datetime.datetime.strptime(morning_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
 
         while tm > int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))) and tm < int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))):
             time.sleep(60)
