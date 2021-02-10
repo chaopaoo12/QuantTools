@@ -113,7 +113,9 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
             mark += 1
             mark_tm = (datetime.datetime.strptime(morning_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
 
-        time.sleep(300)
+        if tm < int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
+            time.sleep(300)
+
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
     if tm > int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
