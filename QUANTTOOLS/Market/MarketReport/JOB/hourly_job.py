@@ -98,13 +98,13 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
                 QA_util_log_info('{name}-{trading_date}:hourly: {hourly}'.format(name=name,trading_date=trading_date,hourly=res2[0]))
                 if res2[1] == True and res2[3] <= 0:
                     ###卖出信号
-                    send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'卖出信号',direction = 'SELL',offset='SELL',volume=None)
+                    send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
                 elif res2[2] == True:
                     ###买入信号
-                    send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'买入信号',direction = 'BUY',offset='BUY',volume=None)
+                    send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
 
                 if res2[0] == -1:
-                    send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'60min线趋势下跌',direction = 'SELL',offset='SELL',volume=None)
+                    send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'60min线趋势下跌',direction = 'SELL',offset=mark_tm,volume=None)
                 pass
 
             time.sleep(5)
