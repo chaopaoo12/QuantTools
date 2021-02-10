@@ -33,6 +33,10 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
 
         QA_util_log_info('##JOB Now Build Tracking Frame ==== {}'.format(str(trading_date)), ui_log = None)
 
+        while tm < int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
+            time.sleep(60)
+            tm = int(datetime.datetime.now().strftime("%H%M%S"))
+
         if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
             if mark_tm in ["10:30:00", "11:30:00", "14:00:00", "14:50:00"]:
                 QA_util_log_info('##JOB Now Time ==== {}'.format(str(mark_tm)), ui_log = None)
@@ -85,22 +89,17 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
 
                     time.sleep(1)
                 ###15分钟级程序 1 爬虫 2 分析
-
-            if tm > int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))):
-                mark = 0
-                mark_tm = (datetime.datetime.strptime(afternoon_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
-            else:
-                mark += 1
-                mark_tm = (datetime.datetime.strptime(morning_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
-
-        while tm > int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))) and tm < int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))):
-            time.sleep(60)
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
+            while tm >= int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))) and tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))):
 
-        if tm < int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
-            time.sleep(300)
+                time.sleep(600)
+                tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
-        tm = int(datetime.datetime.now().strftime("%H%M%S"))
+            mark += 1
+            if tm <= int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))):
+                mark_tm = (datetime.datetime.strptime(morning_begin, "%H:%M:%S") + datetime.timedelta(minutes=15*mark)).strftime("%H:%M:%S")
+            else:
+                mark_tm = (datetime.datetime.strptime(afternoon_begin, "%H:%M:%S") + datetime.timedelta(minutes=15*(mark-8))).strftime("%H:%M:%S")
 
     if tm > int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         ###time out
