@@ -12,6 +12,7 @@ def tracking_base(trading_date, strategy_id, func, model_name, file_name, percen
     QA_util_log_info('##JOB## Now Tracking ===== {}'.format(str(trading_date)))
 
     res = track_roboot(r_tar, account, trading_date, percent, strategy_id, exceptions = exceptions)
+
     return(res)
 
 if __name__ == '__main__':
