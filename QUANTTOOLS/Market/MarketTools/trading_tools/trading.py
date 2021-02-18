@@ -179,7 +179,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
-            data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,positions.code.tolist()+list(target_tar.index), type= 'real')
+            data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
             if mark_tm in marktm_list:
                 if mark_tm == "14:50:00":
                     mark_tm = "15:00:00"
@@ -196,8 +196,11 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                     for code in code_list:
                         name = QA_fetch_stock_name(code)
                         QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
-                        res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]
-                        QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
+                        try:
+                            res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]
+                            QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
+                        except:
+                            pass
                         #try:
                         if code in positions.code.tolist():
                             if res2.SKDJ_CROSS1_HR == True:
