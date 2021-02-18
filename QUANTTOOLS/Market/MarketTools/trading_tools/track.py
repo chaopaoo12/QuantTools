@@ -70,6 +70,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                             if res2[1] == True:
                                 ###卖出信号1
                                 send_actionnotice(strategy_id,'{code}{name}:{trading_date}-{mark_tm}'.format(code=code,name=name,trading_date=trading_date,mark_tm=mark_tm),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
+
                         if code in list(target_tar.index):
                             if res2[2] == True:
                                 ###买入信号
