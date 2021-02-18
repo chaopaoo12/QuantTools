@@ -146,13 +146,13 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     afternoon_begin = "13:00:00"
     afternoon_14 = "14:00:00"
     afternoon_end = "15:00:00"
+    marktm_list = ["09:30:00", "10:30:00", "11:30:00", "14:00:00", "14:50:00"]
 
     while tm < int(time.strftime("%H%M%S",time.strptime("09:30:00", "%H:%M:%S"))):
         time.sleep(15)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
     QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
-    mark = 0
 
     if tm <= int(time.strftime("%H%M%S",time.strptime(morning_10, "%H:%M:%S"))):
         mark_tm = "09:30:00"
@@ -164,6 +164,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
         mark_tm = "14:00:00"
     else:
         mark_tm = "14:50:00"
+    mark = marktm_list.index(mark_tm)
 
     while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
@@ -179,7 +180,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
         if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
             data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,positions.code.tolist()+list(target_tar.index), type= 'real')
-            if mark_tm in ["09:30:00", "10:30:00", "11:30:00", "14:00:00", "14:50:00"]:
+            if mark_tm in marktm_list:
                 if mark_tm == "14:50:00":
                     mark_tm = "15:00:00"
 
@@ -233,10 +234,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
             mark += 1
-            if tm <= int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))):
-                mark_tm = (datetime.datetime.strptime(morning_begin, "%H:%M:%S") + datetime.timedelta(minutes=15*mark)).strftime("%H:%M:%S")
-            else:
-                mark_tm = (datetime.datetime.strptime(afternoon_begin, "%H:%M:%S") + datetime.timedelta(minutes=15*(mark-8))).strftime("%H:%M:%S")
+            mark_tm = marktm_list[mark]
 
     if tm > int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         ###time out
