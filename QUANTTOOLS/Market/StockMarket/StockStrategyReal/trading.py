@@ -46,7 +46,7 @@ def trading_summary(trading_date,percent = percent, account= 'name:client-1',exc
     #    model_name = 'stock_xg_real'
     #    percent = 0.2
 
-    res = trading_base(trading_date, r_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
+    res = trading_base2(trading_date, r_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
 
     return(res)
 
