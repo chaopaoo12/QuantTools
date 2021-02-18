@@ -1,5 +1,6 @@
 from QUANTTOOLS.Trader.account_manage.Trend_Track.Trends import daily
 from QUANTTOOLS.Ananlysis.Trends.trends import stock_daily, stock_hourly, btc_hourly
+from QUANTTOOLS.Ananlysis.Trends.base_tools import trends_btc_hour
 from QUANTTOOLS.Ananlysis.Trends.setting import CN_INDEX
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
@@ -32,6 +33,17 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
     QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
     mark = 0
     mark_tm = morning_begin
+    hour = ['00','01','02','03','04','05','06','07','08','09','10','11','12']
+    tims = ["00:00", "15:00", "30:00", "45:00"]
+
+    time_split = []
+    for i in hour:
+        for j in tims:
+            time_split.append(i+':'+j)
+
+    for i in range(0, len(time_split)-1):
+        if tm <= int(time.strftime("%M%S",time.strptime(time_split[i], "%H:%M:%S"))):
+            mark_tm = time_split[i]
 
     while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
@@ -42,23 +54,26 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
+            name = 'btcbtcusd'
+            data = trends_btc_hour(name)
+
             if mark_tm[3:] in ["00:00", "15:00", "30:00", "45:00"]:
                 QA_util_log_info('##JOB Now Time ==== {}'.format(str(mark_tm)), ui_log = None)
                 ####job1 小时级报告 指数小时级跟踪
-                name = 'btcbtcusd'
+
                 QA_util_log_info('##JOB Now Code ==== {}'.format(str(name)), ui_log = None)
 
-                res2 = btc_hourly(name, trading_date, mark_tm)
+                res2 = data.loc[(trading_date + ' ' + mark_tm, name)][['SKDJ_TR','SKDJ_CROSS1','SKDJ_CROSS2','MA5']]
                 QA_util_log_info(res2, ui_log = None)
-                QA_util_log_info('{name}-{trading_date}:hourly: {hourly}'.format(name=name,trading_date=trading_date,hourly=res2[0]))
-                if res2[1] == True and res2[3] <= 0:
+                QA_util_log_info('{name}-{trading_date}:hourly: {hourly}'.format(name=name,trading_date=trading_date,hourly=res2.SKDJ_TR))
+                if res2.SKDJ_CROSS1 == True:
                     ###卖出信号
                     send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
-                elif res2[2] == True:
+                elif res2.SKDJ_CROSS2 == True:
                     ###买入信号
                     send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
 
-                if res2[0] == -1:
+                if res2.SKDJ_TR == -1:
                     send_actionnotice(strategy_id,'{name}:{trading_date}'.format(name=name,trading_date=trading_date),'15min线趋势下跌',direction = 'SELL',offset=mark_tm,volume=None)
                 pass
 
