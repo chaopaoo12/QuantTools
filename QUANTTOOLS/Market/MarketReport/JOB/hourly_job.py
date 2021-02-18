@@ -83,7 +83,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
             ###15分钟级程序 1 爬虫 2 分析
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
             mark += 1
-            mark_tm = mark_tm[mark]
+            mark_tm = time_split[mark]
 
     if tm > int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         ###time out
