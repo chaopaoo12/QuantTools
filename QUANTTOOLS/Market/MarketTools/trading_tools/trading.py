@@ -195,7 +195,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 for code_list in [positions.code.tolist(), list(target_tar.index)]:
                     for code in code_list:
                         name = QA_fetch_stock_name(code)
-                        QA_util_log_info('##JOB Now Code ==== {} {}'.format(str(code),str(name)), ui_log = None)
+                        QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                         res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]
                         QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                         #try:
