@@ -224,7 +224,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
                 ###15分钟级程序 1 爬虫 2 分析
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
-            while tm >= int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))) and tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))):
+            while tm >= int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))) and tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))) and mark_tm == "14:00:00":
 
                 time.sleep(600)
                 tm = int(datetime.datetime.now().strftime("%H%M%S"))
