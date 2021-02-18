@@ -65,8 +65,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
 
                 QA_util_log_info('##JOB Now Code ==== {}'.format(str(name)), ui_log = None)
                 print(data)
-                res2 = data.loc[trading_date + ' ' + mark_tm][['SKDJ_TR','SKDJ_CROSS1','SKDJ_CROSS2','MA5']]
-                print(res2)
+                res2 = data.loc[(trading_date + ' ' + mark_tm, name)][['SKDJ_TR','SKDJ_CROSS1','SKDJ_CROSS2','MA5']]
                 QA_util_log_info(res2, ui_log = None)
                 QA_util_log_info('{name}-{trading_date}:hourly: {hourly}'.format(name=name,trading_date=trading_date,hourly=res2.SKDJ_TR))
                 if res2.SKDJ_CROSS1 == True:
