@@ -31,8 +31,6 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
     afternoon_end = "23:55:00"
 
     QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
-    mark = 0
-    mark_tm = morning_begin
     hour = ['00','01','02','03','04','05','06','07','08','09','10','11','12',
             '13','14','15','16','17','18','19','20','21','22','23']
     tims = ["00:00", "15:00", "30:00", "45:00"]
@@ -46,7 +44,9 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
         if tm <= int(time.strftime("%H%M%S",time.strptime(time_split[i], "%H:%M:%S"))):
             mark_tm = time_split[i-1]
             break
-    print(mark_tm)
+
+    mark = time_split.index(mark_tm)
+
     while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
 
@@ -83,7 +83,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
             ###15分钟级程序 1 爬虫 2 分析
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
             mark += 1
-            mark_tm = (datetime.datetime.strptime(morning_begin, "%H:%M:%S") + datetime.timedelta(minutes=mark*15)).strftime("%H:%M:%S")
+            mark_tm = mark_tm[mark]
 
     if tm > int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         ###time out
