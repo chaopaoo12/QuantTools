@@ -9,6 +9,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtm_bid,QA
 from QUANTTOOLS.Ananlysis.Trends.trends import stock_daily, stock_hourly
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import QA_fetch_stock_name
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour
+from QUANTTOOLS.Trader.account_manage.base_func.Client import get_UseCapital, get_StockPos
 import time
 import datetime
 
@@ -184,14 +185,13 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         QA_util_log_info('##JOB Now Code ==== {} {}'.format(str(code),str(name)), ui_log = None)
 
                         try:
-                            QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2[0]))
-
                             if code in positions.code.tolist():
                                 res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]
+                                QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                                 if res2.SKDJ_CROSS1_HR == True:
                                     ###卖出信号1
                                     send_actionnotice(strategy_id,'{code}{name}:{stm}'.format(code=code,name=name,stm=stm),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
-                                    deal_pos = 111
+                                    deal_pos = get_StockPos(code, client, account)
                                     target_pos = 0
                                     industry = positions.loc[code]['INDUSTRY']
                                     QA_util_log_info('##JOB Now Start Selling {code} ==== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
