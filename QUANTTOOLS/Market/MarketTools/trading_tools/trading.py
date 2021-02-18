@@ -198,7 +198,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         QA_util_log_info('##JOB Now Code ==== {} {}'.format(str(code),str(name)), ui_log = None)
                         res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]
                         QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
-                    #    try:
+                        #try:
                         if code in positions.code.tolist():
                             if res2.SKDJ_CROSS1_HR == True:
                                 ###卖出信号1
@@ -219,8 +219,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 industry = target_tar.loc[code]['INDUSTRY']
                                 QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
                                 BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
-                    #except:
-                    #        pass
+                        #except:
+                        #        pass
                         time.sleep(1)
             QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS1_HR == 1][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
             QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS2_HR == 1][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
