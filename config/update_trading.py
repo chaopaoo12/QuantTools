@@ -94,4 +94,4 @@ if __name__ == '__main__':
         time.sleep(180)
         res = check_stock_quant(mark_day)
 
-    daily_run(mark_day)
+    daily_run(check_day)
