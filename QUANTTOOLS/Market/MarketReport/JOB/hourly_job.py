@@ -45,6 +45,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
     for i in range(0, len(time_split)-1):
         if tm <= int(time.strftime("%H%M%S",time.strptime(time_split[i], "%H:%M:%S"))):
             mark_tm = time_split[i]
+            break
     print(mark_tm)
     while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
