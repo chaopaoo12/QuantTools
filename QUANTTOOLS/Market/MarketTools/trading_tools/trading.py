@@ -165,6 +165,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
         if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
             if mark_tm in ["09:30:00", "10:30:00", "11:30:00", "14:00:00", "14:55:00"]:
+                cross1 = []
+                cross2 = []
                 if mark_tm == "14:55:00":
                     mark_tm = "15:00:00"
                 QA_util_log_info('##JOB Now Time ==== {}'.format(str(mark_tm)), ui_log = None)
@@ -195,6 +197,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         if code in positions.code.tolist():
                             if res2[1] == True:
                                 ###卖出信号1
+                                cross1.append(code)
                                 send_actionnotice(strategy_id,'{code}{name}:{trading_date}-{mark_tm}'.format(code=code,name=name,trading_date=trading_date,mark_tm=mark_tm),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
                                 deal_pos = 111
                                 target_pos = 0
@@ -204,6 +207,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
                         if code in list(target_tar.index):
                             if res2[2] == True:
+                                cross2.append(code)
                                 ###买入信号
                                 send_actionnotice(strategy_id,'{code}{name}:{trading_date}-{mark_tm}'.format(code=code,name=name,trading_date=trading_date,mark_tm=mark_tm),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
                                 price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
@@ -215,6 +219,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
                         pass
                         time.sleep(1)
+                QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(mark_tm), cross1), ui_log = None)
+                QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(mark_tm), cross2), ui_log = None)
 
                 ###15分钟级程序 1 爬虫 2 分析
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
