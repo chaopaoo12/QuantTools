@@ -165,6 +165,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     else:
         mark_tm = "14:50:00"
     mark = marktm_list.index(mark_tm)
+    print(mark)
 
     while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
