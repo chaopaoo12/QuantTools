@@ -154,13 +154,13 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
     mark = 0
 
-    if tm <= int(time.strftime("%H%M%S",time.strptime(morning_begin, "%H:%M:%S"))):
+    if tm <= int(time.strftime("%H%M%S",time.strptime(morning_10, "%H:%M:%S"))):
         mark_tm = "09:30:00"
-    elif tm <= int(time.strftime("%H%M%S",time.strptime(morning_10, "%H:%M:%S"))):
-        mark_tm = "10:30:00"
     elif tm <= int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))):
-        mark_tm = "11:30:00"
+        mark_tm = "10:30:00"
     elif tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_14, "%H:%M:%S"))):
+        mark_tm = "11:30:00"
+    elif tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         mark_tm = "14:00:00"
     else:
         mark_tm = "14:50:00"
