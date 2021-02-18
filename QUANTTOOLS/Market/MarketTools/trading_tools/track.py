@@ -46,6 +46,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                 ####job1 小时级报告 指数小时级跟踪
                 for code_list in [positions.code.tolist(), list(target_tar.index)]:
                     for code in code_list:
+
                         name = QA_fetch_stock_name(code)
                         QA_util_log_info('##JOB Now Code ==== {} {}'.format(str(code),str(name)), ui_log = None)
 
@@ -53,29 +54,30 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
                             code = 'SH' + code
                         elif code[0:3] in ['000','002','300']:
                             code = 'SZ' + code
+                        try:
+                            if mark_tm == "09:30:00":
+                                res1 = stock_daily(code, QA_util_get_pre_trade_date(trading_date), QA_util_get_pre_trade_date(trading_date))
+                                QA_util_log_info('{code}{name}-{trading_date}:daily: {daily}; weekly: {weekly}'.format(code=code,name=name,trading_date=trading_date,daily=res1[0],weekly=res1[1]))
+                                res2 = stock_hourly(code, QA_util_get_pre_trade_date(trading_date), QA_util_get_pre_trade_date(trading_date), "15:00:00")
+                            else:
+                                res1 = stock_daily(code, trading_date, trading_date)
+                                QA_util_log_info('{code}{name}-{trading_date}:daily: {daily}; weekly: {weekly}'.format(code=code,name=name,trading_date=trading_date,daily=res1[0],weekly=res1[1]))
+                                res2 = stock_hourly(code, trading_date, trading_date, mark_tm)
 
-                        if mark_tm == "09:30:00":
-                            res1 = stock_daily(code, QA_util_get_pre_trade_date(trading_date), QA_util_get_pre_trade_date(trading_date))
-                            QA_util_log_info('{code}{name}-{trading_date}:daily: {daily}; weekly: {weekly}'.format(code=code,name=name,trading_date=trading_date,daily=res1[0],weekly=res1[1]))
-                            res2 = stock_hourly(code, QA_util_get_pre_trade_date(trading_date), QA_util_get_pre_trade_date(trading_date), "15:00:00")
-                        else:
-                            res1 = stock_daily(code, trading_date, trading_date)
-                            QA_util_log_info('{code}{name}-{trading_date}:daily: {daily}; weekly: {weekly}'.format(code=code,name=name,trading_date=trading_date,daily=res1[0],weekly=res1[1]))
-                            res2 = stock_hourly(code, trading_date, trading_date, mark_tm)
+                            QA_util_log_info(res2, ui_log = None)
+                            QA_util_log_info('{code}{name}-{trading_date}-{mark_tm}:hourly: {hourly}'.format(code=code,name=name,trading_date=trading_date,mark_tm=mark_tm,hourly=res2[0]))
 
-                        QA_util_log_info(res2, ui_log = None)
-                        QA_util_log_info('{code}{name}-{trading_date}-{mark_tm}:hourly: {hourly}'.format(code=code,name=name,trading_date=trading_date,mark_tm=mark_tm,hourly=res2[0]))
+                            if code in positions.code.tolist():
+                                if res2[1] == True:
+                                    ###卖出信号1
+                                    send_actionnotice(strategy_id,'{code}{name}:{trading_date}-{mark_tm}'.format(code=code,name=name,trading_date=trading_date,mark_tm=mark_tm),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
 
-                        if code in positions.code.tolist():
-                            if res2[1] == True:
-                                ###卖出信号1
-                                send_actionnotice(strategy_id,'{code}{name}:{trading_date}-{mark_tm}'.format(code=code,name=name,trading_date=trading_date,mark_tm=mark_tm),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
-
-                        if code in list(target_tar.index):
-                            if res2[2] == True:
-                                ###买入信号
-                                send_actionnotice(strategy_id,'{code}{name}:{trading_date}-{mark_tm}'.format(code=code,name=name,trading_date=trading_date,mark_tm=mark_tm),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
-                        pass
+                            if code in list(target_tar.index):
+                                if res2[2] == True:
+                                    ###买入信号
+                                    send_actionnotice(strategy_id,'{code}{name}:{trading_date}-{mark_tm}'.format(code=code,name=name,trading_date=trading_date,mark_tm=mark_tm),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
+                        except:
+                            pass
                         time.sleep(1)
 
                 ###15分钟级程序 1 爬虫 2 分析
