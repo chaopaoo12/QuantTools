@@ -33,7 +33,8 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
     QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
     mark = 0
     mark_tm = morning_begin
-    hour = ['00','01','02','03','04','05','06','07','08','09','10','11','12']
+    hour = ['00','01','02','03','04','05','06','07','08','09','10','11','12',
+            '13','14','15','16','17','18','19','20','21','22','23']
     tims = ["00:00", "15:00", "30:00", "45:00"]
 
     time_split = []
@@ -42,7 +43,7 @@ def auto_btc_tracking(trading_date, strategy_id='BTC数据跟踪'):
             time_split.append(i+':'+j)
 
     for i in range(0, len(time_split)-1):
-        if tm <= int(time.strftime("%M%S",time.strptime(time_split[i], "%H:%M:%S"))):
+        if tm <= int(time.strftime("%H%M%S",time.strptime(time_split[i], "%H:%M:%S"))):
             mark_tm = time_split[i]
 
     while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
