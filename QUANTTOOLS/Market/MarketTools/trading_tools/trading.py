@@ -175,7 +175,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 else:
                     stm = trading_date + ' ' + mark_tm
 
-                QA_util_log_info('##JOB Now Time ==== {}'.format(str(mark_tm)), ui_log = None)
+                QA_util_log_info('##JOB Now Time ==== {}'.format(str(stm)), ui_log = None)
 
                 ####job1 小时级报告 指数小时级跟踪
                 for code_list in [positions.code.tolist(), list(target_tar.index)]:
@@ -184,28 +184,28 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         QA_util_log_info('##JOB Now Code ==== {} {}'.format(str(code),str(name)), ui_log = None)
 
                         try:
-                            QA_util_log_info('{code}{name}-{trading_date}-{mark_tm}:hourly: {hourly}'.format(code=code,name=name,trading_date=trading_date,mark_tm=mark_tm,hourly=res2[0]))
+                            QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2[0]))
 
                             if code in positions.code.tolist():
                                 res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]
                                 if res2.SKDJ_CROSS1_HR == True:
                                     ###卖出信号1
-                                    send_actionnotice(strategy_id,'{code}{name}:{trading_date}-{mark_tm}'.format(code=code,name=name,trading_date=trading_date,mark_tm=mark_tm),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
+                                    send_actionnotice(strategy_id,'{code}{name}:{stm}'.format(code=code,name=name,stm=stm),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
                                     deal_pos = 111
                                     target_pos = 0
                                     industry = positions.loc[code]['INDUSTRY']
-                                    QA_util_log_info('##JOB Now Start Selling {code} ==== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
+                                    QA_util_log_info('##JOB Now Start Selling {code} ==== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
                                     SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
 
                             if code in list(target_tar.index):
                                 if res2.SKDJ_CROSS2_HR  == True:
                                     ###买入信号
-                                    send_actionnotice(strategy_id,'{code}{name}:{trading_date}-{mark_tm}'.format(code=code,name=name,trading_date=trading_date,mark_tm=mark_tm),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
+                                    send_actionnotice(strategy_id,'{code}{name}:{stm}'.format(code=code,name=name,stm=stm),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
                                     price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
                                     deal_pos = round(50000 / price,2)
                                     target_pos = deal_pos
                                     industry = target_tar.loc[code]['INDUSTRY']
-                                    QA_util_log_info('##JOB Now Start Buying {code} ===== {date}'.format(code = code, date = str(trading_date)), ui_log = None)
+                                    QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
                                     BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
                         except:
                             pass
