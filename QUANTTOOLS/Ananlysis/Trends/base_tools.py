@@ -63,4 +63,5 @@ def trends_btc_hour(BTC):
     data_btc = data_btc.assign(SKDJ_TR = (data_btc.SKDJ_K - data_btc.SKDJ_D).apply(lambda x:np.sign(x)),
                        SHORT_TR = (data_btc.SHORT20 > 0)*1,
                        LONG_TR = (data_btc.LONG60 > 0)*1)
+    print(data_btc)
     return(data_btc)
