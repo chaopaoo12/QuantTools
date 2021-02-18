@@ -9,4 +9,4 @@ if __name__ == '__main__':
         mark_day = QA_util_get_last_day(QA_util_today_str())
 
     if QA_util_if_trade(QA_util_today_str()):
-        trading_summary(mark_day)
+        trading(mark_day)
