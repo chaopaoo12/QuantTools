@@ -56,18 +56,6 @@ if __name__ == '__main__':
         #QA_SU_save_stock_industryinfo()
         res = check_stock_code()
 
-    res = check_index_techindex(mark_day)
-    while res is None or (len(res[0]) + len(res[1])) > 20:
-        time.sleep(180)
-        res = check_index_techindex(mark_day)
-
-    res = check_index_techhour(mark_day)
-    while res is None or (len(res[0]) + len(res[1])) > 20:
-        time.sleep(180)
-        res = check_index_techhour(mark_day)
-
-    index_run(mark_day)
-
     res = check_stock_alpha191(mark_day)
     while res is None or (len(res[0]) + len(res[1])) > 20:
         time.sleep(180)
@@ -94,3 +82,15 @@ if __name__ == '__main__':
         res = check_stock_quant(mark_day)
 
     daily_run(mark_day)
+
+    res = check_index_techindex(mark_day)
+    while res is None or (len(res[0]) + len(res[1])) > 20:
+        time.sleep(180)
+        res = check_index_techindex(mark_day)
+
+    res = check_index_techhour(mark_day)
+    while res is None or (len(res[0]) + len(res[1])) > 20:
+        time.sleep(180)
+        res = check_index_techhour(mark_day)
+
+    index_run(mark_day)
