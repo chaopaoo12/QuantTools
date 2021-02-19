@@ -45,7 +45,6 @@ if __name__ == '__main__':
 
     if QA_util_if_trade(mark_day):
         check_day = QA_util_get_pre_trade_date(mark_day,1)
-
     else:
         check_day = QA_util_get_real_date(mark_day)
 
@@ -94,4 +93,4 @@ if __name__ == '__main__':
         time.sleep(180)
         res = check_stock_quant(mark_day)
 
-    daily_run(check_day)
+    daily_run(mark_day)
