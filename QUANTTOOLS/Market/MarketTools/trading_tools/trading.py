@@ -235,6 +235,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
             time.sleep(600)
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
+            QA_util_log_info(tm)
 
         mark += 1
         mark_tm = marktm_list[mark]
