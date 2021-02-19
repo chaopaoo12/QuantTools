@@ -39,7 +39,7 @@ def trading_base(trading_date, r_tar, percent, account, title, exceptions, test 
     res = trade_roboot(r_tar, account, trading_date, percent, title, type='end', exceptions = exceptions, test = test)
     return(res)
 
-def trading_base2(trading_date, r_tar, percent, account, title, exceptions, test = True):
+def trading_base2(trading_date, r_tar, percent, account, title, exceptions, test = False):
 
     QA_util_log_info(
         '##JOB## Now Chect Account Server ==== {}'.format(str(trading_date)))
