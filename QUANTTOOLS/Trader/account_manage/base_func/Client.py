@@ -94,6 +94,7 @@ def check_Client(client, account, strategy_id, trading_date, exceptions, ui_log=
     except:
         QA_util_log_info(
             '##JOB Now Get Frozen_Positions Failed ==== {}'.format(str(trading_date)), ui_log)
+        frozen_positions = pd.DataFrame()
 
     try:
         QA_util_log_info('##JOB Now Get Frozen ==== {}'.format(str(trading_date)), ui_log)
