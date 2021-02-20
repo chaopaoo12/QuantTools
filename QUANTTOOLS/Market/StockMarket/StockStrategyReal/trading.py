@@ -9,10 +9,12 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
 
     r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir, model_name, file_name)
     r_tar = prediction_tar[(prediction_tar.RANK <= 10)&(prediction_tar.TARGET5.isnull())].reset_index(level=0, drop=True).drop_duplicates(subset='NAME')
-    percent = round(r_tar[(r_tar.PASS_MARK.isnull())&(r_tar.O_PROB > 0.5)].shape[0]/10,1)
-    if percent < 0.2:
-        percent = 0.2
-    res = trading_base2(trading_date, r_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
+    per = round(r_tar[(r_tar.PASS_MARK.isnull())&(r_tar.O_PROB > 0.5)].shape[0]/10,1)
+    if per < 0.2:
+        per = 0.2
+    elif per >= 0.6:
+        per = percent
+    res = trading_base2(trading_date, r_tar, percent = per, account= account, title = model_name, exceptions = exceptions)
 
     return(res)
 
