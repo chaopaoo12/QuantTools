@@ -60,10 +60,10 @@ def check_Client(client, account, strategy_id, trading_date, exceptions, ui_log=
                           )
     try:
         QA_util_log_info('##JOB Now Get Sub_Accounts ==== {}'.format(str(trading_date)), ui_log)
-        sub_accounts = float(res['sub_accounts']['总 资 产'])
+        sub_accounts = res['sub_accounts']
     except:
         QA_util_log_info('##JOB Now Get Sub_Accounts Failed ==== {}'.format(str(trading_date)), ui_log)
-
+        sub_accounts = 0
     try:
         QA_util_log_info('##JOB Now Get Positions ==== {}'.format(str(trading_date)), ui_log)
         positions = res['positions'][['证券代码','证券名称','股票余额','可用余额','冻结数量','参考盈亏','成本价','市价','市值','盈亏比例(%)']]
