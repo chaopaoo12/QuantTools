@@ -45,8 +45,11 @@ def get_Position(client, account):
 
 def get_hold(client, account):
     logging.basicConfig(level=logging.DEBUG)
-    res = client.get_positions(account)
-    hold = float(res['sub_accounts']['股票市值'])/float(res['sub_accounts']['总 资 产'])
+    try:
+        res = client.get_positions(account)
+        hold = float(res['sub_accounts']['股票市值'])/float(res['sub_accounts']['总 资 产'])
+    except:
+        hold = 0
     return(hold)
 
 def check_Client(client, account, strategy_id, trading_date, exceptions, ui_log= None):
