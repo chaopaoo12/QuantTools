@@ -214,7 +214,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
 
                         if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
-                            if res2.SKDJ_CROSS2_HR == True & res2.MA60_HR >= 0:
+                            if res2.SKDJ_CROSS2_HR == True and res2.MA60_HR >= 0:
                                 ###买入信号
                                 send_actionnotice(strategy_id,'{code}{name}:{stm}'.format(code=code,name=name,stm=stm),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
                                 price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
