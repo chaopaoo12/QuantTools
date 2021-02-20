@@ -43,6 +43,12 @@ def get_Position(client, account):
     positions =positions.rename(columns={'证券代码': 'code'})
     return(positions)
 
+def get_hold(client, account):
+    logging.basicConfig(level=logging.DEBUG)
+    res = client.get_positions(account)
+    hold = float(res['sub_accounts']['股票市值'])/float(res['sub_accounts']['总 资 产'])
+    return(hold)
+
 def check_Client(client, account, strategy_id, trading_date, exceptions, ui_log= None):
     logging.basicConfig(level=logging.DEBUG)
     try:
@@ -102,15 +108,7 @@ def check_Client(client, account, strategy_id, trading_date, exceptions, ui_log=
     except:
         frozen = 0
 
-    try:
-        QA_util_log_info('##JOB Now Get Holding Percent ==== {}'.format(str(trading_date)), ui_log)
-        hold = float(res['sub_accounts']['股票市值'])/float(res['sub_accounts']['总 资 产'])
-    except:
-        hold = 0
-
     QA_util_log_info(
         '##JOB Now Check Account Finished ==== {}'.format(str(trading_date)), ui_log)
 
-
-
-    return(sub_accounts, frozen, positions, frozen_positions, hold)
+    return(sub_accounts, frozen, positions, frozen_positions)
