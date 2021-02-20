@@ -60,7 +60,7 @@ def check_Client(client, account, strategy_id, trading_date, exceptions, ui_log=
                           )
     try:
         QA_util_log_info('##JOB Now Get Sub_Accounts ==== {}'.format(str(trading_date)), ui_log)
-        sub_accounts = res['sub_accounts']
+        sub_accounts = float(res['sub_accounts']['总 资 产'])
     except:
         QA_util_log_info('##JOB Now Get Sub_Accounts Failed ==== {}'.format(str(trading_date)), ui_log)
         sub_accounts = 0
@@ -101,7 +101,16 @@ def check_Client(client, account, strategy_id, trading_date, exceptions, ui_log=
         frozen = float(frozen_positions['市值'].sum())
     except:
         frozen = 0
+
+    try:
+        QA_util_log_info('##JOB Now Get Holding Percent ==== {}'.format(str(trading_date)), ui_log)
+        hold = float(res['sub_accounts']['股票市值'])/float(res['sub_accounts']['总 资 产'])
+    except:
+        hold = 0
+
     QA_util_log_info(
         '##JOB Now Check Account Finished ==== {}'.format(str(trading_date)), ui_log)
 
-    return(sub_accounts, frozen, positions, frozen_positions)
+
+
+    return(sub_accounts, frozen, positions, frozen_positions, hold)
