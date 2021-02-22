@@ -55,7 +55,7 @@ def trading_base2(trading_date, r_tar, percent, account, title, exceptions, test
 
     QA_util_log_info('##JOB## Now Timing Control ==== {}'.format(str(trading_date)))
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    target_tm = int(time.strftime("%H%M%S", time.strptime("09:30:00", "%H:%M:%S")))
+    target_tm = int(time.strftime("%H%M%S", time.strptime("09:25:00", "%H:%M:%S")))
     if test is False:
         while tm < target_tm:
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
