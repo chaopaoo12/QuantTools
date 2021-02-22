@@ -8,7 +8,7 @@ from QUANTTOOLS.Market.MarketTools.trading_tools.BuildTradingFrame import build
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_realtm_ask
 from QUANTTOOLS.Ananlysis.Trends.trends import stock_daily, stock_hourly
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import QA_fetch_stock_name
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour, get_quant_data
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_UseCapital, get_StockPos, get_hold
 import time
 import datetime
@@ -186,8 +186,10 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
                 if mark_tm == "09:30:00":
                     stm = QA_util_get_pre_trade_date(trading_date)+' 15:00:00'
+                    day_line = get_quant_data(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'crawl')
                 else:
                     stm = trading_date + ' ' + mark_tm
+                    day_line = None
 
                 QA_util_log_info('##JOB Now Time ==== {}'.format(str(stm)), ui_log = None)
 
@@ -207,6 +209,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 msg = 'SKDJ死叉'
                             elif res2.MA10_HR < 0:
                                 msg = '打穿MA10'
+                            elif day_line is not None and day_line.loc[(QA_util_get_pre_trade_date(trading_date), code)].SKDJ_CROSS1 == 1:
+                                msg = '日线SKDJ死叉'
                             else:
                                 msg = None
                                 ###卖出信号1
