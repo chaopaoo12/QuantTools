@@ -211,7 +211,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 msg = None
                                 ###卖出信号1
                             if msg is not None:
-                                send_actionnotice(strategy_id,'{code}{name}:{stm}---{msg}'.format(code=code,name=name,stm=stm, msg=msg),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
+                                send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
                                 deal_pos = get_StockPos(code, client, account)
                                 target_pos = 0
                                 industry = positions[positions.code == code]['INDUSTRY']
@@ -229,7 +229,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 msg = None
                             if msg is not None:
                                 ###买入信号
-                                send_actionnotice(strategy_id,'{code}{name}:{stm}'.format(code=code,name=name,stm=stm),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
+                                send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
                                 price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
                                 deal_pos = round(50000 / price,2)
                                 target_pos = deal_pos
