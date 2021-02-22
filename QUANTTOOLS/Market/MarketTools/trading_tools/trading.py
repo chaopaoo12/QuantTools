@@ -197,13 +197,13 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         name = QA_fetch_stock_name(code)
                         QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                         try:
-                            res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR','MA60_HR']]
+                            res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR']]
                             QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                         except:
                             pass
                         #try:
                         if code in positions.code.tolist():
-                            if res2.SKDJ_CROSS1_HR == True:
+                            if res2.SKDJ_CROSS1_HR == True or res2.MA10_HR < 0:
                                 ###卖出信号1
                                 send_actionnotice(strategy_id,'{code}{name}:{stm}'.format(code=code,name=name,stm=stm),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
                                 deal_pos = get_StockPos(code, client, account)
