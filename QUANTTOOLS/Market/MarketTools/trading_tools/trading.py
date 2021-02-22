@@ -197,7 +197,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         name = QA_fetch_stock_name(code)
                         QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                         try:
-                            res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR']]
+                            res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','MACD_JC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR']]
                             QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                         except:
                             pass
@@ -215,7 +215,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     time.sleep(1)
 
                         if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
-                            if res2.SKDJ_CROSS2_HR == True and res2.MA5_HR >= 0:
+                            if (res2.SKDJ_CROSS2_HR == True and res2.MA5_HR >= 0) or (res2.MACD_JC_HR == True):
                                 ###买入信号
                                 send_actionnotice(strategy_id,'{code}{name}:{stm}'.format(code=code,name=name,stm=stm),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
                                 price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
