@@ -203,9 +203,15 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                             pass
                         #try:
                         if code in positions.code.tolist():
-                            if res2.SKDJ_CROSS1_HR == True or res2.MA10_HR < 0:
+                            if res2.SKDJ_CROSS1_HR == True:
+                                msg = 'SKDJ死叉'
+                            elif res2.MA10_HR < 0:
+                                msg = '打穿MA10'
+                            else:
+                                msg = None
                                 ###卖出信号1
-                                send_actionnotice(strategy_id,'{code}{name}:{stm}'.format(code=code,name=name,stm=stm),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
+                            if msg is not None:
+                                send_actionnotice(strategy_id,'{code}{name}:{stm}---{msg}'.format(code=code,name=name,stm=stm, msg=msg),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
                                 deal_pos = get_StockPos(code, client, account)
                                 target_pos = 0
                                 industry = positions[positions.code == code]['INDUSTRY']
@@ -215,7 +221,13 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     time.sleep(1)
 
                         if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
-                            if (res2.SKDJ_CROSS2_HR == True and res2.MA5_HR >= 0) or (res2.MACD_JC_HR == True):
+                            if (res2.SKDJ_CROSS2_HR == True and res2.MA5_HR >= 0):
+                                msg = 'SKDJ金叉'
+                            elif res2.MACD_JC_HR == True:
+                                msg = 'MACD金叉'
+                            else:
+                                msg = None
+                            if msg is not None:
                                 ###买入信号
                                 send_actionnotice(strategy_id,'{code}{name}:{stm}'.format(code=code,name=name,stm=stm),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
                                 price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
