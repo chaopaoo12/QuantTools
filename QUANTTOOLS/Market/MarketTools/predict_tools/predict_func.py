@@ -4,7 +4,7 @@ import joblib
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_name,QA_fetch_stock_name
 from QUANTAXIS import QA_fetch_stock_info
-from QUANTAXIS.QAUtil import (QA_util_log_info)
+from QUANTAXIS.QAUtil import (QA_util_log_info,QA_util_get_real_date)
 from QUANTTOOLS.Message import send_actionnotice, send_email
 from datetime import datetime,timedelta
 from dateutil.relativedelta import relativedelta
@@ -26,7 +26,7 @@ def make_prediction(Model, trading_date, name, working_dir, code = None, type='c
                           offset='HOLD',
                           volume=None
                           )
-    start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-2))).strftime('%Y-%m-%d')
+    start = QA_util_get_real_date((datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-2))).strftime('%Y-%m-%d'))
     print(start)
     end = trading_date
     QA_util_log_info('##JOB Now Model Predict from {start} to {end} ==== {s}'.format(start = start, end = end, s = str(trading_date)))
