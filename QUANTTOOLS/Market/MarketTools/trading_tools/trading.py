@@ -179,17 +179,17 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
-            data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
+
             if mark_tm in marktm_list:
                 if mark_tm == "14:50:00":
                     mark_tm = "15:00:00"
 
                 if mark_tm == "09:30:00":
-                    stm = QA_util_get_pre_trade_date(trading_date)+' 15:00:00'
-                    day_line = get_quant_data(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'crawl')
+                    data = get_quant_data(QA_util_get_pre_trade_date(trading_date),QA_util_get_pre_trade_date(trading_date),list(set(positions.code.tolist()+list(target_tar.index))), type= 'crawl')
+                    stm = QA_util_get_pre_trade_date(trading_date)
                 else:
+                    data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
                     stm = trading_date + ' ' + mark_tm
-                    day_line = None
 
                 QA_util_log_info('##JOB Now Time ==== {}'.format(str(stm)), ui_log = None)
 
@@ -199,48 +199,54 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         name = QA_fetch_stock_name(code)
                         QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                         try:
-                            res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','MACD_JC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR']]
-                            QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
+                            if mark_tm == "09:30:00":
+                                res2 = data.loc[(stm, code)][['SKDJ_CROSS1','SKDJ_TR_HR','SKDJ_CROSS1_HR','MACD_JC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR']]
+                                QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
+                            else:
+                                res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','MACD_JC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR']]
+                                res2.SKDJ_CROSS1 = None
+                                QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                         except:
-                            pass
+                            res2 = None
                         #try:
-                        if code in positions.code.tolist():
-                            if res2.SKDJ_CROSS1_HR == True:
-                                msg = 'SKDJ死叉'
-                            elif res2.MA10_HR < 0:
-                                msg = '打穿MA10'
-                            elif day_line is not None and day_line.loc[(QA_util_get_pre_trade_date(trading_date), code)].SKDJ_CROSS1 == 1:
-                                msg = '日线SKDJ死叉'
-                            else:
-                                msg = None
-                                ###卖出信号1
-                            if msg is not None:
-                                send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
-                                deal_pos = get_StockPos(code, client, account)
-                                target_pos = 0
-                                industry = positions[positions.code == code]['INDUSTRY']
-                                QA_util_log_info('##JOB Now Start Selling {code} ==== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
-                                if get_hold(client, account) <= percent:
-                                    SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
-                                    time.sleep(1)
+                        if res2 is not None:
+                            if code in positions.code.tolist():
+                                if res2.SKDJ_CROSS1_HR == True:
+                                    msg = 'SKDJ死叉'
+                                elif res2.MA10_HR < 0:
+                                    msg = '打穿MA10'
+                                elif res2.SKDJ_CROSS1 == 1:
+                                    msg = '日线SKDJ死叉'
+                                else:
+                                    msg = None
+                                    ###卖出信号1
+                                if msg is not None:
+                                    send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
+                                    deal_pos = get_StockPos(code, client, account)
+                                    target_pos = 0
+                                    industry = positions[positions.code == code]['INDUSTRY']
+                                    QA_util_log_info('##JOB Now Start Selling {code} ==== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
+                                    if get_hold(client, account) <= percent:
+                                        SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
+                                        time.sleep(1)
 
-                        if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
-                            if res2.SKDJ_CROSS2_HR == True and res2.MA5_HR >= 0:
-                                msg = 'SKDJ金叉'
-                            #elif res2.MACD_JC_HR == True:
-                            #    msg = 'MACD金叉'
-                            else:
-                                msg = None
-                            if msg is not None:
-                                ###买入信号
-                                send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
-                                price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
-                                deal_pos = round(50000 / price,2)
-                                target_pos = deal_pos
-                                industry = target_tar.loc[code]['INDUSTRY']
-                                QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
-                                BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
-                                time.sleep(1)
+                            if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
+                                if res2.SKDJ_CROSS2_HR == True and res2.MA5_HR >= 0:
+                                    msg = 'SKDJ金叉'
+                                #elif res2.MACD_JC_HR == True:
+                                #    msg = 'MACD金叉'
+                                else:
+                                    msg = None
+                                if msg is not None:
+                                    ###买入信号
+                                    send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
+                                    price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
+                                    deal_pos = round(50000 / price,2)
+                                    target_pos = deal_pos
+                                    industry = target_tar.loc[code]['INDUSTRY']
+                                    QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
+                                    BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
+                                    time.sleep(1)
                         #except:
                         #        pass
                 QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS1_HR == 1][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
