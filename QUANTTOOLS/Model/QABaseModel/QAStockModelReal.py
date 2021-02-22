@@ -127,6 +127,7 @@ class QAStockModelReal(QAModel):
         bina.index = b.index
         b[['Z_PROB','O_PROB']] = bina
         b.loc[:,'RANK'] = b['O_PROB'].groupby('date').rank(ascending=False)
+        b = b[b['O_PROB'].notna()]
         return(b[b['y_pred']==1], b)
 
 if __name__ == 'main':

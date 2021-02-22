@@ -74,6 +74,7 @@ class QAStockModelHour(QAModel):
         bina.index = train.index
         train[['Z_PROB','O_PROB']] = bina
         train.loc[:,'RANK'] = train['O_PROB'].groupby('datetime').rank(ascending=False)
+        train = train[train['O_PROB'].notna()]
 
         if type == 'crawl':
             train = train.join(data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
