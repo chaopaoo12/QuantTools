@@ -175,7 +175,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
 
     ####今日转好趋势的指数
     hour_prediction['SHIFT_O_PROB'] = hour_prediction['O_PROB'].groupby('code').shift()
-    print(hour_prediction)
+    print(hour_prediction[['O_PROB','SHIFT_O_PROB']])
     target_fd = hour_prediction[(hour_prediction.O_PROB - hour_prediction.SHIFT_O_PROB >= 0.5) & (hour_prediction.O_PROB > 0.95)].reset_index()
     target_fd = target_fd.assign(date = target_fd.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
     try:
