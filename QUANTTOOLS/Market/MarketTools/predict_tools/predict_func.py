@@ -27,6 +27,7 @@ def make_prediction(Model, trading_date, name, working_dir, code = None, type='c
                           volume=None
                           )
     start = (datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-2))).strftime('%Y-%m-%d')
+    print(start)
     end = trading_date
     QA_util_log_info('##JOB Now Model Predict from {start} to {end} ==== {s}'.format(start = start, end = end, s = str(trading_date)))
     if code is None:
