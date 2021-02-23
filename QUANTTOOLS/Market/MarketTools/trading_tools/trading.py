@@ -205,8 +205,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                             else:
                                 res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','MACD_JC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR']]
-                                res2.SKDJ_CROSS1 = None
                                 QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
+                                res2.SKDJ_CROSS1 = None
                         except:
                             res2 = None
                             QA_util_log_info('error')
