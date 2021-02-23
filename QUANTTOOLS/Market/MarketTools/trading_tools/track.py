@@ -99,7 +99,7 @@ def track_roboot(target_tar, account, trading_date, percent, strategy_id,  excep
         send_actionnotice(strategy_id,'Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)
 
 
-def track_roboot2(account, trading_date, percent, strategy_id, exceptions = None, test = False):
+def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = False):
 
     QA_util_log_info('##JOB Now Check Timing ==== {}'.format(str(trading_date)), ui_log = None)
 
