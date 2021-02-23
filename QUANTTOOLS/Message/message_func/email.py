@@ -4,6 +4,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart  # 构建邮件头信息，包括发件人，接收人，标题等
 from email.header import Header
 from QUANTTOOLS.Message.message_func.setting import smtpserver,smtpport,msg_from,passwd,msg_to
+from imbox import Imbox
 
 def send_email(mail_title, msg, date, smtpserver=smtpserver, smtpport=smtpport,msg_from=msg_from,msg_to=msg_to,passwd=passwd):
     smtpserver = smtpserver
@@ -30,3 +31,13 @@ def send_email(mail_title, msg, date, smtpserver=smtpserver, smtpport=smtpport,m
         print("发送失败")
     finally:
         s.quit()
+
+def reademail(mail_title,smtpserver=smtpserver,msg_from=msg_from,passwd=passwd,seen= False):
+    with Imbox(smtpserver, msg_from, passwd, ssl=True) as imbox:
+        all_inbox_messages = imbox.messages(folder='&UXZO1mWHTvZZOQ-/Report', unread=True)
+        for uid, message in all_inbox_messages:
+            if message.subject == mail_title:
+                htmlbody=message.body['html']
+                if seen == True:
+                    imbox.make_seen(uid)
+                return(htmlbody)
