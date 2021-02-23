@@ -39,5 +39,5 @@ def reademail(mail_title,smtpserver=smtpserver,msg_from=msg_from,passwd=passwd,s
             if message.subject == mail_title:
                 htmlbody=message.body['html']
                 if seen == True:
-                    imbox.make_seen(uid)
+                    imbox.mark_seen(uid)
                 return(htmlbody)
