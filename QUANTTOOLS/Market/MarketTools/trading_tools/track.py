@@ -123,8 +123,6 @@ def track_roboot2(account, trading_date, percent, strategy_id, exceptions = None
 
         QA_util_log_info('##JOB Now Build Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
 
-
-
         ####job1 小时级报告 指数小时级跟踪
         for code in positions.code.tolist():
             name = QA_fetch_stock_name(code)
