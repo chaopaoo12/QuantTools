@@ -152,7 +152,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
         time.sleep(15)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
-    QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
+    QA_util_log_info('##JOB Now Start Trading ==== {}'.format(str(trading_date)), ui_log = None)
 
     if tm <= int(time.strftime("%H%M%S",time.strptime(morning_10, "%H:%M:%S"))):
         mark_tm = "09:30:00"
@@ -231,9 +231,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     target_pos = 0
                                     industry = positions[positions.code == code]['INDUSTRY']
                                     QA_util_log_info('##JOB Now Start Selling {code} ==== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
-                                    if get_hold(client, account) <= percent:
-                                        SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
-                                        time.sleep(1)
+                                    SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
+                                    time.sleep(1)
 
                             if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
                                 if (res2.SKDJ_CROSS2_HR == True) and (res2.MA5_HR >= 0):
@@ -251,8 +250,9 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     target_pos = deal_pos
                                     industry = target_tar.loc[code]['INDUSTRY']
                                     QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
-                                    BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
-                                    time.sleep(1)
+                                    if get_hold(client, account) <= percent:
+                                        BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
+                                        time.sleep(1)
                         #except:
                         #        pass
                 QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS1_HR == 1][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
@@ -271,8 +271,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
     if tm >= int(time.strftime("%H%M%S", time.strptime(afternoon_end, "%H:%M:%S"))):
         ###time out
-        QA_util_log_info('##JOB Tracking Finished ==================== {}'.format(trading_date), ui_log=None)
-        send_actionnotice(strategy_id,'Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)
+        QA_util_log_info('##JOB Trading Finished ==================== {}'.format(trading_date), ui_log=None)
+        send_actionnotice(strategy_id,'Trading Report:{}'.format(trading_date),'Trading Finished',direction = 'Trading',offset='Finished',volume=None)
 
 if __name__ == '__main__':
     pass
