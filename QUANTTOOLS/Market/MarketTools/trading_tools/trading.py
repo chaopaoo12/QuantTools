@@ -198,10 +198,9 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                     for code in code_list:
                         name = QA_fetch_stock_name(code)
                         QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
-
+                        res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','MACD_JC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR']]
                         try:
                             if mark_tm == "09:30:00":
-                                QA_util_log_info('error A ')
                                 res2 = data.loc[(stm, code)][['SKDJ_CROSS1','SKDJ_TR_HR','SKDJ_CROSS1_HR','MACD_JC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR']]
                                 QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                             else:
