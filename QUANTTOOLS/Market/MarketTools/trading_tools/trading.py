@@ -159,7 +159,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     elif tm <= int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))):
         mark_tm = "10:30:00"
     elif tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_14, "%H:%M:%S"))):
-        mark_tm = "11:30:00"
+        mark_tm = "13:00:00"
     elif tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         mark_tm = "14:00:00"
     else:
@@ -169,6 +169,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
         client = get_Client()
+        client.cancel_all(account)
         sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
         account_info = client.get_account(account)
 
@@ -187,6 +188,9 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 if mark_tm == "09:30:00":
                     data = get_quant_data(QA_util_get_pre_trade_date(trading_date),QA_util_get_pre_trade_date(trading_date),list(set(positions.code.tolist()+list(target_tar.index))), type= 'crawl')
                     stm = QA_util_get_pre_trade_date(trading_date)
+                elif mark_tm == '13:00:00':
+                    data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
+                    stm = trading_date + ' ' + '11:30:00'
                 else:
                     data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
                     stm = trading_date + ' ' + mark_tm
