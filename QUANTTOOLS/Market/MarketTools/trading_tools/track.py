@@ -5,7 +5,7 @@ from QUANTTOOLS.Ananlysis.Trends.trends import stock_daily, stock_hourly
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import QA_fetch_stock_name
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_UseCapital, get_StockPos, get_hold
 from QUANTTOOLS.Trader.account_manage.TradAction.SELL import SELL
-from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_close,QA_fetch_get_stock_realtm_bid
+from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_close,QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_realtime
 import time
 import datetime
 
@@ -129,13 +129,17 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
             hold = positions[positions.code==code]['成本价']
             price = QA_fetch_get_stock_realtm_bid(code)
             close = QA_fetch_get_stock_close(code)
-            QA_util_log_info('##JOB Now Code {code}({name} ==== 成本:{hold} 昨收:{close} 现价:{price}'.format(code=str(code),name=str(name),hold=hold, close = close, price = price), ui_log = None)
+            high = QA_fetch_get_stock_realtime(code).high
+            QA_util_log_info('##JOB Now Code {code}({name} ==== 成本:{hold} 昨收:{close} 今高:{high} 现价:{price}'.format(code=str(code),name=str(name),hold=hold,high=high, close = close, price = price), ui_log = None)
             close = price /close - 1
             hold = price /hold - 1
+            high = price/high-1
             if hold <= -0.05 :
                 msg = '突破开仓位-5%'
             elif close <= -0.05:
                 msg = '回撤-5%'
+            elif high <= -0.05:
+                msg = '高点回撤-5%'
             else:
                 msg = None
                 ###卖出信号1
