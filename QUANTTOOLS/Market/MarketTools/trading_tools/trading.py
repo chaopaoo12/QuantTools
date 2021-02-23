@@ -146,7 +146,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     afternoon_begin = "13:00:00"
     afternoon_14 = "14:00:00"
     afternoon_end = "15:00:00"
-    marktm_list = ["09:30:00", "10:30:00", "11:30:00", "14:00:00", "14:50:00"]
+    marktm_list = ["09:30:00", "10:30:00", '13:00:00', "14:00:00", "14:50:00"]
 
     while tm < int(time.strftime("%H%M%S",time.strptime("09:30:00", "%H:%M:%S"))):
         time.sleep(15)
