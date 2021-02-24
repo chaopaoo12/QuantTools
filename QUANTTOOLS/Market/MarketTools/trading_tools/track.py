@@ -130,7 +130,7 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
             price = QA_fetch_get_stock_realtm_bid(code)
             close = QA_fetch_get_stock_close(code)
             high = QA_fetch_get_stock_realtime(code).high
-            QA_util_log_info('##JOB Now Code {code}({name} ==== 成本:{hold} 昨收:{close} 今高:{high} 现价:{price}'.format(code=str(code),name=str(name),hold=hold,high=high, close = close, price = price), ui_log = None)
+            QA_util_log_info('##JOB Now Code {code}({name}) ==== 成本:{hold} 昨收:{close} 今高:{high} 现价:{price}'.format(code=str(code),name=str(name),hold=str(hold),high=str(high), close = str(close), price = str(price)), ui_log = None)
             close = price /close - 1
             hold = price /hold - 1
             high = price/high-1
