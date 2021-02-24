@@ -8,20 +8,20 @@ import math
 def SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target, close, type = 'end', test = False):
 
     real_pos = get_StockPos(code, client, account)
-    QA_util_log_info('##JOB Get Real Time Postition {real_pos} Before {code} Buying ===== {date}'.format(real_pos=real_pos, code = code, date=trading_date), ui_log = None)
+    QA_util_log_info('##JOB Get Real Time Postition {real_pos} Before {code} Selling ===== {date}'.format(real_pos=real_pos, code = code, date=trading_date), ui_log = None)
 
     if math.floor(target_pos/100)*100 <= target_pos:
         pass
     else:
         deal_pos = math.floor(abs(real_pos - target_pos)/100)*100
 
-    QA_util_log_info('##JOB Get Refresh Deal Position {deal_pos} Before {code} Buying ===== {date}'.format(deal_pos = deal_pos, code = code, date=trading_date), ui_log = None)
+    QA_util_log_info('##JOB Get Refresh Deal Position {deal_pos} Before {code} Selling ===== {date}'.format(deal_pos = deal_pos, code = code, date=trading_date), ui_log = None)
 
     if type == 'end':
         #quotation = easyquotation.use('sina')
         #price = quotation.real(code)[code]['sell']-0.01
         price = round(QA_fetch_get_stock_realtm_ask(code)-0.01,2)
-        QA_util_log_info('##JOB Get Real Time Price {price} Before {code} Buying ===== {date}'.format(price = price, code = code, date=trading_date), ui_log = None)
+        QA_util_log_info('##JOB Get Real Time Price {price} Before {code} Selling ===== {date}'.format(price = price, code = code, date=trading_date), ui_log = None)
 
         QA_util_log_info('卖出 {code}({NAME},{INDUSTRY}) {deal_pos}股, 目标持仓:{target_pos},单价:{price},总金额:{target}====={trading_date}'.format(code=code,
                                                                                                                               NAME= name,
