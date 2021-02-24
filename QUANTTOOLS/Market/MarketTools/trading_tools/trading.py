@@ -250,6 +250,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     target_pos = deal_pos
                                     industry = target_tar.loc[code]['INDUSTRY']
                                     QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
+                                    QA_util_log_info(get_hold(client, account),percent)
                                     if get_hold(client, account) <= percent:
                                         BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
                                         time.sleep(1)
