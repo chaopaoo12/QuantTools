@@ -254,7 +254,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                         BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
                                         time.sleep(1)
                                     else:
-                                        QA_util_log_info('##JOB Now Full {code} ===== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
+                                        QA_util_log_info('##JOB Now Full {code} {percent}/{hold} ===== {stm}'.format(code = code,percent=percent,hold=get_hold(client, account), stm = str(stm)), ui_log = None)
                         #except:
                         #        pass
                 QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS1_HR == 1][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
