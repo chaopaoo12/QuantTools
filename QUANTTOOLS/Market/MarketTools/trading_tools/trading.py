@@ -171,7 +171,6 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
         client = get_Client()
         client.cancel_all(account)
         sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
-        positions = positions[positions['可用余额'] > 0]
         account_info = client.get_account(account)
 
         QA_util_log_info('##JOB Now Build Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
