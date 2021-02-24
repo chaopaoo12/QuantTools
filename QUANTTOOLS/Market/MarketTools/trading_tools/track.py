@@ -147,7 +147,7 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
                 send_actionnotice(strategy_id,'{code}{name}:{msg}'.format(code=code,name=name, msg=msg),'卖出信号',direction = 'SELL',offset=None,volume=None)
                 deal_pos = get_StockPos(code, client, account)
                 target_pos = 0
-                industry = positions[positions.code == code]['INDUSTRY']
+                industry = str(positions[positions.code == code]['INDUSTRY'])
                 QA_util_log_info('##JOB Now Start Selling {code} ===='.format(code = code), ui_log = None)
                 SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = True)
                 time.sleep(1)
