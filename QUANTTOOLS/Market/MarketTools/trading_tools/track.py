@@ -126,7 +126,7 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
         ####job1 小时级报告 指数小时级跟踪
         for code in positions.code.tolist():
             name = QA_fetch_stock_name(code)
-            hold = positions[positions.code==code]['成本价']
+            hold = float(positions[positions.code==code]['成本价'])
             price = QA_fetch_get_stock_realtm_bid(code)
             close = QA_fetch_get_stock_close(code)
             high = QA_fetch_get_stock_realtime(code).high
