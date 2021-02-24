@@ -132,15 +132,17 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
             close = float(QA_fetch_get_stock_close(code))
             high = float(QA_fetch_get_stock_realtime(code).high)
             QA_util_log_info('##JOB Now Code {code}({name}) ==== 成本:{hold} 昨收:{close} 今高:{high} 现价:{price}'.format(code=str(code),name=str(name),hold=str(hold),high=str(high), close = str(close), price = str(price)), ui_log = None)
-            close = price /close - 1
-            hold = price /hold - 1
-            high = price / high-1
+            hold = price / hold - 1
+
+            if close > high:
+                warning_line = price /close - 1
+            else:
+                warning_line = price / high-1
+
             if hold <= -0.05 :
-                msg = '突破开仓位-5%'
-            elif close <= -0.05:
-                msg = '回撤-5%'
-            elif high <= -0.05:
-                msg = '高点回撤-5%'
+                msg = '跌破开仓位-5%:止损'
+            elif warning_line <= -0.05:
+                msg = '高点回撤-5%:止盈'
             else:
                 msg = None
                 ###卖出信号1
