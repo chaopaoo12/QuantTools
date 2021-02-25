@@ -229,7 +229,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
                                     deal_pos = get_StockPos(code, client, account)
                                     target_pos = 0
-                                    industry = str(positions[positions.code == code]['INDUSTRY'])
+                                    industry = str(target_tar.loc[code].INDUSTRY)
                                     QA_util_log_info('##JOB Now Start Selling {code} ==== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
                                     SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
                                     time.sleep(1)
@@ -248,7 +248,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
                                     deal_pos = round(50000 / price,2)
                                     target_pos = deal_pos
-                                    industry = str(target_tar.loc[code]['INDUSTRY'])
+                                    industry = str(target_tar.loc[code].INDUSTRY)
                                     QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}'.format(code = code, stm = str(stm)), ui_log = None)
                                     if get_hold(client, account) <= percent:
                                         BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
