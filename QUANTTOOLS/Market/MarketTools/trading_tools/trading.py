@@ -272,7 +272,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             QA_util_log_info(tm)
 
         mark += 1
-        mark_tm = marktm_list[mark]
+        if mark <= len(marktm_list):
+            mark_tm = marktm_list[mark]
 
     if tm >= int(time.strftime("%H%M%S", time.strptime(afternoon_end, "%H:%M:%S"))):
         ###time out
