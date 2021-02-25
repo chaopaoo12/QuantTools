@@ -141,8 +141,8 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
 
             if hold <= -0.05 :
                 msg = '跌破开仓位-5%:止损'
-            elif warning_line <= -0.05 and hold > 0:
-                msg = '高点回撤-5%:止盈'
+            #elif warning_line <= -0.05 and hold > 0:
+            #    msg = '高点回撤-5%:止盈'
             else:
                 msg = None
                 ###卖出信号1
