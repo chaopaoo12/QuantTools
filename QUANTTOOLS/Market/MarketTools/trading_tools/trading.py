@@ -215,8 +215,9 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                             res2 = None
                             QA_util_log_info('error')
                         #try:
-                        msg = None
+
                         if res2 is not None:
+                            msg = None
                             if code in positions.code.tolist():
                                 if res2.SKDJ_CROSS1_HR == True:
                                     msg = 'SKDJ死叉'
