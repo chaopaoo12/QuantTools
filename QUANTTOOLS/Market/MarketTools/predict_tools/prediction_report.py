@@ -160,11 +160,11 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)))
 
     ###目前趋势中的指数
-    terns_index = prediction[(prediction.SKDJ_TR_HR == 1)].loc[trading_date][['NAME','SKDJ_TR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']]
+    terns_index = prediction[(prediction.SKDJ_TR == 1)].loc[trading_date][['NAME','SKDJ_TR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']]
 
     ###近期强势趋势可能延续的指数
     try:
-        terns_fulture = prediction[(prediction.SKDJ_TR_HR == 1) & (prediction.HOUR_PROB >= 0.95)].loc[trading_date]
+        terns_fulture = prediction[(prediction.SKDJ_TR == 1) & (prediction.DAY_PROB >= 0.95)].loc[trading_date]
     except:
         terns_fulture = None
     ###近期表现强势的指数
@@ -177,9 +177,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     #hour_prediction['SHIFT_O_PROB'] = hour_prediction['O_PROB'].groupby('code').shift()
 
     try:
-        target_fd = hour_prediction[hour_prediction.O_PROB >= 0.95].reset_index()
-        target_fd = target_fd.assign(date = target_fd.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        target_fd = target_fd.loc[trading_date]
+        target_fd = prediction[prediction.DAY_PROB > 0.5].loc[trading_date]
     except:
         target_fd = None
     ###小时级趋势延续至日线 不需要
