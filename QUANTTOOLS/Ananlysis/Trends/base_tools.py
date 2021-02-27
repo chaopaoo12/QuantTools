@@ -26,12 +26,14 @@ def trends_money(MONEY, date):
                                  LONG_TR = (data_money.LONG60 > 0)*1,
                                  TERNS = ((data_money.SHORT20 > 0) * (data_money.LONG60 > 0) * (data_money.LONG_AMOUNT > 0) * 1)
                                  )
+    data_money.SKDJ_TR = data_money.SKDJ_TR.fillna(method='ffill')
     week_money = get_indicator_short(week_money,'week')
     week_money = week_money.assign(SKDJ_TR = (week_money.SKDJ_CROSS1*-1+ week_money.SKDJ_CROSS2*1)/(week_money.SKDJ_CROSS1+week_money.SKDJ_CROSS2),
                                    SHORT_TR = (week_money.SHORT20 > 0)*1,
                                    LONG_TR = (week_money.LONG60 > 0)*1,
                                    TERNS = ((week_money.SHORT20 > 0) * (week_money.LONG60 > 0) * (week_money.LONG_AMOUNT > 0) * 1)
                                    )
+    week_money.SKDJ_TR = week_money.SKDJ_TR.fillna(method='ffill')
     return(data_money, week_money)
 
 def trends_btc(BTC):
@@ -41,16 +43,18 @@ def trends_btc(BTC):
     week_btc = QA_DataStruct_Stock_day(week.reset_index().set_index(['date','code']))
     data_btc = get_indicator_short(data_btc,'day')
     data_btc = data_btc.assign(SKDJ_TR = (data_btc.SKDJ_CROSS1*-1+ data_btc.SKDJ_CROSS2*1)/(data_btc.SKDJ_CROSS1+data_btc.SKDJ_CROSS2),
-                                 SHORT_TR = (data_btc.SHORT20 > 0)*1,
-                                 LONG_TR = (data_btc.LONG60 > 0)*1,
-                                 TERNS = ((data_btc.SHORT20 > 0) * (data_btc.LONG60 > 0) * (data_btc.LONG_AMOUNT > 0) * 1)
-                                 )
+                            SHORT_TR = (data_btc.SHORT20 > 0)*1,
+                            LONG_TR = (data_btc.LONG60 > 0)*1,
+                            TERNS = ((data_btc.SHORT20 > 0) * (data_btc.LONG60 > 0) * (data_btc.LONG_AMOUNT > 0) * 1)
+                            )
+    data_btc.SKDJ_TR = data_btc.SKDJ_TR.fillna(method='ffill')
     week_btc = get_indicator_short(week_btc,'week')
     week_btc = week_btc.assign(SKDJ_TR = (week_btc.SKDJ_CROSS1*-1+ week_btc.SKDJ_CROSS2*1)/(week_btc.SKDJ_CROSS1+week_btc.SKDJ_CROSS2),
                                  SHORT_TR = (week_btc.SHORT20 > 0)*1,
                                  LONG_TR = (week_btc.LONG60 > 0)*1,
                                  TERNS = ((week_btc.SHORT20 > 0) * (week_btc.LONG60 > 0) * (week_btc.LONG_AMOUNT > 0) * 1)
                                  )
+    week_btc.SKDJ_TR = week_btc.SKDJ_TR.fillna(method='ffill')
     return(data_btc, week_btc)
 
 def trends_gold(GOLD, date):
@@ -64,12 +68,14 @@ def trends_gold(GOLD, date):
                                    LONG_TR = (data_gold.LONG60 > 0)*1,
                                    TERNS = ((data_gold.SHORT20 > 0) * (data_gold.LONG60 > 0) * (data_gold.LONG_AMOUNT > 0) * 1)
                                    )
+    data_gold.SKDJ_TR = data_gold.SKDJ_TR.fillna(method='ffill')
     week_gold = get_indicator_short(week_gold,'week')
     week_gold = week_gold.assign(SKDJ_TR = (week_gold.SKDJ_CROSS1*-1+ week_gold.SKDJ_CROSS2*1)/(week_gold.SKDJ_CROSS1+week_gold.SKDJ_CROSS2),
                                  SHORT_TR = (week_gold.SHORT20 > 0)*1,
                                  LONG_TR = (week_gold.LONG60 > 0)*1,
                                  TERNS = ((week_gold.SHORT20 > 0) * (week_gold.LONG60 > 0) * (week_gold.LONG_AMOUNT > 0) * 1)
                                  )
+    week_gold.SKDJ_TR = week_gold.SKDJ_TR.fillna(method='ffill')
     return(data_gold, week_gold)
 
 def trends_stock(code, start_date, end_date, period='day', type='before'):
@@ -83,12 +89,14 @@ def trends_stock(code, start_date, end_date, period='day', type='before'):
                                LONG_TR = (data_index.LONG60 > 0)*1,
                                TERNS = ((data_index.SHORT20 > 0) * (data_index.LONG60 > 0) * (data_index.LONG_AMOUNT > 0) * 1)
                                )
+    data_index.SKDJ_TR = data_index.SKDJ_TR.fillna(method='ffill')
     week_index = get_indicator(week_index,'week')
     week_index = week_index.assign(SKDJ_TR = (week_index.SKDJ_CROSS1*-1+ week_index.SKDJ_CROSS2*1)/(week_index.SKDJ_CROSS1+week_index.SKDJ_CROSS2),
                                    SHORT_TR = (week_index.SHORT20 > 0)*1,
                                    LONG_TR = (week_index.LONG60 > 0)*1,
                                    TERNS = ((week_index.SHORT20 > 0) * (week_index.LONG60 > 0) * (week_index.LONG_AMOUNT > 0) * 1)
                                    )
+    week_index.SKDJ_TR = week_index.SKDJ_TR.fillna(method='ffill')
     return(data_index, week_index)
 
 def trends_stock_hour(code, start_date, end_date, type='hour'):
@@ -105,4 +113,5 @@ def trends_btc_hour(BTC):
                        LONG_TR = (data_btc.LONG60 > 0)*1,
                        TERNS = ((data_btc.SHORT20 > 0) * (data_btc.LONG60 > 0) * (data_btc.LONG_AMOUNT > 0) * 1)
                        )
+    data_btc.SKDJ_TR = data_btc.SKDJ_TR.fillna(method='ffill')
     return(data_btc)
