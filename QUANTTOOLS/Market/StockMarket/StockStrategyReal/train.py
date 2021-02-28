@@ -44,6 +44,7 @@ def daymodel_train(date, working_dir=working_dir):
     stock_model = start_train(stock_model, stock_xg_set, other_params, 0, 0.95)
     save_report(stock_model, 'stock_xg', working_dir)
 
+    start_date = str(int(date[0:4])-1)+'-01-01'
     stock_model = prepare_data(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 1, col = 'SKDJ_TR', type='value', shift=-2)
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
