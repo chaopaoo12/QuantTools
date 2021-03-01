@@ -8,7 +8,7 @@ def load_data(func, trading_date, working_dir, model_name, file_name):
         prediction = load_prediction(file_name, working_dir)
         print('a')
         check_prediction(prediction, trading_date)
-        print(b)
+        print('b')
         target_pool = prediction['target_pool']
         prediction_tar = prediction['prediction']
     except:
