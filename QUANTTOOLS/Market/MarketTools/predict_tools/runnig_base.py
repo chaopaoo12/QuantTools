@@ -46,13 +46,18 @@ def predict_index_dev(trading_date, predict_func1, predict_func2, predict_func3,
     Index_Report(QA_util_get_real_date(trading_date), res['prediction'], res['hour_prediction'], model_date, )
 
 
-def predict_stock_dev(trading_date, predict_func1, predict_func2, predict_func3, day_moel, hour_model, min_model, file_name, top_num, percent, working_dir, exceptions):
+def predict_stock_dev(trading_date, xg_predict_func, predict_func1, predict_func2, predict_func3, xg_model, day_moel, hour_model, min_model, file_name, top_num, percent, working_dir, exceptions):
     stock_b = pd.DataFrame()
     res = dict()
+    if xg_predict_func is not None:
+        xg_tar, xg_b, start, end, model_date = predict_func1(trading_date, model_name = xg_model,  working_dir=working_dir)
+        stock_b[['NAME','INDUSTRY','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']] = xg_b[['O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
+        res['date'] = trading_date
+        res['XG_prediction'] = xg_b
+
     if predict_func1 is not None:
         day_tar, day_b, start, end, model_date = predict_func1(trading_date, model_name = day_moel,  working_dir=working_dir)
-        stock_b[['NAME','INDUSTRY','SKDJ_TR','DAY_PROB','DAY_RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']] = day_b[['NAME','INDUSTRY','SKDJ_TR','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
-        res['date'] = trading_date
+        stock_b[['SKDJ_TR','DAY_PROB','DAY_RANK']] = day_b[['SKDJ_TR','O_PROB','RANK']]
         res['day_prediction'] = day_b
 
     if predict_func2 is not None:
@@ -71,14 +76,14 @@ def predict_stock_dev(trading_date, predict_func1, predict_func2, predict_func3,
         stock_b[['SKDJ_TR_15M','MIN_PROB']] = rrr1[['SKDJ_TR_15M','O_PROB']]
         res['min_prediction'] = min_b
 
-    stock_tar = stock_b[(stock_b.DAY_PROB > 0.5)]
+    stock_tar = stock_b[(stock_b.O_PROB > 0.5)]
     res['target_pool'] = stock_tar
     res['prediction'] = stock_b
 
     save_prediction(res, file_name, working_dir)
     prediction_report(QA_util_get_real_date(trading_date), stock_tar, stock_b, model_date, top_num, exceptions, percent,
                       name_list = ['NAME','INDUSTRY','SKDJ_TR','SKDJ_TR_HR'],
-                      value_ist = ['DAY_PROB','DAY_RANK','HOUR_PROB','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
+                      value_ist = ['O_PROB','RANK','DAY_PROB','DAY_RANK','HOUR_PROB','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
                       sort_mark ='DAY_RANK',
-                      selec_list=['NAME','INDUSTRY','SKDJ_TR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','DAY_RANK'],
+                      selec_list=['NAME','INDUSTRY','SKDJ_TR','SKDJ_TR_HR','O_PROB','DAY_PROB','HOUR_PROB','RANK','DAY_RANK'],
                       account='name:client-1', ui_log = None)

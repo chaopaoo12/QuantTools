@@ -52,13 +52,13 @@ def prediction_report(trading_date, target_pool, prediction, model_date, top_num
     client = get_Client()
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, "prediction_report", trading_date, exceptions=exceptions)
 
-    ###预测为正TOP
+    ###XG股池 + 交易成绩
     current_score, current_details = Current_Report(trading_date, target_pool, top_num, name_list = name_list, value_ist = value_ist, sort_mark =sort_mark)
 
-    ###预测为正T
+    ###XG+DAY_LINE
     currentall_score, currentall_details = Current_Report(trading_date, target_pool, name_list = name_list, value_ist = value_ist, sort_mark =sort_mark)
 
-    ###预测TOP
+    ###XG+DAY_LINE预测TOP
     top_score, top_details = Current_Report(trading_date, prediction, top_num, name_list = name_list, value_ist = value_ist, sort_mark =sort_mark)
 
     ####预测的最终结果
