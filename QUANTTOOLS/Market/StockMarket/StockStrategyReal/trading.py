@@ -16,7 +16,8 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
         per = percent
     else:
         per = per
-    res = trading_base2(trading_date, r_tar, percent = per, account= account, title = model_name, exceptions = exceptions)
+    target_pool,prediction,start,end,Model_Date = func(QA_util_get_last_day(trading_date), working_dir, code = list(r_tar.index), type = 'crawl', model_name = 'stock_mars_day')
+    res = trading_base2(trading_date, prediction[prediction.O_PROB > 0.5], percent = per, account= account, title = model_name, exceptions = exceptions)
 
     return(res)
 
