@@ -9,6 +9,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
 
     print(QA_util_get_last_day(trading_date))
     r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir, model_name = 'stock_xg', file_name = 'prediction')
+    print('a')
     r_tar = prediction_tar[(prediction_tar.RANK <= 20)&(prediction_tar.TARGET5.isnull())].reset_index(level=0, drop=True).drop_duplicates(subset='NAME')
     #per = round(prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]/20,1)
     #if per < 0.2:
