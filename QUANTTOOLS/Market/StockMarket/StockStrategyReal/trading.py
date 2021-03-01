@@ -9,15 +9,15 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
 
     r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir, model_name, file_name)
     r_tar = prediction_tar[(prediction_tar.RANK <= 20)&(prediction_tar.TARGET5.isnull())].reset_index(level=0, drop=True).drop_duplicates(subset='NAME')
-    per = round(prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]/20,1)
-    if per < 0.2:
-        per = 0.2
-    elif per >= 0.6:
-        per = percent
-    else:
-        per = per
+    #per = round(prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]/20,1)
+    #if per < 0.2:
+    #    per = 0.2
+    #elif per >= 0.6:
+    #    per = percent
+    #else:
+    #    per = per
     target_pool,prediction,start,end,Model_Date = func(QA_util_get_last_day(trading_date), working_dir, code = list(r_tar.index), type = 'crawl', model_name = 'stock_mars_day')
-    res = trading_base2(trading_date, prediction[prediction.O_PROB > 0.5], percent = per, account= account, title = model_name, exceptions = exceptions)
+    res = trading_base2(trading_date, prediction[prediction.O_PROB > 0.5], percent = percent, account= account, title = model_name, exceptions = exceptions)
 
     return(res)
 
