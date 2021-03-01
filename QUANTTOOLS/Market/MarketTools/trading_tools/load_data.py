@@ -10,6 +10,7 @@ def load_data(func, trading_date, working_dir, model_name, file_name):
         print(prediction)
         print(len(prediction))
         target_pool = prediction['target_pool']
+        print('a')
         prediction_tar = prediction['prediction']
     except:
         func(trading_date, working_dir=working_dir, model_name=model_name)
@@ -23,4 +24,5 @@ def load_data(func, trading_date, working_dir, model_name, file_name):
         r_tar = None
         prediction_tar =  None
         send_email('交易报告:'+ trading_date, "空仓状态", 'date')
+
     return(r_tar, prediction_tar, prediction)
