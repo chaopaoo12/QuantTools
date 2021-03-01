@@ -16,7 +16,7 @@ class QAIndexModelHour(QAModel):
     def model_predict(self, start, end, code = None, type='crawl'):
         if code is not None:
             self.code = code
-        QA_util_log_info('##JOB Got Data by {type}==== from {_from} to {_to}'.format(type=type, _from=start, _to=end), ui_log = None)
+        QA_util_log_info('##JOB Got Index Quant hour Data by {type}==== from {_from} to {_to}'.format(type=type, _from=start, _to=end), ui_log = None)
         data = get_index_quant_hour(start, end, code = self.code, type= type)
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)

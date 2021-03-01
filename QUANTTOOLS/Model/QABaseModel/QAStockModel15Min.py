@@ -18,7 +18,7 @@ class QAStockModel15Min(QAModel):
     def model_predict(self, start, end, code = None, type='crawl'):
         if code is not None:
             self.code = code
-        QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=self.block,sub_block=self.sub_block, _from=start, _to=end), ui_log = None)
+        QA_util_log_info('##JOB Got Stock Quant 15min Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=self.block,sub_block=self.sub_block, _from=start, _to=end), ui_log = None)
         data = get_quant_data_15min(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, norm_type=self.norm_type)
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
