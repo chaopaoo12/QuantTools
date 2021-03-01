@@ -12,6 +12,7 @@ def load_data(func, trading_date, working_dir, model_name, file_name):
         target_pool = prediction['target_pool']
         print('a')
         prediction_tar = prediction['prediction']
+        print('b')
     except:
         func(trading_date, working_dir=working_dir, model_name=model_name)
         prediction = load_prediction(file_name, working_dir)
