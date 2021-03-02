@@ -221,8 +221,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                             if code in positions.code.tolist():
                                 if res2.SKDJ_CROSS1_HR == True:
                                     msg = 'SKDJ死叉'
-                                elif res2.MA10_HR < 0:
-                                    msg = '打穿MA10'
+                                #elif res2.MA10_HR < 0:
+                                #    msg = '打穿MA10'
                                 elif res2.SKDJ_CROSS1 == 1:
                                     msg = '日线SKDJ死叉'
                                 else:
