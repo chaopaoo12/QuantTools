@@ -169,7 +169,10 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
         QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
         client = get_Client()
-        client.cancel_all(account)
+        try:
+            client.cancel_all(account)
+        except:
+            QA_util_log_info('##JOB Cancel Orders Failed==== {}'.format(str(trading_date)), ui_log = None)
         sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
         positions = positions[positions['可用余额'] > 0]
         account_info = client.get_account(account)
