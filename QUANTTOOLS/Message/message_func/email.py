@@ -27,7 +27,7 @@ def send_email(mail_title, msg, date, smtpserver=smtpserver, smtpport=smtpport,m
         s.login(msg_from, passwd)
         s.sendmail(msg_from, msg_to, msg.as_string())
         print("发送成功")
-    except(s.SMTPException) as e:
+    except:
         print("发送失败")
     finally:
         s.quit()
