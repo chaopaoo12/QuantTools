@@ -208,10 +208,10 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                         try:
                             if mark_tm == "09:30:00":
-                                res2 = data.loc[(stm, code)][['SKDJ_CROSS1','SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR']]
+                                res2 = data.loc[(stm, code)][['SKDJ_CROSS1','SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
                                 QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                             else:
-                                res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR']]
+                                res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
                                 QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                                 res2.SKDJ_CROSS1 = None
                         except:
@@ -222,8 +222,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         if res2 is not None:
                             msg = None
                             if code in positions.code.tolist():
-                                if res2.SKDJ_CROSS1_HR == True:
-                                    msg = 'SKDJ死叉'
+                                if res2.CCI_CROSS2_HR == True:
+                                    msg = 'CCI死叉'
                                 #elif res2.MA10_HR < 0:
                                 #    msg = '打穿MA10'
                                 elif res2.SKDJ_CROSS1 == 1:
@@ -241,10 +241,10 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     time.sleep(1)
 
                             if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
-                                if (res2.SKDJ_CROSS2_HR == True) and (res2.MA5_HR >= 0):
-                                    msg = 'SKDJ金叉'
-                                elif (res2.CROSS_JC_HR == True) and (res2.SKDJ_TR_HR == 1):
-                                    msg = 'MACD金叉'
+                                if res2.CCI_CROSS1_HR == True:
+                                    msg = 'CCI金叉'
+                                #elif (res2.CROSS_JC_HR == True) and (res2.SKDJ_TR_HR == 1):
+                                #    msg = 'MACD金叉'
                                 else:
                                     msg = None
 
