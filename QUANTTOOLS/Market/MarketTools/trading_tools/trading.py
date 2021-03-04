@@ -228,6 +228,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 #    msg = '打穿MA10'
                                 elif res2.SKDJ_CROSS1 == 1:
                                     msg = '日线SKDJ死叉'
+                                elif res2.CCI_HR < 100:
+                                    msg = 'CCI止损'
                                 else:
                                     msg = None
                                     ###卖出信号1
