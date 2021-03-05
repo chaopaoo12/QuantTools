@@ -222,8 +222,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         if res2 is not None:
                             msg = None
                             if code in positions.code.tolist():
-                                if res2.CCI_CROSS2_HR == True:
-                                    msg = 'CCI死叉'
+                                if res2.SKDJ_CROSS1_HR == True:
+                                    msg = 'SKDJ死叉'
                                 #elif res2.MA10_HR < 0:
                                 #    msg = '打穿MA10'
                                 elif res2.SKDJ_CROSS1 == 1:
@@ -244,8 +244,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     time.sleep(1)
 
                             if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
-                                if res2.CCI_CROSS1_HR == True:
-                                    msg = 'CCI金叉'
+                                if res2.CCI_HR > 0 and res2.SKDJ_CROSS2_HR == 1:
+                                    msg = 'SKDJ金叉'
                                 #elif (res2.CROSS_JC_HR == True) and (res2.SKDJ_TR_HR == 1):
                                 #    msg = 'MACD金叉'
                                 else:
