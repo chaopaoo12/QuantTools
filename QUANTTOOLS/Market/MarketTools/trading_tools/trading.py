@@ -221,7 +221,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
                         if res2 is not None:
                             msg = None
-                            if code in positions.code.tolist():
+                            if code in [i for i in positions.code.tolist() if i not in list(target_tar.index)]:
                                 if res2.SKDJ_CROSS1_HR == True:
                                     msg = 'SKDJ死叉'
                                 #elif res2.MA10_HR < 0:
