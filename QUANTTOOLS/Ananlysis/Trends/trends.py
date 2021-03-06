@@ -9,9 +9,10 @@ def btc_daily(BTC):
     incr15 = day.iloc[-1:]['MA15'].values[0]
     incr = day.iloc[-1:]['MA15_C'].values[0]
     incrs = day.iloc[-1:]['MA15_D'].values[0]
+    CCI = day.iloc[-1:]['CCI'].values[0]
     SKDJ_MARK = day.iloc[-1:]['SKDJ_CROSS2'].values[0] + day.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
     CCI_MARK = day.iloc[-1:]['CCI_CROSS1'].values[0] + day.iloc[-1:]['CCI_CROSS2'].values[0] * -1
-    return(day_check, week_check, incr, incrs,incr5,incr15,SKDJ_MARK,CCI_MARK)
+    return(day_check, week_check, incr, incrs,incr5,incr15,CCI,SKDJ_MARK,CCI_MARK)
 
 def money_daily(MONEY, date):
     day, week = trends_money(MONEY, date)
@@ -21,9 +22,10 @@ def money_daily(MONEY, date):
     incr15 = day.iloc[-1:]['MA15'].values[0]
     incr = day.iloc[-1:]['MA15_C'].values[0]
     incrs = day.iloc[-1:]['MA15_D'].values[0]
+    CCI = day.iloc[-1:]['CCI'].values[0]
     SKDJ_MARK = day.iloc[-1:]['SKDJ_CROSS2'].values[0] + day.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
     CCI_MARK = day.iloc[-1:]['CCI_CROSS1'].values[0] + day.iloc[-1:]['CCI_CROSS2'].values[0] * -1
-    return(day_check, week_check, incr, incrs,incr5,incr15,SKDJ_MARK,CCI_MARK)
+    return(day_check, week_check, incr, incrs,incr5,incr15,CCI,SKDJ_MARK,CCI_MARK)
 
 def gold_daily(GOLD, date):
     day, week = trends_gold(GOLD, date)
@@ -33,9 +35,10 @@ def gold_daily(GOLD, date):
     incr15 = day.iloc[-1:]['MA15'].values[0]
     incr = day.iloc[-1:]['MA15_C'].values[0]
     incrs = day.iloc[-1:]['MA15_D'].values[0]
+    CCI = day.iloc[-1:]['CCI'].values[0]
     SKDJ_MARK = day.iloc[-1:]['SKDJ_CROSS2'].values[0] + day.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
     CCI_MARK = day.iloc[-1:]['CCI_CROSS1'].values[0] + day.iloc[-1:]['CCI_CROSS2'].values[0] * -1
-    return(day_check, week_check, incr, incrs,incr5,incr15,SKDJ_MARK,CCI_MARK)
+    return(day_check, week_check, incr, incrs,incr5,incr15,CCI,SKDJ_MARK,CCI_MARK)
 
 def stock_daily(stock, start_date, end_date):
     day, week = trends_stock(stock,start_date,end_date)
@@ -45,9 +48,10 @@ def stock_daily(stock, start_date, end_date):
     incr15 = day.iloc[-1:]['MA15'].values[0]
     incr = day.iloc[-1:]['MA15_C'].values[0]
     incrs = day.iloc[-1:]['MA15_D'].values[0]
+    CCI = day.iloc[-1:]['CCI'].values[0]
     SKDJ_MARK = day.iloc[-1:]['SKDJ_CROSS2'].values[0] + day.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
     CCI_MARK = day.iloc[-1:]['CCI_CROSS1'].values[0] + day.iloc[-1:]['CCI_CROSS2'].values[0] * -1
-    return(day_check, week_check, incr, incrs, incr5, incr15,SKDJ_MARK,CCI_MARK)
+    return(day_check, week_check, incr, incrs, incr5, incr15,CCI,SKDJ_MARK,CCI_MARK)
 
 def stock_hourly(stock, start_date, end_date, date_type):
     hour = trends_stock_hour(stock,start_date,end_date)
