@@ -15,7 +15,7 @@ def train_base(trading_date, train_func, pred_func):
             trading_date = QA_util_get_real_date(trading_date)
 
         train_func(trading_date)
-        pred_func(trading_date)
+        #pred_func(trading_date)
     else:
         pass
 
