@@ -179,7 +179,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     except:
         top_index = None
 
-    ####今日转好趋势的指数
+    ####近期选股记录
     #hour_prediction['SHIFT_O_PROB'] = hour_prediction['O_PROB'].groupby('code').shift()
 
     try:
@@ -237,9 +237,9 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
         send_email('交易报告:'+ trading_date, "消息组件运算失败:近期表现强势的指数", trading_date)
 
     try:
-        terns_t_body = build_table(target_fd, '今日转好趋势的指数')
+        terns_t_body = build_table(target_fd, '近期选股记录')
     except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:今日转好趋势的指数", trading_date)
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:近期选股记录", trading_date)
 
     title = '市场状态报告'
 
