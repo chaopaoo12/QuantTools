@@ -160,13 +160,19 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)))
 
     ###目前趋势中的指数
-    terns_index = prediction[(prediction.SKDJ_TR == 1)].loc[trading_date][['NAME','SKDJ_TR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('DAY_PROB',ascending=False)
+    terns_index = prediction[(prediction.SKDJ_TR == 1)].loc[trading_date][['NAME','SKDJ_TR','CCI','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('DAY_PROB',ascending=False)
 
-    ###近期强势趋势可能延续的指数
+    ###入场信号
     try:
-        terns_fulture = prediction[(prediction.SKDJ_TR == 1) & (prediction.DAY_PROB >= 0.95)].loc[trading_date]
+        in_list = prediction[((prediction.SKDJ_CROSS2 == 1) | (prediction.CROSS_JC == 1))& (prediction.CCI > 0)].loc[trading_date]
     except:
-        terns_fulture = None
+        in_list = None
+
+    try:
+        out_list = prediction[(prediction.SKDJ_CROSS1 == 1)].loc[trading_date]
+    except:
+        out_list = None
+
     ###近期表现强势的指数
     try:
         top_index = prediction[prediction.INDEX_TARGET5 > 5]
@@ -177,15 +183,15 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     #hour_prediction['SHIFT_O_PROB'] = hour_prediction['O_PROB'].groupby('code').shift()
 
     try:
-        target_fd = prediction[prediction.DAY_PROB > 0.5].loc[trading_date]
+        target_fd = prediction[((prediction.SKDJ_CROSS2 == 1) | (prediction.CROSS_JC == 1))& (prediction.CCI > 0)]
     except:
         target_fd = None
     ###小时级趋势延续至日线 不需要
 
     ####大盘情况预测
-    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET']]
-    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET']]
-    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET']]
+    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','DAY_PROB','SKDJ_TR','CCI','HOUR_PROB','PASS_MARK','INDEX_TARGET']]
+    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','DAY_PROB','SKDJ_TR','CCI','HOUR_PROB','PASS_MARK','INDEX_TARGET']]
+    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','DAY_PROB','SKDJ_TR','CCI','HOUR_PROB','PASS_MARK','INDEX_TARGET']]
 
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)))
 
@@ -216,9 +222,14 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
 
     #########
     try:
-        terns_ful_body = build_table(terns_fulture, '近期强势趋势可能延续的指数')
+        in_body = build_table(in_list, '入场提示')
     except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:近期强势趋势可能延续的指数", trading_date)
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:入场提示", trading_date)
+
+    try:
+        out_body = build_table(out_list, '出场提示')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:出场提示", trading_date)
 
     try:
         terns_his_body = build_table(top_index, '近期表现强势的指数')
@@ -235,7 +246,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
 
     try:
         msg = build_email(build_head(),err_msg,
-                          terns_body,terns_ful_body,market_000001,market_399001,market_399006,
+                          terns_body,in_body,out_body,market_000001,market_399001,market_399006,
                           terns_his_body, terns_t_body)
         send_actionnotice("prediction_report",
                           '交易报告:{}'.format(trading_date),
