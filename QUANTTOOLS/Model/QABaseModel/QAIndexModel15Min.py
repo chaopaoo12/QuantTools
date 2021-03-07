@@ -74,7 +74,7 @@ class QAIndexModel15Min(QAModel):
         elif type == 'real':
             b = train[['y_pred','Z_PROB','O_PROB','RANK']]
 
-        b = b.join(data[['SKDJ_TR_15M','CCI_15M']])
+        b = b.join(data[['SKDJ_TR_15M','CCI_15M','SKDJ_CROSS2_15M','SKDJ_CROSS1_15M','CROSS_JC_15M']])
         return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
