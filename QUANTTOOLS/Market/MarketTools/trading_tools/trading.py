@@ -171,6 +171,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
         client = get_Client()
         try:
             client.cancel_all(account)
+            time.sleep(5)
         except:
             QA_util_log_info('##JOB Cancel Orders Failed==== {}'.format(str(trading_date)), ui_log = None)
         sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
