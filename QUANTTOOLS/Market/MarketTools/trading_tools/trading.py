@@ -269,6 +269,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         #        pass
                 QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS1_HR == 1][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
                 QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS2_HR == 1][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
+                time.sleep(30)
+
 
         ###15分钟级程序 1 爬虫 2 分析
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
