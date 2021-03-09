@@ -55,6 +55,10 @@ def predict_stock_summary(trading_date, top_num=top, working_dir=working_dir):
 
 def predict_watch(trading_date, working_dir=working_dir):
     data = get_quant_data(trading_date,trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
-    target_pool1,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, code = list(data[(data.SKDJ_CROSS2_WK == 1)&(data.CCI_WK > 0)].loc[trading_date].index), type = 'crawl', model_name = 'stock_mars_day')
-    target_pool2,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, code = list(data[(data.ROE_RATE > 1)&(data.PE_RATE < 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)].loc[trading_date].index), type = 'crawl', model_name = 'stock_mars_day')
-    base_report(trading_date, '观察报告', **{'低估值清单': target_pool1, '周线趋势清单': target_pool2})
+    wk_list = list(data[(data.SKDJ_CROSS2_WK == 1)&(data.CCI_WK > 0)].loc[trading_date].index)
+    pe_list = list(data[(data.ROE_RATE > 1)&(data.PE_RATE < 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)].loc[trading_date].index)
+    both_list = [i for i in wk_list if i in pe_list]
+    target_pool1,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, code = wk_list, type = 'crawl', model_name = 'stock_mars_day')
+    target_pool2,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, code = pe_list, type = 'crawl', model_name = 'stock_mars_day')
+    target_pool3,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, code = both_list, type = 'crawl', model_name = 'stock_mars_day')
+    base_report(trading_date, '观察报告', **{'低估值清单': target_pool1, '周线趋势清单': target_pool2, '复合清单': target_pool3})
