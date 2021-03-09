@@ -4,7 +4,8 @@ from .concat_predict import (concat_predict,concat_predict_hour,concat_predict_1
                              concat_predict_real,concat_predict_crawl,concat_predict_hedge,
                              concat_predict_index,concat_predict_indexhour,concat_predict_index15min)
 from .setting import working_dir, percent, exceptions, top
-from QUANTTOOLS.Market.MarketTools import predict_base, predict_index_base, predict_index_dev, predict_stock_dev
+from QUANTTOOLS.Market.MarketTools import predict_base, predict_index_base, predict_index_dev, predict_stock_dev,base_report
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_quant_data,get_quant_data
 
 def predict(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict, model_name = 'stock_xg', file_name = 'prediction', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
@@ -51,3 +52,13 @@ def predict_stock_summary(trading_date, top_num=top, working_dir=working_dir):
                       xg_model = 'stock_xg', day_moel = 'stock_mars_day', hour_model=None, min_model=None,
                       file_name = 'prediction_stock_summary',
                       top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+
+def predict_lowpe(trading_date, working_dir=working_dir):
+    data = get_quant_data(trading_date,trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
+    target_pool1,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, code = list(data[(data.SKDJ_CROSS2_WK == 1)&(data.CCI_WK > 0)].loc[trading_date].index), type = 'crawl', model_name = 'stock_mars_day')
+    target_pool2,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, code = list(data[(data.ROE_RATE > 1)&(data.PE_RATE < 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)].loc[trading_date].index), type = 'crawl', model_name = 'stock_mars_day')
+    base_report(trading_date, '观察报告', **{'低估值清单': target_pool1, '周线趋势清单': target_pool2})
+
+
+def predict_wktrends(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
+    predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'wktrends_prediction', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)

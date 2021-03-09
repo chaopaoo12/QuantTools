@@ -1,6 +1,6 @@
 #coding :utf-8
 
-from QUANTTOOLS.Market.MarketTools.predict_tools import save_prediction, prediction_report, Index_Report
+from QUANTTOOLS.Market.MarketTools.predict_tools import save_prediction, prediction_report, Index_Report, base_report
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_real_date
 import pandas as pd
 

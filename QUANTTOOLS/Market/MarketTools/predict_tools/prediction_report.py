@@ -267,3 +267,46 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
                           )
 
     return(target_fd)
+
+
+def base_report(trading_date, title, **kwargs):
+
+    QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)))
+
+    try:
+        err_msg = '模型训练日期:{model_date}'.format(model_date=trading_date)
+    except:
+        err_msg = 'error'
+        send_email('交易报告:'+ trading_date, "模型训练日期获取运算失败", trading_date)
+
+    bodys = []
+
+    for i in kwargs:
+        try:
+            body = build_table(kwargs[i], '{}周期内选股记录'.format(i))
+            bodys.append(body)
+        except:
+            send_email('交易报告:'+ trading_date, "消息组件运算失败:{}周期内选股记录".format(i), trading_date)
+
+    try:
+        msg = build_email(build_head(),err_msg, bodys
+                          )
+        send_actionnotice("prediction_report",
+                          '交易报告:{}'.format(trading_date),
+                          '模型运行完毕',
+                          direction = 'HOLD',
+                          offset='HOLD',
+                          volume=None
+                          )
+        send_email(title + trading_date, msg, trading_date)
+    except:
+        send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
+        send_actionnotice("prediction_report",
+                          '交易报告:{}'.format(trading_date),
+                          '模型运行完毕 Email过程失败',
+                          direction = 'HOLD',
+                          offset='HOLD',
+                          volume=None
+                          )
+
+    return(None)
