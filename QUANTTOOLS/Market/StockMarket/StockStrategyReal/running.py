@@ -60,5 +60,4 @@ def predict_watch(trading_date, working_dir=working_dir):
     both_list = [i for i in wk_list if i in pe_list]
     target_pool1,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, code = wk_list, type = 'crawl', model_name = 'stock_mars_day')
     target_pool2,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, code = pe_list, type = 'crawl', model_name = 'stock_mars_day')
-    target_pool3,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, code = both_list, type = 'crawl', model_name = 'stock_mars_day')
-    base_report(trading_date, '观察报告', **{'低估值清单': target_pool1, '周线趋势清单': target_pool2, '复合清单': target_pool3})
+    base_report(trading_date, '观察报告', **{'低估值清单': target_pool1, '周线趋势清单': target_pool2, '复合清单': target_pool2.loc[both_list]})
