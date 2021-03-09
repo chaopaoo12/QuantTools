@@ -288,7 +288,6 @@ def base_report(trading_date, title, **kwargs):
         except:
             send_email('交易报告:'+ trading_date, "消息组件运算失败:{}周期内选股记录".format(i), trading_date)
 
-    print(bodys)
     try:
         msg = build_email(build_head(), err_msg, bodys
                           )
