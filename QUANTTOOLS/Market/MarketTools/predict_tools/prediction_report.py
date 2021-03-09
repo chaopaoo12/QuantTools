@@ -284,10 +284,11 @@ def base_report(trading_date, title, **kwargs):
     for i in kwargs:
         try:
             body = build_table(kwargs[i], '{}周期内选股记录'.format(i))
-            bodys.append(body)
+            bodys.extend(body)
         except:
             send_email('交易报告:'+ trading_date, "消息组件运算失败:{}周期内选股记录".format(i), trading_date)
 
+    print(bodys)
     try:
         msg = build_email(build_head(),err_msg, bodys
                           )
@@ -300,7 +301,7 @@ def base_report(trading_date, title, **kwargs):
                           )
         send_email(title + trading_date, msg, trading_date)
     except:
-        send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
+        send_email(title + trading_date, "消息构建失败", trading_date)
         send_actionnotice("prediction_report",
                           '交易报告:{}'.format(trading_date),
                           '模型运行完毕 Email过程失败',
