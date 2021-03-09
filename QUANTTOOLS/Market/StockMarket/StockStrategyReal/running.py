@@ -53,12 +53,8 @@ def predict_stock_summary(trading_date, top_num=top, working_dir=working_dir):
                       file_name = 'prediction_stock_summary',
                       top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
-def predict_lowpe(trading_date, working_dir=working_dir):
+def predict_watch(trading_date, working_dir=working_dir):
     data = get_quant_data(trading_date,trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
     target_pool1,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, code = list(data[(data.SKDJ_CROSS2_WK == 1)&(data.CCI_WK > 0)].loc[trading_date].index), type = 'crawl', model_name = 'stock_mars_day')
     target_pool2,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, code = list(data[(data.ROE_RATE > 1)&(data.PE_RATE < 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)].loc[trading_date].index), type = 'crawl', model_name = 'stock_mars_day')
     base_report(trading_date, '观察报告', **{'低估值清单': target_pool1, '周线趋势清单': target_pool2})
-
-
-def predict_wktrends(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
-    predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'wktrends_prediction', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
