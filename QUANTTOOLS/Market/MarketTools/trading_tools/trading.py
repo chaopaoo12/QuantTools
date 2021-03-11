@@ -254,7 +254,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 else:
                                     msg = None
 
-                                if msg is not None:
+                                if msg is not None and get_UseCapital(client, account) >= 3000:
                                     ###买入信号
                                     send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
                                     price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
