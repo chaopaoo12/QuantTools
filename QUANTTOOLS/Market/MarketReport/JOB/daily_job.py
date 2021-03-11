@@ -13,7 +13,7 @@ def aotu_report(trading_date):
                                   '日线斜率':res[2], '斜率变动':res[3],
                                   '五日偏离':res[4], '十五日偏离':res[5],
                                   'SKDJ_MARK':res[6], 'CCI_MARK':res[7], 'CCI':res[8],
-                                  'SKDJ_MARK_WK':res[10], 'CCI_MARK_WK':res[11], 'CCI_WK':res[9]}, ignore_index=True)
+                                  'SKDJ_MARK_WK':res[9], 'CCI_MARK_WK':res[10], 'CCI_WK':res[11]}, ignore_index=True)
 
     for code in GOLD:
         res = gold_daily(code, trading_date)
@@ -22,7 +22,7 @@ def aotu_report(trading_date):
                                   '日线斜率':res[2], '斜率变动':res[3],
                                   '五日偏离':res[4], '十五日偏离':res[5],
                                   'SKDJ_MARK':res[6], 'CCI_MARK':res[7], 'CCI':res[8],
-                                  'SKDJ_MARK_WK':res[10], 'CCI_MARK_WK':res[11], 'CCI_WK':res[9]}, ignore_index=True)
+                                  'SKDJ_MARK_WK':res[9], 'CCI_MARK_WK':res[10], 'CCI_WK':res[11]}, ignore_index=True)
 
     for code in MONEY:
         res = money_daily(code, trading_date)
@@ -31,7 +31,7 @@ def aotu_report(trading_date):
                                   '日线斜率':res[2], '斜率变动':res[3],
                                   '五日偏离':res[4], '十五日偏离':res[5],
                                   'SKDJ_MARK':res[6], 'CCI_MARK':res[7], 'CCI':res[8],
-                                  'SKDJ_MARK_WK':res[10], 'CCI_MARK_WK':res[11], 'CCI_WK':res[9]}, ignore_index=True)
+                                  'SKDJ_MARK_WK':res[9], 'CCI_MARK_WK':res[10], 'CCI_WK':res[11]}, ignore_index=True)
 
     for code in CN_INDEX:
         res = stock_daily(code, trading_date, trading_date)
@@ -40,7 +40,7 @@ def aotu_report(trading_date):
                                   '日线斜率':res[2], '斜率变动':res[3],
                                   '五日偏离':res[4], '十五日偏离':res[5],
                                   'SKDJ_MARK':res[6], 'CCI_MARK':res[7], 'CCI':res[8],
-                                  'SKDJ_MARK_WK':res[10], 'CCI_MARK_WK':res[11], 'CCI_WK':res[9]}, ignore_index=True)
+                                  'SKDJ_MARK_WK':res[9], 'CCI_MARK_WK':res[10], 'CCI_WK':res[11]}, ignore_index=True)
 
     for code in US_INDEX:
         res = stock_daily(code, trading_date, trading_date)
@@ -49,7 +49,7 @@ def aotu_report(trading_date):
                                   '日线斜率':res[2], '斜率变动':res[3],
                                   '五日偏离':res[4], '十五日偏离':res[5],
                                   'SKDJ_MARK':res[6], 'CCI_MARK':res[7], 'CCI':res[8],
-                                  'SKDJ_MARK_WK':res[10], 'CCI_MARK_WK':res[11], 'CCI_WK':res[9]}, ignore_index=True)
+                                  'SKDJ_MARK_WK':res[9], 'CCI_MARK_WK':res[10], 'CCI_WK':res[11]}, ignore_index=True)
     #BTC_RES = BTC_RES.rename(columns={'code':'标的', 'daily':'日线走势', 'weekly':'周线走势'}, inplace = True)
     target_body = build_table(BTC_RES[['code','daily','日线斜率','斜率变动','五日偏离','十五日偏离',
                                        'SKDJ_MARK','CCI_MARK','CCI',
