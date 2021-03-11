@@ -51,7 +51,11 @@ def aotu_report(trading_date):
                                   'SKDJ_MARK':res[6], 'CCI_MARK':res[7], 'CCI':res[8],
                                   'SKDJ_MARK_WK':res[10], 'CCI_MARK_WK':res[11], 'CCI_WK':res[9]}, ignore_index=True)
     #BTC_RES = BTC_RES.rename(columns={'code':'标的', 'daily':'日线走势', 'weekly':'周线走势'}, inplace = True)
-    target_body = build_table(BTC_RES, '目标持仓')
+    target_body = build_table(BTC_RES[['code','daily','日线斜率','斜率变动','五日偏离','十五日偏离',
+                                       'SKDJ_MARK','CCI_MARK','CCI',
+                                       'weekly',
+                                       'SKDJ_MARK_WK','CCI_MARK_WK','CCI_WK'
+                                       ]], '目标持仓')
     msg = build_email(build_head(),target_body)
     send_email('金融产品价格趋势' + trading_date, msg, trading_date)
     return(BTC_RES)
