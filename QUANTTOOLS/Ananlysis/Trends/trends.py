@@ -12,7 +12,10 @@ def btc_daily(BTC):
     CCI = day.iloc[-1:]['CCI'].values[0]
     SKDJ_MARK = day.iloc[-1:]['SKDJ_CROSS2'].values[0] + day.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
     CCI_MARK = day.iloc[-1:]['CCI_CROSS1'].values[0] + day.iloc[-1:]['CCI_CROSS2'].values[0] * -1
-    return(day_check, week_check, incr, incrs,incr5,incr15,SKDJ_MARK,CCI_MARK,CCI)
+    CCI_WK = week.iloc[-1:]['CCI'].values[0]
+    SKDJ_MARK_WK = week.iloc[-1:]['SKDJ_CROSS2'].values[0] + week.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
+    CCI_MARK_WK = week.iloc[-1:]['CCI_CROSS1'].values[0] + week.iloc[-1:]['CCI_CROSS2'].values[0] * -1
+    return(day_check, week_check, incr, incrs,incr5,incr15,SKDJ_MARK,CCI_MARK,CCI,SKDJ_MARK_WK,CCI_MARK_WK,CCI_WK)
 
 def money_daily(MONEY, date):
     day, week = trends_money(MONEY, date)
@@ -25,7 +28,10 @@ def money_daily(MONEY, date):
     CCI = day.iloc[-1:]['CCI'].values[0]
     SKDJ_MARK = day.iloc[-1:]['SKDJ_CROSS2'].values[0] + day.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
     CCI_MARK = day.iloc[-1:]['CCI_CROSS1'].values[0] + day.iloc[-1:]['CCI_CROSS2'].values[0] * -1
-    return(day_check, week_check, incr, incrs,incr5,incr15,SKDJ_MARK,CCI_MARK,CCI)
+    CCI_WK = week.iloc[-1:]['CCI'].values[0]
+    SKDJ_MARK_WK = week.iloc[-1:]['SKDJ_CROSS2'].values[0] + week.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
+    CCI_MARK_WK = week.iloc[-1:]['CCI_CROSS1'].values[0] + week.iloc[-1:]['CCI_CROSS2'].values[0] * -1
+    return(day_check, week_check, incr, incrs,incr5,incr15,SKDJ_MARK,CCI_MARK,CCI,SKDJ_MARK_WK,CCI_MARK_WK,CCI_WK)
 
 def gold_daily(GOLD, date):
     day, week = trends_gold(GOLD, date)
@@ -38,7 +44,10 @@ def gold_daily(GOLD, date):
     CCI = day.iloc[-1:]['CCI'].values[0]
     SKDJ_MARK = day.iloc[-1:]['SKDJ_CROSS2'].values[0] + day.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
     CCI_MARK = day.iloc[-1:]['CCI_CROSS1'].values[0] + day.iloc[-1:]['CCI_CROSS2'].values[0] * -1
-    return(day_check, week_check, incr, incrs,incr5,incr15,SKDJ_MARK,CCI_MARK,CCI)
+    CCI_WK = week.iloc[-1:]['CCI'].values[0]
+    SKDJ_MARK_WK = week.iloc[-1:]['SKDJ_CROSS2'].values[0] + week.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
+    CCI_MARK_WK = week.iloc[-1:]['CCI_CROSS1'].values[0] + week.iloc[-1:]['CCI_CROSS2'].values[0] * -1
+    return(day_check, week_check, incr, incrs,incr5,incr15,SKDJ_MARK,CCI_MARK,CCI,SKDJ_MARK_WK,CCI_MARK_WK,CCI_WK)
 
 def stock_daily(stock, start_date, end_date):
     day, week = trends_stock(stock,start_date,end_date)
@@ -51,7 +60,10 @@ def stock_daily(stock, start_date, end_date):
     CCI = day.iloc[-1:]['CCI'].values[0]
     SKDJ_MARK = day.iloc[-1:]['SKDJ_CROSS2'].values[0] + day.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
     CCI_MARK = day.iloc[-1:]['CCI_CROSS1'].values[0] + day.iloc[-1:]['CCI_CROSS2'].values[0] * -1
-    return(day_check, week_check, incr, incrs, incr5, incr15,SKDJ_MARK,CCI_MARK,CCI)
+    CCI_WK = week.iloc[-1:]['CCI'].values[0]
+    SKDJ_MARK_WK = week.iloc[-1:]['SKDJ_CROSS2'].values[0] + week.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
+    CCI_MARK_WK = week.iloc[-1:]['CCI_CROSS1'].values[0] + week.iloc[-1:]['CCI_CROSS2'].values[0] * -1
+    return(day_check, week_check, incr, incrs, incr5, incr15,SKDJ_MARK,CCI_MARK,CCI,SKDJ_MARK_WK,CCI_MARK_WK,CCI_WK)
 
 def stock_hourly(stock, start_date, end_date, date_type):
     hour = trends_stock_hour(stock,start_date,end_date)
