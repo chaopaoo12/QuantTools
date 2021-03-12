@@ -19,6 +19,6 @@ def load_data(func, trading_date, working_dir, model_name, file_name):
         r_tar = target_pool.loc[trading_date]
     except:
         r_tar = None
-        prediction_tar =  None
+        #prediction_tar =  None
         send_email('交易报告:'+ trading_date, "空仓状态", 'date')
     return(r_tar, prediction_tar, prediction)
