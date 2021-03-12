@@ -241,9 +241,13 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     deal_pos = get_StockPos(code, client, account)
                                     target_pos = 0
                                     industry = str(positions.set_index('code').loc[code].INDUSTRY)
-                                    QA_util_log_info('##JOB Now Start Selling {code} ==== {stm}{msg}'.format(code = code, stm = str(stm), msg=msg), ui_log = None)
-                                    SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
-                                    time.sleep(1)
+                                    while deal_pos > 0:
+                                        QA_util_log_info('##JOB Now Start Selling {code} ==== {stm}{msg}'.format(code = code, stm = str(stm), msg=msg), ui_log = None)
+                                        SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
+                                        time.sleep(3)
+                                        client.cancel_all(account)
+                                        time.sleep(3)
+                                        deal_pos = get_StockPos(code, client, account)
 
                             if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
                                 QA_util_log_info('##JOB Now Buying ==== {}', ui_log = None)
