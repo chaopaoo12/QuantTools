@@ -55,7 +55,7 @@ def aotu_report(trading_date):
                                        'SKDJ_MARK','CCI_MARK','CCI',
                                        'weekly',
                                        'SKDJ_MARK_WK','CCI_MARK_WK','CCI_WK'
-                                       ]], '目标持仓')
+                                       ]], '市场价格监控')
     msg = build_email(build_head(),target_body)
     send_email('金融产品价格趋势' + trading_date, msg, trading_date)
     return(BTC_RES)
