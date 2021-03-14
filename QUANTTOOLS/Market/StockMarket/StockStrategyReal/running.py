@@ -6,7 +6,7 @@ from .concat_predict import (concat_predict,concat_predict_hour,concat_predict_1
 from .setting import working_dir, percent, exceptions, top
 from QUANTTOOLS.Market.MarketTools import predict_base, predict_index_base, predict_index_dev, predict_stock_dev,base_report
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_quant_data,get_quant_data
-from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
+from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date,QA_util_get_real_date
 
 
 def predict(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
@@ -56,6 +56,7 @@ def predict_stock_summary(trading_date, top_num=top, working_dir=working_dir):
                       top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_watch(trading_date, working_dir=working_dir):
+    trading_date = QA_util_get_real_date(trading_date)
     data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
     wk_list = list(data[(data.SKDJ_CROSS2_WK == 1)&(data.CCI_WK > 0)].loc[trading_date].index)
     pe_list = list(data[(data.ROE_RATE > 1)&(data.PE_RATE < 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)].loc[trading_date].index)
