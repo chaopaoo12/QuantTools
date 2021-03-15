@@ -222,8 +222,9 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
                         if res2 is not None:
                             msg = None
-                            QA_util_log_info('##JOB Now Selling ==== {}', ui_log = None)
+
                             if code in positions.code.tolist():
+                                QA_util_log_info('##JOB Now Selling ==== {}', ui_log = None)
                                 if res2.SKDJ_CROSS1_HR == True and res2.MA5_HR < 0:
                                     msg = 'SKDJ死叉'
                                 #elif res2.MA10_HR < 0:
