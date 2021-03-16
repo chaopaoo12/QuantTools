@@ -224,18 +224,19 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                             msg = None
 
                             if code in positions.code.tolist():
-                                QA_util_log_info('##JOB Now Selling ==== {}', ui_log = None)
+                                QA_util_log_info('##JOB Now Selling Check ==== {}'.format(code), ui_log = None)
                                 if res2.SKDJ_CROSS1_HR == True and res2.MA5_HR < 0:
                                     msg = 'SKDJ死叉'
                                 #elif res2.MA10_HR < 0:
                                 #    msg = '打穿MA10'
-                                elif res2.SKDJ_TR_HR == 0 and res2.MA5_HR < 0:
+                                elif res2.SKDJ_TR_HR < 1 and res2.MA5_HR < 0:
                                     ##当日错误入场之后 次日及早离场
                                     msg = 'SKDJ止损:跌破MA5'
                                 else:
                                     msg = None
                                     ###卖出信号1
                                 if msg is not None:
+                                    QA_util_log_info('##JOB Now Selling ==== {}'.format(code), ui_log = None)
                                     send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'卖出信号',direction = 'SELL',offset=mark_tm,volume=None)
                                     deal_pos = get_StockPos(code, client, account)
                                     target_pos = 0
@@ -250,7 +251,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                         try_times += 1
 
                             if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
-                                QA_util_log_info('##JOB Now Buying ==== {}', ui_log = None)
+                                QA_util_log_info('##JOB Now Buying Ckeck==== {}'.format(code), ui_log = None)
                                 if res2.CCI_HR > 0 and res2.SKDJ_CROSS2_HR == 1:
                                     msg = 'SKDJ金叉'
                                 elif res2.CROSS_JC_HR == True and res2.CCI_HR > 0:
@@ -259,6 +260,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     msg = None
 
                                 if msg is not None and get_UseCapital(client, account) >= 3000:
+                                    QA_util_log_info('##JOB Now Buying==== {}'.format(code), ui_log = None)
                                     ###买入信号
                                     send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
                                     price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
