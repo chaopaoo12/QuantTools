@@ -254,8 +254,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 QA_util_log_info('##JOB Now Buying Ckeck==== {}'.format(code), ui_log = None)
                                 if res2.CCI_HR > 0 and res2.SKDJ_CROSS2_HR == 1:
                                     msg = 'SKDJ金叉'
-                                elif res2.CROSS_JC_HR == True and res2.CCI_HR > 0:
-                                    msg = 'MACD金叉'
+                                #elif res2.CROSS_JC_HR == True and res2.CCI_HR > 0:
+                                #    msg = 'MACD金叉'
                                 else:
                                     msg = None
 
