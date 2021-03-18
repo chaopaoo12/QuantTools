@@ -162,7 +162,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     ###目前趋势中的指数
     terns_index = prediction[(prediction.SKDJ_TR == 1)].loc[trading_date][['NAME','SKDJ_TR','CCI','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('DAY_PROB',ascending=False)
 
-    ###入场信号
+    ###日线入场信号
     try:
         in_list = prediction[((prediction.SKDJ_CROSS2 == 1) | (prediction.CROSS_JC == 1))& (prediction.CCI > 0)].loc[trading_date]
     except:
@@ -172,6 +172,17 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
         out_list = prediction[(prediction.SKDJ_CROSS1 == 1)].loc[trading_date]
     except:
         out_list = None
+
+    ###hour线入场信号
+    #try:
+    #    in_list_HR = hour_prediction[((hour_prediction.SKDJ_CROSS2_HR == 1) | (hour_prediction.CROSS_JC_HR == 1))& (hour_prediction.CCI_HR > 0)].loc[trading_date]
+    #except:
+    #    in_list_HR = None
+
+    #try:
+    #    out_list_HR = hour_prediction[(hour_prediction.SKDJ_CROSS1_HR == 1)].loc[trading_date]
+    #except:
+    #    out_list_HR = None
 
     ###近期表现强势的指数
     try:
@@ -186,6 +197,11 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
         target_fd = prediction[((prediction.SKDJ_CROSS2 == 1) | (prediction.CROSS_JC == 1))& (prediction.CCI > 0)]
     except:
         target_fd = None
+
+    try:
+        target_hr = hour_prediction[((hour_prediction.SKDJ_CROSS2_HR == 1) | (hour_prediction.CROSS_JC_HR == 1))& (hour_prediction.CCI_HR > 0)]
+    except:
+        target_hr = None
     ###小时级趋势延续至日线 不需要
 
     ####大盘情况预测
@@ -237,6 +253,11 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
         send_email('交易报告:'+ trading_date, "消息组件运算失败:近期表现强势的指数", trading_date)
 
     try:
+        terns_h_body = build_table(target_hr, '近期hour选股记录')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:近期hour选股记录", trading_date)
+
+    try:
         terns_t_body = build_table(target_fd, '近期选股记录')
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:近期选股记录", trading_date)
@@ -247,7 +268,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     try:
         msg = build_email(build_head(),err_msg,
                           terns_body,in_body,out_body,market_000001,market_399001,market_399006,
-                          terns_his_body, terns_t_body)
+                          terns_his_body, terns_t_body, terns_h_body)
         send_actionnotice("prediction_report",
                           '交易报告:{}'.format(trading_date),
                           '模型运行完毕',
