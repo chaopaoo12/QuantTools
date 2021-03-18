@@ -17,7 +17,10 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     else:
         data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date),type='crawl', block=False, sub_block=False,norm_type=None)
         pe_list = list(data[(data.ROE_RATE > 1)&(data.PE_RATE < 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)].loc[QA_util_get_last_day(trading_date)].index)
-        per = 0.5
+        if per > 0.2:
+            per = per
+        else:
+            per = 0.2
 
     if pe_list is None:
         target_pool,prediction,start,end,Model_Date = func(QA_util_get_last_day(trading_date), working_dir, code = list(r_tar.index), type = 'crawl', model_name = 'stock_mars_day')
