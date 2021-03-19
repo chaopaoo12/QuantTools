@@ -51,7 +51,7 @@ def predict_stock_dev(trading_date, xg_predict_func, predict_func1, predict_func
     res = dict()
     if xg_predict_func is not None:
         xg_tar, xg_b, start, end, model_date = predict_func1(trading_date, model_name = xg_model,  working_dir=working_dir)
-        stock_b[['NAME','INDUSTRY','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']] = xg_b[['O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
+        stock_b[['NAME','INDUSTRY','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']] = xg_b[['NAME','INDUSTRY','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
         res['date'] = trading_date
         res['XG_prediction'] = xg_b
 
