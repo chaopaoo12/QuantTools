@@ -23,6 +23,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_stock_quant_pre,
                                                    QA_fetch_stock_quant_pre_train,
                                                    QA_fetch_stock_target,
+                                                   QA_fetch_future_target,
                                                    QA_fetch_interest_rate,
                                                    QA_fetch_index_alpha,
                                                    QA_fetch_index_alpha101,
@@ -281,6 +282,22 @@ def QA_fetch_stock_target_adv(code, start="all", end=None, type='close', method=
         return QA_DataStruct_Financial(data)
     else:
         data = QA_fetch_stock_target(code, start, end, type=type, method=method)
+        return QA_DataStruct_Financial(data)
+
+def QA_fetch_future_target_adv(code, start="all", end=None,frequence='1min', type='close', method= 'value'):
+    '获取股票量化机器学习数据查询接口'
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2008-01-01'
+        end = QA_util_today_str()
+        data = QA_fetch_future_target(code, start, end, frequence=frequence, close_type=type, method=method)
+        return QA_DataStruct_Financial(data)
+    else:
+        data = QA_fetch_future_target(code, start, end, frequence=frequence, close_type=type, method=method)
         return QA_DataStruct_Financial(data)
 
 def QA_fetch_interest_rate_adv(start="all", end=None):

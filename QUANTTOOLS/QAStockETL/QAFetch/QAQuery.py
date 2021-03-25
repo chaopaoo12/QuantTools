@@ -3368,3 +3368,55 @@ def QA_fetch_stock_min_pre(code, start, end=None, block = True, close_type='clos
     else:
         QA_util_log_info("QA Error QA_fetch_stock_hour_pre format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
         return None
+
+def QA_fetch_future_target(codes, start_date, end_date, frequence='1min', close_type='close', method = 'value'):
+    if QA_util_if_trade(end_date):
+        pass
+    else:
+        end_date = QA_util_get_real_date(end_date)
+    end = QA_util_get_next_datetime(end_date,10)
+    rng1 = QA_util_get_trade_range(start_date, end_date)
+    if frequence=='day':
+        data = QA.QA_fetch_future_day_adv(codes,start_date,end)
+        func1 = pct
+        func2 = pct_log
+        chan_col = 'date'
+        chan_date = '2020-08-24'
+    else:
+        data = QA.QA_fetch_future_min_adv(codes,start_date,end,frequence=frequence)
+        func1 = min_pct
+        func2 = min_pct_log
+        chan_col = 'datetime'
+        chan_date = '2020-08-24 09:00:00'
+
+    res1 = data.to_qfq().data
+    res1.columns = [x + '_qfq' for x in res1.columns]
+    data = data.data.join(res1).reset_index()
+
+    if frequence=='day':
+        cols = ['date','code','PRE_DATE','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']
+    else:
+        cols = ['datetime','code','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']
+
+    data['up_rate'] = data.apply(lambda x : 0.2 if str(x[chan_col]) >= chan_date and str(x['code']).startswith('300') == True else 0.1,axis=1)
+
+    if method == 'value':
+        res = data.groupby('code').apply(func1, type=close_type)[cols]
+    elif method == 'log':
+        res = data.groupby('code').apply(func2, type=close_type)[cols]
+    else:
+        res = None
+    if frequence == 'day':
+        res['date'] = res['date'].apply(lambda x: str(x)[0:10])
+        res['next_date'] = res['date'].apply(lambda x: QA_util_get_pre_trade_date(x, -2))
+        res = res.set_index(['date','code']).loc[rng1]
+    else:
+        res['date'] = res['datetime'].apply(lambda x: str(x)[0:10])
+        res = res.set_index(['date','code']).loc[rng1].reset_index().set_index(['datetime','code'])
+
+    for columnname in res.columns:
+        if res[columnname].dtype == 'float64':
+            res[columnname]=res[columnname].astype('float32')
+        if res[columnname].dtype == 'int64':
+            res[columnname]=res[columnname].astype('int8')
+    return(res)

@@ -1,4 +1,4 @@
-from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv,QA_fetch_stock_min_adv,QA_fetch_index_day_adv,QA_fetch_index_min_adv
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv,QA_fetch_stock_min_adv,QA_fetch_index_day_adv,QA_fetch_index_min_adv,QA_fetch_future_min_adv,QA_fetch_future_day_adv
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_index_day,QA_fetch_index_min
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_half_adv
 from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator,ohlc,get_indicator_short
@@ -6,6 +6,21 @@ from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_ut
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
 from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq
 import numpy as np
+
+def QA_fetch_get_future_indicator(code, start_date, end_date, frequence = 'day'):
+    start = QA_util_get_pre_trade_date(start_date,12)
+    rng1 = QA_util_get_trade_range(start_date, end_date)
+    if frequence == 'day':
+        data = QA_fetch_future_day_adv(code,start,end_date)
+        data = get_indicator(data, 'day')
+    else:
+        data = QA_fetch_future_min_adv(code,start,end_date,frequence=frequence)
+        data = get_indicator(data, 'min')
+
+    data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]].reset_index()
+    data = data[data.date.isin(rng1)]
+    data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
+    return(data)
 
 def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
     if type == 'min':
