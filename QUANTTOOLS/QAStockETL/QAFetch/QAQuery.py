@@ -3376,39 +3376,32 @@ def QA_fetch_future_target(codes, start_date, end_date, frequence='1min', close_
         end_date = QA_util_get_real_date(end_date)
     end = QA_util_get_next_datetime(end_date,10)
     rng1 = QA_util_get_trade_range(start_date, end_date)
-    if frequence=='day':
-        data = QA.QA_fetch_future_day_adv(codes,start_date,end)
-        func1 = pct
-        func2 = pct_log
-        chan_col = 'date'
-        chan_date = '2020-08-24'
-    else:
-        data = QA.QA_fetch_future_min_adv(codes,start_date,end,frequence=frequence)
-        func1 = min_pct
-        func2 = min_pct_log
-        chan_col = 'datetime'
-        chan_date = '2020-08-24 09:00:00'
-
-    res1 = data.to_qfq().data
-    res1.columns = [x + '_qfq' for x in res1.columns]
-    data = data.data.join(res1).reset_index()
 
     if frequence=='day':
-        cols = ['date','code','PRE_DATE','OPEN_MARK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']
+        data = QA.QA_fetch_future_day_adv(codes,start_date,end).data.reset_index()
+        func1 = index_pct
+        func2 = index_pct_log
     else:
-        cols = ['datetime','code','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']
+        start_date = start_date + ' 00:00:00'
+        end = end + ' 23:59:00'
+        data = QA.QA_fetch_future_min_adv(codes,start_date,end,frequence).data.reset_index()
+        func1 = min_index_pct
+        func2 = min_index_pct_log
 
-    data['up_rate'] = data.apply(lambda x : 0.2 if str(x[chan_col]) >= chan_date and str(x['code']).startswith('300') == True else 0.1,axis=1)
+    if frequence=='day':
+        cols = ['date','code','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10','INDEX_TARGET20']
+    else:
+        cols = ['datetime','code','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10','INDEX_TARGET20']
 
     if method == 'value':
-        res = data.groupby('code').apply(func1, type=close_type)[cols]
+        res = data.groupby('code').apply(func1)[cols]
     elif method == 'log':
-        res = data.groupby('code').apply(func2, type=close_type)[cols]
+        res = data.groupby('code').apply(func2)[cols]
     else:
         res = None
+
     if frequence == 'day':
         res['date'] = res['date'].apply(lambda x: str(x)[0:10])
-        res['next_date'] = res['date'].apply(lambda x: QA_util_get_pre_trade_date(x, -2))
         res = res.set_index(['date','code']).loc[rng1]
     else:
         res['date'] = res['datetime'].apply(lambda x: str(x)[0:10])

@@ -14,7 +14,7 @@ def QA_fetch_get_future_indicator(code, start_date, end_date, frequence = 'day')
         data = QA_fetch_future_day_adv(code,start,end_date)
         data = get_indicator(data, 'day')
     else:
-        data = QA_fetch_future_min_adv(code,start,end_date,frequence=frequence)
+        data = QA_fetch_future_min_adv(code,start+' 00:00:00',end_date + ' 23:59:00',frequence=frequence)
         data = get_indicator(data, 'min')
 
     data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]].reset_index()
