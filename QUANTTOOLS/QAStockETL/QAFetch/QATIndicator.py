@@ -339,17 +339,10 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
             data = data[data.date.isin(rng1)]
         else:
             data=data.loc[rng1]
-        if type == 'min':
-            data = data.assign(SKDJ_TR = (data.SKDJ_CROSS1*-1+ data.SKDJ_CROSS2*1)/(data.SKDJ_CROSS1+data.SKDJ_CROSS2),
-                               SHORT_TR = (data.SHORT20 > 0)*1,
-                               LONG_TR = (data.LONG60 > 0)*1,
-                               TERNS = ((data.SHORT20 > 0) * (data.LONG60 > 0) * 1)
-                               )
-        else:
-            data = data.assign(SKDJ_TR = (data.SKDJ_CROSS1*-1+ data.SKDJ_CROSS2*1)/(data.SKDJ_CROSS1+data.SKDJ_CROSS2),
-                               SHORT_TR = (data.SHORT20 > 0)*1,
-                               LONG_TR = (data.LONG60 > 0)*1,
-                               TERNS = ((data.SHORT20 > 0) * (data.LONG60 > 0) * (data.LONG_AMOUNT > 0) * 1)
-                               )
+        data = data.assign(SKDJ_TR = (data.SKDJ_CROSS1*-1+ data.SKDJ_CROSS2*1)/(data.SKDJ_CROSS1+data.SKDJ_CROSS2),
+                           SHORT_TR = (data.SHORT20 > 0)*1,
+                           LONG_TR = (data.LONG60 > 0)*1,
+                           TERNS = ((data.SHORT20 > 0) * (data.LONG60 > 0) * (data.LONG_AMOUNT > 0) * 1)
+                           )
         data.SKDJ_TR = data.SKDJ_TR.groupby('code').fillna(method='ffill')
         return(data)
