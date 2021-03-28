@@ -266,7 +266,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     ###买入信号
                                     send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
                                     price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
-                                    deal_pos = round(50000 / price,2)
+                                    deal_pos = round(80000 / price,2)
                                     target_pos = deal_pos
                                     industry = str(target_tar.loc[code].INDUSTRY)
                                     QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}{msg}'.format(code = code, stm = str(stm), msg=msg), ui_log = None)
