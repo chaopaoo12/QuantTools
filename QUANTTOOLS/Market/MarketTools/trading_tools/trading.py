@@ -221,7 +221,6 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         #try:
 
                         if res2 is not None:
-                            msg = None
 
                             if code in positions.code.tolist():
                                 QA_util_log_info('##JOB Now Selling Check ==== {}'.format(code), ui_log = None)
