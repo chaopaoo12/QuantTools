@@ -59,7 +59,7 @@ if __name__ == '__main__':
             QA_SU_save_stock_day()
 
         res = check_sinastock_day(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 0:
+        while res is None or len(res[1]) > 0:
             for i in res[0] + res[1]:
                 QA_SU_save_single_stock_day(i)
             res = check_sinastock_day(mark_day)
@@ -71,7 +71,7 @@ if __name__ == '__main__':
             QA_SU_save_stock_xdxr()
 
         res = check_sinastock_adj(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 0:
+        while res is None or len(res[1]) > 0:
             for i in res[0] + res[1]:
                 QA_SU_save_single_stock_xdxr(i)
             res = check_sinastock_adj(mark_day)
