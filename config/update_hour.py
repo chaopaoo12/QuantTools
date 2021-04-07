@@ -13,7 +13,10 @@ if __name__ == '__main__':
     mark_day = QA_util_today_str()
 
     if QA_util_if_trade(mark_day):
-        QA_SU_save_stock_aklist()
+        try:
+            QA_SU_save_stock_aklist()
+        except:
+            pass
 
         res = check_stock_60min(mark_day)
         if res is None or (len(res[0]) + len(res[1])) > 20:
