@@ -10,7 +10,10 @@ if __name__ == '__main__':
     if QA_util_if_trade(mark_day):
         QA_SU_save_stock_list('tdx')
         #QA_SU_save_stock_info_tushare()
-        QA_SU_save_stock_aklist()
+        try:
+            QA_SU_save_stock_aklist()
+        except:
+            pass
         #QA_SU_save_stock_industryinfo()
         QA_SU_save_stock_info()
         res = check_stock_code()

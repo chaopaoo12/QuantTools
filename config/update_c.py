@@ -48,7 +48,10 @@ if __name__ == '__main__':
     mark_day = QA_util_today_str()
     if QA_util_if_trade(mark_day):
 
-        QA_SU_save_stock_aklist()
+        try:
+            QA_SU_save_stock_aklist()
+        except:
+            pass
         QA_SU_save_stock_list('tdx')
         #QA_SU_save_stock_info_tushare()
         QA_SU_save_stock_industryinfo()

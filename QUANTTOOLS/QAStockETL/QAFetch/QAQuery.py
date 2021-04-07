@@ -1845,9 +1845,18 @@ def QA_fetch_stock_delist(collections=DATABASE.stock_delist):
     )
 
 def QA_fetch_stock_om_all():
-    stock_delist = QA_fetch_stock_delist()[['code','name']].code.unique().tolist()
-    tushare_list = pd.DataFrame(QA.QAFetch.QAQuery.QA_fetch_stock_basic_info_tushare())[['code','name']]
-    ak_list = QA_fetch_stock_aklist().reset_index(drop=True)
+    try:
+        stock_delist = QA_fetch_stock_delist()[['code','name']]
+    except:
+        stock_delist = None
+    try:
+        ak_list = QA_fetch_stock_aklist().reset_index(drop=True)
+    except:
+        ak_list = None
+    try:
+        tushare_list = pd.DataFrame(QA.QAFetch.QAQuery.QA_fetch_stock_basic_info_tushare())[['code','name']]
+    except:
+        tushare_list = None
     code_list = QA_fetch_stock_list()[['code','name']].reset_index(drop=True)
     code = code_list.append(tushare_list).append(ak_list).drop_duplicates()
     code_list = code[~code.code.isin(stock_delist)]
@@ -1855,9 +1864,18 @@ def QA_fetch_stock_om_all():
 
 
 def QA_fetch_stock_all():
-    stock_delist = QA_fetch_stock_delist()[['code','name']]
-    ak_list = QA_fetch_stock_aklist().reset_index(drop=True)
-    tushare_list = pd.DataFrame(QA.QAFetch.QAQuery.QA_fetch_stock_basic_info_tushare())[['code','name']]
+    try:
+        stock_delist = QA_fetch_stock_delist()[['code','name']]
+    except:
+        stock_delist = None
+    try:
+        ak_list = QA_fetch_stock_aklist().reset_index(drop=True)
+    except:
+        ak_list = None
+    try:
+        tushare_list = pd.DataFrame(QA.QAFetch.QAQuery.QA_fetch_stock_basic_info_tushare())[['code','name']]
+    except:
+        tushare_list = None
     code_list = QA_fetch_stock_list()[['code','name']].reset_index(drop=True)
     code_list = code_list.append(stock_delist).append(tushare_list).append(ak_list).drop_duplicates()
     return(code_list)
