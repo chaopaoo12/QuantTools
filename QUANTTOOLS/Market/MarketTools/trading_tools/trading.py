@@ -191,8 +191,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                     mark_tm = "15:00:00"
 
                 if mark_tm == "09:30:00":
-                    data = get_quant_data(QA_util_get_pre_trade_date(trading_date),QA_util_get_pre_trade_date(trading_date),list(set(positions.code.tolist()+list(target_tar.index))), type= 'crawl')
-                    stm = QA_util_get_pre_trade_date(trading_date)
+                    data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),QA_util_get_pre_trade_date(trading_date),list(set(positions.code.tolist()+list(target_tar.index))), type= 'crawl')
+                    stm = QA_util_get_pre_trade_date(trading_date) + ' ' + '15:00:00'
                 elif mark_tm == '13:00:00':
                     data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
                     stm = trading_date + ' ' + '11:30:00'
@@ -208,13 +208,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         name = QA_fetch_stock_name(code)
                         QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                         try:
-                            if mark_tm == "09:30:00":
-                                res2 = data.loc[(stm, code)][['SKDJ_CROSS1','SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
-                                QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
-                            else:
-                                res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
-                                QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
-                                res2.SKDJ_CROSS1 = None
+                            res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
+                            QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                         except:
                             res2 = None
                             QA_util_log_info('error')
