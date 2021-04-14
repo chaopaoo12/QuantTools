@@ -192,7 +192,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
                 if mark_tm == "09:30:00":
                     data = get_quant_data(QA_util_get_pre_trade_date(trading_date),QA_util_get_pre_trade_date(trading_date),list(set(positions.code.tolist()+list(target_tar.index))), type= 'crawl')
-                    stm = QA_util_get_pre_trade_date(trading_date) + ' ' + '15:00:00'
+                    stm = QA_util_get_pre_trade_date(trading_date)
                 elif mark_tm == '13:00:00':
                     data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
                     stm = trading_date + ' ' + '11:30:00'
