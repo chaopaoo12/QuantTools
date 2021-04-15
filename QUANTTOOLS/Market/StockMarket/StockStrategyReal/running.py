@@ -58,8 +58,8 @@ def predict_stock_summary(trading_date, top_num=top, working_dir=working_dir):
 def predict_watch(trading_date, working_dir=working_dir):
     trading_date = QA_util_get_real_date(trading_date)
     data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
-    wk_list = data[(data.SKDJ_CROSS2_WK == 1)&(data.CCI_WK > 0)].loc[trading_date].index
-    pe_list = data[(data.ROE_RATE > 1)&(data.PE_RATE < 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)].loc[trading_date].index
+    wk_list = data[(data.SKDJ_CROSS2_WK == 1)&(data.CCI_WK > 0)].index
+    pe_list = data[(data.ROE_RATE > 1)&(data.PE_RATE < 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)].index
     #both_list = [i for i in wk_list if i in pe_list]
     target_pool,prediction,start,end,Model_Date = concat_predict(trading_date, working_dir, type = 'crawl', model_name = 'stock_mars_day')
     target_pool1 = target_pool.loc[wk_list]
