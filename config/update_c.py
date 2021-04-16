@@ -116,12 +116,12 @@ if __name__ == '__main__':
         print("write quant data into mongodb")
 
         res = check_stock_fianacial(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 20:
+        while res is None or len(res[1]) > 20:
             QA_SU_save_stock_fianacial_momgo(mark_day,mark_day)
             res = check_stock_fianacial(mark_day)
 
         res = check_stock_finper(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 20:
+        while res is None or len(res[1]) > 20:
             QA_SU_save_stock_fianacial_percent_day(start_date = mark_day, end_date = mark_day)
             res = check_stock_finper(mark_day)
 
