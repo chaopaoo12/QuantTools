@@ -72,7 +72,7 @@ if __name__ == '__main__':
         res = check_stock_techindex(mark_day)
 
     res = check_stock_finper(mark_day)
-    while res is None or (len(res[0]) + len(res[1])) > 20:
+    while res is None or len(res[1]) > 20:
         time.sleep(180)
         res = check_stock_finper(mark_day)
 
