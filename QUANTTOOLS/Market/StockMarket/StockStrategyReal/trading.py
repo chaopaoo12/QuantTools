@@ -9,7 +9,7 @@ from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_
 def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_name = 'prediction', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
     r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir, model_name = 'stock_xg', file_name = 'prediction')
-    r_tar = prediction_tar[(prediction_tar.RANK <= 20)&(prediction_tar.TARGET5.isnull())].reset_index(level=0, drop=True).drop_duplicates(subset='NAME')
+    r_tar = prediction_tar[(prediction_tar.RANK <= 20)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
     per = prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]
     if per >= 5:
         per = percent
@@ -25,9 +25,11 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
 
     if pe_list is None:
         target_pool,prediction,start,end,Model_Date = func(QA_util_get_last_day(trading_date), working_dir, code = list(r_tar.index), type = 'crawl', model_name = 'stock_mars_day')
+        target_pool = target_pool.loc[QA_util_get_last_day(trading_date)].reindex(index=r_tar.index).dropna(how='all')
     else:
         target_pool,prediction,start,end,Model_Date = func(QA_util_get_last_day(trading_date), working_dir, code = pe_list, type = 'crawl', model_name = 'stock_mars_day')
-    res = trading_base2(trading_date, target_pool.loc[QA_util_get_last_day(trading_date)], percent = per, account= account, title = model_name, exceptions = exceptions)
+        target_pool = target_pool.loc[QA_util_get_last_day(trading_date)].reindex(index=pe_list.index).dropna(how='all')
+    res = trading_base2(trading_date, target_pool, percent = per, account= account, title = model_name, exceptions = exceptions)
     return(res)
 
 def trading_real(trading_date, func = concat_predict, model_name = 'stock_xg_real', file_name = 'prediction_real', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
