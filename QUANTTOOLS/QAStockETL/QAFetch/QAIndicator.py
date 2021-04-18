@@ -67,6 +67,20 @@ def QA_indicator_OSC(DataFrame, N=20, M=6):
 
     return pd.DataFrame(DICT)
 
+def QA_indicator_CMI(DataFrame, N=6):
+    """
+    1.指标>=20 时, 趋势区间；
+    2.指标<20 时, 无趋势；
+
+    """
+    CLOSE = DataFrame['close']
+    LOWV = LLV(DataFrame['low'], N)
+    HIGHV = HHV(DataFrame['high'], N)
+    CMI = ABS((CLOSE - REF(CLOSE, N - 1)) / (HIGHV - LOWV)) * 100
+    DICT = {'CMI': CMI}
+
+    return pd.DataFrame(DICT)
+
 def QA_indicator_SKDJ(DataFrame, N=9, M=3):
     """
     1.指标>80 时，回档机率大；指标<20 时，反弹机率大；
