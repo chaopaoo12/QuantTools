@@ -19,7 +19,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
         #pe_list = list(data[(data.ROE_RATE > 1)&(data.PE_RATE < 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)].loc[QA_util_get_last_day(trading_date)].index)
         #pe_list = list(data[(data.SKDJ_CROSS2_WK == 1)&(data.CCI_WK > 0)].loc[QA_util_get_last_day(trading_date)].index)
         pe_list = None
-        if per > 3:
+        if per > 0:
             per = 0.6
         else:
             per = 0.5
