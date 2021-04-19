@@ -15,7 +15,7 @@ def Current_Report(trading_date, target_pool, top_num=5, name_list = None, value
             current_details = target_pool[name_list + value_ist]
         else:
             current_score = target_pool[(target_pool[sort_mark] <= top_num)].groupby('date').mean()[value_ist]
-            current_details = target_pool[(target_pool[sort_mark] <= top_num)][name_list + value_ist].reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index(['date','code'])
+            current_details = target_pool[(target_pool[sort_mark] <= top_num)][name_list + value_ist].reset_index().sort_values(by=['date','RANK'],ascending=[True,True]).set_index(['date','code'])
     else:
         current_score = pd.DataFrame()
         current_details = pd.DataFrame()
