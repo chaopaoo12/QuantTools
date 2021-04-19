@@ -46,8 +46,8 @@ def make_stockprediction(Stock, trading_date, name, working_dir, code = None, in
         prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().set_index([index,'code']).sort_index().rename(columns={'name':'NAME'})
     else:
         INDUSTRY = QA_fetch_stock_info(prediction.reset_index()['code'].unique().tolist())[['industry']]
-        target_pool = target_pool.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index([index,'code']).rename(columns={'name':'NAME','industry':'INDUSTRY'})
-        prediction = prediction.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index([index,'code']).rename(columns={'name':'NAME','industry':'INDUSTRY'})
+        target_pool = target_pool.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().sort_values(by=[index,'RANK'],ascending=[False,True]).set_index([index,'code']).rename(columns={'name':'NAME','industry':'INDUSTRY'})
+        prediction = prediction.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().sort_values(by=[index,'RANK'],ascending=[False,True]).set_index([index,'code']).rename(columns={'name':'NAME','industry':'INDUSTRY'})
     return(target_pool, prediction, start, end, Model_date)
 
 def make_indexprediction(Index, trading_date, name, working_dir, code = None, index = 'date', type='crawl'):
@@ -57,9 +57,9 @@ def make_indexprediction(Index, trading_date, name, working_dir, code = None, in
 
     NAME = QA_fetch_index_name(prediction.reset_index()['code'].unique().tolist())
 
-    target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index([index,'code']).rename(columns={'name':'NAME'})
+    target_pool = target_pool.reset_index().set_index('code').join(NAME).reset_index().sort_values(by=[index,'RANK'],ascending=[False,True]).set_index([index,'code']).rename(columns={'name':'NAME'})
 
-    prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index([index,'code']).rename(columns={'name':'NAME'})
+    prediction = prediction.reset_index().set_index('code').join(NAME).reset_index().sort_values(by=[index,'RANK'],ascending=[False,True]).set_index([index,'code']).rename(columns={'name':'NAME'})
 
     return(target_pool, prediction, start, end, Model_date)
 
