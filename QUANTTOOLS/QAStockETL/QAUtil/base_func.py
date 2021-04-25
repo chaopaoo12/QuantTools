@@ -196,6 +196,7 @@ def pre(data, type = 'close'):
     data = data.sort_values('date',ascending=True)
 
     if type == 'close':
+        data[['OPEN_MARK']]= data[['close_qfq']]
         data[['PASS_MARK']]= data.shift(-1)[['close_qfq']]
         data[['PRE_DATE','TARGET']]= data.shift(-2)[['date','close_qfq']]
         data[['TARGET3']]= data.shift(-3)[['close_qfq']]
@@ -204,6 +205,7 @@ def pre(data, type = 'close'):
         data[['TARGET10']]= data.shift(-10)[['close_qfq']]
         data[['TARGET20']]= data.shift(-20)[['close_qfq']]
     elif type == 'high':
+        data[['OPEN_MARK']]= data[['close_qfq']]
         data[['PASS_MARK']]= data.shift(-1)[['close_qfq']]
         data[['PRE_DATE','TARGET']]= data.shift(-2)[['date','high_qfq']]
         data[['TARGET3']]= data.shift(-3)[['high_qfq']]
