@@ -192,6 +192,41 @@ def index_pct_log(market):
     market['INDEX_TARGET10'] = np.log(market['PRE10_MARKET']/market['PRE_MARKET'])
     return(market)
 
+def pre(data, type = 'close'):
+    data = data.sort_values('date',ascending=True)
+
+    if type == 'close':
+        data[['PASS_MARK']]= data.shift(-1)[['close_qfq']]
+        data[['PRE_DATE','TARGET']]= data.shift(-2)[['date','close_qfq']]
+        data[['TARGET3']]= data.shift(-3)[['close_qfq']]
+        data[['TARGET4']]= data.shift(-4)[['close_qfq']]
+        data[['TARGET5']]= data.shift(-5)[['close_qfq']]
+        data[['TARGET10']]= data.shift(-10)[['close_qfq']]
+        data[['TARGET20']]= data.shift(-20)[['close_qfq']]
+    elif type == 'high':
+        data[['PASS_MARK']]= data.shift(-1)[['close_qfq']]
+        data[['PRE_DATE','TARGET']]= data.shift(-2)[['date','high_qfq']]
+        data[['TARGET3']]= data.shift(-3)[['high_qfq']]
+        data[['TARGET4']]= data.shift(-4)[['high_qfq']]
+        data[['TARGET5']]= data.shift(-5)[['high_qfq']]
+        data[['TARGET10']]= data.shift(-10)[['high_qfq']]
+        data[['TARGET20']]= data.shift(-20)[['high_qfq']]
+    else:
+        data=None
+    return(data)
+
+def index_pre(market):
+    market = market.sort_values('date',ascending=True)
+
+    market['PASS_MARK']= market.shift(-1)['close']
+    market['INDEX_TARGET']= market.shift(-2)['close']
+    market['INDEX_TARGET3']= market.shift(-3)['close']
+    market['INDEX_TARGET4']= market.shift(-4)['close']
+    market['INDEX_TARGET5']= market.shift(-5)['close']
+    market['INDEX_TARGET10']= market.shift(-10)['close']
+    market['INDEX_TARGET20']= market.shift(-20)['close']
+    return(market)
+
 def min_pct(data, type = 'close'):
     data = data.sort_values('datetime',ascending=True)
 
@@ -309,4 +344,40 @@ def min_index_pct_log(market):
     market['INDEX_TARGET4'] = np.log(market['PRE4_MARKET']/market['PRE_MARKET'])
     market['INDEX_TARGET5'] = np.log(market['PRE5_MARKET']/market['PRE_MARKET'])
     market['INDEX_TARGET10'] = np.log(market['PRE10_MARKET']/market['PRE_MARKET'])
+    return(market)
+
+def min_pre(data, type = 'close'):
+    data = data.sort_values('datetime',ascending=True)
+
+    if type == 'close':
+        #data = data.assign(up_rate= lambda x: 0.2 if x.date >= '2020-08-24' and str(x.code).startswith('300') == True else 0.1)
+        data['AVG_TOTAL_MARKET'] =  data['amount']/data['volume']/100
+        data[['PASS_MARK']]= data.shift(-1)[['close_qfq']]
+        data[['TARGET']]= data.shift(-2)[['close_qfq']]
+        data[['TARGET3']]= data.shift(-3)[['close_qfq']]
+        data[['TARGET4']]= data.shift(-4)[['close_qfq']]
+        data[['TARGET5']]= data.shift(-5)[['close_qfq']]
+        data[['TARGET10']]= data.shift(-10)[['close_qfq']]
+        data[['TARGET20']]= data.shift(-20)[['close_qfq']]
+    elif type == 'high':
+        data[['PASS_MARK']]= data.shift(-1)[['close_qfq']]
+        data[['TARGET']]= data.shift(-2)[['high_qfq']]
+        data[['TARGET3']]= data.shift(-3)[['high_qfq']]
+        data[['TARGET4']]= data.shift(-4)[['high_qfq']]
+        data[['TARGET5']]= data.shift(-5)[['high_qfq']]
+        data[['TARGET10']]= data.shift(-10)[['high_qfq']]
+        data[['TARGET20']]= data.shift(-20)[['high_qfq']]
+    else:
+        data=None
+    return(data)
+
+def min_index_pre(market):
+    market = market.sort_values('datetime',ascending=True)
+    market['PASS_MARK']= market.shift(-1)['close']
+    market['INDEX_TARGET']= market.shift(-2)['close']
+    market['INDEX_TARGET3']= market.shift(-3)['close']
+    market['INDEX_TARGET4']= market.shift(-4)['close']
+    market['INDEX_TARGET5']= market.shift(-5)['close']
+    market['INDEX_TARGET10']= market.shift(-10)['close']
+    market['INDEX_TARGET20']= market.shift(-20)['close']
     return(market)

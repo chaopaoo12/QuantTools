@@ -40,7 +40,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import (QA_util_if_trade, QA_util
 
 from QUANTTOOLS.QAStockETL.QAData.financial_mean import financial_dict, dict2
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import time_this_function
-from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,index_pct_log,pct_log,min_pct,min_index_pct,min_index_pct_log,min_pct_log
+from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,pre,index_pre,index_pct_log,pct_log,min_pct,min_index_pct,min_pre,min_index_pre,min_index_pct_log,min_pct_log
 
 from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
 import numpy
@@ -898,6 +898,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='day', close_type='c
         data = QA.QA_fetch_stock_day_adv(codes,start_date,end)
         func1 = pct
         func2 = pct_log
+        func3 = pre
         chan_col = 'date'
         chan_date = '2020-08-24'
     else:
@@ -906,6 +907,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='day', close_type='c
         data = QA.QA_fetch_stock_min_adv(codes,start_date,end,type)
         func1 = min_pct
         func2 = min_pct_log
+        func3 = min_pre
         chan_col = 'datetime'
         chan_date = '2020-08-24 09:00:00'
 
@@ -925,7 +927,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='day', close_type='c
     elif method == 'log':
         res = data.groupby('code').apply(func2, type=close_type)[cols]
     else:
-        res = None
+        res = data.groupby('code').apply(func3, type=close_type)[cols]
     if type == 'day':
         res['date'] = res['date'].apply(lambda x: str(x)[0:10])
         res['next_date'] = res['date'].apply(lambda x: QA_util_get_pre_trade_date(x, -2))
@@ -1191,12 +1193,14 @@ def QA_fetch_index_target(codes, start_date, end_date,type='day', method = 'valu
         data = QA.QA_fetch_index_day_adv(codes,start_date,end).data.reset_index()
         func1 = index_pct
         func2 = index_pct_log
+        func3 = index_pre
     else:
         start_date = start_date + ' 09:30:00'
         end = end + ' 15:00:00'
         data = QA.QA_fetch_index_min_adv(codes,start_date,end,type).data.reset_index()
         func1 = min_index_pct
         func2 = min_index_pct_log
+        func3 = min_index_pre
 
     if type=='day':
         cols = ['date','code','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10','INDEX_TARGET20']
@@ -1208,7 +1212,7 @@ def QA_fetch_index_target(codes, start_date, end_date,type='day', method = 'valu
     elif method == 'log':
         res = data.groupby('code').apply(func2)[cols]
     else:
-        res = None
+        res = data.groupby('code').apply(func3)[cols]
 
     if type == 'day':
         res['date'] = res['date'].apply(lambda x: str(x)[0:10])
