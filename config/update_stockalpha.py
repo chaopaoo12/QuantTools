@@ -70,7 +70,7 @@ if __name__ == '__main__':
         #    res = check_sinastock_alpha101(mark_day)
 
         res = check_stock_alpha191(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 20:
+        while res is None or len(res[1]) > 20:
             QA_SU_save_stock_alpha_day(start_date=mark_day, end_date = mark_day)
             res = check_stock_alpha191(mark_day)
 
