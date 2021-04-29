@@ -58,7 +58,7 @@ if __name__ == '__main__':
         print("download day data")
 
         res = check_stock_day(mark_day)
-        if res is None or (len(res[0]) + len(res[1])) > 20:
+        if res is None or len(res[1]) > 50:
             QA_SU_save_stock_day()
 
         res = check_sinastock_day(mark_day)
@@ -70,7 +70,7 @@ if __name__ == '__main__':
         QA_SU_save_stock_block('tdx')
 
         res = check_stock_adj(mark_day)
-        if res is None or (len(res[0]) + len(res[1])) > 20:
+        if res is None or len(res[1]) > 50:
             QA_SU_save_stock_xdxr()
 
         res = check_sinastock_adj(mark_day)
