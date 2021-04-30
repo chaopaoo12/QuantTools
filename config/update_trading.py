@@ -61,18 +61,8 @@ if __name__ == '__main__':
         time.sleep(180)
         res = check_stock_alpha191(mark_day)
 
-    res = check_stock_techhour(mark_day)
-    while res is None or len(res[1]) > 20:
-        time.sleep(180)
-        res = check_stock_techhour(mark_day)
-
-    res = check_stock_techindex(mark_day)
-    while res is None or len(res[1]) > 20:
-        time.sleep(180)
-        res = check_stock_techindex(mark_day)
-
     res = check_stock_finper(mark_day)
-    while res is None or len(res[1]) > 30:
+    while res is None or len(res[1]) > 50:
         time.sleep(180)
         res = check_stock_finper(mark_day)
 

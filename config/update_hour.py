@@ -19,7 +19,7 @@ if __name__ == '__main__':
             pass
 
         res = check_stock_60min(mark_day)
-        if res is None or len(res[1]) > 20:
+        if res is None or len(res[1]) > 50:
             QA_SU_save_stock_hour()
 
         res = check_sinastock_60min(mark_day)
@@ -34,7 +34,7 @@ if __name__ == '__main__':
             res = check_sinastock_adj(mark_day)
 
         res =check_stock_techhour(mark_day)
-        if res is None or len(res[1]) > 20:
+        if res is None or len(res[1]) > 50:
             QA_SU_save_stock_technical_hour_day(start_date = mark_day,  end_date = mark_day)
             res =check_stock_techhour(mark_day)
 
