@@ -38,17 +38,17 @@ if __name__ == '__main__':
     ckeck_day = QA_util_get_real_date(mark_day)
 
     check = check_stock_day(ckeck_day)
-    while check is None or (len(check[0]) + len(check[1])) > 10:
+    while check is None or len(check[1]) > 50:
         time.sleep(180)
         check = check_stock_day(ckeck_day)
 
     check = check_stock_adj(ckeck_day)
-    while check is None or (len(check[0]) + len(check[1])) > 10:
+    while check is None or len(check[1]) > 50:
         time.sleep(180)
         check = check_stock_adj(ckeck_day)
 
     check = check_stock_quant(ckeck_day)
-    while check is None or (len(check[0]) + len(check[1])) > 10:
+    while check is None or len(check[1]) > 10:
         time.sleep(180)
         check = check_stock_quant(ckeck_day)
 
