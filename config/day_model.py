@@ -48,7 +48,7 @@ if __name__ == '__main__':
         check = check_stock_adj(ckeck_day)
 
     check = check_stock_quant(ckeck_day)
-    while check is None or len(check[1]) > 10:
+    while check is None or len(check[1]) > 100:
         time.sleep(180)
         check = check_stock_quant(ckeck_day)
 
