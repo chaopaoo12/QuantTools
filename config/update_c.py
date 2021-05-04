@@ -116,7 +116,7 @@ if __name__ == '__main__':
         print("write quant data into mongodb")
 
         res = check_stock_fianacial(mark_day)
-        while res is None or len(res[1]) > 30:
+        while res is None or len(res[1]) > 50:
             QA_SU_save_stock_fianacial_momgo(mark_day,mark_day)
             res = check_stock_fianacial(mark_day)
 
