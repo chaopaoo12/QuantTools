@@ -1,7 +1,7 @@
 #coding=utf-8
 
 from QUANTTOOLS.Model.StockModel.StrategyXgboost import QAStockXGBoost
-from QUANTTOOLS.Model.StockModel.StrategyXgboostHour import QAStockXGBoostHour
+from QUANTTOOLS.Model.StockModel.StrategyXgboostHourMark import QAStockXGBoostHourMark
 from QUANTTOOLS.Model.StockModel.StrategyXgboost15Min import QAStockXGBoost15Min
 from QUANTTOOLS.Model.IndexModel.IndexXGboost import QAIndexXGBoost
 from QUANTTOOLS.Model.IndexModel.IndexXGboostHour import QAIndexXGBoostHour
@@ -54,20 +54,20 @@ def daymodel_train(date, working_dir=working_dir):
     save_report(stock_model, 'stock_mars_day', working_dir)
 
 def hourmodel_train(date, working_dir=working_dir):
-    hour_model = QAStockXGBoostHour()
+    hour_model = QAStockXGBoostHourMark()
 
     start_date = str(int(date[0:4])-1)+'-01-01'
     end_date = date
 
     hour_model = load_data(hour_model, start_date, end_date, norm_type=None)
 
-    hour_model = prepare_data(hour_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 3), mark = 1, col = 'SKDJ_TR_HR', type='value', shift = -2)
+    hour_model = prepare_data(hour_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 3), mark = 1, col = ['PASS_MARK','TARGET3'], type='value', shift = None)
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
     hour_model = start_train(hour_model, stock_hour_set, other_params, 0, 0.99)
-    save_report(hour_model, 'stock_mars_hour', working_dir)
+    save_report(hour_model, 'stock_mark_hour', working_dir)
 
 def train_hedge(date, working_dir=working_dir):
     hedge_model = QAStockXGBoost()

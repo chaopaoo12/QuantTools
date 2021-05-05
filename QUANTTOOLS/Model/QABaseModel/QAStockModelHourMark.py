@@ -4,7 +4,7 @@ from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAModel import QAModel
 from QUANTTOOLS.Message import send_email, send_actionnotice
 
-class QAStockModelHour(QAModel):
+class QAStockModelHourMark(QAModel):
 
     def get_data(self, start, end, code =None, block=False, sub_block=False, type ='model', norm_type='normalization'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
@@ -109,7 +109,7 @@ class QAStockModelHour(QAModel):
         elif type == 'real':
             b = train[['y_pred','Z_PROB','O_PROB','RANK']]
 
-        b = b.join(data[['SKDJ_TR_HR']])
+        b = b.join(data[['SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']])
         return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
