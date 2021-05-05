@@ -2,6 +2,7 @@
 
 from QUANTTOOLS.Model.StockModel.StrategyXgboost import QAStockXGBoost
 from QUANTTOOLS.Model.StockModel.StrategyXgboostHour import QAStockXGBoostHour
+from QUANTTOOLS.Model.StockModel.StrategyXgboostHourMark import QAStockXGBoostHourMark
 from QUANTTOOLS.Model.StockModel.StrategyXgboost15Min import QAStockXGBoost15Min
 from QUANTTOOLS.Model.StockModel.StrategyXgboostReal import QAStockXGBoostReal
 from QUANTTOOLS.Model.StockModel.StrategyXgboostHedge import QAStockXGBoostHedge
@@ -17,6 +18,11 @@ def concat_predict(trading_date, working_dir, code = None, type = 'crawl', model
 
 def concat_predict_hour(trading_date, working_dir, code = None, type = 'crawl', model_name = 'stock_mars_hour'):
     Stock = QAStockXGBoostHour()
+    target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, code, index='datetime', type=type)
+    return(target_pool,prediction,start,end,Model_Date)
+
+def concat_predict_hourmark(trading_date, working_dir, code = None, type = 'crawl', model_name = 'stock_mars_hour'):
+    Stock = QAStockXGBoostHourMark()
     target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, code, index='datetime', type=type)
     return(target_pool,prediction,start,end,Model_Date)
 
