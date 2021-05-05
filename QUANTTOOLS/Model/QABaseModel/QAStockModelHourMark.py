@@ -9,11 +9,36 @@ class QAStockModelHour(QAModel):
     def get_data(self, start, end, code =None, block=False, sub_block=False, type ='model', norm_type='normalization'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
         self.data = get_quant_data_hour(start, end, code=code, type = type, block = block, sub_block = sub_block, norm_type=norm_type)
+        self.data = self.data[(self.data.SKDJ_CROSS2_HR == 1)|(self.data.CROSS_JC_HR == 1)]
         self.info['code'] = code
         self.info['norm_type'] = norm_type
         self.info['block'] = block
         self.info['sub_block'] = sub_block
         print(self.data.shape)
+
+    def set_target(self, col, mark, type = 'value', shift= None):
+        self.target = col
+        QA_util_log_info('##JOB Set Train Target by {type} at {mark} in column {col} ==== {date}'.format(type=type, mark= mark,
+                                                                                                         col=col, date= self.info['date']),
+                         ui_log = None)
+
+        self.data['star'] = self.data[self.target[0]] + self.data[self.target[1]]
+
+        if type == 'value':
+            if shift is not None:
+                self.data['star'] = self.data['star'].apply(lambda x: 1 if x >= mark else 0)
+            else:
+                self.data['star'] = self.data['star'].apply(lambda x: 1 if x >= mark else 0)
+        elif type == 'percent':
+            self.data['star'] = self.data['star'].groupby('date').apply(lambda x: x.rank(ascending=False, pct=True)).apply(lambda x :1 if x <= mark else 0)
+        else:
+            QA_util_log_info('##target type must be in [value,percent] ===== {}'.format(self.info['date']), ui_log = None)
+
+        if shift is not None:
+            self.data['star'] = self.data['star'].groupby('code').shift(shift)
+
+        self.info['target'] = self.target
+        QA_util_log_info('##save used columns ==== {}'.format(self.info['date']), ui_log = None)
 
     def model_predict(self, start, end, code = None, type='crawl'):
         if code is not None:
