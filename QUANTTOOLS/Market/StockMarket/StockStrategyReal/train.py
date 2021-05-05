@@ -59,7 +59,7 @@ def hourmodel_train(date, working_dir=working_dir):
     start_date = str(int(date[0:4])-1)+'-01-01'
     end_date = date
 
-    hour_model = load_data(hour_model, start_date, end_date, norm_type=None)
+    hour_model = load_data(hour_model, start_date, end_date, type='crawl', norm_type=None)
 
     hour_model = prepare_data(hour_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 3), mark = 1, col = ['PASS_MARK','TARGET3'], type='value', shift = None)
 
