@@ -61,7 +61,7 @@ def hourmodel_train(date, working_dir=working_dir):
 
     hour_model = load_data(hour_model, start_date, end_date, type='crawl', norm_type=None)
 
-    hour_model = prepare_data(hour_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 3), mark = 1, col = 'TARGET3', type='value', shift = None)
+    hour_model = prepare_data(hour_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 3), mark = 1, col = ['PASS_MARK','TARGET3'], type='value', shift = None)
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
