@@ -22,7 +22,10 @@ class QAStockModelHourMark(QAModel):
                                                                                                          col=col, date= self.info['date']),
                          ui_log = None)
 
-        self.data['star'] = self.data[self.target[0]] + self.data[self.target[1]]
+        if isinstance(self.target, list):
+            self.data['star'] = self.data[self.target[0]] + self.data[self.target[1]]
+        else:
+            self.data['star'] = self.data[self.target]
 
         if type == 'value':
             if shift is not None:
