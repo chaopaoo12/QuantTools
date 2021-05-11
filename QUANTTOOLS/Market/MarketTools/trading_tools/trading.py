@@ -13,6 +13,29 @@ from QUANTTOOLS.Trader.account_manage.base_func.Client import get_UseCapital, ge
 import time
 import datetime
 
+def open_control(trading_date):
+    time_contrl_bf("09:30:00")
+    QA_util_log_info('##JOB Now Start Trading ==== {}'.format(str(trading_date)), ui_log = None)
+
+def close_control(strategy_id, trading_date):
+    time_contrl_af("15:00:00")
+    QA_util_log_info('##JOB Trading Finished ==================== {}'.format(trading_date), ui_log=None)
+    send_actionnotice(strategy_id,'Trading Report:{}'.format(trading_date),'Trading Finished',direction = 'Trading',offset='Finished',volume=None)
+
+def time_contrl_bf(tm_mark):
+    tm = int(datetime.datetime.now().strftime("%H%M%S"))
+    while tm <= int(time.strftime("%H%M%S",time.strptime(tm_mark, "%H:%M:%S"))):
+        time.sleep(15)
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
+    return(tm_mark)
+
+def time_contrl_af(tm_mark):
+    tm = int(datetime.datetime.now().strftime("%H%M%S"))
+    while tm >= int(time.strftime("%H%M%S",time.strptime(tm_mark, "%H:%M:%S"))):
+        time.sleep(15)
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
+    return(tm_mark)
+
 def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='end', exceptions = None, test = False):
 
     QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
@@ -193,6 +216,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 if mark_tm == "09:30:00":
                     data = get_quant_data(QA_util_get_pre_trade_date(trading_date),QA_util_get_pre_trade_date(trading_date),list(set(positions.code.tolist()+list(target_tar.index))), type= 'crawl')
                     stm = QA_util_get_pre_trade_date(trading_date)
+                    #hour_data = func(trading_date, working_dir, code = list(set(positions.code.tolist()+list(target_tar.index))), type= 'real', model_name = 'stock_mark_hour')
                 elif mark_tm == '13:00:00':
                     data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
                     stm = trading_date + ' ' + '11:30:00'
