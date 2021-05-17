@@ -339,7 +339,7 @@ def get_indicator(data, type='day'):
     except:
         ASI = data.data.assign(ASI=None,ASIT=None)[['ASI','ASIT']]
     try:
-        SAR_V = data.add_func(SAR)
+        SAR_V = data.add_func(SAR,acceleration = 0.02, maximum = 0.2)
     except:
         SAR_V = data.data.assign(SAR=None)[['SAR']]
     try:
@@ -873,7 +873,7 @@ def get_indicator_short(data, type='day'):
                                 SKDJ_CROSS2=0)[['SKDJ_K','SKDJ_D','RSV','SKDJ_CROSS1','SKDJ_CROSS2']]
 
     try:
-        SAR_V = data.add_func(SAR)
+        SAR_V = data.add_func(SAR,acceleration = 0.02, maximum = 0.2)
     except:
         SAR_V = data.data.assign(SAR=None)[['SAR']]
 
