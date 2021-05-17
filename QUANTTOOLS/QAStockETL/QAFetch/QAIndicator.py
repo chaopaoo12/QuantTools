@@ -1,5 +1,6 @@
 import QUANTAXIS as QA
 from QUANTAXIS.QAIndicator.base import *
+from QUANTAXIS.QAIndicator.talib_indicators import SAR
 from scipy import stats
 import pandas as pd
 import math
@@ -115,7 +116,7 @@ def rolling_ols(y):
     '''
     #y = pd.DataFrame.ewm(y,alpha=1.0/24,ignore_na=True).mean().values
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
-    return(model.slope*10)
+    return(math.atan(model.slope)*180/math.pi)
 
 def spc(data, N= 5):
     data[['MA5_C','MA15_C','MA30_C','MA60_C','GMMA3_C','GMMA15_C','GMMA30_C',
@@ -337,6 +338,10 @@ def get_indicator(data, type='day'):
         ASI = data.add_func(QA.QA_indicator_ASI)
     except:
         ASI = data.data.assign(ASI=None,ASIT=None)[['ASI','ASIT']]
+    try:
+        SAR_V = data.add_func(SAR)
+    except:
+        SAR_V = data.data.assign(SAR=None)[['SAR']]
     try:
         OBV = data.add_func(QA.QA_indicator_OBV)
         OBV['OBV_C'] = OBV['OBV']/QA.REF(OBV['OBV'], 1)-1
@@ -765,7 +770,7 @@ def get_indicator(data, type='day'):
     except:
         CDLXSIDEGAP3METHODS = data.data.assign(CDLXSIDEGAP3METHODS=0)['CDLXSIDEGAP3METHODS']
 
-    res =pd.concat([VR,VRSI,VSTD,BOLL,MIKE,ASI,OBV,PVT,VPT,KDJ,WR,ROC,RSI,CCI,BIAS,OSC,
+    res =pd.concat([VR,VRSI,VSTD,BOLL,MIKE,ASI,SAR_V,OBV,PVT,VPT,KDJ,WR,ROC,RSI,CCI,BIAS,OSC,
                     ADTM,MACD,DMI,DMA,PBX,MTM,CHO,BBI,MFI,ATR,SKDJ,DDI,shadow,MA,MA_VOL,
                     CDL2CROWS,CDL3BLACKCROWS,CDL3INSIDE,CDL3LINESTRIKE,CDL3OUTSIDE,
                     CDL3STARSINSOUTH,CDL3WHITESOLDIERS,CDLABANDONEDBABY,CDLADVANCEBLOCK,
@@ -781,6 +786,7 @@ def get_indicator(data, type='day'):
                     CDLSPINNINGTOP,CDLSTALLEDPATTERN,CDLSTICKSANDWICH,CDLTAKURI,CDLTASUKIGAP,
                     CDLTHRUSTING,CDLTRISTAR,CDLUNIQUE3RIVER,CDLUPSIDEGAP2CROWS,CDLXSIDEGAP3METHODS],
                    axis=1).dropna(how='all')
+    res['SAR_MARK'] = data['close']/res['SAR']  - 1
     res['WR'] = data['close']/res['WR']  - 1
     res['MR'] = data['close']/res['MR'] - 1
     res['SR'] = data['close']/res['SR'] - 1
@@ -865,6 +871,11 @@ def get_indicator_short(data, type='day'):
     except:
         SKDJ = data.data.assign(SKDJ_K=None,SKDJ_D=None,RSV=None,SKDJ_CROSS1=0,
                                 SKDJ_CROSS2=0)[['SKDJ_K','SKDJ_D','RSV','SKDJ_CROSS1','SKDJ_CROSS2']]
+
+    try:
+        SAR_V = data.add_func(SAR)
+    except:
+        SAR_V = data.data.assign(SAR=None)[['SAR']]
 
     try:
         MA = data.add_func(QA.QA_indicator_MA,3,5,8,10,12,15,20,30,35,40,45,50,60)
@@ -994,10 +1005,10 @@ def get_indicator_short(data, type='day'):
                                 CROSS_JC=0,CROSS_SC=0,)[['DIF','DEA','MACD','CROSS_JC','CROSS_SC','MACD_TR']]
 
 
-    res =pd.concat([BOLL,CCI,MACD,MA,MA_VOL,SKDJ],
+    res =pd.concat([BOLL,CCI,MACD,MA,MA_VOL,SKDJ,SAR_V],
                    axis=1).dropna(how='all')
     res = res.groupby('code').apply(spc)
-
+    res['SAR_MARK'] = data['close']/res['SAR']  - 1
     res['MA3'] = data['close'] / res['MA3'] - 1
     res['MA5'] = data['close'] / res['MA5'] - 1
     res['MA8'] = data['close'] / res['MA8'] - 1
