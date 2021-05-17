@@ -786,7 +786,7 @@ def get_indicator(data, type='day'):
                     CDLSPINNINGTOP,CDLSTALLEDPATTERN,CDLSTICKSANDWICH,CDLTAKURI,CDLTASUKIGAP,
                     CDLTHRUSTING,CDLTRISTAR,CDLUNIQUE3RIVER,CDLUPSIDEGAP2CROWS,CDLXSIDEGAP3METHODS],
                    axis=1).dropna(how='all')
-    res['SAR_MARK'] = data['close']/res['SAR']  - 1
+    res['SAR_MARK'] = 1 - data['close']/res['SAR']
     res['WR'] = data['close']/res['WR']  - 1
     res['MR'] = data['close']/res['MR'] - 1
     res['SR'] = data['close']/res['SR'] - 1
@@ -1008,7 +1008,7 @@ def get_indicator_short(data, type='day'):
     res =pd.concat([BOLL,CCI,MACD,MA,MA_VOL,SKDJ,SAR_V],
                    axis=1).dropna(how='all')
     res = res.groupby('code').apply(spc)
-    res['SAR_MARK'] = data['close']/res['SAR']  - 1
+    res['SAR_MARK'] = 1 - data['close']/res['SAR']
     res['MA3'] = data['close'] / res['MA3'] - 1
     res['MA5'] = data['close'] / res['MA5'] - 1
     res['MA8'] = data['close'] / res['MA8'] - 1
