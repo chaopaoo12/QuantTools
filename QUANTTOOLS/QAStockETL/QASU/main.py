@@ -296,6 +296,12 @@ def QA_SU_save_stock_15min():
 def QA_SU_save_single_stock_15min(code):
     save_tdx.QA_SU_save_single_stock_15min(code)
 
+def QA_SU_save_stock_30min():
+    save_tdx.QA_SU_save_stock_30min()
+
+def QA_SU_save_single_stock_30min(code):
+    save_tdx.QA_SU_save_single_stock_30min(code)
+
 def QA_SU_save_index_hour():
     save_tdx.QA_SU_save_index_hour()
 
@@ -361,3 +367,9 @@ def QA_SU_save_index_technical_15min_day(code = None,start_date=None,end_date=No
 
 def QA_SU_save_index_technical_15min_his(code = None,start_date=None,end_date=None):
     save_stock_technical_index.QA_SU_save_index_technical_15min_his(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_stock_technical_30min_day(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_stock_technical_30min_day(codes = code,start_date=start_date,end_date=end_date)
+
+def QA_SU_save_stock_technical_30min_his(code = None,start_date=None,end_date=None):
+    save_stock_technical_index.QA_SU_save_stock_technical_30min_his(codes = code,start_date=start_date,end_date=end_date)

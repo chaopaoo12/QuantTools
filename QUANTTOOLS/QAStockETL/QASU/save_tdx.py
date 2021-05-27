@@ -1291,6 +1291,14 @@ def QA_SU_save_stock_hour(client=DATABASE, ui_log=None, ui_progress=None):
     """
     QA_SU_save_stock_min(['60min'])
 
+def QA_SU_save_stock_30min(client=DATABASE, ui_log=None, ui_progress=None):
+    """save stock_min
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+    QA_SU_save_stock_min(['30min'])
+
 def QA_SU_save_stock_15min(client=DATABASE, ui_log=None, ui_progress=None):
     """save stock_min
 
@@ -1306,6 +1314,14 @@ def QA_SU_save_single_stock_hour(code : str, client=DATABASE, ui_log=None, ui_pr
         client {[type]} -- [description] (default: {DATABASE})
     """
     QA_SU_save_single_stock_min(code, ['60min'])
+
+def QA_SU_save_single_stock_30min(code : str, client=DATABASE, ui_log=None, ui_progress=None):
+    """save single stock_min
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+    QA_SU_save_single_stock_min(code, ['30min'])
 
 def QA_SU_save_single_stock_15min(code : str, client=DATABASE, ui_log=None, ui_progress=None):
     """save single stock_min

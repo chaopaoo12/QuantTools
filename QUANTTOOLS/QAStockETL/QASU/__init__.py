@@ -7,6 +7,7 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_stock_day,QA_SU_save_sto
                                              QA_SU_save_stock_real,QA_SU_save_block_xq_day,
                                              QA_SU_save_stock_hour,QA_SU_save_single_stock_hour,
                                              QA_SU_save_stock_15min,QA_SU_save_single_stock_15min,
+                                             QA_SU_save_stock_30min,QA_SU_save_single_stock_30min,
                                              QA_SU_save_stock_xdxr,QA_SU_save_single_stock_xdxr)
 
 ###index basic data
@@ -30,6 +31,7 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_fianacialTTM_momgo,QA_SU
                                              QA_SU_save_stock_alpha_day, QA_SU_save_stock_alpha_his,
                                              QA_SU_save_stock_alpha101_day,QA_SU_save_stock_alpha101_his,
                                              QA_SU_save_stock_technical_15min_day,QA_SU_save_stock_technical_15min_his,
+                                             QA_SU_save_stock_technical_30min_day,QA_SU_save_stock_technical_30min_his,
                                              QA_SU_save_stock_technical_hour_day,QA_SU_save_stock_technical_hour_his,
                                              QA_SU_save_stock_technical_index_day,QA_SU_save_stock_technical_index_his,
                                              QA_SU_save_stock_technical_week_day,QA_SU_save_stock_technical_week_his,
@@ -95,6 +97,7 @@ from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (
                                                 QA_etl_stock_alpha_day,
                                                 QA_etl_stock_financial_day,
                                                 QA_etl_stock_technical_15min,
+                                                QA_etl_stock_technical_30min,
                                                 QA_etl_stock_technical_hour,
                                                 QA_etl_stock_technical_day,
                                                 QA_etl_stock_technical_week,
