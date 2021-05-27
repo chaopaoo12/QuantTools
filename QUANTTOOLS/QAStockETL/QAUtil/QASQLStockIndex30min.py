@@ -278,7 +278,7 @@ GMMA15_D as GMMA15_D_30M,
 GMMA_VOL15_D as GMMA_VOL15_D_30M,
 GMMA30_D as GMMA30_D_30M,
 GMMA_VOL30_D as GMMA_VOL30_D_30M
-from STOCK_TECHNICAL_HOUR
+from STOCK_TECHNICAL_30MIN
 where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
 and order_Date <=
