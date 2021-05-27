@@ -36,6 +36,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import (QA_util_date_gap,
 #Fetch
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex import QA_Sql_Stock_Index
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex15min import QA_Sql_Stock_Index15min
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex30min import QA_Sql_Stock_Index30min
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexHour import QA_Sql_Stock_IndexHour
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexWeek import QA_Sql_Stock_IndexWeek
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101 import QA_Sql_Stock_Alpha101
