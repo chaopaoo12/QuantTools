@@ -26,10 +26,19 @@ def QA_fetch_stock_15min(code, start, end):
     return(QA_fetch_stock_min_adv(code, start, end, frequence='15min').data)
 
 def check_stock_15min(mark_day = None):
-    return(check_stock_data(func = QA_fetch_stock_60min, mark_day = mark_day, title = 'Stock 15Min'))
+    return(check_stock_data(func = QA_fetch_stock_15min, mark_day = mark_day, title = 'Stock 15Min'))
 
 def check_sinastock_15min(mark_day = None):
     return(check_stock_base(func1 = QA_fetch_stock_15min, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock 15Min sina'))
+
+def QA_fetch_stock_30min(code, start, end):
+    return(QA_fetch_stock_min_adv(code, start, end, frequence='30min').data)
+
+def check_stock_30min(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_30min, mark_day = mark_day, title = 'Stock 30Min'))
+
+def check_sinastock_30min(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_30min, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock 30Min sina'))
 
 def QA_fetch_stock_60min(code, start, end):
     return(QA_fetch_stock_min_adv(code, start, end, frequence='60min').data)
@@ -138,6 +147,12 @@ def QA_fetch_stock_tech15min(code, start, end):
 
 def check_stock_tech15min(mark_day = None):
     return(check_stock_data(func = QA_fetch_stock_tech15min, mark_day = mark_day, title = 'Stock Tech15min'))
+
+def QA_fetch_stock_tech30min(code, start, end):
+    return(QA_fetch_stock_technical_index_adv(code, start, end, type='30min').data)
+
+def check_stock_tech30min(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_tech30min, mark_day = mark_day, title = 'Stock Tech30min'))
 
 def QA_fetch_stock_techhour(code, start, end):
     return(QA_fetch_stock_technical_index_adv(code, start, end, type='hour').data)
