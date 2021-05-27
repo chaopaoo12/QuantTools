@@ -587,8 +587,10 @@ def QA_fetch_stock_technical_index(code, start, end=None, type='day', format='pd
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
-    if type == '15min':
+    if type in ['15min','15m']:
         collections=DATABASE.stock_technical_15min
+    if type in ['30min','30m']:
+        collections=DATABASE.stock_technical_30min
     elif type == 'hour':
         collections=DATABASE.stock_technical_hour
     elif type == 'day':
@@ -612,7 +614,7 @@ def QA_fetch_stock_technical_index(code, start, end=None, type='day', format='pd
         res = pd.DataFrame([item for item in cursor])
         try:
             res['date'] = res['date'].apply(lambda x: str(x)[0:10])
-            if type in ['hour','15min', 'min']:
+            if type in ['hour','30min', '15min','min']:
                 res = res.drop(['time_stamp'],axis=1)
             res = res.drop(['date_stamp'],axis=1).set_index(['date','code'])
         except:
