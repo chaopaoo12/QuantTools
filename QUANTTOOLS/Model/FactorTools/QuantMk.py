@@ -286,7 +286,7 @@ def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method
         pass
     return(res)
 
-def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
+def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
 
     code_list = QA_fetch_stock_all()
     if code is None:
@@ -316,7 +316,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
         res = QA_fetch_stock_quant_min(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
         res = QA_fetch_get_stock_quant_min(codes, start_date, end_date).drop(['date','time_stamp'],axis=1)
-        res.columns = [x.upper() + '_15M' for x in res.columns]
+        res.columns = [x.upper() + '_30M' for x in res.columns]
     return(res)
 
 def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
