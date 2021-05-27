@@ -291,8 +291,8 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
         start = QA_util_get_pre_trade_date(start_date,20)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_fetch_get_usstock_day_xq(code, start, end_date, period='30m', type='before').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp'])
-            data['type'] = '30min'
+            data = QA_fetch_get_usstock_day_xq(code, start, end_date, period='15m', type='before').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp'])
+            data['type'] = '15min'
             data = QA_DataStruct_Stock_min(data)
         except:
             QA_util_log_info("JOB No Minly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
