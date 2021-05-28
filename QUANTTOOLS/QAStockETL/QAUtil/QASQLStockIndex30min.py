@@ -292,6 +292,8 @@ def QA_Sql_Stock_Index30min(from_ , to_, type = 'day', sql_text = sql_text, ui_l
     conn = cx_Oracle.connect(ORACLE_PATH2)
     if type == 'day':
         sql_text = sql_text + " and substr(datetime, 12, 20) = '15:00:00'"
+    elif type == 'hour':
+        sql_text = sql_text + " and substr(datetime, 12) in ('10:30:00','11:30:00','14:00:00','15:00:00')"
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
     if type == 'day':
