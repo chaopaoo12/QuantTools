@@ -768,7 +768,7 @@ def QA_etl_stock_technical_30min(start_date = QA_util_today_str(), end_date= Non
         end_date = QA_util_today_str()
     QA_util_log_info('##JOB Now ETL STOCK TECHNICAL 30min ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
     codes = list(QA_fetch_stock_all()['code'])
-    data = QA_fetch_stock_technical_index_adv(codes, start_date, end_date,type='15min').data
+    data = QA_fetch_stock_technical_index_adv(codes, start_date, end_date,type='30min').data
     if data is None:
         QA_util_log_info(
             '##JOB NO STOCK TECHNICAL 15min HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
