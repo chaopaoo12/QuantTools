@@ -3095,7 +3095,7 @@ def QA_fetch_stock_quant_hour(code, start, end=None, block = True, norm_type='no
         hour_res = hour(start, end, 'hour').groupby('code').fillna(method='ffill').loc[(slice(None),code),]
         QA_util_log_info(
             'JOB Get Stock Tech 30Min data start=%s end=%s' % (start, end))
-        hhour_res = hhour(start, end, 'min').groupby('code').fillna(method='ffill').loc[(slice(None),code),].drop(['date'],axis=1)
+        hhour_res = hhour(start, end, 'hour').groupby('code').fillna(method='ffill').loc[(slice(None),code),].drop(['date'],axis=1)
 
         try:
             res = hour_res.join(hhour_res)
