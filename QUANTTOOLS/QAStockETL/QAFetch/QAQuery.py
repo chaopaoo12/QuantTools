@@ -6,6 +6,7 @@ from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_basic_info_tushare,QA_fetch
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_delist
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex import QA_Sql_Stock_Index
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex15min import QA_Sql_Stock_Index15min
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndex30min import QA_Sql_Stock_Index30min
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexHour import QA_Sql_Stock_IndexHour
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexWeek import QA_Sql_Stock_IndexWeek
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101 import QA_Sql_Stock_Alpha101
@@ -3084,6 +3085,7 @@ def QA_fetch_stock_quant_hour(code, start, end=None, block = True, norm_type='no
 
     code = QA_util_code_tolist(code)
     hour = QA_Sql_Stock_IndexHour
+    hhour = QA_Sql_Stock_Index30min
 
     if QA_util_date_valid(end):
 
@@ -3091,9 +3093,12 @@ def QA_fetch_stock_quant_hour(code, start, end=None, block = True, norm_type='no
         QA_util_log_info(
             'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
         hour_res = hour(start, end, 'hour').groupby('code').fillna(method='ffill').loc[(slice(None),code),]
+        QA_util_log_info(
+            'JOB Get Stock Tech 30Min data start=%s end=%s' % (start, end))
+        hhour_res = hhour(start, end, 'min').groupby('code').fillna(method='ffill').loc[(slice(None),code),]
 
         try:
-            res = hour_res
+            res = hour_res.join(hhour_res)
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
