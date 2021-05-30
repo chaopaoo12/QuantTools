@@ -19,7 +19,7 @@ def predict_index_dev(trading_date, predict_func1, predict_func2, predict_func3,
     res = dict()
     if predict_func1 is not None:
         day_tar, day_b, start, end, model_date = predict_func1(trading_date, model_name = day_moel,  working_dir=working_dir)
-        stock_b[['NAME','SKDJ_TR','SKDJ_K','CCI','SKDJ_CROSS2','SKDJ_CROSS1','CROSS_JC','DAY_PROB','DAY_RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','PASS_MARK']] = day_b[['NAME','SKDJ_TR','SKDJ_K','CCI','SKDJ_CROSS2','SKDJ_CROSS1','CROSS_JC','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','PASS_MARK']]
+        stock_b[['NAME','SKDJ_TR','SKDJ_K','SKDJ_CROSS2','SKDJ_CROSS1','CROSS_JC','DAY_PROB','DAY_RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','PASS_MARK']] = day_b[['NAME','SKDJ_TR','SKDJ_K','SKDJ_CROSS2','SKDJ_CROSS1','CROSS_JC','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','PASS_MARK']]
         res['date'] = trading_date
 
     if predict_func2 is not None:
