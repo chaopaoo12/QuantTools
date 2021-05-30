@@ -19,7 +19,7 @@ def predict_index_dev(trading_date, predict_func1, predict_func2, predict_func3,
     res = dict()
     if predict_func1 is not None:
         day_tar, day_b, start, end, model_date = predict_func1(trading_date, model_name = day_moel,  working_dir=working_dir)
-        stock_b[['NAME','SKDJ_TR','CCI','SKDJ_CROSS2','SKDJ_CROSS1','CROSS_JC','DAY_PROB','DAY_RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','PASS_MARK']] = day_b[['NAME','SKDJ_TR','CCI','SKDJ_CROSS2','SKDJ_CROSS1','CROSS_JC','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','PASS_MARK']]
+        stock_b[['NAME','SKDJ_TR','SKDJ_K','CCI','SKDJ_CROSS2','SKDJ_CROSS1','CROSS_JC','DAY_PROB','DAY_RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','PASS_MARK']] = day_b[['NAME','SKDJ_TR','SKDJ_K','CCI','SKDJ_CROSS2','SKDJ_CROSS1','CROSS_JC','O_PROB','RANK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','PASS_MARK']]
         res['date'] = trading_date
 
     if predict_func2 is not None:
@@ -27,7 +27,7 @@ def predict_index_dev(trading_date, predict_func1, predict_func2, predict_func3,
         rrr1 = hour_b.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        stock_b[['SKDJ_TR_HR','HOUR_PROB']] = rrr1[['SKDJ_TR_HR','O_PROB']]
+        stock_b[['SKDJ_TR_HR','SKDJ_K_HR','HOUR_PROB']] = rrr1[['SKDJ_TR_HR','O_PROB','SKDJ_K_HR']]
         res['hour_prediction'] = hour_b
 
     if predict_func3 is not None:
@@ -35,7 +35,7 @@ def predict_index_dev(trading_date, predict_func1, predict_func2, predict_func3,
         rrr1 = min_b.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        stock_b[['SKDJ_TR_15M','MIN_PROB']] = rrr1[['SKDJ_TR_15M','O_PROB']]
+        stock_b[['SKDJ_TR_15M','SKDJ_K_15M','MIN_PROB']] = rrr1[['SKDJ_TR_15M','SKDJ_K_15M','O_PROB']]
         res['min_prediction'] = min_b
 
     stock_tar = stock_b[(stock_b.DAY_PROB > 0.5)]
@@ -51,13 +51,13 @@ def predict_stock_dev(trading_date, xg_predict_func, predict_func1, predict_func
     res = dict()
     if xg_predict_func is not None:
         xg_tar, xg_b, start, end, model_date = predict_func1(trading_date, model_name = xg_model,  working_dir=working_dir)
-        stock_b[['NAME','INDUSTRY','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']] = xg_b[['NAME','INDUSTRY','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
+        stock_b[['NAME','INDUSTRY','SKDJ_K','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']] = xg_b[['NAME','INDUSTRY','SKDJ_K','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK']]
         res['date'] = trading_date
         res['XG_prediction'] = xg_b
 
     if predict_func1 is not None:
         day_tar, day_b, start, end, model_date = predict_func1(trading_date, model_name = day_moel,  working_dir=working_dir)
-        stock_b[['SKDJ_TR','DAY_PROB','DAY_RANK']] = day_b[['SKDJ_TR','O_PROB','RANK']]
+        stock_b[['SKDJ_TR','SKDJ_K','DAY_PROB','DAY_RANK']] = day_b[['SKDJ_TR','SKDJ_K','O_PROB','RANK']]
         res['day_prediction'] = day_b
 
     if predict_func2 is not None:
@@ -65,7 +65,7 @@ def predict_stock_dev(trading_date, xg_predict_func, predict_func1, predict_func
         rrr1 = hour_b.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        stock_b[['SKDJ_TR_HR','HOUR_PROB']] = rrr1[['SKDJ_TR_HR','O_PROB']]
+        stock_b[['SKDJ_TR_HR','SKDJ_K_HR','HOUR_PROB']] = rrr1[['SKDJ_TR_HR','SKDJ_K_HR','O_PROB']]
         res['hour_prediction'] = hour_b
 
     if predict_func3 is not None:
@@ -73,7 +73,7 @@ def predict_stock_dev(trading_date, xg_predict_func, predict_func1, predict_func
         rrr1 = min_b.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        stock_b[['SKDJ_TR_15M','MIN_PROB']] = rrr1[['SKDJ_TR_15M','O_PROB']]
+        stock_b[['SKDJ_TR_15M','SKDJ_K_15M','MIN_PROB']] = rrr1[['SKDJ_TR_15M','SKDJ_K_15M','O_PROB']]
         res['min_prediction'] = min_b
 
     stock_tar = stock_b[(stock_b.O_PROB > 0.5)]
@@ -83,7 +83,7 @@ def predict_stock_dev(trading_date, xg_predict_func, predict_func1, predict_func
     save_prediction(res, file_name, working_dir)
     prediction_report(QA_util_get_real_date(trading_date), stock_tar, stock_b, model_date, top_num, exceptions, percent,
                       name_list = ['NAME','INDUSTRY','SKDJ_TR'],
-                      value_ist = ['O_PROB','RANK','DAY_PROB','DAY_RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
+                      value_ist = ['SKDJ_K','SKDJ_K_HR','O_PROB','RANK','DAY_PROB','DAY_RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
                       sort_mark ='DAY_RANK',
-                      selec_list=['NAME','INDUSTRY','SKDJ_TR','O_PROB','DAY_PROB','RANK','DAY_RANK'],
+                      selec_list=['NAME','INDUSTRY','SKDJ_TR','SKDJ_K','SKDJ_K_HR','O_PROB','DAY_PROB','RANK','DAY_RANK'],
                       account='name:client-1', ui_log = None)

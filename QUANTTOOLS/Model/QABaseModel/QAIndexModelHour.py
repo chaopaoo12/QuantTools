@@ -74,7 +74,7 @@ class QAIndexModelHour(QAModel):
         elif type == 'real':
             b = train[['y_pred','Z_PROB','O_PROB','RANK']]
 
-        b = b.join(data[['SKDJ_TR_HR','CCI_HR','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR']])
+        b = b.join(data[['SKDJ_TR_HR','CCI_HR','SKDJ_K_HR','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR']])
         return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
