@@ -74,7 +74,7 @@ def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
         start = QA_util_get_pre_trade_date(start_date,12)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_fetch_index_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='15min')
+            data = QA_fetch_index_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='30min')
         except:
             QA_util_log_info("JOB No Minly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'hour':
@@ -242,7 +242,7 @@ def QA_fetch_get_index_indicator_short(code, start_date, end_date, type = 'day')
         start = QA_util_get_pre_trade_date(start_date,12)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_fetch_index_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='15min')
+            data = QA_fetch_index_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='30min')
         except:
             QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
     elif type == 'hour':
