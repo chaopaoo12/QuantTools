@@ -27,7 +27,7 @@ def predict_index_dev(trading_date, predict_func1, predict_func2, predict_func3,
         rrr1 = hour_b.reset_index().set_index('datetime')
         rrr1 = rrr1[rrr1.index.hour == 15].reset_index()
         rrr1 = rrr1.assign(date=rrr1.datetime.apply(lambda x:str(x)[0:10])).set_index(['date','code'])
-        stock_b[['SKDJ_TR_HR','SKDJ_K_HR','HOUR_PROB']] = rrr1[['SKDJ_TR_HR','O_PROB','SKDJ_K_HR']]
+        stock_b[['SKDJ_TR_HR','SKDJ_K_HR','HOUR_PROB']] = rrr1[['SKDJ_TR_HR','SKDJ_K_HR','O_PROB']]
         res['hour_prediction'] = hour_b
 
     if predict_func3 is not None:
