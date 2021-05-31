@@ -186,7 +186,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
 
     ###近期表现强势的指数
     try:
-        top_index = prediction[prediction.INDEX_TARGET5 > 5][['NAME','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_K_HR','DAY_PROB','DAY_RANK','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+        top_index = prediction[prediction.INDEX_TARGET5 > 5][['NAME','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','DAY_RANK','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
     except:
         top_index = None
 
