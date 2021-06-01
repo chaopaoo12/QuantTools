@@ -4,7 +4,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_half_adv
 from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator,ohlc,get_indicator_short
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
-from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq
+from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq, QA_fetch_get_stock_min_sina
 import numpy as np
 
 def QA_fetch_get_future_indicator(code, start_date, end_date, frequence = 'day'):
@@ -291,7 +291,7 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
         start = QA_util_get_pre_trade_date(start_date,20)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_fetch_get_usstock_day_xq(code, start, end_date, period='30m', type='before').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp'])
+            data = QA_fetch_get_stock_min_sina(code, period='30', type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
             data['type'] = '30min'
             data = QA_DataStruct_Stock_min(data)
         except:
@@ -300,7 +300,7 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
         start = QA_util_get_pre_trade_date(start_date,55)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
-            data = QA_fetch_get_usstock_day_xq(code, start, end_date, period='60m', type='before').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date','date_stamp'])
+            data = QA_fetch_get_stock_min_sina(code, period='60', type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
             data['type'] = '60min'
             data = QA_DataStruct_Stock_min(data)
         except:
