@@ -494,7 +494,7 @@ def QA_fetch_get_stock_quant_hour(code, start_date, end_date):
                          ((code.index(i) +1), len(code), i, start_date, end_date))
         try:
             res = res.append(QA_fetch_get_stock_indicator_realtime(i, start_date, end_date, type = 'hour'))
-            time.sleep(1.5)
+            time.sleep(2.5)
         except:
             pass
     return(res)
@@ -507,7 +507,7 @@ def QA_fetch_get_stock_quant_min(code, start_date, end_date):
         try:
             data = QA_fetch_get_stock_indicator_realtime(i, start_date, end_date, type = 'min')
             res = res.append(data)
-            time.sleep(1.5)
+            time.sleep(2.5)
         except:
             pass
     return(res)
