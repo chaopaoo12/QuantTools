@@ -292,7 +292,7 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA_fetch_get_stock_min_sina(code, period='30', type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
-            data['type'] = '30min'
+            data = data.assign(type='30min',amount=0)
             data = QA_DataStruct_Stock_min(data)
         except:
             QA_util_log_info("JOB No Minly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
@@ -301,7 +301,7 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA_fetch_get_stock_min_sina(code, period='60', type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
-            data['type'] = '60min'
+            data = data.assign(type='60min',amount=0)
             data = QA_DataStruct_Stock_min(data)
         except:
             QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
