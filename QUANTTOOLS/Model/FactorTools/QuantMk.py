@@ -315,7 +315,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
     elif type == 'model':
         res = QA_fetch_stock_quant_min(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
-        res = QA_fetch_get_stock_quant_min(codes, start_date, end_date)
+        res = QA_fetch_get_stock_quant_min(codes, start_date, end_date).drop(['date','time_stamp'],axis=1)
         res.columns = [x.upper() + '_30M' for x in res.columns]
     return(res)
 
@@ -348,7 +348,7 @@ def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block 
     elif type == 'model':
         res = QA_fetch_stock_quant_min(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
-        res = QA_fetch_get_stock_quant_min(codes, start_date, end_date)
+        res = QA_fetch_get_stock_quant_min(codes, start_date, end_date).drop(['date','time_stamp'],axis=1)
         res.columns = [x.upper() + '_30M' for x in res.columns]
     return(res)
 
