@@ -125,7 +125,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import (QA_fetch_get_quant_data
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAusstock import (QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare)
 
-from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import (QA_fetch_get_usstock_report_xq, QA_fetch_get_usstock_day_xq)
+from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import (QA_fetch_get_usstock_report_xq, QA_fetch_get_usstock_day_xq, QA_fetch_get_stock_min_sina)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import (QA_fetch_get_stock_close,fetch_get_stock_code_all,
                                                  QA_fetch_get_stock_realtm_ask,QA_fetch_get_stock_realtm_askvol,
