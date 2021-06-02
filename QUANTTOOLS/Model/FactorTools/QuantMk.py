@@ -262,6 +262,9 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
     elif type == 'real':
         res = QA_fetch_get_stock_quant_hour(codes, start_date, end_date).drop(['date','time_stamp'],axis=1)
         res.columns = [x.upper() + '_HR' for x in res.columns]
+        res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date).drop(['date','time_stamp'],axis=1)
+        res1.columns = [x.upper() + '_30M' for x in res.columns]
+        res = res.join(res1)
     return(res)
 
 def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
