@@ -727,7 +727,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, norm_ty
 
         QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
-        week_res = week(start_date,end_date)
+        week_res = week(QA_util_get_pre_trade_date(start,90),end_date)
 
         QA_util_log_info(
             'JOB Get Stock Alpha191 train data start=%s end=%s' % (start, end))
@@ -838,7 +838,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
 
         QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
-        week_res = week(start_date,end_date)
+        week_res = week(QA_util_get_pre_trade_date(start,90),end_date)
 
         QA_util_log_info(
             'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
@@ -1145,6 +1145,8 @@ def QA_fetch_index_technical_index(code, start, end=None, type='day', format='pd
     # code checking
     if type == '15min':
         collections=DATABASE.index_technical_15min
+    if type == '30min':
+        collections=DATABASE.index_technical_30min
     elif type == 'hour':
         collections=DATABASE.index_technical_hour
     elif type == 'day':
@@ -1168,7 +1170,7 @@ def QA_fetch_index_technical_index(code, start, end=None, type='day', format='pd
         res = pd.DataFrame([item for item in cursor])
         try:
             res['date'] = res['date'].apply(lambda x: str(x)[0:10])
-            if type in ['hour','15min', 'min']:
+            if type in ['hour','15min','30min', 'min']:
                 res = res.drop(['time_stamp'],axis=1)
             res = res.drop(['date_stamp'],axis=1).set_index(['date','code'])
         except:
@@ -1257,7 +1259,7 @@ def QA_fetch_index_quant_data(code, start, end = None, norm_type = 'normalizatio
 
         QA_util_log_info(
             'JOB Get Index Tech Week data start=%s end=%s' % (start, end))
-        week_res = week(start_date,end_date)
+        week_res = week(QA_util_get_pre_trade_date(start,90),end_date)
 
         #QA_util_log_info(
         #    'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
