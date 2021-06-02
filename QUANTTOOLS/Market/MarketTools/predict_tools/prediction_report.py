@@ -44,7 +44,7 @@ def Funding_Decision(trading_date, target_pool, sub_accounts, frozen, percent, s
 
 def prediction_report(trading_date, target_pool, prediction, model_date, top_num, exceptions, percent,
                       name_list = ['NAME','INDUSTRY'],
-                      value_ist = ['Z_PROB','O_PROB','RANK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
+                      value_ist = ['Z_PROB','O_PROB','RANK','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
                       sort_mark ='RANK',
                       selec_list=['NAME','INDUSTRY','Z_PROB','O_PROB','RANK'],
                       account='name:client-1',  ui_log = None):
@@ -160,16 +160,16 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)))
 
     ###目前趋势中的指数
-    terns_index = prediction[(prediction.SKDJ_TR == 1)].loc[trading_date][['NAME','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('DAY_PROB',ascending=False)
+    terns_index = prediction[(prediction.SKDJ_TR == 1)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('DAY_PROB',ascending=False)
 
     ###日线入场信号
     try:
-        in_list = prediction[((prediction.SKDJ_CROSS2 == 1) | (prediction.CROSS_JC == 1))& (prediction.CCI > 0)].loc[trading_date]
+        in_list = prediction[((prediction.SKDJ_CROSS2 == 1) | (prediction.CROSS_JC == 1))& (prediction.CCI > 0)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']]
     except:
         in_list = None
 
     try:
-        out_list = prediction[(prediction.SKDJ_CROSS1 == 1)].loc[trading_date]
+        out_list = prediction[(prediction.SKDJ_CROSS1 == 1)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']]
     except:
         out_list = None
 
@@ -186,7 +186,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
 
     ###近期表现强势的指数
     try:
-        top_index = prediction[prediction.INDEX_TARGET5 > 5][['NAME','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','DAY_RANK','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
+        top_index = prediction[prediction.INDEX_TARGET5 > 5][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','DAY_RANK','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
     except:
         top_index = None
 
@@ -194,7 +194,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     #hour_prediction['SHIFT_O_PROB'] = hour_prediction['O_PROB'].groupby('code').shift()
 
     try:
-        target_fd = prediction[((prediction.SKDJ_CROSS2 == 1) | (prediction.CROSS_JC == 1))& (prediction.CCI > 0)]
+        target_fd = prediction[((prediction.SKDJ_CROSS2 == 1) | (prediction.CROSS_JC == 1))& (prediction.CCI > 0)][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','DAY_RANK','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']]
     except:
         target_fd = None
 
@@ -205,9 +205,9 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     ###小时级趋势延续至日线 不需要
 
     ####大盘情况预测
-    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
-    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
-    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
+    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
+    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
+    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
 
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)))
 

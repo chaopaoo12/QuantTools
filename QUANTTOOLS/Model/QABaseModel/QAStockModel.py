@@ -133,7 +133,7 @@ class QAStockModel(QAModel):
         elif type == 'real':
             b = train[['y_pred','Z_PROB','O_PROB','RANK']]
 
-        b = b.join(data[['SKDJ_TR','SKDJ_K','SKDJ_TR_HR','SKDJ_K_HR']])
+        b = b.join(data[['SKDJ_TR','SKDJ_K','SKDJ_TR_HR','SKDJ_K_HR','SKDJ_TR_WK','SKDJ_K_WK']])
         return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
