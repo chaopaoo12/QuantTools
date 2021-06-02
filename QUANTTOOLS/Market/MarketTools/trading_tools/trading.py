@@ -232,7 +232,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         name = QA_fetch_stock_name(code)
                         QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                         try:
-                            res2 = data.loc[(stm, code)][['SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
+                            res2 = data.loc[(stm, code)][['SKDJ_K_30M','SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
                             QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                         except:
                             res2 = None
@@ -272,12 +272,10 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
                             if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
                                 QA_util_log_info('##JOB Now Buying Ckeck==== {}'.format(code), ui_log = None)
-                                if res2.CCI_HR > 0 and res2.SKDJ_CROSS2_HR == 1 and res2.CROSS_SC_HR == 0:
+                                if res2.SKDJ_K_30M <= 40 and res2.SKDJ_CROSS2_HR == 1:
                                     msg = 'SKDJ金叉'
-                                elif res2.CROSS_JC_HR == 1 and res2.CCI_HR > 0 and res2.SKDJ_CROSS1_HR == 0 :
+                                elif res2.CROSS_JC_HR == 1 and res2.SKDJ_K_30M <= 40:
                                     msg = 'MACD金叉'
-                                elif res2.CROSS_JC_HR == 1 and res2.SKDJ_CROSS2_HR == 1:
-                                    msg = '双金叉'
                                 else:
                                     msg = None
 
@@ -299,8 +297,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     QA_util_log_info('##JOB Not On Buying ==== {}'.format(code))
                         #except:
                         #        pass
-                QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS1_HR == 1][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
-                QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS2_HR == 1][['SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
+                QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS1_HR == 1][['SKDJ_K_30M','SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
+                QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS2_HR == 1][['SKDJ_K_30M','SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
                 time.sleep(30)
 
 
