@@ -1287,3 +1287,124 @@ def QA_SU_save_index_technical_15min_his(codes = None,start_date=None,end_date=N
     else:
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
+
+def QA_SU_save_index_technical_30min_day(codes = None,start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+    '''
+     save stock_day
+    计算技术指标
+    历史全部数据
+    :return:
+    '''
+    if start_date == None:
+        if end_date == None:
+            end_date = QA_util_today_str()
+            start_date = QA_util_get_pre_trade_date(QA_util_today_str(),1)
+        else:
+            start_date = QA_util_get_pre_trade_date(end_date,1)
+    else:
+        start_date = QA_util_get_pre_trade_date(start_date,1)
+        if end_date == None:
+            end_date = QA_util_today_str()
+
+    if codes is None:
+        codes = QA_fetch_index_list_adv().code.unique().tolist()
+    else:
+        codes = QA_util_code_tolist(codes)
+
+    index_technical_hour = client.index_technical_30min
+    index_technical_hour.create_index([('code',
+                                        pymongo.ASCENDING),
+                                       ('time_stamp',
+                                        pymongo.ASCENDING),
+                                       ('date_stamp',
+                                        pymongo.ASCENDING)], unique=True)
+    err = []
+
+    def __saving_work(code,start_date,end_date):
+        try:
+            QA_util_log_info(
+                '##JOB01 Now Saving index_technical_30min from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
+            data = QA_fetch_get_index_indicator(code, start_date, end_date, 'min')
+            if data is not None:
+                index_technical_hour.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
+        except Exception as error0:
+            print(error0)
+            err.append(str(code))
+
+    for item in codes:
+
+        QA_util_log_info('The {} of Total {}'.format
+                         ((codes.index(item) +1), len(codes)))
+
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(item) +1) / len(codes) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
+        QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+
+        __saving_work( item,start_date,end_date)
+
+    if len(err) < 1:
+        QA_util_log_info('SUCCESS save index_technical_30min ^_^',  ui_log)
+    else:
+        QA_util_log_info(' ERROR CODE \n ',  ui_log)
+        QA_util_log_info(err, ui_log)
+
+def QA_SU_save_index_technical_30min_his(codes = None,start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+
+    '''
+     save stock_day
+    计算技术指标
+    历史全部数据
+    :return:
+    '''
+    if start_date == None:
+        if end_date == None:
+            end_date = QA_util_today_str()
+            start_date = "2010-01-01"
+        else:
+            start_date = QA_util_get_pre_trade_date(end_date,1)
+    else:
+        start_date = QA_util_get_pre_trade_date(start_date,1)
+        if end_date == None:
+            end_date = QA_util_today_str()
+
+    if codes is None:
+        codes = QA_fetch_index_list_adv().code.unique().tolist()
+    else:
+        codes = QA_util_code_tolist(codes)
+
+    index_technical_hour = client.index_technical_30min
+    index_technical_hour.create_index([('code',
+                                        pymongo.ASCENDING),
+                                       ('time_stamp',
+                                        pymongo.ASCENDING),
+                                       ('date_stamp',
+                                        pymongo.ASCENDING)], unique=True)
+    err = []
+
+    def __saving_work(code,start_date,end_date):
+        try:
+            QA_util_log_info(
+                '##JOB01 Now Saving index_technical_30min from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
+            data = QA_fetch_get_index_indicator(code, start_date, end_date, 'min')
+            if data is not None:
+                index_technical_hour.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
+        except Exception as error0:
+            print(error0)
+            err.append(str(code))
+
+    for item in codes:
+
+        QA_util_log_info('The {} of Total {}'.format
+                         ((codes.index(item) +1), len(codes)))
+
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(item) +1) / len(codes) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
+        QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+
+        __saving_work( item,start_date,end_date)
+
+    if len(err) < 1:
+        QA_util_log_info('SUCCESS save index_technical_30min ^_^',  ui_log)
+    else:
+        QA_util_log_info(' ERROR CODE \n ',  ui_log)
+        QA_util_log_info(err, ui_log)
