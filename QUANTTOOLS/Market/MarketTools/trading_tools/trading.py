@@ -232,7 +232,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         name = QA_fetch_stock_name(code)
                         QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                         try:
-                            res2 = data.loc[(stm, code)][['SKDJ_K_30M','SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
+                            res2 = data.loc[(stm, code)][['SKDJ_K_30M','SKDJ_TR_HR','SKDJ_TR_30M','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','SKDJ_CROSS2_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
                             QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                         except:
                             res2 = None
@@ -247,9 +247,9 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     msg = 'SKDJ死叉'
                                 #elif res2.MA10_HR < 0:
                                 #    msg = '打穿MA10'
-                                elif res2.SKDJ_TR_HR < 1 and res2.MA5_HR < 0:
+                                elif res2.SKDJ_TR_30M < 1 and res2.MA5_30M < 0:
                                     ##当日错误入场之后 次日及早离场
-                                    msg = 'SKDJ止损:跌破MA5'
+                                    msg = 'SKDJ止损:30Min跌破MA5'
                                 else:
                                     msg = None
                                     ###卖出信号1
