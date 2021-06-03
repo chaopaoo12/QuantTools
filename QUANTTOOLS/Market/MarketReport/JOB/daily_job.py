@@ -10,51 +10,50 @@ def aotu_report(trading_date):
         res = btc_daily(code)
         BTC_RES = BTC_RES.append({'code':code,
                                   'daily':res[0], 'weekly':res[1],
+                                  'SKDJ_K':res[6], 'SKDJ_TR':res[7],
+                                  'SKDJ_K_WK':res[8],'SKDJ_TR_WK':res[9],
                                   '日线斜率':res[2], '斜率变动':res[3],
-                                  '五日偏离':res[4], '十五日偏离':res[5],
-                                  'SKDJ_MARK':res[6], 'CCI_MARK':res[7], 'CCI':res[8],
-                                  'SKDJ_MARK_WK':res[9], 'CCI_MARK_WK':res[10], 'CCI_WK':res[11]}, ignore_index=True)
+                                  '五日偏离':res[4], '十五日偏离':res[5]}, ignore_index=True)
 
     for code in GOLD:
         res = gold_daily(code, trading_date)
         BTC_RES = BTC_RES.append({'code':code,
                                   'daily':res[0], 'weekly':res[1],
+                                  'SKDJ_K':res[6], 'SKDJ_TR':res[7],
+                                  'SKDJ_K_WK':res[8],'SKDJ_TR_WK':res[9],
                                   '日线斜率':res[2], '斜率变动':res[3],
-                                  '五日偏离':res[4], '十五日偏离':res[5],
-                                  'SKDJ_MARK':res[6], 'CCI_MARK':res[7], 'CCI':res[8],
-                                  'SKDJ_MARK_WK':res[9], 'CCI_MARK_WK':res[10], 'CCI_WK':res[11]}, ignore_index=True)
+                                  '五日偏离':res[4], '十五日偏离':res[5]}, ignore_index=True)
 
     for code in MONEY:
         res = money_daily(code, trading_date)
         BTC_RES = BTC_RES.append({'code':code,
                                   'daily':res[0], 'weekly':res[1],
+                                  'SKDJ_K':res[6], 'SKDJ_TR':res[7],
+                                  'SKDJ_K_WK':res[8],'SKDJ_TR_WK':res[9],
                                   '日线斜率':res[2], '斜率变动':res[3],
-                                  '五日偏离':res[4], '十五日偏离':res[5],
-                                  'SKDJ_MARK':res[6], 'CCI_MARK':res[7], 'CCI':res[8],
-                                  'SKDJ_MARK_WK':res[9], 'CCI_MARK_WK':res[10], 'CCI_WK':res[11]}, ignore_index=True)
+                                  '五日偏离':res[4], '十五日偏离':res[5]}, ignore_index=True)
 
     for code in CN_INDEX:
         res = stock_daily(code, trading_date, trading_date)
         BTC_RES = BTC_RES.append({'code':code,
                                   'daily':res[0], 'weekly':res[1],
+                                  'SKDJ_K':res[6], 'SKDJ_TR':res[7],
+                                  'SKDJ_K_WK':res[8],'SKDJ_TR_WK':res[9],
                                   '日线斜率':res[2], '斜率变动':res[3],
-                                  '五日偏离':res[4], '十五日偏离':res[5],
-                                  'SKDJ_MARK':res[6], 'CCI_MARK':res[7], 'CCI':res[8],
-                                  'SKDJ_MARK_WK':res[9], 'CCI_MARK_WK':res[10], 'CCI_WK':res[11]}, ignore_index=True)
+                                  '五日偏离':res[4], '十五日偏离':res[5]}, ignore_index=True)
 
     for code in US_INDEX:
         res = stock_daily(code, trading_date, trading_date)
         BTC_RES = BTC_RES.append({'code':code,
                                   'daily':res[0], 'weekly':res[1],
+                                  'SKDJ_K':res[6], 'SKDJ_TR':res[7],
+                                  'SKDJ_K_WK':res[8],'SKDJ_TR_WK':res[9],
                                   '日线斜率':res[2], '斜率变动':res[3],
-                                  '五日偏离':res[4], '十五日偏离':res[5],
-                                  'SKDJ_MARK':res[6], 'CCI_MARK':res[7], 'CCI':res[8],
-                                  'SKDJ_MARK_WK':res[9], 'CCI_MARK_WK':res[10], 'CCI_WK':res[11]}, ignore_index=True)
+                                  '五日偏离':res[4], '十五日偏离':res[5]}, ignore_index=True)
     #BTC_RES = BTC_RES.rename(columns={'code':'标的', 'daily':'日线走势', 'weekly':'周线走势'}, inplace = True)
-    target_body = build_table(BTC_RES[['code','daily','日线斜率','斜率变动','五日偏离','十五日偏离',
-                                       'SKDJ_MARK','CCI_MARK','CCI',
-                                       'weekly',
-                                       'SKDJ_MARK_WK','CCI_MARK_WK','CCI_WK'
+    target_body = build_table(BTC_RES[['code','daily','weekly',
+                                       'SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK',
+                                       '日线斜率','斜率变动','五日偏离','十五日偏离',
                                        ]], '市场价格监控')
     msg = build_email(build_head(),target_body)
     send_email('金融产品价格趋势' + trading_date, msg, trading_date)
