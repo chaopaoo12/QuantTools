@@ -62,5 +62,5 @@ def predict_watch(trading_date, working_dir=working_dir):
     pe_list = data[(data.ROE_RATE > 1)&(data.PE_RATE < 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)][['SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','INDUSTRY','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
     target_pool2 = pe_list.reset_index().sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
     target_pool1 = wk_list.reset_index().sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
-    target_pool3 = pe_list[pe_list.SKDJ_K_WK <= 30].reindex(index=pe_list).reindex(index=wk_list).dropna(how='all')
-    base_report(trading_date, '观察报告', **{'低估值清单': target_pool2, '周线趋势清单': target_pool1, '复合清单': target_pool3})
+    target_pool3 = pe_list[pe_list.SKDJ_K_WK <= 30].sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
+    base_report(trading_date, '观察报告', **{'低估值清单': target_pool2, '复合清单': target_pool3})
