@@ -30,9 +30,6 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
         target_pool = r_tar.append(pe_list).reset_index().drop_duplicates(subset=['code'],keep='first',inplace=False).set_index('code')
         #target_pool = target_pool.loc[QA_util_get_last_day(trading_date)].reindex(index=pe_list.index).dropna(how='all')
 
-    ##追涨抄底控制 K<=25 抄底 K>=75追涨
-    #data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date),code=list(target_pool.index),type='crawl', block=False, sub_block=False,norm_type=None)
-
     res = trading_base2(trading_date, target_pool, percent = per, account= account, title = model_name, exceptions = exceptions)
     return(res)
 
