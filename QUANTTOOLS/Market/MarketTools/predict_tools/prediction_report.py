@@ -160,18 +160,18 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)))
 
     ###目前趋势中的指数
-    terns_index = prediction[(prediction.SKDJ_TR == 1)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('DAY_PROB',ascending=False)
+    terns_index = prediction[(prediction.SKDJ_TR == 1)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('SKDJ_K',ascending=True)
 
     ###日线入场信号
-    try:
-        in_list = prediction[((prediction.SKDJ_CROSS2 == 1) | (prediction.CROSS_JC == 1))& (prediction.CCI > 0)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']]
-    except:
-        in_list = None
+    #try:
+    #    in_list = prediction[((prediction.SKDJ_CROSS2 == 1) | (prediction.CROSS_JC == 1))& (prediction.CCI > 0)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']]
+    #except:
+    #    in_list = None
 
-    try:
-        out_list = prediction[(prediction.SKDJ_CROSS1 == 1)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']]
-    except:
-        out_list = None
+    #try:
+    #    out_list = prediction[(prediction.SKDJ_CROSS1 == 1)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']]
+    #except:
+    #    out_list = None
 
     ###hour线入场信号
     #try:
@@ -237,15 +237,15 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
         send_email('交易报告:'+ trading_date, "消息组件运算失败:创业指数情况", trading_date)
 
     #########
-    try:
-        in_body = build_table(in_list, '入场提示')
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:入场提示", trading_date)
+    #try:
+    #    in_body = build_table(in_list, '入场提示')
+    #except:
+    #    send_email('交易报告:'+ trading_date, "消息组件运算失败:入场提示", trading_date)
 
-    try:
-        out_body = build_table(out_list, '出场提示')
-    except:
-        send_email('交易报告:'+ trading_date, "消息组件运算失败:出场提示", trading_date)
+    #try:
+    #    out_body = build_table(out_list, '出场提示')
+    #except:
+    #    send_email('交易报告:'+ trading_date, "消息组件运算失败:出场提示", trading_date)
 
     try:
         terns_his_body = build_table(top_index, '近期表现强势的指数')
@@ -267,7 +267,8 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
 
     try:
         msg = build_email(build_head(),err_msg,
-                          terns_body,in_body,out_body,market_000001,market_399001,market_399006,
+                          terns_body,#in_body,out_body,
+                          market_000001,market_399001,market_399006,
                           terns_his_body, terns_t_body, terns_h_body)
         send_actionnotice("prediction_report",
                           '交易报告:{}'.format(trading_date),
