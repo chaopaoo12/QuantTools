@@ -13,7 +13,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     #r_tar = prediction_tar[(prediction_tar.RANK <= 20)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
     per = prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]
 
-    if per >= 5:
+    if per >= 1:
         per = percent
         pe_list = None
     else:
