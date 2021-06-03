@@ -55,7 +55,7 @@ def stock_daily(stock, start_date, end_date):
     incrs = day.iloc[-1:]['MA15_D'].values[0]
     SKDJ_MARK = day.iloc[-1:]['SKDJ_CROSS2'].values[0] + day.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
     SKDJ_MARK_WK = week.iloc[-1:]['SKDJ_CROSS2'].values[0] + week.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
-    return(day_check, week_check, incr, incrs, incr5, incr15,SKDJ_MARK,skdj_k,SKDJ_MARK,skdj_k_wk,SKDJ_MARK_WK)
+    return(day_check, week_check, incr, incrs, incr5, incr15,skdj_k,SKDJ_MARK,skdj_k_wk,SKDJ_MARK_WK)
 
 def stock_hourly(stock, start_date, end_date, date_type):
     hour = trends_stock_hour(stock,start_date,end_date)
