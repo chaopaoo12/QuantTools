@@ -214,16 +214,13 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                     mark_tm = "15:00:00"
 
                 if mark_tm == "09:30:00":
-                    data = get_quant_data(QA_util_get_pre_trade_date(trading_date),QA_util_get_pre_trade_date(trading_date),list(set(positions.code.tolist()+list(target_tar.index))), type= 'crawl')
                     stm = QA_util_get_pre_trade_date(trading_date)
                     #hour_data = func(trading_date, working_dir, code = list(set(positions.code.tolist()+list(target_tar.index))), type= 'real', model_name = 'stock_mark_hour')
                 elif mark_tm == '13:00:00':
-                    data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
                     stm = trading_date + ' ' + '11:30:00'
                 else:
-                    data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
                     stm = trading_date + ' ' + mark_tm
-
+                data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
                 QA_util_log_info('##JOB Now Time ==== {}'.format(str(stm)), ui_log = None)
 
                 ####job1 小时级报告 指数小时级跟踪
