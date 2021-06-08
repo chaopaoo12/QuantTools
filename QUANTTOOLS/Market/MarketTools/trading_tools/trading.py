@@ -214,8 +214,9 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                     mark_tm = "15:00:00"
 
                 if mark_tm == "09:30:00":
-                    stm = QA_util_get_pre_trade_date(trading_date)
+                    stm = QA_util_get_pre_trade_date(trading_date) + ' ' + '15:00:00'
                     #hour_data = func(trading_date, working_dir, code = list(set(positions.code.tolist()+list(target_tar.index))), type= 'real', model_name = 'stock_mark_hour')
+
                 elif mark_tm == '13:00:00':
                     stm = trading_date + ' ' + '11:30:00'
                 else:
