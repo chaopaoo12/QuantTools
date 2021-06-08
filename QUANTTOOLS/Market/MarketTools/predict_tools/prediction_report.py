@@ -162,6 +162,15 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     ###目前趋势中的指数
     terns_index = prediction[(prediction.SKDJ_TR == 1)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('SKDJ_K',ascending=True)
 
+    ###周线级别机会
+    WK_index = prediction[(prediction.SKDJ_K_WK <= 30)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('SKDJ_K_WK',ascending=True)
+
+    ###日线级别机会
+    DAY_index = prediction[(prediction.SKDJ_K <= 30)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('SKDJ_K',ascending=True)
+
+    ###小时线级别机会
+    HR_index = prediction[(prediction.SKDJ_K_HR <= 30)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('SKDJ_K_HR',ascending=True)
+
     ###日线入场信号
     #try:
     #    in_list = prediction[((prediction.SKDJ_CROSS2 == 1) | (prediction.CROSS_JC == 1))& (prediction.CCI > 0)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']]
@@ -222,6 +231,21 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
         send_email('交易报告:'+ trading_date, "消息组件运算失败:目前趋势中的指数", trading_date)
 
     try:
+        WK_body = build_table(WK_index, '周线级别机会')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:周线级别机会", trading_date)
+
+    try:
+        DAY_body = build_table(DAY_index, '日线级别机会')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:日线级别机会", trading_date)
+
+    try:
+        HR_body = build_table(HR_index, '小时级别机会')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:小时级别机会", trading_date)
+
+    try:
         market_000001 = build_table(market_000001, '上证指数情况')
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:上证指数情况", trading_date)
@@ -267,7 +291,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
 
     try:
         msg = build_email(build_head(),err_msg,
-                          terns_body,#in_body,out_body,
+                          terns_body,WK_body,DAY_body,HR_body,#in_body,out_body,
                           market_000001,market_399001,market_399006,
                           terns_his_body, terns_t_body, terns_h_body)
         send_actionnotice("prediction_report",
