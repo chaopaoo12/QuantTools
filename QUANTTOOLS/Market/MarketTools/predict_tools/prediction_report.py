@@ -163,13 +163,13 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     terns_index = prediction[(prediction.SKDJ_TR == 1)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('SKDJ_K',ascending=True)
 
     ###周线级别机会
-    WK_index = prediction[(prediction.SKDJ_K_WK <= 30)][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('SKDJ_K_WK',ascending=True)
+    WK_index = prediction[(prediction.SKDJ_K_WK <= 30)][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']].reset_index().sort_values(by=['date','SKDJ_K_WK'],ascending=[False,True]).set_index(['date','code'])
 
     ###日线级别机会
-    DAY_index = prediction[(prediction.SKDJ_K <= 30)][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('SKDJ_K',ascending=True)
+    DAY_index = prediction[(prediction.SKDJ_K <= 30)][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']].reset_index().sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
 
     ###小时线级别机会
-    HR_index = prediction[(prediction.SKDJ_K_HR <= 30)][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('SKDJ_K_HR',ascending=True)
+    HR_index = prediction[(prediction.SKDJ_K_HR <= 30)][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']].reset_index().sort_values(by=['date','SKDJ_K_HR'],ascending=[False,True]).set_index(['date','code'])
 
     ###日线入场信号
     #try:
