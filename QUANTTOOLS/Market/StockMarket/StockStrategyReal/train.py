@@ -91,9 +91,7 @@ def train_index(date, working_dir=working_dir):
     start_date = str(int(date[0:4])-3)+'-01-01'
     end_date = date
 
-    index_model = load_data(index_model, start_date, end_date, norm_type=None)
-
-    index_model = load_data(index_model, start_date, end_date, norm_type=None)
+    index_model = load_data(index_model, start_date, end_date, type='crawl', norm_type=None)
 
     index_model = prepare_data(index_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'INDEX_TARGET5', type='percent')
 
