@@ -88,7 +88,7 @@ def train_hedge(date, working_dir=working_dir):
 def train_index(date, working_dir=working_dir):
     index_model = QAIndexXGBoost()
 
-    start_date = str(int(date[0:4])-3)+'-05-01'
+    start_date = str(int(date[0:4])-3)+'-01-01'
     end_date = date
 
     index_model = load_data(index_model, start_date, end_date, norm_type=None)
