@@ -1261,12 +1261,12 @@ def QA_fetch_index_quant_data(code, start, end = None, norm_type = 'normalizatio
             'JOB Get Index Tech Week data start=%s end=%s' % (start, end))
         week_res = week(QA_util_get_pre_trade_date(start,90),end_date)
 
-        #QA_util_log_info(
-        #    'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
-        #hour_res = hour(start_date, end_date)
+        QA_util_log_info(
+            'JOB Get Index Tech Hour data start=%s end=%s' % (start, end))
+        hour_res = hour(start_date, end_date)
 
         try:
-            res = index_res.join(week_res).groupby('code').fillna(method='ffill').loc[((rng,code),)]
+            res = index_res.join(week_res).join(hour_res).groupby('code').fillna(method='ffill').loc[((rng,code),)]
 
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
