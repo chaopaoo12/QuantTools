@@ -45,7 +45,7 @@ def predict_minly(trading_date, top_num=top, working_dir=working_dir, exceptions
 def predict_index_summary(trading_date, top_num=top, working_dir=working_dir):
     predict_index_dev(trading_date,
                       predict_func1 =concat_predict_index, predict_func2 =concat_predict_indexhour, predict_func3 =None,
-                      day_moel = 'index_mars_day', hour_model='index_mars_hour', min_model=None,
+                      day_moel = 'index_xg', hour_model='index_mars_hour', min_model=None,
                       file_name = 'prediction_index_summary', top_num=top_num, working_dir=working_dir)
 
 def predict_stock_summary(trading_date, top_num=top, working_dir=working_dir):
