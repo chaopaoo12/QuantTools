@@ -95,7 +95,7 @@ def train_index(date, working_dir=working_dir):
 
     index_model = load_data(index_model, start_date, end_date, norm_type=None)
 
-    index_model = prepare_data(index_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET5', type='percent')
+    index_model = prepare_data(index_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'INDEX_TARGET5', type='percent')
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
