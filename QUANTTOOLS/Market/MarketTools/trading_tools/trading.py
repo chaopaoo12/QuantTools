@@ -277,20 +277,23 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 else:
                                     msg = None
 
-                                if msg is not None and get_UseCapital(client, account) >= 3000:
-                                    QA_util_log_info('##JOB Now Buying==== {}'.format(code), ui_log = None)
-                                    ###买入信号
-                                    send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
-                                    price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
-                                    deal_pos = round(80000 / price,2)
-                                    target_pos = deal_pos
-                                    industry = str(target_tar.loc[code].INDUSTRY)
-                                    QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}{msg}'.format(code = code, stm = str(stm), msg=msg), ui_log = None)
-                                    if get_hold(client, account) <= percent:
-                                        BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
-                                        time.sleep(1)
+                                if msg is not None:
+                                    if get_UseCapital(client, account) >= 3000:
+                                        QA_util_log_info('##JOB Now Buying==== {}'.format(code), ui_log = None)
+                                        ###买入信号
+                                        send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
+                                        price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
+                                        deal_pos = round(80000 / price,2)
+                                        target_pos = deal_pos
+                                        industry = str(target_tar.loc[code].INDUSTRY)
+                                        QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}{msg}'.format(code = code, stm = str(stm), msg=msg), ui_log = None)
+                                        if get_hold(client, account) <= percent:
+                                            BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
+                                            time.sleep(1)
+                                        else:
+                                            QA_util_log_info('##JOB Now Full {code} {percent}/{hold} ===== {stm}'.format(code = code,percent=percent,hold=get_hold(client, account), stm = str(stm)), ui_log = None)
                                     else:
-                                        QA_util_log_info('##JOB Now Full {code} {percent}/{hold} ===== {stm}'.format(code = code,percent=percent,hold=get_hold(client, account), stm = str(stm)), ui_log = None)
+                                        QA_util_log_info('##JOB Now Not Enough Money==== {}'.format(code), ui_log = None)
                                 else:
                                     QA_util_log_info('##JOB Not On Buying ==== {}'.format(code))
                         #except:
