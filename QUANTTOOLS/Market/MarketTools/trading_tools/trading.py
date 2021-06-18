@@ -272,7 +272,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 QA_util_log_info('##JOB Now Buying Ckeck==== {}'.format(code), ui_log = None)
                                 if res2.SKDJ_K_30M <= 50 and res2.SKDJ_CROSS2_HR == 1 and res2.SKDJ_TR_30M > 0:
                                     msg = 'SKDJ金叉'
-                                elif res2.CROSS_JC_HR == 1 and res2.SKDJ_K_30M <= 40 and res2.SKDJ_TR_30M > 0:
+                                elif res2.CROSS_JC_HR == 1 and res2.SKDJ_K_30M <= 50 and res2.SKDJ_TR_30M > 0:
                                     msg = 'MACD金叉'
                                 else:
                                     msg = None
@@ -295,7 +295,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     else:
                                         QA_util_log_info('##JOB Now Not Enough Money==== {}'.format(code), ui_log = None)
                                 else:
-                                    QA_util_log_info('##JOB Not On Buying ==== {}'.format(code))
+                                    QA_util_log_info('##JOB Not On Buying ==== {} SKDJ_CROSS2_HR:{} CROSS_JC_HR:{} SKDJ_K_30M:{} SKDJ_TR_30M:{}'.format(code, res2.SKDJ_CROSS2_HR, res2.CROSS_JC_HR, res2.SKDJ_K_30M, res2.SKDJ_TR_30M))
                         #except:
                         #        pass
                 QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS1_HR == 1][['SKDJ_K_30M','SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
