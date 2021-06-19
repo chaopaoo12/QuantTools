@@ -10,9 +10,6 @@ ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Or
 
 sql_text = '''select to_char(ORDER_DATE, 'yyyy-mm-dd') as "date",
 CODE AS "code",
-PE_10VAL,PEEGL_10VAL,PB_10VAL,
-PS_10VAL,PE_20VAL,PEEGL_20VAL,
-PB_20VAL,PS_20VAL,PE_30VAL,
 PE_30DN,PE_30UP,PEEGL_30VAL,PEEGL_30DN,PEEGL_30UP,
 PB_30VAL,PB_30DN,PB_30UP,
 PS_30VAL,PS_30DN,PS_30UP,

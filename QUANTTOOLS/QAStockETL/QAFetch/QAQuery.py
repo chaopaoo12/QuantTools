@@ -694,11 +694,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, norm_ty
         __data = []
         QA_util_log_info(
             'JOB Get Stock Financial train data start=%s end=%s' % (start, end))
-        pe_res = pe(start_date,end_date)[['PE_10VAL','PEEGL_10VAL','PB_10VAL',
-                                          #'PEG_10VAL',
-                                          'PS_10VAL','PE_20VAL','PEEGL_20VAL','PB_20VAL',
-                                          #'PEG_20VAL',
-                                          'PS_20VAL','PE_30VAL','PE_30DN','PE_30UP',
+        pe_res = pe(start_date,end_date)[['PE_30VAL','PE_30DN','PE_30UP',
                                           'PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
                                           'PB_30VAL','PB_30DN','PB_30UP',
                                           #'PEG_30VAL','PEG_30DN','PEG_30UP',
@@ -805,11 +801,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
         __data = []
         QA_util_log_info(
             'JOB Get Stock Financial data start=%s end=%s' % (start, end))
-        pe_res = pe(start_date,end_date)[['PE_10VAL','PEEGL_10VAL','PB_10VAL',
-                                          #'PEG_10VAL',
-                                          'PS_10VAL','PE_20VAL','PEEGL_20VAL','PB_20VAL',
-                                          #'PEG_20VAL',
-                                          'PS_20VAL','PE_30VAL','PE_30DN','PE_30UP',
+        pe_res = pe(start_date,end_date)[['PE_30VAL','PE_30DN','PE_30UP',
                                           'PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
                                           'PB_30VAL','PB_30DN','PB_30UP',
                                           #'PEG_30VAL','PEG_30DN','PEG_30UP',
@@ -2927,10 +2919,7 @@ def QA_fetch_usstock_quant_data_train(code, start, end=None, block = True, norm_
         __data = []
         QA_util_log_info(
             'JOB Get Stock Financial train data start=%s end=%s' % (start, end))
-        pe_res = pe(start_date,end_date)[['PE_10VAL','PEEGL_10VAL','PB_10VAL','PS_10VAL',
-                                          'PE_20VAL','PEEGL_20VAL','PB_20VAL',
-                                          #,'PEG_20VAL',
-                                          'PS_20VAL','PE_30VAL','PE_30DN','PE_30UP',
+        pe_res = pe(start_date,end_date)[['PE_30VAL','PE_30DN','PE_30UP',
                                           'PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
                                           'PB_30VAL','PB_30DN','PB_30UP',
                                           #'PEG_30VAL','PEG_30DN','PEG_30UP',
