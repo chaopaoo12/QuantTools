@@ -88,7 +88,7 @@ def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method
         codes = list(code_list[code_list.HY.apply(lambda x:len(x) != 5)].code)
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
-    codes = codes + ['000001','399001','399006']
+    codes = codes + ['000001','399001','399005','399006']
     codes = list(set(codes))
 
     codes = [i for i in codes if i not in ['880602','880604', '880650', '880608']]
@@ -277,7 +277,7 @@ def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method
         codes = list(code_list[code_list.HY.apply(lambda x:len(x) != 5)].code)
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
-    codes = codes + ['000001','399001','399006']
+    codes = codes + ['000001','399001','399005','399006']
     codes = list(set(codes))
 
     codes = [i for i in codes if i not in ['880602','880604', '880650', '880608']]
@@ -365,7 +365,7 @@ def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', metho
         codes = list(code_list[code_list.HY.apply(lambda x:len(x) != 5)].code)
     else:
         codes = list(code_list[code_list.code.isin(code)].code)
-    codes = codes + ['000001','399001','399006']
+    codes = codes + ['000001','399001','399005','399006']
     codes = list(set(codes))
 
     codes = [i for i in codes if i not in ['880602','880604', '880650', '880608']]
