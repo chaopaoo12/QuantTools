@@ -217,6 +217,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
     market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
     market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
+    market_399005 = prediction.loc[(slice(None),'399005'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
 
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)))
 
@@ -256,6 +257,11 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
         send_email('交易报告:'+ trading_date, "消息组件运算失败:深证指数情况", trading_date)
 
     try:
+        market_399005 = build_table(market_399005, '中小板指数情况')
+    except:
+        send_email('交易报告:'+ trading_date, "消息组件运算失败:中小板指数情况", trading_date)
+
+    try:
         market_399006 = build_table(market_399006, '创业指数情况')
     except:
         send_email('交易报告:'+ trading_date, "消息组件运算失败:创业指数情况", trading_date)
@@ -291,8 +297,9 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
 
     try:
         msg = build_email(build_head(),err_msg,
-                          terns_body,WK_body,DAY_body,HR_body,#in_body,out_body,
-                          market_000001,market_399001,market_399006,
+                          terns_body,#in_body,out_body,
+                          market_000001,market_399001,market_399005, market_399006,
+                          WK_body,DAY_body,HR_body,
                           terns_his_body, terns_t_body, terns_h_body)
         send_actionnotice("prediction_report",
                           '交易报告:{}'.format(trading_date),
