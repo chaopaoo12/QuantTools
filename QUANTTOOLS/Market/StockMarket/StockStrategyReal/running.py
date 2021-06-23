@@ -71,7 +71,7 @@ def index_predict_watch(trading_date, working_dir=working_dir):
     data = get_index_quant_data(QA_util_get_pre_trade_date(trading_date,90),trading_date,type='crawl', norm_type=None)
     r = data[['PASS_MARK']].groupby('code').describe()
     r.columns=['cnt','mean','std','min','p25','median','p75','max']
-    rr = r.join(data.loc['2021-06-21'][['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR']])
+    rr = r.join(data.loc[trading_date][['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR']])
     rr['per'] = rr['p75'] / abs(rr['p25'])
     rr1 = rr[(rr.per >= 1.5)&(rr['std'] >=1.8)].sort_values('SKDJ_K').reset_index()
     rr1 = rr1.assign(NAME=rr1.code.apply(lambda x:QA_fetch_index_name(x))).set_index('code')
