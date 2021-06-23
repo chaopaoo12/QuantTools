@@ -28,7 +28,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
         #target_pool = target_pool.loc[QA_util_get_last_day(trading_date)].reindex(index=r_tar.index).dropna(how='all')
     else:
         #target_pool,prediction,start,end,Model_Date = func(QA_util_get_last_day(trading_date), working_dir, code = list(r_tar.index) + pe_list, type = 'crawl', model_name = 'stock_mars_day')
-        target_pool = r_tar.append(pe_list).reset_index().drop_duplicates(subset=['code'],keep='first',inplace=False).set_index('code').sort_values('SKDJ_K_HR')
+        target_pool = r_tar.append(pe_list).reset_index().drop_duplicates(subset=['code'],keep='first',inplace=False).set_index('code').sort_values('SKDJ_K')
         #target_pool = target_pool.loc[QA_util_get_last_day(trading_date)].reindex(index=pe_list.index).dropna(how='all')
 
     res = trading_base2(trading_date, target_pool, percent = per, account= account, title = model_name, exceptions = exceptions)
