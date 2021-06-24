@@ -14,7 +14,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     r.columns=['cnt','mean','std','min','p25','median','p75','max']
     rr = r.join(data.loc[trading_date][['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR']])
     rr['per'] = rr['p75'] / abs(rr['p25'])
-    rr1 = rr[((rr.per >= 1.5)|(rr['std'] >=1.8))&(rr.p75 >= 1)].sort_values('SKDJ_K').reset_index()
+    rr1 = rr[((rr.per >= 1.5)|(rr['std'] >=1.8))&(rr.p75 >= 1)].reset_index()
 
     r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir, model_name = 'stock_xg', file_name = 'prediction')
 
