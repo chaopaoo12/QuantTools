@@ -79,7 +79,7 @@ def index_predict_watch(trading_date, working_dir=working_dir):
 
     r_tar, prediction_tar, prediction = load_data(concat_predict, trading_date, working_dir, 'stock_xg', 'prediction')
 
-    kk = prediction_tar.loc[(trading_date,find_stock(rr1[rr1.SKDJ_K_HR <= 40].code.tolist())),].sort_values('SKDJ_K')
+    kk = prediction_tar.loc[(trading_date,find_stock(rr1[rr1.SKDJ_K <= 40].code.tolist())),].sort_values('SKDJ_K')
 
     base_report(trading_date, '市场观察报告', **{'主线趋势指数': rr1,
                                            '日线机会清单': rr1[rr1.SKDJ_K <= 30],
