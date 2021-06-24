@@ -4,10 +4,11 @@ from .concat_predict import (concat_predict,concat_predict_hour,concat_predict_1
                              concat_predict_real,concat_predict_crawl,concat_predict_hedge,
                              concat_predict_index,concat_predict_indexhour,concat_predict_index15min)
 from .setting import working_dir, percent, exceptions, top
-from QUANTTOOLS.Market.MarketTools import predict_base, predict_index_base, predict_index_dev, predict_stock_dev,base_report
+from QUANTTOOLS.Market.MarketTools import predict_base, predict_index_base, predict_index_dev, predict_stock_dev,base_report, load_data
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_quant_data,get_quant_data
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date,QA_util_get_real_date
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_name
+from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
 
 def predict(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict, model_name = 'stock_xg', file_name = 'prediction', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
@@ -74,10 +75,14 @@ def index_predict_watch(trading_date, working_dir=working_dir):
     rr = r.join(data.loc[trading_date][['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR']])
     rr['per'] = rr['p75'] / abs(rr['p25'])
     rr1 = rr[((rr.per >= 1.5)|(rr['std'] >=1.8))&(rr.p75 >= 1)].sort_values('SKDJ_K').reset_index()
-    rr1 = rr1.assign(NAME=rr1.code.apply(lambda x:QA_fetch_index_name(x))).set_index('code')
+    rr1 = rr1.assign(NAME=rr1.code.apply(lambda x:QA_fetch_index_name(x)))
 
+    r_tar, prediction_tar, prediction = load_data(concat_predict, trading_date, working_dir, 'stock_xg', 'prediction')
+
+    kk = prediction_tar.loc[(trading_date,find_stock(rr1[rr1.SKDJ_K_HR <= 40].code.tolist())),]
 
     base_report(trading_date, '市场观察报告', **{'主线趋势指数': rr1,
                                            '日线机会清单': rr1[rr1.SKDJ_K <= 30],
                                            '小时线机会清单': rr1[rr1.SKDJ_K_HR <= 30],
-                                           '周线机会清单':rr1[rr1.SKDJ_K_WK <= 30]})
+                                           '周线机会清单':rr1[rr1.SKDJ_K_WK <= 30],
+                                           '待选股池清单':kk})
