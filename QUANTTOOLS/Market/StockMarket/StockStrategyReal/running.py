@@ -75,7 +75,7 @@ def index_predict_watch(trading_date, working_dir=working_dir):
     rr = r.join(data.loc[trading_date][['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR']])
     rr['per'] = rr['p75'] / abs(rr['p25'])
     rr1 = rr[((rr.per >= 1.5)|(rr['std'] >=1.8))&(rr.p75 >= 1)].sort_values('SKDJ_K').reset_index()
-    rr1 = rr1.assign(NAME=rr1.code.apply(lambda x:QA_fetch_index_name(x)))
+    rr1 = rr1.assign(NAME=rr1.code.apply(lambda x:QA_fetch_index_name(x)))[['NAME','SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR','per','cnt','mean','std','min','p25','median','p75','max']]
 
     r_tar, prediction_tar, prediction = load_data(concat_predict, trading_date, working_dir, 'stock_xg', 'prediction')
 
