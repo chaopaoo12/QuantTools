@@ -19,7 +19,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir, model_name = 'stock_xg', file_name = 'prediction')
 
     r_tar = prediction_tar.loc[(QA_util_get_last_day(trading_date),find_stock(rr1[rr1.SKDJ_K <= 40].code.tolist())),]
-    r_tar = r_tar[r_tar.y_pred==1].sort_values('SKDJ_K')
+    r_tar = r_tar[r_tar.y_pred==1]
     #r_tar = prediction_tar[prediction_tar.RANK <= 20].loc[QA_util_get_last_day(trading_date)]
     #r_tar = prediction_tar[(prediction_tar.RANK <= 20)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
     #r_tar = prediction_tar.loc[(slice(None),list(r_tar.index)),].loc[QA_util_get_last_day(trading_date)]
@@ -36,6 +36,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     if pe_list is None:
         #target_pool,prediction,start,end,Model_Date = func(QA_util_get_last_day(trading_date), working_dir, code = list(r_tar.index), type = 'crawl', model_name = 'stock_mars_day')
         target_pool = r_tar.sort_values('SKDJ_K')
+        QA_util_log_info(target_pool)
         #target_pool = target_pool.loc[QA_util_get_last_day(trading_date)].reindex(index=r_tar.index).dropna(how='all')
     else:
         #target_pool,prediction,start,end,Model_Date = func(QA_util_get_last_day(trading_date), working_dir, code = list(r_tar.index) + pe_list, type = 'crawl', model_name = 'stock_mars_day')
