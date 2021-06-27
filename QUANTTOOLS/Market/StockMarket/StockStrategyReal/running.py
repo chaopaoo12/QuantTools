@@ -86,3 +86,6 @@ def index_predict_watch(trading_date, working_dir=working_dir):
                                            '小时线机会清单': rr1[rr1.SKDJ_K_HR <= 30],
                                            '周线机会清单':rr1[rr1.SKDJ_K_WK <= 30],
                                            '待选股池清单':kk})
+
+def predict_3(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
+    predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
