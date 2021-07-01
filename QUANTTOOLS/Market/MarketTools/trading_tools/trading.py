@@ -271,11 +271,6 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 else:
                                     QA_util_log_info('##JOB Not On Selling ==== {}'.format(code))
 
-                                if tm >= int(time.strftime("%H%M%S", time.strptime(afternoon_end, "%H:%M:%S"))):
-                                    ###time out
-                                    QA_util_log_info('##JOB Trading Finished ==================== {}'.format(trading_date), ui_log=None)
-                                    send_actionnotice(strategy_id,'Trading Report:{}'.format(trading_date),'Trading Finished',direction = 'Trading',offset='Finished',volume=None)
-
                             if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
                                 QA_util_log_info('##JOB Now Buying Ckeck==== {}'.format(code), ui_log = None)
                                 if res2.SKDJ_K_30M <= 50 and res2.SKDJ_CROSS2_HR == 1 and res2.SKDJ_TR_30M > 0:
@@ -304,10 +299,6 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                         QA_util_log_info('##JOB Now Not Enough Money==== {}'.format(code), ui_log = None)
                                 else:
                                     QA_util_log_info('##JOB Not On Buying ==== {} SKDJ_CROSS2_HR:{} CROSS_JC_HR:{} SKDJ_K_30M:{} SKDJ_TR_30M:{}'.format(code, res2.SKDJ_CROSS2_HR, res2.CROSS_JC_HR, res2.SKDJ_K_30M, res2.SKDJ_TR_30M))
-                                if tm >= int(time.strftime("%H%M%S", time.strptime(afternoon_end, "%H:%M:%S"))):
-                                    ###time out
-                                    QA_util_log_info('##JOB Trading Finished ==================== {}'.format(trading_date), ui_log=None)
-                                    send_actionnotice(strategy_id,'Trading Report:{}'.format(trading_date),'Trading Finished',direction = 'Trading',offset='Finished',volume=None)
                         #except:
                         #        pass
                 QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS1_HR == 1][['SKDJ_K_30M','SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
