@@ -42,8 +42,7 @@ class QAStockModelHourMark(QAModel):
         QA_util_log_info('##save used columns ==== {}'.format(self.info['date']), ui_log = None)
 
     def model_predict(self, start, end, code = None, type='crawl'):
-        if code is not None:
-            self.code = code
+        self.code = code
         QA_util_log_info('##JOB Got Stock Quant hour Data by {type} ==== from {_from} to {_to}'.format(type=type, _from=start, _to=end), ui_log = None)
         data = get_quant_data_hour(start, end, code = self.code, type= type, norm_type=self.norm_type)
         data = data[(data.SKDJ_CROSS2_HR == 1)|(data.CROSS_JC_HR == 1)]
