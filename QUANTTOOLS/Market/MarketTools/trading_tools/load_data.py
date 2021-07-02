@@ -14,7 +14,6 @@ def load_data(func, trading_date, working_dir, model_name, file_name):
         QA_util_log_info(file_name)
         target_pool = target_pool
         prediction_tar = prediction
-
     try:
         r_tar = target_pool.loc[trading_date]
     except:
