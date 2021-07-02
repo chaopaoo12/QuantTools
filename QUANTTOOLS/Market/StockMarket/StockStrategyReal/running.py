@@ -1,6 +1,6 @@
 #coding :utf-8
 
-from .concat_predict import (concat_predict,concat_predict_hour,concat_predict_15min,
+from .concat_predict import (concat_predict,concat_predict_hour,concat_predict_15min,concat_predict_hourmark,
                              concat_predict_real,concat_predict_crawl,concat_predict_hedge,
                              concat_predict_index,concat_predict_indexhour,concat_predict_index15min)
 from .setting import working_dir, percent, exceptions, top
@@ -38,6 +38,10 @@ def predict_daily(trading_date, top_num=top, working_dir=working_dir, exceptions
 
 def predict_hourly(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict_hour, model_name = 'stock_mars_hour', file_name = 'prediction_stock_mars_hour', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+
+def predict_hourly_mark(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
+    predict_base(trading_date, concat_predict_hourmark, model_name = 'stock_mark_hour', file_name = 'prediction_stock_mark_hour', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+
 
 def predict_minly(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict_15min, model_name = 'stock_mars_min', file_name = 'prediction_stock_mars_min', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
