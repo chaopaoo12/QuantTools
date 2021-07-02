@@ -16,7 +16,7 @@ class QAStockModelHour(QAModel):
     def model_predict(self, start, end, code = None, type='crawl'):
         self.code = code
         QA_util_log_info('##JOB Got Stock Quant hour Data by {type} ==== from {_from} to {_to}'.format(type=type, _from=start, _to=end), ui_log = None)
-        data = get_quant_data_hour(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, norm_type=self.norm_type)
+        data = get_quant_data_hour(start, end, code = self.code, type= type, norm_type=self.norm_type)
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','date','datetime',
                                                        'OPEN_MARK','PASS_MARK','TARGET','TARGET3',
