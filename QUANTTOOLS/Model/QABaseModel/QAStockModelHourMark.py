@@ -114,7 +114,6 @@ class QAStockModelHourMark(QAModel):
             b = train[['y_pred','Z_PROB','O_PROB','RANK']]
 
         b = b.join(data[['SKDJ_TR_HR','SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','SKDJ_CROSS2_HR','MA5_HR','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']])
-        print(b)
         return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
