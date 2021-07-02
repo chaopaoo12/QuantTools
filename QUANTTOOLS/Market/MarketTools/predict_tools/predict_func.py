@@ -37,7 +37,6 @@ def make_prediction(Model, trading_date, name, working_dir, code = None, type='c
 
 def make_stockprediction(Stock, trading_date, name, working_dir, code = None, index = 'date', type='crawl'):
     Model, target_pool, prediction, start, end, Model_date = make_prediction(Stock, trading_date, name, working_dir, code, type)
-    print(prediction)
     QA_util_log_info('##JOB Now Add info to Predictions')
 
     NAME = QA_fetch_stock_name(prediction.reset_index()['code'].unique().tolist())
