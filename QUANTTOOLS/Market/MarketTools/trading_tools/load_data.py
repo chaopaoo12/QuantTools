@@ -10,11 +10,10 @@ def load_data(func, trading_date, working_dir, model_name, file_name):
         target_pool = prediction['target_pool']
         prediction_tar = prediction['prediction']
     except:
-        func(trading_date, working_dir=working_dir, model_name=model_name)
+        target_pool,prediction,start,end,Model_Date = func(trading_date, working_dir=working_dir, model_name=model_name)
         QA_util_log_info(file_name)
-        prediction = load_prediction(file_name, working_dir)
-        target_pool = prediction['target_pool']
-        prediction_tar = prediction['prediction']
+        target_pool = target_pool
+        prediction_tar = prediction
 
     try:
         r_tar = target_pool.loc[trading_date]
