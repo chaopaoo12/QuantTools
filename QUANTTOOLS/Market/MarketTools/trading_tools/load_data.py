@@ -11,7 +11,6 @@ def load_data(func, trading_date, working_dir, model_name, file_name):
         prediction_tar = prediction['prediction']
     except:
         target_pool,prediction,start,end,Model_Date = func(trading_date, working_dir=working_dir, model_name=model_name)
-        QA_util_log_info(file_name)
         target_pool = target_pool
         prediction_tar = prediction
     try:
