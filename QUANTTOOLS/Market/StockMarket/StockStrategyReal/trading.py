@@ -35,7 +35,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
 
     if pe_list is None:
         #target_pool,prediction,start,end,Model_Date = func(QA_util_get_last_day(trading_date), working_dir, code = list(r_tar.index), type = 'crawl', model_name = 'stock_mars_day')
-        target_pool = r_tar.sort_values('SKDJ_K')
+        target_pool = r_tar.sort_values('SKDJ_K_HR')
         QA_util_log_info(target_pool)
         #target_pool = target_pool.loc[QA_util_get_last_day(trading_date)].reindex(index=r_tar.index).dropna(how='all')
     else:
