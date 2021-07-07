@@ -224,7 +224,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
                 res2 = data.loc[stm][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','SKDJ_CROSS2_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']].sort_values('SKDJ_K_HR')
 
-                target_list = list(target_tar.index)
+                target_list = list(res2.index)
                 QA_util_log_info('##JOB Now Time ==== {}'.format(str(stm)), ui_log = None)
 
                 ####job1 小时级报告 指数小时级跟踪
