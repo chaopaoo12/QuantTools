@@ -318,8 +318,11 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
     elif type == 'model':
         res = QA_fetch_stock_quant_min(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
-        res = QA_fetch_get_stock_quant_min(codes, start_date, end_date).drop(['date','time_stamp'],axis=1)
+        res = QA_fetch_get_stock_quant_hour(codes, start_date, end_date, '30min').drop(['date','time_stamp'],axis=1)
         res.columns = [x.upper() + '_30M' for x in res.columns]
+        res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '15min').drop(['date','time_stamp'],axis=1)
+        res1.columns = [x.upper() + '_15M' for x in res1.columns]
+        res = res.join(res1)
     return(res)
 
 def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
