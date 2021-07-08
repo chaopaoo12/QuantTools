@@ -344,10 +344,10 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
     else:
         data = get_indicator(data, type)
         data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]]
-        if type in ['15min','30min','min','hour']:
-            data = data[data.date.isin(rng1)]
-        else:
-            data=data.loc[rng1]
+        #if type in ['15min','30min','min','hour']:
+        #    data = data[data.date.isin(rng1)]
+        #else:
+        #    data=data.loc[rng1]
         data = data.assign(SKDJ_TR = (data.SKDJ_CROSS1*-1+ data.SKDJ_CROSS2*1)/(data.SKDJ_CROSS1+data.SKDJ_CROSS2),
                            SHORT_TR = (data.SHORT20 > 0)*1,
                            LONG_TR = (data.LONG60 > 0)*1,
