@@ -141,6 +141,7 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
             stm = trading_date + ' ' + mark_tm
 
         ##分析数据
+        print('tm',tm,'mark_tm',mark_tm,int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))))
         while tm <= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
 
             if tm > int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
