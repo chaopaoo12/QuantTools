@@ -157,6 +157,7 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
                 print('2')
                 time.sleep(60)
                 tm = int(datetime.datetime.now().strftime("%H%M%S"))
+        print('c')
 
         ##开市前休息
         while tm < int(time.strftime("%H%M%S",time.strptime(morning_begin, "%H:%M:%S"))):
