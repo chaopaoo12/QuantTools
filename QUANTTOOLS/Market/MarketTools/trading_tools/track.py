@@ -163,7 +163,7 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
         ##午休
         while tm >= int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))) and tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))):
             QA_util_log_info('##JOB Not Trading Time ==== {}'.format(str(trading_date)), ui_log = None)
-            time.sleep(600)
+            time.sleep(60)
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         ##action
