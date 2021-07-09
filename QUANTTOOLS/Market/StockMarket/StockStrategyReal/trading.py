@@ -10,21 +10,22 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
 
     r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir, model_name = 'stock_xg', file_name = 'prediction')
 
-    data = get_index_quant_data(QA_util_get_pre_trade_date(trading_date,91),QA_util_get_last_day(trading_date),type='crawl', norm_type=None)
-    r = data[['PASS_MARK']].groupby('code').describe()
-    r.columns=['cnt','mean','std','min','p25','median','p75','max']
-    rr = r.join(data.loc[QA_util_get_last_day(trading_date)][['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR']])
-    rr['per'] = rr['p75'] / abs(rr['p25'])
-    rr1 = rr[((rr.per >= 1.5)|(rr['std'] >=1.8))&(rr.p75 >= 1)].reset_index()
-    QA_util_log_info(rr1[rr1.SKDJ_K <= 40])
-    r_tar = prediction_tar.loc[(QA_util_get_last_day(trading_date),find_stock(rr1[(rr1.SKDJ_K <= 40)|(rr1.SKDJ_K_HR <= 40)].code.tolist())),]
-    r_tar = r_tar[(r_tar.y_pred==1)&(r_tar.TARGET5.isnull())]
+    #data = get_index_quant_data(QA_util_get_pre_trade_date(trading_date,91),QA_util_get_last_day(trading_date),type='crawl', norm_type=None)
+    #r = data[['PASS_MARK']].groupby('code').describe()
+    #r.columns=['cnt','mean','std','min','p25','median','p75','max']
+    #rr = r.join(data.loc[QA_util_get_last_day(trading_date)][['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR']])
+    #rr['per'] = rr['p75'] / abs(rr['p25'])
+    #rr1 = rr[((rr.per >= 1.5)|(rr['std'] >=1.8))&(rr.p75 >= 1)].reset_index()
+    #QA_util_log_info(rr1[rr1.SKDJ_K <= 40])
+    #r_tar = prediction_tar.loc[(QA_util_get_last_day(trading_date),find_stock(rr1[(rr1.SKDJ_K <= 40)|(rr1.SKDJ_K_HR <= 40)].code.tolist())),]
+    #r_tar = r_tar[(r_tar.y_pred==1)&(r_tar.TARGET5.isnull())]
 
     data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date),type='crawl', block=False, sub_block=False,norm_type=None)
     pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)]
     pe_list = prediction_tar.loc[pe_list.index]
 
-    target_pool = prediction_tar.loc[(slice(None),list(set((pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist()+r_tar[(r_tar.y_pred==1)&(r_tar.TARGET5.isnull())].reset_index().code.tolist())))),].loc[QA_util_get_last_day(trading_date)].sort_values('RANK')
+    #target_pool = prediction_tar.loc[(slice(None),list(set((pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist())))),].loc[QA_util_get_last_day(trading_date)].sort_values('RANK')
+    target_pool = pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].sort_values('RANK')
     per = percent
 
     #r_tar = prediction_tar[prediction_tar.RANK <= 20].loc[QA_util_get_last_day(trading_date)]
