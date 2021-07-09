@@ -80,12 +80,15 @@ def index_predict_watch(trading_date, working_dir=working_dir):
     r.columns=['cnt','mean','std','min','p25','median','p75','max']
     rr = r.join(data.loc[trading_date][['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR']])
     rr['per'] = rr['p75'] / abs(rr['p25'])
-    rr1 = rr[((rr.per >= 1.5)|(rr['std'] >=1.8))&(rr.p75 >= 1)].sort_values('SKDJ_K').reset_index()
-    rr1 = rr1.assign(NAME=rr1.code.apply(lambda x:QA_fetch_index_name(x)))[['code','NAME','SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR','per','cnt','mean','std','min','p25','median','p75','max']]
+    rr1 = rr[((rr.per >= 1.5)|(rr['std'] >=1.8))&(rr.p75 >= 1)]\
 
+    res = data.loc[(slice(None),rr1.reset_index().code.tolist()),]
+
+    rr1 = res.assign(NAME=res.code.apply(lambda x:QA_fetch_index_name(x)))[['code','NAME','SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+    rr1 = rr1.reset_index().sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
     r_tar, prediction_tar, prediction = load_data(concat_predict, trading_date, working_dir, 'stock_xg', 'prediction')
 
-    kk = prediction_tar.loc[(trading_date,find_stock(rr1[rr1.SKDJ_K <= 40].code.tolist())),].sort_values('SKDJ_K')
+    kk = prediction_tar.loc[(trading_date,find_stock(rr1[rr1.SKDJ_K <= 40].loc[trading_date].code.tolist())),].sort_values('SKDJ_K')
 
     base_report(trading_date, '市场观察报告', **{'主线趋势指数': rr1,
                                            '日线机会清单': rr1[rr1.SKDJ_K <= 40],
