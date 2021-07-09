@@ -174,7 +174,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     a.sort()
 
     if a.index(tm) == 0:
-        mark_tm = '09:30:00'
+        mark_tm = '15:00:00'
         action_tm = '09:30:00'
     else:
         mark_tm = a[a.index(tm)-1]
