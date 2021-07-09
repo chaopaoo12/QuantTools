@@ -23,7 +23,6 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date),type='crawl', block=False, sub_block=False,norm_type=None)
     pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)]
     pe_list = prediction_tar.loc[pe_list.index]
-    pe_list = pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist()
 
     target_pool = prediction_tar.loc[(slice(None),list(set((pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist()+r_tar[(r_tar.y_pred==1)&(r_tar.TARGET5.isnull())].reset_index().code.tolist())))),].loc[QA_util_get_last_day(trading_date)].sort_values('RANK')
     per = percent
