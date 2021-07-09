@@ -7,6 +7,7 @@ from .setting import working_dir, percent, exceptions, top
 from QUANTTOOLS.Market.MarketTools import predict_base, predict_index_base, predict_index_dev, predict_stock_dev,base_report, load_data
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_quant_data,get_quant_data
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date,QA_util_get_real_date
+from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import (QA_util_get_trade_range)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_name
 from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
 
@@ -80,9 +81,9 @@ def index_predict_watch(trading_date, working_dir=working_dir):
     r.columns=['cnt','mean','std','min','p25','median','p75','max']
     rr = r.join(data.loc[trading_date][['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR']])
     rr['per'] = rr['p75'] / abs(rr['p25'])
-    rr1 = rr[((rr.per >= 1.5)|(rr['std'] >=1.8))&(rr.p75 >= 1)]\
+    rr1 = rr[((rr.per >= 1.5)|(rr['std'] >=1.8))&(rr.p75 >= 1)]
 
-    res = data.loc[(slice(None),rr1.reset_index().code.tolist()),].reset_index()
+    res = data.loc[(QA_util_get_trade_range(QA_util_get_pre_trade_date(trading_date,10),trading_date),rr1.reset_index().code.tolist()),].reset_index()
 
     rr1 = res.assign(NAME=res.code.apply(lambda x:QA_fetch_index_name(x)))[['date','code','NAME','SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
     rr1 = rr1.sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
