@@ -145,21 +145,18 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
         print(tm <= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))))
         print(tm > int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))))
         while tm <= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
-            print('a')
-            if tm > int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
-                print('1')
-                QA_util_log_info('##JOB Now Build Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
-                hold = float(positions[positions.code==code]['成本价'])
-                price = float(QA_fetch_get_stock_realtm_bid(code))
-                close = float(QA_fetch_get_stock_close(code))
-                high = float(QA_fetch_get_stock_realtime(code).high)
-                #data = get_quant_data_min(QA_util_get_pre_trade_date(trading_date),trading_date,positions.code.tolist(), type= 'real')
-                #res1 = data.loc[stm][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_15M','SKDJ_TR_15M','SKDJ_CROSS1_30M','CROSS_JC_30M','CROSS_SC_30M','SKDJ_CROSS2_30M','MA5_30M','MA10_30M','MA60_30M','CCI_30M','CCI_CROSS1_30M','CCI_CROSS2_30M']].sort_values('SKDJ_K_HR')
-            else:
-                print('2')
-                time.sleep(60)
-                tm = int(datetime.datetime.now().strftime("%H%M%S"))
-        print('c')
+            time.sleep(60)
+            tm = int(datetime.datetime.now().strftime("%H%M%S"))
+
+        if tm > int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
+            print('1')
+            QA_util_log_info('##JOB Now Build Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
+            hold = float(positions[positions.code==code]['成本价'])
+            price = float(QA_fetch_get_stock_realtm_bid(code))
+            close = float(QA_fetch_get_stock_close(code))
+            high = float(QA_fetch_get_stock_realtime(code).high)
+            #data = get_quant_data_min(QA_util_get_pre_trade_date(trading_date),trading_date,positions.code.tolist(), type= 'real')
+            #res1 = data.loc[stm][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_15M','SKDJ_TR_15M','SKDJ_CROSS1_30M','CROSS_JC_30M','CROSS_SC_30M','SKDJ_CROSS2_30M','MA5_30M','MA10_30M','MA60_30M','CCI_30M','CCI_CROSS1_30M','CCI_CROSS2_30M']].sort_values('SKDJ_K_HR')
 
         ##开市前休息
         while tm < int(time.strftime("%H%M%S",time.strptime(morning_begin, "%H:%M:%S"))):
@@ -173,40 +170,39 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
 
         ##action
         while tm <= int(time.strftime("%H%M%S",time.strptime(action_tm, "%H:%M:%S"))) and action_tm is not None:
+            time.sleep(60)
+            tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
-            if tm > int(time.strftime("%H%M%S",time.strptime(action_tm, "%H:%M:%S"))):
-                ##action
-                ####job1 小时级报告 指数小时级跟踪
-                for code in positions.code.tolist():
-                    name = QA_fetch_stock_name(code)
-                    QA_util_log_info('##JOB Now Code {code}({name}) ==== 成本:{hold} 昨收:{close} 今高:{high} 现价:{price}'.format(code=str(code),name=str(name),hold=str(hold),high=str(high), close = str(close), price = str(price)), ui_log = None)
-                    hold = price / hold - 1
+        if tm > int(time.strftime("%H%M%S",time.strptime(action_tm, "%H:%M:%S"))):
+            ##action
+            ####job1 小时级报告 指数小时级跟踪
+            for code in positions.code.tolist():
+                name = QA_fetch_stock_name(code)
+                QA_util_log_info('##JOB Now Code {code}({name}) ==== 成本:{hold} 昨收:{close} 今高:{high} 现价:{price}'.format(code=str(code),name=str(name),hold=str(hold),high=str(high), close = str(close), price = str(price)), ui_log = None)
+                hold = price / hold - 1
 
-                    if close > high:
-                        warning_line = price /close - 1
-                    else:
-                        warning_line = price / high-1
+                if close > high:
+                    warning_line = price /close - 1
+                else:
+                    warning_line = price / high-1
 
-                    if hold <= -0.05 :
-                        msg = '跌破开仓位-5%:止损'
-                    #elif warning_line <= -0.05 and hold > 0:
-                    #    msg = '高点回撤-5%:止盈'
-                    else:
-                        msg = None
-                        ###卖出信号1
-                    if msg is not None:
-                        send_actionnotice(strategy_id,'{code}{name}:{msg}'.format(code=code,name=name, msg=msg),'卖出信号',direction = 'SELL',offset=None,volume=None)
-                        deal_pos = get_StockPos(code, client, account)
-                        target_pos = 0
-                        industry = str(positions[positions.code == code]['INDUSTRY'])
-                        QA_util_log_info('##JOB Now Start Selling {code} ===='.format(code = code), ui_log = None)
-                        SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = True)
-                        time.sleep(1)
-                    #except:
-                    #        pass
-            else:
-                time.sleep(60)
-                tm = int(datetime.datetime.now().strftime("%H%M%S"))
+                if hold <= -0.05 :
+                    msg = '跌破开仓位-5%:止损'
+                #elif warning_line <= -0.05 and hold > 0:
+                #    msg = '高点回撤-5%:止盈'
+                else:
+                    msg = None
+                    ###卖出信号1
+                if msg is not None:
+                    send_actionnotice(strategy_id,'{code}{name}:{msg}'.format(code=code,name=name, msg=msg),'卖出信号',direction = 'SELL',offset=None,volume=None)
+                    deal_pos = get_StockPos(code, client, account)
+                    target_pos = 0
+                    industry = str(positions[positions.code == code]['INDUSTRY'])
+                    QA_util_log_info('##JOB Now Start Selling {code} ===='.format(code = code), ui_log = None)
+                    SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = True)
+                    time.sleep(1)
+                #except:
+                #        pass
 
         ##update mark_tm action_tm
         if marktm_list.index(mark_tm) == len(marktm_list) - 1:
