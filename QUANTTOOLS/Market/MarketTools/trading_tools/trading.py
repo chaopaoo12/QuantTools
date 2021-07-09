@@ -203,7 +203,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
         else:
             stm = trading_date + ' ' + mark_tm
 
-        QA_util_log_info('##JOB Now Time ==== {}'.format(str(stm)), ui_log = None)
+        QA_util_log_info('##JOB Now Time {} ==== {}'.format(str(mark_tm),str(stm)), ui_log = None)
 
         ##分析数据
         while tm < int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
