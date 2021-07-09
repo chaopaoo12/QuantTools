@@ -218,10 +218,12 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS2_HR == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
 
         while tm < int(time.strftime("%H%M%S",time.strptime(morning_begin, "%H:%M:%S"))):
+            QA_util_log_info('##JOB Not Start Time ==== {}'.format(str(trading_date)), ui_log = None)
             time.sleep(15)
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         while tm >= int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))) and tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))):
+            QA_util_log_info('##JOB Not Trading Time ==== {}'.format(str(trading_date)), ui_log = None)
             time.sleep(600)
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
             QA_util_log_info(tm)
