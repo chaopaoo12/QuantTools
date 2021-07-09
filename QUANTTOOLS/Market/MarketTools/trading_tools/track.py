@@ -117,12 +117,15 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
     a = marktm_list + [tm]
     a.sort()
 
-    if a.index(tm) > 0:
-        mark_tm = a[a.index(tm)-1]
-        action_tm = action_list[a.index(tm)]
-    elif a.index(tm) == 0:
+    if a.index(tm) == 0:
         mark_tm = '15:00:00'
         action_tm = '09:30:00'
+    elif a.index(tm) == len(a)-1:
+        mark_tm = '15:00:00'
+        action_tm = '15:00:00'
+    else:
+        mark_tm = a[a.index(tm)-1]
+        action_tm = action_list[a.index(tm)]
 
     tm = int(time.strftime("%H%M%S",time.strptime(tm, "%H:%M:%S")))
     QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
