@@ -149,7 +149,6 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         if tm > int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
-            print('1')
             QA_util_log_info('##JOB Now Build Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
             hold = float(positions[positions.code==code]['成本价'])
             price = float(QA_fetch_get_stock_realtm_bid(code))
@@ -160,11 +159,13 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
 
         ##开市前休息
         while tm < int(time.strftime("%H%M%S",time.strptime(morning_begin, "%H:%M:%S"))):
+            QA_util_log_info('##JOB Not Start Time ==== {}'.format(str(trading_date)), ui_log = None)
             time.sleep(60)
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         ##午休
         while tm >= int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))) and tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))):
+            QA_util_log_info('##JOB Not Trading Time ==== {}'.format(str(trading_date)), ui_log = None)
             time.sleep(600)
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
