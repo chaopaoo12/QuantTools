@@ -17,8 +17,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     rr['per'] = rr['p75'] / abs(rr['p25'])
     rr1 = rr[((rr.per >= 1.5)|(rr['std'] >=1.8))&(rr.p75 >= 1)].reset_index()
     QA_util_log_info(rr1[rr1.SKDJ_K <= 40])
-    rr1[(rr1.SKDJ_K <= 40)|(rr1.SKDJ_K_HR <= 40)]
-    r_tar = prediction_tar.loc[(trading_date,find_stock(rr1[(rr1.SKDJ_K <= 40)|(rr1.SKDJ_K_HR <= 40)].code.tolist())),]
+    r_tar = prediction_tar.loc[(QA_util_get_last_day(trading_date),find_stock(rr1[(rr1.SKDJ_K <= 40)|(rr1.SKDJ_K_HR <= 40)].code.tolist())),]
     r_tar = r_tar[(r_tar.y_pred==1)&(r_tar.TARGET5.isnull())].reset_index().code.tolist()
 
     data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date),type='crawl', block=False, sub_block=False,norm_type=None)
