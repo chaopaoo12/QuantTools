@@ -122,7 +122,7 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
         action_tm = '09:30:00'
     elif a.index(tm) == len(a)-1:
         mark_tm = '15:00:00'
-        action_tm = '15:00:00'
+        action_tm = None
     else:
         mark_tm = a[a.index(tm)-1]
         action_tm = action_list[a.index(tm)]
