@@ -138,6 +138,7 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
         code_list = positions.code.tolist()
 
         if mark_tm == '15:00:00':
+            mark_tm = '09:30:00'
             stm = QA_util_get_pre_trade_date(trading_date) + ' ' + '15:00:00'
         else:
             stm = trading_date + ' ' + mark_tm
@@ -149,10 +150,7 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
 
         if tm > int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
             QA_util_log_info('##JOB Now Build Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
-            hold = float(positions[positions.code.isin(code_list)]['成本价'])
-            price = float(QA_fetch_get_stock_realtm_bid(code_list))
-            close = float(QA_fetch_get_stock_close(code_list))
-            high = float(QA_fetch_get_stock_realtime(code_list).high)
+            realtm = QA_fetch_get_stock_realtime(code_list).join(positions.set_index('code'))
             #data = get_quant_data_min(QA_util_get_pre_trade_date(trading_date),trading_date,positions.code.tolist(), type= 'real')
             #res1 = data.loc[stm][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_15M','SKDJ_TR_15M','SKDJ_CROSS1_30M','CROSS_JC_30M','CROSS_SC_30M','SKDJ_CROSS2_30M','MA5_30M','MA10_30M','MA60_30M','CCI_30M','CCI_CROSS1_30M','CCI_CROSS2_30M']].sort_values('SKDJ_K_HR')
 
@@ -176,8 +174,12 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
         if tm > int(time.strftime("%H%M%S",time.strptime(action_tm, "%H:%M:%S"))):
             ##action
             ####job1 小时级报告 指数小时级跟踪
-            for code in positions.code.tolist():
+            for code in code_list:
                 name = QA_fetch_stock_name(code)
+                hold = float(realtm.loc[code]['成本价'])
+                price = float(realtm.loc[code].buy)
+                close = float(realtm.loc[code].close)
+                high = float(realtm.loc[code].high)
                 QA_util_log_info('##JOB Now Code {code}({name}) ==== 成本:{hold} 昨收:{close} 今高:{high} 现价:{price}'.format(code=str(code),name=str(name),hold=str(hold),high=str(high), close = str(close), price = str(price)), ui_log = None)
                 hold = price / hold - 1
 
