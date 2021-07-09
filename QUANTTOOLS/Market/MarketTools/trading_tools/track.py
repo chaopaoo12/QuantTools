@@ -143,8 +143,9 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
         ##分析数据
         print('tm',tm,'mark_tm',mark_tm,int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))))
         while tm <= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
-
+            print('a')
             if tm > int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
+                print('1')
                 QA_util_log_info('##JOB Now Build Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
                 hold = float(positions[positions.code==code]['成本价'])
                 price = float(QA_fetch_get_stock_realtm_bid(code))
@@ -153,6 +154,7 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
                 #data = get_quant_data_min(QA_util_get_pre_trade_date(trading_date),trading_date,positions.code.tolist(), type= 'real')
                 #res1 = data.loc[stm][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_15M','SKDJ_TR_15M','SKDJ_CROSS1_30M','CROSS_JC_30M','CROSS_SC_30M','SKDJ_CROSS2_30M','MA5_30M','MA10_30M','MA60_30M','CCI_30M','CCI_CROSS1_30M','CCI_CROSS2_30M']].sort_values('SKDJ_K_HR')
             else:
+                print('2')
                 time.sleep(60)
                 tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
