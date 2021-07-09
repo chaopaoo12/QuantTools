@@ -23,8 +23,7 @@ def QA_fetch_get_stock_realtime(code, source ='sina'):
     return(values)
 
 def QA_fetch_get_stock_real(code):
-    quotation = easyquotation.use('sina')
-    values = quotation.stocks(code)[code]
+    values = QA_fetch_get_stock_realtime(code).loc[code]
     return(values)
 
 def QA_fetch_get_stock_close(code):
