@@ -228,8 +228,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
         ##action
         while tm <= int(time.strftime("%H%M%S",time.strptime(action_tm, "%H:%M:%S"))) and action_tm is not None:
-            time.sleep(60)
-            tm = int(datetime.datetime.now().strftime("%H%M%S"))
+
             if tm > int(time.strftime("%H%M%S",time.strptime(action_tm, "%H:%M:%S"))):
                 for code in [positions.code.tolist(), target_list]:
                     name = QA_fetch_stock_name(code)
@@ -308,6 +307,9 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                     QA_util_log_info('##JOB Now Not Enough Money==== {}'.format(code), ui_log = None)
                             else:
                                 QA_util_log_info('##JOB Now Not On Buying==== {}'.format(code), ui_log = None)
+            else:
+                time.sleep(60)
+                tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         ##update mark_tm action_tm
         if marktm_list.index(mark_tm) == len(marktm_list) - 1:

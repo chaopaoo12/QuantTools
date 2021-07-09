@@ -167,8 +167,7 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
 
         ##action
         while tm <= int(time.strftime("%H%M%S",time.strptime(action_tm, "%H:%M:%S"))) and action_tm is not None:
-            time.sleep(60)
-            tm = int(datetime.datetime.now().strftime("%H%M%S"))
+
             if tm > int(time.strftime("%H%M%S",time.strptime(action_tm, "%H:%M:%S"))):
                 ##action
                 ####job1 小时级报告 指数小时级跟踪
@@ -199,6 +198,9 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
                         time.sleep(1)
                     #except:
                     #        pass
+            else:
+                time.sleep(60)
+                tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         ##update mark_tm action_tm
         if marktm_list.index(mark_tm) == len(marktm_list) - 1:
