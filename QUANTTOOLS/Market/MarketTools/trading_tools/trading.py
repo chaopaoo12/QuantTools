@@ -315,6 +315,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
 
         ##update mark_tm action_tm
+        QA_util_log_info('##JOB Now Update Next MarkTM&ActionTM==== mark_tm: {} action_tm {}'.format(str(mark_tm),str(action_tm)), ui_log = None)
         if marktm_list.index(mark_tm) == len(marktm_list) - 1:
             mark_tm = marktm_list[0]
         else:
@@ -324,9 +325,11 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             action_tm = None
         else:
             action_tm = action_list[action_list.index(action_tm) + 1]
+        QA_util_log_info('##JOB Now Update Next MarkTM&ActionTM==== mark_tm: {} action_tm {}'.format(str(mark_tm),str(action_tm)), ui_log = None)
 
         ###update time
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
+        QA_util_log_info('##JOB Now Update Time'.format(str(tm)), ui_log = None)
 
     ##收市
     if tm >= int(time.strftime("%H%M%S", time.strptime(afternoon_end, "%H:%M:%S"))):
