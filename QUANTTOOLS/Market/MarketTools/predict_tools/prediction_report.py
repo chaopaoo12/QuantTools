@@ -159,6 +159,9 @@ def Index_Reporter(trading_date, target_pool, top_num=5):
 def Index_Report(trading_date, prediction, hour_prediction, model_date):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)))
 
+    ###XG选股模型
+    #Rank_index = prediction[(prediction.DAY_RANK <= 5)][['NAME','DAY_RANK','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']].reset_index().sort_values(by=['date','SKDJ_K_WK'],ascending=[False,True]).set_index(['date','code'])
+
     ###目前趋势中的指数
     terns_index = prediction[(prediction.DAY_RANK <= 10)].loc[trading_date][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB']].sort_values('SKDJ_K',ascending=True)
 
@@ -203,7 +206,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     #hour_prediction['SHIFT_O_PROB'] = hour_prediction['O_PROB'].groupby('code').shift()
 
     try:
-        target_fd = prediction[(prediction.DAY_RANK <= 10)][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']].reset_index().sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
+        target_fd = prediction[(prediction.DAY_RANK <= 10)][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_RANK','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']].reset_index().sort_values(by=['date','DAY_RANK'],ascending=[False,True]).set_index(['date','code'])
     except:
         target_fd = None
 
