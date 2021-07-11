@@ -1,6 +1,6 @@
 
 from .setting import working_dir, percent, exceptions
-from .concat_predict import concat_predict,concat_predict_real,concat_predict_hedge
+from .concat_predict import concat_predict,concat_predict_real,concat_predict_hedge,concat_predict_index
 from QUANTTOOLS.Market.MarketTools import trading_base, load_data, trading_base2
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day,QA_util_get_real_date,QA_util_if_trade,QA_util_log_info,QA_util_get_pre_trade_date
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_quant_data,get_quant_data
@@ -9,6 +9,14 @@ from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
 def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_name = 'prediction', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
     r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir, model_name = 'stock_xg', file_name = 'prediction')
+    r_tar1, prediction_tar1, prediction1 = load_data(concat_predict_index, '2021-07-11', working_dir, 'index_xg', 'prediction_index_summary')
+
+    res = prediction_tar1[prediction_tar1.DAY_PROB >= 0.5]
+    res = res.assign(stock = list(res.reset_index().code.apply(lambda x:find_stock(x))))
+    res = res.explode('stock')
+    res = res.reset_index().rename(columns={'code':'index','stock':'code'})
+    rrr = prediction_tar.loc[prediction_tar.index.intersection(res.set_index(['date','code']).index)]
+    rrr = rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].sort_values('RANK')
 
     #data = get_index_quant_data(QA_util_get_pre_trade_date(trading_date,91),QA_util_get_last_day(trading_date),type='crawl', norm_type=None)
     #r = data[['PASS_MARK']].groupby('code').describe()
@@ -24,8 +32,10 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)]
     pe_list = prediction_tar.loc[pe_list.index]
 
-    #target_pool = prediction_tar.loc[(slice(None),list(set((pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist())))),].loc[QA_util_get_last_day(trading_date)].sort_values('RANK')
-    target_pool = pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].sort_values('RANK')
+    target_list = list(set((pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist()
+                            + rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].reset_index().code.tolist()
+                            )))
+    target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)].sort_values('RANK')
     per = percent
 
     #r_tar = prediction_tar[prediction_tar.RANK <= 20].loc[QA_util_get_last_day(trading_date)]
