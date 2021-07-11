@@ -9,14 +9,15 @@ from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
 def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_name = 'prediction', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
     r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir, model_name = 'stock_xg', file_name = 'prediction')
-    r_tar1, prediction_tar1, prediction1 = load_data(concat_predict_index, '2021-07-11', working_dir, 'index_xg', 'prediction_index_summary')
+    r_tar1, prediction_tar1, prediction1 = load_data(concat_predict_index, QA_util_get_last_day(trading_date), working_dir, 'index_xg', 'prediction_index_summary')
 
-    res = prediction_tar1[prediction_tar1.DAY_PROB >= 0.5]
-    res = res.assign(stock = list(res.reset_index().code.apply(lambda x:find_stock(x))))
-    res = res.explode('stock')
-    res = res.reset_index().rename(columns={'code':'index','stock':'code'})
-    rrr = prediction_tar.loc[prediction_tar.index.intersection(res.set_index(['date','code']).index)]
-    rrr = rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].sort_values('RANK')
+    try:
+        res = prediction_tar1[(prediction_tar1.O_PROB >= 0.5)&prediction_tar1.INDEX_TARGET5.isnull()].reset_index().code.tolist()
+    except:
+        res = prediction_tar1[(prediction_tar1.DAY_PROB >= 0.5)&prediction_tar1.INDEX_TARGET5.isnull()].reset_index().code.tolist()
+
+    rrr = prediction_tar.loc[(slice(None),find_stock(res)),]
+    #rrr = rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].sort_values('RANK')
 
     #data = get_index_quant_data(QA_util_get_pre_trade_date(trading_date,91),QA_util_get_last_day(trading_date),type='crawl', norm_type=None)
     #r = data[['PASS_MARK']].groupby('code').describe()
