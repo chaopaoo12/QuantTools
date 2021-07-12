@@ -319,7 +319,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
         ##update mark_tm action_tm
         QA_util_log_info('##JOB Now Update Next MarkTM&ActionTM==== mark_tm: {} action_tm {}'.format(str(mark_tm),str(action_tm)), ui_log = None)
-        if marktm_list.index(mark_tm) == len(marktm_list) - 1:
+        if mark_tm == '09:30:00':
             mark_tm = marktm_list[0]
         else:
             mark_tm = marktm_list[marktm_list.index(mark_tm) + 1]
