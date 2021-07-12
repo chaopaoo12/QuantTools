@@ -210,7 +210,7 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
                 #        pass
 
         ##update mark_tm action_tm
-        if marktm_list.index(mark_tm) == len(marktm_list) - 1:
+        if mark_tm == '09:30:00':
             mark_tm = marktm_list[0]
         else:
             mark_tm = marktm_list[marktm_list.index(mark_tm) + 1]
