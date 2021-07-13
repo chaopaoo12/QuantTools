@@ -99,3 +99,28 @@ def index_predict_watch(trading_date, working_dir=working_dir):
 
 def predict_3(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+
+
+def predict_target(trading_date, working_dir=working_dir):
+    r_tar, prediction_tar, prediction = load_data(concat_predict, trading_date, working_dir, model_name = 'stock_xg', file_name = 'prediction')
+    r_tar1, prediction_tar1, prediction1 = load_data(concat_predict_index, trading_date, working_dir, 'index_xg', 'prediction_index_summary')
+
+    try:
+        res = prediction_tar1[(prediction_tar1.O_PROB >= 0.5)&prediction_tar1.INDEX_TARGET5.isnull()].reset_index().code.tolist()
+    except:
+        res = prediction_tar1[(prediction_tar1.DAY_PROB >= 0.5)&prediction_tar1.INDEX_TARGET5.isnull()].reset_index().code.tolist()
+
+    rrr = prediction_tar.loc[(slice(None),find_stock(res)),]
+
+    data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
+    pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)]
+    pe_list = prediction_tar.loc[pe_list.index]
+
+    target_list = list(set((pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist()
+                            + rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].reset_index().code.tolist()
+                            )))
+    target_pool = prediction_tar.loc[(slice(None),target_list),].loc[trading_date].sort_values('RANK')
+
+    base_report(trading_date, '模型汇总报告', **{'本日选股': target_pool,
+                                           'INDEX选股': rrr[rrr.y_pred == 1],
+                                           'PE选股': pe_list[pe_list.y_pred == 1]})
