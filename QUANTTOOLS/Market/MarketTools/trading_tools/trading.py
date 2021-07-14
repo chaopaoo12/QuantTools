@@ -7,7 +7,7 @@ from QUANTTOOLS.Trader.account_manage.TradAction.HOLD import HOLD
 from QUANTTOOLS.Market.MarketTools.trading_tools.BuildTradingFrame import build
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtm_bid
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import QA_fetch_stock_name
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour,get_quant_data_30min
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_UseCapital, get_StockPos, get_hold
 import time
 import datetime
@@ -166,8 +166,9 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     morning_end = "11:30:00"
     afternoon_begin = "13:00:00"
     afternoon_end = "15:00:00"
-    marktm_list = ["10:30:00","11:30:00","14:00:00", "15:00:00"]
-    action_list = ["09:30:00","10:30:00","13:00:00", "14:00:00"]
+    ontm_list = ["10:30:00","11:30:00","14:00:00", "15:00:00"]
+    marktm_list = ['10:00:00',"10:30:00",'11:00:00',"11:30:00",'13:30:00',"14:00:00",'14:30:00',"15:00:00"]
+    action_list = ["09:30:00",'10:00:00',"10:30:00",'11:00:00',"11:30:00",'13:30:00',"14:00:00",'14:30:00']
 
     ##init+确定时间
     a = marktm_list + [tm]
@@ -182,6 +183,9 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     else:
         mark_tm = a[a.index(tm)-1]
         action_tm = action_list[a.index(tm)]
+
+    if mark_tm not in ontm_list:
+        mark_tm = a[a.index(tm)-2]
 
     tm = int(time.strftime("%H%M%S",time.strptime(tm, "%H:%M:%S")))
     QA_util_log_info('##JOB Now Start Trading ==== {}'.format(str(trading_date)), ui_log = None)
@@ -214,12 +218,19 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
-            data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
-            res1 = data.loc[stm][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','SKDJ_CROSS2_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']].sort_values('SKDJ_K_HR')
-            target_list = [i for i in list(res1.index) if i not in positions.code.tolist()]
+            if tm in ontm_list:
+                #整点
+                data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
+                hour_data = data.loc[stm][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_30M','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']].sort_values('SKDJ_K_HR')
+                source_data = hour_data
+            else:
+                data = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
+                half_data = data.loc[stm][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_30M','MA5_30M','MA10_HR','MA60_HR']].sort_values('SKDJ_K_HR')
+                source_data = half_data.join(half_data).groupby('code').fillna(method='ffill')
             ####job1 小时级报告 指数小时级跟踪
-            QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS1_HR == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
-            QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(stm), data[data.SKDJ_CROSS2_HR == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_HR']]), ui_log = None)
+            target_list = [i for i in list(target_tar.index) if i not in positions.code.tolist()]
+            QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), source_data[source_data.SKDJ_CROSS1_HR == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_30M','SKDJ_K_HR','MA5_HR']]), ui_log = None)
+            QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(stm), source_data[source_data.SKDJ_CROSS2_HR == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_30M','SKDJ_K_HR','MA5_HR']]), ui_log = None)
 
         while tm < int(time.strftime("%H%M%S",time.strptime(morning_begin, "%H:%M:%S"))):
             QA_util_log_info('##JOB Not Start Time ==== {}'.format(str(trading_date)), ui_log = None)
@@ -242,7 +253,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 name = QA_fetch_stock_name(code)
                 QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                 try:
-                    res2 = res1.loc[code]
+                    res2 = source_data.loc[code]
                     QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                 except:
                     res2 = None
@@ -254,16 +265,12 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                     if code in positions[positions['可用余额'] > 0].code.tolist():
 
                         QA_util_log_info('##JOB Now Selling Check ==== {}'.format(code), ui_log = None)
-                        if res2.SKDJ_CROSS1_HR == True and res2.MA5_HR < 0 and res2.SKDJ_TR_30M < 1:
+                        if res2.SKDJ_CROSS1_30M == True and res2.MA5_30M < 0:
                             msg = 'SKDJ死叉'
                         #elif res2.MA10_HR < 0:
                         #    msg = '打穿MA10'
-                        elif res2.SKDJ_TR_HR < 1 and res2.MA5_HR < 0 and res2.SKDJ_TR_30M < 1:
-                            msg = 'SKDJ止损:跌破MA5'
                         elif res2.SKDJ_TR_30M < 1 and res2.MA5_30M < 0:
-                            ##当日错误入场之后 次日及早离场
-                            #msg = 'SKDJ止损:30Min跌破MA5'
-                            msg = None
+                            msg = 'SKDJ止损:跌破MA5'
                         else:
                             msg = None
                             ###卖出信号1
@@ -289,10 +296,12 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         QA_util_log_info('##JOB Now Buying Ckeck==== {}'.format(code), ui_log = None)
 
                         QA_util_log_info('##JOB Not On Buying ==== {} SKDJ_CROSS2_HR:{} CROSS_JC_HR:{} SKDJ_K_30M:{} SKDJ_TR_30M:{}'.format(code, res2.SKDJ_CROSS2_HR, res2.CROSS_JC_HR, res2.SKDJ_K_30M, res2.SKDJ_TR_30M))
-                        if res2.SKDJ_K_30M <= 50 and res2.SKDJ_CROSS2_HR == 1 and res2.SKDJ_TR_30M > 0:
-                            msg = 'SKDJ金叉'
-                        elif res2.CROSS_JC_HR == 1 and res2.SKDJ_K_30M <= 50 and res2.SKDJ_TR_30M > 0:
+                        if res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_K_HR <50:
+                            msg = 'SKDJ:30M金叉 小时线K:{}'.format(res2.SKDJ_K_HR)
+                        elif res2.CROSS_JC_30M == 1:
                             msg = 'MACD金叉'
+                        elif res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_K_TR == 1:
+                            msg = 'SKDJ金叉'
                         else:
                             msg = None
 
