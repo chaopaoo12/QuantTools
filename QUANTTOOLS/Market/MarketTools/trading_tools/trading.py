@@ -232,8 +232,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
             ####job1 小时级报告 指数小时级跟踪
             target_list = [i for i in list(target_tar.index) if i not in positions.code.tolist()]
-            QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), str(source_data[source_data.SKDJ_CROSS1_30M == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_30M','SKDJ_K_HR','MA5_HR']])), ui_log = None)
-            QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(stm), str(source_data[source_data.SKDJ_CROSS2_30M == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_30M','SKDJ_K_HR','MA5_HR']])), ui_log = None)
+            #QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), str(source_data[source_data.SKDJ_CROSS1_30M == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_30M','SKDJ_K_HR','MA5_HR']])), ui_log = None)
+            #QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(stm), str(source_data[source_data.SKDJ_CROSS2_30M == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_30M','SKDJ_K_HR','MA5_HR']])), ui_log = None)
 
         while tm < int(time.strftime("%H%M%S",time.strptime(morning_begin, "%H:%M:%S"))):
             QA_util_log_info('##JOB Not Start Time ==== {}'.format(str(trading_date)), ui_log = None)
