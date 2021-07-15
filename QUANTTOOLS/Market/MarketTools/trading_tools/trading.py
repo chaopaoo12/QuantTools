@@ -257,6 +257,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                 try:
                     res2 = source_data.loc[code]
+                    QA_util_log_info(res2)
                     QA_util_log_info('{code}{name}-{stm}:hourly: {hourly}'.format(code=code,name=name,stm=stm,hourly=res2.SKDJ_TR_HR))
                 except:
                     res2 = None
@@ -299,7 +300,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         QA_util_log_info('##JOB Now Buying Ckeck==== {}'.format(code), ui_log = None)
 
                         QA_util_log_info('##JOB Not On Buying ==== {} SKDJ_CROSS2_HR:{} CROSS_JC_HR:{} SKDJ_K_30M:{} SKDJ_TR_30M:{}'.format(code, res2.SKDJ_CROSS2_HR, res2.CROSS_JC_HR, res2.SKDJ_K_30M, res2.SKDJ_TR_30M))
-                        if res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_K_HR <50:
+                        if res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_K_HR < 50:
                             msg = 'SKDJ:30M金叉 小时线K:{}'.format(res2.SKDJ_K_HR)
                         elif res2.CROSS_JC_30M == 1:
                             msg = 'MACD金叉'
