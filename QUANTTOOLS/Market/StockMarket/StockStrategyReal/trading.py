@@ -40,7 +40,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     per = percent
 
     if target_pool[target_pool.y_pred==1].shape[0] > 30:
-        target_pool = target_pool[target_pool.y_pred==1].head(5)
+        target_pool = target_pool[target_pool.y_pred==1]
 
     #r_tar = prediction_tar[prediction_tar.RANK <= 20].loc[QA_util_get_last_day(trading_date)]
     #r_tar = prediction_tar[(prediction_tar.RANK <= 20)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
