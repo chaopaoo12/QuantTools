@@ -218,7 +218,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
-            if tm in ontm_list:
+            if tm in list(map(lambda x:int(time.strftime("%H%M%S",time.strptime(x, "%H:%M:%S"))), ontm_list)):
                 #整点
                 QA_util_log_info(stm)
                 data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
