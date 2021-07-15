@@ -6,6 +6,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_stock_base_real_adv)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_info
 from QUANTTOOLS.QAStockETL.QAFetch.QATIndicator import QA_fetch_get_stock_indicator_realtime
+import multiprocessing
+from functools import partial
 from QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,QA_util_get_trade_range,QA_util_get_next_trade_date,QA_util_code_tolist,
                                QA_util_get_pre_trade_date)
 import math
@@ -488,24 +490,13 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, norm_type='norm
     return(res)
 
 def QA_fetch_get_stock_quant_hour(code, start_date, end_date):
-    res = pd.DataFrame()
-    for i in code:
-        QA_util_log_info('The {} of Total {} Stock Tech Indicator Hourly ==== {} from {} to {}'.format
-                         ((code.index(i) +1), len(code), i, start_date, end_date))
-        try:
-            res = res.append(QA_fetch_get_stock_indicator_realtime(i, start_date, end_date, type = 'hour'))
-        except:
-            pass
-    return(res)
+    pool = multiprocessing.Pool(15)
+    with pool as p:
+        res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type='hour'), code)
+    return(pd.concat(res))
 
 def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min'):
-    res = pd.DataFrame()
-    for i in code:
-        QA_util_log_info('The {} of Total {} Stock Tech Indicator Minly ==== {} from {} to {}'.format
-                         ((code.index(i) +1), len(code), i, start_date, end_date))
-        try:
-            data = QA_fetch_get_stock_indicator_realtime(i, start_date, end_date, type = type)
-            res = res.append(data)
-        except:
-            pass
-    return(res)
+    pool = multiprocessing.Pool(15)
+    with pool as p:
+        res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
+    return(pd.concat(res))
