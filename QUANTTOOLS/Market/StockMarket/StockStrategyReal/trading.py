@@ -31,7 +31,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     #r_tar = r_tar[(r_tar.y_pred==1)&(r_tar.TARGET5.isnull())]
 
     data = QA_fetch_stock_fianacial(QA_fetch_stock_all().code.tolist(),QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date))
-    pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)]
+    pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)].set_index(['date','code'])
     pe_list = prediction_tar.loc[prediction_tar.index.intersection(pe_list.index)]
 
     target_list = list(set((pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist()
