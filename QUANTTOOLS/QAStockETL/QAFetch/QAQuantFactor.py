@@ -500,3 +500,6 @@ def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min'):
     with pool as p:
         res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
     return(pd.concat(res))
+
+if __name__ == '__main__':
+    pass

@@ -80,3 +80,6 @@ def QA_fetch_get_stock_min_sina(code, period='30', type='qfq'):
     data = data.assign(date_stamp=data['datetime'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     data = data.assign(code=code)
     return(data)
+
+if __name__ == '__main__':
+    pass

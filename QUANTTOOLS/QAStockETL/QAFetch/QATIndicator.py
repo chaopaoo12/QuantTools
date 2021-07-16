@@ -346,3 +346,6 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
                            )
         data.SKDJ_TR = data.SKDJ_TR.groupby('code').fillna(method='ffill')
         return(data)
+
+if __name__ == '__main__':
+    pass
