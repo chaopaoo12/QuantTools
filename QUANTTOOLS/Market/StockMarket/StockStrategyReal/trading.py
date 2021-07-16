@@ -5,6 +5,7 @@ from QUANTTOOLS.Market.MarketTools import trading_base, load_data, trading_base2
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day,QA_util_get_real_date,QA_util_if_trade,QA_util_log_info,QA_util_get_pre_trade_date
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_quant_data,get_quant_data
 from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial,QA_fetch_stock_all
 
 def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_name = 'prediction', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
@@ -29,7 +30,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     #r_tar = prediction_tar.loc[(QA_util_get_last_day(trading_date),find_stock(rr1[(rr1.SKDJ_K <= 40)|(rr1.SKDJ_K_HR <= 40)].code.tolist())),]
     #r_tar = r_tar[(r_tar.y_pred==1)&(r_tar.TARGET5.isnull())]
 
-    data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date),type='model', block=False, sub_block=False,norm_type=None)
+    data = QA_fetch_stock_fianacial(QA_fetch_stock_all().code.tolist(),QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date))
     pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)]
     pe_list = prediction_tar.loc[pe_list.index]
 
