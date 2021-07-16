@@ -291,15 +291,15 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
     success = False
 
     if type == '15min':
-        period = 15
+        period = '15'
     elif type == '30min':
-        period = 30
+        period = '30'
     elif type == 'hour':
-        period = 60
+        period = '60'
 
     while attempts < 3 and not success:
         try:
-            data = QA_fetch_get_stock_min_sina(code, period='15', type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
+            data = QA_fetch_get_stock_min_sina(code, period=period, type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
             data = data.assign(type='15min',amount=0)
             data = QA_DataStruct_Stock_min(data)
             success = True
