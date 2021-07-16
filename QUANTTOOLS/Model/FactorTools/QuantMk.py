@@ -12,6 +12,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_quant
 import QUANTAXIS as QA
 from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
+import time
 
 def get_quant_data_train(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
     code_list = QA_fetch_stock_all()
@@ -262,6 +263,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
     elif type == 'real':
         res = QA_fetch_get_stock_quant_hour(codes, start_date, end_date)
         res.columns = [x.upper() + '_HR' for x in res.columns]
+        time.sleep(10)
         res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date)
         res1.columns = [x.upper() + '_30M' for x in res1.columns]
         res = res.join(res1)
