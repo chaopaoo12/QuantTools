@@ -124,3 +124,6 @@ def QA_SU_save_usstock_fianacial_percent_his(code = None, start_date=None,end_da
     else:
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
+
+if __name__ == '__main__':
+    pass

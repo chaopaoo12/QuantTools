@@ -2057,3 +2057,6 @@ def QA_SU_save_single_index_min(code : str, time_type : list, client=DATABASE, u
     else:
         QA_util_log_info(' ERROR CODE \n ', ui_log=ui_log)
         QA_util_log_info(err, ui_log=ui_log)
+
+if __name__ == '__main__':
+    pass

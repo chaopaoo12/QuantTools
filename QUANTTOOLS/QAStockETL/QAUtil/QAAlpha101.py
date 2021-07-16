@@ -883,3 +883,6 @@ def get_alpha(df):
                'alpha083','alpha084','alpha085','alpha086','alpha088','alpha092',
                'alpha094','alpha095','alpha096','alpha098','alpha099','alpha101']]
 
+if __name__ == '__main__':
+    pass
+

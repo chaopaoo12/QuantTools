@@ -1408,3 +1408,6 @@ def QA_SU_save_index_technical_30min_his(codes = None,start_date=None,end_date=N
     else:
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
+
+if __name__ == '__main__':
+    pass

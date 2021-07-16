@@ -200,3 +200,6 @@ def QA_SU_save_usstock_alpha101_his(code = None, start_date = None, end_date = N
     else:
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
+
+if __name__ == '__main__':
+    pass

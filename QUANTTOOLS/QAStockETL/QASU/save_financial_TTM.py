@@ -23,3 +23,6 @@ def QA_SU_save_fianacialTTM_momgo(client=DATABASE):
         elif isinstance(e, pymongo.bulk.BulkWriteError):
             pass
     pass
+
+if __name__ == '__main__':
+    pass

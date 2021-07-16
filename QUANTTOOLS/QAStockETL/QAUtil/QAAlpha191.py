@@ -2890,4 +2890,5 @@ class Alpha_191:
             })
         return(res)
 
-
+if __name__ == '__main__':
+    pass

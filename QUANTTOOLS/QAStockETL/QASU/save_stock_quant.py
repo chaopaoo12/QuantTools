@@ -715,3 +715,6 @@ def QA_SU_save_stock_quant_his(code=None, start_date=None,end_date=None, ui_log 
             else:
                 QA_util_log_info(
                     '##JOB01 No Data stock_quant_data ============== {deal_date} '.format(deal_date=deal_date), ui_log)
+
+if __name__ == '__main__':
+    pass

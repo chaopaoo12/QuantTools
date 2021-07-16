@@ -230,3 +230,6 @@ def QA_SU_save_usstock_technical_week_his(codes = None,start_date=None,end_date=
     else:
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
+
+if __name__ == '__main__':
+    pass

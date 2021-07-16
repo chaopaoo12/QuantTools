@@ -383,3 +383,6 @@ def min_index_pre(market):
     market['INDEX_TARGET10']= market.shift(-10)['close']
     market['INDEX_TARGET20']= market.shift(-20)['close']
     return(market)
+
+if __name__ == '__main__':
+    pass
