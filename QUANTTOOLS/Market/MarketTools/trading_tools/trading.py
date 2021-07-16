@@ -165,7 +165,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     morning_begin = "09:30:00"
     morning_end = "11:30:00"
     afternoon_begin = "13:00:00"
-    afternoon_end = "15:00:00"
+    afternoon_end = "18:00:00"
     ontm_list = ["10:30:00","11:30:00","14:00:00", "15:00:00"]
     marktm_list = ['10:00:00',"10:30:00",'11:00:00',"11:30:00",'13:30:00',"14:00:00",'14:30:00',"15:00:00"]
     action_list = ["09:30:00",'10:00:00',"10:30:00",'11:00:00','13:00:00','13:30:00',"14:00:00",'14:30:00']
@@ -175,15 +175,13 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     a.sort()
 
     if a.index(tm) == 0:
-        mark_tm = '15:00:00'
+        mark_tm = '09:30:00'
     elif a.index(tm) == len(a)-1:
         mark_tm = '15:00:00'
     else:
         mark_tm = a[a.index(tm)-1]
 
-    if mark_tm == '15:00:00':
-        action_tm='09:30:00'
-    elif mark_tm == '11:30:00':
+    if mark_tm == '11:30:00':
         action_tm='13:00:00'
     else:
         action_tm=mark_tm
@@ -208,8 +206,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
         QA_util_log_info('##JOB Now Build Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
 
-        if mark_tm == "15:00:00":
-            mark_tm = '09:30:00'
+        if mark_tm == "09:30:00":
             stm = QA_util_get_pre_trade_date(trading_date) + ' ' + '15:00:00'
         else:
             stm = trading_date + ' ' + mark_tm
@@ -342,7 +339,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             mark_tm = marktm_list[marktm_list.index(mark_tm) + 1]
 
         if marktm_list.index(mark_tm) == len(marktm_list) -1:
-            action_tm = None
+            action_tm = '15:00:00'
         else:
             action_tm = action_list[action_list.index(action_tm) + 1]
         QA_util_log_info('##JOB Now Update Next MarkTM&ActionTM==== mark_tm: {} action_tm {}'.format(str(mark_tm),str(action_tm)), ui_log = None)
