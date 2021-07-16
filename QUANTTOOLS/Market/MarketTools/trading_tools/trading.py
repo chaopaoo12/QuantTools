@@ -168,7 +168,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
     afternoon_end = "15:00:00"
     ontm_list = ["10:30:00","11:30:00","14:00:00", "15:00:00"]
     marktm_list = ['10:00:00',"10:30:00",'11:00:00',"11:30:00",'13:30:00',"14:00:00",'14:30:00',"15:00:00"]
-    action_list = ["09:30:00",'10:00:00',"10:30:00",'11:00:00',"11:30:00",'13:30:00',"14:00:00",'14:30:00']
+    action_list = ["09:30:00",'10:00:00',"10:30:00",'11:00:00','13:00:00','13:30:00',"14:00:00",'14:30:00']
 
     ##init+确定时间
     a = marktm_list + [tm]
@@ -176,18 +176,21 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
     if a.index(tm) == 0:
         mark_tm = '15:00:00'
-        action_tm = '09:30:00'
     elif a.index(tm) == len(a)-1:
         mark_tm = '15:00:00'
-        action_tm = None
     else:
         mark_tm = a[a.index(tm)-1]
-        action_tm = action_list[a.index(tm)]
 
-    if mark_tm not in ontm_list:
-        mark_tm = a[a.index(tm)-2]
-        QA_util_log_info('##JOB Now Init Time Mark mark_tm:{}, action_tm:{}'.format(mark_tm, action_tm), ui_log = None)
+    if mark_tm == '15:00:00':
+        action_tm='09:30:00'
+    elif mark_tm == '11:30:00':
+        action_tm='13:00:00'
+    else:
+        action_tm=mark_tm
 
+    QA_util_log_info('##JOB Now Init Time Mark mark_tm:{}, action_tm:{}'.format(mark_tm, action_tm), ui_log = None)
+
+    source_data = None
     tm = int(time.strftime("%H%M%S",time.strptime(tm, "%H:%M:%S")))
     QA_util_log_info('##JOB Now Start Trading ==== {}'.format(str(trading_date)), ui_log = None)
     while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
@@ -219,12 +222,12 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
-            if mark_tm in ontm_list:
+            if mark_tm in ontm_list or source_data is None:
                 #整点
                 QA_util_log_info('##Now Mark Time {},Stm {}, Stock {}'.format(mark_tm,str(stm),len(list(set(positions.code.tolist()+list(target_tar.index))))))
                 data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
                 hour_data = data[['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']].sort_values('SKDJ_K_HR')
-                source_data = hour_data.loc[stm]
+                source_data = hour_data.groupby('code').fillna(method='ffill').loc[stm]
             else:
                 QA_util_log_info('##Now Mark Time {},Stm {}, Stock {}'.format(mark_tm,str(stm),len(list(set(positions.code.tolist()+list(target_tar.index))))))
                 half_data = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
@@ -236,7 +239,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             #QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), str(source_data[source_data.SKDJ_CROSS1_30M == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_30M','SKDJ_K_HR','MA5_HR']])), ui_log = None)
             #QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(stm), str(source_data[source_data.SKDJ_CROSS2_30M == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR'','SKDJ_CROSS1_30M','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_30M','SKDJ_K_HR','MA5_HR']])), ui_log = None)
 
-        while tm < int(time.strftime("%H%M%S",time.strptime(morning_begin, "%H:%M:%S"))):
+        while tm <= int(time.strftime("%H%M%S",time.strptime(morning_begin, "%H:%M:%S"))):
             QA_util_log_info('##JOB Not Start Time ==== {}'.format(str(trading_date)), ui_log = None)
             time.sleep(15)
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
