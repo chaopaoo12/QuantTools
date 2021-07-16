@@ -510,10 +510,24 @@ def QA_fetch_get_stock_quant_hour(code, start_date, end_date):
     return(data)
 
 def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min'):
-    pool = multiprocessing.Pool(15)
-    with pool as p:
-        res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
-    return(pd.concat(res))
+    attempts = 0
+    success = False
+
+    while attempts < 3 and not success:
+        try:
+            pool = multiprocessing.Pool(15)
+            with pool as p:
+                res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
+                data = pd.concat(res)
+                sucess = True
+        except:
+            attempts += 1
+            QA_util_log_info("JOB Try {} tims. ======= from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+            if attempts == 3:
+                QA_util_log_info("JOB No Minly data for ======= from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+                data = None
+
+    return(data)
 
 if __name__ == '__main__':
     pass
