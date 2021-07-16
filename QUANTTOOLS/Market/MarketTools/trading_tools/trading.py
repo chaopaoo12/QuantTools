@@ -329,30 +329,29 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 QA_util_log_info('##JOB Now Not Enough Money==== {}'.format(code), ui_log = None)
                         else:
                             QA_util_log_info('##JOB Now Not On Buying==== {}'.format(code), ui_log = None)
-
-
-        ##update mark_tm action_tm
-        QA_util_log_info('##JOB Now Update Next MarkTM&ActionTM==== mark_tm: {} action_tm {}'.format(str(mark_tm),str(action_tm)), ui_log = None)
-        if mark_tm == '09:30:00':
-            mark_tm = marktm_list[0]
-        else:
-            mark_tm = marktm_list[marktm_list.index(mark_tm) + 1]
-
-        if marktm_list.index(mark_tm) == len(marktm_list) -1:
-            action_tm = '15:00:00'
-        else:
-            action_tm = action_list[action_list.index(action_tm) + 1]
-        QA_util_log_info('##JOB Now Update Next MarkTM&ActionTM==== mark_tm: {} action_tm {}'.format(str(mark_tm),str(action_tm)), ui_log = None)
-
         ###update time
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
         QA_util_log_info('##JOB Now Update Time'.format(str(tm)), ui_log = None)
 
-    ##收市
-    if tm >= int(time.strftime("%H%M%S", time.strptime(afternoon_end, "%H:%M:%S"))):
-        ###time out
-        QA_util_log_info('##JOB Trading Finished ==================== {}'.format(trading_date), ui_log=None)
-        send_actionnotice(strategy_id,'Trading Report:{}'.format(trading_date),'Trading Finished',direction = 'Trading',offset='Finished',volume=None)
+        ##收市
+        if tm >= int(time.strftime("%H%M%S", time.strptime(afternoon_end, "%H:%M:%S"))) or action_tm == '15:00:00':
+            ###time out
+            QA_util_log_info('##JOB Trading Finished ==================== {}'.format(trading_date), ui_log=None)
+            send_actionnotice(strategy_id,'Trading Report:{}'.format(trading_date),'Trading Finished',direction = 'Trading',offset='Finished',volume=None)
+        else:
+            QA_util_log_info('##JOB Now Update Next MarkTM&ActionTM==== mark_tm: {} action_tm {}'.format(str(mark_tm),str(action_tm)), ui_log = None)
+            if mark_tm == '09:30:00':
+                mark_tm = marktm_list[0]
+            else:
+                mark_tm = marktm_list[marktm_list.index(mark_tm) + 1]
+
+            if marktm_list.index(mark_tm) == len(marktm_list) -1:
+                action_tm = '15:00:00'
+            else:
+                action_tm = action_list[action_list.index(action_tm) + 1]
+            QA_util_log_info('##JOB Now Update Next MarkTM&ActionTM==== mark_tm: {} action_tm {}'.format(str(mark_tm),str(action_tm)), ui_log = None)
+
+
 
 if __name__ == '__main__':
     pass
