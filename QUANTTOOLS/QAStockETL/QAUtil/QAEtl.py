@@ -975,3 +975,6 @@ def QA_util_process_financial(deal_date = None, type = 'day'):
         cursor.close()
         conn.commit()
         conn.close()
+
+if __name__ == '__main__':
+    pass

@@ -106,3 +106,6 @@ def QA_Sql_Index_Alpha101(from_ , to_, sql_text = sql_text, ui_log= None):
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
     return(data.drop_duplicates((['code', 'date'])).set_index(['date','code']))
+
+if __name__ == '__main__':
+    pass

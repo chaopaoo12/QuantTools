@@ -1633,3 +1633,6 @@ def QA_util_etl_financial_TTM(ui_log= None):
     data = data.assign(date_stamp=data['REPORT_DATE'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     conn.close()
     return(data)
+
+if __name__ == '__main__':
+    pass

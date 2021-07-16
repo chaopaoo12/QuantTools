@@ -5063,3 +5063,6 @@ def QA_util_get_order_datetime(dt, trade_date_dict='CN'):
                              'lt', trade_date_dict),
             dt.time()
         )
+
+if __name__ == '__main__':
+    pass
