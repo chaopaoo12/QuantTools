@@ -261,13 +261,32 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
     elif type == 'model':
         res = QA_fetch_stock_quant_hour(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
-        res = QA_fetch_get_stock_quant_hour(codes, start_date, end_date)
-        res.columns = [x.upper() + '_HR' for x in res.columns]
-        QA_util_log_info('##JOB Hour Data Finish')
-        time.sleep(10)
-        QA_util_log_info('##JOB Min Data Start')
-        res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date)
-        res1.columns = [x.upper() + '_30M' for x in res1.columns]
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res = QA_fetch_get_stock_quant_min(codes, start_date, end_date, 'hour')
+                res.columns = [x.upper() + '_HR' for x in res.columns]
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 60min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 60min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
+        time.sleep(5)
+
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '30min')
+                res1.columns = [x.upper() + '_30M' for x in res1.columns]
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 30min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 30min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
         res = res1.join(res)
     return(res)
 
@@ -322,10 +341,30 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
     elif type == 'model':
         res = QA_fetch_stock_quant_min(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
-        res = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '30min')
-        res.columns = [x.upper() + '_30M' for x in res.columns]
-        res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '15min')
-        res1.columns = [x.upper() + '_15M' for x in res1.columns]
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '30min')
+                res.columns = [x.upper() + '_30M' for x in res.columns]
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 30min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 30min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '15min')
+                res1.columns = [x.upper() + '_15M' for x in res1.columns]
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 15min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 15min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
         res = res1.join(res)
     return(res)
 
@@ -358,8 +397,17 @@ def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block 
     elif type == 'model':
         res = QA_fetch_stock_quant_min(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
-        res = QA_fetch_get_stock_quant_min(codes, start_date, end_date)
-        res.columns = [x.upper() + '_30M' for x in res.columns]
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res = QA_fetch_get_stock_quant_min(codes, start_date, end_date)
+                res.columns = [x.upper() + '_30M' for x in res.columns]
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 30min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 30min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
     return(res)
 
 def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
