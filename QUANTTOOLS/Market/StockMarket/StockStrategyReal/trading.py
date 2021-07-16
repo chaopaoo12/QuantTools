@@ -34,7 +34,6 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     #pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)].set_index(['date','code'])
     #pe_list = prediction_tar.loc[prediction_tar.index.intersection(pe_list.index)]
 
-    r_tar = prediction_tar[prediction_tar.RANK <= 20].loc[QA_util_get_last_day(trading_date)]
     r_tar = prediction_tar[(prediction_tar.RANK <= 20)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
     #r_tar = prediction_tar.loc[(slice(None),list(r_tar.index)),].loc[QA_util_get_last_day(trading_date)]
     #per = prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]
