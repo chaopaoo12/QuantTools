@@ -26,3 +26,6 @@ def QA_SU_save_interest_rate(client=DATABASE, ui_log = None, ui_progress = None)
             print(error0)
             #err.append(str(code))
     __saving_work( interest_rate)
+
+if __name__ == '__main__':
+    pass

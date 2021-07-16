@@ -33,3 +33,6 @@ def QA_SU_save_usstock_list_day(client=DATABASE, ui_log = None, ui_progress = No
     else:
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
+
+if __name__ == '__main__':
+    pass
