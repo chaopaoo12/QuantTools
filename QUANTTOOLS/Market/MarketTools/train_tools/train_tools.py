@@ -64,3 +64,6 @@ def prepare_train(model, date, col = 'TARGET5', k = 3, start = "-01-01", shift =
     model.set_train_rng(train_start=str(int(date[0:4])-k)+start,
                         train_end=QA_util_get_last_day(QA_util_get_real_date(date), shift))
     return(model)
+
+if __name__ == '__main__':
+    pass

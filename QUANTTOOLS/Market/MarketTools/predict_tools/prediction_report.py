@@ -366,3 +366,6 @@ def base_report(trading_date, title, **kwargs):
                           )
 
     return(None)
+
+if __name__ == '__main__':
+    pass

@@ -82,3 +82,6 @@ def check_prediction(prediction, date):
         pass
     else:
         raise Exception('预测需更新')
+
+if __name__ == '__main__':
+    pass

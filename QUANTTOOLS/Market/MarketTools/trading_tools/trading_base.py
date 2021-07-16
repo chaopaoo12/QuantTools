@@ -72,3 +72,6 @@ def trading_base2(trading_date, r_tar, percent, account, title, exceptions, test
                       )
     res = trade_roboot2(r_tar, account, trading_date, percent, title, type='end', exceptions = exceptions, test = test)
     return(res)
+
+if __name__ == '__main__':
+    pass

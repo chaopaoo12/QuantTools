@@ -87,3 +87,6 @@ def predict_stock_dev(trading_date, xg_predict_func, predict_func1, predict_func
                       sort_mark ='DAY_RANK',
                       selec_list=['NAME','INDUSTRY','SKDJ_TR','SKDJ_K','SKDJ_K_HR','O_PROB','DAY_PROB','RANK','DAY_RANK'],
                       account='name:client-1', ui_log = None)
+
+if __name__ == '__main__':
+    pass
