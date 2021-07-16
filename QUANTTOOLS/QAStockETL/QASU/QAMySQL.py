@@ -805,3 +805,6 @@ def QA_etl_index_to_stock(ui_log= None):
     QA_util_sql_store_mysql(res, "index_stock",if_exists='replace')
     QA_util_log_info(
         '##JOB ETL INDEX TO STOCK HAS BEEN SAVED ==== {}'.format(str(datetime.date.today())), ui_log)
+
+if __name__ == '__main__':
+    pass

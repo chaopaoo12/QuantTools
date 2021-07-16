@@ -373,3 +373,6 @@ def QA_SU_save_stock_technical_30min_day(code = None,start_date=None,end_date=No
 
 def QA_SU_save_stock_technical_30min_his(code = None,start_date=None,end_date=None):
     save_stock_technical_index.QA_SU_save_stock_technical_30min_his(codes = code,start_date=start_date,end_date=end_date)
+
+if __name__ == '__main__':
+    pass
