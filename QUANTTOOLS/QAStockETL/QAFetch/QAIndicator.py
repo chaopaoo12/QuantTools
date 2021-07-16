@@ -1040,3 +1040,6 @@ def get_indicator_short(data, type='day'):
         res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
         res = res.set_index(['datetime','code']).dropna(how='all')
     return(res)
+
+if __name__ == '__main__':
+    pass
