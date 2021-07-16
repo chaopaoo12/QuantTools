@@ -13,3 +13,6 @@ def QA_fetch_get_btc_min(code, type=15):
                        code=code,
                        type=type)
     return(data)
+
+if __name__ == '__main__':
+    pass

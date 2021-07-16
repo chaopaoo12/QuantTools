@@ -276,3 +276,6 @@ def hedge_alpha_half(code, index, date=None):
         return(Alpha_191(price, date, index_price).alpha())
     except:
         return(None)
+
+if __name__ == '__main__':
+    pass

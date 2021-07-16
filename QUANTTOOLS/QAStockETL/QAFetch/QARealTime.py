@@ -11,3 +11,6 @@ def QA_fetch_get_realtime(code, type):
                        date=data['datetime'].apply(lambda x: str(x)[0:10]),
                        date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(data)
+
+if __name__ == '__main__':
+    pass

@@ -41,3 +41,6 @@ def QA_fetch_get_usstock_indicator(code, start_date, end_date, type = 'day'):
         data = data[data.date.isin(rng1)]
         data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
+
+if __name__ == '__main__':
+    pass

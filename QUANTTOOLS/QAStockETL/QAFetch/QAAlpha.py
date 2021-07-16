@@ -159,3 +159,6 @@ def QA_fetch_get_hedge_alpha(index_code, date, ui_log = None):
     else:
         QA_util_log_info(
             '##JOB Non Data Stock Alpha191 for ============== {}'.format(date), ui_log)
+
+if __name__ == '__main__':
+    pass

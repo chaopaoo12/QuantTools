@@ -982,3 +982,6 @@ def QA_fetch_xqblock_day_adv(code, start="all", end=None, collections=DATABASE.b
     else:
         data = QA_fetch_xqblock_day(code, start, end, format='pd')
         return QA_DataStruct_Index_day(data)
+
+if __name__ == '__main__':
+    pass

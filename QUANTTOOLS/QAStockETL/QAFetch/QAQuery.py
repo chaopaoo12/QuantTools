@@ -3443,3 +3443,6 @@ def QA_fetch_future_target(codes, start_date, end_date, frequence='1min', close_
         if res[columnname].dtype == 'int64':
             res[columnname]=res[columnname].astype('int8')
     return(res)
+
+if __name__ == '__main__':
+    pass

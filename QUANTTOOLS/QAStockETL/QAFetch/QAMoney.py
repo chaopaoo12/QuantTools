@@ -20,3 +20,6 @@ def QA_fetch_get_diniw_min(type, lens=1000):
                        code='DINIW',
                        type=type)
     return(data)
+
+if __name__ == '__main__':
+    pass

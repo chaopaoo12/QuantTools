@@ -267,3 +267,6 @@ def QA_fetch_get_index_etlday(codes, start=None, end=None):
     except:
         res=None
     return(res)
+
+if __name__ == '__main__':
+    pass

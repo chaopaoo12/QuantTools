@@ -13,3 +13,6 @@ def QA_fetch_get_gold_min(code, type):
                        code=code,
                        type=type)
     return(data)
+
+if __name__ == '__main__':
+    pass

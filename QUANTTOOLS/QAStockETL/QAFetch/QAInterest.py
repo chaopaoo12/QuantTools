@@ -31,3 +31,6 @@ def QA_fetch_get_interest_rate():
     data = data.assign(crawl_date=data['crawl_date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(data)
+
+if __name__ == '__main__':
+    pass

@@ -55,3 +55,6 @@ def QA_fetch_get_stock_financial_percent(code,start_date,end_date):
         return(fianacial)
     except:
         QA_util_log_info('JOB No Data for {code} ====== from {_from} to {_to}'.format(code=code, _from=start_date, _to=end_date))
+
+if __name__ == '__main__':
+    pass

@@ -31,3 +31,6 @@ def QA_fetch_get_usstock_alpha101(code, start, end):
     else:
         QA_util_log_info(
             '##JOB Non Data UsStock Alpha101 ============== from {_from} to {_to}'.format(_from=start, _to=end))
+
+if __name__ == '__main__':
+    pass

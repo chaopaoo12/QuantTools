@@ -11,3 +11,6 @@ def QA_fetch_get_block_day_xq(code, start_date, end_date):
     data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])),
                        name = name)
     return(data)
+
+if __name__ == '__main__':
+    pass

@@ -186,3 +186,6 @@ def QA_fetch_get_stock_half(code, start, end):
 
 def fetch_get_stock_code_all():
     return(stock_info_a_code_name())
+
+if __name__ == '__main__':
+    pass
