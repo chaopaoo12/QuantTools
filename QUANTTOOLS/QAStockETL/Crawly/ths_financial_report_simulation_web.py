@@ -51,3 +51,6 @@ def get_stock_report_ths(code):
     res["code"] = code
     res['crawl_date']=QA_util_today_str()
     return(res)
+
+if __name__ == '__main__':
+    pass

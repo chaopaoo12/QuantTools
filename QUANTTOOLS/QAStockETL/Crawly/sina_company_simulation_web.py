@@ -30,3 +30,6 @@ def get_usstock_list_sina():
         return None
     else:
         return(res)
+
+if __name__ == '__main__':
+    pass

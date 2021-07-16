@@ -92,3 +92,6 @@ def read_stock_week(code, start_date, end_date):
     data = data.assign(timestamp = data.timestamp.apply(lambda x:x/1000))
     data = data.assign(date = pd.to_datetime(data.timestamp.apply(lambda x:str(datetime.datetime.fromtimestamp(x))[0:10])))
     return(data)
+
+if __name__ == '__main__':
+    pass

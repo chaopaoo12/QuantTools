@@ -60,3 +60,6 @@ def get_btc_min_sina(symbol, scala, lens):
         return None
     else:
         return(data)
+
+if __name__ == '__main__':
+    pass

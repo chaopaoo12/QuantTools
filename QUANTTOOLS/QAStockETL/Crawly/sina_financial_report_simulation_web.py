@@ -69,3 +69,6 @@ def get_stock_report_sina(code,report_year):
         except:
             pass
         return(res)
+
+if __name__ == '__main__':
+    pass

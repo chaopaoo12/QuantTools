@@ -86,3 +86,6 @@ def get_diniw_min_sina(scala, lens):
         return None
     else:
         return(data)
+
+if __name__ == '__main__':
+    pass

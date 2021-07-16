@@ -65,3 +65,6 @@ def get_stock_shares_sina(code):
         return None
     else:
         return(res)
+
+if __name__ == '__main__':
+    pass

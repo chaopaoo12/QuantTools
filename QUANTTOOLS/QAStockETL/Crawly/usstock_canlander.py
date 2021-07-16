@@ -46,3 +46,6 @@ def get_usstock_canlander(start='20080101', end='20200930'):
     a_list = getEveryDay(start,end)
     b_list = get_us_canlander()
     return([i[0:4]+'-'+i[4:6]+'-'+i[6:8] for i in a_list if i not in b_list])
+
+if __name__ == '__main__':
+    pass

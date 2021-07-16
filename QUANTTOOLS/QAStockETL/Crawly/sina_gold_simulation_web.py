@@ -67,3 +67,6 @@ def get_gold_min_sina(symbol, scala):
         return None
     else:
         return(data)
+
+if __name__ == '__main__':
+    pass

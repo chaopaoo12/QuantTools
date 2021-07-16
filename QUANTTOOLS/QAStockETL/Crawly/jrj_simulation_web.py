@@ -64,3 +64,6 @@ def get_financial_report_date(report_date, headers = None, psize= 2000,vname="pl
     data['report_date']=report_date
     data['crawl_date']=QA_util_today_str()
     return(data[data["real_date"].apply(lambda x: len(x)!=0)])
+
+if __name__ == '__main__':
+    pass

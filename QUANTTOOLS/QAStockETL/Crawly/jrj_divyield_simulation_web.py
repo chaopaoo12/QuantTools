@@ -74,3 +74,6 @@ def get_stock_divyield(report_date, headers = None, page=1):
     if data is None:
         data = pd.DataFrame()
     return(data)
+
+if __name__ == '__main__':
+    pass

@@ -12,3 +12,6 @@ def read_data_ifzq(code, ex, type):
                      datetime=res.datetime.apply(lambda x: x[0:4]+'-'+x[4:6]+'-'+x[6:8]+' '+x[8:10]+':'+x[10:12]+':00'),
                      code=code)
     return(res)
+
+if __name__ == '__main__':
+    pass
