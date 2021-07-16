@@ -186,6 +186,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
     if mark_tm not in ontm_list:
         mark_tm = a[a.index(tm)-2]
+        QA_util_log_info('##JOB Now Init Time Mark mark_tm:{}, action_tm:{}'.format(mark_tm, action_tm), ui_log = None)
 
     tm = int(time.strftime("%H%M%S",time.strptime(tm, "%H:%M:%S")))
     QA_util_log_info('##JOB Now Start Trading ==== {}'.format(str(trading_date)), ui_log = None)
