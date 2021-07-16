@@ -116,3 +116,6 @@ from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (QA_etl_index_day,
                                                 QA_etl_index_technical_hour,
                                                 QA_etl_index_technical_15min
                                                 )
+
+if __name__ == '__main__':
+    pass
