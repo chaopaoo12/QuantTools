@@ -265,6 +265,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
         res.columns = [x.upper() + '_HR' for x in res.columns]
         QA_util_log_info('##JOB Hour Data Finish')
         time.sleep(10)
+        QA_util_log_info('##JOB Min Data Start')
         res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date)
         res1.columns = [x.upper() + '_30M' for x in res1.columns]
         res = res.join(res1)
