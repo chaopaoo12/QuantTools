@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_index_
                                            QA_fetch_index_quant_min,QA_fetch_index_min_pre,
                                            QA_fetch_stock_quant_min,QA_fetch_stock_min_pre)
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_quant_hour,QA_fetch_get_stock_quant_min
-import QUANTAXIS as QA
+from QUANTAXIS import QA_fetch_stock_block,QA_fetch_index_list_adv
 from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
 import time
@@ -22,7 +22,7 @@ def get_quant_data_train(start_date, end_date, code=None, type = 'crawl', block 
         codes = code_list[code_list.code.isin(code)]
 
     if block is True:
-        data = QA.QA_fetch_stock_block()
+        data = QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
         codes = codes[codes.code.isin(block)]
@@ -55,7 +55,7 @@ def get_quant_data_realtime(start_date, end_date, code=None, type = 'model', blo
         codes = code_list[code_list.code.isin(code)]
 
     if block is True:
-        data = QA.QA_fetch_stock_block()
+        data = QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
         codes = codes[codes.code.isin(block)]
@@ -81,7 +81,7 @@ def get_quant_data_realtime(start_date, end_date, code=None, type = 'model', blo
 
 def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
 
-    code_list = QA.QA_fetch_index_list_adv()
+    code_list = QA_fetch_index_list_adv()
 
     if code is None:
         code_list = QA_fetch_index_info(list(code_list.code))
@@ -111,7 +111,7 @@ def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = Fals
         codes = code_list[code_list.code.isin(code)]
 
     if block is True:
-        data = QA.QA_fetch_stock_block()
+        data = QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
         codes = codes[codes.code.isin(block)]
@@ -142,7 +142,7 @@ def get_hedge_data(start_date, end_date, code=None, type = 'crawl', block = True
         codes = code_list[code_list.code.isin(code)]
 
     if block is True:
-        data = QA.QA_fetch_stock_block()
+        data = QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['沪深300'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
         codes = codes[codes.code.isin(block)]
@@ -174,7 +174,7 @@ def get_hedge_data_realtime(start_date, end_date, code=None, type = 'model', blo
         codes = code_list[code_list.code.isin(code)]
 
     if block is True:
-        data = QA.QA_fetch_stock_block()
+        data = QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['沪深300'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
         codes = codes[codes.code.isin(block)]
@@ -206,7 +206,7 @@ def get_500hedge_data(start_date, end_date, code=None, type = 'crawl', block = T
         codes = code_list[code_list.code.isin(code)].drop_duplicates()
 
     if block is True:
-        data = QA.QA_fetch_stock_block()
+        data = QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['中证500'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
         codes = codes[codes.code.isin(block)]
@@ -239,7 +239,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
         codes = code_list[code_list.code.isin(code)].drop_duplicates()
 
     if block is True:
-        data = QA.QA_fetch_stock_block()
+        data = QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
         codes = codes[codes.code.isin(block)]
@@ -273,7 +273,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
 
 def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
 
-    code_list = QA.QA_fetch_index_list_adv()
+    code_list = QA_fetch_index_list_adv()
 
     if code is None:
         code_list = QA_fetch_index_info(list(code_list.code))
@@ -302,7 +302,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
         codes = code_list[code_list.code.isin(code)]
 
     if block is True:
-        data = QA.QA_fetch_stock_block()
+        data = QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
         codes = codes[codes.code.isin(block)]
@@ -338,7 +338,7 @@ def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block 
         codes = code_list[code_list.code.isin(code)]
 
     if block is True:
-        data = QA.QA_fetch_stock_block()
+        data = QA_fetch_stock_block()
         block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
         #codes = [i for i in codes if i.startswith('300') == False]
         codes = codes[codes.code.isin(block)]
@@ -364,7 +364,7 @@ def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block 
 
 def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
 
-    code_list = QA.QA_fetch_index_list_adv()
+    code_list = QA_fetch_index_list_adv()
 
     if code is None:
         code_list = QA_fetch_index_info(list(code_list.code))
