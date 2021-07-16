@@ -287,9 +287,9 @@ def QA_fetch_get_index_indicator_short(code, start_date, end_date, type = 'day')
         return(data)
 
 def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'day'):
+    attempts = 0
+    success = False
     if type == '15min':
-        attempts = 0
-        success = False
         while attempts < 3 and not success:
             try:
                 data = QA_fetch_get_stock_min_sina(code, period='15', type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
@@ -303,8 +303,6 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
                     QA_util_log_info("JOB No Minly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
                     data = None
     elif type == '30min':
-        attempts = 0
-        success = False
         while attempts < 3 and not success:
             try:
                 data = QA_fetch_get_stock_min_sina(code, period='30', type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
@@ -317,8 +315,6 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
                     QA_util_log_info("JOB No Minly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
                     data = None
     elif type == 'hour':
-        attempts = 0
-        success = False
         while attempts < 3 and not success:
             try:
                 data = QA_fetch_get_stock_min_sina(code, period='60', type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
