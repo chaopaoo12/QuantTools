@@ -268,7 +268,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
         QA_util_log_info('##JOB Min Data Start')
         res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date)
         res1.columns = [x.upper() + '_30M' for x in res1.columns]
-        res = res.join(res1)
+        res = res1.join(res)
     return(res)
 
 def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
@@ -326,7 +326,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
         res.columns = [x.upper() + '_30M' for x in res.columns]
         res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '15min')
         res1.columns = [x.upper() + '_15M' for x in res1.columns]
-        res = res.join(res1)
+        res = res1.join(res)
     return(res)
 
 def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
