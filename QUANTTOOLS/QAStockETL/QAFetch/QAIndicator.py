@@ -1023,7 +1023,7 @@ def get_indicator_short(data, type='day'):
                                 CROSS_JC=0,CROSS_SC=0,)[['DIF','DEA','MACD','CROSS_JC','CROSS_SC','MACD_TR']]
 
 
-    res =pd.concat([CCI,MACD,MA,SKDJ,SAR_V],
+    res =pd.concat([CCI,MACD,MA,MA_VOL,SKDJ,SAR_V],
                    axis=1).dropna(how='all')
     res = res.groupby('code').apply(spc)
     res['SAR_MARK'] = 1 - data['close']/res['SAR']
