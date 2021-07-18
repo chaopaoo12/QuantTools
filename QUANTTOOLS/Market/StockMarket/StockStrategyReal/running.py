@@ -119,7 +119,7 @@ def predict_target(trading_date, working_dir=working_dir):
     target_list = list(set((pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist()
                             + rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].reset_index().code.tolist()
                             )))
-    target_pool = prediction_tar.loc[(slice(None),target_list),].loc[trading_date].sort_values('RANK')
+    target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_real_date(trading_date)].sort_values('RANK')
 
     base_report(trading_date, '模型汇总报告', **{'本日选股': target_pool,
                                            'INDEX选股': rrr[rrr.y_pred == 1],
