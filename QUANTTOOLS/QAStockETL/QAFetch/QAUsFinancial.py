@@ -79,7 +79,6 @@ def QA_fetch_get_stock_min_sina(code, period='30', type='qfq'):
     data[['open','close','high','low','volume']] = data[['open','close','high','low','volume']].apply(pd.to_numeric)
     data = data.assign(date_stamp=data['datetime'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])),code=code)
     data['datetime']=pd.to_datetime(data['datetime'],format='%m-%d-%Y %H:%M:%S')
-    print(data)
     return(data)
 
 if __name__ == '__main__':
