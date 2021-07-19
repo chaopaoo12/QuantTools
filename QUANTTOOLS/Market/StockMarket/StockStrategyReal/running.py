@@ -125,6 +125,7 @@ def predict_target(trading_date, working_dir=working_dir):
     min30 = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='model', block=False, sub_block=False,norm_type=None)
 
     res = min30.join(hour[[i for i in hour.columns if i not in min30.columns]]).gropuby('code').fillna(method='ffill')
+    res = res[res.date.isin(QA_util_get_trade_range(QA_util_get_pre_trade_date(trading_date,5),trading_date))]
 
     in_list = res[(res.SKDJ_CROSS2_30M == 1 and res.SKDJ_K_HR < 50) | (res.CROSS_JC_30M == 1 and res.SKDJ_K_HR < 50)].loc[(slice(None),target_list),][['SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_30M','SKDJ_TR_30M','MA5_30M','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5']]
 
