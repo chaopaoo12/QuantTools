@@ -126,9 +126,9 @@ def predict_target(trading_date, working_dir=working_dir):
 
     res = min30.join(hour[[i for i in hour.columns if i not in min30.columns]]).gropuby('code').fillna(method='ffill')
 
-    in_list = res[(res.SKDJ_CROSS2_30M == 1 and res.SKDJ_K_HR < 50) | (res.CROSS_JC_30M == 1 and res.SKDJ_K_HR < 50)].loc[(slice(None),target_list),][['SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_30M','SKDJ_TR_30M','MA5_30M','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR']]
+    in_list = res[(res.SKDJ_CROSS2_30M == 1 and res.SKDJ_K_HR < 50) | (res.CROSS_JC_30M == 1 and res.SKDJ_K_HR < 50)].loc[(slice(None),target_list),][['SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_30M','SKDJ_TR_30M','MA5_30M','DAY_PROB','HOUR_PROB','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5']]
 
-    out_ist = res[(res.SKDJ_CROSS1_30M == 1 and res.MA5_30M < 0) | (res.SKDJ_TR_30M < 1 and res.MA5_30M < 0)].loc[(slice(None),target_list),][['SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_30M','SKDJ_TR_30M','MA5_30M','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR']]
+    out_ist = res[(res.SKDJ_CROSS1_30M == 1 and res.MA5_30M < 0) | (res.SKDJ_TR_30M < 1 and res.MA5_30M < 0)].loc[(slice(None),target_list),][['SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_30M','SKDJ_TR_30M','MA5_30M','DAY_PROB','HOUR_PROB','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5']]
 
     base_report(trading_date, '模型汇总报告', **{'本日选股': target_pool,
                                            'INDEX选股': rrr[rrr.y_pred == 1],
