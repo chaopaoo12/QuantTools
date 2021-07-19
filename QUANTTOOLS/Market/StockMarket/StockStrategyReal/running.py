@@ -124,11 +124,11 @@ def predict_target(trading_date, working_dir=working_dir):
     hour = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
     min30 = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='model', block=False, sub_block=False,norm_type=None)
 
-    res = min30.join(hour).gropuby('code').fillna(method='ffill')
+    res = min30.join(hour[[i for i in hour.columns if i not in min30.columns]]).gropuby('code').fillna(method='ffill')
 
-    in_list = res[(res.SKDJ_CROSS2_30M == 1 and res.SKDJ_K_HR < 50) | (res.CROSS_JC_30M == 1 and res.SKDJ_K_HR < 50)].loc[(slice(None),target_list),]
+    in_list = res[(res.SKDJ_CROSS2_30M == 1 and res.SKDJ_K_HR < 50) | (res.CROSS_JC_30M == 1 and res.SKDJ_K_HR < 50)].loc[(slice(None),target_list),][['SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_30M','SKDJ_TR_30M','MA5_30M','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR']]
 
-    out_ist = res[(res.SKDJ_CROSS1_30M == 1 and res.MA5_30M < 0) | (res.SKDJ_TR_30M < 1 and res.MA5_30M < 0)].loc[(slice(None),target_list),]
+    out_ist = res[(res.SKDJ_CROSS1_30M == 1 and res.MA5_30M < 0) | (res.SKDJ_TR_30M < 1 and res.MA5_30M < 0)].loc[(slice(None),target_list),][['SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_30M','SKDJ_TR_30M','MA5_30M','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR']]
 
     base_report(trading_date, '模型汇总报告', **{'本日选股': target_pool,
                                            'INDEX选股': rrr[rrr.y_pred == 1],
