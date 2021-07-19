@@ -5,7 +5,7 @@ from .concat_predict import (concat_predict,concat_predict_hour,concat_predict_1
                              concat_predict_index,concat_predict_indexhour,concat_predict_index15min)
 from .setting import working_dir, percent, exceptions, top
 from QUANTTOOLS.Market.MarketTools import predict_base, predict_index_base, predict_index_dev, predict_stock_dev,base_report, load_data
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_quant_data,get_quant_data
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_quant_data,get_quant_data,get_quant_data_hour,get_quant_data_30min
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date,QA_util_get_real_date
 from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import (QA_util_get_trade_range)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_name
@@ -121,6 +121,17 @@ def predict_target(trading_date, working_dir=working_dir):
                             )))
     target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_real_date(trading_date)].sort_values('RANK')
 
+    hour = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
+    min30 = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='model', block=False, sub_block=False,norm_type=None)
+
+    res = min30.join(hour).gropuby('code').fillna(method='ffill')
+
+    in_list = res[(res.SKDJ_CROSS2_30M == 1 and res.SKDJ_K_HR < 50) | (res.CROSS_JC_30M == 1 and res.SKDJ_K_HR < 50)].loc[(slice(None),target_list),]
+
+    out_ist = res[(res.SKDJ_CROSS1_30M == 1 and res.MA5_30M < 0) | (res.SKDJ_TR_30M < 1 and res.MA5_30M < 0)].loc[(slice(None),target_list),]
+
     base_report(trading_date, '模型汇总报告', **{'本日选股': target_pool,
                                            'INDEX选股': rrr[rrr.y_pred == 1],
-                                           'PE选股': pe_list[pe_list.y_pred == 1]})
+                                           'PE选股': pe_list[pe_list.y_pred == 1],
+                                           '进场信号':in_list,
+                                           '出场信号':out_ist})
