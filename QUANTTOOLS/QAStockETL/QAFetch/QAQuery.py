@@ -3317,7 +3317,7 @@ def QA_fetch_stock_quant_min(code, start, end=None, block = True, norm_type='nor
     '获取股票日线'
 
     code = QA_util_code_tolist(code)
-    hour = QA_Sql_Stock_Index15min
+    hour = QA_Sql_Stock_Index30min
 
     if QA_util_date_valid(end):
 
