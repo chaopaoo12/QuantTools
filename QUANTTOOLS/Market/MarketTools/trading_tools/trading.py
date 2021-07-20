@@ -223,13 +223,13 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 #整点
                 QA_util_log_info('##Now Mark Time {},Stm {}, Stock {}'.format(mark_tm,str(stm),len(list(set(positions.code.tolist()+list(target_tar.index))))))
                 data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
-                hour_data = data[['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']].sort_values('SKDJ_K_HR')
+                hour_data = data[['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
                 source_data = hour_data.groupby('code').fillna(method='ffill').loc[stm]
             else:
                 QA_util_log_info('##Now Mark Time {},Stm {}, Stock {}'.format(mark_tm,str(stm),len(list(set(positions.code.tolist()+list(target_tar.index))))))
                 half_data = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
                 source_data = half_data.join(hour_data[['SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]).groupby('code').fillna(method='ffill')
-                source_data = source_data.loc[stm][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']].sort_values('SKDJ_K_HR')
+                source_data = source_data.loc[stm][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
 
             ####job1 小时级报告 指数小时级跟踪
             target_list = [i for i in list(target_tar.index) if i not in positions.code.tolist()]
