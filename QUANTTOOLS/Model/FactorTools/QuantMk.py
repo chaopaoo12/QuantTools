@@ -29,7 +29,7 @@ def get_quant_data_train(start_date, end_date, code=None, type = 'crawl', block 
     else:
         pass
     QA_util_log_info('##JOB Now Delete ST Stock')
-    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    #codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
     codes = list(set(codes['code']))
 
@@ -62,7 +62,7 @@ def get_quant_data_realtime(start_date, end_date, code=None, type = 'model', blo
     else:
         pass
     QA_util_log_info('##JOB Now Delete ST Stock')
-    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    #codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
     codes = list(set(codes['code']))
 
@@ -149,7 +149,7 @@ def get_hedge_data(start_date, end_date, code=None, type = 'crawl', block = True
     else:
         pass
     QA_util_log_info('##JOB Now Delete ST Stock')
-    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    #codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
     codes = list(set(codes['code']))
 
@@ -181,7 +181,7 @@ def get_hedge_data_realtime(start_date, end_date, code=None, type = 'model', blo
     else:
         pass
     QA_util_log_info('##JOB Now Delete ST Stock')
-    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    #codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
     codes = list(set(codes['code']))
 
@@ -213,7 +213,7 @@ def get_500hedge_data(start_date, end_date, code=None, type = 'crawl', block = T
     else:
         pass
     QA_util_log_info('##JOB Now Delete ST Stock')
-    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    #codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
     codes = list(set(codes['code']))
 
@@ -247,7 +247,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
         pass
 
     QA_util_log_info('##JOB Now Delete ST Stock')
-    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    #codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
     codes = list(set(codes['code']))
 
@@ -331,7 +331,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
     else:
         pass
     QA_util_log_info('##JOB Now Delete ST Stock')
-    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    #codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
     codes = list(set(codes['code']))
 
@@ -389,7 +389,7 @@ def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block 
     else:
         pass
     QA_util_log_info('##JOB Now Delete ST Stock')
-    codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    #codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
     codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
     codes = list(set(codes['code']))
 
