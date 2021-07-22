@@ -38,7 +38,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     #r_tar = prediction_tar.loc[(slice(None),list(r_tar.index)),].loc[QA_util_get_last_day(trading_date)]
     #per = prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]
 
-    target_list = list(set((list(r_tar.index) +
+    target_list = list(set((#list(r_tar.index) +
                             #pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist() +
                             rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].reset_index().code.tolist()
                             )))
