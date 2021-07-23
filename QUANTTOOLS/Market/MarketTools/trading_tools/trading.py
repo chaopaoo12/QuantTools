@@ -276,7 +276,9 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         #elif res2.MA10_HR < 0:
                         #    msg = '打穿MA10'
                         elif res2.SKDJ_TR_30M < 1 and round(res2.MA5_30M,2) < 0:
-                            msg = 'SKDJ止损:跌破MA5'
+                            msg = 'SKDJ止损:30M跌破MA5'
+                        #elif res2.SKDJ_TR_HR < 1 and round(res2.MA5_HR,2) < 0:
+                        #    msg = 'SKDJ止损:HR跌破MA5'
                         else:
                             msg = None
                             ###卖出信号1
