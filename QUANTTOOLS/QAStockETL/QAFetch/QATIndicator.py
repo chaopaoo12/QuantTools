@@ -4,7 +4,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_half_adv
 from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator,ohlc,get_indicator_short
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
-from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq, QA_fetch_get_stock_min_sina
+from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq, QA_fetch_get_stock_min_sina,QA_fetch_get_index_min_sina
 import numpy as np
 
 def QA_fetch_get_future_indicator(code, start_date, end_date, frequence = 'day'):
@@ -297,7 +297,42 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
 
     try:
         data = QA_fetch_get_stock_min_sina(code, period=period, type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
-        data = data.assign(type='15min',amount=0)
+        data = data.assign(type=type,amount=0)
+        data = QA_DataStruct_Stock_min(data)
+    except:
+        QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
+        data = None
+
+    if data is None:
+        return None
+    else:
+        data = get_indicator(data, type)
+        data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]]
+        #if type in ['15min','30min','min','hour']:
+        #    data = data[data.date.isin(rng1)]
+        #else:
+        #    data=data.loc[rng1]
+        data = data.assign(SKDJ_TR = (data.SKDJ_CROSS1*-1+ data.SKDJ_CROSS2*1)/(data.SKDJ_CROSS1+data.SKDJ_CROSS2),
+                           SHORT_TR = (data.SHORT20 > 0)*1,
+                           LONG_TR = (data.LONG60 > 0)*1,
+                           TERNS = ((data.SHORT20 > 0) * (data.LONG60 > 0) * (data.LONG_AMOUNT > 0) * 1)
+                           )
+        data.SKDJ_TR = data.SKDJ_TR.groupby('code').fillna(method='ffill')
+        return(data)
+
+
+def QA_fetch_get_index_indicator_realtime(code, start_date, end_date, type = 'day'):
+
+    if type == '15min':
+        period = '15'
+    elif type == '30min':
+        period = '30'
+    elif type == 'hour':
+        period = '60'
+
+    try:
+        data = QA_fetch_get_index_min_sina(code, period=period).reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
+        data = data.assign(type=type,amount=0)
         data = QA_DataStruct_Stock_min(data)
     except:
         QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))

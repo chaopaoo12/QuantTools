@@ -81,5 +81,19 @@ def QA_fetch_get_stock_min_sina(code, period='30', type='qfq'):
     data['datetime']=pd.to_datetime(data['datetime'],format='%Y-%m-%d %H:%M:%S')
     return(data)
 
+def QA_fetch_get_index_min_sina(code,period='30'):
+    #code = ['sh000001','sz399001','sz399006','sz399005']
+    if code[0:2] == '00' and len(code) == 6:
+        code1 = 'SH'+code
+    elif code[0:2] == '39':
+        code1 = 'SZ'+code
+    else:
+        code1 = code
+    data = stock_zh_a_minute(code1, period).rename(columns={'day':'datetime'})
+    data[['open','close','high','low','volume']] = data[['open','close','high','low','volume']].apply(pd.to_numeric)
+    data = data.assign(date_stamp=data['datetime'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])),code=code)
+    data['datetime']=pd.to_datetime(data['datetime'],format='%Y-%m-%d %H:%M:%S')
+    return(data)
+
 if __name__ == '__main__':
     pass

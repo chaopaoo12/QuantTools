@@ -8,7 +8,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_index_
                                            QA_fetch_stock_quant_hour,QA_fetch_stock_hour_pre,
                                            QA_fetch_index_quant_min,QA_fetch_index_min_pre,
                                            QA_fetch_stock_quant_min,QA_fetch_stock_min_pre)
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_quant_hour,QA_fetch_get_stock_quant_min
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_quant_hour,QA_fetch_get_stock_quant_min,QA_fetch_get_index_quant_hour,QA_fetch_get_index_quant_min
 from QUANTAXIS import QA_fetch_stock_block,QA_fetch_index_list_adv
 from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
@@ -312,7 +312,37 @@ def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method
         res = QA_fetch_index_hour_pre(codes,start_date, end_date, method=method,norm_type=norm_type)
     elif type == 'model':
         res = QA_fetch_index_quant_hour(codes, start_date, end_date, norm_type =norm_type)
-        pass
+    elif type == 'real':
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res = QA_fetch_get_index_quant_min(codes, start_date, end_date, 'hour')
+                res.columns = [x.upper() + '_HR' for x in res.columns]
+                success = True
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 60min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 60min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
+        QA_util_log_info('time sleep')
+        time.sleep(5)
+
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res1 = QA_fetch_get_index_quant_min(codes, start_date, end_date, '30min')
+                res1.columns = [x.upper() + '_30M' for x in res1.columns]
+                success = True
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 30min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 30min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
+        res = res1.join(res)
     return(res)
 
 def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
@@ -437,7 +467,69 @@ def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', metho
     elif type == 'model':
         res = QA_fetch_index_quant_min(codes, start_date, end_date, norm_type =norm_type)
     elif type == 'real':
-        pass
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res = QA_fetch_get_index_quant_min(codes, start_date, end_date, '30min')
+                res.columns = [x.upper() + '_30M' for x in res.columns]
+                success = True
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 30min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 30min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res1 = QA_fetch_get_index_quant_min(codes, start_date, end_date, '15min')
+                res1.columns = [x.upper() + '_15M' for x in res1.columns]
+                success = True
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 15min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 15min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
+        res = res1.join(res)
+    return(res)
+
+
+def get_index_quant_30min(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
+
+    code_list = QA_fetch_index_list_adv()
+
+    if code is None:
+        code_list = QA_fetch_index_info(list(code_list.code))
+        code_list = code_list[~code_list.cate.isin(['5','3'])]
+        codes = list(code_list[code_list.HY.apply(lambda x:len(x) != 5)].code)
+    else:
+        codes = list(code_list[code_list.code.isin(code)].code)
+    codes = codes + ['000001','399001','399005','399006']
+    codes = list(set(codes))
+
+    codes = [i for i in codes if i not in ['880602','880604', '880650', '880608']]
+
+    if type == 'crawl':
+        res = QA_fetch_index_min_pre(codes,start_date,end_date, method=method,norm_type=norm_type)
+    elif type == 'model':
+        res = QA_fetch_index_quant_min(codes, start_date, end_date, norm_type =norm_type)
+    elif type == 'real':
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res = QA_fetch_get_index_quant_min(codes, start_date, end_date)
+                success = True
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 30min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 30min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
+        res.columns = [x.upper() + '_30M' for x in res.columns]
     return(res)
 
 if __name__ == 'main':

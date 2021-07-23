@@ -5,7 +5,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_stock_alpha101real_adv,QA_fetch_stock_alpha191real_adv,
                                                            QA_fetch_stock_base_real_adv)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_info
-from QUANTTOOLS.QAStockETL.QAFetch.QATIndicator import QA_fetch_get_stock_indicator_realtime
+from QUANTTOOLS.QAStockETL.QAFetch.QATIndicator import QA_fetch_get_stock_indicator_realtime,QA_fetch_get_index_indicator_realtime
 import multiprocessing
 from functools import partial
 from QUANTAXIS.QAUtil import (QA_util_date_stamp, QA_util_log_info,QA_util_get_trade_range,QA_util_get_next_trade_date,QA_util_code_tolist,
@@ -499,6 +499,18 @@ def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min'):
     pool = multiprocessing.Pool(15)
     with pool as p:
         res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
+    return(pd.concat(res))
+
+def QA_fetch_get_index_quant_hour(code, start_date, end_date):
+    pool = multiprocessing.Pool(5)
+    with pool as p:
+        res = p.map(partial(QA_fetch_get_index_indicator_realtime, start_date=start_date, end_date=end_date, type='hour'), code)
+    return(pd.concat(res))
+
+def QA_fetch_get_index_quant_min(code, start_date, end_date, type='30min'):
+    pool = multiprocessing.Pool(5)
+    with pool as p:
+        res = p.map(partial(QA_fetch_get_index_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
     return(pd.concat(res))
 
 if __name__ == '__main__':
