@@ -719,7 +719,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, norm_ty
 
         QA_util_log_info(
             'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start_date,end_date)
+        hour_res = hour(start_date,end_date,'hour').reset_index('code').between_time('15:00:00','15:00:00').reset_index(drop=True).set_index(['date','code'])
 
         QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
@@ -826,7 +826,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
 
         QA_util_log_info(
             'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start_date,end_date)
+        hour_res = hour(start_date,end_date,'hour').reset_index('code').between_time('15:00:00','15:00:00').reset_index(drop=True).set_index(['date','code'])
 
         QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
