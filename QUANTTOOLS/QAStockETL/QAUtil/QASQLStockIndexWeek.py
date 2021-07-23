@@ -318,5 +318,5 @@ def QA_Sql_Stock_IndexWeek(from_ , to_, sql_text = sql_text, ui_log= None):
     for columnname in data.columns:
         if data[columnname].dtype == 'object':
             data[columnname]=data[columnname].astype('float32')
-    data.columns = [x.upper() + '_WK' for x in data.columns if x not in ['date','datetime','code']]
+    data.columns = [x.upper() + '_WK' if x not in ['date','datetime','code'] else x for x in data.columns]
     return(data)

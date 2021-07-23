@@ -325,5 +325,5 @@ def QA_Sql_Stock_Index30min(from_ , to_, type = 'day', sql_text = sql_text, ui_l
     for columnname in data.columns:
         if data[columnname].dtype == 'object' and columnname not in ['date','datetime','code']:
             data[columnname]=data[columnname].astype('float32')
-    data.columns = [x.upper() + '_30M' for x in data.columns if x not in ['date','datetime','code']]
+    data.columns = [x.upper() + '_30M' if x not in ['date','datetime','code'] else x for x in data.columns]
     return(data)
