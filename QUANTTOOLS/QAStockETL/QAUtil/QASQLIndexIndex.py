@@ -275,7 +275,31 @@ GMMA_VOL3_D,
 GMMA15_D,
 GMMA_VOL15_D,
 GMMA30_D,
-GMMA_VOL30_D
+GMMA_VOL30_D,
+CASE
+         WHEN SKDJ_K = SKDJ_D AND SKDJ_K = 100 then
+          1
+         when SKDJ_K = SKDJ_D AND SKDJ_K = 0 then
+          -1
+         WHEN SKDJ_K > SKDJ_D then
+          1
+         when SKDJ_K < SKDJ_D then
+          -1
+         else
+          0
+       end as SKDJ_TR,
+       case
+         when SHORT20 > 0 then
+          1
+         else
+          0
+       end as SHORT_TR,
+       case
+         when LONG60 > 0 then
+          1
+         else
+          0
+       end as LONG_TR
 from INDEX_TECHNICAL
 where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
@@ -294,9 +318,4 @@ def QA_Sql_Index_Index(from_ , to_, sql_text = sql_text, ui_log= None):
     for columnname in data.columns:
         if data[columnname].dtype == 'object':
             data[columnname]=data[columnname].astype('float32')
-    data = data.assign(SKDJ_TR = (data.SKDJ_CROSS1*-1+ data.SKDJ_CROSS2*1)/(data.SKDJ_CROSS1+data.SKDJ_CROSS2),
-                       SHORT_TR = (data.SHORT20 > 0)*1,
-                       LONG_TR = (data.LONG60 > 0)*1
-                       )
-    data.SKDJ_TR = data.SKDJ_TR.groupby('code').fillna(method='ffill')
     return(data)
