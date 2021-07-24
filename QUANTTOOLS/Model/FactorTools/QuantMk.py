@@ -290,7 +290,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
                 if attempts == 3:
                     QA_util_log_info("JOB Failed to get 30min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
 
-        res = res1.join(res)
+        res = res1.join(res).groupby('code').fillna(method='ffill')
     return(res)
 
 def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
@@ -342,7 +342,7 @@ def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method
                 if attempts == 3:
                     QA_util_log_info("JOB Failed to get 30min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
 
-        res = res1.join(res)
+        res = res1.join(res).groupby('code').fillna(method='ffill')
     return(res)
 
 def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
@@ -400,7 +400,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
                 if attempts == 3:
                     QA_util_log_info("JOB Failed to get 15min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
 
-        res = res1.join(res)
+        res = res1.join(res).groupby('code').fillna(method='ffill')
     return(res)
 
 def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
@@ -436,7 +436,7 @@ def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block 
         success = False
         while attempts < 3 and not success:
             try:
-                res = QA_fetch_get_stock_quant_min(codes, start_date, end_date)
+                res = QA_fetch_get_stock_quant_min(codes, start_date, end_date).groupby('code').fillna(method='ffill')
                 success = True
             except:
                 attempts += 1
@@ -493,7 +493,7 @@ def get_index_quant_15min(start_date, end_date, code=None, type = 'crawl', metho
                 if attempts == 3:
                     QA_util_log_info("JOB Failed to get 15min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
 
-        res = res1.join(res)
+        res = res1.join(res).groupby('code').fillna(method='ffill')
     return(res)
 
 
@@ -521,7 +521,7 @@ def get_index_quant_30min(start_date, end_date, code=None, type = 'crawl', metho
         success = False
         while attempts < 3 and not success:
             try:
-                res = QA_fetch_get_index_quant_min(codes, start_date, end_date)
+                res = QA_fetch_get_index_quant_min(codes, start_date, end_date).groupby('code').fillna(method='ffill')
                 success = True
             except:
                 attempts += 1
