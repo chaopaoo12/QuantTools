@@ -28,21 +28,22 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     #rr1 = rr[((rr.per >= 1.5)|(rr['std'] >=1.8))&(rr.p75 >= 1)].reset_index()
     #QA_util_log_info(rr1[rr1.SKDJ_K <= 40])
     #r_tar = prediction_tar.loc[(QA_util_get_last_day(trading_date),find_stock(rr1[(rr1.SKDJ_K <= 40)|(rr1.SKDJ_K_HR <= 40)].code.tolist())),]
-    #r_tar = r_tar[(r_tar.y_pred==1)&(r_tar.TARGET5.isnull())]
+    #r_tar = r_tar[(r_tar.y_pred==1)&(r_tar.TARGET3.isnull())]
 
     #data = QA_fetch_stock_fianacial(QA_fetch_stock_all().code.tolist(),QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date))
     #pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)].set_index(['date','code'])
     #pe_list = prediction_tar.loc[prediction_tar.index.intersection(pe_list.index)]
 
-    r_tar = prediction_tar[(prediction_tar.RANK <= 20)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
+    r_tar = prediction_tar[(prediction_tar.O_PROB > 0)&(prediction_tar.TARGET3.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
     #r_tar = prediction_tar.loc[(slice(None),list(r_tar.index)),].loc[QA_util_get_last_day(trading_date)]
     #per = prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]
 
-    target_list = list(set((#list(r_tar.index) +
+    target_list = list(set((list(r_tar.index) +
                             #pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist() +
-                            rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].reset_index().code.tolist()
+                            rrr[(rrr.y_pred==1)&(rrr.TARGET3.isnull())].reset_index().code.tolist()
                             )))
-    target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)].sort_values('RANK')
+    target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)]
+    #target_pool = target_pool[target_pool.SKDJ_K_HR <= 40]
     per = percent
 
     #if target_pool[target_pool.y_pred==1].shape[0] > 30:
