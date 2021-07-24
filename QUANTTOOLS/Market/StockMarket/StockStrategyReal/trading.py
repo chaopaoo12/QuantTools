@@ -13,11 +13,13 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     r_tar1, prediction_tar1, prediction1 = load_data(concat_predict_index, QA_util_get_last_day(trading_date), working_dir, 'index_xg', 'prediction_index_summary')
 
     try:
-        res = prediction_tar1[((prediction_tar1.O_PROB>=0.5)|(prediction_tar1.SKDJ_K_HR<=30))&(prediction_tar1.RANK<=10)].loc[QA_util_get_last_day(trading_date)].reset_index().code.tolist()
+        res = prediction_tar1[(prediction_tar1.O_PROB>=0.5)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
     except:
-        res = prediction_tar1[((prediction_tar1.DAY_PROB>=0.5)|(prediction_tar1.SKDJ_K_HR<=30))&(prediction_tar1.DAY_RANK<=10)].loc[QA_util_get_last_day(trading_date)].reset_index().code.tolist()
+        res = prediction_tar1[(prediction_tar1.DAY_PROB>=0.5)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
 
-    rrr = prediction_tar.loc[(slice(None),find_stock(res)),]
+    lll = prediction_tar1.loc[QA_util_get_last_day(trading_date)].loc[res]
+
+    rrr = prediction_tar.loc[(slice(None),find_stock(lll[lll.SKDJ_K_HR<=40])),]
     #rrr = rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].sort_values('RANK')
 
     #data = get_index_quant_data(QA_util_get_pre_trade_date(trading_date,91),QA_util_get_last_day(trading_date),type='crawl', norm_type=None)
