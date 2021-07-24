@@ -7,7 +7,7 @@ from QUANTTOOLS.Trader.account_manage.TradAction.HOLD import HOLD
 from QUANTTOOLS.Market.MarketTools.trading_tools.BuildTradingFrame import build
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtm_bid
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import QA_fetch_stock_name
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour,get_quant_data_30min
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour,get_quant_data_30min,get_index_quant_hour
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_UseCapital, get_StockPos, get_hold
 import time
 import datetime
@@ -219,6 +219,29 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         if tm >= int(time.strftime("%H%M%S",time.strptime(mark_tm, "%H:%M:%S"))):
+
+            index = get_index_quant_hour(QA_util_get_pre_trade_date(trading_date,10),trading_date,code=['000001','399001','399005','399006'],type='real')
+            index = index[index.datetime == stm].set_index('code')
+            if index.loc['000001'].SKDJ_K_30M >= 75 and index.loc['000001'].SKDJ_TR_30M > 0:
+                #sell and no buy 高位盘整
+                buy = False
+                pass
+
+            elif index.loc['000001'].SKDJ_K_30M < 75 or index.loc['000001'].SKDJ_TR_30M > 0:
+                buy=True
+                pass
+
+            elif index.loc['000001'].SKDJ_K_30M >= 75 and index.loc['000001'].SKDJ_TR_30M < 0:
+                #hold 下跌中继
+                buy = False
+                pass
+            elif index.loc['000001'].SKDJ_K_30M <= 25 and index.loc['000001'].SKDJ_TR_30M < 0:
+                buy=True
+                pass
+            else:
+                buy=True
+                pass
+
             if mark_tm in ontm_list or source_data is None:
                 #整点
                 QA_util_log_info('##Now Mark Time {},Stm {}, Stock {}'.format(mark_tm,str(stm),len(list(set(positions.code.tolist()+list(target_tar.index))))))
@@ -233,7 +256,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 source_data = source_data[source_data.datetime == stm].set_index('code')[['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
 
             ####job1 小时级报告 指数小时级跟踪
-            target_list = [i for i in list(target_tar.index) if i not in positions.code.tolist()]
+            target_list = list(source_data[source_data.SKDJ_K_HR <= 40].sort_values('SKDJ_K_HR').index)
             #QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), str(source_data[source_data.SKDJ_CROSS1_30M == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_30M','SKDJ_K_HR','MA5_HR']])), ui_log = None)
             #QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(stm), str(source_data[source_data.SKDJ_CROSS2_30M == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR'','SKDJ_CROSS1_30M','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_30M','SKDJ_K_HR','MA5_HR']])), ui_log = None)
 
@@ -254,7 +277,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         if tm > int(time.strftime("%H%M%S",time.strptime(action_tm, "%H:%M:%S"))) and action_tm is not None:
-            for code in positions.code.tolist() + target_list:
+            for code in target_list:
                 name = QA_fetch_stock_name(code)
                 QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                 try:
@@ -313,7 +336,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         else:
                             msg = None
 
-                        if msg is not None:
+                        if msg is not None and buy is True:
                             if get_UseCapital(client, account) >= 10000:
                                 QA_util_log_info('##JOB Now Buying==== {}'.format(code), ui_log = None)
                                 ###买入信号
