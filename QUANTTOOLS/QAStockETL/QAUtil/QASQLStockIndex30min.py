@@ -293,13 +293,13 @@ CASE
           1
          else
           0
-       end as SHORT,
+       end as SHORT_TR,
        case
          when LONG60 > 0 then
           1
          else
           0
-       end as LONG
+       end as LONG_TR
 from STOCK_TECHNICAL_30MIN
 where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
