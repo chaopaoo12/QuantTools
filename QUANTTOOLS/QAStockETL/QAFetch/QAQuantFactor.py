@@ -490,28 +490,65 @@ def QA_fetch_get_quant_data_realtime(code, start_date, end_date, norm_type='norm
     return(res)
 
 def QA_fetch_get_stock_quant_hour(code, start_date, end_date):
-    pool = multiprocessing.Pool(15)
-    with pool as p:
-        res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type='hour'), code)
-    return(pd.concat(res))
+
+    if len(code) >= 15:
+        pool = multiprocessing.Pool(15)
+        with pool as p:
+            res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type='hour'), code)
+        return(pd.concat(res))
+    elif len(code) > 1:
+        pool = multiprocessing.Pool(len(code))
+        with pool as p:
+            res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type='hour'), code)
+        return(pd.concat(res))
+    else:
+        res = QA_fetch_get_stock_indicator_realtime(code, start_date=start_date, end_date=end_date, type='hour')
+        return(res)
 
 def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min'):
-    pool = multiprocessing.Pool(15)
-    with pool as p:
-        res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
-    return(pd.concat(res))
+    if len(code) >= 15:
+        pool = multiprocessing.Pool(15)
+        with pool as p:
+            res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
+        return(pd.concat(res))
+    elif len(code) > 1:
+        pool = multiprocessing.Pool(len(code))
+        with pool as p:
+            res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
+        return(pd.concat(res))
+    else:
+        res = QA_fetch_get_stock_indicator_realtime(code, start_date=start_date, end_date=end_date, type=type)
+        return(res)
 
 def QA_fetch_get_index_quant_hour(code, start_date, end_date):
-    pool = multiprocessing.Pool(5)
-    with pool as p:
-        res = p.map(partial(QA_fetch_get_index_indicator_realtime, start_date=start_date, end_date=end_date, type='hour'), code)
-    return(pd.concat(res))
+    if len(code) > 5:
+        pool = multiprocessing.Pool(5)
+        with pool as p:
+            res = p.map(partial(QA_fetch_get_index_indicator_realtime, start_date=start_date, end_date=end_date, type='hour'), code)
+        return(pd.concat(res))
+    elif len(code) > 1:
+        pool = multiprocessing.Pool(len(code))
+        with pool as p:
+            res = p.map(partial(QA_fetch_get_index_indicator_realtime, start_date=start_date, end_date=end_date, type='hour'), code)
+        return(pd.concat(res))
+    else:
+        res = QA_fetch_get_index_indicator_realtime(code, start_date=start_date, end_date=end_date, type='hour')
+        return(res)
 
 def QA_fetch_get_index_quant_min(code, start_date, end_date, type='30min'):
-    pool = multiprocessing.Pool(5)
-    with pool as p:
-        res = p.map(partial(QA_fetch_get_index_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
-    return(pd.concat(res))
+    if len(code) > 5:
+        pool = multiprocessing.Pool(5)
+        with pool as p:
+            res = p.map(partial(QA_fetch_get_index_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
+        return(pd.concat(res))
+    elif len(code) > 1:
+        pool = multiprocessing.Pool(len(code))
+        with pool as p:
+            res = p.map(partial(QA_fetch_get_index_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
+        return(pd.concat(res))
+    else:
+        res = QA_fetch_get_index_indicator_realtime(code, start_date=start_date, end_date=end_date, type=type)
+        return(res)
 
 if __name__ == '__main__':
     pass
