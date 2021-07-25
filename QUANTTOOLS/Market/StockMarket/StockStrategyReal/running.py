@@ -120,9 +120,13 @@ def predict_target(trading_date, working_dir=working_dir):
     pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)]
     pe_list = prediction_tar.loc[pe_list.index].reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index(['date','code'])
 
-    target_list = list(set((#pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist() +
+    r_tar = prediction_tar[(prediction_tar.O_PROB > 0)&(prediction_tar.TARGET3.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().set_index('code')
+
+    target_list = list(set((list(r_tar.index) +
+                            #pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist() +
                             rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].reset_index().code.tolist()
                             )))
+
     target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_real_date(trading_date)].sort_values('RANK')
 
     hour = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
