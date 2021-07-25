@@ -126,7 +126,6 @@ def predict_target(trading_date, working_dir=working_dir):
                             #pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist() +
                             rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].reset_index().code.tolist()
                             )))
-    print(prediction_tar.loc[(slice(None),target_list),])
     target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_real_date(trading_date)].sort_values('RANK')
 
     hour = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
