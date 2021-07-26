@@ -18,7 +18,6 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
         res = prediction_tar1[(prediction_tar1.DAY_PROB>=0.5)&(prediction_tar1.DAY_RANK<=10)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
 
     lll = prediction_tar1.loc[QA_util_get_last_day(trading_date)].loc[res]
-    print(lll)
 
     rrr = prediction_tar.loc[(slice(None),find_stock(list(lll[lll.SKDJ_K_HR<=40].index))),]
     #rrr = rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].sort_values('RANK')
