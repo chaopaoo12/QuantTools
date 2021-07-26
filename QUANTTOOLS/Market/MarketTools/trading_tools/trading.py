@@ -281,7 +281,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
 
         if tm > int(time.strftime("%H%M%S",time.strptime(action_tm, "%H:%M:%S"))) and action_tm is not None:
-            for code in target_list:
+            for code in target_list + positions[positions['可用余额'] > 0].code.tolist():
                 name = QA_fetch_stock_name(code)
                 QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                 try:
@@ -294,6 +294,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 #try:
 
                 if res2 is not None and 'DR' not in name:
+                    QA_util_log_info('##JOB DR Day ==== {}'.format(code), ui_log = None)
 
                     if code in positions[positions['可用余额'] > 0].code.tolist():
 
