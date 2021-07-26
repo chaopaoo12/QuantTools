@@ -112,7 +112,7 @@ def predict_target(trading_date, working_dir=working_dir):
 
     lll = prediction_tar1.loc[QA_util_get_real_date(trading_date)].loc[res]
 
-    rrr = prediction_tar.loc[(slice(None),find_stock(lll[lll.SKDJ_K_HR<=40])),]
+    rrr = prediction_tar.loc[(slice(None),find_stock(list(lll[lll.SKDJ_K_HR<=40].index))),]
 
     #rrr = prediction_tar.loc[(slice(None),find_stock(res)),].reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index(['date','code'])
 
