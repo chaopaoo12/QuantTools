@@ -83,7 +83,7 @@ def predict_stock_dev(trading_date, xg_predict_func, predict_func1, predict_func
     save_prediction(res, file_name, working_dir)
     prediction_report(QA_util_get_real_date(trading_date), stock_tar, stock_b, model_date, top_num, exceptions, percent,
                       name_list = ['NAME','INDUSTRY','SKDJ_TR'],
-                      value_ist = ['SKDJ_K','SKDJ_K_HR','O_PROB','RANK','DAY_PROB','DAY_RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK','UB','LB','WIDTH','UB_HR','LB_HR','WIDTH_HR'],
+                      value_ist = ['SKDJ_K','SKDJ_K_HR','O_PROB','RANK','DAY_PROB','DAY_RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK','UB','LB','WIDTH','UB_HR','LB_HR','WIDTH_HR','RSI1','RSI3'],
                       sort_mark ='DAY_RANK',
                       selec_list=['NAME','INDUSTRY','SKDJ_TR','SKDJ_K','SKDJ_K_HR','O_PROB','DAY_PROB','RANK','DAY_RANK','UB','LB','WIDTH','UB_HR','LB_HR','WIDTH_HR'],
                       account='name:client-1', ui_log = None)
