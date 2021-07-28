@@ -2,7 +2,7 @@
 
 working_dir = 'D:\\model\\current'
 percent = 1
-exceptions = ['002841']
+exceptions = None
 top = 20
 
 stock_xg_set = ['ALPHA_057',
