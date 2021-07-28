@@ -44,7 +44,7 @@ def Funding_Decision(trading_date, target_pool, sub_accounts, frozen, percent, s
 
 def prediction_report(trading_date, target_pool, prediction, model_date, top_num, exceptions, percent,
                       name_list = ['NAME','INDUSTRY'],
-                      value_ist = ['Z_PROB','O_PROB','RANK','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
+                      value_ist = ['Z_PROB','O_PROB','RANK','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','ATRR','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
                       sort_mark ='RANK',
                       selec_list=['NAME','INDUSTRY','Z_PROB','O_PROB','RANK'],
                       account='name:client-1',  ui_log = None):
