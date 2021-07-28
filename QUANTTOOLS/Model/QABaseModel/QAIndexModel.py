@@ -73,7 +73,7 @@ class QAIndexModel(QAModel):
         elif type == 'real':
             b = train[['y_pred','Z_PROB','O_PROB','RANK']]
 
-        b = b.join(data[['SKDJ_TR_HR','SKDJ_K_HR','SKDJ_TR','SKDJ_K','SKDJ_CROSS2','SKDJ_CROSS1','CROSS_JC','SKDJ_TR_WK','SKDJ_K_WK']])
+        b = b.join(data[['SKDJ_TR_HR','SKDJ_K_HR','SKDJ_TR','SKDJ_K','SKDJ_CROSS2','SKDJ_CROSS1','CROSS_JC','SKDJ_TR_WK','SKDJ_K_WK','ATRR','UB','LB','WIDTH','UB_HR','LB_HR','WIDTH_HR','RSI3','RSI2','RSI3_C','RSI2_C','RSI3_HR','RSI2_HR','RSI3_C_HR','RSI2_C_HR']])
         return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
