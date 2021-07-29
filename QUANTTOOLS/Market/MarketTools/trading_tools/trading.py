@@ -328,7 +328,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         else:
                             QA_util_log_info('##JOB Not On Selling ==== {}'.format(code))
 
-                    if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()]:
+                    if code in [i for i in list(target_tar.index) if i not in positions.code.tolist()] and action_tm != '09:30:00':
                         QA_util_log_info('##JOB Now Buying Ckeck==== {}'.format(code), ui_log = None)
 
                         QA_util_log_info('##JOB Not On Buying ==== {} SKDJ_CROSS2_HR:{} CROSS_JC_HR:{} SKDJ_K_30M:{} SKDJ_TR_30M:{}'.format(code, res2.SKDJ_CROSS2_HR, res2.CROSS_JC_HR, res2.SKDJ_K_30M, res2.SKDJ_TR_30M))
