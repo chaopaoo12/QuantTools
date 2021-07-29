@@ -222,7 +222,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
             index = get_index_quant_hour(QA_util_get_pre_trade_date(trading_date,10),trading_date,code=['000001','399001','399005','399006'],type='real').reset_index()
             index = index[index.datetime == stm].set_index('code')
-            if index.loc['000001'].SKDJ_K_30M >= 75 and index.loc['000001'].SKDJ_TR_30M > 0:
+            if index.loc['000001'].SKDJ_K_30M >= 75 and index.loc['000001'].SKDJ_TR_30M > 0 and index.loc['000001'].SKDJ_K_HR > 75:
                 QA_util_log_info('##JOB 暂停追高 ==== {}'.format(str(stm)), ui_log = None)
                 #sell and no buy 高位盘整
                 buy = False
