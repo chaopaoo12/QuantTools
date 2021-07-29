@@ -206,7 +206,7 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     #hour_prediction['SHIFT_O_PROB'] = hour_prediction['O_PROB'].groupby('code').shift()
 
     try:
-        target_fd = prediction[(prediction.DAY_RANK <= 10)][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_RANK','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']].reset_index().sort_values(by=['date','DAY_RANK'],ascending=[False,True]).set_index(['date','code'])
+        target_fd = prediction[(prediction.DAY_RANK <= 10)][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','RSI3','RSI2','RSI3_C','RSI2_C','DAY_RANK','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5']].reset_index().sort_values(by=['date','DAY_RANK'],ascending=[False,True]).set_index(['date','code'])
     except:
         target_fd = None
 
@@ -217,10 +217,10 @@ def Index_Report(trading_date, prediction, hour_prediction, model_date):
     ###小时级趋势延续至日线 不需要
 
     ####大盘情况预测
-    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
-    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
-    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
-    market_399005 = prediction.loc[(slice(None),'399005'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5']]
+    market_000001 = prediction.loc[(slice(None),'000001'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5','RSI3','RSI2','RSI3_C','RSI2_C']]
+    market_399001 = prediction.loc[(slice(None),'399001'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5','RSI3','RSI2','RSI3_C','RSI2_C']]
+    market_399006 = prediction.loc[(slice(None),'399006'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5','RSI3','RSI2','RSI3_C','RSI2_C']]
+    market_399005 = prediction.loc[(slice(None),'399005'),][['NAME','SKDJ_TR_WK','SKDJ_K_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','DAY_PROB','HOUR_PROB','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET5','RSI3','RSI2','RSI3_C','RSI2_C']]
 
     QA_util_log_info('##JOB## Now Message Building ==== {}'.format(str(trading_date)))
 
