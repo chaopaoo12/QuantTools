@@ -92,7 +92,7 @@ def index_predict_watch(trading_date, working_dir=working_dir):
     kk = prediction_tar.loc[(trading_date,find_stock(list(rr1[rr1.SKDJ_K <= 40].loc[trading_date].index))),].sort_values('SKDJ_K')
 
     base_report(trading_date, '市场观察报告', **{'主线趋势指数': rr1,
-                                           '日线机会清单': rr1[rr1.SKDJ_K <= 40],
+                                           '日线机会清单': rr1[(rr1.SKDJ_K <= 40)],
                                            '小时线机会清单': rr1[rr1.SKDJ_K_HR <= 30],
                                            '周线机会清单':rr1[rr1.SKDJ_K_WK <= 30],
                                            '待选股池清单':kk})
