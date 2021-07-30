@@ -336,7 +336,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                             msg = 'SKDJ:60MIN金叉 小时线K:{}'.format(res2.SKDJ_K_HR)
                         elif res2.CROSS_JC_HR == 1 and res2.SKDJ_K_30M < 70 and res2.SKDJ_TR_30M > 0 and round(res2.MA5_30M,2) >= 0:
                             msg = 'MACD金叉'
-                        elif res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_TR_HR <= 40 and res2.SKDJ_TR_HR > 0 and round(res2.MA5_30M,2) >= 0:
+                        elif res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_TR_HR <= 40 and res2.SKDJ_TR_HR < 0 and round(res2.MA5_30M,2) >= 0:
                             msg = 'SKDJ:30MIN金叉 小时线K:{}'.format(res2.SKDJ_K_HR)
                         #elif res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_TR_HR == 1:
                         #    msg = 'SKDJ金叉'
