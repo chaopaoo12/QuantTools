@@ -260,7 +260,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 source_data = source_data[source_data.datetime == stm].set_index('code')[['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
 
             ####job1 小时级报告 指数小时级跟踪
-            target_list = list(source_data[source_data.SKDJ_K_HR <= 40].sort_values('SKDJ_K_HR').index)
+            target_list = list(source_data[(source_data.RSI2_HR>50)&(source_data.RSI3_HR<50)&(source_data.RSI3_C_HR>0)].sort_values('SKDJ_K_HR').index)
             #QA_util_log_info('##JOB Now cross1 ==== {}: {}'.format(str(stm), str(source_data[source_data.SKDJ_CROSS1_30M == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_30M','SKDJ_K_HR','MA5_HR']])), ui_log = None)
             #QA_util_log_info('##JOB Now cross2 ==== {}: {}'.format(str(stm), str(source_data[source_data.SKDJ_CROSS2_30M == 1][['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_TR_HR'','SKDJ_CROSS1_30M','SKDJ_CROSS1_HR','SKDJ_CROSS2_HR','MA5_30M','SKDJ_K_HR','MA5_HR']])), ui_log = None)
 
