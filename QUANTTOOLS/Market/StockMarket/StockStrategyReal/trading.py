@@ -41,7 +41,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     #per = prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]
 
     target_list = list(set((list(r_tar.index) +
-                            pe_list[(pe_list.y_pred==1)].reset_index().code.tolist() +
+                            pe_list[(pe_list.y_pred==1)&(pe_list.TARGET3.isnull())].reset_index().code.tolist() +
                             rrr[(rrr.y_pred==1)&(rrr.ATRR>=0.03)&(rrr.TARGET3.isnull())].reset_index().code.tolist()
                             )))
     target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)]
