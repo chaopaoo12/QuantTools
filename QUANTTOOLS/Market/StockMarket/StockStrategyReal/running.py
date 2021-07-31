@@ -138,7 +138,7 @@ def predict_target(trading_date, working_dir=working_dir):
 
     #out_ist = res[((res.SKDJ_CROSS1_30M == 1) | (res.SKDJ_TR_30M < 1)) & (res.MA5_30M < 0)].loc[(slice(None),target_list),][['date','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_30M','SKDJ_TR_30M','MA5_30M','PASS_MARK','TARGET','TARGET3','TARGET5']]
 
-    base_report(trading_date, '模型汇总报告', **{'本日选股': target_pool,
+    base_report(trading_date, '模型汇总报告', **{'本日选股': target_pool[target_pool.RSI2 > 50],
                                            'INDEX选股': rrr[rrr.y_pred == 1],
                                            'PE选股': pe_list[pe_list.y_pred == 1],
                                            #'进场信号':in_list,
