@@ -45,7 +45,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
                             rrr[(rrr.y_pred==1)&(rrr.ATRR>=0.03)&(rrr.TARGET3.isnull())].reset_index().code.tolist()
                             )))
     target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)]
-    target_pool = target_pool[target_pool.RSI2 > 50]
+    target_pool = target_pool[target_pool.RSI2 > target_pool.RSI3]
     per = percent
 
     #if target_pool[target_pool.y_pred==1].shape[0] > 30:
