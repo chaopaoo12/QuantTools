@@ -299,14 +299,12 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                     if code in positions[positions['可用余额'] > 0].code.tolist():
 
                         QA_util_log_info('##JOB Now Selling Check ==== {}'.format(code), ui_log = None)
-                        if res2.SKDJ_CROSS1_30M == True and round(res2.MA5_30M,2) < 0:
+                        if res2.SKDJ_CROSS1_HR == 1 and round(res2.MA5_HR,2) < 0:
                             msg = 'SKDJ死叉'
-                        #elif res2.MA10_HR < 0:
-                        #    msg = '打穿MA10'
-                        elif res2.SKDJ_TR_30M < 1 and round(res2.MA5_30M,2) < 0:
-                            msg = 'SKDJ止损:30M跌破MA5'
-                        #elif res2.SKDJ_TR_HR < 1 and round(res2.MA5_HR,2) < 0:
-                        #    msg = 'SKDJ止损:HR跌破MA5'
+                        elif res2.SKDJ_TR_30M < 1 and round(res2.MA5_HR,2) < 0:
+                            msg = 'SKDJ止损:HR跌破MA5'
+                        elif res2.SKDJ_TR_HR < 1 and round(res2.MA5_HR,2) < 0:
+                            msg = 'SKDJ止损:HR跌破MA5'
                         else:
                             msg = None
                             ###卖出信号1
