@@ -120,13 +120,13 @@ def predict_target(trading_date, working_dir=working_dir):
     pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)]
     pe_list = prediction_tar.loc[pe_list.index].reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index(['date','code'])
 
-    r_tar = prediction_tar[(prediction_tar.O_PROB > 0.5)&(prediction_tar.RANK<=20)&(prediction_tar.TARGET3.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().set_index('code')
+    r_tar = prediction_tar[(prediction_tar.O_PROB > 0.5)&(prediction_tar.TARGET3.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().set_index('code')
 
     target_list = list(set((list(r_tar.index) +
                             pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist() +
                             rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].reset_index().code.tolist()
                             )))
-    target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_real_date(trading_date)].sort_values('SKDJ_K_HR')
+    target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_real_date(trading_date)]
 
     #hour = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
     #min30 = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='model', block=False, sub_block=False,norm_type=None)
@@ -138,7 +138,7 @@ def predict_target(trading_date, working_dir=working_dir):
 
     #out_ist = res[((res.SKDJ_CROSS1_30M == 1) | (res.SKDJ_TR_30M < 1)) & (res.MA5_30M < 0)].loc[(slice(None),target_list),][['date','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_30M','SKDJ_TR_30M','MA5_30M','PASS_MARK','TARGET','TARGET3','TARGET5']]
 
-    base_report(trading_date, '模型汇总报告', **{'本日选股': target_pool[target_pool.RSI3 > target_pool.RSI2],
+    base_report(trading_date, '模型汇总报告', **{'本日选股': target_pool[target_pool.RSI3 > target_pool.RSI2].sort_values('RANK').head(20),
                                            'INDEX选股': rrr[(rrr.y_pred == 1)&(rrr.RSI3 > rrr.RSI2)],
                                            'PE选股': pe_list[(pe_list.y_pred == 1)&(pe_list.RSI3 > pe_list.RSI2)],
                                            #'进场信号':in_list,
