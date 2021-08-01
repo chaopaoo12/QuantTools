@@ -301,10 +301,10 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         QA_util_log_info('##JOB Now Selling Check ==== {}'.format(code), ui_log = None)
                         if res2.SKDJ_CROSS1_HR == 1 and res2.SKDJ_TR_30M < 0 and round(res2.MA5_HR,2) < 0:
                             msg = 'SKDJ死叉'
-                        elif res2.SKDJ_TR_30M < 1 and round(res2.MA5_HR,2) < 0:
+                        #elif res2.SKDJ_TR_30M < 1 and round(res2.MA5_HR,2) < 0:
                             #msg = 'SKDJ止损:30M跌破MA5'
-                            msg = None
-                        elif res2.SKDJ_TR_HR < 1 and res2.SKDJ_TR_30M < 0 and round(res2.MA5_HR,2) < 0:
+                        #    msg = None
+                        elif res2.SKDJ_TR_HR < 0 and res2.SKDJ_TR_30M < 0 and round(res2.MA5_HR,2) < 0:
                             msg = 'SKDJ止损:HR跌破MA5'
                         else:
                             msg = None
@@ -331,12 +331,12 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         QA_util_log_info('##JOB Now Buying Ckeck==== {}'.format(code), ui_log = None)
 
                         QA_util_log_info('##JOB Not On Buying ==== {} SKDJ_CROSS2_HR:{} CROSS_JC_HR:{} SKDJ_K_30M:{} SKDJ_TR_30M:{}'.format(code, res2.SKDJ_CROSS2_HR, res2.CROSS_JC_HR, res2.SKDJ_K_30M, res2.SKDJ_TR_30M))
-                        if res2.SKDJ_CROSS2_HR == 1 and res2.SKDJ_K_30M < 70 and res2.SKDJ_TR_30M > 0 and round(res2.MA5_30M,2) >= 0:
-                            msg = 'SKDJ:60MIN金叉 小时线K:{}'.format(res2.SKDJ_K_HR)
+                        if res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_TR_HR <= 40 and res2.SKDJ_TR_HR < 0 and round(res2.MA5_30M,2) >= 0:
+                            msg = 'SKDJ:30MIN金叉 小时线K:{}'.format(res2.SKDJ_K_HR)
                         #elif res2.CROSS_JC_HR == 1 and res2.SKDJ_K_30M < 70 and res2.SKDJ_TR_30M > 0 and round(res2.MA5_30M,2) >= 0:
                         #    msg = 'MACD金叉'
-                        elif res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_TR_HR <= 40 and res2.SKDJ_TR_HR < 0 and round(res2.MA5_30M,2) >= 0:
-                            msg = 'SKDJ:30MIN金叉 小时线K:{}'.format(res2.SKDJ_K_HR)
+                        #elif res2.SKDJ_CROSS2_HR == 1 and res2.SKDJ_K_30M < 70 and res2.SKDJ_TR_30M > 0 and round(res2.MA5_30M,2) >= 0:
+                        #    msg = 'SKDJ:60MIN金叉 小时线K:{}'.format(res2.SKDJ_K_HR)
                         #elif res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_TR_HR == 1:
                         #    msg = 'SKDJ金叉'
                         else:
