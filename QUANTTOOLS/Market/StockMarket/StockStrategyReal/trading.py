@@ -13,9 +13,9 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     r_tar1, prediction_tar1, prediction1 = load_data(concat_predict_index, QA_util_get_last_day(trading_date), working_dir, 'index_xg', 'prediction_index_summary')
 
     try:
-        res = prediction_tar1[(prediction_tar1.O_PROB>=0.5)&(prediction_tar1.RANK<=10)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
+        res = prediction_tar1[(prediction_tar1.O_PROB>=0.5)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
     except:
-        res = prediction_tar1[(prediction_tar1.DAY_PROB>=0.5)&(prediction_tar1.DAY_RANK<=10)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
+        res = prediction_tar1[(prediction_tar1.DAY_PROB>=0.5)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
 
     lll = prediction_tar1.loc[QA_util_get_last_day(trading_date)].loc[res]
 
@@ -36,7 +36,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)].set_index(['date','code'])
     pe_list = prediction_tar.loc[prediction_tar.index.intersection(pe_list.index)]
 
-    r_tar = prediction_tar[(prediction_tar.O_PROB > 0)&(prediction_tar.RANK<=20)&(prediction_tar.ATRR>=0.03)&(prediction_tar.TARGET3.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
+    r_tar = prediction_tar[(prediction_tar.O_PROB > 0.5)&(prediction_tar.RANK<=20)&(prediction_tar.ATRR>=0.03)&(prediction_tar.TARGET3.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
     #r_tar = prediction_tar.loc[(slice(None),list(r_tar.index)),].loc[QA_util_get_last_day(trading_date)]
     #per = prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]
 
