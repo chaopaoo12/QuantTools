@@ -106,9 +106,9 @@ def predict_target(trading_date, working_dir=working_dir):
     r_tar1, prediction_tar1, prediction1 = load_data(concat_predict_index, trading_date, working_dir, 'index_xg', 'prediction_index_summary')
 
     try:
-        res = prediction_tar1[(prediction_tar1.O_PROB>=0.5)&(prediction_tar1.RANK<=10)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
+        res = prediction_tar1[(prediction_tar1.O_PROB>=0.5)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
     except:
-        res = prediction_tar1[(prediction_tar1.DAY_PROB>=0.5)&(prediction_tar1.DAY_RANK<=10)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
+        res = prediction_tar1[(prediction_tar1.DAY_PROB>=0.5)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
 
     lll = prediction_tar1.loc[QA_util_get_real_date(trading_date)].loc[res]
 
