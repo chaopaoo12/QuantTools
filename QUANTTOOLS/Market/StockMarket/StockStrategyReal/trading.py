@@ -19,7 +19,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
 
     lll = prediction_tar1.loc[QA_util_get_last_day(trading_date)].loc[res]
 
-    rrr = prediction_tar.loc[(slice(None),find_stock(list(lll[(lll.SKDJ_K_HR<=40)&(lll.RSI2>50)].index))),]
+    rrr = prediction_tar.loc[(slice(None),find_stock(list(lll[(lll.RSI3>lll.RSI2)].index))),]
     #rrr = rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].sort_values('RANK')
 
     #data = get_index_quant_data(QA_util_get_pre_trade_date(trading_date,91),QA_util_get_last_day(trading_date),type='crawl', norm_type=None)
@@ -45,7 +45,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
                             rrr[(rrr.y_pred==1)&(rrr.ATRR>=0.03)&(rrr.TARGET3.isnull())].reset_index().code.tolist()
                             )))
     target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)]
-    target_pool = target_pool[target_pool.RSI2 > target_pool.RSI3]
+    target_pool = target_pool[target_pool.RSI3 > target_pool.RSI2]
     per = percent
 
     #if target_pool[target_pool.y_pred==1].shape[0] > 30:
