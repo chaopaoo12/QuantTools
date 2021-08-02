@@ -120,7 +120,7 @@ def predict_target(trading_date, working_dir=working_dir):
     pe_list = data[(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)]
     pe_list = prediction_tar.loc[pe_list.index]
 
-    r_tar = prediction_tar[(prediction_tar.O_PROB > 0.5)&(prediction_tar.TARGET3.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().set_index('code')
+    r_tar = prediction_tar[(prediction_tar.O_PROB > 0.5)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().set_index('code')
 
     target_list = list(set((list(r_tar.index) +
                             pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist() +
