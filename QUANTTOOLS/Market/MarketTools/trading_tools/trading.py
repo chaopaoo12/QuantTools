@@ -356,13 +356,12 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 industry = str(target_tar.loc[code].INDUSTRY)
                                 try_times = 0
                                 QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}{msg}'.format(code = code, stm = str(stm), msg=msg), ui_log = None)
-                                while get_hold(client, account) <= percent and buy is True and try_times <= 5:
-                                    if try_times > 0:
-                                        hold_pos = get_StockPos(code, client, account)
-                                        deal_pos = deal_pos - hold_pos
+                                while get_hold(client, account) <= percent and deal_pos > 0 and buy is True and try_times <= 5:
                                     BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
                                     try_times += 1
                                     time.sleep(3)
+                                    hold_pos = get_StockPos(code, client, account)
+                                    deal_pos = target_pos - hold_pos
 
                                 if get_hold(client, account) > percent:
                                     QA_util_log_info('##JOB Now Full {code} {percent}/{hold} ===== {stm}'.format(code = code,percent=percent,hold=get_hold(client, account), stm = str(stm)), ui_log = None)
