@@ -36,7 +36,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     pe_list = data[(data.ROE_RATE > 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)].set_index(['date','code'])
     pe_list = prediction_tar.loc[prediction_tar.index.intersection(pe_list.index)]
 
-    r_tar = prediction_tar[(prediction_tar.O_PROB > 0.5)&(prediction_tar.ATRR>=0.03)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
+    r_tar = prediction_tar[(prediction_tar.O_PROB > 0.5)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
     #r_tar = prediction_tar.loc[(slice(None),list(r_tar.index)),].loc[QA_util_get_last_day(trading_date)]
     #per = prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]
 
@@ -45,7 +45,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
                             rrr[(rrr.y_pred==1)&(rrr.ATRR>=0.03)&(rrr.TARGET5.isnull())].reset_index().code.tolist()
                             )))
     target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)]
-    target_pool = target_pool[target_pool.RSI3 > target_pool.RSI2].sort_values('RANK').head(20)
+    target_pool = target_pool[target_pool.RSI3 > target_pool.RSI2].sort_values('RANK').head(50)
     per = percent
 
     #if target_pool[target_pool.y_pred==1].shape[0] > 30:
