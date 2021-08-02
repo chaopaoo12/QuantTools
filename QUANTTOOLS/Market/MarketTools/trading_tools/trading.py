@@ -294,7 +294,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 #try:
 
                 if res2 is not None and 'DR' not in name:
-                    QA_util_log_info('##JOB DR Day ==== {}'.format(code), ui_log = None)
+                    QA_util_log_info('##JOB not DR Day ==== {}'.format(code), ui_log = None)
 
                     if code in positions[positions['可用余额'] > 0].code.tolist():
 
