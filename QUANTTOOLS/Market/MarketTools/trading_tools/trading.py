@@ -350,16 +350,28 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                                 QA_util_log_info('##JOB Now Buying==== {}'.format(code), ui_log = None)
                                 ###买入信号
                                 send_actionnotice(strategy_id,'{code}{name}:{stm}{msg}'.format(code=code,name=name,stm=stm, msg=msg),'买入信号',direction = 'BUY',offset=mark_tm,volume=None)
+                                price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
+                                deal_pos = round(80000 / price,2)
+                                target_pos = deal_pos
                                 industry = str(target_tar.loc[code].INDUSTRY)
+                                try_times = 0
                                 QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}{msg}'.format(code = code, stm = str(stm), msg=msg), ui_log = None)
-                                if get_hold(client, account) <= percent and buy is True:
-                                    price = round(QA_fetch_get_stock_realtm_bid(code)+0.01,2)
-                                    deal_pos = round(80000 / price,2)
-                                    target_pos = deal_pos
+                                while get_hold(client, account) <= percent and buy is True and try_times <= 5:
+                                    if try_times > 0:
+                                        hold_pos = get_StockPos(code, client, account)
+                                        deal_pos = deal_pos - hold_pos
                                     BUY(client, account, strategy_id, account_info,trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = test)
+                                    try_times += 1
                                     time.sleep(3)
-                                else:
+
+                                if get_hold(client, account) > percent:
                                     QA_util_log_info('##JOB Now Full {code} {percent}/{hold} ===== {stm}'.format(code = code,percent=percent,hold=get_hold(client, account), stm = str(stm)), ui_log = None)
+                                elif buy is False:
+                                    QA_util_log_info('##JOB Now Index Under Control {code} {percent}/{hold} ===== {stm}'.format(code = code,percent=percent,hold=get_hold(client, account), stm = str(stm)), ui_log = None)
+                                elif try_times > 5:
+                                    QA_util_log_info('##JOB Now NO More Times {code} {percent}/{hold} ===== {stm}'.format(code = code,percent=percent,hold=get_hold(client, account), stm = str(stm)), ui_log = None)
+                                else:
+                                    pass
                             else:
                                 QA_util_log_info('##JOB Now Not Enough Money==== {}'.format(code), ui_log = None)
                         else:
