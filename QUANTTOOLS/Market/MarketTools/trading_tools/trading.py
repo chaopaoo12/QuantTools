@@ -225,7 +225,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             if index.loc['000001'].SKDJ_K_30M >= 75 and index.loc['000001'].SKDJ_TR_30M > 0 and index.loc['000001'].SKDJ_K_HR > 75:
                 QA_util_log_info('##JOB 暂停追高 ==== {}'.format(str(stm)), ui_log = None)
                 #sell and no buy 高位盘整
-                buy = False
+                buy = True
                 pass
 
             elif index.loc['000001'].SKDJ_K_30M < 75 or index.loc['000001'].SKDJ_TR_30M > 0:
@@ -236,7 +236,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             elif index.loc['000001'].SKDJ_K_30M >= 75 and index.loc['000001'].SKDJ_TR_30M < 0:
                 QA_util_log_info('##JOB 高位下跌 ==== {}'.format(str(stm)), ui_log = None)
                 #hold 下跌中继
-                buy = False
+                buy = True
                 pass
             elif index.loc['000001'].SKDJ_K_30M <= 25 and index.loc['000001'].SKDJ_TR_30M < 0:
                 QA_util_log_info('##JOB 进入低位 ==== {}'.format(str(stm)), ui_log = None)
