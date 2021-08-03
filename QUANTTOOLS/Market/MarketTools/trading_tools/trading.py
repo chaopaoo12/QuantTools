@@ -250,14 +250,14 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                 #整点
                 QA_util_log_info('##Now Mark Time {},Stm {}, Stock {}'.format(mark_tm,str(stm),len(list(set(positions.code.tolist()+list(target_tar.index))))))
                 data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,10),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
-                hour_data = data[['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
+                hour_data = data[['SKDJ_K_15M','SKDJ_TR_15M','SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
                 source_data = hour_data.reset_index()
                 source_data = source_data[source_data.datetime == stm].set_index('code')
             else:
                 QA_util_log_info('##Now Mark Time {},Stm {}, Stock {}'.format(mark_tm,str(stm),len(list(set(positions.code.tolist()+list(target_tar.index))))))
                 hour_data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,10),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
                 source_data = hour_data.reset_index()
-                source_data = source_data[source_data.datetime == stm].set_index('code')[['SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
+                source_data = source_data[source_data.datetime == stm].set_index('code')[['SKDJ_K_15M','SKDJ_TR_15M','SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
 
             ####job1 小时级报告 指数小时级跟踪
             target_list = list(source_data.sort_values('SKDJ_K_HR').index)
@@ -334,6 +334,8 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         QA_util_log_info('##JOB Not On Buying ==== {} SKDJ_CROSS2_HR:{} CROSS_JC_HR:{} SKDJ_K_30M:{} SKDJ_TR_30M:{}'.format(code, res2.SKDJ_CROSS2_HR, res2.CROSS_JC_HR, res2.SKDJ_K_30M, res2.SKDJ_TR_30M))
                         if res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_K_HR <= 40 and res2.SKDJ_TR_HR < 0 and round(res2.MA5_30M,2) >= 0:
                             msg = 'SKDJ:30MIN金叉抄底 小时线K:{}'.format(res2.SKDJ_K_HR)
+                        elif res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_K_15M <= 50 and res2.SKDJ_K_15M > 0 and round(res2.MA5_30M,2) >= 0:
+                            msg = 'SKDJ:30MIN金叉抄底 30M线K:{}'.format(res2.SKDJ_K_15M)
                         elif res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_K_30M <= 40 and res2.SKDJ_TR_HR < 0 and round(res2.MA5_30M,2) >= 0:
                             msg = 'SKDJ:30MIN金叉追涨 小时线K:{}'.format(res2.SKDJ_K_HR)
                         #elif res2.CROSS_JC_HR == 1 and res2.SKDJ_K_30M < 70 and res2.SKDJ_TR_30M > 0 and round(res2.MA5_30M,2) >= 0:

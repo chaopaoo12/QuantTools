@@ -290,7 +290,23 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
                 if attempts == 3:
                     QA_util_log_info("JOB Failed to get 30min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
 
-        res = res1.join(res).groupby('code').fillna(method='ffill')
+        QA_util_log_info('time sleep')
+        time.sleep(5)
+
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res2 = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '15min')
+                res2.columns = [x.upper() + '_15M' for x in res2.columns]
+                success = True
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 15min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 15min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
+        res = res2.join(res1).join(res).groupby('code').fillna(method='ffill')
     return(res)
 
 def get_index_quant_hour(start_date, end_date, code=None, type = 'crawl', method = 'value',norm_type=None):
