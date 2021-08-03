@@ -42,8 +42,10 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
 
     target_list = list(set((list(r_tar.index) +
                             pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist() +
+                            find_stock(['880730','880727']) +
                             rrr[(rrr.y_pred==1)&(rrr.ATRR>=0.03)&(rrr.TARGET5.isnull())].reset_index().code.tolist()
                             )))
+    target_list = [i for i in target_list if i.startswith('688') == False]
     target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)]
     target_pool = target_pool[(target_pool.RSI3 > target_pool.RSI2)&(target_pool.ATRR >= 0.03)].sort_values('RANK').head(50)
     per = percent
