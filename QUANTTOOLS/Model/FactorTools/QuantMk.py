@@ -598,8 +598,8 @@ def get_quant_data_1min(start_date, end_date, code=None, type = 'model', block =
         success = False
         while attempts < 3 and not success:
             try:
-                res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '1min')
-                res1.columns = [x.upper() + '_1M' for x in res1.columns]
+                res = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '1min')
+                res.columns = [x.upper() + '_1M' for x in res.columns]
                 success = True
             except:
                 attempts += 1
