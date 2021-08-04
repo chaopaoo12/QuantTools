@@ -565,5 +565,49 @@ def get_index_quant_30min(start_date, end_date, code=None, type = 'crawl', metho
         res.columns = [x.upper() + '_30M' for x in res.columns]
     return(res)
 
+def get_quant_data_1min(start_date, end_date, code=None, type = 'model', block = False, sub_block= True, method = 'value', norm_type = 'normalization'):
+
+    code_list = QA_fetch_stock_all()
+    if code is None:
+        codes = code_list
+    else:
+        codes = code_list[code_list.code.isin(code)]
+
+    if block is True:
+        data = QA_fetch_stock_block()
+        block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
+        #codes = [i for i in codes if i.startswith('300') == False]
+        codes = codes[codes.code.isin(block)]
+    else:
+        pass
+    QA_util_log_info('##JOB Now Delete ST Stock')
+    #codes = codes[codes.name.apply(lambda x:x.count('ST')) == 0]
+    codes = codes[codes.name.apply(lambda x:x.count('退')) == 0]
+    codes = list(set(codes['code']))
+
+    QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
+    codes = [i for i in codes if i.startswith('688') == False]
+    codes = [i for i in codes if i.startswith('787') == False]
+    codes = [i for i in codes if i.startswith('789') == False]
+    if type == 'crawl':
+        res = QA_fetch_stock_min_pre(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type)
+    elif type == 'model':
+        res = QA_fetch_stock_quant_min(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
+    elif type == 'real':
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res1 = QA_fetch_get_index_quant_min(codes, start_date, end_date, '1min')
+                res1.columns = [x.upper() + '_1M' for x in res1.columns]
+                success = True
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 30min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 30min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
+    return(res)
+
 if __name__ == 'main':
     pass
