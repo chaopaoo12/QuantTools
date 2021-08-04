@@ -598,14 +598,14 @@ def get_quant_data_1min(start_date, end_date, code=None, type = 'model', block =
         success = False
         while attempts < 3 and not success:
             try:
-                res1 = QA_fetch_get_index_quant_min(codes, start_date, end_date, '1min')
+                res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '1min')
                 res1.columns = [x.upper() + '_1M' for x in res1.columns]
                 success = True
             except:
                 attempts += 1
-                QA_util_log_info("JOB Try {} times for 30min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                QA_util_log_info("JOB Try {} times for 1min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
                 if attempts == 3:
-                    QA_util_log_info("JOB Failed to get 30min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+                    QA_util_log_info("JOB Failed to get 1min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
 
     return(res)
 
