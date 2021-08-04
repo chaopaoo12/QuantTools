@@ -294,6 +294,8 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
         period = '30'
     elif type == 'hour':
         period = '60'
+    elif type == '1min':
+        period = '1'
 
     try:
         data = QA_fetch_get_stock_min_sina(code, period=period, type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
@@ -329,6 +331,8 @@ def QA_fetch_get_index_indicator_realtime(code, start_date, end_date, type = 'da
         period = '30'
     elif type == 'hour':
         period = '60'
+    elif type == '1min':
+        period = '1'
 
     try:
         data = QA_fetch_get_index_min_sina(code, period=period).reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
