@@ -125,7 +125,7 @@ def predict_target(trading_date, working_dir=working_dir):
     target_list = list(set((list(r_tar.index) +
                             pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist() +
                             rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].reset_index().code.tolist() +
-                            find_stock(['880730','880727'])
+                            find_stock(['880727','880730','880505','880560','880951','880491'])
                             )))
     target_list = [i for i in target_list if i.startswith('688') == False]
     target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_real_date(trading_date)]
