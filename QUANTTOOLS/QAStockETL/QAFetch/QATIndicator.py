@@ -294,6 +294,8 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
         period = '30'
     elif type == 'hour':
         period = '60'
+    elif type == '5min':
+        period = '5'
     elif type == '1min':
         period = '1'
     else:
