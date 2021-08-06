@@ -5,6 +5,7 @@ import joblib
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
 from sklearn.utils import shuffle
 from QUANTTOOLS.Message import send_email, send_actionnotice
+from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
 
 class QAModel():
 
@@ -97,6 +98,13 @@ class QAModel():
         self.info['drop'] = drop
         self.info['cols'] = self.cols
 
+    def normoalize_data(self, type='normal'):
+        if type == 'normal':
+            self.X_train = self.X_train.groupby('date').apply(normalization)
+        elif type == 'stand':
+            self.X_train = self.X_train.groupby('date').apply(standardize)
+        self.info['normoalize'] = type
+
     def copy_model(self, object):
         self.data = object.data
         self.info = object.info
@@ -124,9 +132,14 @@ class QAModel():
         self.code = self.info['code']
         self.norm_type = self.info['norm_type']
         self.target = self.info['target']
+
         try:
             self.block = self.info['block']
             self.sub_block = self.info['sub_block']
+        except:
+            pass
+        try:
+            self.normoalize = self.info['normoalize']
         except:
             pass
         return(self)

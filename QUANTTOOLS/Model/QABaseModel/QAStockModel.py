@@ -4,6 +4,7 @@ from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAModel import QAModel
 from QUANTTOOLS.Message import send_email, send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old,QA_fetch_get_stockcode_real,QA_fetch_stock_all,QA_fetch_code_new,QA_fetch_stock_om_all
+from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
 
 class QAStockModel(QAModel):
 
@@ -117,8 +118,19 @@ class QAStockModel(QAModel):
 
         QA_util_log_info(train.shape[0])
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
-        train = train.assign(y_pred = self.model.predict(train[self.cols]))
-        bina = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
+        try:
+            norm = self.normoalize
+            if norm == 'normal':
+                train = train.assign(y_pred = self.model.predict(train[self.cols].groupby('date').apply(normalization)))
+                bina = pd.DataFrame(self.model.predict_proba(train[self.cols].groupby('date').apply(normalization)))[[0,1]]
+            elif norm == 'stand':
+                train = train.assign(y_pred = self.model.predict(train[self.cols].groupby('date').apply(standardize)))
+                bina = pd.DataFrame(self.model.predict_proba(train[self.cols].groupby('date').apply(standardize)))[[0,1]]
+
+        except:
+            train = train.assign(y_pred = self.model.predict(train[self.cols]))
+            bina = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
+
         bina.index = train.index
         train[['Z_PROB','O_PROB']] = bina
         train.loc[:,'RANK'] = train['O_PROB'].groupby('date').rank(ascending=False)
