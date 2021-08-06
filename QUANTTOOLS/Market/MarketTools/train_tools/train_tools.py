@@ -20,6 +20,11 @@ def prepare_data(model, start_date, end_date, mark = 0.3, col = 'TARGET5', type 
                         train_end=end_date)
     return(model)
 
+def norm_data(model, type = 'normal', ui_log = None ):
+    QA_util_log_info('##JOB03 Now Norm Stock Model Data ==== ', ui_log)
+    model.normoalize_data(type=type)
+    return(model)
+
 def start_train(model, cols, other_params, thresh=0, drop=0.99):
 
     model.prepare_data(thresh=thresh, drop=drop, cols = cols)
