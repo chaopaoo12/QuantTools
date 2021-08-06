@@ -332,7 +332,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
                         QA_util_log_info('##JOB Now Buying Ckeck==== {}'.format(code), ui_log = None)
 
                         QA_util_log_info('##JOB Not On Buying ==== {} SKDJ_CROSS2_HR:{} CROSS_JC_HR:{} SKDJ_K_30M:{} SKDJ_TR_30M:{}'.format(code, res2.SKDJ_CROSS2_HR, res2.CROSS_JC_HR, res2.SKDJ_K_30M, res2.SKDJ_TR_30M))
-                        if res2.SKDJ_CROSS2_HR == 1 and res2.SKDJ_K_30M < 40 and res2.SKDJ_TR_30M > 0 and round(res2.MA5_30M,2) >= 0:
+                        if res2.SKDJ_CROSS2_HR == 1 and res2.SKDJ_K_30M < 60 and res2.SKDJ_TR_30M > 0 and round(res2.MA5_30M,2) >= 0:
                             msg = 'SKDJ:60MIN金叉追涨 小时线K:{}'.format(res2.SKDJ_K_HR)
 
                         #elif res2.SKDJ_CROSS2_30M == 1 and res2.SKDJ_K_15M <= 50 and res2.SKDJ_K_15M > 0 and round(res2.MA5_30M,2) >= 0:
