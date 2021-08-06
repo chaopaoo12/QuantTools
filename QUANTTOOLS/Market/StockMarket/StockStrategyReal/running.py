@@ -66,12 +66,12 @@ def predict_watch(trading_date, working_dir=working_dir):
     data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
     r_tar, prediction_tar, prediction = load_data(concat_predict, trading_date, working_dir, 'stock_xg', 'prediction')
     #wk_list = data[data.SKDJ_K_WK <= 30][['SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','INDUSTRY','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
-    pe_list = data[(data.ROE_RATE > 1)&(data.PE_RATE < 1)&(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 15)&(data.PE_TTM <= 30)&(data.STOCK_TYPE <= 2)]
-    pe_list = prediction_tar.loc[pe_list.index]
+    data = data[(data.NETPROFIT_INRATE > 30)&(data.ROE_TTM >= 10)&(data.SHORT10 < 0.01)&(data.SHORT20 < 0.01)&(data.SHORT10 > -0.01)&(data.SHORT20 > -0.01)&(data.MA60_C > 0)]
+    pe_list = prediction_tar.loc[data.index]
     target_pool2 = pe_list.reset_index().sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
     #target_pool1 = wk_list.reset_index().sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
     target_pool3 = pe_list[pe_list.SKDJ_K_WK <= 30].reset_index().sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
-    base_report(trading_date, '观察报告', **{'低估值清单': target_pool2, '复合清单': target_pool3})
+    base_report(trading_date, '观察报告', **{'初始清单':data,'低估值清单': target_pool2, '复合清单': target_pool3})
 
 
 def index_predict_watch(trading_date, working_dir=working_dir):
