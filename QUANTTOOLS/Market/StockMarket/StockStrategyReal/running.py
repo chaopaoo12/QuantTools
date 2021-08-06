@@ -66,7 +66,7 @@ def predict_watch(trading_date, working_dir=working_dir):
     data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
     r_tar, prediction_tar, prediction = load_data(concat_predict, trading_date, working_dir, 'stock_xg', 'prediction')
     #wk_list = data[data.SKDJ_K_WK <= 30][['SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','INDUSTRY','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
-    data = data[(data.NETPROFIT_INRATE > 30)&(data.ROE_TTM >= 10)&(data.SHORT10 < 0.01)&(data.SHORT20 < 0.01)&(data.SHORT10 > -0.01)&(data.SHORT20 > -0.01)&(data.MA60_C > 0)][['INDUSTRY','NETPROFIT_INRATE','ROE_TTM','SHORT10','SHORT20','MA60_C','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR']]
+    data = data[(data.NETPROFIT_INRATE > 30)&(data.ROE_TTM >= 10)&(data.SHORT10 < 0.01)&(data.SHORT20 < 0.01)&(data.SHORT10 > -0.01)&(data.SHORT20 > -0.01)&(data.MA60_C > 0)][['INDUSTRY','NETPROFIT_INRATE','ROE_TTM','SHORT10','SHORT20','MA60_C','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','ATRR']]
     pe_list = prediction_tar.loc[data.index]
     target_pool2 = pe_list.reset_index().sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
     #target_pool1 = wk_list.reset_index().sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
