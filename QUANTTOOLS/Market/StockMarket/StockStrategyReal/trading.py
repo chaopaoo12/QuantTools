@@ -33,7 +33,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     #r_tar = r_tar[(r_tar.y_pred==1)&(r_tar.TARGET3.isnull())]
 
     data = QA_fetch_stock_fianacial(QA_fetch_stock_all().code.tolist(),QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date))
-    pe_list = data[(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 10)].set_index(['date','code'])
+    pe_list = data[(data.NETPROFIT_INRATE > 30)&(data.ROE_TTM >= 10)&(data.SHORT10 < 0.01)&(data.SHORT20 < 0.01)&(data.SHORT10 > -0.01)&(data.SHORT20 > -0.01)&(data.MA60_C > 0)]
     pe_list = prediction_tar.loc[prediction_tar.index.intersection(pe_list.index)]
 
     r_tar = prediction_tar[(prediction_tar.O_PROB > 0.5)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
@@ -47,7 +47,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
                             )))
     target_list = [i for i in target_list if i.startswith('688') == False]
     target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)]
-    target_pool = target_pool[(target_pool.RSI3 > target_pool.RSI2)&(target_pool.SKDJ_K_HR < 40)&(target_pool.SKDJ_TR_HR < 0)&(target_pool.SKDJ_K > 80)&(target_pool.ATRR >= 0.03)].sort_values('SKDJ_K_HR').head(50)
+    target_pool = pe_list.loc[QA_util_get_last_day(trading_date)]
     per = percent
 
     #if target_pool[target_pool.y_pred==1].shape[0] > 30:
