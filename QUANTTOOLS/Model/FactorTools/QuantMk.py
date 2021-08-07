@@ -256,7 +256,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
 
-    QA_util_log_info(codes)
+    QA_util_log_info(len(codes))
 
     if type == 'crawl':
         res = QA_fetch_stock_hour_pre(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type)
