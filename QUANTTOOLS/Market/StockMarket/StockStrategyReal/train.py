@@ -44,6 +44,13 @@ def daymodel_train(date, working_dir=working_dir):
     stock_model = start_train(stock_model, stock_xg_set, other_params, 0, 0.95)
     save_report(stock_model, 'stock_xg', working_dir)
 
+    stock_model = norm_data(stock_model, type='normal')
+    other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
+                    'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
+
+    stock_model = start_train(stock_model, stock_xg_set, other_params, 0, 0.95)
+    save_report(stock_model, 'stock_xg_norm', working_dir)
+
     stock_model = prepare_data(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET5', type='percent')
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
@@ -53,15 +60,6 @@ def daymodel_train(date, working_dir=working_dir):
     save_report(stock_model, 'stock_mars_day', working_dir)
 
     stock_model = norm_data(stock_model, type='normal')
-
-    other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
-                    'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
-
-    stock_model = start_train(stock_model, stock_xg_set, other_params, 0, 0.95)
-    save_report(stock_model, 'stock_xg_norm', working_dir)
-
-    stock_model = prepare_data(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET5', type='percent')
-
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
