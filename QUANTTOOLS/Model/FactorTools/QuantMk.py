@@ -118,17 +118,17 @@ def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = Fals
     else:
         pass
 
-    codes = list(set(codes['code']))
+    code_all = list(set(codes['code']))
     if ST is True:
         QA_util_log_info('##JOB Now Delete ST Stock')
         ST = list(codes[codes.name.apply(lambda x:x.count('ST')) == 1]['code']) + list(codes[codes.name.apply(lambda x:x.count('退')) == 1]['code'])
-        codes = [i for i in codes if i not in ST]
+        code_all = [i for i in code_all if i not in ST]
 
 
     QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
-    code_688 = [i for i in codes if i.startswith('688') == True] + [i for i in codes if i.startswith('787') == True] + [i for i in codes if i.startswith('789') == True]
+    code_688 = [i for i in code_all if i.startswith('688') == True] + [i for i in code_all if i.startswith('787') == True] + [i for i in code_all if i.startswith('789') == True]
 
-    codes = [i for i in codes if i not in code_688]
+    codes = [i for i in code_all if i not in code_688]
 
     if type == 'crawl':
         res = QA_fetch_stock_quant_pre_adv(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type).data
