@@ -33,9 +33,9 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     #r_tar = r_tar[(r_tar.y_pred==1)&(r_tar.TARGET3.isnull())]
 
     data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date),code=QA_fetch_stock_all().code.tolist(),type='crawl', block=False, sub_block=False,norm_type=None,ST=False)
-    pe_list = data[(data.NETPROFIT_INRATE > 30)&(data.ROE_TTM >= 10)&(data.SHORT10 < 0.01)&(data.SHORT20 < 0.01)&(data.SHORT10 > -0.01)&(data.SHORT20 > -0.01)&(data.MA60_C > 0)&(data.ATRR > 0.02)&(data.TARGET.isnull())]
+    pe_list = data[(data.NETPROFIT_INRATE > 30)&(data.ROE_TTM >= 10)&(data.SHORT10 < 0.01)&(data.SHORT20 < 0.01)&(data.SHORT10 > -0.01)&(data.SHORT20 > -0.01)&(data.MA60_C > 0)&(data.ATRR > 0.02)]
     #pe_list = pe_list[(pe_list.TARGET.isnull())].sort_values('RANK')
-    #pe_list = prediction_tar.loc[prediction_tar.index.intersection(pe_list.index)]
+    pe_list = prediction_tar.loc[prediction_tar.index.intersection(pe_list.index)]
 
     r_tar = prediction_tar[(prediction_tar.O_PROB > 0.5)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
     #r_tar = prediction_tar.loc[(slice(None),list(r_tar.index)),].loc[QA_util_get_last_day(trading_date)]
@@ -47,8 +47,8 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
                             #find_stock(['880727','880730','880505','880560','880951','880491'])
                             )))
     target_list = [i for i in target_list if i.startswith('688') == False]
-    #target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)]
-    target_pool = pe_list.reset_index().drop_duplicates(subset='NAME',keep='last').sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
+    target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)]
+    #target_pool = pe_list.reset_index().drop_duplicates(subset='NAME',keep='last').sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
     per = percent
 
     #if target_pool[target_pool.y_pred==1].shape[0] > 30:
