@@ -12,7 +12,7 @@ def load_data(model, start_date, end_date, type ='model', norm_type=None, ui_log
     model.get_data(start=start_date, end= end_date, type =type, norm_type=norm_type)
     return(model)
 
-def prepare_data(model, start_date, end_date, mark = 0.3, col = 'TARGET5', type = 'percent', shift = None, ui_log = None ):
+def set_target(model, start_date, end_date, mark = 0.3, col = 'TARGET5', type = 'percent', shift = None, ui_log = None ):
     QA_util_log_info('##JOB03 Now Set Stock Model Target ==== {}'.format(str(end_date)), ui_log)
     model.set_target(col = col, mark = mark, type = type, shift = shift)
     QA_util_log_info('##JOB04 Now Set Stock Model Train time range ==== {}'.format(str(end_date)), ui_log)
@@ -20,14 +20,17 @@ def prepare_data(model, start_date, end_date, mark = 0.3, col = 'TARGET5', type 
                         train_end=end_date)
     return(model)
 
+def prepare_data(model, cols, thresh=0, drop=0.99):
+    model.prepare_data(thresh=thresh, drop=drop, cols = cols)
+    return(model)
+
 def norm_data(model, type = 'normal', ui_log = None ):
     QA_util_log_info('##JOB03 Now Norm Stock Model Data ==== ', ui_log)
     model.normoalize_data(type=type)
+
     return(model)
 
-def start_train(model, cols, other_params, thresh=0, drop=0.99):
-
-    model.prepare_data(thresh=thresh, drop=drop, cols = cols)
+def start_train(model, other_params):
     other_params = other_params
     model.build_model(other_params)
     model.model_running()
