@@ -122,7 +122,7 @@ def predict_target(trading_date, working_dir=working_dir):
     #rrr = prediction_tar.loc[(slice(None),find_stock(res)),].reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index(['date','code'])
 
     data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
-    pe_list = data[(data.NETPROFIT_INRATE > 30)&(data.ROE_TTM >= 10)&(data.SHORT10 < 0.01)&(data.SHORT20 < 0.01)&(data.SHORT10 > -0.01)&(data.SHORT20 > -0.01)&(data.MA60_C > 0)]
+    pe_list = data[(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 10)&(data.SHORT10.abs() < 0.01)&(data.SHORT20.abs() < 0.01)&(data.MA60_C > 0)]
     pe_list = prediction_tar.loc[pe_list.index]
 
     r_tar = prediction_tar[(prediction_tar.O_PROB > 0.5)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().set_index('code')
