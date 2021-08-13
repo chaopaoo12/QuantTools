@@ -108,16 +108,7 @@ def predict_norm(trading_date, top_num=top, working_dir=working_dir, exceptions=
 
 def predict_target(trading_date, working_dir=working_dir):
     r_tar, prediction_tar, prediction = load_data(concat_predict, trading_date, working_dir, model_name = 'stock_xg', file_name = 'prediction')
-    r_tar1, prediction_tar1, prediction1 = load_data(concat_predict_index, trading_date, working_dir, 'index_xg', 'prediction_index_summary')
 
-    try:
-        res = prediction_tar1[(prediction_tar1.O_PROB>=0.5)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
-    except:
-        res = prediction_tar1[(prediction_tar1.DAY_PROB>=0.5)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
-
-    lll = prediction_tar1.loc[QA_util_get_real_date(trading_date)].loc[res]
-
-    rrr = prediction_tar.loc[(slice(None),find_stock(list(lll[lll.RSI3 > lll.RSI2].index))),].sort_index()
 
     #rrr = prediction_tar.loc[(slice(None),find_stock(res)),].reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index(['date','code'])
 
@@ -129,7 +120,6 @@ def predict_target(trading_date, working_dir=working_dir):
 
     target_list = list(set((list(r_tar.index) +
                             pe_list[(pe_list.y_pred==1)&(pe_list.TARGET5.isnull())].reset_index().code.tolist() +
-                            rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].reset_index().code.tolist() +
                             find_stock(['880727','880730','880505','880560','880951','880491'])
                             )))
     target_list = [i for i in target_list if i.startswith('688') == False]
@@ -146,7 +136,6 @@ def predict_target(trading_date, working_dir=working_dir):
     #out_ist = res[((res.SKDJ_CROSS1_30M == 1) | (res.SKDJ_TR_30M < 1)) & (res.MA5_30M < 0)].loc[(slice(None),target_list),][['date','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_30M','SKDJ_TR_30M','MA5_30M','PASS_MARK','TARGET','TARGET3','TARGET5']]
 
     base_report(trading_date, '模型汇总报告', **{'本日选股': target_pool[(target_pool.RSI3 > target_pool.RSI2)&(target_pool.SKDJ_K < 40)&(target_pool.ATRR >= 0.03)].sort_values('SKDJ_K_HR').head(50),
-                                           'INDEX选股': rrr[(rrr.y_pred == 1)&(rrr.RSI3 > rrr.RSI2)&(target_pool.ATRR >= 0.05)],
                                            'PE选股': pe_list[(pe_list.y_pred == 1)&(pe_list.RSI3 > pe_list.RSI2)&(target_pool.ATRR >= 0.05)],
                                            #'进场信号':in_list,
                                            #'出场信号':out_ist
