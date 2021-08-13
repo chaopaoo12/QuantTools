@@ -33,7 +33,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     #r_tar = r_tar[(r_tar.y_pred==1)&(r_tar.TARGET3.isnull())]
 
     data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date),code=QA_fetch_stock_all().code.tolist(),type='crawl', block=False, sub_block=False,norm_type=None,ST=False)
-    pe_list = data[(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 10)&(data.SHORT10.abs() < 0.01)&(data.SHORT20.abs() < 0.01)&(data.MA60_C > 0)&(data.ATRR > 0.02)]
+    pe_list = data[(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 10)&(data.SHORT10.abs() < 0.01)&(data.SHORT20 > -0.01)&(data.SHORT20 < 0)&(data.MA60_C > 0)&(data.ATRR > 0.02)]
     #pe_list = pe_list[(pe_list.TARGET.isnull())].sort_values('RANK')
     pe_list = prediction_tar.loc[prediction_tar.index.intersection(pe_list.index)]
 
