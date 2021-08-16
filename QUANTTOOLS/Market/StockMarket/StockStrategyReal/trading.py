@@ -10,16 +10,16 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial,QA_fetch_stoc
 def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_name = 'prediction', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
     r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir, model_name = 'stock_xg', file_name = 'prediction')
-    r_tar1, prediction_tar1, prediction1 = load_data(concat_predict_index, QA_util_get_last_day(trading_date), working_dir, 'index_xg', 'prediction_index_summary')
+    #r_tar1, prediction_tar1, prediction1 = load_data(concat_predict_index, QA_util_get_last_day(trading_date), working_dir, 'index_xg', 'prediction_index_summary')
 
-    try:
-        res = prediction_tar1[(prediction_tar1.O_PROB>=0.5)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
-    except:
-        res = prediction_tar1[(prediction_tar1.DAY_PROB>=0.5)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
+    #try:
+    #    res = prediction_tar1[(prediction_tar1.O_PROB>=0.5)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
+    #except:
+    #    res = prediction_tar1[(prediction_tar1.DAY_PROB>=0.5)&(prediction_tar1.INDEX_TARGET3.isnull())].reset_index().code.tolist()
 
-    lll = prediction_tar1.loc[QA_util_get_last_day(trading_date)].loc[res]
+    #lll = prediction_tar1.loc[QA_util_get_last_day(trading_date)].loc[res]
 
-    rrr = prediction_tar.loc[(slice(None),find_stock(list(lll[(lll.RSI3>lll.RSI2)].index))),]
+    #rrr = prediction_tar.loc[(slice(None),find_stock(list(lll[(lll.RSI3>lll.RSI2)].index))),]
     #rrr = rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].sort_values('RANK')
 
     #data = get_index_quant_data(QA_util_get_pre_trade_date(trading_date,91),QA_util_get_last_day(trading_date),type='crawl', norm_type=None)
@@ -37,7 +37,7 @@ def trading(trading_date, func = concat_predict, model_name = 'stock_xg', file_n
     #pe_list = pe_list[(pe_list.TARGET.isnull())].sort_values('RANK')
     pe_list = prediction_tar.loc[prediction_tar.index.intersection(pe_list.index)]
 
-    r_tar = prediction_tar[(prediction_tar.O_PROB > 0.5)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
+    #r_tar = prediction_tar[(prediction_tar.O_PROB > 0.5)&(prediction_tar.TARGET5.isnull())].drop_duplicates(subset='NAME',keep='last').reset_index().sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
     #r_tar = prediction_tar.loc[(slice(None),list(r_tar.index)),].loc[QA_util_get_last_day(trading_date)]
     #per = prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]
 
