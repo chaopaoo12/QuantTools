@@ -65,7 +65,7 @@ def filter_extreme_3sigma(array,n=3): #3 sigma
 def neutralization(factor, mkt_cap=None, industry = None):
     y = factor
     if mkt_cap is not None:
-        LnMktCap = mkt_cap.apply(lambda x:math.log(x))
+        LnMktCap = mkt_cap
         if industry is not None: #行业、市值
             dummy_industry = pd.get_dummies(industry).astype(float)
             x = pd.concat([LnMktCap,dummy_industry],axis = 1)
@@ -78,19 +78,19 @@ def neutralization(factor, mkt_cap=None, industry = None):
     return result.resid
 
 def normalization(data):
-    res1 = data[[i for i in list(data.columns) if i != 'INDUSTRY']].apply(lambda x:normalization_series(filter_extreme_3sigma(x)))
+    res1 = data[[i for i in list(data.columns) if i not in ['INDUSTRY','TOTAL_MARKET','next_date']]].apply(lambda x:neutralization(normalization_series(filter_extreme_3sigma(x)), data['TOTAL_MARKET'], data['INDUSTRY']))
     return(res1)
 
 def standardize(data):
-    res1 = data[[i for i in list(data.columns) if i != 'INDUSTRY']].apply(lambda x:standardize_series(filter_extreme_3sigma(x)))
+    res1 = data[[i for i in list(data.columns) if i not in ['INDUSTRY','TOTAL_MARKET','next_date']]].apply(lambda x:neutralization(standardize_series(filter_extreme_3sigma(x)), data['TOTAL_MARKET'], data['INDUSTRY']))
     return(res1)
 
 def normalization_rolling(data, N):
-    res1 = data[[i for i in list(data.columns) if i != 'INDUSTRY']].rolling(N).apply(lambda x:normalization_series_rolling(filter_extreme_3sigma(x)))
+    res1 = data[[i for i in list(data.columns) if i not in ['INDUSTRY','TOTAL_MARKET','next_date']]].rolling(N).apply(lambda x:normalization_series_rolling(filter_extreme_3sigma(x)))
     return(res1)
 
 def standardize_rolling(data, N):
-    res1 = data[[i for i in list(data.columns) if i != 'INDUSTRY']].rolling(N).apply(lambda x:standardize_series_rolling(filter_extreme_3sigma(x)))
+    res1 = data[[i for i in list(data.columns) if i not in ['INDUSTRY','TOTAL_MARKET','next_date']]].rolling(N).apply(lambda x:standardize_series_rolling(filter_extreme_3sigma(x)))
     return(res1)
 
 def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):

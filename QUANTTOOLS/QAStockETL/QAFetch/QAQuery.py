@@ -43,7 +43,7 @@ from QUANTTOOLS.QAStockETL.QAData.financial_mean import financial_dict, dict2
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import time_this_function
 from QUANTTOOLS.QAStockETL.QAUtil.base_func import pct,index_pct,pre,index_pre,index_pct_log,pct_log,min_pct,min_index_pct,min_pre,min_index_pre,min_index_pct_log,min_pct_log
 
-from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
+from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize, neutralization
 import numpy
 import pandas as pd
 import datetime
@@ -752,13 +752,12 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, norm_ty
             else:
                 pass
 
-            col_tar = ['INDUSTRY']
             if norm_type == 'standardize':
                 QA_util_log_info('##JOB stock quant train data standardize trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
-                res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
+                res = res.groupby('date').apply(standardize)
             elif norm_type == 'normalization':
                 QA_util_log_info('##JOB stock quant train data normalization trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
-                res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
+                res = res.groupby('date').apply(normalization)
             else:
                 QA_util_log_info('##JOB norm_type must be in [standardize, normalization]')
                 pass
@@ -861,10 +860,10 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
             col_tar = ['INDUSTRY']
             if norm_type == 'standardize':
                 QA_util_log_info('##JOB stock quant data standardize trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
-                res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(standardize).join(res[col_tar])
+                res = res.groupby('date').apply(standardize)
             elif norm_type == 'normalization':
                 QA_util_log_info('##JOB stock quant data normalization trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
-                res = res[[x for x in list(res.columns) if x not in col_tar]].groupby('date').apply(normalization).join(res[col_tar])
+                res = res.groupby('date').apply(normalization)
             else:
                 QA_util_log_info('##JOB norm_type must be in [standardize, normalization]')
                 pass
