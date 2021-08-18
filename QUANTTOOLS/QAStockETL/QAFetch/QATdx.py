@@ -106,13 +106,25 @@ def QA_fetch_get_stock_industryinfo(file_name='tdxhy.cfg'):
                        names=['market','code','TDXHY','SWHY','HHY'],
                        encoding='gb18030'))
 
-def QA_fetch_get_index_info(file_name='tdxzs.cfg'):
-    return(pd.read_csv(tdx_dir+file_name,
-                       header=None,
-                       sep='|',
-                       dtype=str,
-                       names=['index_name','code','cate','unknown1','unknown2','HY'],
-                       encoding='gb18030'))
+def QA_fetch_get_index_info(file_name=['tdxzs.cfg','tdxzs2.cfg','tdxzs3.cfg']):
+    res = pd.DataFrame()
+    if len(file_name) > 1:
+        for i in file_name:
+            data = pd.read_csv(tdx_dir+i,
+                               header=None,
+                               sep='|',
+                               dtype=str,
+                               names=['index_name','code','cate','unknown1','unknown2','HY'],
+                               encoding='gb18030')
+            res = res.append(data)
+        return(res)
+    else:
+        return(pd.read_csv(tdx_dir+file_name,
+                           header=None,
+                           sep='|',
+                           dtype=str,
+                           names=['index_name','code','cate','unknown1','unknown2','HY'],
+                           encoding='gb18030'))
 
 def QA_fetch_get_stock_delist():
     sh = ak.stock_info_sh_delist(indicator="终止上市公司")[['COMPANY_CODE','SECURITY_ABBR_A','LISTING_DATE','QIANYI_DATE']]
