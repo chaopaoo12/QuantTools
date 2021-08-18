@@ -103,7 +103,7 @@ def QA_fetch_get_stock_industryinfo(file_name='tdxhy.cfg'):
                        header=None,
                        sep='|',
                        dtype=str,
-                       names=['market','code','TDXHY','SWHY','HHY'],
+                       names=['market','code','TDXHY','SWHY','HHY','XHY'],
                        encoding='gb18030'))
 
 def QA_fetch_get_index_info(file_name=['tdxzs.cfg','tdxzs2.cfg','tdxzs3.cfg']):
