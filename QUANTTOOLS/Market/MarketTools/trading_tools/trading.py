@@ -9,7 +9,6 @@ from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtm_bid
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import QA_fetch_stock_name
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour,get_quant_data_30min,get_index_quant_hour
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_UseCapital, get_StockPos, get_hold
-import pandas as pd
 import time
 import datetime
 
@@ -202,10 +201,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
         except:
             QA_util_log_info('##JOB Cancel Orders Failed==== {}'.format(str(trading_date)), ui_log = None)
         sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
-        try:
-            positions = positions[positions['股票余额'] > 0]
-        except:
-            positions = pd.DataFrame({'code':None})
+        positions = positions[positions['股票余额'] > 0]
         account_info = client.get_account(account)
 
         QA_util_log_info('##JOB Now Build Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
