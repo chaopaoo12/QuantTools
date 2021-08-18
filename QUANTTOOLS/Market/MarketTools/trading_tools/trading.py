@@ -205,7 +205,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
         try:
             positions = positions[positions['股票余额'] > 0]
         except:
-            positions = pd.DataFrame()
+            positions = pd.DataFrame({'code':None})
         account_info = client.get_account(account)
 
         QA_util_log_info('##JOB Now Build Trading Frame ==== {}'.format(str(trading_date)), ui_log = None)
