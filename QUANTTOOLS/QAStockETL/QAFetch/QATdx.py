@@ -86,16 +86,25 @@ def QA_fetch_get_usstock_financial_calendar():
 
 def QA_fetch_get_stock_industry(stock_all):
     stock_all = stock_all.drop_duplicates('code')
-    stock_industry = QA_fetch_get_stock_industryinfo()
+    stock_industry = QA_fetch_get_stock_industryinfo().fillna('0')
     index_info = QA_fetch_get_index_info()
     stock_info = QA_fetch_stock_info(stock_all.code.tolist())[['code','province','ipo_date']]
-    stock_info = stock_info.assign(AREA= stock_info.province.apply(lambda x:'8802'+str(x) if len(str(x)) ==2 else '88020'+str(x)).apply(lambda x:index_info[index_info.code==x].index_name.reset_index(drop=True)),
+
+    name_dict = index_info[['code','index_name']].set_index('code').T.to_dict('records')[0]
+    hy_dict = index_info[['HY','index_name']].set_index('HY').T.to_dict('records')[0]
+    name_dict['880200'] = 'unknown'
+    name_dict['0'] = 'unknown'
+    hy_dict['T00'] = 'unknown'
+    hy_dict['0'] = 'unknown'
+    hy_dict['100000'] = 'unknown'
+
+    stock_info = stock_info.assign(AREA= stock_info.province.apply(lambda x:'8802'+str(x) if len(str(x)) ==2 else '88020'+str(x)).apply(lambda x:name_dict[x]),
                                    ipo_date= stock_info.ipo_date.apply(lambda x:str(x)))
-    stock_industry = stock_industry.assign(TDX=stock_industry.TDXHY.apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)),
-                                            SW=stock_industry.SWHY.apply(lambda x:str(x[0:4]+'00') if x is not None and x is not np.nan and len(x) >= 4 else None).apply(lambda x:index_info[index_info.HY==x].index_name.reset_index(drop=True)),
-                                            NAME=stock_industry.code.apply(lambda x:stock_all[stock_all.code==x].name.reset_index(drop=True)),
-                                            AREA=stock_industry.code.apply(lambda x:stock_info[stock_info.code==x].AREA.reset_index(drop=True)),
-                                            IPO=stock_industry.code.apply(lambda x:stock_info[stock_info.code==x].ipo_date.reset_index(drop=True)))
+    stock_industry = stock_industry.assign(TDX=stock_industry.TDXHY.apply(lambda x:hy_dict[x]),
+                                           SWHY=stock_industry.SWHY.apply(lambda x:str(x[0:4]+'00') if x is not None and x is not np.nan and len(x) >= 4 else '0').apply(lambda x:hy_dict[x]),
+                                           NAME=stock_industry.code.apply(lambda x:stock_all[stock_all.code==x].name.reset_index(drop=True)),
+                                           AREA=stock_industry.code.apply(lambda x:stock_info[stock_info.code==x].AREA.reset_index(drop=True)),
+                                           IPO=stock_industry.code.apply(lambda x:stock_info[stock_info.code==x].ipo_date.reset_index(drop=True)))
     return(stock_industry)
 
 def QA_fetch_get_stock_industryinfo(file_name='tdxhy.cfg'):
