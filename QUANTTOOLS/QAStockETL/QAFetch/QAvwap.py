@@ -28,7 +28,7 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1'):
         data = data.assign(camt = data.groupby('date')['amt'].cumsum(),
                            cvolume = data.groupby('date')['volume'].cumsum())
         data['vamp'] = data['camt'] / data['cvolume']
-        data = data.apply(spc)
+        data['vamp_c'] = data.groupby('date').rolling(window=5).agg({'vamp':rolling_ols}).reset_index(level=0,drop=True)
     except:
         QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
         data = None
