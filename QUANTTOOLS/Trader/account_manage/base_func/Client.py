@@ -7,7 +7,7 @@ from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTTOOLS.Message.message_func import send_email
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_get_days_to_today
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_stock_industryinfo
 import pandas as pd
 
 def get_Client(host=yun_ip, port=yun_port, key=easytrade_password):
@@ -38,7 +38,7 @@ def get_Position(client, account):
     positions=positions.astype({'市值':'float','股票余额':'float','可用余额':'float'})
     positions = positions[positions['股票余额'] > 0]
     positions['上市时间'] = positions['证券代码'].apply(lambda x:QA_util_get_days_to_today(str(QA_fetch_stock_to_market_date(x))))
-    positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industry(x))
+    positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industryinfo('300894').SW)
     positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
     positions =positions.rename(columns={'证券代码': 'code'})
     return(positions)
