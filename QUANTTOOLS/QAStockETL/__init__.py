@@ -80,7 +80,9 @@ from QUANTTOOLS.QAStockETL.QASU import (
                                         QA_etl_usstock_day,
                                         QA_etl_usstock_alpha_day,QA_etl_usstock_alpha101_day,
                                         QA_etl_usstock_technical_day,QA_etl_usstock_technical_week,
-                                        QA_etl_usstock_financial_percent_day
+                                        QA_etl_usstock_financial_percent_day,
+
+                                        QA_SU_save_stock_neutral_day
                                         )
 
 ###Index Save Result
