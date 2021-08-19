@@ -200,7 +200,7 @@ def standardize(data):
             'ALPHA_154'
             ]
 
-    res1 = data[[i for i in list(data.columns) if i not in ['INDUSTRY','TOTAL_MARKET','next_date'] + cols]].apply(lambda x:neutralization(standardize_series(filter_extreme_3sigma(x)), data['TOTAL_MARKET'], data['INDUSTRY']))
+    res1 = data[[i for i in list(data.columns) if i not in ['INDUSTRY','TOTAL_MARKET','next_date'] + cols]].apply(lambda x:neutralization(standardize_series(filter_extreme_3sigma(x)), data['TOTAL_MARKET'], data['INDUSTRY'])).join(data[cols])
     return(res1)
 
 def normalization_rolling(data, N):
