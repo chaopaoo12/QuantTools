@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetc
                                            QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,
                                            QA_fetch_financial_report_wy_adv,
 
-                                           QA_fetch_stock_industryinfo,
+                                           QA_fetch_stock_industryinfo,QA_fetch_stock_quant_data,
 
                                            QA_fetch_get_stock_etlday, QA_fetch_get_usstock_etlday,
                                            QA_fetch_get_stock_etlhalf,

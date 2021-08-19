@@ -117,5 +117,7 @@ from QUANTTOOLS.QAStockETL.QASU.QAMySQL import (QA_etl_index_day,
                                                 QA_etl_index_technical_15min
                                                 )
 
+from QUANTTOOLS.QAStockETL.QASU.main import QA_SU_save_stock_neutral_day
+
 if __name__ == '__main__':
     pass
