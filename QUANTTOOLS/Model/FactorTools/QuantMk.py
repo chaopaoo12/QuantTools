@@ -7,7 +7,8 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_index_
                                            QA_fetch_index_quant_hour,QA_fetch_index_hour_pre,
                                            QA_fetch_stock_quant_hour,QA_fetch_stock_hour_pre,
                                            QA_fetch_index_quant_min,QA_fetch_index_min_pre,
-                                           QA_fetch_stock_quant_min,QA_fetch_stock_min_pre)
+                                           QA_fetch_stock_quant_min,QA_fetch_stock_min_pre,
+                                           QA_fetch_stock_quant_neut_adv,QA_fetch_stock_quant_neut)
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_quant_hour,QA_fetch_get_stock_quant_min,QA_fetch_get_index_quant_hour,QA_fetch_get_index_quant_min
 from QUANTAXIS import QA_fetch_stock_block,QA_fetch_index_list_adv
 from QUANTAXIS.QAUtil import QA_util_log_info
@@ -611,6 +612,42 @@ def get_quant_data_1min(start_date, end_date, code=None, type = 'model', block =
                 if attempts == 3:
                     QA_util_log_info("JOB Failed to get 1min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
 
+    return(res)
+
+def get_quant_data_neut(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', ST=True):
+
+    code_list = QA_fetch_stock_om_all()
+    if code is None:
+        codes = code_list
+    else:
+        codes = code_list[code_list.code.isin(code)]
+
+    if block is True:
+        data = QA_fetch_stock_block()
+        block = list(data[data.blockname.isin(['上证50','沪深300','创业300','上证180','上证380','深证100','深证300','中证100','中证200'])]['code'].drop_duplicates())
+        #codes = [i for i in codes if i.startswith('300') == False]
+        codes = codes[codes.code.isin(block)]
+    else:
+        pass
+
+    code_all = list(set(codes['code']))
+    if ST is True:
+        QA_util_log_info('##JOB Now Delete ST Stock')
+        ST = list(codes[codes.name.apply(lambda x:x.count('ST')) == 1]['code']) + list(codes[codes.name.apply(lambda x:x.count('退')) == 1]['code'])
+        code_all = [i for i in code_all if i not in ST]
+
+
+    QA_util_log_info('##JOB Now Delete Stock Start With [688, 787, 789]')
+    code_688 = [i for i in code_all if i.startswith('688') == True] + [i for i in code_all if i.startswith('787') == True] + [i for i in code_all if i.startswith('789') == True]
+
+    codes = [i for i in code_all if i not in code_688]
+
+    if type == 'crawl':
+        res = QA_fetch_stock_quant_neut_adv(codes,start_date,end_date, block = sub_block, method=method).data
+    elif type == 'model':
+        res = QA_fetch_stock_quant_neut(codes, start_date, end_date, block = sub_block)
+    elif type == 'real':
+        pass
     return(res)
 
 if __name__ == 'main':
