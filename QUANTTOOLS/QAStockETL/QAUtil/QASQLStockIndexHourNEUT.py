@@ -7,7 +7,7 @@ from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Ora
 ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
 
 sql_text = '''select to_char(ORDER_DATE, 'yyyy-mm-dd') as "date",
-CODE AS "code",datetime as "datetime",VR,
+CODE AS "code",VR,
 VRSI,
 VRSI_C,
 VSTD,
