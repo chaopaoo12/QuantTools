@@ -197,9 +197,9 @@ def standardize(data):
             'SKDJ_TR',
             'SHORT_TR',
             'LONG_TR',
-            'ALPHA_154'
-            ]
 
+            ]
+    cols = ['ALPHA_154'] + [i + '_HR' for i in cols] + [i + '_WK' for i in cols] + cols
     res1 = data[[i for i in list(data.columns) if i not in ['INDUSTRY','TOTAL_MARKET','next_date'] + cols]].apply(lambda x:neutralization(standardize_series(filter_extreme_3sigma(x)), data['TOTAL_MARKET'], data['INDUSTRY'])).join(data[cols])
     return(res1)
 
