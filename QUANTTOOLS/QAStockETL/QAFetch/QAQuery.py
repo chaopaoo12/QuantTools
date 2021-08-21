@@ -14,6 +14,13 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191 import QA_Sql_Stock_Alpha19
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancial import QA_Sql_Stock_Financial
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancialPE import QA_Sql_Stock_FinancialPercent
 
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexNEUT import QA_Sql_Stock_Index_neut
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexHourNEUT import QA_Sql_Stock_IndexHour_neut
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexWeekNEUT import QA_Sql_Stock_IndexWeek_neut
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191NEUT import QA_Sql_Stock_Alpha191_neut
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancialNEUT import QA_Sql_Stock_Financial_neut
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancialPENEUT import QA_Sql_Stock_FinancialPercent_neut
+
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockBaseHalf import QA_Sql_Stock_BaseHalf
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101Half import QA_Sql_Stock_Alpha101Half
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191Half import QA_Sql_Stock_Alpha191Half
@@ -3442,6 +3449,105 @@ def QA_fetch_future_target(codes, start_date, end_date, frequence='1min', close_
         if res[columnname].dtype == 'int64':
             res[columnname]=res[columnname].astype('int8')
     return(res)
+
+@time_this_function
+def QA_fetch_stock_quant_neut(code, start, end=None, block = True, format='pd'):
+    '获取股票日线'
+    end_date = end
+    rng = QA_util_get_trade_range(start, end)
+
+    code = QA_util_code_tolist(code)
+    financial = QA_Sql_Stock_Financial_neut
+    index = QA_Sql_Stock_Index_neut
+    hour = QA_Sql_Stock_IndexHour_neut
+    week = QA_Sql_Stock_IndexWeek_neut
+    alpha = QA_Sql_Stock_Alpha191_neut
+    pe = QA_Sql_Stock_FinancialPercent_neut
+
+    if QA_util_date_valid(end):
+
+        __data = []
+        QA_util_log_info(
+            'JOB Get Stock Financial data start=%s end=%s' % (start, end))
+        pe_res = pe(start,end_date)
+        financial_res = financial(start,end_date)
+
+        QA_util_log_info(
+            'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
+        index_res = index(start,end_date)
+
+        QA_util_log_info(
+            'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
+        hour_res = hour(start,end_date)
+
+        QA_util_log_info(
+            'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
+        week_res = week(start,end_date)
+
+        QA_util_log_info(
+            'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
+        alpha_res = alpha(start,end_date)
+
+        try:
+            res = financial_res.join(index_res).join(week_res).join(alpha_res).join(hour_res).join(pe_res).loc[(rng,code),]
+            for columnname in res.columns:
+                if res[columnname].dtype == 'float64':
+                    res[columnname]=res[columnname].astype('float32')
+                if res[columnname].dtype == 'float32':
+                    res[columnname]=res[columnname].astype('float32')
+                if res[columnname].dtype == 'int64':
+                    res[columnname]=res[columnname].astype('int8')
+                if res[columnname].dtype == 'int32':
+                    res[columnname]=res[columnname].astype('int8')
+                if res[columnname].dtype == 'int16':
+                    res[columnname]=res[columnname].astype('int8')
+
+            if block is True:
+                block = QA.QA_fetch_stock_block(code).reset_index(drop=True).drop_duplicates(['blockname','code'])
+                block = pd.crosstab(block['code'],block['blockname'])
+                block.columns = ['S_' + i for i  in  list(block.columns)]
+                res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
+            else:
+                pass
+        except:
+            res = None
+
+        if format in ['P', 'p', 'pandas', 'pd']:
+            return res
+        elif format in ['json', 'dict']:
+            return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+        elif format in ['n', 'N', 'numpy']:
+            return numpy.asarray(res)
+        elif format in ['list', 'l', 'L']:
+            return numpy.asarray(res).tolist()
+        else:
+            QA_util_log_info("QA Error QA_fetch_stock_quant_neut format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            return None
+    else:
+        QA_util_log_info(
+            'QA Error QA_fetch_stock_quant_neut date parameter start=%s end=%s is not right' % (start, end))
+
+def QA_fetch_stock_quant_neut_pre(code, start, end=None, block = True, close_type='close', method='value', format='pd'):
+    QA_util_log_info(
+        'JOB Get Stock Quant Neut data start=%s end=%s' % (start, end))
+    res = QA_fetch_stock_quant_neut(code, start, end, block)
+    QA_util_log_info(
+        'JOB Get Stock Target data start=%s end=%s' % (start, end))
+    target = QA_fetch_stock_target(code, start, end, close_type=close_type, method=method)
+    res = res.join(target)
+    if format in ['P', 'p', 'pandas', 'pd']:
+        return res
+    elif format in ['json', 'dict']:
+        return QA_util_to_json_from_pandas(res)
+        # 多种数据格式
+    elif format in ['n', 'N', 'numpy']:
+        return numpy.asarray(res)
+    elif format in ['list', 'l', 'L']:
+        return numpy.asarray(res).tolist()
+    else:
+        QA_util_log_info("QA Error QA_fetch_stock_quant_neut_pre format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+        return None
 
 if __name__ == '__main__':
     pass

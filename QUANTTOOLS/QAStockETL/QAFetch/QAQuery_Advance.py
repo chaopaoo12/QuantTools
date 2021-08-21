@@ -22,6 +22,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_stock_quant_data,
                                                    QA_fetch_stock_quant_pre,
                                                    QA_fetch_stock_quant_pre_train,
+                                                   QA_fetch_stock_quant_neut_pre,
                                                    QA_fetch_stock_target,
                                                    QA_fetch_future_target,
                                                    QA_fetch_interest_rate,
@@ -982,6 +983,22 @@ def QA_fetch_xqblock_day_adv(code, start="all", end=None, collections=DATABASE.b
     else:
         data = QA_fetch_xqblock_day(code, start, end, format='pd')
         return QA_DataStruct_Index_day(data)
+
+def QA_fetch_stock_quant_neut_adv(code, start="all", end=None, block=True, type='close', method= 'value', norm_type='normalization'):
+    '获取股票量化机器学习数据查询接口'
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2008-01-01'
+        end = QA_util_today_str()
+        data = QA_fetch_stock_quant_neut_pre(code, start, end, block, close_type=type, method=method, format='pd')
+        return QA_DataStruct_Financial(data)
+    else:
+        data = QA_fetch_stock_quant_neut_pre(code, start, end, block, close_type=type, method=method, format='pd')
+        return QA_DataStruct_Financial(data)
 
 if __name__ == '__main__':
     pass
