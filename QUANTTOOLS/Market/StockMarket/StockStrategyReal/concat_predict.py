@@ -1,6 +1,7 @@
 #coding :utf-8
 
 from QUANTTOOLS.Model.StockModel.StrategyXgboost import QAStockXGBoost
+from QUANTTOOLS.Model.StockModel.StrategyXgboostNeut import QAStockXGBoostNeut
 from QUANTTOOLS.Model.StockModel.StrategyXgboostHour import QAStockXGBoostHour
 from QUANTTOOLS.Model.StockModel.StrategyXgboostHourMark import QAStockXGBoostHourMark
 from QUANTTOOLS.Model.StockModel.StrategyXgboost15Min import QAStockXGBoost15Min
@@ -10,6 +11,11 @@ from QUANTTOOLS.Model.IndexModel.IndexXGboost import QAIndexXGBoost
 from QUANTTOOLS.Model.IndexModel.IndexXGboostHour import QAIndexXGBoostHour
 from QUANTTOOLS.Model.IndexModel.IndexXGboost15Min import QAIndexXGBoost15Min
 from QUANTTOOLS.Market.MarketTools import make_prediction,make_stockprediction,make_indexprediction
+
+def concat_predict_neut(trading_date, working_dir, code = None, type = 'crawl', model_name = 'stock_xg_neut'):
+    Stock = QAStockXGBoostNeut()
+    target_pool,prediction,start,end,Model_Date = make_stockprediction(Stock, trading_date, model_name, working_dir, code, index='date', type=type)
+    return(target_pool,prediction,start,end,Model_Date)
 
 def concat_predict(trading_date, working_dir, code = None, type = 'crawl', model_name = 'stock_mars_day'):
     Stock = QAStockXGBoost()

@@ -6,7 +6,7 @@ from sklearn.metrics import (accuracy_score,
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAStockModelNeut import QAStockModelNeut
 
-class QAStockXGBoost(QAStockModelNeut):
+class QAStockXGBoostNeut(QAStockModelNeut):
 
     def build_model(self, other_params):
         QA_util_log_info('##JOB Set Model Params ===== {}'.format(self.info['date']), ui_log = None)
