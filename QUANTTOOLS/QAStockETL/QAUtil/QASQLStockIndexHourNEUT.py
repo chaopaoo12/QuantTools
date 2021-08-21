@@ -286,19 +286,14 @@ and order_Date <=
 to_date('{to_}', 'yyyy-mm-dd')
 '''
 
-def QA_Sql_Stock_IndexHour_neut(from_ , to_, type = 'day', sql_text = sql_text, ui_log= None):
+def QA_Sql_Stock_IndexHour_neut(from_ , to_, sql_text = sql_text, ui_log= None):
     QA_util_log_info(
         '##JOB01 Now Fetch Stock QuantData Index Hour ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     sql_text = sql_text.format(from_=from_,to_=to_)
     conn = cx_Oracle.connect(ORACLE_PATH2)
-    if type == 'day':
-        sql_text = sql_text + " and substr(datetime, 12, 20) = '15:00:00'"
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
-    if type == 'day':
-        data = data.drop_duplicates((['code', 'date'])).set_index(['date','code']).drop('datetime',axis=1)
-    else:
-        data = data.assign(datetime = data.datetime.apply(lambda x:pd.to_datetime(x))).drop_duplicates((['code', 'datetime'])).set_index(['datetime','code'])
+    data = data.drop_duplicates((['code', 'date'])).set_index(['date','code']).drop('datetime',axis=1)
     for columnname in data.columns:
         if data[columnname].dtype == 'object' and columnname not in ['date','datetime','code']:
             data[columnname]=data[columnname].astype('float32')
