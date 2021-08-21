@@ -6,23 +6,10 @@ from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Ora
 ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
 
 sql_text = '''select to_char(ORDER_DATE, 'yyyy-mm-dd') as "date",
-CODE AS "code",INDUSTRY,ln(TOTAL_MARKET) as TOTAL_MARKET,
-ln(TOTAL_MARKET*TRA_RATE+1) as TRA_RATE, 
-case
-when total_market * tra_rate / 100000000000 >= 100 then
-  0
- when total_market * tra_rate / 100000000000 >= 10 then
-  1
- when total_market * tra_rate / 100000000000 >= 5 then
-  2
- when total_market * tra_rate / 100000000000 >= 3 then
-  3
- when total_market * tra_rate / 100000000000 < 3 then
-  4
- else
-  5
-end as stock_type,
-               DAYS,
+CODE AS "code",
+TRA_RATE, 
+stock_type,
+DAYS,
 AVG5,AVG10,AVG20,AVG30,AVG60,
 LAG,LAG2,LAG3,LAG5,LAG10,LAG20,LAG30,LAG60,
 AVG5_TOR, AVG20_TOR,AVG30_TOR,AVG60_TOR,
