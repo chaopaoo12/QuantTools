@@ -130,8 +130,12 @@ class QAModel():
         self.thresh = self.info['thresh']
         self.drop = self.info['drop']
         self.code = self.info['code']
-        self.norm_type = self.info['norm_type']
         self.target = self.info['target']
+
+        try:
+            self.norm_type = self.info['norm_type']
+        except:
+            pass
 
         try:
             self.block = self.info['block']
