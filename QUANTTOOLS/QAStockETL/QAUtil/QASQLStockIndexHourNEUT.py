@@ -293,7 +293,7 @@ def QA_Sql_Stock_IndexHour_neut(from_ , to_, sql_text = sql_text, ui_log= None):
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
-    data = data.drop_duplicates((['code', 'date'])).set_index(['date','code']).drop('datetime',axis=1)
+    data = data.drop_duplicates((['code', 'date'])).set_index(['date','code'])
     for columnname in data.columns:
         if data[columnname].dtype == 'object' and columnname not in ['date','datetime','code']:
             data[columnname]=data[columnname].astype('float32')
