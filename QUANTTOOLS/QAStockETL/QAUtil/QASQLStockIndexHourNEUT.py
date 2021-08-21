@@ -300,7 +300,7 @@ CASE
          else
           0
        end as LONG_TR
-from STOCK_TECHNICAL_HOUR
+from STOCK_TECH_NEUT_HOUR 
 where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
 and order_Date <=

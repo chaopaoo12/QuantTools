@@ -38,7 +38,7 @@ alpha_167,alpha_168,alpha_169,alpha_170,alpha_172,alpha_173,
 alpha_174,alpha_175,alpha_177,alpha_178,alpha_179,
 alpha_180,alpha_184,alpha_185,alpha_186,alpha_187,alpha_188,
 alpha_189,alpha_191
-from stock_alpha191
+from stock_alpha191_neut
 where order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
 and order_Date <=
