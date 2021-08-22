@@ -6,6 +6,7 @@ from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
 from sklearn.utils import shuffle
 from QUANTTOOLS.Message import send_email, send_actionnotice
 from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
+import numpy as np
 
 class QAModel():
 
@@ -52,6 +53,8 @@ class QAModel():
                                                                    'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]
         else:
             self.cols = cols
+
+        self.data = self.data.fillna(value=np.nan)
 
         s_res = self.data[self.cols].describe().T
         s_res = s_res.assign(rate = s_res['count']/self.data.shape[0])
