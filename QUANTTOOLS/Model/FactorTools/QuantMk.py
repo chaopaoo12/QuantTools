@@ -614,7 +614,7 @@ def get_quant_data_1min(start_date, end_date, code=None, type = 'model', block =
 
     return(res)
 
-def get_quant_data_neut(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', ST=True):
+def get_quant_data_neut(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', ST=True, norm_type = 'normalization'):
 
     code_list = QA_fetch_stock_om_all()
     if code is None:
