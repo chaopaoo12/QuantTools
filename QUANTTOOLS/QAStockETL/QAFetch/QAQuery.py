@@ -842,8 +842,9 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
             'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
         alpha_res = alpha(start_date,end_date)
 
+        res = financial_res.join(index_res).join(week_res).join(alpha_res).join(hour_res).join(pe_res).groupby('code').fillna(method='ffill').loc[(rng,code),]
+
         try:
-            res = financial_res.join(index_res).join(week_res).join(alpha_res).join(hour_res).join(pe_res).groupby('code').fillna(method='ffill').loc[(rng,code),]
             for columnname in res.columns:
                 if res[columnname].dtype == 'float64':
                     res[columnname]=res[columnname].astype('float32')
@@ -855,27 +856,26 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
                     res[columnname]=res[columnname].astype('int8')
                 if res[columnname].dtype == 'int16':
                     res[columnname]=res[columnname].astype('int8')
-
-            if block is True:
-                block = QA.QA_fetch_stock_block(code).reset_index(drop=True).drop_duplicates(['blockname','code'])
-                block = pd.crosstab(block['code'],block['blockname'])
-                block.columns = ['S_' + i for i  in  list(block.columns)]
-                res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
-            else:
-                pass
-
-            col_tar = ['INDUSTRY']
-            if norm_type == 'standardize':
-                QA_util_log_info('##JOB stock quant data standardize trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
-                res = res.groupby('date').apply(standardize)
-            elif norm_type == 'normalization':
-                QA_util_log_info('##JOB stock quant data normalization trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
-                res = res.groupby('date').apply(normalization)
-            else:
-                QA_util_log_info('##JOB norm_type must be in [standardize, normalization]')
-                pass
         except:
-            res = None
+            pass
+
+        if block is True:
+            block = QA.QA_fetch_stock_block(code).reset_index(drop=True).drop_duplicates(['blockname','code'])
+            block = pd.crosstab(block['code'],block['blockname'])
+            block.columns = ['S_' + i for i  in  list(block.columns)]
+            res = res.join(block, on = 'code', lsuffix='_caller', rsuffix='_other')
+        else:
+            pass
+
+        if norm_type == 'standardize':
+            QA_util_log_info('##JOB stock quant data standardize trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
+            res = res.groupby('date').apply(standardize)
+        elif norm_type == 'normalization':
+            QA_util_log_info('##JOB stock quant data normalization trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
+            res = res.groupby('date').apply(normalization)
+        else:
+            QA_util_log_info('##JOB norm_type must be in [standardize, normalization]')
+            pass
 
         if format in ['P', 'p', 'pandas', 'pd']:
             return res
