@@ -869,7 +869,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
 
         if norm_type == 'standardize':
             QA_util_log_info('##JOB stock quant data standardize trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
-            res = res.groupby('date').apply(standardize)
+            res = res.groupby('date').apply(standardize).reset_index(level=0,drop=True)
         elif norm_type == 'normalization':
             QA_util_log_info('##JOB stock quant data normalization trans ============== from {from_} to {to_} '.format(from_= start,to_=end))
             res = res.groupby('date').apply(normalization)
