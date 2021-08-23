@@ -63,18 +63,18 @@ def filter_extreme_3sigma(array,n=3): #3 sigma
     return(array)
 
 def neutralization(factor, mkt_cap=None, industry = None):
-    y = factor
+    y = factor.dropna()
     if mkt_cap is not None:
         LnMktCap = mkt_cap
         if industry is not None: #行业、市值
-            dummy_industry = pd.get_dummies(industry).astype(float)
+            dummy_industry = pd.get_dummies(industry)
             x = pd.concat([LnMktCap,dummy_industry],axis = 1)
         else: #仅市值
             x = LnMktCap
     elif industry is not None: #仅行业
-        dummy_industry = pd.get_dummies(industry).astype(float)
+        dummy_industry = pd.get_dummies(industry)
         x = dummy_industry
-    result = sml.OLS(y.astype(float),x.astype(float)).fit()
+    result = sml.OLS(y.astype(float),x.loc[y.index].astype(float)).fit()
     return result.resid
 
 def normalization(data):
