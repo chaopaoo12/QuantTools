@@ -201,7 +201,6 @@ stock_day_set = ['ALPHA_174',
                  'GMMA_VOL30',
                  'LAG20']
 
-
 index_xg_set = ['MTM_HR',
                  'MA5',
                  'SKDJ_TR',
