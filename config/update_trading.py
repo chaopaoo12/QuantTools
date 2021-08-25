@@ -28,7 +28,7 @@
 """对应于save x
 """
 
-from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_code,
+from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_code,check_stock_neut,
                                          check_stock_finper,check_stock_alpha191,
                                          check_stock_techweek,check_stock_techhour,
                                          check_stock_techindex,check_index_techweek,
@@ -66,10 +66,10 @@ if __name__ == '__main__':
         time.sleep(180)
         res = check_stock_finper(mark_day)
 
-    res = check_stock_quant(mark_day)
+    res = check_stock_neut(mark_day)
     while res is None or len(res[1]) > 100:
         time.sleep(180)
-        res = check_stock_quant(mark_day)
+        res = check_stock_neut(mark_day)
 
     daily_run(mark_day)
 

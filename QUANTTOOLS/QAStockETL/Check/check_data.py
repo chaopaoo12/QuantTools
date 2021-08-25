@@ -12,7 +12,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_stock_alpha101half_adv,
                                                            QA_fetch_stock_half_adv,
                                                            QA_fetch_stock_alpha191half_adv,
-                                                           QA_fetch_stock_technical_half_adv
+                                                           QA_fetch_stock_technical_half_adv,
+                                                           QA_fetch_stock_quant_neut_adv
                                                            )
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191Half import QA_Sql_Stock_Alpha191Half
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101Half import QA_Sql_Stock_Alpha101Half
@@ -191,6 +192,12 @@ def QA_fetch_stock_quant_data(code, start, end):
 
 def check_stock_quant(mark_day = None):
     return(check_stock_data(func = QA_fetch_stock_quant_data, mark_day = mark_day, title = 'Stock Quant'))
+
+def QA_fetch_stock_quant_neut(code, start, end):
+    return(QA_fetch_stock_quant_neut_adv(code, start, end, norm_type=None).data)
+
+def check_stock_neut(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_quant_neut, mark_day = mark_day, title = 'Stock Quant'))
 
 def QA_fetch_index_15min(code, start, end):
     return(QA_fetch_index_min_adv(code, start, end, frequence='15min').data)
