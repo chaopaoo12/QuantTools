@@ -43,10 +43,10 @@ def Funding_Decision(trading_date, target_pool, sub_accounts, frozen, percent, s
 
 
 def prediction_report(trading_date, target_pool, prediction, model_date, top_num, exceptions, percent,
-                      name_list = ['NAME'],
+                      name_list = ['NAME','INDUSTRY'],
                       value_ist = ['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
                       sort_mark ='RANK',
-                      selec_list=['NAME','Z_PROB','O_PROB','RANK'],
+                      selec_list=['NAME','INDUSTRY','Z_PROB','O_PROB','RANK'],
                       account='name:client-1',  ui_log = None):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
     client = get_Client()
