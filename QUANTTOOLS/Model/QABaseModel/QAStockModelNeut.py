@@ -136,14 +136,13 @@ class QAStockModelNeut(QAModel):
         train = train[train['O_PROB'].notna()]
 
         if type == 'crawl':
-            train = train.join(data[['INDUSTRY','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
-            b = train[['INDUSTRY','y_pred','Z_PROB','O_PROB','RANK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
+            train = train.join(data[['PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']])
+            b = train[['y_pred','Z_PROB','O_PROB','RANK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
         elif type == 'model':
-            b = train[['INDUSTRY','y_pred','Z_PROB','O_PROB','RANK']]
+            b = train[['y_pred','Z_PROB','O_PROB','RANK']]
         elif type == 'real':
             b = train[['y_pred','Z_PROB','O_PROB','RANK']]
 
-        b = b.join(data[['SKDJ_TR','SKDJ_K','SKDJ_TR_HR','SKDJ_K_HR','SKDJ_TR_WK','SKDJ_K_WK','ATRR','UB','LB','WIDTH','UB_HR','LB_HR','WIDTH_HR','RSI3','RSI2','RSI3_C','RSI2_C','RSI3_HR','RSI2_HR','RSI3_C_HR','RSI2_C_HR']])
         return(b[b.y_pred==1], b)
 
 if __name__ == 'main':
