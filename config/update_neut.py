@@ -59,7 +59,7 @@ if __name__ == '__main__':
             res = check_stock_techindex(mark_day)
 
         res = check_stock_techhour(mark_day)
-        if res is None or len(res[1]) > 50:
+        while res is None or len(res[1]) > 50:
             time.sleep(180)
             res =check_stock_techhour(mark_day)
 
