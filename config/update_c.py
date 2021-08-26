@@ -136,6 +136,4 @@ if __name__ == '__main__':
             time.sleep(180)
             res = check_stock_quant(mark_day)
 
-        QA_SU_save_stock_neutral_day(start_date=mark_day,end_date=mark_day)
-
         QA_SU_save_stock_info()
