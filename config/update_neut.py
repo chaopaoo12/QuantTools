@@ -63,9 +63,9 @@ if __name__ == '__main__':
             time.sleep(180)
             res =check_stock_techhour(mark_day)
 
-        res = check_stock_neut(mark_day)
+        res = check_stock_quant(mark_day)
         while res is None or len(res[1]) > 100:
             time.sleep(180)
-            res = check_stock_neut(mark_day)
+            res = check_stock_quant(mark_day)
 
         QA_SU_save_stock_neutral_day(start_date=mark_day,end_date=mark_day)
