@@ -48,14 +48,14 @@ def choose_model(date, working_dir=working_dir):
     save_report(stock_model, 'stock_xg', working_dir)
 
 def daymodel_train(date, working_dir=working_dir):
-    stock_model = QAStockXGBoost()
+    stock_model = QAStockXGBoostNeut()
 
     start_date = str(int(date[0:4])-3)+'-01-01'
     end_date = date
 
     stock_model = load_data(stock_model, start_date, end_date, type ='crawl', norm_type=None)
 
-    stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.42, col = 'TARGET5', type='percent')
+    stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET5', type='percent')
 
     stock_model = prepare_data(stock_model, stock_xg_set, 0, 0.95)
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
@@ -64,28 +64,14 @@ def daymodel_train(date, working_dir=working_dir):
     stock_model = start_train(stock_model, other_params)
     save_report(stock_model, 'stock_xg', working_dir)
 
-    stock_model = norm_data(stock_model, type='normal')
-    other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
-                    'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
+    stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.42, col = 'TARGET5', type='percent')
 
-    stock_model = start_train(stock_model, other_params)
-    save_report(stock_model, 'stock_xg_norm', working_dir)
-
-    stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET5', type='percent')
-
-    stock_model = prepare_data(stock_model, stock_day_set, 0, 0.95)
+    stock_model = prepare_data(stock_model, None, 0, 0.95)
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
     stock_model = start_train(stock_model, other_params)
     save_report(stock_model, 'stock_mars_day', working_dir)
-
-    stock_model = norm_data(stock_model, type='normal')
-    other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
-                    'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
-
-    stock_model = start_train(stock_model, other_params)
-    save_report(stock_model, 'stock_mars_norm', working_dir)
 
 def train_hedge(date, working_dir=working_dir):
     hedge_model = QAStockXGBoost()
