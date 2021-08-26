@@ -1,16 +1,34 @@
 #coding=utf-8
 
+from QUANTTOOLS.Model.StockModel.StrategyXgboostNeut import QAStockXGBoostNeut
 from QUANTTOOLS.Model.StockModel.StrategyXgboost import QAStockXGBoost
 from QUANTTOOLS.Model.StockModel.StrategyXgboostHourMark import QAStockXGBoostHourMark
 from QUANTTOOLS.Model.StockModel.StrategyXgboost15Min import QAStockXGBoost15Min
 from QUANTTOOLS.Model.IndexModel.IndexXGboost import QAIndexXGBoost
 from QUANTTOOLS.Model.IndexModel.IndexXGboostHour import QAIndexXGBoostHour
 from QUANTTOOLS.Model.IndexModel.IndexXGboost15Min import QAIndexXGBoost15Min
-from .setting import working_dir, stock_day_set, stock_hour_set, index_day_set, index_hour_set, stock_xg_set, index_xg_set
+from .setting import working_dir, stock_day_set, index_day_set, index_hour_set, stock_xg_set, index_xg_set
 from QUANTTOOLS.Market.MarketTools.train_tools import prepare_train, start_train, save_report, load_data, prepare_data, norm_data, set_target
 from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import QA_util_get_real_date,QA_util_get_last_day
 from QUANTAXIS.QAUtil import QA_util_add_months
 import datetime
+
+def neut_model(date, working_dir=working_dir):
+    stock_model = QAStockXGBoostNeut()
+
+    start_date = str(int(date[0:4])-3)+'-01-01'
+    end_date = date
+
+    stock_model = load_data(stock_model, start_date, end_date, type ='crawl', norm_type=None)
+
+    stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET5', type='percent')
+
+    stock_model = prepare_data(stock_model, stock_xg_set, 0, 0.95)
+    other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
+                    'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
+
+    stock_model = start_train(stock_model, other_params)
+    save_report(stock_model, 'stock_xg_neut', working_dir)
 
 def choose_model(date, working_dir=working_dir):
     stock_model = QAStockXGBoost()
@@ -18,7 +36,7 @@ def choose_model(date, working_dir=working_dir):
     start_date = str(int(date[0:4])-3)+'-01-01'
     end_date = date
 
-    stock_model = load_data(stock_model, start_date, end_date, type ='crawl')
+    stock_model = load_data(stock_model, start_date, end_date, type ='crawl', norm_type=None)
 
     stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET5', type='percent')
 
@@ -68,23 +86,6 @@ def daymodel_train(date, working_dir=working_dir):
 
     stock_model = start_train(stock_model, other_params)
     save_report(stock_model, 'stock_mars_norm', working_dir)
-
-
-def hourmodel_train(date, working_dir=working_dir):
-    hour_model = QAStockXGBoostHourMark()
-
-    start_date = str(int(date[0:4])-1)+'-01-01'
-    end_date = date
-
-    hour_model = load_data(hour_model, start_date, end_date, type='crawl', norm_type=None)
-
-    hour_model = prepare_data(hour_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 3), mark = 0, col = ['PASS_MARK','TARGET3'], type='value', shift = None)
-
-    other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
-                    'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
-
-    hour_model = start_train(hour_model, stock_hour_set, other_params, 0, 0.99)
-    save_report(hour_model, 'stock_mark_hour', working_dir)
 
 def train_hedge(date, working_dir=working_dir):
     hedge_model = QAStockXGBoost()
