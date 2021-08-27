@@ -98,13 +98,13 @@ def index_predict_watch(trading_date, working_dir=working_dir):
                                            '待选股池清单':kk})
 
 def predict_3(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
-    predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+    predict_base(trading_date, concat_predict, model_name = 'stock_xg_base', file_name = 'prediction_stock_xg_base', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_3_norm(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
-    predict_base(trading_date, concat_predict, model_name = 'stock_mars_norm', file_name = 'prediction_stock_mars_norm', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+    predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_norm(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
-    predict_base(trading_date, concat_predict, model_name = 'stock_xg_norm', file_name = 'prediction_norm', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+    predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_target(trading_date, working_dir=working_dir):
     r_tar, prediction_tar, prediction = load_data(concat_predict, trading_date, working_dir, model_name = 'stock_xg', file_name = 'prediction')
