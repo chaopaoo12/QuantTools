@@ -50,7 +50,7 @@ def choose_model(date, working_dir=working_dir):
 def daymodel_train(date, working_dir=working_dir):
     stock_model = QAStockXGBoostNeut()
 
-    start_date = str(int(date[0:4])-3)+'-01-01'
+    start_date = str(int(date[0:4])-2)+'-01-01'
     end_date = date
 
     stock_model = load_data(stock_model, start_date, end_date, type ='crawl', norm_type=None)
