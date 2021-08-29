@@ -101,7 +101,7 @@ def predict_3(trading_date, top_num=top, working_dir=working_dir, exceptions=exc
     predict_base(trading_date, concat_predict, model_name = 'stock_xg_base', file_name = 'prediction_stock_xg_base', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_3_norm(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
-    predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+    predict_base(trading_date, concat_predict_neut, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_norm(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
