@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial,QA_fetch_stoc
 
 def trading(trading_date, func = concat_predict_neut, model_name = 'stock_xg', file_name = 'prediction', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
-    r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day')
+    r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir, model_name = 'stock_xg_base', file_name = 'prediction_stock_xg_base')
     #r_tar1, prediction_tar1, prediction1 = load_data(concat_predict_index, QA_util_get_last_day(trading_date), working_dir, 'index_xg', 'prediction_index_summary')
 
     #try:
