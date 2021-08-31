@@ -73,7 +73,10 @@ def QA_fetch_stock_name(stock_code):
     :return: string 上市日期 eg： '民生银行'
     '''
     NAME = pd.DataFrame(QA_fetch_stock_list()).set_index('code')[['name']]
-    items = NAME.reindex(stock_code)
+    if isinstance(stock_code,list):
+        items = NAME.reindex(stock_code)
+    else:
+        items = NAME.reindex([stock_code])
     return items['name']
 
 def QA_fetch_index_name(stock_code):
