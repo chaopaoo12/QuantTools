@@ -5,7 +5,7 @@ from QUANTTOOLS.Market.MarketTools import trading_base, load_data, trading_base2
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day,QA_util_get_real_date,QA_util_if_trade,QA_util_log_info,QA_util_get_pre_trade_date
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_quant_data,get_quant_data
 from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial,QA_fetch_stock_all
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial,QA_fetch_stock_all,QA_fetch_get_stock_llv
 
 def trading(trading_date, func = concat_predict_neut, model_name = 'stock_xg', file_name = 'prediction', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
@@ -33,13 +33,16 @@ def trading(trading_date, func = concat_predict_neut, model_name = 'stock_xg', f
     #r_tar = prediction_tar.loc[(QA_util_get_last_day(trading_date),find_stock(rr1[(rr1.SKDJ_K <= 40)|(rr1.SKDJ_K_HR <= 40)].code.tolist())),]
     #r_tar = r_tar[(r_tar.y_pred==1)&(r_tar.TARGET3.isnull())]
 
-    data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),QA_util_get_last_day(trading_date),code=QA_fetch_stock_all().code.tolist(),type='crawl', block=False, sub_block=False,norm_type=None,ST=False)
+    data = get_quant_data(QA_util_get_pre_trade_date(trading_date,6),QA_util_get_last_day(trading_date),code=QA_fetch_stock_all().code.tolist(),type='crawl', block=False, sub_block=False,norm_type=None,ST=False)
     #pe_list = data[(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 10)&(data.PE_TTM <= 100)&(data.SHORT10.abs() < 0.01)&(data.SHORT20 > -0.01)&(data.SHORT20 < 0)&(data.MA60_C > 0)&(data.ATRR > 0.02)]
     #pe_list = pe_list[(pe_list.TARGET.isnull())].sort_values('RANK')
     #pe_list = prediction_tar.loc[prediction_tar.index.intersection(pe_list.index)]
 
+    indicator = QA_fetch_get_stock_llv(prediction_tar.reset_index().code.tolist(),QA_util_get_pre_trade_date(trading_date,6),QA_util_get_last_day(trading_date),'day').set_index(['date','code'])
+
     prediction_tar = prediction_tar.join(data[['SHORT10','SHORT20','MA60_C']])
-    r_tar = prediction_tar[(prediction_tar.MA60_C > 0)&(prediction_tar.RANK <= 20)].loc[QA_util_get_last_day(trading_date)]
+    res = prediction_tar.join(indicator)
+    r_tar = res[(res.LLS > 0)&(res.LLL > 0)&(res.RANK <= 20)].loc[QA_util_get_last_day(trading_date)]
     #r_tar = prediction_tar.loc[(slice(None),list(r_tar.index)),].loc[QA_util_get_last_day(trading_date)]
     #per = prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]
 
