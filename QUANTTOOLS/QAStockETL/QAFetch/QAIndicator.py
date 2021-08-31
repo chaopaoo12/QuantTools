@@ -36,6 +36,19 @@ def QA_indicator_MACD(DataFrame, short=12, long=26, mid=9):
 
     return pd.DataFrame({'DIF': DIF, 'DEA': DEA, 'MACD': MACD})
 
+def QA_indicator_LLV(DataFrame, S=5, M=10, L=20):
+    """
+    低位监控
+    """
+    LOWS = LLV(DataFrame['low'], S)
+    LOWM = LLV(DataFrame['low'], M)
+    LOWL = LLV(DataFrame['low'], L)
+    S = LOWS / LOWM -1
+    L = LOWM / LOWL -1
+    return pd.DataFrame({
+        'LLS': S, 'LLL': L
+    })
+
 def QA_indicator_DMA(DataFrame, M1=10, M2=50, M3=10):
     """
     平均线差 DMA
@@ -1048,6 +1061,34 @@ def get_indicator_short(data, type='day'):
     res['GMMA3_D'] = res['GMMA3_C'] - res.groupby('code')['GMMA3_C'].shift(1)
     res['GMMA15_D'] = res['GMMA15_C'] - res.groupby('code')['GMMA15_C'].shift(1)
     res['GMMA30_D'] = res['GMMA30_C'] - res.groupby('code')['GMMA30_C'].shift(1)
+
+    if type in ['day','week','month']:
+        res = res.reset_index()
+        res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
+        res = res.set_index(['date','code']).dropna(how='all')
+    elif type in ['min','hour']:
+        res = res.reset_index()
+        res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
+        res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
+        res = res.set_index(['datetime','code']).dropna(how='all')
+    return(res)
+
+def get_LLV(data, type='day'):
+    try:
+        # todo
+        #A.低价区域：70~40——为可买进区域
+        #B.安全区域：150~80——正常分布区域
+        #C.获利区域：450~160——应考虑获利了结
+        #D.警戒区域：450以上——股价已过高
+        #2.在低价区域中，VR值止跌回升，可买进，
+        #3.在VR>160时，股价上扬，VR值见顶，可卖出，
+        #1．VR指标在低价区域准确度较高，当VR>160时有失真可能，特别是在350~400高档区，有时会发生将股票卖出后，股价仍续涨的现象，此时可以配合PSY心理线指标来化解疑难。
+        #2．VR低于40的形态，运用在个股走势上，常发生股价无法有效反弹的效应，随后VR只维持在40~60之间徘徊。因而，此种讯号较适宜应用在指数方面，并且配合ADR、OBOS……等指标使用效果非常好。
+        VR = data.add_func(QA_indicator_LLV)[['LLS','LLL']]
+    except:
+        VR = data.data.assign(LLS=None,LLL=None)[['LLS','LLL']]
+
+    res = VR.dropna(how='all')
 
     if type in ['day','week','month']:
         res = res.reset_index()
