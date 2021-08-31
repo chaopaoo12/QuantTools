@@ -39,7 +39,7 @@ def get_Position(client, account):
     positions = positions[positions['股票余额'] > 0]
     positions['上市时间'] = positions['证券代码'].apply(lambda x:QA_util_get_days_to_today(str(QA_fetch_stock_to_market_date(x))))
     positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industryinfo(x).SWHY.values[0])
-    positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
+    positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x).values[0])
     positions =positions.rename(columns={'证券代码': 'code'})
     return(positions)
 
@@ -80,7 +80,7 @@ def check_Client(client, account, strategy_id, trading_date, exceptions, ui_log=
         positions = positions[positions['股票余额'] > 0]
         positions['上市时间'] = positions['证券代码'].apply(lambda x:QA_util_get_days_to_today(str(QA_fetch_stock_to_market_date(x))))
         positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industryinfo(x).SWHY.values[0])
-        positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x))
+        positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x).values[0])
         positions =positions.rename(columns={'证券代码': 'code'})
     except:
         QA_util_log_info('##JOB Now Get Positions Failed ==== {}'.format(str(trading_date)), ui_log)
