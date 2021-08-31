@@ -282,7 +282,7 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
         if tm > int(time.strftime("%H%M%S",time.strptime(action_tm, "%H:%M:%S"))) and action_tm is not None:
             for code in positions[positions['股票余额'] > 0].code.tolist() + target_list:
-                name = QA_fetch_stock_name(code)
+                name = QA_fetch_stock_name(code).values[0]
                 QA_util_log_info('##JOB Now Code {stm} ==== {code}({name})'.format(stm=str(stm),code=str(code),name=str(name)), ui_log = None)
                 try:
                     res2 = source_data.loc[code]
