@@ -22,7 +22,8 @@ def trading(trading_date, func = concat_predict_neut, model_name = 'stock_xg', f
     #rrr = prediction_tar.loc[(slice(None),find_stock(list(lll[(lll.RSI3>lll.RSI2)].index))),]
     #rrr = rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].sort_values('RANK')
 
-    #data = get_index_quant_data(QA_util_get_pre_trade_date(trading_date,91),QA_util_get_last_day(trading_date),type='crawl', norm_type=None)
+    data = get_index_quant_data(QA_util_get_pre_trade_date(trading_date,91),QA_util_get_last_day(trading_date),type='crawl', norm_type=None)
+
     #r = data[['PASS_MARK']].groupby('code').describe()
     #r.columns=['cnt','mean','std','min','p25','median','p75','max']
     #rr = r.join(data.loc[QA_util_get_last_day(trading_date)][['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR']])
@@ -37,7 +38,8 @@ def trading(trading_date, func = concat_predict_neut, model_name = 'stock_xg', f
     #pe_list = pe_list[(pe_list.TARGET.isnull())].sort_values('RANK')
     #pe_list = prediction_tar.loc[prediction_tar.index.intersection(pe_list.index)]
 
-    r_tar = prediction_tar[prediction_tar.RANK <= 20].loc[QA_util_get_last_day(trading_date)]
+    prediction_tar = prediction_tar.join(data[['SHORT10','SHORT20','MA60_C']])
+    r_tar = prediction_tar[(prediction_tar.MA60_C > 0)&(prediction_tar.RANK <= 20)].loc[QA_util_get_last_day(trading_date)]
     #r_tar = prediction_tar.loc[(slice(None),list(r_tar.index)),].loc[QA_util_get_last_day(trading_date)]
     #per = prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]
 
