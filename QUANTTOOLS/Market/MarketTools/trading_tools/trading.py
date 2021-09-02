@@ -161,6 +161,11 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
     QA_util_log_info('##JOB Now Check Timing ==== {}'.format(str(trading_date)), ui_log = None)
 
+    if target_tar is None:
+        t_list = []
+    else:
+        t_list = list(target_tar.index)
+
     tm = datetime.datetime.now().strftime("%H:%M:%S")
     morning_begin = "09:30:00"
     morning_end = "11:30:00"
@@ -248,14 +253,14 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
 
             if mark_tm in ontm_list or source_data is None:
                 #整点
-                #QA_util_log_info('##Now Mark Time {},Stm {}, Stock {}'.format(mark_tm,str(stm),len(list(set(positions.code.tolist()+list(target_tar.index))))))
-                data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,10),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
+                QA_util_log_info('##Now Mark Time {},Stm {}, Stock {}'.format(mark_tm,str(stm),len(list(set(positions.code.tolist()+t_list)))))
+                data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,10),trading_date,list(set(positions.code.tolist()+t_list)), type= 'real')
                 hour_data = data[['SKDJ_K_15M','SKDJ_TR_15M','SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
                 source_data = hour_data.reset_index()
                 source_data = source_data[source_data.datetime == stm].set_index('code')
             else:
-                QA_util_log_info('##Now Mark Time {},Stm {}, Stock {}'.format(mark_tm,str(stm),len(list(set(positions.code.tolist()+list(target_tar.index))))))
-                hour_data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,10),trading_date,list(set(positions.code.tolist()+list(target_tar.index))), type= 'real')
+                QA_util_log_info('##Now Mark Time {},Stm {}, Stock {}'.format(mark_tm,str(stm),len(list(set(positions.code.tolist()+t_list)))))
+                hour_data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,10),trading_date,list(set(positions.code.tolist()+t_list)), type= 'real')
                 source_data = hour_data.reset_index()
                 source_data = source_data[source_data.datetime == stm].set_index('code')[['SKDJ_K_15M','SKDJ_TR_15M','SKDJ_K_30M','SKDJ_TR_30M','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_CROSS2_30M','SKDJ_CROSS1_30M','CROSS_JC_30M','SKDJ_CROSS2_HR','SKDJ_CROSS1_HR','CROSS_JC_HR','CROSS_SC_HR','MA5_HR','MA5_30M','MA10_HR','MA60_HR','CCI_HR','CCI_CROSS1_HR','CCI_CROSS2_HR']]
 
