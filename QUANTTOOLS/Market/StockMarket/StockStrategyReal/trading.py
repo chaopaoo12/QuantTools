@@ -42,17 +42,22 @@ def trading(trading_date, func = concat_predict_neut, model_name = 'stock_xg', f
 
     prediction_tar = prediction_tar.join(data[['SHORT10','SHORT20','MA60_C']])
     res = prediction_tar.join(indicator)
-    r_tar = res[(res.LLS > 0)&(res.LLL > 0)&(res.RANK <= 20)].loc[QA_util_get_last_day(trading_date)]
+    try:
+        r_tar = res[(res.LLS > 0)&(res.LLL > 0)&(res.RANK <= 20)].loc[QA_util_get_last_day(trading_date)]
+        target_list = list(set((list(r_tar.index)
+                                #pe_list[(pe_list.TARGET.isnull())].reset_index().code.tolist() #+
+                                #rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].reset_index().code.tolist() +
+                                #find_stock(['880727','880730','880505','880560','880951','880491'])
+                                )))
+        target_list = [i for i in target_list if i.startswith('688') == False]
+        target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)]
+    except:
+        #r_tar = None
+        target_pool = None
     #r_tar = prediction_tar.loc[(slice(None),list(r_tar.index)),].loc[QA_util_get_last_day(trading_date)]
     #per = prediction_tar[(prediction_tar.PASS_MARK.isnull())&(prediction_tar.O_PROB > 0.5)].shape[0]
 
-    target_list = list(set((list(r_tar.index)
-                            #pe_list[(pe_list.TARGET.isnull())].reset_index().code.tolist() #+
-                            #rrr[(rrr.y_pred==1)&(rrr.TARGET5.isnull())].reset_index().code.tolist() +
-                            #find_stock(['880727','880730','880505','880560','880951','880491'])
-                            )))
-    target_list = [i for i in target_list if i.startswith('688') == False]
-    target_pool = prediction_tar.loc[(slice(None),target_list),].loc[QA_util_get_last_day(trading_date)]
+
     #target_pool = pe_list.reset_index().drop_duplicates(subset='NAME',keep='last').sort_values(by=['date','RANK'],ascending=[False,True]).set_index('code')
     per = percent
 
