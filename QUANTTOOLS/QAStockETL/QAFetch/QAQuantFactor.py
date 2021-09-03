@@ -502,7 +502,7 @@ def QA_fetch_get_stock_quant_hour(code, start_date, end_date):
             res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type='hour'), code)
         return(pd.concat(res))
     else:
-        res = QA_fetch_get_stock_indicator_realtime(code, start_date=start_date, end_date=end_date, type='hour')
+        res = QA_fetch_get_stock_indicator_realtime(code[0], start_date=start_date, end_date=end_date, type='hour')
         return(res)
 
 def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min'):
@@ -517,7 +517,7 @@ def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min'):
             res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
         return(pd.concat(res))
     else:
-        res = QA_fetch_get_stock_indicator_realtime(code, start_date=start_date, end_date=end_date, type=type)
+        res = QA_fetch_get_stock_indicator_realtime(code[0], start_date=start_date, end_date=end_date, type=type)
         return(res)
 
 def QA_fetch_get_index_quant_hour(code, start_date, end_date):
@@ -532,7 +532,7 @@ def QA_fetch_get_index_quant_hour(code, start_date, end_date):
             res = p.map(partial(QA_fetch_get_index_indicator_realtime, start_date=start_date, end_date=end_date, type='hour'), code)
         return(pd.concat(res))
     else:
-        res = QA_fetch_get_index_indicator_realtime(code, start_date=start_date, end_date=end_date, type='hour')
+        res = QA_fetch_get_index_indicator_realtime(code[0], start_date=start_date, end_date=end_date, type='hour')
         return(res)
 
 def QA_fetch_get_index_quant_min(code, start_date, end_date, type='30min'):
@@ -547,7 +547,7 @@ def QA_fetch_get_index_quant_min(code, start_date, end_date, type='30min'):
             res = p.map(partial(QA_fetch_get_index_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
         return(pd.concat(res))
     else:
-        res = QA_fetch_get_index_indicator_realtime(code, start_date=start_date, end_date=end_date, type=type)
+        res = QA_fetch_get_index_indicator_realtime(code[0], start_date=start_date, end_date=end_date, type=type)
         return(res)
 
 if __name__ == '__main__':
