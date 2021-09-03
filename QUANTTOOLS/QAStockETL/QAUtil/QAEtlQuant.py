@@ -184,32 +184,56 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
                 operatingRevenue_l3y / operatingRevenue_l4y - 1
              end * 100,
              2) AS operatingRinrate_l3y,
-       round(case
+        round(case
                when netProfit_TTM_yoy = 0 then
                 0
-               else
-                netProfit_TTM / netProfit_TTM_yoy - 1
+               when netProfit_TTM > 0 and netProfit_TTM_yoy > 0 then
+                (netProfit_TTM - netProfit_TTM_yoy) / netProfit_TTM_yoy
+               when netProfit_TTM > 0 and netProfit_TTM_yoy < 0 then
+                - ((netProfit_TTM - netProfit_TTM_yoy) / netProfit_TTM_yoy)
+               when netProfit_TTM < 0 and netProfit_TTM_yoy > 0 then
+                ((netProfit_TTM - netProfit_TTM_yoy) / netProfit_TTM_yoy)
+               when netProfit_TTM < 0 and netProfit_TTM_yoy < 0 then
+                -((netProfit_TTM - netProfit_TTM_yoy) / netProfit_TTM_yoy)
              end * 100,
              2) as netProfit_inrate,
        round(case
                when netProfit_TTM_l2y = 0 then
                 0
-               else
-                netProfit_TTM_yoy / netProfit_TTM_l2y - 1
+               when netProfit_TTM_yoy > 0 and netProfit_TTM_l2y > 0 then
+                (netProfit_TTM_yoy - netProfit_TTM_l2y) / netProfit_TTM_l2y
+               when netProfit_TTM_yoy > 0 and netProfit_TTM_l2y < 0 then
+                - ((netProfit_TTM_yoy - netProfit_TTM_l2y) / netProfit_TTM_l2y)
+               when netProfit_TTM_yoy < 0 and netProfit_TTM_l2y > 0 then
+                ((netProfit_TTM_yoy - netProfit_TTM_l2y) / netProfit_TTM_l2y)
+               when netProfit_TTM_yoy < 0 and netProfit_TTM_l2y < 0 then
+                - ((netProfit_TTM_yoy - netProfit_TTM_l2y) / netProfit_TTM_l2y)
              end * 100,
              2) as netProfit_inrate_yoy,
        round(case
-               when netProfit_TTM_l3y = 0 then
+               when netProfit_TTM_l2y = 0 then
                 0
-               else
-                netProfit_TTM_l2y / netProfit_TTM_l3y - 1
+               when netProfit_TTM_l2y > 0 and netProfit_TTM_l3y > 0 then
+                (netProfit_TTM_l2y - netProfit_TTM_l3y) / netProfit_TTM_l3y
+               when netProfit_TTM_l2y > 0 and netProfit_TTM_l3y < 0 then
+                - ((netProfit_TTM_l2y - netProfit_TTM_l3y) / netProfit_TTM_l3y)
+               when netProfit_TTM_l2y < 0 and netProfit_TTM_l3y > 0 then
+                ((netProfit_TTM_l2y - netProfit_TTM_l3y) / netProfit_TTM_l3y)
+               when netProfit_TTM_l2y < 0 and netProfit_TTM_l3y < 0 then
+                - ((netProfit_TTM_l2y - netProfit_TTM_l3y) / netProfit_TTM_l3y)
              end * 100,
              2) as netProfit_inrate_l2y,
        round(case
-               when netProfit_TTM_l4y = 0 then
+               when netProfit_TTM_l3y = 0 then
                 0
-               else
-                netProfit_TTM_l3y / netProfit_TTM_l4y - 1
+               when netProfit_TTM_l3y > 0 and netProfit_TTM_l4y > 0 then
+                (netProfit_TTM_l3y - netProfit_TTM_l4y) / netProfit_TTM_l4y
+               when netProfit_TTM_l3y > 0 and netProfit_TTM_l4y < 0 then
+                - ((netProfit_TTM_l3y - netProfit_TTM_l4y) / netProfit_TTM_l4y)
+               when netProfit_TTM_l3y < 0 and netProfit_TTM_l4y > 0 then
+                ((netProfit_TTM_l3y - netProfit_TTM_l4y) / netProfit_TTM_l4y)
+               when netProfit_TTM_l3y < 0 and netProfit_TTM_l4y < 0 then
+                - ((netProfit_TTM_l3y - netProfit_TTM_l4y) / netProfit_TTM_l4y)
              end * 100,
              2) as netProfit_inrate_l3y,
        round(case
@@ -243,29 +267,53 @@ def QA_util_etl_stock_quant(deal_date = None,ui_log= None):
        round(case
                when totalProfit_yoy = 0 then
                 0
-               else
-                totalProfit / totalProfit_yoy - 1
+               when totalProfit > 0 and totalProfit_yoy > 0 then
+                (totalProfit - totalProfit_yoy) / totalProfit_yoy
+               when totalProfit > 0 and totalProfit_yoy < 0 then
+                - ((totalProfit - totalProfit_yoy) / totalProfit_yoy)
+               when totalProfit < 0 and totalProfit_yoy > 0 then
+                ((totalProfit - totalProfit_yoy) / totalProfit_yoy)
+               when totalProfit < 0 and totalProfit_yoy < 0 then
+                - ((totalProfit - totalProfit_yoy) / totalProfit_yoy)
              end * 100,
              2) as totalProfitinrate,
        round(case
                when totalProfit_l2y = 0 then
                 0
-               else
-                totalProfit_yoy / totalProfit_l2y - 1
+               when totalProfit_yoy > 0 and totalProfit_l2y > 0 then
+                (totalProfit_yoy - totalProfit_l2y) / totalProfit_l2y
+               when totalProfit_yoy > 0 and totalProfit_l2y < 0 then
+                - ((totalProfit_yoy - totalProfit_l2y) / totalProfit_l2y)
+               when totalProfit_yoy < 0 and totalProfit_l2y > 0 then
+                ((totalProfit_yoy - totalProfit_l2y) / totalProfit_l2y)
+               when totalProfit_yoy < 0 and totalProfit_l2y < 0 then
+                - ((totalProfit_yoy - totalProfit_l2y) / totalProfit_l2y)
              end * 100,
              2) as totalProfitinrate_yoy,
-       round(case
+        round(case
                when totalProfit_l3y = 0 then
                 0
-               else
-                totalProfit_l2y / totalProfit_l3y - 1
+               when totalProfit_l2y > 0 and totalProfit_l3y > 0 then
+                (totalProfit_l2y - totalProfit_l3y) / totalProfit_l3y
+               when totalProfit_l2y > 0 and totalProfit_l3y < 0 then
+                - ((totalProfit_l2y - totalProfit_l3y) / totalProfit_l3y)
+               when totalProfit_l2y < 0 and totalProfit_l3y > 0 then
+                ((totalProfit_l2y - totalProfit_l3y) / totalProfit_l3y)
+               when totalProfit_l2y < 0 and totalProfit_l3y < 0 then
+                - ((totalProfit_l2y - totalProfit_l3y) / totalProfit_l3y)
              end * 100,
              2) as totalProfitinrate_l2y,
        round(case
                when totalProfit_l4y = 0 then
                 0
-               else
-                totalProfit_l3y / totalProfit_l4y - 1
+               when totalProfit_l3y > 0 and totalProfit_l4y > 0 then
+                (totalProfit_l3y - totalProfit_l4y) / totalProfit_l4y
+               when totalProfit_l3y > 0 and totalProfit_l4y < 0 then
+                - ((totalProfit_l3y - totalProfit_l4y) / totalProfit_l4y)
+               when totalProfit_l3y < 0 and totalProfit_l4y > 0 then
+                ((totalProfit_l3y - totalProfit_l4y) / totalProfit_l4y)
+               when totalProfit_l3y < 0 and totalProfit_l4y < 0 then
+                - ((totalProfit_l3y - totalProfit_l4y) / totalProfit_l4y)
              end * 100,
              2) as totalProfitinrate_l3y,
        round(case
