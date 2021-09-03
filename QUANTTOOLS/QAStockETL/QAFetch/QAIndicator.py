@@ -43,10 +43,16 @@ def QA_indicator_LLV(DataFrame, S=5, M=10, L=20):
     LOWS = LLV(DataFrame['low'], S)
     LOWM = LLV(DataFrame['low'], M)
     LOWL = LLV(DataFrame['low'], L)
-    S = LOWS / LOWM -1
-    L = LOWM / LOWL -1
+    LS = LOWS / LOWM -1
+    LL = LOWM / LOWL -1
+    HIGS = LLV(DataFrame['high'], S)
+    HIGM = LLV(DataFrame['high'], M)
+    HIGL = LLV(DataFrame['high'], L)
+    HS = HIGS / HIGM -1
+    HL = HIGM / HIGL -1
     return pd.DataFrame({
-        'LLS': S, 'LLL': L
+        'LLS': LS, 'LLL': LL,
+        'HS': HS, 'HL': HL
     })
 
 def QA_indicator_DMA(DataFrame, M1=10, M2=50, M3=10):
