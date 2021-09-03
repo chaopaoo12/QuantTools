@@ -103,7 +103,7 @@ def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method
         pass
     return(res)
 
-def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization', ST=True):
+def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization', ST=False):
 
     code_list = QA_fetch_stock_om_all()
     if code is None:
