@@ -12,6 +12,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_index_
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_quant_hour,QA_fetch_get_stock_quant_min,QA_fetch_get_index_quant_hour,QA_fetch_get_index_quant_min
 from QUANTAXIS import QA_fetch_stock_block,QA_fetch_index_list_adv
 from QUANTAXIS.QAUtil import QA_util_log_info
+from QUANTTOOLS.QAStockETL.FuncTools.TransForm import series_to_supervised
 import pandas as pd
 import time
 
@@ -103,7 +104,7 @@ def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method
         pass
     return(res)
 
-def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization', ST=False):
+def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization', ST=False, n_in = None):
 
     code_list = QA_fetch_stock_om_all()
     if code is None:
@@ -137,6 +138,11 @@ def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = Fals
         res = QA_fetch_stock_quant_data(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
         pass
+
+    if n_in is None:
+        pass
+    else:
+        res = res[[i for i in res.columns if i not in ['INDUSTRY']]].groupby('code').apply(series_to_supervised, n_in = [1,2,3,5,10]).join(res['INDUSTRY'])
     return(res)
 
 def get_hedge_data(start_date, end_date, code=None, type = 'crawl', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
