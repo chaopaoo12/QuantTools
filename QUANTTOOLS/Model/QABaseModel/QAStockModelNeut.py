@@ -8,19 +8,20 @@ from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
 
 class QAStockModelNeut(QAModel):
 
-    def get_data(self, start, end, code=None, block=False, sub_block=False, type ='crawl', norm_type=None):
+    def get_data(self, start, end, code=None, block=False, sub_block=False, type ='crawl', norm_type=None, n_in=None):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-        self.data = get_quant_data_neut(start, end, code=code, type = type, block = block, sub_block = sub_block)
+        self.data = get_quant_data_neut(start, end, code=code, type = type, block = block, sub_block = sub_block, n_in=n_in)
         self.info['code'] = code
         self.info['block'] = block
         self.info['sub_block'] = sub_block
+        self.info['n_in'] = n_in
         QA_util_log_info(self.data.shape)
 
     def model_predict(self, start, end, code = None, type='crawl'):
 
         self.code = code
         QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.block,sub_block=self.sub_block, _from=start, _to=end, target = self.target), ui_log = None)
-        data = get_quant_data_neut(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block)
+        data = get_quant_data_neut(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block,n_in=self.n_in)
         code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all().code.unique().tolist())
         code_old = QA_fetch_code_old().code.unique().tolist()
         code_new = QA_fetch_code_new().code.unique().tolist()

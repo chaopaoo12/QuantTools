@@ -145,8 +145,14 @@ class QAModel():
             self.sub_block = self.info['sub_block']
         except:
             pass
+
         try:
             self.normoalize = self.info['normoalize']
+        except:
+            pass
+
+        try:
+            self.n_in = self.info['n_in']
         except:
             pass
         return(self)
