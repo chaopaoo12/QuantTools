@@ -143,7 +143,8 @@ def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = Fals
         pass
     else:
         res = res[[i for i in res.columns if i not in ['INDUSTRY','next_date','PASS_MARK','TARGET',
-                                                       'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(series_to_supervised, n_in = [1,2,3,5,10]).join(res['INDUSTRY'])
+                                                       'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(series_to_supervised, n_in = n_in).join(res['INDUSTRY','next_date','PASS_MARK','TARGET',
+                                                                                                                                                                                        'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20'])
     return(res)
 
 def get_hedge_data(start_date, end_date, code=None, type = 'crawl', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
