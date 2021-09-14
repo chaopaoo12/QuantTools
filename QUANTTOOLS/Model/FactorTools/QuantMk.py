@@ -622,7 +622,7 @@ def get_quant_data_1min(start_date, end_date, code=None, type = 'model', block =
 
     return(res)
 
-def get_quant_data_neut(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', ST=True):
+def get_quant_data_neut(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', ST=True, n_in= None):
 
     code_list = QA_fetch_stock_om_all()
     if code is None:
@@ -656,7 +656,14 @@ def get_quant_data_neut(start_date, end_date, code=None, type = 'crawl', block =
         res = QA_fetch_stock_quant_neut(codes, start_date, end_date, block = sub_block)
     elif type == 'real':
         pass
-    return(res)
+
+    if n_in is None:
+        pass
+    else:
+        res = res[[i for i in res.columns if i not in ['INDUSTRY','next_date','PASS_MARK','TARGET',
+                                                       'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(series_to_supervised, n_in = n_in).join(res[['INDUSTRY','next_date','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']])
+
+        return(res)
 
 if __name__ == 'main':
     pass
