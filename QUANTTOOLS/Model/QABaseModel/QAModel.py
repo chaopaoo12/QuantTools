@@ -154,7 +154,7 @@ class QAModel():
         try:
             self.n_in = self.info['n_in']
         except:
-            pass
+            self.n_in = None
         return(self)
 
 if __name__ == 'main':
