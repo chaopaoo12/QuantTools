@@ -4,25 +4,24 @@ from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAModel import QAModel
 from QUANTTOOLS.Message import send_email, send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old,QA_fetch_get_stockcode_real,QA_fetch_stock_all,QA_fetch_code_new,QA_fetch_stock_om_all
-from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
+from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize,series_to_supervised
 
 class QAStockModel(QAModel):
 
-    def get_data(self, start, end, code=None, block=False, sub_block=False, type ='model', norm_type='normalization', n_in=None):
+    def get_data(self, start, end, code=None, block=False, sub_block=False, type ='model', norm_type='normalization'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-        self.data = get_quant_data(start, end, code=code, type = type, block = block, sub_block = sub_block, norm_type=norm_type, n_in=n_in)
+        self.data = get_quant_data(start, end, code=code, type = type, block = block, sub_block = sub_block, norm_type=norm_type)
         self.info['code'] = code
         self.info['norm_type'] = norm_type
         self.info['block'] = block
         self.info['sub_block'] = sub_block
-        self.info['n_in'] = n_in
         QA_util_log_info(self.data.shape)
 
     def model_predict(self, start, end, code = None, type='crawl'):
 
         self.code = code
         QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.block,sub_block=self.sub_block, _from=start, _to=end, target = self.target), ui_log = None)
-        data = get_quant_data(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, norm_type=self.norm_type,n_in=self.n_in)
+        data = get_quant_data(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, norm_type=self.norm_type)
         code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all().code.unique().tolist())
         code_old = QA_fetch_code_old().code.unique().tolist()
         code_new = QA_fetch_code_new().code.unique().tolist()
@@ -67,6 +66,10 @@ class QAStockModel(QAModel):
                                                        'TARGET4','TARGET5','TARGET10','TARGET20','AVG_TARGET','INDEX_TARGET',
                                                        'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
                                                        'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]
+        if self.n_in is not None:
+            data = data[[i for i in self.data.columns if i not in ['next_date','PRE_DATE','PASS_MARK','TARGET',
+                                                                             'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(series_to_supervised, n_in = self.n_in).join(data[['next_date','PRE_DATE','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']])
+
         train = pd.DataFrame()
         n_cols = []
         for i in self.cols:
