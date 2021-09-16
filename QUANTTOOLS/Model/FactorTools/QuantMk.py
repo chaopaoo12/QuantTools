@@ -12,7 +12,6 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_index_
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_quant_hour,QA_fetch_get_stock_quant_min,QA_fetch_get_index_quant_hour,QA_fetch_get_index_quant_min
 from QUANTAXIS import QA_fetch_stock_block,QA_fetch_index_list_adv
 from QUANTAXIS.QAUtil import QA_util_log_info
-from QUANTTOOLS.QAStockETL.FuncTools.TransForm import series_to_supervised
 import pandas as pd
 import time
 
@@ -104,7 +103,7 @@ def get_index_quant_data(start_date, end_date, code=None, type = 'crawl', method
         pass
     return(res)
 
-def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization', ST=False, n_in = None):
+def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', norm_type = 'normalization', ST=False):
 
     code_list = QA_fetch_stock_om_all()
     if code is None:
@@ -138,13 +137,6 @@ def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = Fals
         res = QA_fetch_stock_quant_data(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
         pass
-
-    if n_in is None:
-        pass
-    else:
-        res = res[[i for i in res.columns if i not in ['INDUSTRY','next_date','PRE_DATE','PASS_MARK','TARGET',
-                                                       'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(series_to_supervised, n_in = n_in).join(res[['INDUSTRY','next_date','PRE_DATE','PASS_MARK','TARGET',
-                                                                                                                                                                                        'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']])
     return(res)
 
 def get_hedge_data(start_date, end_date, code=None, type = 'crawl', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):
@@ -622,7 +614,7 @@ def get_quant_data_1min(start_date, end_date, code=None, type = 'model', block =
 
     return(res)
 
-def get_quant_data_neut(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', ST=True, n_in= None):
+def get_quant_data_neut(start_date, end_date, code=None, type = 'crawl', block = False, sub_block= True, method = 'value', ST=True):
 
     code_list = QA_fetch_stock_om_all()
     if code is None:
@@ -656,11 +648,6 @@ def get_quant_data_neut(start_date, end_date, code=None, type = 'crawl', block =
         res = QA_fetch_stock_quant_neut(codes, start_date, end_date, block = sub_block)
     elif type == 'real':
         pass
-    if n_in is None:
-        pass
-    else:
-        res = res[[i for i in res.columns if i not in ['next_date','PRE_DATE','PASS_MARK','TARGET',
-                                                       'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(series_to_supervised, n_in = n_in).join(res[['next_date','PRE_DATE','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']])
 
     return(res)
 
