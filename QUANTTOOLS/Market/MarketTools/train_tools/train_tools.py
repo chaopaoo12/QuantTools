@@ -13,7 +13,7 @@ def load_data(model, start_date, end_date, type ='model', norm_type=None, ui_log
     return(model)
 
 def shuffle(model, n_in = None):
-    model.shuffl(n_in)
+    model.shuffle(n_in)
     return(model)
 
 def set_target(model, start_date, end_date, mark = 0.3, col = 'TARGET5', type = 'percent', shift = None, ui_log = None ):
