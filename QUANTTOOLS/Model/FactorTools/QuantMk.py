@@ -656,14 +656,13 @@ def get_quant_data_neut(start_date, end_date, code=None, type = 'crawl', block =
         res = QA_fetch_stock_quant_neut(codes, start_date, end_date, block = sub_block)
     elif type == 'real':
         pass
-    print(res.shape)
     if n_in is None:
         pass
     else:
         res = res[[i for i in res.columns if i not in ['next_date','PRE_DATE','PASS_MARK','TARGET',
                                                        'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(series_to_supervised, n_in = n_in).join(res[['next_date','PRE_DATE','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']])
 
-        return(res)
+    return(res)
 
 if __name__ == 'main':
     pass
