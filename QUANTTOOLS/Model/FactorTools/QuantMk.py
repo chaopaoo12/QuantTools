@@ -656,7 +656,7 @@ def get_quant_data_neut(start_date, end_date, code=None, type = 'crawl', block =
         res = QA_fetch_stock_quant_neut(codes, start_date, end_date, block = sub_block)
     elif type == 'real':
         pass
-
+    print(res.shape)
     if n_in is None:
         pass
     else:
