@@ -12,6 +12,10 @@ def load_data(model, start_date, end_date, type ='model', norm_type=None, n_in=N
     model.get_data(start=start_date, end= end_date, type =type, norm_type=norm_type, n_in = n_in)
     return(model)
 
+def shuffle(model, n_in = None):
+    model.shuffl(n_in)
+    return(model)
+
 def set_target(model, start_date, end_date, mark = 0.3, col = 'TARGET5', type = 'percent', shift = None, ui_log = None ):
     QA_util_log_info('##JOB03 Now Set Stock Model Target ==== {}'.format(str(end_date)), ui_log)
     model.set_target(col = col, mark = mark, type = type, shift = shift)
