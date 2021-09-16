@@ -5,7 +5,7 @@ import joblib
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
 from sklearn.utils import shuffle
 from QUANTTOOLS.Message import send_email, send_actionnotice
-from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
+from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize, series_to_supervised
 import numpy as np
 
 class QAModel():
@@ -37,6 +37,13 @@ class QAModel():
 
         self.info['target'] = self.target
         QA_util_log_info('##save used columns ==== {}'.format(self.info['date']), ui_log = None)
+
+    def shuffle(self, n_in = None):
+        if n_in is not None:
+            self.data = self.data[[i for i in self.data.columns if i not in ['next_date','PRE_DATE','PASS_MARK','TARGET',
+                                                                             'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(series_to_supervised, n_in = n_in).join(self.data[['next_date','PRE_DATE','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']])
+        self.info['n_in'] = n_in
+
 
     def set_train_rng(self, train_start, train_end):
         QA_util_log_info('##JOB Set Train Range from {_from} to {_to} ===== {date}'.format(_from=train_start,_to=train_end, date=self.info['date']), ui_log = None)
