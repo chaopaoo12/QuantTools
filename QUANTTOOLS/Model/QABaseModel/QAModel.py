@@ -45,6 +45,7 @@ class QAModel():
                                                                              'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(series_to_supervised, n_in = n_in).join(self.data[['next_date','PRE_DATE','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']])
         self.info['n_in'] = n_in
         QA_util_log_info('##JOB01 Now Data shuffle Finish')
+        QA_util_log_info(self.data.shape)
 
 
     def set_train_rng(self, train_start, train_end):
