@@ -68,7 +68,7 @@ def daymodel_train(date, working_dir=working_dir):
 
     stock_model = load_data(stock_model, start_date, end_date, type ='crawl', norm_type=None)
 
-    stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET5', type='percent')
+    stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET', type='percent')
 
     stock_model = prepare_data(stock_model, stock_day_set, 0, 0.95)
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
