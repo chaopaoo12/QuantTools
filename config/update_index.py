@@ -59,6 +59,10 @@ if __name__ == '__main__':
         QA_etl_index_technical_day(mark_day, mark_day)
 
     if datetime.strptime(mark_day,'%Y-%m-%d').weekday() + 1 == 5:
-        QA_SU_save_index_technical_week_day(start_date=mark_day, end_date = mark_day)
+        res = check_index_techweek(mark_day)
+        while res is None or (len(res[0]) + len(res[1])) > 20:
+            QA_SU_save_index_technical_week_day(start_date = mark_day, end_date = mark_day)
+            res = check_index_techweek(mark_day)
+
         QA_etl_index_technical_week(mark_day,  mark_day)
 
