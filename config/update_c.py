@@ -130,9 +130,4 @@ if __name__ == '__main__':
         QA_etl_stock_financial_day(mark_day, mark_day)
         QA_etl_stock_financial_percent_day(mark_day, mark_day)
 
-        res = check_stock_quant(mark_day)
-        while res is None or len(res[1]) > 100:
-            time.sleep(180)
-            res = check_stock_quant(mark_day)
-
         QA_SU_save_stock_info()

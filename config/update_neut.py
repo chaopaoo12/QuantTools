@@ -27,10 +27,7 @@
 
 """对应于save x
 """
-from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_neutral_day)
-from QUANTTOOLS.QAStockETL.Check import (check_stock_day, check_stock_fianacial, check_stock_adj, check_stock_finper,
-                                         check_sinastock_day, check_sinastock_adj,check_stock_code, check_stock_quant,
-                                         check_wy_financial, check_tdx_financial, check_ttm_financial)
+from QUANTTOOLS.QAStockETL import (QA_SU_save_stock_neutral_day,QA_SU_save_stock_quant_data_day)
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_code,check_stock_neut,
                                          check_stock_finper,check_stock_alpha191,check_stock_techhour,
@@ -62,6 +59,8 @@ if __name__ == '__main__':
         while res is None or len(res[1]) > 50:
             time.sleep(180)
             res =check_stock_techhour(mark_day)
+
+        QA_SU_save_stock_quant_data_day(start_date=mark_day,end_date=mark_day)
 
         res = check_stock_quant(mark_day)
         while res is None or len(res[1]) > 100:
