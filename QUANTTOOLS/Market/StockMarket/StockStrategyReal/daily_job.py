@@ -4,10 +4,14 @@ from .running import predict_index,predict,predict_3,predict_hourly,predict_inde
 
 def daily_run(trading_date):
 
+    #TARGET 3
     predict_3(trading_date)
-    predict_3_norm(trading_date)
+    #TARGET5 3
+    predict_norm(trading_date)
     predict_watch(trading_date)
-    predict(trading_date)
+    #TARGET 3 neut
+    predict_3_norm(trading_date)
+    #TARGET5 3 neut
     predict_neut(trading_date)
     #predict_stock_summary(trading_date)
 
