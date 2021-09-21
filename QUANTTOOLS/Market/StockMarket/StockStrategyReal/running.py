@@ -12,13 +12,13 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_name
 from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
 
 def predict(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
-    predict_base(trading_date, concat_predict, model_name = 'stock_xg', file_name = 'prediction', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+    predict_base(trading_date, concat_predict, model_name = 'stock_xg_nn', file_name = 'prediction_crawl', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_real(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict_real, model_name = 'stock_xg_real', file_name = 'prediction_real', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_crawl(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
-    predict_base(trading_date, concat_predict_crawl, model_name = 'stock_xg_real', file_name = 'prediction_crawl', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+    predict_base(trading_date, concat_predict_crawl, model_name = 'stock_xg', file_name = 'prediction', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_hedge(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict_hedge, model_name = 'hedge_xg', file_name = 'prediction_hedge', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
@@ -98,10 +98,10 @@ def index_predict_watch(trading_date, working_dir=working_dir):
                                            '待选股池清单':kk})
 
 def predict_3(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
-    predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+    predict_base(trading_date, concat_predict, model_name = 'stock_mars_nn', file_name = 'prediction_stock_mars_nn', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_3_norm(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
-    predict_base(trading_date, concat_predict_neut, model_name = 'stock_mars_nn', file_name = 'prediction_stock_mars_nn', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
+    predict_base(trading_date, concat_predict_neut, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
 
 def predict_norm(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict, model_name = 'stock_xg_nn', file_name = 'prediction_stock_xg_nn', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
