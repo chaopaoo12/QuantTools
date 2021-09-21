@@ -15,5 +15,5 @@ if __name__ == '__main__':
         except:
             pass
         #QA_SU_save_stock_industryinfo()
-        QA_SU_save_stock_info()
+        #QA_SU_save_stock_info()
         res = check_stock_code()
