@@ -12,7 +12,7 @@ def daily_run(trading_date):
     #TARGET 3 neut
     predict_3_norm(trading_date)
     #TARGET5 3 neut
-    predict_neut(trading_date)
+    predict(trading_date)
     #predict_stock_summary(trading_date)
 
 def index_run(trading_date):

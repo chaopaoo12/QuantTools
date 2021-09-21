@@ -62,7 +62,7 @@ def daymodel_train(date, working_dir=working_dir):
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
     stock_model = start_train(stock_model, other_params)
-    save_report(stock_model, 'stock_xg', working_dir)
+    save_report(stock_model, 'stock_xg_nn', working_dir)
 
     stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET', type='percent')
 
@@ -71,7 +71,7 @@ def daymodel_train(date, working_dir=working_dir):
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
     stock_model = start_train(stock_model, other_params)
-    save_report(stock_model, 'stock_mars_day', working_dir)
+    save_report(stock_model, 'stock_mars_nn', working_dir)
 
     stock_model = QAStockXGBoost()
 
@@ -84,7 +84,7 @@ def daymodel_train(date, working_dir=working_dir):
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
     stock_model = start_train(stock_model, other_params)
-    save_report(stock_model, 'stock_mars_nn', working_dir)
+    save_report(stock_model, 'stock_mars_day', working_dir)
 
     stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET5', type='percent')
 
@@ -93,7 +93,7 @@ def daymodel_train(date, working_dir=working_dir):
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
     stock_model = start_train(stock_model, other_params)
-    save_report(stock_model, 'stock_xg_nn', working_dir)
+    save_report(stock_model, 'stock_xg', working_dir)
 
 def train_hedge(date, working_dir=working_dir):
     hedge_model = QAStockXGBoost()
