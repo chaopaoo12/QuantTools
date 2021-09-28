@@ -36,6 +36,21 @@ def QA_indicator_MACD(DataFrame, short=12, long=26, mid=9):
 
     return pd.DataFrame({'DIF': DIF, 'DEA': DEA, 'MACD': MACD})
 
+def QA_Value_LLV(DataFrame, S=5, M=10, L=20):
+    """
+    低位监控
+    """
+    LOWS = LLV(DataFrame['low'], S)
+    LOWM = LLV(DataFrame['low'], M)
+    LOWL = LLV(DataFrame['low'], L)
+    HIGS = LLV(DataFrame['high'], S)
+    HIGM = LLV(DataFrame['high'], M)
+    HIGL = LLV(DataFrame['high'], L)
+    return pd.DataFrame({
+        'LOWS': LOWS, 'LOWM': LOWM, 'LOWL': LOWL,
+        'HIGS': HIGS, 'HIGM': HIGM, 'HIGL': HIGL
+    })
+
 def QA_indicator_LLV(DataFrame, S=5, M=10, L=20):
     """
     低位监控
