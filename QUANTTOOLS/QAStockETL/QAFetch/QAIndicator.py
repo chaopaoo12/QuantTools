@@ -43,9 +43,9 @@ def QA_Value_LLV(DataFrame, S=5, M=10, L=20):
     LOWS = LLV(DataFrame['low'], S)
     LOWM = LLV(DataFrame['low'], M)
     LOWL = LLV(DataFrame['low'], L)
-    HIGS = LLV(DataFrame['high'], S)
-    HIGM = LLV(DataFrame['high'], M)
-    HIGL = LLV(DataFrame['high'], L)
+    HIGS = HHV(DataFrame['high'], S)
+    HIGM = HHV(DataFrame['high'], M)
+    HIGL = HHV(DataFrame['high'], L)
     return pd.DataFrame({
         'LOWS': LOWS, 'LOWM': LOWM, 'LOWL': LOWL,
         'HIGS': HIGS, 'HIGM': HIGM, 'HIGL': HIGL
@@ -60,9 +60,9 @@ def QA_indicator_LLV(DataFrame, S=5, M=10, L=20):
     LOWL = LLV(DataFrame['low'], L)
     LS = LOWS / LOWM -1
     LL = LOWM / LOWL -1
-    HIGS = LLV(DataFrame['high'], S)
-    HIGM = LLV(DataFrame['high'], M)
-    HIGL = LLV(DataFrame['high'], L)
+    HIGS = HHV(DataFrame['high'], S)
+    HIGM = HHV(DataFrame['high'], M)
+    HIGL = HHV(DataFrame['high'], L)
     HS = HIGS / HIGM -1
     HL = HIGM / HIGL -1
     return pd.DataFrame({
@@ -1108,6 +1108,34 @@ def get_LLV(data, type='day'):
         VR = data.add_func(QA_indicator_LLV)[['LLS','LLL','HS','HL']]
     except:
         VR = data.data.assign(LLS=None,LLL=None)[['LLS','LLL','HS','HL']]
+
+    res = VR.dropna(how='all')
+
+    if type in ['day','week','month']:
+        res = res.reset_index()
+        res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
+        res = res.set_index(['date','code']).dropna(how='all')
+    elif type in ['min','hour']:
+        res = res.reset_index()
+        res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
+        res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
+        res = res.set_index(['datetime','code']).dropna(how='all')
+    return(res)
+
+def get_LLValue(data, type='day'):
+    try:
+        # todo
+        #A.低价区域：70~40——为可买进区域
+        #B.安全区域：150~80——正常分布区域
+        #C.获利区域：450~160——应考虑获利了结
+        #D.警戒区域：450以上——股价已过高
+        #2.在低价区域中，VR值止跌回升，可买进，
+        #3.在VR>160时，股价上扬，VR值见顶，可卖出，
+        #1．VR指标在低价区域准确度较高，当VR>160时有失真可能，特别是在350~400高档区，有时会发生将股票卖出后，股价仍续涨的现象，此时可以配合PSY心理线指标来化解疑难。
+        #2．VR低于40的形态，运用在个股走势上，常发生股价无法有效反弹的效应，随后VR只维持在40~60之间徘徊。因而，此种讯号较适宜应用在指数方面，并且配合ADR、OBOS……等指标使用效果非常好。
+        VR = data.add_func(QA_Value_LLV)[['LOWS', 'LOWM', 'LOWL', 'HIGS', 'HIGM', 'HIGL']]
+    except:
+        VR = data.data.assign(LLS=None,LLL=None)[['LOWS', 'LOWM', 'LOWL', 'HIGS', 'HIGM', 'HIGL']]
 
     res = VR.dropna(how='all')
 
