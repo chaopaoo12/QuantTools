@@ -87,15 +87,14 @@ def index_predict_watch(trading_date, working_dir=working_dir):
 
     rr1 = res.assign(NAME=res.code.apply(lambda x:QA_fetch_index_name(x)))[['date','code','NAME','SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK','SKDJ_K_HR','SKDJ_TR_HR','RSI3','RSI2','RSI3_C','RSI2_C','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
     rr1 = rr1.sort_values(by=['date','SKDJ_K'],ascending=[False,True]).set_index(['date','code'])
-    r_tar, prediction_tar, prediction = load_data(concat_predict, trading_date, working_dir, 'stock_xg', 'prediction')
+    #r_tar, prediction_tar, prediction = load_data(concat_predict, trading_date, working_dir, 'stock_xg', 'prediction')
 
-    kk = prediction_tar.loc[(trading_date,find_stock(list(rr1[rr1.SKDJ_K <= 40].loc[trading_date].index))),].sort_values('SKDJ_K')
+    #kk = prediction_tar.loc[(trading_date,find_stock(list(rr1[rr1.SKDJ_K <= 40].loc[trading_date].index))),].sort_values('SKDJ_K')
 
     base_report(trading_date, '市场观察报告', **{'主线趋势指数': rr1,
                                            '日线机会清单': rr1[(rr1.SKDJ_K <= 40)],
                                            '小时线机会清单': rr1[rr1.SKDJ_K_HR <= 30],
-                                           '周线机会清单':rr1[rr1.SKDJ_K_WK <= 30],
-                                           '待选股池清单':kk})
+                                           '周线机会清单':rr1[rr1.SKDJ_K_WK <= 30]})
 
 def predict_3(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
