@@ -292,7 +292,7 @@ def track_roboot3(account, trading_date, strategy_id, exceptions = None, test = 
                     target_pos = 0
                     industry = str(positions[positions.code == code]['INDUSTRY'])
                     QA_util_log_info('##JOB Now Start Selling {code} ===='.format(code = code), ui_log = None)
-                    SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = True)
+                    #SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = True)
                     time.sleep(1)
                 #except:
                 #        pass
