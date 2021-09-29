@@ -6,7 +6,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import QA_fetch_stock_name
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour, get_quant_data
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_UseCapital, get_StockPos, get_hold
 from QUANTTOOLS.Trader.account_manage.TradAction.SELL import SELL
-from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_close,QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_realtime
+from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_real,QA_fetch_get_stock_realtm_bid,QA_fetch_get_stock_realtime
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
 import time
 import datetime
 
@@ -229,6 +230,78 @@ def track_roboot2(account, trading_date, strategy_id, exceptions = None, test = 
         QA_util_log_info('##JOB Tracking Finished ==================== {}'.format(trading_date), ui_log=None)
         send_actionnotice(strategy_id,'Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)
 
+def track_roboot3(account, trading_date, strategy_id, exceptions = None, test = False):
+
+    QA_util_log_info('##JOB Now Check Timing ==== {}'.format(str(trading_date)), ui_log = None)
+
+    tm = datetime.datetime.now().strftime("%H:%M:%S")
+    morning_begin = "09:30:00"
+    morning_end = "11:30:00"
+    afternoon_begin = "13:00:00"
+    afternoon_end = "15:00:00"
+
+
+    tm = int(time.strftime("%H%M%S",time.strptime(tm, "%H:%M:%S")))
+    QA_util_log_info('##JOB Now Start Tracking ==== {}'.format(str(trading_date)), ui_log = None)
+
+    while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
+
+        ##开市前休息
+        while tm < int(time.strftime("%H%M%S",time.strptime(morning_begin, "%H:%M:%S"))):
+            QA_util_log_info('##JOB Not Start Time ==== {}'.format(str(trading_date)), ui_log = None)
+            time.sleep(60)
+            tm = int(datetime.datetime.now().strftime("%H%M%S"))
+
+        ##午休
+        while tm >= int(time.strftime("%H%M%S",time.strptime(morning_end, "%H:%M:%S"))) and tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_begin, "%H:%M:%S"))):
+            QA_util_log_info('##JOB Not Trading Time ==== {}'.format(str(trading_date)), ui_log = None)
+            time.sleep(60)
+            tm = int(datetime.datetime.now().strftime("%H%M%S"))
+
+        QA_util_log_info('##JOB Now Get Account info ==== {}'.format(str(trading_date)), ui_log = None)
+        client = get_Client()
+        sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
+        positions = positions[positions['可用余额'] > 0]
+        account_info = client.get_account(account)
+
+        code_list = positions.code.tolist()
+
+        data = QA_fetch_stock_day_adv(code_list,QA_util_get_pre_trade_date(trading_date),trading_date).data.reset_index().set_index('code')[['high','volume','amount']].rename(columns={'high':'high_pre','volume':'volume_pre'})
+
+        res = QA_fetch_get_stock_real(code_list).join(data)
+
+        res['stop_price'] = res[['high','high_pre']].max(axis=1) *0.95
+        ##分析数据
+
+        ttt = res[res.now < res.stop_price]
+        if ttt is not None or ttt.shape[0]>0:
+            ##sell
+            for code in list(ttt.index):
+                name = QA_fetch_stock_name(code)
+                hold = float(positions.loc[code]['成本价'])
+                price = float(ttt.loc[code].buy)
+                close = float(ttt.loc[code].close)
+                high = float(ttt.loc[code].stop_price)
+                QA_util_log_info('##JOB Now Code {code}({name}) ==== 成本:{hold} 昨收:{close} 今高:{high} 现价:{price}'.format(code=str(code),name=str(name),hold=str(hold),high=str(high), close = str(close), price = str(price)), ui_log = None)
+
+                msg =  '高点回撤-5%'
+                ###卖出信号1
+                if msg is not None:
+                    send_actionnotice(strategy_id,'{code}{name}:{msg}'.format(code=code,name=name, msg=msg),'卖出信号',direction = 'SELL',offset=None,volume=None)
+                    deal_pos = get_StockPos(code, client, account)
+                    target_pos = 0
+                    industry = str(positions[positions.code == code]['INDUSTRY'])
+                    QA_util_log_info('##JOB Now Start Selling {code} ===='.format(code = code), ui_log = None)
+                    SELL(client, account, strategy_id, account_info, trading_date, code, name, industry, deal_pos, target_pos, target=None, close=0, type = 'end', test = True)
+                    time.sleep(1)
+                #except:
+                #        pass
+
+    ##收市
+    if tm >= int(time.strftime("%H%M%S", time.strptime(afternoon_end, "%H:%M:%S"))):
+        ###time out
+        QA_util_log_info('##JOB Tracking Finished ==================== {}'.format(trading_date), ui_log=None)
+        send_actionnotice(strategy_id,'Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)
 
 if __name__ == '__main__':
     pass
