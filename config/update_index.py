@@ -36,6 +36,7 @@ from QUANTTOOLS.QAStockETL.Check import (check_index_techindex, check_index_tech
 from QUANTTOOLS.QAStockETL import (QA_etl_index_technical_day,
                                    QA_etl_index_technical_week)
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
+from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import QA_util_get_real_date
 from datetime import datetime
 
 if __name__ == '__main__':
@@ -59,6 +60,10 @@ if __name__ == '__main__':
         QA_etl_index_technical_day(mark_day, mark_day)
 
     if datetime.strptime(mark_day,'%Y-%m-%d').weekday() + 1 == 5:
+        if QA_util_if_trade(mark_day):
+            mark_day = mark_day
+        else:
+            mark_day = QA_util_get_real_date(mark_day)
         QA_SU_save_index_technical_week_day(start_date = mark_day, end_date = mark_day)
 
         QA_etl_index_technical_week(mark_day,  mark_day)
