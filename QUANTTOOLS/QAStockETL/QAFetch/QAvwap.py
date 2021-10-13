@@ -1,5 +1,6 @@
 from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq, QA_fetch_get_stock_min_sina
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_min_adv
 from scipy import stats
 import pandas as pd
 import math
@@ -17,10 +18,15 @@ def spc(data, N= 5):
     data[['vamp_c']]= data.rolling(window=N).agg({'vamp':rolling_ols})
     return(data)
 
-def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1'):
-    try:
-        QA_util_log_info("JOB Get {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
+def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'crawl'):
+    QA_util_log_info("JOB Get {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
+
+    if type == 'crawl':
+        data = QA_fetch_stock_min_adv(['000001','000002'],'2021-10-01','2021-10-12',frequence='1min').data
+    elif type == 'real':
         data = QA_fetch_get_stock_min_sina(code, period=period, type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
+
+    try:
         data = data.assign(date=data.reset_index().datetime.apply(lambda x:str(x)[0:10]).tolist(),
                            amt=((data['high'] +data['low']) / 2) * data['volume'])
 
