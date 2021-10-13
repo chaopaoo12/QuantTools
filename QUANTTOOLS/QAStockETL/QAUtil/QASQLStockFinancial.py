@@ -7,7 +7,12 @@ ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Or
 
 sql_text = '''select to_char(ORDER_DATE, 'yyyy-mm-dd') as "date",
 CODE AS "code",INDUSTRY,ln(TOTAL_MARKET) as TOTAL_MARKET,
-ln(TOTAL_MARKET*TRA_RATE+1) as TRA_RATE, 
+case
+         when TOTAL_MARKET * TRA_RATE + 1 < 0 then
+          null
+         else
+          TOTAL_MARKET * TRA_RATE / 100 + 1
+       end as TRA_RATE, 
 case
 when total_market * tra_rate / 100000000000 >= 100 then
   0
