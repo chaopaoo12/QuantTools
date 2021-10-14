@@ -4,6 +4,7 @@ from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_min_adv
 from scipy import stats
 import pandas as pd
 import math
+from QUANTAXIS.QAIndicator.base import CROSS
 
 def rolling_ols(y):
     '''
@@ -33,6 +34,8 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data = data.assign(camt = data.groupby('date')['amt'].cumsum(),
                            cvolume = data.groupby('date')['volume'].cumsum())
         data['vamp'] = data['camt'] / data['cvolume']
+        data['VAMP_JC'] = CROSS(data['close'], data['vamp'])
+        data['VAMP_SC'] = CROSS(data['vamp'], data['close'])
         data['vamp_c'] = data.groupby('date').rolling(window=5).agg({'vamp':rolling_ols}).reset_index(level=0,drop=True)
     except:
         QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
