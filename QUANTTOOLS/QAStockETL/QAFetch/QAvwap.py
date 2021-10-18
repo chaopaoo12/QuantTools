@@ -28,19 +28,15 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data = QA_fetch_get_stock_min_sina(code, period=period, type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
 
     try:
-        print('1')
         data = data.assign(date=data.reset_index().datetime.apply(lambda x:str(x)[0:10]).tolist(),
                            HM=data.reset_index().datetime.dt.strftime('%H:%M').values,
                            amt=((data['high'] +data['low']) / 2) * data['volume'])
-        print('A')
         data = data.assign(camt = data.groupby(['date','code'])['amt'].cumsum(),
                            cvolume = data.groupby(['date','code'])['volume'].cumsum())
         data['vamp'] = data['camt'] / data['cvolume']
-        print('B')
         data['VAMP_JC'] = CROSS(data['close'], data['vamp'])
         data['VAMP_SC'] = CROSS(data['vamp'], data['close'])
-        print('C')
-        data['vamp_c'] = data.groupby(['date','code']).rolling(window=5).agg({'vamp':rolling_ols}).reset_index(level=0,drop=True)
+        data['vamp_c'] = data.groupby(['date','code']).apply(lambda x:spc(x))
     except:
         QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
         data = None
