@@ -33,6 +33,8 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
                            amt=((data['high'] +data['low']) / 2) * data['volume'])
         data = data.assign(camt = data.groupby(['date','code'])['amt'].cumsum(),
                            cvolume = data.groupby(['date','code'])['volume'].cumsum())
+        data[['AMT_P','VOL_P']] = data.groupby(['HM','code'])[['camt','cvolume']].shift()
+        data['AMT_UP'] = data['camt'] / data['AMT_P'] - 1
         data['vamp'] = data['camt'] / data['cvolume']
         data['VAMP_JC'] = CROSS(data['close'], data['vamp'])
         data['VAMP_SC'] = CROSS(data['vamp'], data['close'])
