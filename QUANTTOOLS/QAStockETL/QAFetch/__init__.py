@@ -127,7 +127,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAUSFinper import QA_fetch_get_usstock_financ
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import (QA_fetch_get_quant_data,QA_fetch_get_index_quant_data,
                                                          QA_fetch_get_quant_data_train,QA_fetch_get_quant_data_realtime,
-                                                         QA_fetch_get_stock_quant_hour, QA_fetch_get_stock_quant_min)
+                                                         QA_fetch_get_stock_quant_hour, QA_fetch_get_stock_quant_min,
+                                                         QA_fetch_get_stock_vwap_min)
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAusstock import (QA_fetch_get_usstock_list_sina, QA_fetch_get_usstock_list_akshare)
 
