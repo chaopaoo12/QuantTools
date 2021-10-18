@@ -562,7 +562,7 @@ def QA_fetch_get_stock_vwap_min(code, start_date, end_date, type='30min'):
             res = p.map(partial(QA_fetch_get_stock_vwap, start_date=start_date, end_date=end_date, period = type, type='real'), code)
         return(pd.concat(res))
     else:
-        res = QA_fetch_get_stock_vwap(code[0], start_date=start_date, end_date=end_date, type=type)
+        res = QA_fetch_get_stock_vwap(code[0], start_date=start_date, end_date=end_date, period = type, type='real')
         return(res)
 
 if __name__ == '__main__':
