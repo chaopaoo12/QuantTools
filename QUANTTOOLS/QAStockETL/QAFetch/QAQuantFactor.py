@@ -551,8 +551,8 @@ def QA_fetch_get_index_quant_min(code, start_date, end_date, type='30min'):
         return(res)
 
 def QA_fetch_get_stock_vwap_min(code, start_date, end_date, type='30min'):
-    if len(code) >= 10:
-        pool = multiprocessing.Pool(10)
+    if len(code) >= 5:
+        pool = multiprocessing.Pool(5)
         with pool as p:
             res = p.map(partial(QA_fetch_get_stock_vwap, start_date=start_date, end_date=end_date, period = type, type='real'), code)
         return(pd.concat(res))
