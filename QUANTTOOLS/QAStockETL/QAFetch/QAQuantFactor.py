@@ -554,12 +554,12 @@ def QA_fetch_get_stock_vwap_min(code, start_date, end_date, type='30min'):
     if len(code) >= 15:
         pool = multiprocessing.Pool(15)
         with pool as p:
-            res = p.map(partial(QA_fetch_get_stock_vwap, start_date=start_date, end_date=end_date, type=type), code)
+            res = p.map(partial(QA_fetch_get_stock_vwap, start_date=start_date, end_date=end_date, period = type, type='real'), code)
         return(pd.concat(res))
     elif len(code) > 1:
         pool = multiprocessing.Pool(len(code))
         with pool as p:
-            res = p.map(partial(QA_fetch_get_stock_vwap, start_date=start_date, end_date=end_date, type=type), code)
+            res = p.map(partial(QA_fetch_get_stock_vwap, start_date=start_date, end_date=end_date, period = type, type='real'), code)
         return(pd.concat(res))
     else:
         res = QA_fetch_get_stock_vwap(code[0], start_date=start_date, end_date=end_date, type=type)
