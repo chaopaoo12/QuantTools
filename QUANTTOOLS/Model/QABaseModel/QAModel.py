@@ -148,13 +148,14 @@ class QAModel():
         try:
             self.norm_type = self.info['norm_type']
         except:
-            pass
+            self.norm_type = None
 
         try:
             self.block = self.info['block']
             self.sub_block = self.info['sub_block']
         except:
-            pass
+            self.block = False
+            self.sub_block = False
 
         try:
             self.normoalize = self.info['normoalize']
