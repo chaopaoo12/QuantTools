@@ -939,6 +939,7 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='day', close_type='c
         res = data.groupby('code').apply(func2, type=close_type)[cols]
     else:
         res = data.groupby('code').apply(func3, type=close_type)[cols]
+
     if type == 'day':
         res['date'] = res['date'].apply(lambda x: str(x)[0:10])
         res['next_date'] = res['date'].apply(lambda x: QA_util_get_pre_trade_date(x, -2))
@@ -946,6 +947,9 @@ def QA_fetch_stock_target(codes, start_date, end_date, type='day', close_type='c
     else:
         res['date'] = res['datetime'].apply(lambda x: str(x)[0:10])
         res = res.set_index(['date','code']).loc[rng1].reset_index().set_index(['datetime','code'])
+
+    if res.index.nlevels > 2:
+        res = res.reset_index(level=0, drop=True)
 
     for columnname in res.columns:
         if res[columnname].dtype == 'float64':
@@ -962,7 +966,6 @@ def QA_fetch_stock_quant_pre(code, start, end=None, block = True, close_type='cl
         'JOB Get Stock Target data start=%s end=%s' % (start, end))
     target = QA_fetch_stock_target(code, start, end, close_type=close_type, method=method)
     print('res',res)
-    print('target',target)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
         return res
