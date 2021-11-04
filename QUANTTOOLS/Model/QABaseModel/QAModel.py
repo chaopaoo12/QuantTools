@@ -146,26 +146,26 @@ class QAModel():
         self.target = self.info['target']
 
         try:
-            self.norm_type = self.info['norm_type']
+            self.info['norm_type'] = self.info['norm_type']
         except:
-            self.norm_type = None
+            self.info['norm_type'] = None
 
         try:
-            self.block = self.info['block']
-            self.sub_block = self.info['sub_block']
+            self.info['block'] = self.info['block']
+            self.info['sub_block'] = self.info['sub_block']
         except:
-            self.block = False
-            self.sub_block = False
+            self.info['block'] = False
+            self.info['sub_block'] = False
 
         try:
-            self.normoalize = self.info['normoalize']
+            self.info['normoalize'] = self.info['normoalize']
         except:
             pass
 
         try:
-            self.n_in = self.info['n_in']
+            self.info['n_in'] = self.info['n_in']
         except:
-            self.n_in = None
+            self.info['n_in'] = None
         return(self)
 
 if __name__ == 'main':
