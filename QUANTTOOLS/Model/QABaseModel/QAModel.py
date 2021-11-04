@@ -139,33 +139,33 @@ class QAModel():
         QA_util_log_info('##JOB Now Model Loading', ui_log = None)
         self.model = joblib.load(working_dir+"\\{name}.joblib.dat".format(name=name))
         self.info = joblib.load(working_dir+"\\{name}info.joblib.dat".format(name=name))
-        self.info['cols'] = self.info['cols']
-        self.info['thresh'] = self.info['thresh']
-        self.info['drop'] = self.info['drop']
-        self.info['code'] = self.info['code']
-        self.info['target'] = self.info['target']
+        self.cols = self.info['cols']
+        self.thresh = self.info['thresh']
+        self.drop = self.info['drop']
+        self.code = self.info['code']
+        self.target = self.info['target']
 
         try:
-            self.info['norm_type'] = self.info['norm_type']
+            self.norm_type = self.info['norm_type']
         except:
-            self.info['norm_type'] = None
+            self.norm_type = None
 
         try:
-            self.info['block'] = self.info['block']
-            self.info['sub_block'] = self.info['sub_block']
+            self.block = self.info['block']
+            self.sub_block = self.info['sub_block']
         except:
-            self.info['block'] = False
-            self.info['sub_block'] = False
+            self.block = False
+            self.sub_block = False
 
         try:
-            self.info['normoalize'] = self.info['normoalize']
+            self.normoalize = self.info['normoalize']
         except:
             pass
 
         try:
-            self.info['n_in'] = self.info['n_in']
+            self.n_in = self.info['n_in']
         except:
-            self.info['n_in'] = None
+            self.n_in = None
         return(self)
 
 if __name__ == 'main':
