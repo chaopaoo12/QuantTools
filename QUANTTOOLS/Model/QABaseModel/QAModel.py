@@ -139,11 +139,11 @@ class QAModel():
         QA_util_log_info('##JOB Now Model Loading', ui_log = None)
         self.model = joblib.load(working_dir+"\\{name}.joblib.dat".format(name=name))
         self.info = joblib.load(working_dir+"\\{name}info.joblib.dat".format(name=name))
-        self.cols = self.info['cols']
-        self.thresh = self.info['thresh']
-        self.drop = self.info['drop']
-        self.code = self.info['code']
-        self.target = self.info['target']
+        self.info['cols'] = self.info['cols']
+        self.info['thresh'] = self.info['thresh']
+        self.info['drop'] = self.info['drop']
+        self.info['code'] = self.info['code']
+        self.info['target'] = self.info['target']
 
         try:
             self.info['norm_type'] = self.info['norm_type']
