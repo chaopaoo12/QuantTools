@@ -18,7 +18,7 @@ class QAStockModel(QAModel):
         QA_util_log_info(self.data.shape)
 
     def model_predict(self, start, end, code = None, type='crawl'):
-
+        print(self.info)
         self.code = code
         QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.info.block,sub_block=self.info.sub_block, _from=start, _to=end, target = self.info.target), ui_log = None)
         data = get_quant_data(start, end, code = self.code, type= type,block = self.info.block, sub_block=self.info.sub_block, norm_type=self.info.norm_type)
