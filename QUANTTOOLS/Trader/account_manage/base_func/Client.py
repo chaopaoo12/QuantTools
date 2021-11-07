@@ -16,10 +16,17 @@ def get_Client(host=yun_ip, port=yun_port, key=easytrade_password, trader_path=N
         logging.basicConfig(level=logging.DEBUG)
         client = strategyease_sdk.Client(host=host, port=port, key=key)
         client.type = 'online'
-    else:
+        QA_util_log_info(
+            '##JOB Now Get Account Server Online')
+    elif trader_path is not None:
         client = easytrader.use("ths")
         client.connect(trader_path)
         client.type = 'local'
+        QA_util_log_info(
+            '##JOB Now Get Account Server Local')
+    else:
+        QA_util_log_info(
+            '##JOB Now Get Account Server Failed')
     return(client)
 
 def get_UseCapital(client, account=None):
