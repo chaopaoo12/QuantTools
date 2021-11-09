@@ -557,7 +557,7 @@ def QA_fetch_get_stock_vwap_min(code, start_date, end_date, type='30min'):
 
     def __acess(code, start, end, type):
         if len(code) >= 5:
-            pool = multiprocessing.Pool(5)
+            pool = multiprocessing.Pool(15)
             with pool as p:
                 res = p.map(partial(QA_fetch_get_stock_vwap_ascny, start_date=start_date, end_date=end_date, period = type), code)
             return(pd.concat(res))
