@@ -554,21 +554,30 @@ def QA_fetch_get_stock_vwap_ascny(code, start_date, end_date, period):
     return(QA_fetch_get_stock_vwap(code, start_date=start_date, end_date=end_date, period = period, type='real'))
 
 def QA_fetch_get_stock_vwap_min(code, start_date, end_date, type='30min'):
-    if len(code) >= 5:
-        pool = multiprocessing.Pool(5)
-        with pool as p:
-            res = p.map(partial(QA_fetch_get_stock_vwap_ascny, start_date=start_date, end_date=end_date, period = type), code)
-            time.sleep(1)
-        return(pd.concat(res))
-    elif len(code) > 1:
-        pool = multiprocessing.Pool(len(code))
-        with pool as p:
-            res = p.map(partial(QA_fetch_get_stock_vwap_ascny, start_date=start_date, end_date=end_date, period = type), code)
-            time.sleep(1)
-        return(pd.concat(res))
+
+    def __acess(code, start, end, type):
+        if len(code) >= 5:
+            pool = multiprocessing.Pool(5)
+            with pool as p:
+                res = p.map(partial(QA_fetch_get_stock_vwap_ascny, start_date=start_date, end_date=end_date, period = type), code)
+            return(pd.concat(res))
+        elif len(code) > 1:
+            pool = multiprocessing.Pool(len(code))
+            with pool as p:
+                res = p.map(partial(QA_fetch_get_stock_vwap_ascny, start_date=start_date, end_date=end_date, period = type), code)
+            return(pd.concat(res))
+        else:
+            res = QA_fetch_get_stock_vwap_ascny(code[0], start_date=start_date, end_date=end_date, period = type)
+            return(res)
+
+    if len(code) > 30:
+        for i in range(0, len(code), 30):
+            res = pd.DataFrame()
+            data = __acess(code[i:i+30], start_date, end_date, type)
+            res = res.append(data)
     else:
-        res = QA_fetch_get_stock_vwap_ascny(code[0], start_date=start_date, end_date=end_date, period = type)
-        return(res)
+        res = __acess(code, start_date, end_date, type)
+    return(res)
 
 if __name__ == '__main__':
     pass
