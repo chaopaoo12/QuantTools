@@ -25,7 +25,10 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
     if type == 'crawl':
         data = QA_fetch_stock_min_adv(code,start_date, end_date,frequence='1min').data
     elif type == 'real':
-        data = QA_fetch_get_stock_min_sina(code, period=period, type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
+        data = QA_fetch_get_stock_min_sina(code, period=period, type='qfq')
+
+    if data is not None and type == 'real':
+        data = data.reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
 
     try:
         data = data.assign(date=data.reset_index().datetime.apply(lambda x:str(x)[0:10]).tolist(),
