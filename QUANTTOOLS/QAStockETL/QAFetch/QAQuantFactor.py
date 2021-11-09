@@ -577,7 +577,7 @@ def QA_fetch_get_stock_vwap_min(code, start_date, end_date, type='30min'):
             data = __acess(code[i:i+30], start_date, end_date, type)
             res.append(data)
             QA_util_log_info(data)
-            time.sleep(3)
+            time.sleep(10)
     else:
         res = __acess(code, start_date, end_date, type)
     return(res)
