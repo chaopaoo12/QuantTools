@@ -574,7 +574,7 @@ def QA_fetch_get_stock_vwap_min(code, start_date, end_date, type='30min'):
         for i in range(0, len(code), 30):
             res = pd.DataFrame()
             data = __acess(code[i:i+30], start_date, end_date, type)
-            res.append(data)
+            res = res.append(data)
     else:
         res = __acess(code, start_date, end_date, type)
     return(res)
