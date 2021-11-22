@@ -152,9 +152,12 @@ class QAModel():
 
         try:
             self.block = self.info['block']
-            self.sub_block = self.info['sub_block']
         except:
             self.block = False
+
+        try:
+            self.sub_block = self.info['sub_block']
+        except:
             self.sub_block = False
 
         try:
