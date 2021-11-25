@@ -28,13 +28,11 @@
 """对应于save x
 """
 
-from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_code,check_stock_neut,
-                                         check_stock_finper,check_stock_alpha191,
-                                         check_stock_techweek,check_stock_techhour,
-                                         check_stock_techindex,check_index_techweek,
-                                         check_index_techindex,check_index_techhour)
+from QUANTTOOLS.QAStockETL.Check import (check_stock_code, check_stock_neut,
+                                         check_stock_finper, check_stock_alpha191,
+                                         check_index_techindex, check_index_techhour)
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade,QA_util_get_pre_trade_date,QA_util_get_real_date
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.daily_job import daily_run, index_run
+from QUANTTOOLS.Market.StockMarket.DailyJob.daily_job import daily_run, index_run
 from QUANTAXIS.QASU.main import (QA_SU_save_stock_list,QA_SU_save_stock_info_tushare)
 from QUANTTOOLS.QAStockETL import QA_SU_save_stock_aklist
 import time

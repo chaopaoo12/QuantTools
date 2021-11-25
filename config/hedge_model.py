@@ -30,7 +30,7 @@
 
 from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_day,check_stock_adj,check_stock_alpha191real,check_stock_alpha101real)
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_real_date,QA_util_get_pre_trade_date
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.train_job import hedge_train
+from QUANTTOOLS.Market.StockMarket.DailyJob.train_job import hedge_train
 import time
 
 if __name__ == '__main__':

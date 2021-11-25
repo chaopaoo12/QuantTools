@@ -30,7 +30,6 @@
 
 from QUANTTOOLS.QAStockETL.Check import (check_stock_techhour)
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_real_date
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.train_job import hourly_train
 import time
 
 if __name__ == '__main__':
@@ -42,4 +41,3 @@ if __name__ == '__main__':
         time.sleep(180)
         check = check_stock_techhour(ckeck_day)
 
-    hourly_train(mark_day)

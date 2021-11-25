@@ -30,7 +30,7 @@
 
 from QUANTTOOLS.QAStockETL.Check import (check_index_techindex,check_index_techhour)
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_real_date
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.train_job import index_train
+from QUANTTOOLS.Market.StockMarket.DailyJob.train_job import index_train
 import time
 
 if __name__ == '__main__':
