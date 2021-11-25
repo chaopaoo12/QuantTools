@@ -76,7 +76,7 @@ def build_info(data):
     need_columns = ['code', 'name', 'industry', 'msg', 'close', 'target_position', 'target_capital', 'mark']
     for inset_column in [i for i in need_columns if i not in data.columns]:
         QA_util_log_info('##CHECK short of columns {}'.format(inset_column), ui_log = None)
-        data = data.assign(inset_column=0)
+        data[inset_column] = 0
 
     sell_list = data[data.mark == 'sell'].code.tolist()
     sell_dict = data[data.code.isin(sell_list)][need_columns].to_dict(orient='records')
