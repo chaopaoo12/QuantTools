@@ -106,12 +106,20 @@ def trading_hedge(trading_date, func = concat_predict, model_name = 'hedge_xg', 
     return(res)
 
 
-def trading_new(trading_date, func=concat_predict_neut, working_dir=working_dir):
+def trading_new(trading_date, working_dir=working_dir):
 
-    r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir=working_dir, model_name='stock_xg_base', file_name='prediction_stock_xg_base')
+    r_tar, prediction_tar2, prediction = load_data(concat_predict, QA_util_get_real_date(trading_date), working_dir, 'stock_xg', 'prediction_stock_mars_nn')
+    r_tar, prediction_tar3, prediction = load_data(concat_predict_neut, QA_util_get_real_date(trading_date), working_dir, 'stock_xg_nn', 'prediction_stock_mars_nn')
+    r_tar, prediction_tar, prediction = load_data(concat_predict_neut, QA_util_get_real_date(trading_date), working_dir, 'stock_mars_nn', 'prediction_stock_mars_nn')
+    r_tar, prediction_tar1, prediction = load_data(concat_predict, QA_util_get_real_date(trading_date), working_dir, 'stock_mars_day', 'prediction_stock_mars_day')
 
-    code_list = prediction_tar[prediction_tar.RANK <= 20].loc[QA_util_get_last_day(trading_date)].code.tolist()
-    time_list = ['10:00:00',"10:30:00",'11:00:00',"11:30:00",'13:30:00',"14:00:00",'14:30:00',"15:00:00"]
+    code_list = list(set(prediction_tar[prediction_tar.RANK <= 20].loc[QA_util_get_real_date(trading_date)].reset_index().code.unique().tolist()
+                         + prediction_tar1[prediction_tar1.RANK <= 20].loc[QA_util_get_real_date(trading_date)].reset_index().code.unique().tolist()
+                         + prediction_tar2[prediction_tar2.RANK <= 20].loc[QA_util_get_real_date(trading_date)].reset_index().code.unique().tolist()
+                         + prediction_tar3[prediction_tar3.RANK <= 20].loc[QA_util_get_real_date(trading_date)].reset_index().code.unique().tolist()
+                         ))
+
+    time_list = ['10:00:00', "10:30:00", '11:00:00', "11:30:00", '13:30:00', "14:00:00", '14:30:00', "15:00:00"]
 
     robot = StrategyRobotBase(code_list, time_list, trading_date)
     robot.set_account(strategy_id)
