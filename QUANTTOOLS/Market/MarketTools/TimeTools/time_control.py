@@ -13,21 +13,21 @@ def time_check_after(tm_mark):
     return tm >= int(time.strftime("%H%M%S",time.strptime(tm_mark, "%H:%M:%S")))
 
 
-def open_check(trading_date):
+def open_check(trading_date, sleep=60):
     while time_check_before("09:30:00"):
-        pass
+        time.sleep(sleep)
     QA_util_log_info('##JOB Now Start Trading ==== {}'.format(str(trading_date)), ui_log = None)
 
 
-def close_check(trading_date):
+def close_check(trading_date, sleep=60):
     while time_check_after("15:00:00"):
-        pass
+        time.sleep(sleep)
     QA_util_log_info('##JOB Trading Finished ==================== {}'.format(trading_date), ui_log=None)
 
 
-def suspend_check(trading_date):
+def suspend_check(trading_date, sleep=60):
     while time_check_after("11:30:00") and time_check_before("13:00:00"):
-        pass
+        time.sleep(sleep)
     QA_util_log_info('##JOB Trading Finished ==================== {}'.format(trading_date), ui_log=None)
 
 
