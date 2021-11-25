@@ -7,7 +7,7 @@ import time
 import math
 
 def BUY(client, account, strategy_id, account_info, trading_date,
-        code, name, industry, target_capital, close, type='end', test=False):
+        code, name, industry, target_capital, close=0, type='end', test=False):
 
     # check account usefull capital
     UseCapital = get_UseCapital(client, account)

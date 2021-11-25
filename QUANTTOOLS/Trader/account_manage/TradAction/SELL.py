@@ -5,7 +5,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask
 import math
 
 def SELL(client, account, strategy_id, account_info, trading_date,
-         code, name, industry, target_capital, close, type='end', test=False):
+         code, name, industry, target_capital, close=0, type='end', test=False):
     # 买股按金额 给定金额条件下 最大数量
     # 卖股按金额 给定金额条件下 最大数量
     real_capital = get_StockCapital(code, client, account)
