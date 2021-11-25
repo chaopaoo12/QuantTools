@@ -28,7 +28,7 @@ def close_check(trading_date, sleep=60):
 def suspend_check(trading_date, sleep=60):
     while time_check_after("11:30:00") and time_check_before("13:00:00"):
         time.sleep(sleep)
-    QA_util_log_info('##JOB Trading Finished ==================== {}'.format(trading_date), ui_log=None)
+    QA_util_log_info('##JOB Suspend Finished ==================== {}'.format(trading_date), ui_log=None)
 
 
 def check_market_time():
