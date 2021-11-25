@@ -4,6 +4,7 @@ working_dir = 'D:\\model\\current'
 top = 20
 percent = 1
 exceptions = None
+
 strategy_id = {'account': 'name:client-1',
                'exceptions': None,
                'strategy_id': '机器学习1号',
