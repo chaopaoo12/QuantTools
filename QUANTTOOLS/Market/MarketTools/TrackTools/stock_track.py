@@ -1,5 +1,5 @@
 from QUANTTOOLS.Market.MarketTools import trading_base, load_data
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.setting import working_dir, stock_day_set, stock_hour_set, index_day_set, index_hour_set
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.setting import working_dir, stock_day_set, index_day_set, index_hour_set
 from QUANTTOOLS.Market.StockMarket.StockStrategyReal.concat_predict import (concat_predict,concat_predict_hour,concat_predict_15min,
                                                                             concat_predict_real,concat_predict_crawl,concat_predict_hedge,
                                                                             concat_predict_index,concat_predict_indexhour,concat_predict_index15min)
