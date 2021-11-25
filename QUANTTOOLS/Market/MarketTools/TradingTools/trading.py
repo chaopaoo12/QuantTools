@@ -4,22 +4,25 @@ from QUANTTOOLS.Trader.account_manage.base_func.Client import get_Client,check_C
 from QUANTTOOLS.Trader.account_manage.TradAction.BUY import BUY
 from QUANTTOOLS.Trader.account_manage.TradAction.SELL import SELL
 from QUANTTOOLS.Trader.account_manage.TradAction.HOLD import HOLD
-from QUANTTOOLS.Market.MarketTools.trading_tools.BuildTradingFrame import build
+from QUANTTOOLS.Market.MarketTools.TradingTools.BuildTradingFrame import build
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtm_bid
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import QA_fetch_stock_name
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour,get_quant_data_30min,get_index_quant_hour
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour, get_index_quant_hour
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_UseCapital, get_StockPos, get_hold
 import time
 import datetime
+
 
 def open_control(trading_date):
     time_contrl_bf("09:30:00")
     QA_util_log_info('##JOB Now Start Trading ==== {}'.format(str(trading_date)), ui_log = None)
 
+
 def close_control(strategy_id, trading_date):
     time_contrl_af("15:00:00")
     QA_util_log_info('##JOB Trading Finished ==================== {}'.format(trading_date), ui_log=None)
     send_actionnotice(strategy_id,'Trading Report:{}'.format(trading_date),'Trading Finished',direction = 'Trading',offset='Finished',volume=None)
+
 
 def time_contrl_bf(tm_mark):
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
@@ -28,12 +31,14 @@ def time_contrl_bf(tm_mark):
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
     return(tm_mark)
 
+
 def time_contrl_af(tm_mark):
     tm = int(datetime.datetime.now().strftime("%H%M%S"))
     while tm >= int(time.strftime("%H%M%S",time.strptime(tm_mark, "%H:%M:%S"))):
         time.sleep(15)
         tm = int(datetime.datetime.now().strftime("%H%M%S"))
     return(tm_mark)
+
 
 def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='end', exceptions = None, test = False):
 
@@ -155,7 +160,6 @@ def trade_roboot(target_tar, account, trading_date, percent, strategy_id, type='
     send_actionnotice(strategy_id,'交易报告:{}'.format(trading_date),'交易完成',direction = 'HOLD',offset='HOLD',volume=None)
 
     return(res1)
-
 
 def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type='end', exceptions = None, test = False):
 
@@ -404,8 +408,6 @@ def trade_roboot2(target_tar, account, trading_date, percent, strategy_id, type=
             else:
                 action_tm = action_list[action_list.index(action_tm) + 1]
             QA_util_log_info('##JOB Now Update Next MarkTM&ActionTM==== mark_tm: {} action_tm {}'.format(str(mark_tm),str(action_tm)), ui_log = None)
-
-
 
 if __name__ == '__main__':
     pass

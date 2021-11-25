@@ -246,6 +246,8 @@ def track_roboot3(account, trading_date, strategy_id, exceptions = None, test = 
 
     while tm <= int(time.strftime("%H%M%S",time.strptime(afternoon_end, "%H:%M:%S"))):
 
+        time.sleep(180)
+
         ##开市前休息
         while tm < int(time.strftime("%H%M%S",time.strptime(morning_begin, "%H:%M:%S"))):
             QA_util_log_info('##JOB Not Start Time ==== {}'.format(str(trading_date)), ui_log = None)
@@ -302,6 +304,10 @@ def track_roboot3(account, trading_date, strategy_id, exceptions = None, test = 
         ###time out
         QA_util_log_info('##JOB Tracking Finished ==================== {}'.format(trading_date), ui_log=None)
         send_actionnotice(strategy_id,'Tracking Report:{}'.format(trading_date),'Tracking Finished',direction = 'Tracking',offset='Finished',volume=None)
+
+def track_rob_main():
+    pass
+
 
 if __name__ == '__main__':
     pass
