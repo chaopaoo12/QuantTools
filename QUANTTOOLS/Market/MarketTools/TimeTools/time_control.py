@@ -3,14 +3,20 @@ import time
 import datetime
 
 
-def time_check_before(tm_mark):
-    tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    return tm <= int(time.strftime("%H%M%S",time.strptime(tm_mark, "%H:%M:%S")))
+def time_check_before(tm_mark, ckeck_tm=None):
+    if ckeck_tm is None:
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
+        return tm <= int(time.strftime("%H%M%S",time.strptime(tm_mark, "%H:%M:%S")))
+    else:
+        return ckeck_tm <= int(time.strftime("%H%M%S",time.strptime(tm_mark, "%H:%M:%S")))
 
 
-def time_check_after(tm_mark):
-    tm = int(datetime.datetime.now().strftime("%H%M%S"))
-    return tm >= int(time.strftime("%H%M%S",time.strptime(tm_mark, "%H:%M:%S")))
+def time_check_after(tm_mark, ckeck_tm=None):
+    if ckeck_tm is None:
+        tm = int(datetime.datetime.now().strftime("%H%M%S"))
+        return tm >= int(time.strftime("%H%M%S",time.strptime(tm_mark, "%H:%M:%S")))
+    else:
+        return ckeck_tm >= int(time.strftime("%H%M%S",time.strptime(tm_mark, "%H:%M:%S")))
 
 
 def open_check(trading_date, sleep=60):

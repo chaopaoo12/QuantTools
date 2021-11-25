@@ -3,7 +3,7 @@ from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_Client,check_Client
 import time
 import datetime
-from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, close_check, suspend_check, get_on_time,time_check_before
+from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, close_check, suspend_check, get_on_time,time_check_before, check_market_time
 from QUANTTOOLS.Market.MarketTools.TradingTools.trading_robot import trading_robot
 
 
@@ -93,21 +93,20 @@ class StrategyRobotBase:
             # prepare signal
             signal_data = self.strategy.strategy_run(mark_tm)
 
+            # second time check after 9.30
+            # 盘前停顿
+            open_check(self.trading_date)
+
             # action
+            while check_market_time() is False:
+                time.sleep(60)
+
             trading_robot(client, self.account, account_info, signal_data,
                           self.trading_date, mark_tm, self.strategy_id, test=test)
 
-            # second time check after 9.30
-            while open_check(self.trading_date):
-                # 盘前停顿
-                time.sleep(60)
-                pass
-
             # third time check not suspend
-            while suspend_check(self.trading_date):
-                # 午盘停顿
-                time.sleep(60)
-                pass
+            # 午盘停顿
+            suspend_check(self.trading_date)
 
         QA_util_log_info('当日交易完成 ==================== {}'.format(
             self.trading_date), ui_log=None)
