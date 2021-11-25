@@ -16,7 +16,7 @@ def rolling_ols(y):
     return(math.atan(model.slope)*180/math.pi)
 
 def spc(data, N= 5):
-    data[['vamp_c']]= data.rolling(window=N).agg({'vamp':rolling_ols})
+    data[['VAMP_C']]= data.rolling(window=N).agg({'VAMP':rolling_ols})
     return(data)
 
 def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'crawl'):
