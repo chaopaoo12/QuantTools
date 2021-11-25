@@ -2,7 +2,7 @@ from QUANTAXIS.QAUtil import QA_util_log_info
 import pandas as pd
 
 
-class StrategyBase():
+class StrategyBase:
 
     def __init__(self, code_list, position, sub_account, base_percent, trading_date):
         self.code_list = code_list
@@ -20,7 +20,7 @@ class StrategyBase():
     def set_balance_func(self, func):
         self.balance_func = func
 
-    def set_percent_func(self, func):
+    def set_percent_func(self, func=None):
         self.percent_func = func
 
     def signal_run(self, mark_tm):
