@@ -50,8 +50,13 @@ def balance(data, position, sub_account, percent):
     # 整体仓位可调整percent
     # 细节仓位另算
 
-    data = data.join(position[['市值', '可用余额']])
-    data = data[(data.signal == 1) | (data['可用余额'] > 0)]
+    if position.shape[0] > 0:
+        data = data.join(position[['市值', '可用余额']])
+        data = data[(data.signal == 1) | (data['可用余额'] > 0)]
+    else:
+        data = data[(data.signal == 1)]
+        data = pd.assign(市值=0,
+                         可用余额=0)
 
     data = pd.assign(target_position=1 / data.signal.sum(),
                      target_capital=data.target_position * sub_account * percent)
