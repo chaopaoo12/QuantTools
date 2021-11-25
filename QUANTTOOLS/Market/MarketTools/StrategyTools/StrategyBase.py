@@ -4,7 +4,7 @@ import pandas as pd
 
 class StrategyBase:
 
-    def __init__(self, code_list, position, sub_account, base_percent, trading_date):
+    def __init__(self, code_list=None, position=None, sub_account=None, base_percent=None, trading_date=None):
         self.code_list = code_list
         self.trading_date = trading_date
         self.position = position
