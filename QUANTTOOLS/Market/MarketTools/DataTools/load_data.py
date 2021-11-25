@@ -21,5 +21,6 @@ def load_data(func, trading_date, working_dir, model_name, file_name):
         send_email('交易报告:'+ trading_date, "空仓状态", 'date')
     return(r_tar, prediction_tar, prediction)
 
+
 if __name__ == '__main__':
     pass
