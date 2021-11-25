@@ -1,6 +1,6 @@
 
-from .train import daymodel_train, train_hedge, train_index
-from .running import predict, predict_real, predict_hedge, predict_index, predict_daily, predict_hourly, predict_minly,predict_index_summary
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.train import daymodel_train, train_hedge, train_index
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.running import predict, predict_real, predict_hedge, predict_index, predict_daily, predict_hourly, predict_minly,predict_index_summary
 
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_trade,QA_util_get_real_date
 

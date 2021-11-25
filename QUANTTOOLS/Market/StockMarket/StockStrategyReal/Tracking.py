@@ -1,5 +1,5 @@
 
-from .setting import working_dir, percent, exceptions
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.setting import exceptions
 from QUANTTOOLS.Market.MarketTools import tracking_base
 
 def Tracking(trading_date):

@@ -1,5 +1,5 @@
 
-from .running import predict_index,predict,predict_3,predict_hourly,predict_index_summary,predict_stock_summary, \
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.running import predict_index,predict,predict_3,predict_hourly,predict_index_summary,predict_stock_summary, \
     predict_target, predict_watch,index_predict_watch, predict_norm, predict_3_norm,predict_neut, predict_3_1
 
 def daily_run(trading_date):

@@ -1,13 +1,12 @@
 
-from .setting import working_dir, percent, exceptions, strategy_id
-from .concat_predict import concat_predict,concat_predict_real,concat_predict_hedge,concat_predict_index,concat_predict_neut
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.setting import working_dir, percent, exceptions, strategy_id
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.concat_predict import concat_predict, concat_predict_neut
 from QUANTTOOLS.Market.MarketTools import trading_base, load_data, trading_base2, StrategyRobotBase, StrategyBase
-from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day,QA_util_get_real_date,QA_util_if_trade,QA_util_log_info,QA_util_get_pre_trade_date
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_quant_data,get_quant_data
-from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial,QA_fetch_stock_all,QA_fetch_get_stock_llv
+from QUANTAXIS.QAUtil import QA_util_get_last_day,QA_util_get_real_date, QA_util_get_pre_trade_date
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_get_stock_llv
 
-from .StrategyTest import signal, balance
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.StrategyTest import signal, balance
 
 def trading(trading_date, func = concat_predict_neut, model_name = 'stock_xg', file_name = 'prediction', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 

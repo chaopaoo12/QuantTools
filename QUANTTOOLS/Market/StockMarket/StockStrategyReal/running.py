@@ -3,9 +3,9 @@
 from .concat_predict import (concat_predict,concat_predict_hour,concat_predict_15min,concat_predict_hourmark,
                              concat_predict_real,concat_predict_crawl,concat_predict_hedge,concat_predict_neut,
                              concat_predict_index,concat_predict_indexhour,concat_predict_index15min)
-from .setting import working_dir, percent, exceptions, top
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.setting import working_dir, percent, exceptions, top
 from QUANTTOOLS.Market.MarketTools import predict_base, predict_index_base, predict_index_dev, predict_stock_dev,base_report, load_data
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_quant_data,get_quant_data,get_quant_data_hour,get_quant_data_30min
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_data,get_quant_data
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date,QA_util_get_real_date
 from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import (QA_util_get_trade_range)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_name

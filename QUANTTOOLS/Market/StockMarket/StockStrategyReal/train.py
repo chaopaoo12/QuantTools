@@ -2,16 +2,11 @@
 
 from QUANTTOOLS.Model.StockModel.StrategyXgboostNeut import QAStockXGBoostNeut
 from QUANTTOOLS.Model.StockModel.StrategyXgboost import QAStockXGBoost
-from QUANTTOOLS.Model.StockModel.StrategyXgboostHourMark import QAStockXGBoostHourMark
-from QUANTTOOLS.Model.StockModel.StrategyXgboost15Min import QAStockXGBoost15Min
 from QUANTTOOLS.Model.IndexModel.IndexXGboost import QAIndexXGBoost
-from QUANTTOOLS.Model.IndexModel.IndexXGboostHour import QAIndexXGBoostHour
-from QUANTTOOLS.Model.IndexModel.IndexXGboost15Min import QAIndexXGBoost15Min
-from .setting import working_dir, stock_day_set, index_day_set, index_hour_set, stock_xg_set, index_xg_set, stock_day_nn, stock_xg_nn
-from QUANTTOOLS.Market.MarketTools.TrainTools import prepare_train, start_train, save_report, load_data, prepare_data, norm_data, set_target, shuffle
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.setting import working_dir, stock_day_set, index_day_set, stock_xg_set, index_xg_set, stock_day_nn, stock_xg_nn
+from QUANTTOOLS.Market.MarketTools.TrainTools import start_train, save_report, load_data, prepare_data, set_target
 from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import QA_util_get_real_date,QA_util_get_last_day
-from QUANTAXIS.QAUtil import QA_util_add_months
-import datetime
+
 
 def neut_model(date, working_dir=working_dir):
     stock_model = QAStockXGBoostNeut()
