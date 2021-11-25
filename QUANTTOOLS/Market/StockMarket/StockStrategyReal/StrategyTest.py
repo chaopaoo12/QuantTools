@@ -57,7 +57,7 @@ def balance(data, position, sub_account, percent):
         data = data[(data.signal == 1)]
         data = data.assign(市值=0, 可用余额=0)
 
-    data = pd.assign(target_position=1 / data.signal.sum(),
+    data = data.assign(target_position=1 / data.signal.sum(),
                      target_capital=data.target_position * sub_account * percent)
 
     # 方案2
