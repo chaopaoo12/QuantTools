@@ -13,7 +13,7 @@ def prepare_strategy(strategy, *args):
     return(strategy)
 
 
-class TradeRobotBase:
+class StrategyRobotBase:
     # 整合
 
     def __init__(self, code_list, time_list, trading_date):
