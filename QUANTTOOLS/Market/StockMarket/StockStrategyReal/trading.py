@@ -1,11 +1,13 @@
 
-from .setting import working_dir, percent, exceptions
+from .setting import working_dir, percent, exceptions, strategy_id
 from .concat_predict import concat_predict,concat_predict_real,concat_predict_hedge,concat_predict_index,concat_predict_neut
-from QUANTTOOLS.Market.MarketTools import trading_base, load_data, trading_base2
+from QUANTTOOLS.Market.MarketTools import trading_base, load_data, trading_base2, StrategyRobotBase, StrategyBase
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day,QA_util_get_real_date,QA_util_if_trade,QA_util_log_info,QA_util_get_pre_trade_date
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_hour,get_index_quant_data,get_quant_data
 from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_fianacial,QA_fetch_stock_all,QA_fetch_get_stock_llv
+
+from .StrategyTest import signal, balance
 
 def trading(trading_date, func = concat_predict_neut, model_name = 'stock_xg', file_name = 'prediction', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
@@ -85,6 +87,7 @@ def trading(trading_date, func = concat_predict_neut, model_name = 'stock_xg', f
     res = trading_base2(trading_date, target_pool, percent = per, account= account, title = model_name, exceptions = exceptions)
     return(res)
 
+
 def trading_real(trading_date, func = concat_predict, model_name = 'stock_xg_real', file_name = 'prediction_real', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
     r_tar, prediction_tar, prediction = load_data(func, trading_date, working_dir, model_name, file_name)
@@ -92,6 +95,7 @@ def trading_real(trading_date, func = concat_predict, model_name = 'stock_xg_rea
     res = trading_base(trading_date, r_tar, percent = percent, account= account, title = model_name, exceptions = exceptions)
 
     return(res)
+
 
 def trading_hedge(trading_date, func = concat_predict, model_name = 'hedge_xg', file_name = 'prediction_hedge', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
@@ -101,6 +105,25 @@ def trading_hedge(trading_date, func = concat_predict, model_name = 'hedge_xg', 
 
     return(res)
 
+
+def trading_new(trading_date, func=concat_predict_neut, working_dir=working_dir):
+
+    r_tar, prediction_tar, prediction = load_data(func, QA_util_get_last_day(trading_date), working_dir=working_dir, model_name='stock_xg_base', file_name='prediction_stock_xg_base')
+
+    code_list = prediction_tar[prediction_tar.RANK <= 20].loc[QA_util_get_last_day(trading_date)].code.tolist()
+    time_list = ['10:00:00',"10:30:00",'11:00:00',"11:30:00",'13:30:00',"14:00:00",'14:30:00',"15:00:00"]
+
+    robot = StrategyRobotBase(code_list, time_list, trading_date)
+    robot.set_account(strategy_id)
+
+    strategy = StrategyBase()
+    strategy.set_signal_func(signal)
+    strategy.set_balance_func(balance)
+    strategy.set_percent_func()
+
+    robot.set_strategy(strategy)
+    robot.ckeck_market_open()
+    robot.run(test=False)
 
 if __name__ == '__main__':
     pass

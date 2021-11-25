@@ -1,9 +1,14 @@
 #coding :utf-8
 
 working_dir = 'D:\\model\\current'
+top = 20
 percent = 1
 exceptions = None
-top = 20
+strategy_id = {'account': 'name:client-1',
+               'exceptions': None,
+               'strategy_id': '机器学习1号',
+               'percent': 1
+               }
 
 stock_xg_set = ['AVG30_RNG',
                  'AVG20_RNG',
