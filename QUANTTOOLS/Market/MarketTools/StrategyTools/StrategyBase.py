@@ -41,7 +41,7 @@ class StrategyBase:
 
         percent = self.percent_run(mark_tm)
 
-        balance_data = self.balance_run(data, percent)
+        balance_data = self.balance_run(data, percent).reset_index()
 
         signal_data = build_info(balance_data)
 
