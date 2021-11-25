@@ -61,7 +61,7 @@ class StrategyRobotBase:
         if self.code_list is None:
             self.code_list = []
 
-        if positions is not None:
+        if positions.shape[0] > 0:
             t_list = self.code_list + positions.code.tolist()
         else:
             t_list = list(set(self.code_list))
