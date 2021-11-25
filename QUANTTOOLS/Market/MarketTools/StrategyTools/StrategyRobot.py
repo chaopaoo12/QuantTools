@@ -52,7 +52,7 @@ class StrategyRobotBase:
         client = get_Client()
         sub_accounts, frozen, positions, frozen_positions = check_Client(
             client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
-        positions = positions[positions['股票余额'] > 0]
+        #positions = positions[positions['股票余额'] > 0]
 
         if self.code_list is None:
             t_list = [] + positions.code.tolist()
@@ -67,7 +67,7 @@ class StrategyRobotBase:
             client = get_Client()
             sub_accounts, frozen, positions, frozen_positions = check_Client(
                 client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
-            positions = positions[positions['股票余额'] > 0]
+            #positions = positions[positions['股票余额'] > 0]
             account_info = client.get_account(self.account)
 
             # strategy body
