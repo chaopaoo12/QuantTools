@@ -20,7 +20,7 @@ def open_check(trading_date, sleep=60):
 
 
 def close_check(trading_date, sleep=60):
-    while time_check_after("15:00:00"):
+    while time_check_before("15:00:00"):
         time.sleep(sleep)
     QA_util_log_info('##JOB Trading Finished ==================== {}'.format(trading_date), ui_log=None)
 

@@ -3,7 +3,7 @@ from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_Client,check_Client
 import time
 import datetime
-from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, close_check, suspend_check, get_on_time
+from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, close_check, suspend_check, get_on_time,time_check_before
 from QUANTTOOLS.Market.MarketTools.TradingTools.trading_robot import trading_robot
 
 
@@ -49,6 +49,7 @@ class StrategyRobotBase:
         mark_tm = get_on_time(tm, self.time_list)
 
         # init code
+        QA_util_log_info('##JOB Now Init Code List ==== {}'.format(str(self.trading_date)), ui_log=None)
         client = get_Client()
         sub_accounts, frozen, positions, frozen_positions = check_Client(
             client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
@@ -65,11 +66,10 @@ class StrategyRobotBase:
             t_list = self.code_list + positions.code.tolist()
         else:
             t_list = list(set(self.code_list))
-
         # init add data
 
         # first time check before 15
-        while close_check(self.trading_date):
+        while time_check_before('15:00:00'):
 
             client = get_Client()
             sub_accounts, frozen, positions, frozen_positions = check_Client(
