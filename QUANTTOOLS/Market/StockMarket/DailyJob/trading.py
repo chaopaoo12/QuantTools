@@ -130,7 +130,7 @@ def trading_new(trading_date, working_dir=working_dir):
 
     robot.set_strategy(strategy)
     robot.ckeck_market_open()
-    robot.run(test=False)
+    robot.run(test=True)
 
 if __name__ == '__main__':
     pass
