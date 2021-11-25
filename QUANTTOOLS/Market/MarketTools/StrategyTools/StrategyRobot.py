@@ -27,10 +27,10 @@ class StrategyRobotBase:
         self.percent = None
 
     def set_account(self, strategy_id):
-        self.account = strategy_id.account
-        self.exceptions = strategy_id.exceptions
-        self.strategy_id = strategy_id.strategy_id
-        self.percent = strategy_id.percent
+        self.account = strategy_id['account']
+        self.exceptions = strategy_id['exceptions']
+        self.strategy_id = strategy_id['strategy_id']
+        self.percent = strategy_id['percent']
 
     def set_strategy(self, strategy):
         self.strategy = strategy
