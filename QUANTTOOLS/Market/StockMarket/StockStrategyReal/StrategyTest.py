@@ -32,7 +32,7 @@ def signal(code_list, trading_date, mark_tm):
     # hold index&condition
     data['signal'] = None
     data.loc[data.SKDJ_TR_HR == 1, "signal"] = 1
-    data.loc[~data.SKDJ_TR_HR == 1, "signal"] = 0
+    data.loc[data.SKDJ_TR_HR != 1, "signal"] = 0
 
     # 方案2
     #data['signal'] = None
