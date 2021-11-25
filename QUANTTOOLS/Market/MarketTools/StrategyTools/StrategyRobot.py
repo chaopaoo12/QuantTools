@@ -53,7 +53,7 @@ class StrategyRobotBase:
         sub_accounts, frozen, positions, frozen_positions = check_Client(
             client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
 
-        if positions is not None:
+        if positions.shape[0] == 0:
             positions = positions[positions['股票余额'] > 0]
         else:
             pass
@@ -75,7 +75,7 @@ class StrategyRobotBase:
             sub_accounts, frozen, positions, frozen_positions = check_Client(
                 client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
 
-            if positions is not None:
+            if positions.shape[0] == 0:
                 positions = positions[positions['股票余额'] > 0]
             else:
                 pass
