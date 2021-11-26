@@ -50,7 +50,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_financial_report,
                                                    QA_fetch_usstock_technical_index,
                                                    QA_fetch_usstock_financial_percent,
                                                    QA_fetch_stock_base_real,
-                                                   QA_fetch_xqblock_day)
+                                                   QA_fetch_xqblock_day,
+                                                   QA_fetch_stock_vwap)
 from QUANTAXIS.QAUtil.QADate import month_data
 from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter,QA_util_log_info,
                               QA_util_datetime_to_strdate, QA_util_add_months,
@@ -67,7 +68,7 @@ def QA_fetch_financial_report_adv(code=None, start=None, end=None, type='report'
     return QA_DataStruct_Financial(QA_fetch_financial_report(code, start, end, type=type, ltype=ltype))
 
 
-def QA_fetch_stock_financial_calendar_adv(code, start="all", end=None, type='day', collections=DATABASE.report_calendar):
+def QA_fetch_stock_financial_calendar_adv(code, start="all", end=None, type='day'):
     '获取股票财报日历'
     #code= [code] if isinstance(code,str) else code
     # code checking
@@ -84,7 +85,7 @@ def QA_fetch_stock_financial_calendar_adv(code, start="all", end=None, type='day
     return QA_DataStruct_Financial(QA_fetch_stock_financial_calendar(code, start, end, type=type, format='pd'))
 
 
-def QA_fetch_stock_divyield_adv(code, start="all", end=None,type='crawl', collections=DATABASE.stock_divyield):
+def QA_fetch_stock_divyield_adv(code, start="all", end=None,type='crawl'):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -99,7 +100,7 @@ def QA_fetch_stock_divyield_adv(code, start="all", end=None,type='crawl', collec
         end = QA_util_today_str()
     return QA_DataStruct_Financial(QA_fetch_stock_divyield(code, start, end, type =type, format='pd'))
 
-def QA_fetch_financial_TTM_adv(code, start="all", end=None, collections=DATABASE.financial_TTM):
+def QA_fetch_financial_TTM_adv(code, start="all", end=None):
     '获取财报TTM'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -145,7 +146,7 @@ def QA_fetch_stock_fianacial_adv(code,
         #     return
         return QA_DataStruct_Financial(res_reset_index)
 
-def QA_fetch_stock_alpha_adv(code, start="all", end=None, collections=DATABASE.stock_alpha):
+def QA_fetch_stock_alpha_adv(code, start="all", end=None):
     '获取股票财报日历'
     #code= [code] if isinstance(code,str) else code
     end = start if end is None else end
@@ -162,7 +163,7 @@ def QA_fetch_stock_alpha_adv(code, start="all", end=None, collections=DATABASE.s
         data = QA_fetch_stock_alpha(code, start, end, format='pd')
         return QA_DataStruct_Financial(data)
 
-def QA_fetch_stock_shares_adv(code, start="all", end=None,type='crawl', collections=DATABASE.stock_shares):
+def QA_fetch_stock_shares_adv(code, start="all", end=None,type='crawl'):
     '获取股票日线'
     #code= [code] if isinstance(code,str) else code
     # code checking
@@ -185,6 +186,23 @@ def QA_fetch_financial_report_wy_adv(code=None, start=None, end=None, type='repo
         end {[type]} -- [description] (default: {None})
     """
     return QA_DataStruct_Financial(QA_fetch_financial_report_wy(code, start, end, type=type, ltype=ltype))
+
+def QA_fetch_stock_vwap_adv(code, start="all", end=None):
+    '获取股票财报日历'
+    #code= [code] if isinstance(code,str) else code
+    end = start if end is None else end
+    start = str(start)[0:10]
+    end = str(end)[0:10]
+
+    # code checking
+    if start == 'all' or start == None:
+        start = '2008-01-01'
+        end = QA_util_today_str()
+        data = QA_fetch_stock_vwap(code, start, end, format='pd')
+        return QA_DataStruct_Financial(data)
+    else:
+        data = QA_fetch_stock_vwap(code, start, end, format='pd')
+        return QA_DataStruct_Financial(data)
 
 def QA_fetch_stock_technical_index_adv(code, start="all", end=None, type='day', collections=DATABASE.stock_technical_index):
     '获取股票财报日历'

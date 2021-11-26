@@ -13,6 +13,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_interest_rat
                                                            QA_fetch_stock_alpha_adv,QA_fetch_stock_alpha101_adv,
                                                            QA_fetch_stock_technical_index_adv,QA_fetch_stock_base_real_adv,
                                                            QA_fetch_stock_technical_half_adv,
+                                                           QA_fetch_stock_vwap_adv,
 
                                                            QA_fetch_stock_quant_data_adv,QA_fetch_stock_quant_pre_adv,
                                                            QA_fetch_stock_quant_pre_train_adv,
@@ -55,6 +56,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_interest_rate,QA_fet
                                                    QA_fetch_stock_alpha,QA_fetch_stock_alpha101,QA_fetch_stock_technical_index,
                                                    QA_fetch_stock_alpha191half, QA_fetch_stock_alpha101half,
                                                    QA_fetch_stock_technical_half,QA_fetch_stock_base_real,
+
+                                                   QA_fetch_stock_vwap,
 
                                                    QA_fetch_stock_quant_data,QA_fetch_stock_quant_data_train,
                                                    QA_fetch_stock_quant_pre,QA_fetch_stock_quant_pre_train,
@@ -163,6 +166,3 @@ from QUANTTOOLS.QAStockETL.QAFetch.QABtc import QA_fetch_get_btc_day,QA_fetch_ge
 from QUANTTOOLS.QAStockETL.QAFetch.QAGold import QA_fetch_get_gold_day,QA_fetch_get_gold_min
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAMoney import QA_fetch_get_money_day,QA_fetch_get_money_min,QA_fetch_get_diniw_min
-
-from QUANTTOOLS.QAStockETL.QAFetch.QAvwap import QA_fetch_get_stock_vwap
-
