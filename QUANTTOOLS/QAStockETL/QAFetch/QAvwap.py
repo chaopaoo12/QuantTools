@@ -67,7 +67,6 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
 
 
 def QA_fetch_get_vwap(code, start_date, end_date, period='1', type='crawl'):
-    QA_util_log_info("JOB Get {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
 
     data = QA_fetch_get_stock_vwap(code, start_date, end_date, period=period, type=type)
     data = data.groupby(['date','code']).agg({'VAMP_C':['min','max','mean','median','std','last',percentile(0.25),percentile(0.75)],
