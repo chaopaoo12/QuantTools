@@ -44,7 +44,8 @@ from QUANTTOOLS.QAStockETL.QASU import \
     save_usstock_technical_index as usstock_index, \
     save_usstock_finper as usstock_finper, \
     crawl_xq_block as xq_block, \
-    save_stock_neutral as neutral
+    save_stock_neutral as neutral, \
+    save_stock_vwap as vwap
 
 from QUANTAXIS.QAUtil import QA_util_today_str
 
@@ -377,6 +378,13 @@ def QA_SU_save_stock_technical_30min_his(code = None,start_date=None,end_date=No
 
 def QA_SU_save_stock_neutral_day(start_date=None,end_date=None):
     neutral.QA_etl_stock_quant_neut(start_date=start_date,end_date=end_date)
+
+def QA_SU_save_stock_vwap_day(start_date=None,end_date=None):
+    vwap.QA_SU_save_stock_vwap_day(start_date=start_date,end_date=end_date)
+
+def QA_SU_save_stock_vwap_his(start_date=None,end_date=None):
+    vwap.QA_SU_save_stock_vwap_his(start_date=start_date,end_date=end_date)
+
 
 if __name__ == '__main__':
     pass
