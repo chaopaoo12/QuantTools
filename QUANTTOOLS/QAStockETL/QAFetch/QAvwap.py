@@ -3,8 +3,16 @@ from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_ut
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_min_adv
 from scipy import stats
 import pandas as pd
+import numpy as np
 import math
 from QUANTAXIS.QAIndicator.base import CROSS
+
+
+def percentile(n):
+    def percentile_(x):
+        return np.nanpercentile(x, n)
+    percentile_.__name__ = 'perc_%s' % n
+    return percentile_
 
 def rolling_ols(y):
     '''
@@ -51,10 +59,20 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['VAMP_JC'] = CROSS(data['close'], data['VAMP'])
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
         data['VAMP_C'] = data.groupby(['date','code']).apply(lambda x:spc(x))['VAMP_C']
-        data = data.reset_index()
-        data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     except:
         QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
         data = None
 
+    return(data)
+
+
+def QA_fetch_get_vwap(code, start_date, end_date, period='1', type='crawl'):
+    QA_util_log_info("JOB Get {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
+
+    data = QA_fetch_get_stock_vwap(code, start_date, end_date, period=period, type=type)
+    data = data.groupby(['date','code']).agg({'VAMP_C':['min','max','mean','median','std','last',percentile(0.25),percentile(0.75)],
+                                            'DISTANCE':['min','max','mean','median','std','last',percentile(0.25),percentile(0.75)]})
+    data.columns = ['_'.join(col).strip().upper() for col in data.columns.values]
+    data = data.reset_index()
+    data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     return(data)

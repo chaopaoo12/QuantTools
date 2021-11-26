@@ -4,7 +4,7 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_i
                               QA_util_to_json_from_pandas, QA_util_today_str,QA_util_get_pre_trade_date,
                               QA_util_datetime_to_strdate,QA_util_code_tolist)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_stock_om_all
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_vwap
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_vwap
 
 def QA_SU_save_stock_vwap_day(codes=None, start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
     '''
@@ -37,7 +37,7 @@ def QA_SU_save_stock_vwap_day(codes=None, start_date=None,end_date=None,client=D
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving save_stock_vwap from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
-            data = QA_fetch_get_stock_vwap(code, start_date, end_date)
+            data = QA_fetch_get_vwap(code, start_date, end_date)
             if data is not None:
                 stock_vwap.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
@@ -93,7 +93,7 @@ def QA_SU_save_stock_technical_index_his(codes=None, start_date=None,end_date=No
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving save_stock_vwap from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
-            data = QA_fetch_get_stock_vwap(code, start_date, end_date)
+            data = QA_fetch_get_vwap(code, start_date, end_date)
             if data is not None:
                 stock_vwap.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
