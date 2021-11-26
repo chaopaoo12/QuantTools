@@ -1,8 +1,7 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour
-from QUANTAXIS.QAUtil import QA_util_log_info, QA_util_get_pre_trade_date
+from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
 import time
-import pandas as pd
 
 
 def signal(code_list, trading_date, mark_tm):
