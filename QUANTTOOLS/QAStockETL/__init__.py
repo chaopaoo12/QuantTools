@@ -127,7 +127,9 @@ from QUANTTOOLS.QAStockETL.QAFetch import (
                                            QA_fetch_stock_all,QA_fetch_stock_delist,
 
                                            QA_fetch_stock_week_adv,QA_fetch_stock_month_adv,QA_fetch_stock_year_adv,
-                                           QA_fetch_stock_week,QA_fetch_stock_month,QA_fetch_stock_year)
+                                           QA_fetch_stock_week,QA_fetch_stock_month,QA_fetch_stock_year,
+                                           QA_fetch_stock_vwap,QA_fetch_stock_vwap_adv
+)
 
 
 from QUANTTOOLS.QAStockETL.Check import (check_index_day,check_stock_day,
