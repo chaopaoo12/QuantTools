@@ -10,7 +10,7 @@ from QUANTAXIS.QAIndicator.base import CROSS
 
 def percentile(n):
     def percentile_(x):
-        return np.nanpercentile(x, n)
+        return np.nanpercentile(x, n/100)
     percentile_.__name__ = 'perc_%s' % n
     return percentile_
 
@@ -69,8 +69,8 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
 def QA_fetch_get_vwap(code, start_date, end_date, period='1', type='crawl'):
 
     data = QA_fetch_get_stock_vwap(code, start_date, end_date, period=period, type=type)
-    data = data.groupby(['date','code']).agg({'VAMP_C':['min','max','mean','median','std','last',percentile(0.25),percentile(0.75)],
-                                            'DISTANCE':['min','max','mean','median','std','last',percentile(0.25),percentile(0.75)]})
+    data = data.groupby(['date','code']).agg({'VAMP_C':['min','max','mean','median','std','last',percentile(25),percentile(75)],
+                                            'DISTANCE':['min','max','mean','median','std','last',percentile(25),percentile(75)]})
     data.columns = ['_'.join(col).strip().upper() for col in data.columns.values]
     data = data.reset_index()
     data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
