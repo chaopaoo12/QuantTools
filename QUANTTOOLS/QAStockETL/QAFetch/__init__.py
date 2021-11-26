@@ -164,3 +164,5 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAGold import QA_fetch_get_gold_day,QA_fetch_
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAMoney import QA_fetch_get_money_day,QA_fetch_get_money_min,QA_fetch_get_diniw_min
 
+from QUANTTOOLS.QAStockETL.QAFetch.QAvwap import QA_fetch_get_stock_vwap
+
