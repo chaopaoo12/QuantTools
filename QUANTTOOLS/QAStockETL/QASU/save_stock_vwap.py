@@ -37,7 +37,7 @@ def QA_SU_save_stock_vwap_day(codes=None, start_date=None,end_date=None,client=D
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving save_stock_vwap from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
-            data = QA_fetch_get_stock_vwap(code, start_date, end_date).reset_index()
+            data = QA_fetch_get_stock_vwap(code, start_date, end_date)
             if data is not None:
                 stock_vwap.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
@@ -93,7 +93,7 @@ def QA_SU_save_stock_technical_index_his(codes=None, start_date=None,end_date=No
         try:
             QA_util_log_info(
                 '##JOB01 Now Saving save_stock_vwap from {start_date} to {end_date} ==== {code}'.format(code=str(code),start_date=start_date,end_date=end_date), ui_log)
-            data = QA_fetch_get_stock_vwap(code, start_date, end_date).reset_index()
+            data = QA_fetch_get_stock_vwap(code, start_date, end_date)
             if data is not None:
                 stock_vwap.insert_many(QA_util_to_json_from_pandas(data), ordered=False)
         except Exception as error0:
