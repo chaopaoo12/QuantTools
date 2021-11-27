@@ -61,7 +61,7 @@ def QA_SU_save_stock_vwap_day(codes=None, start_date=None,end_date=None,client=D
         QA_util_log_info(' ERROR CODE \n ',  ui_log)
         QA_util_log_info(err, ui_log)
 
-def QA_SU_save_stock_technical_index_his(codes=None, start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_stock_vwap_his(codes=None, start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
 
     '''
      save stock_day
