@@ -58,7 +58,7 @@
 """
 from QUANTAXIS.QASU.main import (QA_SU_save_etf_day, QA_SU_save_etf_min,
                                  QA_SU_save_index_min,QA_SU_save_stock_min)
-from  QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
+from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 
 if __name__ == '__main__':
     if QA_util_if_trade(QA_util_today_str()):
