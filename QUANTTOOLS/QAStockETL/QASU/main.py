@@ -295,8 +295,14 @@ def QA_SU_save_single_stock_hour(code):
 def QA_SU_save_stock_15min():
     save_tdx.QA_SU_save_stock_15min()
 
+def QA_SU_save_stock_1min():
+    save_tdx.QA_SU_save_stock_1min()
+
 def QA_SU_save_single_stock_15min(code):
     save_tdx.QA_SU_save_single_stock_15min(code)
+
+def QA_SU_save_single_stock_1min(code):
+    save_tdx.QA_SU_save_single_stock_1min(code)
 
 def QA_SU_save_stock_30min():
     save_tdx.QA_SU_save_stock_30min()

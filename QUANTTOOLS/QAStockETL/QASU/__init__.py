@@ -6,6 +6,7 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_stock_day,QA_SU_save_sto
                                              QA_SU_save_stock_delist,QA_SU_save_stock_industryinfo,
                                              QA_SU_save_stock_real,QA_SU_save_block_xq_day,
                                              QA_SU_save_stock_hour,QA_SU_save_single_stock_hour,
+                                             QA_SU_save_stock_1min,QA_SU_save_single_stock_1min,
                                              QA_SU_save_stock_15min,QA_SU_save_single_stock_15min,
                                              QA_SU_save_stock_30min,QA_SU_save_single_stock_30min,
                                              QA_SU_save_stock_xdxr,QA_SU_save_single_stock_xdxr)

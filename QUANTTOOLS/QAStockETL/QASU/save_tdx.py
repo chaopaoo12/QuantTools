@@ -1283,6 +1283,14 @@ def QA_SU_save_usstock_xq_day(client=DATABASE, ui_log=None, ui_progress=None):
         QA_util_log_info('ERROR CODE \n ', ui_log)
         QA_util_log_info(err, ui_log)
 
+def QA_SU_save_stock_1min(client=DATABASE, ui_log=None, ui_progress=None):
+    """save stock_min
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+    QA_SU_save_stock_min(['1min'])
+
 def QA_SU_save_stock_hour(client=DATABASE, ui_log=None, ui_progress=None):
     """save stock_min
 
@@ -1330,6 +1338,14 @@ def QA_SU_save_single_stock_15min(code : str, client=DATABASE, ui_log=None, ui_p
         client {[type]} -- [description] (default: {DATABASE})
     """
     QA_SU_save_single_stock_min(code, ['15min'])
+
+def QA_SU_save_single_stock_1min(code : str, client=DATABASE, ui_log=None, ui_progress=None):
+    """save single stock_min
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+    QA_SU_save_single_stock_min(code, ['1min'])
 
 def QA_SU_save_single_stock_xdxr(code : str, client=DATABASE, ui_log=None, ui_progress=None):
     """[summary]
