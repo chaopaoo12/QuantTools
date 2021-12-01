@@ -6,7 +6,7 @@ from QUANTAXIS.QAUtil import (DATABASE, QA_util_getBetweenQuarter, QA_util_log_i
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_stock_om_all
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_vwap
 
-def QA_SU_save_stock_vwap_day(codes=None, start_date=None,end_date=None,client=DATABASE, ui_log = None, ui_progress = None):
+def QA_SU_save_stock_vwap_day(codes=None, start_date=None,end_date=None, client=DATABASE, ui_log = None, ui_progress = None):
     '''
      save stock_day
     计算vwap指标
