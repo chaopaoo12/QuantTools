@@ -31,12 +31,12 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
     QA_util_log_info("JOB Get {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
 
     if type == 'crawl':
-        data = QA_fetch_stock_min_adv(code,start_date, end_date,frequence='1min').data
+        data = QA_fetch_stock_min_adv(code,start_date, end_date, frequence='1min').data
     elif type == 'real':
         data = QA_fetch_get_stock_min_sina(code, period=period, type='qfq')
 
     if data is not None and type == 'real':
-        data = data.reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
+        data = data.reset_index(drop=True).set_index(['datetime', 'code']).drop(columns=['date_stamp'])
 
     try:
         data = data.assign(date=data.reset_index().datetime.apply(lambda x:str(x)[0:10]).tolist(),
