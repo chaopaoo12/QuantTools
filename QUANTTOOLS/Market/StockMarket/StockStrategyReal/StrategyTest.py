@@ -48,23 +48,25 @@ def balance(data, position, sub_account, percent):
 
     # 整体仓位可调整percent
     # 细节仓位另算
+    if data is not None:
+        if position is not None:
+            data = data.join(position[['市值', '可用余额']])
+            data = data[(data.signal == 1) | (data['可用余额'] > 0)]
+        else:
+            data = data[(data.signal == 1)]
+            data = data.assign(市值=0, 可用余额=0)
 
-    if position is not None:
-        data = data.join(position[['市值', '可用余额']])
-        data = data[(data.signal == 1) | (data['可用余额'] > 0)]
+        data = data.assign(target_position=1 / data.signal.sum())
+        data = data.assign(target_capital=data.target_position * sub_account * percent)
+
+        # 方案2
+        # data = pd.assign(target_position=1 / data.signal.sum(),
+        #                 target_capital=data.target_position * sub_account * percent)
+
+        data['mark'] = None
+        data.loc[data["target_capital"] >= data["市值"], "mark"] = "buy"
+        data.loc[data["target_capital"] < data["市值"], "mark"] = "sell"
+
+        return(data.reset_index())
     else:
-        data = data[(data.signal == 1)]
-        data = data.assign(市值=0, 可用余额=0)
-
-    data = data.assign(target_position=1 / data.signal.sum())
-    data = data.assign(target_capital=data.target_position * sub_account * percent)
-
-    # 方案2
-    # data = pd.assign(target_position=1 / data.signal.sum(),
-    #                 target_capital=data.target_position * sub_account * percent)
-
-    data['mark'] = None
-    data.loc[data["target_capital"] >= data["市值"], "mark"] = "buy"
-    data.loc[data["target_capital"] < data["市值"], "mark"] = "sell"
-
-    return(data)
+        return None
