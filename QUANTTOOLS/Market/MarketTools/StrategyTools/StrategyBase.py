@@ -37,11 +37,17 @@ class StrategyBase:
 
     def strategy_run(self, mark_tm):
 
-        data = self.signal_run(mark_tm)
+        k = 0
+        while k <= 2:
+            data = self.signal_run(mark_tm)
+            if data is None and self.code_list is not None:
+                k += 1
+            else:
+                break
 
         percent = self.percent_run(mark_tm)
 
-        balance_data = self.balance_run(data, percent).reset_index()
+        balance_data = self.balance_run(data, percent)
 
         signal_data = build_info(balance_data)
 
@@ -71,20 +77,23 @@ def build_info(data):
     #                  'target_capital':0,目标持仓金额
     #                  'data':'xxxx'},
     #                 {...}]}
+    if data is not None:
 
-    QA_util_log_info('##CHECK columns ', ui_log = None)
-    need_columns = ['code', 'name', 'industry', 'msg', 'close', 'target_position', 'target_capital', 'mark']
-    for inset_column in [i for i in need_columns if i not in data.columns]:
-        QA_util_log_info('##CHECK short of columns {}'.format(inset_column), ui_log = None)
-        data[inset_column] = 0
+        QA_util_log_info('##CHECK columns ', ui_log = None)
+        need_columns = ['code', 'name', 'industry', 'msg', 'close', 'target_position', 'target_capital', 'mark']
+        for inset_column in [i for i in need_columns if i not in data.columns]:
+            QA_util_log_info('##CHECK short of columns {}'.format(inset_column), ui_log = None)
+            data[inset_column] = 0
 
-    sell_list = data[data.mark == 'sell'].code.tolist()
-    sell_dict = data[data.code.isin(sell_list)][need_columns].to_dict(orient='records')
-    buy_list = data[data.mark == 'buy'].code.tolist()
-    buy_dict = data[data.code.isin(buy_list)][need_columns].to_dict(orient='records')
+        sell_list = data[data.mark == 'sell'].code.tolist()
+        sell_dict = data[data.code.isin(sell_list)][need_columns].to_dict(orient='records')
+        buy_list = data[data.mark == 'buy'].code.tolist()
+        buy_dict = data[data.code.isin(buy_list)][need_columns].to_dict(orient='records')
 
-    signal_data = {'sell': sell_dict, 'buy': buy_dict}
-    return(signal_data)
+        signal_data = {'sell': sell_dict, 'buy': buy_dict}
+        return(signal_data)
+
+    return(None)
 
 
 if __name__ == '__main__':
