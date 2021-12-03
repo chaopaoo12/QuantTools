@@ -47,12 +47,12 @@ if __name__ == '__main__':
         QA_SU_save_index_info()
 
         res = check_index_60min(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 10:
+        while res is None or (len(res[0]) + len(res[1])) > 100:
             QA_SU_save_index_hour()
             res = check_index_60min(mark_day)
 
         res = check_index_techhour(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 10:
+        while res is None or (len(res[0]) + len(res[1])) > 100:
             QA_SU_save_index_technical_hour_day(start_date = mark_day, end_date = mark_day)
             res = check_index_techhour(mark_day)
 
