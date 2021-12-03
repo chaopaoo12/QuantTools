@@ -48,12 +48,12 @@ if __name__ == '__main__':
         QA_SU_save_index_info()
 
         res = check_index_day(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 20:
+        while res is None or (len(res[0]) + len(res[1])) > 100:
             QA_SU_save_index_day('tdx')
             res = check_index_day(mark_day)
 
         res = check_index_techindex(mark_day)
-        while res is None or (len(res[0]) + len(res[1])) > 20:
+        while res is None or (len(res[0]) + len(res[1])) > 100:
             QA_SU_save_index_technical_index_day(start_date = mark_day, end_date = mark_day)
             res = check_index_techindex(mark_day)
 
