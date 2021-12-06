@@ -173,7 +173,7 @@ class QAModel():
         if hasattr(self, 'n_in'):
             pass
         else:
-            self.info['n_in'] = None
+            self.n_in = None
 
         if hasattr(self, 'normoalize'):
             pass
