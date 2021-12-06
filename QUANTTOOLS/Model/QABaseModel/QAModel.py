@@ -170,6 +170,16 @@ class QAModel():
         for k, v in self.info.items():
             setattr(self, k, v)
 
+        if hasattr(self, 'n_in'):
+            pass
+        else:
+            self.info['n_in'] = None
+
+        if hasattr(self, 'normoalize'):
+            pass
+        else:
+            self.info['normoalize'] = None
+
 
 if __name__ == 'main':
     pass
