@@ -139,37 +139,37 @@ class QAModel():
         QA_util_log_info('##JOB Now Model Loading', ui_log = None)
         self.model = joblib.load(working_dir+"\\{name}.joblib.dat".format(name=name))
         self.info = joblib.load(working_dir+"\\{name}info.joblib.dat".format(name=name))
-        self.cols = self.info['cols']
-        self.thresh = self.info['thresh']
-        self.drop = self.info['drop']
-        self.code = self.info['code']
-        self.target = self.info['target']
 
         try:
-            self.norm_type = self.info['norm_type']
+            self.info['norm_type'] = self.info['norm_type']
         except:
-            self.norm_type = None
+            self.info['norm_type'] = None
 
         try:
-            self.block = self.info['block']
+            self.info['block'] = self.info['block']
         except:
-            self.block = False
+            self.info['block'] = False
 
         try:
-            self.sub_block = self.info['sub_block']
+            self.info['sub_block'] = self.info['sub_block']
         except:
-            self.sub_block = False
+            self.info['sub_block'] = False
 
         try:
-            self.normoalize = self.info['normoalize']
+            self.info['normoalize'] = self.info['normoalize']
         except:
-            pass
+            self.info['normoalize'] = None
 
         try:
-            self.n_in = self.info['n_in']
+            self.info['n_in'] = self.info['n_in']
         except:
-            self.n_in = None
+            self.info['n_in'] = None
         return(self)
+
+    def get_param(self):
+        for k, v in self.info.items():
+            setattr(self, k, v)
+
 
 if __name__ == 'main':
     pass
