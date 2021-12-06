@@ -131,10 +131,12 @@ class QAStockModelNeut(QAModel):
             elif norm == 'stand':
                 train = train.assign(y_pred = self.model.predict(train[self.cols].groupby('date').apply(standardize)))
                 bina = pd.DataFrame(self.model.predict_proba(train[self.cols].groupby('date').apply(standardize)))[[0,1]]
+            else:
+                train = train.assign(y_pred = self.model.predict(train[self.cols]))
+                bina = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
 
         except:
-            train = train.assign(y_pred = self.model.predict(train[self.cols]))
-            bina = pd.DataFrame(self.model.predict_proba(train[self.cols]))[[0,1]]
+            pass
 
         bina.index = train.index
         train[['Z_PROB','O_PROB']] = bina
