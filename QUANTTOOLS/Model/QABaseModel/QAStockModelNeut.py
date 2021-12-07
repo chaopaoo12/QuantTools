@@ -8,9 +8,9 @@ from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
 
 class QAStockModelNeut(QAModel):
 
-    def get_data(self, start, end, code=None, block=False, sub_block=False, type ='crawl', norm_type=None):
+    def get_data(self, start, end, code=None, block=False, sub_block=False, type ='crawl', norm_type=None, ST=True):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-        self.data = get_quant_data_neut(start, end, code=code, type = type, block = block, sub_block = sub_block)
+        self.data = get_quant_data_neut(start, end, code=code, type = type, block = block, sub_block = sub_block, ST =ST)
         self.info['code'] = code
         self.info['block'] = block
         self.info['sub_block'] = sub_block
