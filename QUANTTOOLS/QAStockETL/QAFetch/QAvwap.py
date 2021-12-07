@@ -41,17 +41,13 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
     try:
         data = data.assign(date=data.reset_index().datetime.apply(lambda x:str(x)[0:10]).tolist(),
                            HM=data.reset_index().datetime.dt.strftime('%H:%M').values,
-                           amt=((data['high'] +data['low']) / 2) * data['volume'])
-        data = data.assign(camt = data.groupby(['date','code'])['amt'].cumsum(),
-                           cvolume = data.groupby(['date','code'])['volume'].cumsum(),
-                           open_p = data.groupby(['date','code'])['open'].shift(),
-                           close_p = data.groupby(['date','code'])['close'].shift(),
-                           high_p = data.groupby(['date','code'])['high'].shift(),
-                           low_p = data.groupby(['date','code'])['low'].shift(),
-                           open_p2 = data.groupby(['date','code'])['open'].shift(2),
-                           close_p2 = data.groupby(['date','code'])['close'].shift(2),
-                           high_p2 = data.groupby(['date','code'])['high'].shift(2),
-                           low_p2 = data.groupby(['date','code'])['low'].shift(2))
+                           amt=((data['high']+data['low']) / 2) * data['volume'])
+        data = data.assign(camt=data.groupby(['date','code'])['amt'].cumsum(),
+                           cvolume=data.groupby(['date','code'])['volume'].cumsum())
+        data[['open_p','close_p','high_p','low_p','AMT_P','VOL_P']] = \
+            data.groupby(['date','code'])[['open','close','high','low','camt','cvolume']].shift()
+        data[['open_p2','close_p2','high_p2','low_p2']] = \
+            data.groupby(['date','code'])[['open','close','high','low']].shift(2)
         data[['AMT_P','VOL_P']] = data.groupby(['HM','code'])[['camt','cvolume']].shift()
         data['AMT_UP'] = data['camt'] / data['AMT_P'] - 1
         data['VAMP'] = data['camt'] / data['cvolume']
