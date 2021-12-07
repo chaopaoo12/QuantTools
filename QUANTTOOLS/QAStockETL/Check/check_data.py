@@ -13,7 +13,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_stock_fianac
                                                            QA_fetch_stock_half_adv,
                                                            QA_fetch_stock_alpha191half_adv,
                                                            QA_fetch_stock_technical_half_adv,
-                                                           QA_fetch_stock_quant_neut_adv
+                                                           QA_fetch_stock_quant_neut_adv,
+                                                           QA_fetch_stock_vwap_adv
                                                            )
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191Half import QA_Sql_Stock_Alpha191Half
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101Half import QA_Sql_Stock_Alpha101Half
@@ -50,6 +51,14 @@ def check_stock_60min(mark_day = None):
 def check_sinastock_60min(mark_day = None):
     return(check_stock_base(func1 = QA_fetch_stock_60min, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock 60Min sina'))
 
+def QA_fetch_stock_1min(code, start, end):
+    return(QA_fetch_stock_min_adv(code, start, end, frequence='1min').data)
+
+def check_stock_1min(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_60min, mark_day = mark_day, title = 'Stock 1Min'))
+
+def check_sinastock_1min(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_60min, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock 1Min sina'))
 
 def QA_fetch_stock_half(code, start, end):
     return(QA_fetch_stock_half_adv(code, start, end).data)
@@ -175,6 +184,15 @@ def QA_fetch_stock_techhalf(code, start, end):
 
 def check_sinastock_tech(mark_day = None):
     return(check_stock_base(func1 = QA_fetch_stock_techhalf, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock TechHalf sina'))
+
+def QA_fetch_stock_vwap(code, start, end):
+    return(QA_fetch_stock_vwap_adv(code, start, end).data)
+
+def check_stock_vwap(mark_day = None):
+    return(check_stock_data(func = QA_fetch_stock_vwap, mark_day = mark_day, title = 'Stock Vwap'))
+
+def check_sinastock_vwap(mark_day = None):
+    return(check_stock_base(func1 = QA_fetch_stock_vwap, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock Vwap sina'))
 
 
 def QA_fetch_stock_techweek(code, start, end):
