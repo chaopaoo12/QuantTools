@@ -45,7 +45,7 @@ def choose_model(date, working_dir=working_dir):
 def daymodel_train(date, working_dir=working_dir):
     stock_model = QAStockXGBoostNeut()
 
-    start_date = str(int(date[0:4])-2)+'-01-01'
+    start_date = str(int(date[0:4])-1)+'-01-01'
     end_date = date
 
     stock_model = load_data(stock_model, start_date, end_date, type ='crawl', sub_block=True, norm_type=None)
@@ -71,7 +71,7 @@ def daymodel_train(date, working_dir=working_dir):
 
     stock_model = QAStockXGBoost()
 
-    stock_model = load_data(stock_model, start_date, end_date, type ='crawl', sub_block=True, norm_type=None)
+    stock_model = load_data(stock_model, start_date, end_date, type ='crawl', sub_block=True, norm_type=None, ST=True)
 
     stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 0.3, col = 'TARGET5', type='percent')
 
