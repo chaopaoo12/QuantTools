@@ -29,7 +29,7 @@
 """
 
 from QUANTTOOLS.QAStockETL.Check import (check_stock_code, check_stock_neut,
-                                         check_stock_finper, check_stock_alpha191,
+                                         check_stock_finper, check_stock_alpha191, check_stock_vwap,
                                          check_index_techindex, check_index_techhour)
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade,QA_util_get_pre_trade_date,QA_util_get_real_date
 from QUANTTOOLS.Market.StockMarket.DailyJob.daily_job import daily_run, index_run
@@ -63,6 +63,11 @@ if __name__ == '__main__':
     while res is None or len(res[1]) > 50:
         time.sleep(180)
         res = check_stock_finper(mark_day)
+
+    res = check_stock_vwap(mark_day)
+    while res is None or len(res[1]) > 50:
+        time.sleep(180)
+        res = check_stock_vwap(mark_day)
 
     res = check_stock_neut(mark_day)
     while res is None or len(res[1]) > 100:
