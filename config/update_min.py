@@ -24,5 +24,5 @@ if __name__ == '__main__':
 
         res = check_stock_vwap(mark_day)
         if res is None or len(res[1]) > 50:
-            QA_SU_save_stock_vwap_day(start_date=mark_day,  end_date=mark_day)
+            QA_SU_save_stock_vwap_day(start_date=mark_day, end_date=mark_day)
             res = check_stock_vwap(mark_day)
