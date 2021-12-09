@@ -55,10 +55,10 @@ def QA_fetch_stock_1min(code, start, end):
     return(QA_fetch_stock_min_adv(code, start, end, frequence='1min').data)
 
 def check_stock_1min(mark_day = None):
-    return(check_stock_data(func = QA_fetch_stock_60min, mark_day = mark_day, title = 'Stock 1Min'))
+    return(check_stock_data(func = QA_fetch_stock_1min, mark_day = mark_day, title = 'Stock 1Min'))
 
 def check_sinastock_1min(mark_day = None):
-    return(check_stock_base(func1 = QA_fetch_stock_60min, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock 1Min sina'))
+    return(check_stock_base(func1 = QA_fetch_stock_1min, func2 = QA_fetch_stock_half_realtime, mark_day = mark_day, title = 'Stock 1Min sina'))
 
 def QA_fetch_stock_half(code, start, end):
     return(QA_fetch_stock_half_adv(code, start, end).data)
