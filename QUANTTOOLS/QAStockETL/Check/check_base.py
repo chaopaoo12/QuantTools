@@ -112,16 +112,28 @@ def check_stock_data(func = None, mark_day = None, title = None):
     except:
         data2 = None
 
-    if data1 is None or data2 is None:
+    if data2 is None :
+        QA_util_log_info(
+            '##JOB Now Check {title} Failed ============== {to_date} to {to_date} '.format(title = title,
+                                                                                             deal_date=to_date,
+                                                                                             to_date=to_date))
+        send_actionnotice('{title}检查错误报告'.format(title = title),
+                          '{title}数据缺失:{deal_date}'.format(title = title, deal_date=to_date),
+                          'WARNING',
+                          direction = '{mark_day}, 数据量:{num}'.format(mark_day = to_date, num = 0),
+                          offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = 0),
+                          volume= '缺失全部数据')
+        return(None)
+    elif data1 is None:
         QA_util_log_info(
             '##JOB Now Check {title} Failed ============== {deal_date} to {to_date} '.format(title = title,
                                                                                              deal_date=mark_day,
-                                                                                             to_date=to_date))
+                                                                                             to_date=mark_day))
         send_actionnotice('{title}检查错误报告'.format(title = title),
                           '{title}数据缺失:{deal_date}'.format(title = title, deal_date=mark_day),
                           'WARNING',
                           direction = '{mark_day}, 数据量:{num}'.format(mark_day = mark_day, num = 0),
-                          offset='{to_date}, 数据量:{num}'.format(to_date = to_date, num = 0),
+                          offset='{to_date}, 数据量:{num}'.format(to_date = mark_day, num = 0),
                           volume= '缺失全部数据')
         return(None)
     elif len(data1) < len(data2):
