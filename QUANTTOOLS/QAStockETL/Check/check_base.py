@@ -114,7 +114,7 @@ def check_stock_data(func = None, mark_day = None, title = None):
 
     if data2 is None :
         QA_util_log_info(
-            '##JOB Now Check {title} Failed ============== {to_date} to {to_date} '.format(title = title,
+            '##JOB Now Check {title} Failed to_date ============== {to_date} to {to_date} '.format(title = title,
                                                                                              deal_date=to_date,
                                                                                              to_date=to_date))
         send_actionnotice('{title}检查错误报告'.format(title = title),
@@ -126,7 +126,7 @@ def check_stock_data(func = None, mark_day = None, title = None):
         return(None)
     elif data1 is None:
         QA_util_log_info(
-            '##JOB Now Check {title} Failed ============== {deal_date} to {to_date} '.format(title = title,
+            '##JOB Now Check {title} Failed mark_day ============== {deal_date} to {to_date} '.format(title = title,
                                                                                              deal_date=mark_day,
                                                                                              to_date=mark_day))
         send_actionnotice('{title}检查错误报告'.format(title = title),
