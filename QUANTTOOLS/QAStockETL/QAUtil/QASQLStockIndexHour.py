@@ -318,10 +318,10 @@ def QA_Sql_Stock_IndexHour(from_ , to_,code=None, type = 'day', sql_text = sql_t
     else:
         code_condition = ' code in (' + ','.join(code) + ') and '
 
-    sql_text = sql_text.format(condition = code_condition,from_=from_,to_=to_)
-
     if type == 'day':
-        sql_text = sql_text + " and substr(datetime, 12, 20) = '15:00:00'"
+        code_condition = code_condition + " substr(datetime, 12, 20) = '15:00:00' and "
+
+    sql_text = sql_text.format(condition = code_condition,from_=from_,to_=to_)
 
     conn = cx_Oracle.connect(ORACLE_PATH2)
     QA_util_log_info(sql_text)
