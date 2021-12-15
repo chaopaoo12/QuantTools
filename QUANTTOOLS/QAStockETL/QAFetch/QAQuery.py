@@ -3482,24 +3482,24 @@ def QA_fetch_stock_quant_neut(code, start, end=None, block = True, format='pd'):
         __data = []
         QA_util_log_info(
             'JOB Get Stock Financial data start=%s end=%s' % (start, end))
-        pe_res = pe(start,end_date)
-        financial_res = financial(start,end_date)
+        pe_res = pe(start,end_date,code=code)
+        financial_res = financial(start,end_date,code=code)
 
         QA_util_log_info(
             'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
-        index_res = index(start,end_date)
+        index_res = index(start,end_date,code=code)
 
         QA_util_log_info(
             'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start,end_date)
+        hour_res = hour(start,end_date,code=code)
 
         QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
-        week_res = week(start,end_date)
+        week_res = week(start,end_date,code=code)
 
         QA_util_log_info(
             'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start,end_date)
+        alpha_res = alpha(start,end_date,code=code)
 
         try:
             res = financial_res.join(index_res).join(week_res).join(alpha_res).join(hour_res).join(pe_res).loc[(rng,code),]
