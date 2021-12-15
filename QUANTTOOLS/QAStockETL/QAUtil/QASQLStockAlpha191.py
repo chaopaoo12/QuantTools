@@ -45,10 +45,14 @@ and order_Date <=
 to_date('{to_}', 'yyyy-mm-dd')
 '''
 
-def QA_Sql_Stock_Alpha191(from_ , to_, sql_text = sql_text, ui_log= None):
+def QA_Sql_Stock_Alpha191(from_ , to_, code=None, sql_text = sql_text, ui_log= None):
     QA_util_log_info(
         '##JOB01 Now Fetch Stock QuantData Alpha191 ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
-    sql_text = sql_text.format(from_=from_,to_=to_)
+    if code is None or len(code) > 20:
+        code_condition = ''
+    else:
+        code_condition = ' code in (' + ','.join(code) + ') and '
+    sql_text = sql_text.format(condition = code_condition,from_=from_,to_=to_)
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
