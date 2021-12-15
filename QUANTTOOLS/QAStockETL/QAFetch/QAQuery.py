@@ -704,7 +704,7 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, norm_ty
         __data = []
         QA_util_log_info(
             'JOB Get Stock Financial train data start=%s end=%s' % (start, end))
-        pe_res = pe(start_date,end_date)[['PE_30VAL','PE_30DN','PE_30UP',
+        pe_res = pe(start_date,end_date,code=code)[['PE_30VAL','PE_30DN','PE_30UP',
                                           'PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
                                           'PB_30VAL','PB_30DN','PB_30UP',
                                           #'PEG_30VAL','PEG_30DN','PEG_30UP',
@@ -720,24 +720,24 @@ def QA_fetch_stock_quant_data_train(code, start, end=None, block = True, norm_ty
                                           #'PEG_90VAL','PEG_90DN','PEG_90UP',
                                           #'PS_90VAL','PS_90DN','PS_90UP'
                                           ]].groupby('code').fillna(method='ffill').fillna(0)
-        financial_res = financial(start_date,end_date)
+        financial_res = financial(start_date,end_date,code=code)
         financial_res = financial_res[financial_res.DAYS >= 90]
 
         QA_util_log_info(
             'JOB Get Stock Tech Index train data start=%s end=%s' % (start, end))
-        index_res = index(start_date,end_date)
+        index_res = index(start_date,end_date,code=code)
 
         QA_util_log_info(
             'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start_date,end_date, type= 'day')
+        hour_res = hour(start_date,end_date,code=code, type= 'day')
 
         QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
-        week_res = week(QA_util_get_pre_trade_date(start,90),end_date)
+        week_res = week(QA_util_get_pre_trade_date(start,90),end_date,code=code)
 
         QA_util_log_info(
             'JOB Get Stock Alpha191 train data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start_date,end_date)
+        alpha_res = alpha(start_date,end_date,code=code)
 
         try:
             res = financial_res.join(index_res).join(hour_res).join(week_res).join(alpha_res).join(pe_res).groupby('code').fillna(method='ffill').loc[((rng,code),)]
@@ -810,7 +810,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
         __data = []
         QA_util_log_info(
             'JOB Get Stock Financial data start=%s end=%s' % (start, end))
-        pe_res = pe(start_date,end_date)[['PE_30VAL','PE_30DN','PE_30UP',
+        pe_res = pe(start_date,end_date,code=code)[['PE_30VAL','PE_30DN','PE_30UP',
                                           'PEEGL_30VAL','PEEGL_30DN','PEEGL_30UP',
                                           'PB_30VAL','PB_30DN','PB_30UP',
                                           #'PEG_30VAL','PEG_30DN','PEG_30UP',
@@ -826,24 +826,24 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
                                           #'PEG_90VAL','PEG_90DN','PEG_90UP',
                                           #'PS_90VAL','PS_90DN','PS_90UP'
                                           ]].groupby('code').fillna(method='ffill').fillna(0)
-        financial_res = financial(start_date,end_date)
+        financial_res = financial(start_date,end_date,code=code)
         financial_res = financial_res[financial_res.DAYS >= 90]
 
         QA_util_log_info(
             'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
-        index_res = index(start_date,end_date)
+        index_res = index(start_date,end_date,code=code)
 
         QA_util_log_info(
             'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start_date,end_date, type= 'day')
+        hour_res = hour(start_date,end_date,code=code, type= 'day')
 
         QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
-        week_res = week(QA_util_get_pre_trade_date(start,90),end_date)
+        week_res = week(QA_util_get_pre_trade_date(start,90),end_date,code=code)
 
         QA_util_log_info(
             'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
-        alpha_res = alpha(start_date,end_date)
+        alpha_res = alpha(start_date,end_date,code=code)
 
         QA_util_log_info(
             'JOB Get Stock Vwap data start=%s end=%s' % (start, end))
