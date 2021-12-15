@@ -30,9 +30,8 @@ def QA_Sql_Stock_FinancialPercent(from_ , to_, code =None, sql_text = sql_text, 
         code_condition = ' code = ' + ','.join(code) + ' and '
     else:
         code_condition = ' code in (' + ','.join(code) + ') and '
-    QA_util_log_info(code_condition)
+
     sql_text = sql_text.format(condition = code_condition,from_=from_,to_=to_)
-    QA_util_log_info(sql_text)
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
