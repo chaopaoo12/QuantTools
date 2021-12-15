@@ -53,10 +53,14 @@ to_date('{to_}', 'yyyy-mm-dd')
 def QA_Sql_Stock_Financial(from_ , to_, code = None, sql_text = sql_text, ui_log= None):
     QA_util_log_info(
         '##JOB01 Now Fetch Stock QuantData Financial ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
+
     if code is None or len(code) > 20:
         code_condition = ''
+    elif len(code) == 1:
+        code_condition = ' code = ' + ','.join(code) + ' and '
     else:
         code_condition = ' code in (' + ','.join(code) + ') and '
+
     sql_text = sql_text.format(condition = code_condition,from_=from_,to_=to_)
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql_text, con=conn)

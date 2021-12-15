@@ -312,6 +312,8 @@ def QA_Sql_Stock_Index(from_ , to_, code=None, sql_text = sql_text, ui_log= None
         '##JOB01 Now Fetch Stock QuantData Index ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     if code is None or len(code) > 20:
         code_condition = ''
+    elif len(code) == 1:
+        code_condition = ' code = ' + ','.join(code) + ' and '
     else:
         code_condition = ' code in (' + ','.join(code) + ') and '
     sql_text = sql_text.format(condition = code_condition,from_=from_,to_=to_)
