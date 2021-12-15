@@ -18,17 +18,17 @@ class QAModel():
 
     def set_target(self, col, mark, type = 'value', shift= None):
         self.target = col
-        QA_util_log_info('##JOB Set Train Target by {type} at {mark} in column {col} ==== {date}'.format(type=type, mark= mark,
-                                                                                                         col=col, date= self.info['date']),
-                         ui_log = None)
+        QA_util_log_info('##JOB Set Train Target by {type} at {mark} in column {col} ==== {date}'.format(
+            type=type, mark= mark,col=col, date= self.info['date']),ui_log = None)
 
         if type == 'value':
-            if shift is not None:
-                self.data['star'] = self.data[self.target].apply(lambda x: 1 if x >= mark else 0)
-            else:
-                self.data['star'] = self.data[self.target].apply(lambda x: 1 if x >= mark else 0)
+            self.data['star'] = self.data[self.target].apply(lambda x: 1 if x >= mark else 0)
         elif type == 'percent':
-            self.data['star'] = self.data[self.target].groupby('date').apply(lambda x: x.rank(ascending=False, pct=True)).apply(lambda x :1 if x <= mark else 0)
+            self.data['star'] = self.data[self.target].groupby('date').apply(
+                lambda x: x.rank(ascending=False, pct=True)).apply(
+                lambda x :1 if x <= mark else 0)
+        elif type == 'reg':
+            self.data['star'] = self.data[self.target]
         else:
             QA_util_log_info('##target type must be in [value,percent] ===== {}'.format(self.info['date']), ui_log = None)
 
