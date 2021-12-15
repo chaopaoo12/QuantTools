@@ -324,7 +324,6 @@ def QA_Sql_Stock_IndexHour(from_ , to_,code=None, type = 'day', sql_text = sql_t
     sql_text = sql_text.format(condition = code_condition,from_=from_,to_=to_)
 
     conn = cx_Oracle.connect(ORACLE_PATH2)
-    QA_util_log_info(sql_text)
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
     if type == 'day':
