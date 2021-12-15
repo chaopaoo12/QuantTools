@@ -301,7 +301,7 @@ CASE
           0
        end as LONG_TR
 from STOCK_TECHNICAL
-where order_Date >=
+where {condition} order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
 and order_Date <=
 to_date('{to_}', 'yyyy-mm-dd')

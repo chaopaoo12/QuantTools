@@ -280,7 +280,7 @@ SKDJ_TR,
 SHORT_TR,
 LONG_TR
 from STOCK_TECH_NEUT
-where order_Date >=
+where {condition} order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
 and order_Date <=
 to_date('{to_}', 'yyyy-mm-dd')

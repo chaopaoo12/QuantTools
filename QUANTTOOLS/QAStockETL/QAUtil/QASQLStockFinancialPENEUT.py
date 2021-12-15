@@ -21,7 +21,7 @@ PE_90VAL,PE_90DN,PE_90UP,
 PEEGL_90VAL,PEEGL_90DN,PEEGL_90UP,
 PB_90VAL,PB_90DN,PB_90UP
 from STOCK_FINANCIAL_PERCENT_NEUT
-where order_Date >=
+where {condition} order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
 and order_Date <=
 to_date('{to_}', 'yyyy-mm-dd')
