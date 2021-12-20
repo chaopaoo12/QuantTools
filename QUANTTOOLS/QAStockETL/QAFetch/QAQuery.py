@@ -968,7 +968,7 @@ def QA_fetch_stock_quant_pre(code, start, end=None, block = True, close_type='cl
     res = QA_fetch_stock_quant_data(code, start, end, block, norm_type=norm_type)
     QA_util_log_info(
         'JOB Get Stock Target data start=%s end=%s' % (start, end))
-    target = QA_fetch_stock_target(code, start, end, close_type=close_type, method=method)
+    target = QA_fetch_stock_target(codes=code, start_date=start, end_date=end, close_type=close_type, method=method)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
         return res
@@ -989,7 +989,7 @@ def QA_fetch_stock_quant_pre_train(code, start, end=None, block = True, close_ty
     res = QA_fetch_stock_quant_data_train(code, start, end, block, norm_type=norm_type)
     QA_util_log_info(
         'JOB Get Stock Target data start=%s end=%s' % (start, end))
-    target = QA_fetch_stock_target(code, start, end, type='day', close_type=close_type, method=method)
+    target = QA_fetch_stock_target(codes=code, start_date=start, end_date=end, type='day', close_type=close_type, method=method)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
         return res
@@ -3165,7 +3165,7 @@ def QA_fetch_stock_hour_pre(code, start, end=None, block = True, close_type='clo
     res = QA_fetch_stock_quant_hour(code, start, end, block, norm_type=norm_type).drop(['date'], axis=1)
     QA_util_log_info(
         'JOB Get Stock Target data start=%s end=%s' % (start, end))
-    target = QA_fetch_stock_target(code, start, end, type='60min', close_type=close_type, method=method)
+    target = QA_fetch_stock_target(codes=code, start_date=start, end_date=end, type='60min', close_type=close_type, method=method)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
         return res
@@ -3403,7 +3403,7 @@ def QA_fetch_stock_min_pre(code, start, end=None, block = True, close_type='clos
     res = QA_fetch_stock_quant_min(code, start, end, block, norm_type=norm_type).drop(['date'], axis=1)
     QA_util_log_info(
         'JOB Get Stock Target data start=%s end=%s' % (start, end))
-    target = QA_fetch_stock_target(code, start, end, type='15min', close_type=close_type, method=method)
+    target = QA_fetch_stock_target(codes=code, start_date=start, end_date=end, type='15min', close_type=close_type, method=method)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
         return res
@@ -3547,7 +3547,7 @@ def QA_fetch_stock_quant_neut_pre(code, start, end=None, block = True, close_typ
     res = QA_fetch_stock_quant_neut(code, start, end, block)
     QA_util_log_info(
         'JOB Get Stock Target data start=%s end=%s' % (start, end))
-    target = QA_fetch_stock_target(code, start, end, close_type=close_type, method=method)
+    target = QA_fetch_stock_target(codes=code, start_date=start, end_date=end, close_type=close_type, method=method)
     res = res.join(target)
     if format in ['P', 'p', 'pandas', 'pd']:
         return res
