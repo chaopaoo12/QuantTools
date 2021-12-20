@@ -1013,10 +1013,10 @@ def QA_fetch_stock_quant_neut_adv(code, start="all", end=None, block=True, type=
     if start == 'all' or start == None:
         start = '2008-01-01'
         end = QA_util_today_str()
-        data = QA_fetch_stock_quant_neut(code, start, end, block, close_type=type, method=method, format='pd')
+        data = QA_fetch_stock_quant_neut(code, start, end, block, format='pd')
         return QA_DataStruct_Financial(data)
     else:
-        data = QA_fetch_stock_quant_neut(code, start, end, block, close_type=type, method=method, format='pd')
+        data = QA_fetch_stock_quant_neut(code, start, end, block, format='pd')
         return QA_DataStruct_Financial(data)
 
 def QA_fetch_stock_quant_neut_pre_adv(code, start="all", end=None, block=True, type='close', method= 'value', norm_type='normalization'):
