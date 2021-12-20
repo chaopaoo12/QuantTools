@@ -215,7 +215,7 @@ def QA_fetch_stock_quant_neut(code, start, end):
     return(QA_fetch_stock_quant_neut_adv(code, start, end, norm_type=None).data)
 
 def check_stock_neut(mark_day = None):
-    return(check_stock_data(func = QA_fetch_stock_quant_neut, mark_day = mark_day, title = 'Stock Quant'))
+    return(check_stock_data(func = QA_fetch_stock_quant_neut, mark_day = mark_day, title = 'Stock Quant Neut'))
 
 def QA_fetch_index_15min(code, start, end):
     return(QA_fetch_index_min_adv(code, start, end, frequence='15min').data)
