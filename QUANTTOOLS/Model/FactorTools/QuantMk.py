@@ -1,5 +1,6 @@
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_index_target,
                                            QA_fetch_get_quant_data,QA_fetch_get_index_quant_data,
+                                           QA_fetch_stock_quant_neut_pre_adv,
                                            QA_fetch_index_info,QA_fetch_stock_om_all,QA_fetch_code_new,QA_fetch_stock_all,
                                            QA_fetch_stock_quant_data_train,QA_fetch_stock_quant_pre_train_adv,QA_fetch_get_quant_data_realtime,
                                            QA_fetch_stock_quant_data,QA_fetch_stock_quant_pre_adv,
@@ -643,9 +644,9 @@ def get_quant_data_neut(start_date, end_date, code=None, type = 'crawl', block =
     codes = [i for i in code_all if i not in code_688]
 
     if type == 'crawl':
-        res = QA_fetch_stock_quant_neut_adv(codes,start_date,end_date, block = sub_block, method=method).data
+        res = QA_fetch_stock_quant_neut_pre_adv(codes,start_date,end_date, block = sub_block, method=method).data
     elif type == 'model':
-        res = QA_fetch_stock_quant_neut(codes, start_date, end_date, block = sub_block)
+        res = QA_fetch_stock_quant_neut_adv(codes, start_date, end_date, block = sub_block)
     elif type == 'real':
         pass
 
