@@ -18,7 +18,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_interest_rat
                                                            QA_fetch_stock_quant_data_adv,QA_fetch_stock_quant_pre_adv,
                                                            QA_fetch_stock_quant_pre_train_adv,
                                                            QA_fetch_stock_target_adv,
-                                                           QA_fetch_stock_quant_neut_adv,
+                                                           QA_fetch_stock_quant_neut_adv,QA_fetch_stock_quant_neut_pre_adv,
 
                                                            QA_fetch_future_target_adv,
 
