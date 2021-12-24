@@ -8,6 +8,7 @@ from QUANTTOOLS.Market.MarketTools.TradingTools.trading_robot import trading_rob
 
 
 def prepare_strategy(strategy, *args):
+    print(args)
     for k, v in args:
         setattr(strategy, k, v)
     return(strategy)
