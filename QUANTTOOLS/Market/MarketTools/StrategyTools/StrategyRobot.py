@@ -70,7 +70,7 @@ class StrategyRobotBase:
         # init add data
 
         # first time check before 15
-        while time_check_before('15:00:00'):
+        while time_check_before('15:00:00', test=test):
 
             client = get_Client()
             sub_accounts, frozen, positions, frozen_positions = check_Client(
@@ -103,7 +103,7 @@ class StrategyRobotBase:
             suspend_check(self.trading_date)
 
             # action
-            while check_market_time() is False:
+            while check_market_time(test=test) is False:
                 if time_check_before('15:00:00'):
                     time.sleep(60)
                 else:
