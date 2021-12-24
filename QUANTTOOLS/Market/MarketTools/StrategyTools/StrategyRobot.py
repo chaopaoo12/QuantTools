@@ -98,16 +98,19 @@ class StrategyRobotBase:
             # 盘前停顿
             open_check(self.trading_date)
 
-            # action
-            while check_market_time() is False:
-                time.sleep(60)
-
-            trading_robot(client, self.account, account_info, signal_data,
-                          self.trading_date, mark_tm, self.strategy_id, test=test)
-
             # third time check not suspend
             # 午盘停顿
             suspend_check(self.trading_date)
+
+            # action
+            while check_market_time() is False:
+                if time_check_before('15:00:00'):
+                    time.sleep(60)
+                else:
+                    break
+
+            trading_robot(client, self.account, account_info, signal_data,
+                          self.trading_date, mark_tm, self.strategy_id, test=test)
 
         QA_util_log_info('当日交易完成 ==================== {}'.format(
             self.trading_date), ui_log=None)

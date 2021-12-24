@@ -37,6 +37,8 @@ class StrategyBase:
 
     def strategy_run(self, mark_tm):
 
+        QA_util_log_info('##JOB Now Start Trading ==== {}'.format(mark_tm), ui_log= None)
+
         QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(
             mark_tm), ui_log=None)
         k = 0
