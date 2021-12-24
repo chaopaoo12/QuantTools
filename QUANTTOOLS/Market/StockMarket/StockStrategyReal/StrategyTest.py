@@ -49,7 +49,7 @@ def balance(data, position, sub_account, percent):
     # 整体仓位可调整percent
     # 细节仓位另算
     if data is not None:
-        if position is not None:
+        if position is not None and position.shape[0] > 0:
             data = data.join(position[['市值', '可用余额']])
             data = data[(data.signal == 1) | (data['可用余额'] > 0)]
         else:
