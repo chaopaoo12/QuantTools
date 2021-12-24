@@ -9,7 +9,7 @@ from QUANTTOOLS.Market.MarketTools.TradingTools.trading_robot import trading_rob
 
 def prepare_strategy(strategy, args_dict: dict):
     for k, v in args_dict.items():
-        print(k, ':', v)
+        QA_util_log_info(k, ':', v)
         setattr(strategy, k, v)
     return(strategy)
 
