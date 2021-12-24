@@ -7,9 +7,8 @@ from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, clo
 from QUANTTOOLS.Market.MarketTools.TradingTools.trading_robot import trading_robot
 
 
-def prepare_strategy(strategy, *args):
-    print(args)
-    for k, v in args:
+def prepare_strategy(strategy, args_dict):
+    for k, v in args_dict:
         setattr(strategy, k, v)
     return(strategy)
 
