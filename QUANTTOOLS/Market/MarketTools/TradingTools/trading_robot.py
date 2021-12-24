@@ -7,6 +7,9 @@ from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import check_market_ti
 
 
 def trading_robot(client, account, account_info, signal_data, trading_date, mark_tm, title, test=False):
+    QA_util_log_info('JOB Start Trading ==================== {}'.format(
+        mark_tm), ui_log=None)
+
     # action
     # ckeck whether not market time
     while check_market_time():
