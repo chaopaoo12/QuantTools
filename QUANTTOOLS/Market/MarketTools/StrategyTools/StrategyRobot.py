@@ -87,7 +87,7 @@ class StrategyRobotBase:
                                                              'trading_date': self.trading_date,
                                                              'position': positions,
                                                              'sub_account': sub_accounts,
-                                                             'base_percent': self.percent
+                                                             'base_percent': self.percent,
                                                              })
 
             # prepare signal
