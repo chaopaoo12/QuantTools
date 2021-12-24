@@ -37,7 +37,7 @@ class StrategyBase:
 
     def strategy_run(self, mark_tm):
 
-        QA_util_log_info('JOB Init Trading Single ==================== {}'.format(
+        QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(
             mark_tm), ui_log=None)
         k = 0
         while k <= 2:
@@ -55,6 +55,8 @@ class StrategyBase:
             mark_tm), ui_log=None)
         balance_data = self.balance_run(data, percent)
 
+        QA_util_log_info('JOB Return Signal Data ==================== {}'.format(
+            mark_tm), ui_log=None)
         signal_data = build_info(balance_data)
 
         return(signal_data)
