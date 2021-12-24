@@ -8,8 +8,8 @@ from QUANTTOOLS.Market.MarketTools.TradingTools.trading_robot import trading_rob
 
 
 def prepare_strategy(strategy, args_dict: dict):
-    print(args_dict)
-    for k, v in args_dict:
+    for k, v in args_dict.items():
+        print(k, ':', v)
         setattr(strategy, k, v)
     return(strategy)
 
