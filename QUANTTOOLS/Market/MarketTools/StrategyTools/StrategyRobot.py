@@ -102,6 +102,11 @@ class StrategyRobotBase:
 
             # prepare signal
             signal_data = self.strategy.strategy_run(mark_tm)
+            QA_util_log_info('##Sell List ==== {}'.format(str(self.trading_date)), ui_log=None)
+            QA_util_log_info(signal_data['sell'], ui_log=None)
+
+            QA_util_log_info('##Buy List ==== {}'.format(str(self.trading_date)), ui_log=None)
+            QA_util_log_info(signal_data['buy'], ui_log=None)
 
             # second time check after 9.30
             # 盘前停顿
