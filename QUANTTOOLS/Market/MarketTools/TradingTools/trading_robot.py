@@ -13,9 +13,10 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
 
     # action
     # ckeck whether not market time
-    while check_market_time():
+    while check_market_time() is False:
         time.sleep(60)
         pass
+
     if signal_data is not None:
         for sell_list in signal_data['sell']:
             QA_util_log_info('##JOB Now Start Selling {code} ==== {stm}{msg}'.format(
