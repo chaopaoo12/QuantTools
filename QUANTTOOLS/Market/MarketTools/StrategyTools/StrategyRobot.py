@@ -26,12 +26,22 @@ class StrategyRobotBase:
         self.exceptions = None
         self.strategy_id = None
         self.percent = None
+        self.trader_path = None
 
     def set_account(self, strategy_id):
         self.account = strategy_id['account']
         self.exceptions = strategy_id['exceptions']
         self.strategy_id = strategy_id['strategy_id']
         self.percent = strategy_id['percent']
+        self.trader_path = strategy_id['trader_path']
+
+    def get_account(self, trader_path=None):
+        if self.trader_path is not None:
+            pass
+        else:
+            self.trader_path = trader_path
+        self.client = get_Client(trader_path)
+
 
     def set_strategy(self, strategy):
         self.strategy = strategy
@@ -51,9 +61,8 @@ class StrategyRobotBase:
 
         # init code
         QA_util_log_info('##JOB Now Init Code List ==== {}'.format(str(self.trading_date)), ui_log=None)
-        client = get_Client()
         sub_accounts, frozen, positions, frozen_positions = check_Client(
-            client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
+            self.client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
 
         if positions.shape[0] > 0:
             positions = positions[positions['股票余额'] > 0]
@@ -72,16 +81,15 @@ class StrategyRobotBase:
         # first time check before 15
         while time_check_before('15:00:00', test=test):
 
-            client = get_Client()
             sub_accounts, frozen, positions, frozen_positions = check_Client(
-                client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
+                self.client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
 
             if positions.shape[0] > 0:
                 positions = positions[positions['股票余额'] > 0]
             else:
                 pass
 
-            account_info = client.get_account(self.account)
+            account_info = self.client.get_account(self.account)
 
             # strategy body
             self.strategy = prepare_strategy(self.strategy, {'code_list': t_list,
@@ -109,7 +117,7 @@ class StrategyRobotBase:
                 else:
                     break
 
-            trading_robot(client, self.account, account_info, signal_data,
+            trading_robot(self.client, self.account, account_info, signal_data,
                           self.trading_date, mark_tm, self.strategy_id, test=test)
 
         QA_util_log_info('当日交易完成 ==================== {}'.format(
