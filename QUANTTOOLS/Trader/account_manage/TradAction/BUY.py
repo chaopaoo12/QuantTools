@@ -26,7 +26,11 @@ def BUY(client, account, strategy_id, account_info, trading_date,
 
     if type == 'end':
 
-        price = round(QA_fetch_get_stock_realtm_bid(code)+0.01, 2)
+        price = QA_fetch_get_stock_realtm_bid(code)
+        if price <= 10:
+            price = price
+        else:
+            price = round(price-0.01, 2)
         deal_pos = math.floor(round(deal_capital/price, 0)/100) * 100
         QA_util_log_info('##JOB Get Real Time Price {price} 可买入{deal_pos} Before {code} Buying ===== {date}'.format(
             price=price, code=code, deal_pos=deal_pos, date=trading_date), ui_log=None)
