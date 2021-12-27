@@ -8,7 +8,8 @@ exceptions = None
 strategy_id = {'account': 'name:client-1',
                'exceptions': None,
                'strategy_id': '机器学习1号',
-               'percent': 1
+               'percent': 1,
+               'trader_path': None,
                }
 
 stock_xg_set = ['AVG30_RNG',
