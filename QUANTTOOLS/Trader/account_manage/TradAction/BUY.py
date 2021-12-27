@@ -12,7 +12,7 @@ def BUY(client, account, strategy_id, account_info, trading_date,
     # check account usefull capital
     UseCapital = get_UseCapital(client, account)
     QA_util_log_info('##JOB Check Account Usefull Capital {UseCapital} Before {code} Buying ===== {date}'.format(
-        UseCapital=UseCapital, code=code, date=trading_date), ui_log = None)
+        UseCapital=UseCapital, code=code, date=trading_date), ui_log=None)
 
     real_capital = get_StockCapital(code, client, account)
 
