@@ -41,7 +41,7 @@ class StrategyRobotBase:
             pass
         else:
             self.trader_path = trader_path
-        self.client = get_Client(trader_path)
+        self.client = get_Client(trader_path=self.trader_path)
 
 
     def set_strategy(self, strategy):
