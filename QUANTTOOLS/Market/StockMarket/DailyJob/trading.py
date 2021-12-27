@@ -5,7 +5,7 @@ from QUANTTOOLS.Market.MarketTools import trading_base, load_data, trading_base2
 from QUANTAXIS.QAUtil import QA_util_get_last_day,QA_util_get_real_date, QA_util_get_pre_trade_date
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_get_stock_llv
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.StrategyTest import signal, balance
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.StrategyOne import signal, balance
 
 def trading(trading_date, func = concat_predict_neut, model_name = 'stock_xg', file_name = 'prediction', percent = percent, account= 'name:client-1', working_dir = working_dir, exceptions = exceptions):
 
@@ -129,6 +129,7 @@ def trading_new(trading_date, working_dir=working_dir):
 
     robot.set_strategy(strategy)
     robot.ckeck_market_open()
+    robot.get_account()
     robot.run(test=True)
 
 if __name__ == '__main__':

@@ -49,9 +49,7 @@ def prediction_report(trading_date, target_pool, prediction, model_date, top_num
                       selec_list=['NAME','INDUSTRY','Z_PROB','O_PROB','RANK'],
                       account='name:client-1',  ui_log = None):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
-    print('A')
-    client = get_Client(trader_path = 'C:\\同花顺软件\\同花顺\\xiadan.exe')
-    print('B')
+    client = get_Client(trader_path = None)
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, "prediction_report", trading_date, exceptions=exceptions)
 
     ###XG股池 + 交易成绩
