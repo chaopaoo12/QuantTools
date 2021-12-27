@@ -54,7 +54,7 @@ def get_AllCapital(client, account=None):
 def get_Position(client, account=None):
     if client.type == 'local':
         positions = pd.DataFrame(client.position)
-    elif client.type == 'local':
+    elif client.type == 'online':
         positions = client.get_positions(account)['positions'][['证券代码','证券名称','市值','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
 
     positions=positions.astype({'市值':'float','股票余额':'float','可用余额':'float'})
