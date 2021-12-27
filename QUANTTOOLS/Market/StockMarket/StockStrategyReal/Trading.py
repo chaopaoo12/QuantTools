@@ -30,7 +30,7 @@ def trading_new(trading_date, working_dir=working_dir):
 
     robot.set_strategy(strategy)
     robot.ckeck_market_open()
-    robot.get_account(trader_path='C:\\同花顺软件\\同花顺\\xiadan.exe')
+    robot.get_account()
     robot.run(test=True)
 
 
@@ -100,7 +100,7 @@ def tracking_new(trading_date):
 
     robot.set_strategy(strategy)
     robot.ckeck_market_open()
-    robot.get_account(trader_path='C:\\同花顺软件\\同花顺\\xiadan.exe')
+    robot.get_account()
     robot.run(test=True)
 
 
