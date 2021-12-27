@@ -77,6 +77,9 @@ class StrategyRobotBase:
             t_list = self.code_list + positions.code.tolist()
         else:
             t_list = list(set(self.code_list))
+
+        QA_util_log_info('##Code List ==== {}'.format(str(self.trading_date)), ui_log=None)
+        QA_util_log_info(t_list, ui_log=None)
         # init add data
 
         # first time check before 15
