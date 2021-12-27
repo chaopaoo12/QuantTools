@@ -27,6 +27,7 @@ class StrategyRobotBase:
         self.strategy_id = None
         self.percent = None
         self.trader_path = None
+        self.client = None
 
     def set_account(self, strategy_id):
         self.account = strategy_id['account']
