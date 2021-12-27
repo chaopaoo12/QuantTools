@@ -3,7 +3,7 @@ from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTTOOLS.Trader.account_manage.base_func.Client import get_Client,check_Client
 import time
 import datetime
-from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, close_check, suspend_check, get_on_time,time_check_before, check_market_time
+from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, close_check, suspend_check, get_on_time,time_check_before, check_market_time,time_check_after
 from QUANTTOOLS.Market.MarketTools.TradingTools.trading_robot import trading_robot
 
 
@@ -125,6 +125,11 @@ class StrategyRobotBase:
 
             trading_robot(self.client, self.account, account_info, signal_data,
                           self.trading_date, mark_tm, self.strategy_id, test=test)
+
+            if time_check_after('15:00:00') and test is True:
+                break
+            else:
+                pass
 
         QA_util_log_info('当日交易完成 ==================== {}'.format(
             self.trading_date), ui_log=None)
