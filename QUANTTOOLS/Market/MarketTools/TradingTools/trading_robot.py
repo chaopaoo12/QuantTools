@@ -13,7 +13,7 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
 
     # action
     # ckeck whether not market time
-    while check_market_time() is False:
+    while check_market_time(test=test) is False:
         time.sleep(60)
         pass
 
