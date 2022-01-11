@@ -550,24 +550,26 @@ def QA_fetch_get_index_quant_min(code, start_date, end_date, type='30min'):
         res = QA_fetch_get_index_indicator_realtime(code[0], start_date=start_date, end_date=end_date, type=type)
         return(res)
 
-def QA_fetch_get_stock_vwap_ascny(code, start_date, end_date, period):
-    return(QA_fetch_get_stock_vwap(code, start_date=start_date, end_date=end_date, period = period, type='real'))
+
 
 def QA_fetch_get_stock_vwap_min(code, start_date, end_date, type='30min'):
+
+    def QA_fetch_get_stock_vwap_ascny(code):
+        return(QA_fetch_get_stock_vwap(code, start_date=start_date, end_date=end_date, period = period, type='real'))
 
     def __acess(code, start_date, end_date, type):
         if len(code) >= 5:
             pool = multiprocessing.Pool(15)
             with pool as p:
-                res = p.map(partial(QA_fetch_get_stock_vwap_ascny, start_date=start_date, end_date=end_date, period = type), code)
+                res = p.map(partial(QA_fetch_get_stock_vwap_ascny, period = type), code)
             return(pd.concat(res))
         elif len(code) > 1:
             pool = multiprocessing.Pool(len(code))
             with pool as p:
-                res = p.map(partial(QA_fetch_get_stock_vwap_ascny, start_date=start_date, end_date=end_date, period = type), code)
+                res = p.map(partial(QA_fetch_get_stock_vwap_ascny), code)
             return(pd.concat(res))
         else:
-            res = QA_fetch_get_stock_vwap_ascny(code[0], start_date=start_date, end_date=end_date, period = type)
+            res = QA_fetch_get_stock_vwap_ascny(code[0])
             return(res)
 
     if len(code) > 30:
