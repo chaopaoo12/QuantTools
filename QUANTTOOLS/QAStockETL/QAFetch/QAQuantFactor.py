@@ -551,11 +551,11 @@ def QA_fetch_get_index_quant_min(code, start_date, end_date, type='30min'):
         return(res)
 
 def QA_fetch_get_stock_vwap_ascny(code, start_date, end_date, period):
-    return(QA_fetch_get_stock_vwap(code, start_date=start_date, end_date=end_date, period = period, type='real').reset_index())
+    return(QA_fetch_get_stock_vwap(code, start_date=start_date, end_date=end_date, period = period, type='real'))
 
 def QA_fetch_get_stock_vwap_min(code, start_date, end_date, type='30min'):
 
-    def __acess(code, start, end, type):
+    def __acess(code, start_date, end_date, type):
         if len(code) >= 5:
             pool = multiprocessing.Pool(15)
             with pool as p:
