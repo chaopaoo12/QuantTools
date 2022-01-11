@@ -552,11 +552,9 @@ def QA_fetch_get_index_quant_min(code, start_date, end_date, type='30min'):
 
 def QA_fetch_get_stock_vwap_min(code, start_date, end_date, type='30min'):
 
-    func = partial(QA_fetch_get_stock_vwap, start_date=start_date, end_date=end_date, period = type, type='real')
-
     pool = multiprocessing.Pool(15)
     with pool as p:
-        res = p.map(func, code)
+        res = p.map(partial(QA_fetch_get_stock_vwap, start_date=start_date, end_date=end_date, period = type,type='real'), code)
     return(pd.concat(res))
 
 
