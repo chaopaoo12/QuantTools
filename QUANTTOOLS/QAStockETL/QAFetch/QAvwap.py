@@ -41,8 +41,8 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
     try:
         data = data.assign(date=data.reset_index().datetime.apply(lambda x:str(x)[0:10]).tolist(),
                            HM=data.reset_index().datetime.dt.strftime('%H:%M').values,
-                           amt=((data['high']+data['low']) / 2) * data['volume'])
-        data = data.assign(camt=data.groupby(['date','code'])['amt'].cumsum(),
+                           )
+        data = data.assign(camt=data.groupby(['date','code'])['amount'].cumsum(),
                            cvolume=data.groupby(['date','code'])['volume'].cumsum())
         data[['open_p','close_p','high_p','low_p','AMT_P','VOL_P']] = \
             data.groupby(['date','code'])[['open','close','high','low','camt','cvolume']].shift()

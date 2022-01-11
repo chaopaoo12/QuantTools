@@ -1,5 +1,5 @@
 from QUANTTOOLS.QAStockETL.Crawly import read_financial_report,read_stock_day
-from akshare import stock_zh_a_minute
+from akshare import stock_zh_a_minute,stock_zh_a_hist_min_em
 from QUANTAXIS.QAUtil import QA_util_date_stamp
 import datetime
 import pandas as pd
@@ -66,20 +66,27 @@ def QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='day', type='
     data = data.assign(code=code)
     return(data)
 
-def QA_fetch_get_stock_min_sina(code, period='30', type='qfq'):
-    if code[0:2] == '60' and len(code) == 6:
-        code1 = 'SH'+code
-    elif code[0:3] == '688':
-        code1 = 'SH'+code
-    elif code[0:3] in ['000','002','300'] and len(code) == 6:
-        code1 = 'SZ'+code
-    else:
-        code1 = code
+def QA_fetch_get_stock_min_sina(code, period='30', type=''):
+    #if code[0:2] == '60' and len(code) == 6:
+    #    code1 = 'SH'+code
+    #elif code[0:3] == '688':
+    #    code1 = 'SH'+code
+    #elif code[0:3] in ['000','002','300'] and len(code) == 6:
+    #    code1 = 'SZ'+code
+    #else:
+    #    code1 = code
 
-    data = stock_zh_a_minute(symbol=code1, period=period, adjust=type)
+    data = stock_zh_a_hist_min_em(symbol=code, period=period, adjust=type)
     try:
-        data = data.rename(columns={'day':'datetime'})
-        data[['open','close','high','low','volume']] = data[['open','close','high','low','volume']].apply(pd.to_numeric)
+        data = data.rename(columns={'时间':'datetime',
+                                    '开盘':'open',
+                                    '收盘':'close',
+                                    '最高':'high',
+                                    '最低':'low',
+                                    '成交量':'volume',
+                                    '成交额':'amount',
+                                    '最新价':'price',})
+        data[['open','close','high','low','volume','amount','price']] = data[['open','close','high','low','volume','amount','price']].apply(pd.to_numeric)
         data = data.assign(date_stamp=data['datetime'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])),code=code)
         data['datetime']=pd.to_datetime(data['datetime'],format='%Y-%m-%d %H:%M:%S')
     except:
@@ -88,16 +95,24 @@ def QA_fetch_get_stock_min_sina(code, period='30', type='qfq'):
 
 def QA_fetch_get_index_min_sina(code,period='30'):
     #code = ['sh000001','sz399001','sz399006','sz399005']
-    if code[0:2] == '00' and len(code) == 6:
-        code1 = 'SH'+code
-    elif code[0:2] == '39':
-        code1 = 'SZ'+code
-    else:
-        code1 = code
-    data = stock_zh_a_minute(symbol=code1, period=period)
+    #if code[0:2] == '00' and len(code) == 6:
+    #    code1 = 'SH'+code
+    #elif code[0:2] == '39':
+    #    code1 = 'SZ'+code
+    #else:
+    #    code1 = code
+
+    data = stock_zh_a_hist_min_em(symbol=code, period=period)
     try:
-        data = data.rename(columns={'day':'datetime'})
-        data[['open','close','high','low','volume']] = data[['open','close','high','low','volume']].apply(pd.to_numeric)
+        data = data.rename(columns={'时间':'datetime',
+                                    '开盘':'open',
+                                    '收盘':'close',
+                                    '最高':'high',
+                                    '最低':'low',
+                                    '成交量':'volume',
+                                    '成交额':'amount',
+                                    '最新价':'price',})
+        data[['open','close','high','low','volume','amount','price']] = data[['open','close','high','low','volume','amount','price']].apply(pd.to_numeric)
         data = data.assign(date_stamp=data['datetime'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])),code=code)
         data['datetime']=pd.to_datetime(data['datetime'],format='%Y-%m-%d %H:%M:%S')
     except:
