@@ -76,7 +76,7 @@ def QA_fetch_get_stock_min_sina(code, period='30', type='qfq'):
     else:
         code1 = code
 
-    data = stock_zh_a_minute(code1, period, type)
+    data = stock_zh_a_minute(symbol=code1, period=period, adjust=type)
     try:
         data = data.rename(columns={'day':'datetime'})
         data[['open','close','high','low','volume']] = data[['open','close','high','low','volume']].apply(pd.to_numeric)
@@ -94,7 +94,7 @@ def QA_fetch_get_index_min_sina(code,period='30'):
         code1 = 'SZ'+code
     else:
         code1 = code
-    data = stock_zh_a_minute(code1, period)
+    data = stock_zh_a_minute(symbol=code1, period=period)
     try:
         data = data.rename(columns={'day':'datetime'})
         data[['open','close','high','low','volume']] = data[['open','close','high','low','volume']].apply(pd.to_numeric)
