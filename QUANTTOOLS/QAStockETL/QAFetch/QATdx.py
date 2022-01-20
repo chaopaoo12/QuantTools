@@ -147,17 +147,31 @@ def QA_fetch_get_stock_delist():
     return(sz)
 
 def QA_fetch_get_stock_half_realtime(code, date = QA_util_today_str(), source = 'sina'):
-    quotation = easyquotation.use(source)
-    res = pd.DataFrame(quotation.stocks(code)).T[['date','open','high','low','now','turnover','volume','close']]
-    res = res.reset_index().rename(columns={'index':'code',
-                                            'close':'prev_close',
-                                            'now':'close',
-                                            'turnover':'volume',
-                                            'volume':'amount'})
-    res['date'] = pd.to_datetime(res['date'])
-    res[['open','high','low','close','volume','amount','prev_close']] = res[['open','high','low','close','volume','amount','prev_close']].apply(pd.to_numeric)
-    res['avg_price'] = res['amount']/res['volume']
-    res = res[res.volume > 0]
+    try:
+        quotation = easyquotation.use(source)
+        res = pd.DataFrame(quotation.stocks(code)).T[['date','open','high','low','now','turnover','volume','close']]
+        res = res.reset_index().rename(columns={'index':'code',
+                                                'close':'prev_close',
+                                                'now':'close',
+                                                'turnover':'volume',
+                                                'volume':'amount'})
+        res['date'] = pd.to_datetime(res['date'])
+        res[['open','high','low','close','volume','amount','prev_close']] = res[['open','high','low','close','volume','amount','prev_close']].apply(pd.to_numeric)
+        res['avg_price'] = res['amount']/res['volume']
+        res = res[res.volume > 0]
+    except:
+        source = 'qq'
+        quotation = easyquotation.use(source)
+        res = pd.DataFrame(quotation.stocks(code)).T[['datetime','open','high','low','now','volume','成交额(万)','close']]
+        res = res.reset_index().rename(columns={'index':'code',
+                                                'close':'prev_close',
+                                                'now':'close',
+                                                'turnover':'volume',
+                                                '成交额(万)':'amount'})
+        res['date'] = pd.to_datetime(res['datetime'])
+        res[['open','high','low','close','volume','amount','prev_close']] = res[['open','high','low','close','volume','amount','prev_close']].apply(pd.to_numeric)
+        res['avg_price'] = res['amount']/res['volume']
+        res = res[res.volume > 0]
     res = res[res.date == date]
     res['date_stamp'] = res['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10]))
     return(res)
