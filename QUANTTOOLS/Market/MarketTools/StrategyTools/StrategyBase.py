@@ -4,8 +4,8 @@ import pandas as pd
 
 class StrategyBase:
 
-    def __init__(self, code_list=None, position=None, sub_account=None, base_percent=None, trading_date=None):
-        self.code_list = code_list
+    def __init__(self, buy_list=None, position=None, sub_account=None, base_percent=None, trading_date=None):
+        self.buy_list = buy_list
         self.trading_date = trading_date
         self.position = position
         self.sub_account = sub_account
@@ -24,16 +24,16 @@ class StrategyBase:
         self.percent_func = func
 
     def signal_run(self, mark_tm):
-        return self.signal_func(self.code_list, self.trading_date, mark_tm)
+        return self.signal_func(self.buy_list, self.position, self.trading_date, mark_tm)
 
     def percent_run(self, mark_tm):
         if self.percent_func is not None:
-            return self.percent_func(self.code_list, self.trading_date, mark_tm)
+            return self.percent_func(self.buy_list, self.position, self.trading_date, mark_tm)
         else:
             return self.base_percent
 
     def balance_run(self, signal_data, percent):
-        return self.balance_func(signal_data, self.position, self.sub_account, percent)
+        return self.balance_func(signal_data, self.buy_list, self.position, self.sub_account, percent)
 
     def strategy_run(self, mark_tm):
 
@@ -44,7 +44,7 @@ class StrategyBase:
         k = 0
         while k <= 2:
             data = self.signal_run(mark_tm)
-            if data is None and self.code_list is not None:
+            if data is None and self.buy_list is not None:
                 k += 1
             else:
                 break
