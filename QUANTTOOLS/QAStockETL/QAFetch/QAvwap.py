@@ -33,7 +33,7 @@ def spc(data, N= 240):
     return(data)
 
 def sohlc(data, N= 240):
-    data[['day_open','day_close','day_high','day_low']] = data.rolling(window=N, min_periods=1).agg({'open':'first','close':'last','high':'max','low':'min'})
+    data[['day_open','day_close','day_high','day_low']] = data.rolling(window=N, min_periods=1).agg({'open':first,'close':last,'high':'max','low':'min'})
     return(data)
 
 def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'crawl'):
