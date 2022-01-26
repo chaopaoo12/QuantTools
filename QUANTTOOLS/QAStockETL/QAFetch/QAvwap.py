@@ -59,9 +59,12 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
             data.groupby(['date','code'])[['open','close','high','low']].shift(2)
         data[['AMT_P','VOL_P']] = data.groupby(['HM','code'])[['camt','cvolume']].shift()
         data['AMT_UP'] = data['camt'] / data['AMT_P'] - 1
-        data['VAMP'] = data['camt'] / data['cvolume'] /100
+        data['VAMP'] = data['camt'] / data['cvolume'] / 100
         data['DISTANCE'] = data['close'] / data['VAMP'] - 1
-        data[['day_open','day_close','day_high','day_low']] = data.groupby(['date','code']).apply(lambda x: sohlc(x))[['day_open','day_close','day_high','day_low']]
+        data[['day_open', 'day_close', 'day_high', 'day_low']] = data.groupby(['date','code']).apply(lambda x: sohlc(x))[['day_open', 'day_close', 'day_high', 'day_low']]
+        data['open_pct'] = data['close'] / data['day_open'] - 1
+        data['high_pct'] = data['close'] / data['day_high'] - 1
+        data['low_pct'] = data['close'] / data['day_low'] - 1
         data['VAMP_JC'] = CROSS(data['close'], data['VAMP'])
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
         data['VAMP_C'] = data.groupby(['date','code']).apply(lambda x:spc(x))['VAMP_C']
