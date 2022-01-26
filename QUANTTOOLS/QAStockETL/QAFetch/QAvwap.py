@@ -23,8 +23,8 @@ def rolling_ols(y):
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
     return(math.atan(model.slope)*180/math.pi)
 
-def spc(data, N= 5):
-    data[['VAMP_C']]= data.rolling(window=N).agg({'VAMP':rolling_ols})
+def spc(data, N= 240):
+    data[['VAMP_C']]= data.rolling(window=N,min_periods=5).agg({'VAMP':rolling_ols})
     return(data)
 
 def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'crawl'):
