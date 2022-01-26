@@ -1,10 +1,11 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
 import time
 
 
-def signal(code_list, trading_date, mark_tm):
+def signal(buy_list, position, trading_date, mark_tm):
 
     # 计算信号 提供基础信息 example
     # 输出1 signal 计划持有的code 目前此方案 1:表示持有 0:表示不持有
@@ -13,6 +14,13 @@ def signal(code_list, trading_date, mark_tm):
     # 提前执行部分
     # 盘前数据准备
     # 午盘数据准备
+    if buy_list is None:
+        buy_list = []
+
+    if position.shape[0] > 0:
+        code_list = buy_list + position.code.tolist()
+    else:
+        code_list = list(set(buy_list))
 
     # check data time 在某时某刻之后获准获取数据
     while time_check_before(mark_tm):
@@ -21,14 +29,16 @@ def signal(code_list, trading_date, mark_tm):
 
     # 定时执行部分
     stm = trading_date + ' ' + mark_tm
-    source_data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,10), trading_date, code_list, type='real').reset_index()
-    data = source_data[source_data.datetime == stm].set_index('code')
+    source_data = QA_fetch_get_stock_vwap_min(QA_util_get_pre_trade_date(trading_date,10), trading_date, code_list, type='1')
+    data = source_data.loc[(stm,)]
 
     # add information
     # add name industry
 
     # 方案1
     # hold index&condition
+    #下降通道 超降通道 上升通道 超升通道
+
     data['signal'] = None
     data.loc[data.SKDJ_TR_HR == 1, "signal"] = 1
     data.loc[data.SKDJ_TR_HR != 1, "signal"] = 0
@@ -39,10 +49,13 @@ def signal(code_list, trading_date, mark_tm):
     #data.loc[data.SKDJ_CROSS1_HR == 1, "signal"] = -1
     #data.loc[data.SKDJ_TR_HR == 1, "signal"] = 0
 
+    # msg
+
+
     return(data)
 
 
-def balance(data, position, sub_account, percent):
+def balance(data, buy_list, position, sub_account, percent):
     # 输入mark(信号标志)&持仓情况&总金额&整体仓位 输出 target_capital&target_position
     # 功能:分配仓位(可以有不同的分仓方案)
 
@@ -71,7 +84,7 @@ def balance(data, position, sub_account, percent):
     else:
         return None
 
-def tracking_signal(code_list, trading_date, mark_tm):
+def tracking_signal(buy_list, position, trading_date, mark_tm):
     # 计算信号 提供基础信息 example
     # 输出1 signal 计划持有的code 目前此方案 1:表示持有 0:表示不持有
     # 输出2 signal 进出信号 signal 1:表示进场信号 0:表示无信号 -1:表示卖出信号
@@ -79,6 +92,13 @@ def tracking_signal(code_list, trading_date, mark_tm):
     # 提前执行部分
     # 盘前数据准备
     # 午盘数据准备
+    if buy_list is None:
+        buy_list = []
+
+    if position.shape[0] > 0:
+        code_list = buy_list + position.code.tolist()
+    else:
+        code_list = list(set(buy_list))
 
     # check data time 在某时某刻之后获准获取数据
     while time_check_before(mark_tm):
@@ -87,9 +107,8 @@ def tracking_signal(code_list, trading_date, mark_tm):
 
     # 定时执行部分
     stm = trading_date + ' ' + mark_tm
-    source_data = get_quant_data_hour(QA_util_get_pre_trade_date(trading_date,10), trading_date, code_list, type='real').reset_index()
-    data = source_data[source_data.datetime == stm].set_index('code')
-
+    source_data = QA_fetch_get_stock_vwap_min(QA_util_get_pre_trade_date(trading_date,10), trading_date, code_list, type='1')
+    data = source_data.loc[(stm,)]
     # add information
     # add name industry
 
@@ -97,6 +116,9 @@ def tracking_signal(code_list, trading_date, mark_tm):
     # hold index&condition
     data['signal'] = None
     data.loc[data.SKDJ_CROSS1_HR == 1, "signal"] = -1
+
+    #下降通道 超降通道 上升通道 超升通道
+
 
     # 方案2
     #data['signal'] = None
@@ -106,7 +128,7 @@ def tracking_signal(code_list, trading_date, mark_tm):
 
     return(data)
 
-def track_balance(data, position, sub_account, percent):
+def track_balance(data, buy_list, position, sub_account, percent):
     # 输入mark(信号标志)&持仓情况&总金额&整体仓位 输出 target_capital&target_position
     # 功能:分配仓位(可以有不同的分仓方案)
 
