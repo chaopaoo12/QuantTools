@@ -26,7 +26,7 @@ def rolling_ols(y):
     '''
     #y = pd.DataFrame.ewm(y,alpha=1.0/24,ignore_na=True).mean().values
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
-    return(math.atan(model.slope)*180/math.pi)
+    return(math.degrees(math.atan(model.slope)))
 
 def spc(data, N= 240):
     data[['VAMP_C']]= data.rolling(window=N,min_periods=5).agg({'VAMP':rolling_ols})
