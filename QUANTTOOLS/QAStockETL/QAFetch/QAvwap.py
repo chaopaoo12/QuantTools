@@ -7,6 +7,11 @@ import numpy as np
 import math
 from QUANTAXIS.QAIndicator.base import CROSS
 
+def first(rows):
+    return rows[0]
+
+def last(rows):
+    return rows[-1]
 
 def percentile(n):
     def percentile_(x):
@@ -25,6 +30,10 @@ def rolling_ols(y):
 
 def spc(data, N= 240):
     data[['VAMP_C']]= data.rolling(window=N,min_periods=5).agg({'VAMP':rolling_ols})
+    return(data)
+
+def sohlc(data, N= 240):
+    data[['day_open','day_close','day_high','day_low']] = data.rolling(window=N, min_periods=1).agg({'open':'first','close':'last','high':'max','low':'min'})
     return(data)
 
 def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'crawl'):
@@ -52,6 +61,7 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['AMT_UP'] = data['camt'] / data['AMT_P'] - 1
         data['VAMP'] = data['camt'] / data['cvolume'] /100
         data['DISTANCE'] = data['close'] / data['VAMP'] - 1
+        data[['day_open','day_close','day_high','day_low']] = data.groupby(['date','code']).apply(lambda x: sohlc(x))[['day_open','day_close','day_high','day_low']]
         data['VAMP_JC'] = CROSS(data['close'], data['VAMP'])
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
         data['VAMP_C'] = data.groupby(['date','code']).apply(lambda x:spc(x))['VAMP_C']
