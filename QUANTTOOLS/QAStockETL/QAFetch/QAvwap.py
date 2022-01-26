@@ -52,7 +52,6 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['AMT_UP'] = data['camt'] / data['AMT_P'] - 1
         data['VAMP'] = data['camt'] / data['cvolume'] /100
         data['DISTANCE'] = data['close'] / data['VAMP'] - 1
-        data = data.sort_index()
         data['VAMP_JC'] = CROSS(data['close'], data['VAMP'])
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
         data['VAMP_C'] = data.groupby(['date','code']).apply(lambda x:spc(x))['VAMP_C']
