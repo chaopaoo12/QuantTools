@@ -44,8 +44,8 @@ def signal(buy_list, position, trading_date, mark_tm):
     #DISTANCE < -0.03 & vamp.abs() < 10 & 未跌停 抄底 buy_list生效
 
     data['signal'] = None
-    data.loc[data.SKDJ_TR_HR == 1, "signal"] = 1
-    data.loc[data.SKDJ_TR_HR != 1, "signal"] = 0
+    data.loc[data.VAMP_JC == 1, "signal"] = 1
+    data.loc[data.VAMP_SC == 1, "signal"] = 0
 
     # 方案2
     #data['signal'] = None
