@@ -79,8 +79,20 @@ class StrategyRobotBase:
         account_info = self.client.get_account(self.account)
         # init add data
 
+        # strategy body
+        self.strategy = prepare_strategy(self.strategy, {'buy_list': self.code_list,
+                                                         'trading_date': self.trading_date,
+                                                         'position': positions,
+                                                         'sub_account': sub_accounts,
+                                                         'base_percent': self.percent,
+                                                         })
+
         # first time check before 15
         while time_check_before('15:00:00', test=test):
+
+            while time_check_before(mark_tm):
+                time.sleep(60)
+            QA_util_log_info('##JOB On Time ==== {}'.format(mark_tm), ui_log=None)
 
             sub_accounts, frozen, positions, frozen_positions = check_Client(
                 self.client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
@@ -89,14 +101,6 @@ class StrategyRobotBase:
                 positions = positions[positions['股票余额'] > 0]
             else:
                 pass
-
-            # strategy body
-            self.strategy = prepare_strategy(self.strategy, {'buy_list': self.code_list,
-                                                             'trading_date': self.trading_date,
-                                                             'position': positions,
-                                                             'sub_account': sub_accounts,
-                                                             'base_percent': self.percent,
-                                                             })
 
             # prepare signal
             signal_data = self.strategy.strategy_run(mark_tm)
