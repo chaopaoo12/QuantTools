@@ -75,6 +75,8 @@ class StrategyRobotBase:
 
         QA_util_log_info('##Code List ==== {}'.format(str(self.trading_date)), ui_log=None)
         QA_util_log_info(self.code_list, ui_log=None)
+
+        account_info = self.client.get_account(self.account)
         # init add data
 
         # first time check before 15
@@ -87,8 +89,6 @@ class StrategyRobotBase:
                 positions = positions[positions['股票余额'] > 0]
             else:
                 pass
-
-            account_info = self.client.get_account(self.account)
 
             # strategy body
             self.strategy = prepare_strategy(self.strategy, {'buy_list': self.code_list,
