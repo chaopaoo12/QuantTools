@@ -1,5 +1,4 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
-import pandas as pd
 
 
 class StrategyBase:
