@@ -127,6 +127,8 @@ class StrategyRobotBase:
             if time_check_after('15:00:00') and test is True:
                 break
             else:
+                # get next mark_tm
+                mark_tm = self.time_list[(self.time_list.index(mark_tm)+1) % len(self.time_list)]
                 pass
 
         QA_util_log_info('当日交易完成 ==================== {}'.format(
