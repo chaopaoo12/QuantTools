@@ -1,6 +1,7 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min
+from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtime
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
 from QUANTAXIS.QAUtil import QA_util_log_info
 import time
@@ -35,6 +36,8 @@ def signal(buy_list, position, trading_date, mark_tm):
     stm = trading_date + ' ' + mark_tm
     source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1').sort_index()
     data = source_data.loc[(stm,)]
+    price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价']].rename({'涨停价':'up_price','跌停价':'down_price'}, axis='columns')
+    data = data.join(price)
     QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(
         mark_tm), ui_log=None)
 
@@ -51,20 +54,22 @@ def signal(buy_list, position, trading_date, mark_tm):
 
     data['signal'] = None
 
-    data.loc[(data.VAMP_JC == 1)&(data.VAMP_C.abs() < 15), "signal"] = 1
-    data.loc[data.VAMP_JC == 1, "msg"] = 'VMAP金叉'
-    data.loc[(data.VAMP_SC == 1)&(data.VAMP_C.abs() < 15), "signal"] = 0
-    data.loc[data.VAMP_SC == 1, "msg"] = 'VMAP死叉'
+    data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.price < data.up_price), "signal"] = 1
+    data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.price < data.up_price), "msg"] = 'VMAP金叉'
+    data.loc[(data.VAMP_SC == 1) & (data.VAMP_C.abs() < 15), "signal"] = 0
+    data.loc[(data.VAMP_SC == 1) & (data.VAMP_C.abs() < 15), "msg"] = 'VMAP死叉'
 
-    data.loc[data.VAMP_C >= 15, "signal"] = 1
-    data.loc[data.VAMP_C >= 15, "msg"] = '追涨:VMAP上升通道'
+    data.loc[(data.VAMP_C >= 15) & (data.price < data.up_price), "signal"] = 1
+    data.loc[(data.VAMP_C >= 15) & (data.price < data.up_price), "msg"] = '追涨:VMAP上升通道'
     data.loc[data.VAMP_C <= -15, "signal"] = 0
     data.loc[data.VAMP_C <= -15, "msg"] = '止损:VMAP下降通道'
 
-    data.loc[(data.DISTANCE > 0.03)&(data.VAMP_C.abs() < 15), "signal"] = 0
-    data.loc[(data.DISTANCE > 0.03)&(data.VAMP_C.abs() < 15), "msg"] = 'VMAP超涨'
-    data.loc[(data.DISTANCE < -0.03)&(data.VAMP_C.abs() < 15), "signal"] = 1
-    data.loc[(data.DISTANCE < -0.03)&(data.VAMP_C.abs() < 15), "msg"] = 'VMAP超跌'
+    data.loc[(data.DISTANCE > 0.03) & (data.VAMP_C.abs() < 15) & (data.price < data.up_price), "signal"] = 0
+    data.loc[(data.DISTANCE > 0.03) & (data.VAMP_C.abs() < 15) & (data.price < data.up_price), "msg"] = 'VMAP超涨'
+    data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.price > data.down_price), "signal"] = 1
+    data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.price > data.down_price), "msg"] = 'VMAP超跌'
+
+    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, 'signal'] = 0
 
     # 方案2
     #data['signal'] = None
@@ -78,18 +83,19 @@ def signal(buy_list, position, trading_date, mark_tm):
     return(data)
 
 
-def balance(data, buy_list, position, sub_account, percent):
+def balance(data, position, sub_account, percent):
     # 输入mark(信号标志)&持仓情况&总金额&整体仓位 输出 target_capital&target_position
     # 功能:分配仓位(可以有不同的分仓方案)
+    sub_account = 50000
 
     # 整体仓位可调整percent
     # 细节仓位另算
     if data is not None:
         if position is not None and position.shape[0] > 0:
             data = data.join(position[['市值', '可用余额']])
-            data = data[(data.signal == 1) | (data['可用余额'] > 0)]
+            data = data[(data.signal.isin([0, 1])) | (data['可用余额'] > 0)]
         else:
-            data = data[(data.signal == 1)]
+            data = data[(data.signal.isin([0, 1]))]
             data = data.assign(市值=0, 可用余额=0)
 
         data = data.assign(target_position = 1)
