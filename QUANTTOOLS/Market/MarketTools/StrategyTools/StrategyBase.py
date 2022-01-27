@@ -1,5 +1,5 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
-
+import time
 
 class StrategyBase:
 
@@ -46,6 +46,7 @@ class StrategyBase:
                 x=k+1), ui_log=None)
             data = self.signal_run(mark_tm)
             if data is None and self.buy_list is not None:
+                time.sleep(5)
                 k += 1
             else:
                 break
