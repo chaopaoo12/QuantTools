@@ -44,14 +44,27 @@ def signal(buy_list, position, trading_date, mark_tm):
     # 方案1
     # hold index&condition
     #下降通道 超降通道 上升通道 超升通道
-    #vamp > 15 上升买进 buy_list生效
-    #vamp < -15 下降卖出
+    #VAMP_C > 15 上升买进 buy_list生效
+    #VAMP_C < -15 下降卖出
     #DISTANCE > 0.03 & vamp.abs() < 10 & 未涨停 逃顶
     #DISTANCE < -0.03 & vamp.abs() < 10 & 未跌停 抄底 buy_list生效
 
     data['signal'] = None
-    data.loc[data.VAMP_JC == 1, "signal"] = 1
-    data.loc[data.VAMP_SC == 1, "signal"] = 0
+
+    data.loc[(data.VAMP_JC == 1)&(data.VAMP_C.abs() < 15), "signal"] = 1
+    data.loc[data.VAMP_JC == 1, "msg"] = 'VMAP金叉'
+    data.loc[(data.VAMP_SC == 1)&(data.VAMP_C.abs() < 15), "signal"] = 0
+    data.loc[data.VAMP_SC == 1, "msg"] = 'VMAP死叉'
+
+    data.loc[data.VAMP_C >= 15, "signal"] = 1
+    data.loc[data.VAMP_C >= 15, "msg"] = '追涨:VMAP上升通道'
+    data.loc[data.VAMP_C <= -15, "signal"] = 0
+    data.loc[data.VAMP_C <= -15, "msg"] = '止损:VMAP下降通道'
+
+    data.loc[(data.DISTANCE > 0.03)&(data.VAMP_C.abs() < 15), "signal"] = 0
+    data.loc[(data.DISTANCE > 0.03)&(data.VAMP_C.abs() < 15), "msg"] = 'VMAP超涨'
+    data.loc[(data.DISTANCE < -0.03)&(data.VAMP_C.abs() < 15), "signal"] = 1
+    data.loc[(data.DISTANCE < -0.03)&(data.VAMP_C.abs() < 15), "msg"] = 'VMAP超跌'
 
     # 方案2
     #data['signal'] = None
