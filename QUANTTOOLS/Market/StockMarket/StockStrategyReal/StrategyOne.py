@@ -34,7 +34,7 @@ def signal(buy_list, position, trading_date, mark_tm):
     # 定时执行部分
     stm = trading_date + ' ' + mark_tm
     source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
-    data = source_data.loc[(stm,)]
+    data = source_data.loc[(stm,),]
     QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(
         mark_tm), ui_log=None)
 
