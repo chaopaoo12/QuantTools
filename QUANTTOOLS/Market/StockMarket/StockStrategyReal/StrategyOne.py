@@ -2,6 +2,7 @@ from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_befo
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
+from QUANTAXIS.QAUtil import QA_util_log_info
 import time
 
 
@@ -27,10 +28,15 @@ def signal(buy_list, position, trading_date, mark_tm):
         time.sleep(60)
         pass
 
+    QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(
+        mark_tm), ui_log=None)
+
     # 定时执行部分
     stm = trading_date + ' ' + mark_tm
-    source_data = QA_fetch_get_stock_vwap_min(QA_util_get_pre_trade_date(trading_date,10), trading_date, code_list, type='1')
+    source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
     data = source_data.loc[(stm,)]
+    QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(
+        mark_tm), ui_log=None)
 
     # add information
     # add name industry
