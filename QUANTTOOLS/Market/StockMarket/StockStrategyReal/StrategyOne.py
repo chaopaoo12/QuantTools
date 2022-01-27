@@ -17,7 +17,7 @@ def signal(buy_list, position, trading_date, mark_tm):
     if buy_list is None:
         buy_list = []
 
-    if position.shape[0] > 0:
+    if position is not None and position.shape[0] > 0:
         code_list = buy_list + position.code.tolist()
     else:
         code_list = list(set(buy_list))
@@ -38,6 +38,10 @@ def signal(buy_list, position, trading_date, mark_tm):
     # 方案1
     # hold index&condition
     #下降通道 超降通道 上升通道 超升通道
+    #vamp > 15 上升买进 buy_list生效
+    #vamp < -15 下降卖出
+    #DISTANCE > 0.03 & vamp.abs() < 10 & 未涨停 逃顶
+    #DISTANCE < -0.03 & vamp.abs() < 10 & 未跌停 抄底 buy_list生效
 
     data['signal'] = None
     data.loc[data.SKDJ_TR_HR == 1, "signal"] = 1
