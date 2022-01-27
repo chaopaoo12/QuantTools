@@ -16,7 +16,7 @@ def QA_fetch_get_usstock_day(code, start, end):
     data = data[['open','close','high','low','vol','amount','date','code','date_stamp']]
     return(data)
 
-def QA_fetch_get_stock_realtime(code, source ='sina'):
+def QA_fetch_get_stock_realtime(code, source ='qq'):
     quotation = easyquotation.use(source)
     values = pd.DataFrame(quotation.stocks(code)).T
     values.index.name = 'code'
@@ -33,11 +33,11 @@ def QA_fetch_get_stock_realtm_ask(code):
     return(float(QA_fetch_get_stock_real(code)['sell']))
 
 def QA_fetch_get_stock_realtm_askvol(code):
-    return(float(QA_fetch_get_stock_real(code)['aks1_volume']))
+    return(float(QA_fetch_get_stock_real(code)['ask1_volume']))
 
 def QA_fetch_get_stock_realtm_askvol5(code):
-    res = float(QA_fetch_get_stock_realtime(code)[['aks1_volume','aks2_volume','aks3_volume','aks4_volume','aks5_volume']])
-    return(float(res.aks1_volume + res.aks2_volume + res.aks3_volume + res.aks4_volume + res.aks5_volume))
+    res = float(QA_fetch_get_stock_realtime(code)[['ask1_volume','ask2_volume','ask3_volume','ask4_volume','ask5_volume']])
+    return(float(res.ask1_volume + res.ask2_volume + res.ask3_volume + res.ask4_volume + res.ask5_volume))
 
 def QA_fetch_get_stock_realtm_bid(code):
     return(float(QA_fetch_get_stock_real(code)['buy']))
