@@ -72,6 +72,11 @@ def signal(buy_list, position, trading_date, mark_tm):
     data.loc[data.reset_index().code.isin([i for i in position.code.tolist() if i not in buy_list]) & (data.signal == 1), 'signal'] = None
     #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
     #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
+    QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
+    QA_util_log_info(data[data.signal==1], ui_log=None)
+
+    QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
+    QA_util_log_info(data[data.signal==0], ui_log=None)
 
     # 方案2
     #data['signal'] = None
