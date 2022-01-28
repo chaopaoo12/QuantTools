@@ -132,7 +132,9 @@ class StrategyRobotBase:
                 break
             else:
                 # get next mark_tm
+                QA_util_log_info('##本交易时段 ==================== {}'.format(mark_tm), ui_log=None)
                 mark_tm = self.time_list[(self.time_list.index(mark_tm)+1) % len(self.time_list)]
+                QA_util_log_info('##下一交易时段 ==================== {}'.format(mark_tm), ui_log=None)
                 pass
 
         QA_util_log_info('当日交易完成 ==================== {}'.format(
