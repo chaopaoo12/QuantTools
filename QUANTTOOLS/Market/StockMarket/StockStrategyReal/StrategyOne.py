@@ -59,8 +59,8 @@ def signal(buy_list, position, trading_date, mark_tm):
     data.loc[(data.VAMP_SC == 1) & (data.VAMP_C.abs() < 15), "signal"] = 0
     data.loc[(data.VAMP_SC == 1) & (data.VAMP_C.abs() < 15), "msg"] = 'VMAP死叉'
 
-    data.loc[(data.VAMP_C >= 15) & (data.price < data.up_price), "signal"] = 1
-    data.loc[(data.VAMP_C >= 15) & (data.price < data.up_price), "msg"] = '追涨:VMAP上升通道'
+    data.loc[(data.VAMP_C >= 15) & (data.price < data.up_price) & (data.DISTANCE < 0.02), "signal"] = 1
+    data.loc[(data.VAMP_C >= 15) & (data.price < data.up_price) & (data.DISTANCE < 0.02), "msg"] = '追涨:VMAP上升通道'
     data.loc[data.VAMP_C <= -15, "signal"] = 0
     data.loc[data.VAMP_C <= -15, "msg"] = '止损:VMAP下降通道'
 
