@@ -29,7 +29,7 @@ def signal(buy_list, position, trading_date, mark_tm):
         time.sleep(60)
         pass
 
-    QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(
+    QA_util_log_info('##JOB Crawl Trading Data ==================== {}'.format(
         mark_tm), ui_log=None)
 
     # 定时执行部分
@@ -38,7 +38,7 @@ def signal(buy_list, position, trading_date, mark_tm):
     data = source_data.loc[(stm,)]
     price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价']].rename({'涨停价':'up_price','跌停价':'down_price'}, axis='columns')
     data = data.join(price)
-    QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(
+    QA_util_log_info('##JOB Finished Trading Signal ==================== {}'.format(
         mark_tm), ui_log=None)
 
     # add information
@@ -110,6 +110,13 @@ def balance(data, position, sub_account, percent):
         data['mark'] = None
         data.loc[data["target_capital"] >= data["市值"], "mark"] = "buy"
         data.loc[data["target_capital"] < data["市值"], "mark"] = "sell"
+
+        QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
+        QA_util_log_info(data[data.mark=='buy'], ui_log=None)
+
+
+        QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
+        QA_util_log_info(data[data.mark=='sell'], ui_log=None)
 
         return(data.reset_index())
     else:
