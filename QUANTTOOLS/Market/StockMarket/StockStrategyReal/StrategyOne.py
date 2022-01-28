@@ -69,7 +69,8 @@ def signal(buy_list, position, trading_date, mark_tm):
     data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.price > data.down_price), "signal"] = 1
     data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.price > data.down_price), "msg"] = 'VMAP超跌'
 
-    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, 'signal'] = 0
+    if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
+        data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, 'signal'] = None
 
     # 方案2
     #data['signal'] = None
@@ -98,7 +99,7 @@ def balance(data, position, sub_account, percent):
             data = data[(data.signal.isin([0, 1]))]
             data = data.assign(市值=0, 可用余额=0)
 
-        data = data.assign(target_position = 1)
+        data = data.assign(target_position = data.signal)
                            # 1 / data.signal.sum())
         data = data.assign(target_capital=data.target_position * sub_account * percent)
 
