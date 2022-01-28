@@ -53,6 +53,7 @@ def signal(buy_list, position, trading_date, mark_tm):
     #DISTANCE < -0.03 & vamp.abs() < 10 & 未跌停 抄底 buy_list生效
 
     data['signal'] = None
+    data['msg'] = None
 
     data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "signal"] = 1
     data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
