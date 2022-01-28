@@ -70,7 +70,6 @@ def signal(buy_list, position, trading_date, mark_tm):
     data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.price > data.down_price), "msg"] = 'VMAP超跌'
 
     if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
-        data.loc[[i for i in position.code.tolist() if i not in buy_list]].apply(lambda row:row['signal'] == 1)
         data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
 
     # 方案2
