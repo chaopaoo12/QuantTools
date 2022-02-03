@@ -110,7 +110,7 @@ class QAStockModelNeut(QAModel):
                                   offset='WARNING',
                                   volume=None
                                   )
-        short_of_data = [i for i in target_code if i not in train.loc[end].reset_index().code.unique().tolist()]
+        short_of_data = [i for i in target_code if i not in train.loc[QA_util_get_real_date(end)].reset_index().code.unique().tolist()]
 
         if len(short_of_data) > 0:
             QA_util_log_info('##JOB {} Short of Data: {} ===== from {_from} to {_to}'.format(len(short_of_data), short_of_data,_from=start,_to = end), ui_log = None)
