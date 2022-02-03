@@ -192,7 +192,7 @@ def QA_fetch_get_stock_half_real(code, date, source = 'sina'):
     res = res[res.date == date]
     return(res)
 
-def QA_fetch_get_stockcode_real(code, date = QA_util_today_str(), source = 'sina'):
+def QA_fetch_get_stockcode_real(code, date = QA_util_today_str(), source = 'qq'):
     res = QA_fetch_get_stock_half_realtime(code=code, date = date, source = source)
 
     return(res.code.unique().tolist())
