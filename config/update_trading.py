@@ -40,7 +40,6 @@ import time
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
 
-
     if QA_util_if_trade(mark_day):
         check_day = QA_util_get_pre_trade_date(mark_day,1)
     else:
