@@ -1,4 +1,3 @@
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_last_day,QA_util_get_real_date,QA_util_if_trade,QA_util_log_info
 from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_code_wy,QA_fetch_financial_code_ttm,
@@ -88,9 +87,9 @@ def check_wy_financial(mark_day=None, type='day', ui_log = None):
         return(None)
 
 def check_stock_code():
-    code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all().code.unique().tolist())
-    code_old = QA_fetch_code_old().code.unique().tolist()
-    code_new = QA_fetch_code_new().code.unique().tolist()
+    code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all()['code'].unique().tolist())
+    code_old = QA_fetch_code_old()['code'].unique().tolist()
+    code_new = QA_fetch_code_new()['code'].unique().tolist()
     short_of_code = [i for i in code_all if i not in code_old + code_new]
 
     if len(short_of_code) > 0:
