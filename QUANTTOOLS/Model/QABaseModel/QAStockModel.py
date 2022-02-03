@@ -5,6 +5,7 @@ from QUANTTOOLS.Model.QABaseModel.QAModel import QAModel
 from QUANTTOOLS.Message import send_email, send_actionnotice
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old,QA_fetch_stock_all,QA_fetch_code_new,QA_fetch_stock_om_all
 from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize,series_to_supervised
+from QUANTAXIS.QAUtil import QA_util_if_trade,QA_util_get_pre_trade_date,QA_util_get_real_date
 
 class QAStockModel(QAModel):
 
@@ -39,7 +40,7 @@ class QAStockModel(QAModel):
         target_code = [i for i in code_all if i not in code_new + ST + code_688]
 
         short_of_code = [i for i in code_all if i not in code_old + code_new]
-        short_of_data = [i for i in target_code if i not in data.loc[end].reset_index().code.unique().tolist()]
+        short_of_data = [i for i in target_code if i not in data.loc[QA_util_get_real_date(end)].reset_index().code.unique().tolist()]
 
         if len(short_of_code) > 0:
             QA_util_log_info('##JOB {} Short of Code: {} ===== from {_from} to {_to}'.format(len(short_of_code), short_of_code,_from=start,_to = end), ui_log = None)
