@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
     QA_SU_save_stock_aklist()
     res = check_stock_code()
-    while len(res) > 0:
+    if len(res) > 0:
         QA_SU_save_stock_list('tdx')
         #QA_SU_save_stock_info_tushare()
         #QA_SU_save_stock_industryinfo()
