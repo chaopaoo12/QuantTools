@@ -87,7 +87,7 @@ def check_wy_financial(mark_day=None, type='day', ui_log = None):
         return(None)
 
 def check_stock_code():
-    code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all()['code'].unique().tolist())
+    code_all = QA_fetch_stock_all()['code'].unique().tolist()
     code_old = QA_fetch_code_old()['code'].unique().tolist()
     code_new = QA_fetch_code_new()['code'].unique().tolist()
     short_of_code = [i for i in code_all if i not in code_old + code_new]

@@ -50,7 +50,7 @@ def QA_SU_save_stock_half(client=DATABASE, ui_log=None, ui_progress=None):
     :param ui_progress: 给GUI qt 界面使用
     :param ui_progress_int_value: 给GUI qt 界面使用
     '''
-    stock_list = QA_fetch_stock_all().code.unique().tolist()
+    stock_list = QA_fetch_stock_all()['code'].unique().tolist()
     coll_stock_day = client.stock_day_half
     coll_stock_day.create_index(
         [("code",
@@ -150,7 +150,7 @@ def QA_SU_save_stock_day(client=DATABASE, ui_log=None, ui_progress=None):
     :param ui_progress: 给GUI qt 界面使用
     :param ui_progress_int_value: 给GUI qt 界面使用
     '''
-    stock_list = QA_fetch_stock_all().code.unique().tolist()
+    stock_list = QA_fetch_stock_all()['code'].unique().tolist()
     coll_stock_day = client.stock_day
     coll_stock_day.create_index(
         [("code",
@@ -285,7 +285,7 @@ def QA_SU_save_usstock_day(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
 
-    __usstock_list = QA_fetch_get_usstock_list_akshare().code.unique().tolist()
+    __usstock_list = QA_fetch_get_usstock_list_akshare()['code'].unique().tolist()
 
     coll = client.usstock_day
     coll.create_index(
@@ -379,7 +379,7 @@ def QA_SU_save_usstock_adj(client=DATABASE, ui_log=None, ui_progress=None):
     Keyword Arguments:
         client {[type]} -- [description] (default: {DATABASE})
     """
-    stock_list = QA_fetch_get_usstock_list_akshare().code.unique().tolist()
+    stock_list = QA_fetch_get_usstock_list_akshare()['code'].unique().tolist()
     # client.drop_collection('stock_xdxr')
 
     try:
@@ -451,7 +451,7 @@ def QA_SU_save_usstock_pb(client=DATABASE, ui_log=None, ui_progress=None):
     Keyword Arguments:
         client {[type]} -- [description] (default: {DATABASE})
     """
-    stock_list = QA_fetch_get_usstock_list_akshare().code.unique().tolist()
+    stock_list = QA_fetch_get_usstock_list_akshare()['code'].unique().tolist()
     # client.drop_collection('stock_xdxr')
 
     try:
@@ -518,7 +518,7 @@ def QA_SU_save_usstock_pe(client=DATABASE, ui_log=None, ui_progress=None):
     Keyword Arguments:
         client {[type]} -- [description] (default: {DATABASE})
     """
-    stock_list = QA_fetch_get_usstock_list_akshare().code.unique().tolist()
+    stock_list = QA_fetch_get_usstock_list_akshare()['code'].unique().tolist()
     # client.drop_collection('stock_xdxr')
 
     try:
@@ -705,7 +705,7 @@ def QA_SU_save_index_week(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
 
-    stock_list = QA_fetch_get_index_list('tdx').code.unique().tolist()
+    stock_list = QA_fetch_get_index_list('tdx')['code'].unique().tolist()
     coll_index_week = client.index_week
     coll_index_week.create_index(
         [("code",
@@ -801,7 +801,7 @@ def QA_SU_save_index_month(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
 
-    stock_list = QA_fetch_get_index_list('tdx').code.unique().tolist()
+    stock_list = QA_fetch_get_index_list('tdx')['code'].unique().tolist()
     coll_index_month = client.index_month
     coll_index_month.create_index(
         [("code",
@@ -897,7 +897,7 @@ def QA_SU_save_index_year(client=DATABASE, ui_log=None, ui_progress=None):
         client {[type]} -- [description] (default: {DATABASE})
     """
 
-    stock_list = QA_fetch_get_index_list('tdx').code.unique().tolist()
+    stock_list = QA_fetch_get_index_list('tdx')['code'].unique().tolist()
     coll_index_year = client.index_year
     coll_index_year.create_index(
         [("code",
@@ -992,7 +992,7 @@ def QA_SU_save_stock_xdxr(client=DATABASE, ui_log=None, ui_progress=None):
     Keyword Arguments:
         client {[type]} -- [description] (default: {DATABASE})
     """
-    stock_list = QA_fetch_stock_all().code.unique().tolist()
+    stock_list = QA_fetch_stock_all()['code'].unique().tolist()
     # client.drop_collection('stock_xdxr')
 
     try:
@@ -1104,7 +1104,7 @@ def QA_SU_save_stock_info(client=DATABASE, ui_log=None, ui_progress=None):
     """
 
     client.drop_collection('stock_info')
-    stock_list = QA_fetch_stock_all().code.unique().tolist()
+    stock_list = QA_fetch_stock_all()['code'].unique().tolist()
     coll = client.stock_info
     coll.create_index('code')
     err = []
@@ -1152,7 +1152,7 @@ def QA_SU_save_stock_real(client=DATABASE, ui_log=None, ui_progress=None):
     """
 
     #client.drop_collection('stock_real')
-    stock_list = QA_fetch_stock_all().code.unique().tolist()
+    stock_list = QA_fetch_stock_all()['code'].unique().tolist()
     coll = client.stock_real
     coll.create_index([('code',
                         pymongo.ASCENDING),
@@ -1192,7 +1192,7 @@ def QA_SU_save_usstock_xq_day(client=DATABASE, ui_log=None, ui_progress=None):
     :param ui_progress: 给GUI qt 界面使用
     :param ui_progress_int_value: 给GUI qt 界面使用
     '''
-    stock_list = QA_fetch_get_usstock_list_akshare().code.unique().tolist()
+    stock_list = QA_fetch_get_usstock_list_akshare()['code'].unique().tolist()
     coll_stock_day = client.usstock_day_xq
     coll_stock_day.create_index(
         [("code",
@@ -1498,7 +1498,7 @@ def QA_SU_save_stock_basereal(code =None, start_date = None, end_date = None, cl
         client {[type]} -- [description] (default: {DATABASE})
     """
     if code is None:
-        stock_list = QA_fetch_stock_all().code.unique().tolist()
+        stock_list = QA_fetch_stock_all()['code'].unique().tolist()
     else:
         stock_list = QA_util_code_tolist(code)
     stock_basereal = client.stock_basereal
@@ -1578,7 +1578,7 @@ def QA_SU_save_stock_min(time_type : list,client=DATABASE, ui_log=None, ui_progr
         client {[type]} -- [description] (default: {DATABASE})
     """
 
-    stock_list = QA_fetch_get_stock_list().code.unique().tolist()
+    stock_list = QA_fetch_get_stock_list()['code'].unique().tolist()
     coll = client.stock_min
     coll.create_index(
         [
