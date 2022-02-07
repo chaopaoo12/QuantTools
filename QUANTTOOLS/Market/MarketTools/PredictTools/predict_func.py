@@ -33,11 +33,10 @@ def make_prediction(Model, trading_date, name, working_dir, code = None, type='c
         target_pool, prediction = Model.model_predict(start, end, type=type)
     else:
         target_pool, prediction = Model.model_predict(start, end, code, type=type)
-    Model.info['name'] = name
-    return(Model, target_pool, prediction, start, end, Model.info['date'], Model.info['target'])
+    return(Model, target_pool, prediction, start, end, Model.info['date'], name, Model.info['target'])
 
 def make_stockprediction(Stock, trading_date, name, working_dir, code = None, index = 'date', type='crawl'):
-    Model, target_pool, prediction, start, end, Model_date = make_prediction(Stock, trading_date, name, working_dir, code, type)
+    Model, target_pool, prediction, start, end, Model_date, model_name, target = make_prediction(Stock, trading_date, name, working_dir, code, type)
     QA_util_log_info('##JOB Now Add info to Predictions')
 
     NAME = QA_fetch_stock_name(prediction.reset_index()['code'].unique().tolist())
@@ -49,10 +48,10 @@ def make_stockprediction(Stock, trading_date, name, working_dir, code = None, in
         INDUSTRY = QA_fetch_stock_info(prediction.reset_index()['code'].unique().tolist())[['industry']]
         target_pool = target_pool.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().sort_values(by=[index,'RANK'],ascending=[False,True]).set_index([index,'code']).rename(columns={'name':'NAME','industry':'INDUSTRY'})
         prediction = prediction.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().sort_values(by=[index,'RANK'],ascending=[False,True]).set_index([index,'code']).rename(columns={'name':'NAME','industry':'INDUSTRY'})
-    return(target_pool, prediction, start, end, Model_date, Model.info['name'])
+    return(target_pool, prediction, start, end, Model_date, model_name, target)
 
 def make_indexprediction(Index, trading_date, name, working_dir, code = None, index = 'date', type='crawl'):
-    Model, target_pool, prediction, start, end, Model_date = make_prediction(Index, trading_date, name, working_dir, code, type)
+    Model, target_pool, prediction, start, end, Model_date, model_name, target = make_prediction(Index, trading_date, name, working_dir, code, type)
 
     QA_util_log_info('##JOB Now Add info to Predictions')
 
