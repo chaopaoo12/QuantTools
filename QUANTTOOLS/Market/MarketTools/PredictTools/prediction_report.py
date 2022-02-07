@@ -42,7 +42,9 @@ def Funding_Decision(trading_date, target_pool, sub_accounts, frozen, percent, s
     return(target)
 
 
-def prediction_report(trading_date, target_pool, prediction, model_date, top_num, exceptions, percent,
+def prediction_report(trading_date, target_pool, prediction, model_date,
+                      model_name, target,
+                      top_num, exceptions, percent,
                       name_list = ['NAME','INDUSTRY'],
                       value_ist = ['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
                       sort_mark ='RANK',
@@ -121,7 +123,7 @@ def prediction_report(trading_date, target_pool, prediction, model_date, top_num
 
     try:
         msg = build_email(build_head(),err_msg,
-                          target_body,hold_body,fronzen_body,
+                          target_body, hold_body,fronzen_body,
                           model_score,  stock_socre, allstock_socre,
                           modelhis_body, modeltophis_body)
         send_actionnotice("prediction_report",
@@ -131,7 +133,7 @@ def prediction_report(trading_date, target_pool, prediction, model_date, top_num
                           offset='HOLD',
                           volume=None
                           )
-        send_email(title + trading_date, msg, trading_date)
+        send_email(model_name + title + trading_date + target, msg, trading_date)
     except:
         send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
         send_actionnotice("prediction_report",

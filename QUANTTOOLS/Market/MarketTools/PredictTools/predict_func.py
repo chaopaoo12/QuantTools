@@ -33,7 +33,8 @@ def make_prediction(Model, trading_date, name, working_dir, code = None, type='c
         target_pool, prediction = Model.model_predict(start, end, type=type)
     else:
         target_pool, prediction = Model.model_predict(start, end, code, type=type)
-    return(Model, target_pool, prediction, start, end, Model.info['date'])
+    Model.info['name'] = name
+    return(Model, target_pool, prediction, start, end, Model.info['date'], Model.info['target'])
 
 def make_stockprediction(Stock, trading_date, name, working_dir, code = None, index = 'date', type='crawl'):
     Model, target_pool, prediction, start, end, Model_date = make_prediction(Stock, trading_date, name, working_dir, code, type)
@@ -48,7 +49,7 @@ def make_stockprediction(Stock, trading_date, name, working_dir, code = None, in
         INDUSTRY = QA_fetch_stock_info(prediction.reset_index()['code'].unique().tolist())[['industry']]
         target_pool = target_pool.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().sort_values(by=[index,'RANK'],ascending=[False,True]).set_index([index,'code']).rename(columns={'name':'NAME','industry':'INDUSTRY'})
         prediction = prediction.reset_index().set_index('code').join(NAME).join(INDUSTRY).reset_index().sort_values(by=[index,'RANK'],ascending=[False,True]).set_index([index,'code']).rename(columns={'name':'NAME','industry':'INDUSTRY'})
-    return(target_pool, prediction, start, end, Model_date)
+    return(target_pool, prediction, start, end, Model_date, Model.info['name'])
 
 def make_indexprediction(Index, trading_date, name, working_dir, code = None, index = 'date', type='crawl'):
     Model, target_pool, prediction, start, end, Model_date = make_prediction(Index, trading_date, name, working_dir, code, type)
