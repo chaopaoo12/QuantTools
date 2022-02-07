@@ -133,7 +133,7 @@ def prediction_report(trading_date, target_pool, prediction, model_date,
                           offset='HOLD',
                           volume=None
                           )
-        send_email(model_name + title + trading_date + target, msg, trading_date)
+        send_email(model_name + ' ' + title+ ':' + trading_date + ' ' + target, msg, trading_date)
     except:
         send_email('交易报告:'+ trading_date, "消息构建失败", trading_date)
         send_actionnotice("prediction_report",
