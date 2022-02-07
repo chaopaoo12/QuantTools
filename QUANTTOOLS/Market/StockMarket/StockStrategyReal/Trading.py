@@ -7,15 +7,16 @@ from .StrategyOne import signal, balance, tracking_signal, track_balance
 
 def trading_new(trading_date, working_dir=working_dir):
 
-    r_tar, prediction_tar2, prediction = load_data(concat_predict, QA_util_get_last_day(trading_date), working_dir, 'stock_xg', 'prediction')
+    #r_tar, prediction_tar2, prediction = load_data(concat_predict, QA_util_get_last_day(trading_date), working_dir, 'stock_xg', 'prediction')
     r_tar, prediction_tar3, prediction = load_data(concat_predict_neut, QA_util_get_last_day(trading_date), working_dir, 'stock_xg_nn', 'prediction_stock_xg_nn')
-    r_tar, prediction_tar, prediction = load_data(concat_predict_neut, QA_util_get_last_day(trading_date), working_dir, 'stock_mars_nn', 'prediction_stock_mars_nn')
-    r_tar, prediction_tar1, prediction = load_data(concat_predict, QA_util_get_last_day(trading_date), working_dir, 'stock_mars_day', 'prediction_stock_mars_day')
+    #r_tar, prediction_tar, prediction = load_data(concat_predict_neut, QA_util_get_last_day(trading_date), working_dir, 'stock_mars_nn', 'prediction_stock_mars_nn')
+    #r_tar, prediction_tar1, prediction = load_data(concat_predict, QA_util_get_last_day(trading_date), working_dir, 'stock_mars_day', 'prediction_stock_mars_day')
 
-    code_list = list(set(prediction_tar[prediction_tar.RANK <= 20].loc[QA_util_get_last_day(trading_date)].reset_index().code.unique().tolist()
-                         + prediction_tar1[prediction_tar1.RANK <= 20].loc[QA_util_get_last_day(trading_date)].reset_index().code.unique().tolist()
-                         + prediction_tar2[prediction_tar2.RANK <= 20].loc[QA_util_get_last_day(trading_date)].reset_index().code.unique().tolist()
-                         + prediction_tar3[prediction_tar3.RANK <= 20].loc[QA_util_get_last_day(trading_date)].reset_index().code.unique().tolist()
+    code_list = list(set(#prediction_tar[prediction_tar.RANK <= 20].loc[QA_util_get_last_day(trading_date)].reset_index().code.unique().tolist()
+                         #+ prediction_tar1[prediction_tar1.RANK <= 20].loc[QA_util_get_last_day(trading_date)].reset_index().code.unique().tolist()
+                         #+ prediction_tar2[prediction_tar2.RANK <= 20].loc[QA_util_get_last_day(trading_date)].reset_index().code.unique().tolist()
+                         #+
+        prediction_tar3[prediction_tar3.y_pred == 1].loc[QA_util_get_last_day(trading_date)].reset_index().code.unique().tolist()
                          ))
 
     time_list = ['09:30:00',
