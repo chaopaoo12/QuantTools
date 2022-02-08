@@ -184,6 +184,7 @@ def track_balance(data, buy_list, position, sub_account, percent):
     # 细节仓位另算
     if data is not None:
         if position is not None and position.shape[0] > 0:
+            print(position)
             data = data.join(position[['市值', '可用余额']])
             data = data[(data['signal'] == -1)]
         else:
