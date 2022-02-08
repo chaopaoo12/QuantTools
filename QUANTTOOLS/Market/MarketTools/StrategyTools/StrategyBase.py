@@ -98,9 +98,13 @@ def build_info(data):
             data[inset_column] = 0
 
         sell_list = data[data.mark == 'sell'].code.tolist()
+        QA_util_log_info('##sell_list {}'.format(sell_list), ui_log = None)
+        QA_util_log_info(data[data.code.isin(sell_list)][need_columns], ui_log = None)
         sell_dict = data[data.code.isin(sell_list)][need_columns].to_dict(orient='records')
         buy_list = data[data.mark == 'buy'].code.tolist()
+        QA_util_log_info('##buy_list {}'.format(buy_list), ui_log = None)
         buy_dict = data[data.code.isin(buy_list)][need_columns].to_dict(orient='records')
+        QA_util_log_info(data[data.code.isin(buy_list)][need_columns], ui_log = None)
 
         signal_data = {'sell': sell_dict, 'buy': buy_dict}
         return(signal_data)
