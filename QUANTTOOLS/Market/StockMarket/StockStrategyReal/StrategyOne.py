@@ -118,8 +118,8 @@ def balance(data, position, sub_account, percent):
         #                 target_capital=data.target_position * sub_account * percent)
 
         data['mark'] = None
-        data.loc[data["target_capital"] >= data["市值"], "mark"] = "buy"
-        data.loc[data["target_capital"] < data["市值"], "mark"] = "sell"
+        data.loc[data["target_capital"] >= data["市值"] & (data.signal == 1), "mark"] = "buy"
+        data.loc[data["target_capital"] < data["市值"] & (data.signal == 0), "mark"] = "sell"
         QA_util_log_info(data, ui_log=None)
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
         QA_util_log_info(data[data.mark == 'buy'], ui_log=None)
