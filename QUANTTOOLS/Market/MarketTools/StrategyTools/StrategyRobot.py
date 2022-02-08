@@ -124,7 +124,7 @@ class StrategyRobotBase:
                     time.sleep(60)
                 else:
                     break
-
+            QA_util_log_info('##Trading Mode {} ==================== {}'.format(test, mark_tm), ui_log=None)
             trading_robot(self.client, self.account, account_info, signal_data,
                           self.trading_date, mark_tm, self.strategy_id, test=test)
 
