@@ -62,7 +62,7 @@ def get_Position(client, account=None):
     positions['上市时间'] = positions['证券代码'].apply(lambda x:QA_util_get_days_to_today(str(QA_fetch_stock_to_market_date(x))))
     positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industryinfo(x).SWHY.values[0])
     positions['NAME'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_name(x).values[0])
-    positions =positions.rename(columns={'证券代码': 'code'})
+    positions = positions.rename(columns={'证券代码': 'code'})
     return(positions)
 
 def get_hold(client, account=None):
