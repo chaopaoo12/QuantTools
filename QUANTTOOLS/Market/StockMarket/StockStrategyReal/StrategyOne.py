@@ -56,7 +56,7 @@ def signal(buy_list, position, trading_date, mark_tm):
     data['msg'] = None
     data = data.assign(signal = None,
                         msg = None,
-                        code = data.reset_index().code.to_string())
+                        code = [str(i) for i in data.reset_index().code])
 
     data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "signal"] = 1
     data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
@@ -122,11 +122,11 @@ def balance(data, position, sub_account, percent):
         data.loc[data["target_capital"] < data["市值"], "mark"] = "sell"
         QA_util_log_info(data, ui_log=None)
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.mark=='buy'], ui_log=None)
+        QA_util_log_info(data[data.mark == 'buy'], ui_log=None)
 
 
         QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.mark=='sell'], ui_log=None)
+        QA_util_log_info(data[data.mark == 'sell'], ui_log=None)
 
         return(data.reset_index(drop=True))
     else:
