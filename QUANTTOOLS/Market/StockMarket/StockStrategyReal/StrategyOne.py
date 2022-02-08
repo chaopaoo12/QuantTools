@@ -128,7 +128,7 @@ def balance(data, position, sub_account, percent):
         QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
         QA_util_log_info(data[data.mark == 'sell'], ui_log=None)
 
-        return(data.reset_index(drop=True))
+        return(data.reset_index(drop=True).drop_duplicates())
     else:
         return None
 
