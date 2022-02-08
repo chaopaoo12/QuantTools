@@ -70,7 +70,7 @@ def signal(buy_list, position, trading_date, mark_tm):
     data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.close > data.down_price), "signal"] = 1
     data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.close > data.down_price), "msg"] = 'VMAP超跌'
 
-    data.loc[data.reset_index().code.isin([str(i) for i in position.code.tolist() if i not in buy_list]) & (data.signal.isin([1])), 'signal'] = None
+    data.loc[data.reset_index().code.isin([int(i) for i in position.code.tolist() if i not in buy_list]) & (data.signal.isin([1])), 'signal'] = None
     #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
     #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
     QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
