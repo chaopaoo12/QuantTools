@@ -4,6 +4,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtime
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
 from QUANTAXIS.QAUtil import QA_util_log_info
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo
 import time
 
 
@@ -103,7 +104,7 @@ def balance(data, position, sub_account, percent):
     # 细节仓位另算
     if data is not None:
         if position is not None and position.shape[0] > 0:
-            data = data.join(position[['code', 'NAME', 'INDUSTRY', '市值', '可用余额']].set_index('code'))
+            data = data.join(position[['code', '市值', '可用余额']].set_index('code'))
             data = data[(data.signal.isin([0, 1])) | (data['可用余额'] > 0)]
         else:
             data = data[(data.signal.isin([0, 1]))]
@@ -116,8 +117,10 @@ def balance(data, position, sub_account, percent):
         # 方案2
         # data = pd.assign(target_position=1 / data.signal.sum(),
         #                 target_capital=data.target_position * sub_account * percent)
-
+        data['INDUSTRY'] = data['code'].apply(lambda x:QA_fetch_stock_industryinfo(x).SWHY.values[0])
+        data['NAME'] = data['code'].apply(lambda x:QA_fetch_stock_name(x).values[0])
         data['mark'] = None
+
         data.loc[(data["target_capital"] >= data["市值"]) & (data.signal == 1), "mark"] = "buy"
         data.loc[(data["target_capital"] < data["市值"]) & (data.signal == 0), "mark"] = "sell"
         QA_util_log_info(data, ui_log=None)
