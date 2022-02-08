@@ -92,7 +92,7 @@ def build_info(data):
     if data is not None:
 
         QA_util_log_info('##CHECK columns ', ui_log = None)
-        need_columns = ['code', 'NAME', 'INDUSTRY', 'msg', 'close', 'target_position', 'target_capital', 'mark']
+        need_columns = ['code', 'name', 'industry', 'msg', 'close', 'target_position', 'target_capital', 'mark']
         for inset_column in [i for i in need_columns if i not in data.columns]:
             QA_util_log_info('##CHECK short of columns {}'.format(inset_column), ui_log = None)
             data[inset_column] = 0
