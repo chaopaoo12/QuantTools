@@ -36,7 +36,7 @@ def SELL(client, account, strategy_id, account_info, trading_date,
         QA_util_log_info('卖出 {code}({NAME},{INDUSTRY}){deal_pos}股, 目标持仓金额:{target_capital}====={trading_date}'.format(
             code=code, NAME= name, INDUSTRY=industry, deal_pos=abs(deal_pos),
             target_capital=target_capital, price=price, trading_date=trading_date),ui_log=None)
-        if test:
+        if test is True:
             e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos,
                                      direction='SELL', type='MARKET', priceType=4, price=None, client=client)
             # e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
@@ -62,11 +62,11 @@ def SELL(client, account, strategy_id, account_info, trading_date,
             target_capital=target_capital, price=price,
             trading_date=trading_date), ui_log=None)
 
-        if test:
-            QA_util_log_info('Test Mode', ui_log=None)
-        else:
+        if test is True:
             e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos,
                                      direction='SELL', type='LIMIT', priceType=None, price=price, client=client)
+        else:
+            QA_util_log_info('Test Mode', ui_log=None)
     else:
         QA_util_log_info('type 参数错误 {type} 必须为 [morning, end]====={trading_date}'.format(
             type=type, trading_date=trading_date), ui_log=None)

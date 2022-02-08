@@ -49,12 +49,12 @@ def BUY(client, account, strategy_id, account_info, trading_date,
         QA_util_log_info('买入 {code}({name},{industry}) {deal_pos}股, 目标持仓金额:{target_capital}'.format(
             code=code, name=name, industry=industry, deal_pos=abs(deal_pos),
             price=price, target_capital=target_capital), ui_log=None)
-        if test:
-            QA_util_log_info('Test Mode', ui_log=None)
-        else:
+        if test is True:
             #e = send_trading_message(account, strategy_id, account_info, i, NAME, INDUSTRY, deal, direction = 'BUY', type='MARKET', priceType=4, price = None, client=client)
             e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos,
                                      direction='BUY', type='LIMIT', priceType=None, price=price, client=client)
+        else:
+            QA_util_log_info('Test Mode', ui_log=None)
         time.sleep(5)
 
     elif type == 'morning':
@@ -68,11 +68,11 @@ def BUY(client, account, strategy_id, account_info, trading_date,
         QA_util_log_info('早盘挂单买入 {code}({name},{industry}){deal_pos}股,目标持仓金额:{target_capital}'.format(
             code=code, name=name, industry=industry, deal_pos=abs(deal_pos),
             price=price, target_capital=target_capital), ui_log=None)
-        if test:
-            QA_util_log_info('Test Mode', ui_log=None)
-        else:
+        if test is True:
             e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos,
                                      direction='BUY', type='LIMIT', priceType=None, price=price, client=client)
+        else:
+            QA_util_log_info('Test Mode', ui_log=None)
 
         time.sleep(5)
     else:
