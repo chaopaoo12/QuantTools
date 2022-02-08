@@ -30,7 +30,7 @@ def QA_fetch_get_stock_close(code):
     return(float(QA_fetch_get_stock_realtime(code)['close']))
 
 def QA_fetch_get_stock_realtm_ask(code):
-    return(float(QA_fetch_get_stock_real(code)['sell']))
+    return(float(QA_fetch_get_stock_real(code)['ask1']))
 
 def QA_fetch_get_stock_realtm_askvol(code):
     return(float(QA_fetch_get_stock_real(code)['ask1_volume']))
@@ -40,7 +40,7 @@ def QA_fetch_get_stock_realtm_askvol5(code):
     return(float(res.ask1_volume + res.ask2_volume + res.ask3_volume + res.ask4_volume + res.ask5_volume))
 
 def QA_fetch_get_stock_realtm_bid(code):
-    return(float(QA_fetch_get_stock_real(code)['buy']))
+    return(float(QA_fetch_get_stock_real(code)['bid1']))
 
 def QA_fetch_get_stock_realtm_bidvol(code):
     return(float(QA_fetch_get_stock_real(code)['bid1_volume']))
