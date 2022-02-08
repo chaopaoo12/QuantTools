@@ -54,6 +54,9 @@ def signal(buy_list, position, trading_date, mark_tm):
 
     data['signal'] = None
     data['msg'] = None
+    data  = data.assign(signal = None,
+                        msg = None,
+                        code = data.reset_index().code)
 
     data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "signal"] = 1
     data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
@@ -70,11 +73,11 @@ def signal(buy_list, position, trading_date, mark_tm):
     data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.close > data.down_price), "signal"] = 1
     data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.close > data.down_price), "msg"] = 'VMAP超跌'
 
-    data.loc[data.reset_index().code.isin([int(i) for i in position.code.tolist() if i not in buy_list]) & (data.signal.isin([1])), 'signal'] = None
+    data.loc[data.code.isin([i for i in position.code.tolist() if i not in buy_list]) & (data.signal.isin([1])), 'signal'] = None
     #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
     #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
     QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
-    QA_util_log_info(data[data.signal==1], ui_log=None)
+    QA_util_log_info(data[data.signal == 1], ui_log=None)
 
     QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
     QA_util_log_info(data[data.signal==0], ui_log=None)
