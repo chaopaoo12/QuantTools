@@ -54,9 +54,9 @@ def signal(buy_list, position, trading_date, mark_tm):
 
     data['signal'] = None
     data['msg'] = None
-    data  = data.assign(signal = None,
+    data = data.assign(signal = None,
                         msg = None,
-                        code = data.reset_index().code)
+                        code = data.reset_index().code.to_string())
 
     data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "signal"] = 1
     data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
