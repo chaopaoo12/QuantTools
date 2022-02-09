@@ -5,3 +5,4 @@ from .TradingTools import trading_base, trading_base2, trading_robot
 from .DataTools import load_data
 from .StrategyTools import StrategyBase, StrategyRobotBase
 from .TrackTools import tracking_base
+from .TimeTools.time_control import on_bar, get_on_time, time_check_before, time_check_after, open_check, close_check, suspend_check, check_market_time

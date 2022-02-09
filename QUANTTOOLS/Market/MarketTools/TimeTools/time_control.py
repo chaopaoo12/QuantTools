@@ -1,7 +1,18 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
+import pandas as pd
 import time
 import datetime
 
+
+def on_bar(start, end, sep, breaks):
+    date = '2022-02-09'
+    tm_rng = pd.date_range(date + ' '+start, date + ' '+end, freq=str(sep)+'min')
+    break_tmrng = []
+    for break_rng in breaks:
+        break_tmp = pd.date_range(date + ' '+break_rng[0], date + ' '+break_rng[1], freq=str(sep)+'min')
+        break_tmrng.extend(break_tmp[1:-1])
+    res_rng = [str(i)[11:20] for i in tm_rng if i not in break_tmrng]
+    return(res_rng)
 
 def time_check_before(tm_mark, test=False, ckeck_tm=None):
     if test is False:

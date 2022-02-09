@@ -1,10 +1,6 @@
-from QUANTTOOLS.Market.MarketTools import trading_base, load_data
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.setting import working_dir, stock_day_set, index_day_set, index_hour_set
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.concat_predict import (concat_predict,concat_predict_hour,concat_predict_15min,
-                                                                            concat_predict_real,concat_predict_crawl,concat_predict_hedge,
-                                                                            concat_predict_index,concat_predict_indexhour,concat_predict_index15min)
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.running import predict_stock_summary, predict_index_summary
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.setting import working_dir, percent, exceptions, top
+from QUANTTOOLS.Market.MarketTools import load_data
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.concat_predict import (concat_predict, concat_predict_hour)
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.setting import working_dir
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_quant_min,QA_fetch_get_stock_quant_hour
 
 
