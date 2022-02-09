@@ -39,7 +39,7 @@ def tracking_new(trading_date):
     code_list = None
 
     #[i.strftime('%H:%M:%S') for i in pd.date_range(start='2019-01-09 09:30:00',end = '2019-01-09 15:00:00',freq='5T')]
-    time_list = time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
+    time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
 
     robot = StrategyRobotBase(code_list, time_list, trading_date)
     robot.set_account(strategy_id)
