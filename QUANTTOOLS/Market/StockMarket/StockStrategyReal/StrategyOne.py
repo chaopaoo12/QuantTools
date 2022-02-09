@@ -59,8 +59,8 @@ def signal(buy_list, position, trading_date, mark_tm):
                         msg = None,
                         code = [str(i) for i in data.reset_index().code])
 
-    data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "signal"] = 1
-    data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
+    data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.pct_chg < 3) & (data.close < data.up_price), "signal"] = 1
+    data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.pct_chg < 3) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
     data.loc[(data.VAMP_SC == 1) & (data.VAMP_C.abs() < 15), "signal"] = 0
     data.loc[(data.VAMP_SC == 1) & (data.VAMP_C.abs() < 15), "msg"] = 'VMAP死叉'
 
