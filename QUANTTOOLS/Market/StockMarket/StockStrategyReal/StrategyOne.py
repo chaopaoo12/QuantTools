@@ -37,7 +37,7 @@ def signal(buy_list, position, trading_date, mark_tm):
     stm = trading_date + ' ' + mark_tm
     source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1').sort_index()
     data = source_data.loc[(stm,)]
-    price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_change'}, axis='columns')
+    price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
     data = data.join(price)
     QA_util_log_info('##JOB Finished Trading Signal ==================== {}'.format(
         mark_tm), ui_log=None)
@@ -69,8 +69,8 @@ def signal(buy_list, position, trading_date, mark_tm):
     data.loc[data.VAMP_C <= -15, "signal"] = 0
     data.loc[data.VAMP_C <= -15, "msg"] = '止损:VMAP下降通道'
 
-    data.loc[(data.pct_change < 7) & (data.DISTANCE > 0.03) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "signal"] = 0
-    data.loc[(data.pct_change < 7) & (data.DISTANCE > 0.03) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
+    data.loc[(data.pct_chg < 7) & (data.DISTANCE > 0.03) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "signal"] = 0
+    data.loc[(data.pct_chg < 7) & (data.DISTANCE > 0.03) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
     data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.close > data.down_price), "signal"] = 1
     data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.close > data.down_price), "msg"] = 'VMAP超跌'
 
