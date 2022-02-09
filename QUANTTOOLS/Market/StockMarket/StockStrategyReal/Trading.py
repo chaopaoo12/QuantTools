@@ -18,7 +18,7 @@ def trading_new(trading_date, working_dir=working_dir):
                          #+ prediction_tar3[prediction_tar3.y_pred == 1].loc[QA_util_get_last_day(trading_date)].reset_index().code.unique().tolist()
                          ))
 
-    time_list = on_bar('09:30:00', '15:00:00', 5, [['11:30:00', '13:00:00']])
+    time_list = on_bar('09:35:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
 
     robot = StrategyRobotBase(code_list, time_list, trading_date)
     robot.set_account(strategy_id)
