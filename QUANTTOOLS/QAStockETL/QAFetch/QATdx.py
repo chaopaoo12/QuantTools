@@ -27,7 +27,7 @@ def QA_fetch_get_stock_realtime(code, source ='qq'):
             values.index.name = 'code'
         except:
             values = None
-
+        print(values)
         if values is None:
             try_time += 1
             time.sleep(3)
