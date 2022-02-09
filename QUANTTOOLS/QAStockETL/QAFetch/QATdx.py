@@ -9,6 +9,7 @@ import easyquotation
 import pandas as pd
 import numpy as np
 import akshare as ak
+import time
 
 def QA_fetch_get_usstock_day(code, start, end):
     data = QA_fetch_get_future_day('tdx',code, start, end)
@@ -17,10 +18,22 @@ def QA_fetch_get_usstock_day(code, start, end):
     return(data)
 
 def QA_fetch_get_stock_realtime(code, source ='qq'):
-    quotation = easyquotation.use(source)
-    values = pd.DataFrame(quotation.stocks(code)).T
-    values.index.name = 'code'
+    try_time = 1
+
+    while try_time <= 3:
+        try:
+            quotation = easyquotation.use(source)
+            values = pd.DataFrame(quotation.stocks(code)).T
+            values.index.name = 'code'
+        except:
+            values = None
+
+        if values is None:
+            try_time += 1
+            time.sleep(3)
+
     return(values)
+
 
 def QA_fetch_get_stock_real(code):
     values = QA_fetch_get_stock_realtime(code).loc[code]
