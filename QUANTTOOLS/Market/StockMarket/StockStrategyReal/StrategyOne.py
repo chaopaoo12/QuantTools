@@ -71,8 +71,8 @@ def signal(buy_list, position, trading_date, mark_tm):
         data.loc[data.VAMP_C <= -15, "signal"] = 0
         data.loc[data.VAMP_C <= -15, "msg"] = '止损:VMAP下降通道'
 
-    data.loc[(data.pct_chg < 7) & (data.DISTANCE > 0.03) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "signal"] = 0
-    data.loc[(data.pct_chg < 7) & (data.DISTANCE > 0.03) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
+    data.loc[(data.pct_chg < 7) & (data.DISTANCE > 0.03) & (data.VAMP_C.abs() < 10) & (data.close < data.up_price), "signal"] = 0
+    data.loc[(data.pct_chg < 7) & (data.DISTANCE > 0.03) & (data.VAMP_C.abs() < 10) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
     data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.close > data.down_price), "signal"] = 1
     data.loc[(data.DISTANCE < -0.03) & (data.VAMP_C > 0) & (data.close > data.down_price), "msg"] = 'VMAP超跌'
 
@@ -108,6 +108,7 @@ def balance(data, position, sub_account, percent):
         if position is not None and position.shape[0] > 0:
             data = data.join(position[['code', '市值', '可用余额']].set_index('code'))
             data = data[(data.signal.isin([0, 1])) | (data['可用余额'] > 0)]
+            data[['市值','可用余额']] = data[['市值','可用余额']].fillna(0)
         else:
             data = data[(data.signal.isin([0, 1]))]
             data = data.assign(市值=0, 可用余额=0)
