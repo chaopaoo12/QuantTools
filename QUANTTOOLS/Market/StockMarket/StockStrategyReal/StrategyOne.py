@@ -1,4 +1,4 @@
-from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before
+from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before,time_check_after
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtime
@@ -59,15 +59,17 @@ def signal(buy_list, position, trading_date, mark_tm):
                         msg = None,
                         code = [str(i) for i in data.reset_index().code])
 
+
     data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.pct_chg < 3) & (data.close < data.up_price), "signal"] = 1
     data.loc[(data.VAMP_JC == 1) & (data.VAMP_C.abs() < 15) & (data.pct_chg < 3) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
     data.loc[(data.VAMP_SC == 1) & (data.VAMP_C.abs() < 15), "signal"] = 0
     data.loc[(data.VAMP_SC == 1) & (data.VAMP_C.abs() < 15), "msg"] = 'VMAP死叉'
 
-    data.loc[(data.VAMP_C >= 15) & (data.close < data.up_price) & (data.DISTANCE < 0.02), "signal"] = 1
-    data.loc[(data.VAMP_C >= 15) & (data.close < data.up_price) & (data.DISTANCE < 0.02), "msg"] = '追涨:VMAP上升通道'
-    data.loc[data.VAMP_C <= -15, "signal"] = 0
-    data.loc[data.VAMP_C <= -15, "msg"] = '止损:VMAP下降通道'
+    if time_check_after('09:35:00') is True:
+        data.loc[(data.VAMP_C >= 15) & (data.close < data.up_price) & (data.DISTANCE < 0.02), "signal"] = 1
+        data.loc[(data.VAMP_C >= 15) & (data.close < data.up_price) & (data.DISTANCE < 0.02), "msg"] = '追涨:VMAP上升通道'
+        data.loc[data.VAMP_C <= -15, "signal"] = 0
+        data.loc[data.VAMP_C <= -15, "msg"] = '止损:VMAP下降通道'
 
     data.loc[(data.pct_chg < 7) & (data.DISTANCE > 0.03) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "signal"] = 0
     data.loc[(data.pct_chg < 7) & (data.DISTANCE > 0.03) & (data.VAMP_C.abs() < 15) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
