@@ -32,6 +32,12 @@ def spc(data, N= 240):
     data[['VAMP_C']]= data.rolling(window=N,min_periods=5).agg({'VAMP':rolling_ols})
     return(data)
 
+def spc5(data, N= 5):
+    data[['VAMP_C5',
+          'close_c5']]= data.rolling(window=N,min_periods=5).agg({'VAMP':rolling_ols,
+                                                                'close':rolling_ols})
+    return(data)
+
 def sohlc(data, N= 240):
     data[['day_open','day_close','day_high','day_low']] = data.rolling(window=N, min_periods=1).agg({'open':first,'close':last,'high':'max','low':'min'})
     return(data)
@@ -67,7 +73,8 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['low_pct'] = data['close'] / data['day_low'] - 1
         data['VAMP_JC'] = CROSS(data['close'], data['VAMP'])
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
-        data['VAMP_C'] = data.groupby(['date','code']).apply(lambda x:spc(x))['VAMP_C']
+        data['VAMP_C'] = data.groupby(['date', 'code']).apply(lambda x: spc(x))['VAMP_C']
+        data[['VAMP_C5','close_c5']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_C5','close_c5']]
     except:
         QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
         data = None
