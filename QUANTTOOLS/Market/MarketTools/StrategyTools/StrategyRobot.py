@@ -102,6 +102,11 @@ class StrategyRobotBase:
             else:
                 pass
 
+            #refresh strategy body
+            self.strategy = prepare_strategy(self.strategy, {'position': positions,
+                                                             'sub_account': sub_accounts
+                                                             })
+
             # prepare signal
             signal_data = self.strategy.strategy_run(mark_tm)
             QA_util_log_info('##Sell List ==== {}'.format(str(self.trading_date)), ui_log=None)
