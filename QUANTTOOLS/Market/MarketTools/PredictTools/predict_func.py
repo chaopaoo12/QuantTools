@@ -78,7 +78,7 @@ def load_prediction(name, working_dir= 'D:\\model\\current'):
     return(res)
 
 def check_prediction(prediction, date):
-    if prediction['date'] == date:
+    if prediction['date'] >= date:
         pass
     else:
         raise Exception('预测需更新')
