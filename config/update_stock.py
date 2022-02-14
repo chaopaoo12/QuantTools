@@ -54,7 +54,7 @@ if __name__ == '__main__':
             res = check_sinastock_day(mark_day)
 
         res = check_sinastock_adj(mark_day)
-        while res is None or len(res[1]) > 0:
+        while res is None or len(res[1]) > 5:
             time.sleep(180)
             res = check_sinastock_adj(mark_day)
 
