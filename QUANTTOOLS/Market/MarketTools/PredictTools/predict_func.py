@@ -4,7 +4,7 @@ import joblib
 from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_name,QA_fetch_stock_name
 from QUANTAXIS import QA_fetch_stock_info
-from QUANTAXIS.QAUtil import (QA_util_log_info,QA_util_get_real_date)
+from QUANTAXIS.QAUtil import (QA_util_log_info,QA_util_get_real_date,QA_util_get_pre_trade_date)
 from QUANTTOOLS.Message import send_actionnotice, send_email
 from datetime import datetime,timedelta
 from dateutil.relativedelta import relativedelta
@@ -78,7 +78,7 @@ def load_prediction(name, working_dir= 'D:\\model\\current'):
     return(res)
 
 def check_prediction(prediction, date):
-    if prediction['date'] >= date:
+    if prediction['date'] >= date and QA_util_get_pre_trade_date(prediction['date'],5) <= date:
         pass
     else:
         raise Exception('预测需更新')
