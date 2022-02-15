@@ -32,6 +32,10 @@ def BUY(client, account, strategy_id, account_info, trading_date,
         else:
             price = round(price-0.01, 2)
         deal_pos = math.floor(round(deal_capital/price, 0)/100) * 100
+
+        if deal_pos == 0:
+            deal_pos = 100
+
         QA_util_log_info('##JOB Get Real Time Price {price} 可买入{deal_pos} Before {code} Buying ===== {date}'.format(
             price=price, code=code, deal_pos=deal_pos, date=trading_date), ui_log=None)
 
@@ -64,6 +68,9 @@ def BUY(client, account, strategy_id, account_info, trading_date,
             low_value = 0.0995
         price = round(float(close*(1-low_value)), 2)
         deal_pos = math.floor(round(deal_capital/price, 0)/100) * 100
+
+        if deal_pos == 0:
+            deal_pos = 100
 
         QA_util_log_info('早盘挂单买入 {code}({name},{industry}){deal_pos}股,目标持仓金额:{target_capital}'.format(
             code=code, name=name, industry=industry, deal_pos=abs(deal_pos),
