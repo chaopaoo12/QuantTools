@@ -21,7 +21,7 @@ def Sell(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, pric
             message = client.sell(symbol=symbol, price = price, amount=amount)
     else:
         QA_util_log_info('Direction 参数错误 type{type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
-
+        message = None
     return(message)
 
 def Buy(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, price):
@@ -43,6 +43,7 @@ def Buy(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, price
         elif client.type == 'local':
             message = client.buy(symbol=symbol, price=price, amount=amount)
     else:
+        message = None
         QA_util_log_info('Direction 参数错误 {type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
     return(message)
 
@@ -64,6 +65,7 @@ def send_trading_message(account1, strategy_id, account_info, code, NAME, INDUST
         elif direction == 'HOLD':
             QA_util_log_info('保持持股 {code}({NAME},{INDUSTRY}) {cnt}股'.format(code=code, NAME= NAME,
                                                                               INDUSTRY= INDUSTRY,cnt=abs(mark)), ui_log=None)
+            message = None
             pass
 
     except Exception as e:
@@ -74,6 +76,7 @@ def send_trading_message(account1, strategy_id, account_info, code, NAME, INDUST
                           offset= 'OPEN',
                           volume=abs(mark)
                           )
+        message = None
         QA_util_log_info('{type}交易失败 {code}({NAME},{INDUSTRY}) {cnt}股'.format(type=type, code=code, NAME= NAME,
                                                                           INDUSTRY= INDUSTRY,cnt=abs(mark)), ui_log=None)
     return(message)
