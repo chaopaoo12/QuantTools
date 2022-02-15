@@ -129,24 +129,27 @@ class StrategyRobotBase:
                     time.sleep(60)
                 else:
                     break
-            QA_util_log_info('##Trading Mode {} ==================== {}'.format(test, mark_tm), ui_log=None)
-            trading_robot(self.client, self.account, account_info, signal_data,
-                          self.trading_date, mark_tm, self.strategy_id, test=test)
 
-            if time_check_after('15:00:00') and test is True:
-                break
+            if check_market_time(test=test) is True:
+                QA_util_log_info('##Trading Test Mode {} ==================== {}'.format(test, mark_tm), ui_log=None)
+                trading_robot(self.client, self.account, account_info, signal_data,
+                              self.trading_date, mark_tm, self.strategy_id, test=test)
             else:
-                # get next mark_tm
-                QA_util_log_info('##本交易时段 ==================== {}'.format(mark_tm), ui_log=None)
-                mark_tm = self.time_list[(self.time_list.index(mark_tm)+1) % len(self.time_list)]
-                QA_util_log_info('##下一交易时段 ==================== {}'.format(mark_tm), ui_log=None)
-                pass
+                QA_util_log_info('##JOB 已过交易时间 ==================== {}'.format(mark_tm), ui_log=None)
 
-        QA_util_log_info('当日交易完成 ==================== {}'.format(
-            self.trading_date), ui_log=None)
+        if time_check_after('15:00:00'):
+            QA_util_log_info('当日交易完成 ==================== {}'.format(
+                self.trading_date), ui_log=None)
 
-        send_actionnotice(self.strategy_id, '交易报告:{}'.format(
-            self.trading_date), '当日交易完成', direction='HOLD', offset='HOLD', volume=None)
+            send_actionnotice(self.strategy_id, '交易报告:{}'.format(
+                self.trading_date), '当日交易完成', direction='HOLD', offset='HOLD', volume=None)
+
+        else:
+            # get next mark_tm
+            QA_util_log_info('##本交易时段 ==================== {}'.format(mark_tm), ui_log=None)
+            mark_tm = self.time_list[(self.time_list.index(mark_tm)+1) % len(self.time_list)]
+            QA_util_log_info('##下一交易时段 ==================== {}'.format(mark_tm), ui_log=None)
+
 
 
 if __name__ == '__main__':
