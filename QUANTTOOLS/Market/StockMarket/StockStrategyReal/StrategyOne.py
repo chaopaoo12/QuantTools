@@ -2,6 +2,7 @@ from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_befo
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_hour
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtime
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo
@@ -60,20 +61,20 @@ def signal(buy_list, position, trading_date, mark_tm):
                         code = [str(i) for i in data.reset_index().code])
 
     if time_check_after('09:35:00') is True:
-        data.loc[(data.VAMP_JC == 1) & (data.close_c5 > 0) & (data.VAMP_C5 >= 0) & (data.pct_chg < 3) & (data.close < data.up_price), "signal"] = 1
-        data.loc[(data.VAMP_JC == 1) & (data.close_c5 > 0) & (data.VAMP_C5 >= 0) & (data.pct_chg < 3) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
-        data.loc[(data.VAMP_SC == 1) & (data.close_c5 < 0) & (data.VAMP_C5 <= 0), "signal"] = 0
-        data.loc[(data.VAMP_SC == 1) & (data.close_c5 < 0) & (data.VAMP_C5 <= 0), "msg"] = 'VMAP死叉'
+        data.loc[(data.VAMP_JC == 1) & (data.close_c5 > 0) & (data.pct_chg < 3) & (data.close < data.up_price), "signal"] = 1
+        data.loc[(data.VAMP_JC == 1) & (data.close_c5 > 0) & (data.pct_chg < 3) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
+        data.loc[(data.VAMP_SC == 1) & (data.close_c5 < 0), "signal"] = 0
+        data.loc[(data.VAMP_SC == 1) & (data.close_c5 < 0), "msg"] = 'VMAP死叉'
 
         data.loc[(data.VAMP_C >= 15) & (data.close < data.up_price) & (data.DISTANCE < 0.02), "signal"] = 1
         data.loc[(data.VAMP_C >= 15) & (data.close < data.up_price) & (data.DISTANCE < 0.02), "msg"] = '追涨:VMAP上升通道'
         data.loc[data.VAMP_C <= -15, "signal"] = 0
         data.loc[data.VAMP_C <= -15, "msg"] = '止损:VMAP下降通道'
 
-        data.loc[(data.DISTANCE > 0.03) & (data.close_c5 < 0) & (data.VAMP_C5 <= 0) & (data.VAMP_C.abs() < 10) & (data.close < data.up_price), "signal"] = 0
-        data.loc[(data.DISTANCE > 0.03) & (data.close_c5 < 0) & (data.VAMP_C5 <= 0) & (data.VAMP_C.abs() < 10) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
-        data.loc[(data.DISTANCE < -0.03) & (data.close_c5 > 0) & (data.VAMP_C5 >= 0) & (data.close > data.down_price), "signal"] = 1
-        data.loc[(data.DISTANCE < -0.03) & (data.close_c5 > 0) & (data.VAMP_C5 >= 0) & (data.close > data.down_price), "msg"] = 'VMAP超跌'
+        data.loc[(data.DISTANCE > 0.03) & (data.close_c5 < 0) & (data.VAMP_C.abs() < 10) & (data.close < data.up_price), "signal"] = 0
+        data.loc[(data.DISTANCE > 0.03) & (data.close_c5 < 0) & (data.VAMP_C.abs() < 10) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
+        data.loc[(data.DISTANCE < -0.03) & (data.close_c5 > 0) & (data.close > data.down_price), "signal"] = 1
+        data.loc[(data.DISTANCE < -0.03) & (data.close_c5 > 0) & (data.close > data.down_price), "msg"] = 'VMAP超跌'
 
     data.loc[data.code.isin([i for i in position.code.tolist() if i not in buy_list]) & (data.signal.isin([1])), 'signal'] = None
     #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
