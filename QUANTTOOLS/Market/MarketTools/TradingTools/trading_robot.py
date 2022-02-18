@@ -26,6 +26,8 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
                 code=sell_list['code'], name=sell_list['name'], stm=mark_tm, msg=sell_list['msg']),
                               '卖出信号', direction='SELL', offset=mark_tm, volume=None)
             # sell
+            client.cancel_all(account)
+
             SELL(client, account, title, account_info, trading_date,
                  sell_list['code'], sell_list['name'], sell_list['industry'],
                  target_capital=sell_list['target_capital'], close=0,
