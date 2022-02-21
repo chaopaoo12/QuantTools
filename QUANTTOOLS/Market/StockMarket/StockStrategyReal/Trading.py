@@ -18,18 +18,17 @@ def trading_new(trading_date, working_dir=working_dir):
                          #+ prediction_tar3[prediction_tar3.y_pred == 1].loc[QA_util_get_last_day(trading_date)].reset_index().code.unique().tolist()
                          ))
 
-    time_list = on_bar('09:35:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
+    time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
 
     robot = StrategyRobotBase(code_list, time_list, trading_date)
     robot.set_account(strategy_id)
 
-    strategy = StrategyBase()
+    strategy = StrategyBase(buy_list=code_list, base_percent=1, trading_date=trading_date)
     strategy.set_signal_func(signal)
     strategy.set_balance_func(balance)
     strategy.set_percent_func()
 
     robot.set_strategy(strategy)
-    robot.ckeck_market_open()
     robot.get_account()
     robot.run(test=False)
 
