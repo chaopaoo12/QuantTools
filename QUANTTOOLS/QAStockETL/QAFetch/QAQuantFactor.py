@@ -553,9 +553,23 @@ def QA_fetch_get_index_quant_min(code, start_date, end_date, type='30min'):
 def QA_fetch_get_stock_vwap_min(code, start_date, end_date, type='30min'):
 
     pool = multiprocessing.Pool(15)
-    with pool as p:
-        res = p.map(partial(QA_fetch_get_stock_vwap, start_date=start_date, end_date=end_date, period = type,type='real'), code)
-    return(pd.concat(res))
+
+    k = 1
+    while k <= 5:
+        try:
+            with pool as p:
+                res = p.map(partial(QA_fetch_get_stock_vwap, start_date=start_date, end_date=end_date, period = type,type='real'), code)
+            QA_util_log_info('##JOB QA_fetch_get_stock_vwap_min finish with {k} times  ===================='.format(k=k), ui_log=None)
+            break
+        except:
+            k += 1
+            QA_util_log_info('##JOB QA_fetch_get_stock_vwap_min failed with {k} times ===================='.format(k=k), ui_log=None)
+            time.sleep(5)
+
+    if k > 5:
+        return None
+    else:
+        return(pd.concat(res))
 
 
 if __name__ == '__main__':
