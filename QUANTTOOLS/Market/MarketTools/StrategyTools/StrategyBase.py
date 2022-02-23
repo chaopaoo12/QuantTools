@@ -105,7 +105,7 @@ def build_info(data):
         signal_data = {'sell': sell_dict, 'buy': buy_dict}
         return(signal_data)
 
-    return(None)
+    return({'sell': None, 'buy': None})
 
 
 if __name__ == '__main__':
