@@ -36,65 +36,69 @@ def signal(buy_list, position, trading_date, mark_tm):
 
     # 定时执行部分
     stm = trading_date + ' ' + mark_tm
-    source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1').sort_index()
-    data = source_data.loc[(stm,)]
-    price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
-    data = data.join(price)
-    QA_util_log_info('##JOB Finished Trading Signal ==================== {}'.format(
-        mark_tm), ui_log=None)
+    source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
 
-    # add information
-    # add name industry
+    if source_data is not None:
+        data = source_data.sort_index().loc[(stm,)]
+        price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
+        data = data.join(price)
+        QA_util_log_info('##JOB Finished Trading Signal ==================== {}'.format(
+            mark_tm), ui_log=None)
 
-    # 方案1
-    # hold index&condition
-    #下降通道 超降通道 上升通道 超升通道
-    #VAMP_C > 15 上升买进 buy_list生效
-    #VAMP_C < -15 下降卖出
-    #DISTANCE > 0.03 & vamp.abs() < 10 & 未涨停 逃顶
-    #DISTANCE < -0.03 & vamp.abs() < 10 & 未跌停 抄底 buy_list生效
+        # add information
+        # add name industry
 
-    data['signal'] = None
-    data['msg'] = None
-    data = data.assign(signal = None,
-                        msg = None,
-                        code = [str(i) for i in data.reset_index().code])
+        # 方案1
+        # hold index&condition
+        #下降通道 超降通道 上升通道 超升通道
+        #VAMP_C > 15 上升买进 buy_list生效
+        #VAMP_C < -15 下降卖出
+        #DISTANCE > 0.03 & vamp.abs() < 10 & 未涨停 逃顶
+        #DISTANCE < -0.03 & vamp.abs() < 10 & 未跌停 抄底 buy_list生效
 
-    if time_check_after('09:35:00') is True:
-        data.loc[(data.VAMP_JC == 1) & (data.close_c5 > 0) & (data.pct_chg < 3) & (data.close < data.up_price), "signal"] = 1
-        data.loc[(data.VAMP_JC == 1) & (data.close_c5 > 0) & (data.pct_chg < 3) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
-        data.loc[(data.VAMP_SC == 1) & (data.close_c5 < 0), "signal"] = 0
-        data.loc[(data.VAMP_SC == 1) & (data.close_c5 < 0), "msg"] = 'VMAP死叉'
+        data['signal'] = None
+        data['msg'] = None
+        data = data.assign(signal = None,
+                            msg = None,
+                            code = [str(i) for i in data.reset_index().code])
 
-        data.loc[(data.VAMP_C >= 15) & (data.close < data.up_price) & (data.DISTANCE < 0.02), "signal"] = 1
-        data.loc[(data.VAMP_C >= 15) & (data.close < data.up_price) & (data.DISTANCE < 0.02), "msg"] = '追涨:VMAP上升通道'
-        data.loc[data.VAMP_C <= -15, "signal"] = 0
-        data.loc[data.VAMP_C <= -15, "msg"] = '止损:VMAP下降通道'
+        if time_check_after('09:35:00') is True:
+            data.loc[(data.VAMP_JC == 1) & (data.close_c5 > 0) & (data.pct_chg < 3) & (data.close < data.up_price), "signal"] = 1
+            data.loc[(data.VAMP_JC == 1) & (data.close_c5 > 0) & (data.pct_chg < 3) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
+            data.loc[(data.VAMP_SC == 1) & (data.close_c5 < 0), "signal"] = 0
+            data.loc[(data.VAMP_SC == 1) & (data.close_c5 < 0), "msg"] = 'VMAP死叉'
 
-        data.loc[(data.DISTANCE > 0.03) & (data.close_c5 < 0) & (data.VAMP_C.abs() < 10) & (data.close < data.up_price), "signal"] = 0
-        data.loc[(data.DISTANCE > 0.03) & (data.close_c5 < 0) & (data.VAMP_C.abs() < 10) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
-        data.loc[(data.DISTANCE < -0.03) & (data.close_c5 > 0) & (data.close > data.down_price), "signal"] = 1
-        data.loc[(data.DISTANCE < -0.03) & (data.close_c5 > 0) & (data.close > data.down_price), "msg"] = 'VMAP超跌'
+            data.loc[(data.VAMP_C >= 15) & (data.close < data.up_price) & (data.DISTANCE < 0.02), "signal"] = 1
+            data.loc[(data.VAMP_C >= 15) & (data.close < data.up_price) & (data.DISTANCE < 0.02), "msg"] = '追涨:VMAP上升通道'
+            data.loc[data.VAMP_C <= -15, "signal"] = 0
+            data.loc[data.VAMP_C <= -15, "msg"] = '止损:VMAP下降通道'
 
-    data.loc[data.code.isin([i for i in position.code.tolist() if i not in buy_list]) & (data.signal.isin([1])), 'signal'] = None
-    #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
-    #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
-    QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
-    QA_util_log_info(data[data.signal == 1], ui_log=None)
+            data.loc[(data.DISTANCE > 0.03) & (data.close_c5 < 0) & (data.VAMP_C.abs() < 10) & (data.close < data.up_price), "signal"] = 0
+            data.loc[(data.DISTANCE > 0.03) & (data.close_c5 < 0) & (data.VAMP_C.abs() < 10) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
+            data.loc[(data.DISTANCE < -0.03) & (data.close_c5 > 0) & (data.close > data.down_price), "signal"] = 1
+            data.loc[(data.DISTANCE < -0.03) & (data.close_c5 > 0) & (data.close > data.down_price), "msg"] = 'VMAP超跌'
 
-    QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
-    QA_util_log_info(data[data.signal==0], ui_log=None)
+        data.loc[data.code.isin([i for i in position.code.tolist() if i not in buy_list]) & (data.signal.isin([1])), 'signal'] = None
+        #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
+        #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
+        QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
+        QA_util_log_info(data[data.signal == 1], ui_log=None)
 
-    # 方案2
-    #data['signal'] = None
-    #data.loc[data.SKDJ_CROSS2_HR == 1, "signal"] = 1
-    #data.loc[data.SKDJ_CROSS1_HR == 1, "signal"] = -1
-    #data.loc[data.SKDJ_TR_HR == 1, "signal"] = 0
+        QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
+        QA_util_log_info(data[data.signal==0], ui_log=None)
 
-    # msg
+        # 方案2
+        #data['signal'] = None
+        #data.loc[data.SKDJ_CROSS2_HR == 1, "signal"] = 1
+        #data.loc[data.SKDJ_CROSS1_HR == 1, "signal"] = -1
+        #data.loc[data.SKDJ_TR_HR == 1, "signal"] = 0
+
+        # msg
 
 
-    return(data)
+        return(data)
+    else:
+        return None
 
 
 def balance(data, position, sub_account, percent):
