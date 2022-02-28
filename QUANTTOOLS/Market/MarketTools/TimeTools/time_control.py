@@ -12,6 +12,7 @@ def on_bar(start, end, sep, breaks):
         break_tmp = pd.date_range(date + ' '+break_rng[0], date + ' '+break_rng[1], freq=str(sep)+'min')
         break_tmrng.extend(break_tmp[1:-1])
     res_rng = [str(i)[11:20] for i in tm_rng if i not in break_tmrng]
+    res_rng = [i for i in res_rng if i not in [end]]
     return(res_rng)
 
 def time_check_before(tm_mark, test=False, ckeck_tm=None):
