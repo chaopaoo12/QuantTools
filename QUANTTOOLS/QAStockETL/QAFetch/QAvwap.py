@@ -47,7 +47,7 @@ def rolling_atan(y):
     return(round(math.atan(model.slope),4))
 
 def spc(data, N= 240):
-    data[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN']]= data.rolling(window=N,min_periods=5).agg({'VAMP':[rolling_ols,rolling_slope,rolling_atan]})
+    data[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN']]= data.rolling(window=N,min_periods=2).agg({'VAMP':[rolling_ols,rolling_slope,rolling_atan]})
     return(data)
 
 #def spc5(data, N= 5):
