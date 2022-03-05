@@ -97,7 +97,7 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['low_pct'] = data['close'] / data['day_low'] - 1
         data['VAMP_JC'] = CROSS(data['close'], data['VAMP'])
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
-        data['VAMP_C'] = data.groupby(['date', 'code']).apply(lambda x: spc(x))['VAMP_C']
+        data[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN']] = data.groupby(['date', 'code']).apply(lambda x: spc(x))[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN']]
         data[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN',
               'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN',
                                                                                                                      'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN']]
