@@ -26,16 +26,40 @@ def rolling_ols(y):
     '''
     #y = pd.DataFrame.ewm(y,alpha=1.0/24,ignore_na=True).mean().values
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
-    return(math.degrees(math.atan(model.slope)))
+    return(round(math.degrees(math.atan(model.slope)),4))
+
+def rolling_slope(y):
+    '''
+    滚动回归，返回滚动回归后的回归系数
+    rb: 因变量序列
+    '''
+    #y = pd.DataFrame.ewm(y,alpha=1.0/24,ignore_na=True).mean().values
+    model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
+    return(round(model.slope,4))
+
+def rolling_atan(y):
+    '''
+    滚动回归，返回滚动回归后的回归系数
+    rb: 因变量序列
+    '''
+    #y = pd.DataFrame.ewm(y,alpha=1.0/24,ignore_na=True).mean().values
+    model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
+    return(round(math.atan(model.slope),4))
 
 def spc(data, N= 240):
     data[['VAMP_C']]= data.rolling(window=N,min_periods=5).agg({'VAMP':rolling_ols})
     return(data)
 
+#def spc5(data, N= 5):
+#    data[['VAMP_C5',
+#          'close_c5']]= data.rolling(window=N,min_periods=5).agg({'VAMP':rolling_ols,
+#                                                                'close':rolling_ols})
+#    return(data)
+
 def spc5(data, N= 5):
-    data[['VAMP_C5',
-          'close_c5']]= data.rolling(window=N,min_periods=5).agg({'VAMP':rolling_ols,
-                                                                'close':rolling_ols})
+    data[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN',
+          'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN']]= data.rolling(window=N,min_periods=5).agg({'VAMP':[rolling_ols,rolling_slope,rolling_atan],
+                                                                                                  'close':[rolling_ols,rolling_slope,rolling_atan]})
     return(data)
 
 def sohlc(data, N= 240):
