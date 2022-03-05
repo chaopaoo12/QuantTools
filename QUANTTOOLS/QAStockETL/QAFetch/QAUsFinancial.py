@@ -85,11 +85,16 @@ def QA_fetch_get_stock_min_sina(code, period='30', type=''):
                                     '成交量':'volume',
                                     '成交额':'amount',
                                     '最新价':'price',})
-        data[['open','close','high','low','volume','amount','price']] = data[['open','close','high','low','volume','amount','price']].apply(pd.to_numeric)
+        data[['open','close','high','low','volume','amount']] = data[['open','close','high','low','volume','amount']].apply(pd.to_numeric)
         data = data.assign(date_stamp=data['datetime'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])),code=code)
         data['datetime']=pd.to_datetime(data['datetime'],format='%Y-%m-%d %H:%M:%S')
     except:
         data = None
+
+    try:
+        data[['price']] = data[['price']].apply(pd.to_numeric)
+    except:
+        pass
     return(data)
 
 def QA_fetch_get_index_min_sina(code,period='30'):
