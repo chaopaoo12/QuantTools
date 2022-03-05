@@ -98,7 +98,9 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['VAMP_JC'] = CROSS(data['close'], data['VAMP'])
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
         data['VAMP_C'] = data.groupby(['date', 'code']).apply(lambda x: spc(x))['VAMP_C']
-        data[['VAMP_C5','close_c5']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_C5','close_c5']]
+        data[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN',
+              'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN',
+                                                                                                                     'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN']]
     except:
         QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
         data = None
