@@ -35,7 +35,7 @@ def rolling_k(y):
     '''
     #y = pd.DataFrame.ewm(y,alpha=1.0/24,ignore_na=True).mean().values
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
-    return(round(model.slope/model.intercept,4))
+    return(round(model.slope/model.intercept*100,4))
 
 def rolling_slope(y):
     '''
