@@ -28,6 +28,15 @@ def rolling_ols(y):
     model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
     return(round(math.degrees(math.atan(model.slope)),4))
 
+def rolling_k(y):
+    '''
+    滚动回归，返回滚动回归后的回归系数
+    rb: 因变量序列
+    '''
+    #y = pd.DataFrame.ewm(y,alpha=1.0/24,ignore_na=True).mean().values
+    model = stats.linregress(y=y, x=pd.Series(range(1,len(y)+1)))
+    return(round(model.slope/model.intercept,4))
+
 def rolling_slope(y):
     '''
     滚动回归，返回滚动回归后的回归系数
@@ -47,7 +56,7 @@ def rolling_atan(y):
     return(round(math.atan(model.slope),4))
 
 def spc(data, N= 240):
-    data[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN']]= data.rolling(window=N,min_periods=2).agg({'VAMP':[rolling_ols,rolling_slope,rolling_atan]})
+    data[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN','VAMPC_K']]= data.rolling(window=N,min_periods=2).agg({'VAMP':[rolling_ols,rolling_slope,rolling_atan,rolling_k]})
     return(data)
 
 #def spc5(data, N= 5):
@@ -57,9 +66,9 @@ def spc(data, N= 240):
 #    return(data)
 
 def spc5(data, N= 5):
-    data[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN',
-          'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN']]= data.rolling(window=N,min_periods=5).agg({'VAMP':[rolling_ols,rolling_slope,rolling_atan],
-                                                                                                  'close':[rolling_ols,rolling_slope,rolling_atan]})
+    data[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN','VAMP_K',
+          'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN','CLOSE_K']]= data.rolling(window=N,min_periods=5).agg({'VAMP':[rolling_ols,rolling_slope,rolling_atan,rolling_k],
+                                                                                                  'close':[rolling_ols,rolling_slope,rolling_atan,rolling_k]})
     return(data)
 
 def sohlc(data, N= 240):
@@ -97,10 +106,10 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['low_pct'] = data['close'] / data['day_low'] - 1
         data['VAMP_JC'] = CROSS(data['close'], data['VAMP'])
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
-        data[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN']] = data.groupby(['date', 'code']).apply(lambda x: spc(x))[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN']]
-        data[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN',
-              'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN',
-                                                                                                                     'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN']]
+        data[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN','VAMPC_K']] = data.groupby(['date', 'code']).apply(lambda x: spc(x))[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN','VAMPC_K']]
+        data[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN','VAMP_K',
+              'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN','CLOSE_K']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN','VAMP_K'
+                                                                                                                     'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN','CLOSE_K']]
     except:
         QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
         data = None
