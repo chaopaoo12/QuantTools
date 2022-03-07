@@ -104,10 +104,8 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['low_pct'] = data['close'] / data['day_low'] - 1
         data['VAMP_JC'] = CROSS(data['close'], data['VAMP'])
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
-        data[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN','VAMPC_K']] = data.groupby(['date', 'code']).apply(lambda x: spc(x))[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN','VAMPC_K']]
-        data[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN','VAMP_K',
-              'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN','CLOSE_K']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN','VAMP_K',
-                                                                                                                     'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN','CLOSE_K']]
+        data[['VAMPC_K']] = data.groupby(['date', 'code']).apply(lambda x: spc(x))[['VAMPC_K']]
+        data[['VAMP_K','CLOSE_K']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_K','CLOSE_K']]
     except:
         QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
         data = None
