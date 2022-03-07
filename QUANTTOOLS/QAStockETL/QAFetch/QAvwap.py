@@ -56,7 +56,7 @@ def rolling_atan(y):
     return(round(math.atan(model.slope),4))
 
 def spc(data, N= 240):
-    data[['VAMPC_DEGRESS','VAMPC_SLOPE','VAMPC_ATAN','VAMPC_K']]= data.rolling(window=N,min_periods=2).agg({'VAMP':[rolling_ols,rolling_slope,rolling_atan,rolling_k]})
+    data[['VAMPC_K']]= data.rolling(window=N,min_periods=2).agg({'VAMP':rolling_k})
     return(data)
 
 #def spc5(data, N= 5):
@@ -66,9 +66,7 @@ def spc(data, N= 240):
 #    return(data)
 
 def spc5(data, N= 5):
-    data[['VAMP_DEGRESS','VAMP_SLOPE','VAMP_ATAN','VAMP_K',
-          'CLOSE_DEGRESS','CLOSE_SLOPE','CLOSE_ATAN','CLOSE_K']]= data.rolling(window=N,min_periods=5).agg({'VAMP':[rolling_ols,rolling_slope,rolling_atan,rolling_k],
-                                                                                                  'close':[rolling_ols,rolling_slope,rolling_atan,rolling_k]})
+    data[['VAMP_K','CLOSE_K']]= data.rolling(window=N,min_periods=5).agg({'VAMP':rolling_k,'close':rolling_k})
     return(data)
 
 def sohlc(data, N= 240):
