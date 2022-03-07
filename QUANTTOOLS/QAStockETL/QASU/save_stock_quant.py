@@ -513,7 +513,7 @@ def QA_SU_save_stock_quant_his(code=None, start_date=None,end_date=None, ui_log 
     deal_date_list = QA_util_get_trade_range(start_date, end_date)
 
     if deal_date_list is None:
-        QA_util_log_info('##JOB Nono Trading Day ============== from {_from} to {_to} '.format(_from=start_date, _to=end_date), ui_log)
+        QA_util_log_info('##JOB No Trading Day ============== from {_from} to {_to} '.format(_from=start_date, _to=end_date), ui_log)
     elif data1 is None:
         QA_util_log_info('##JOB No Data for ============== from {from_} to {to_} '.format(from_=start_date,to_=end_date), ui_log)
     else:
