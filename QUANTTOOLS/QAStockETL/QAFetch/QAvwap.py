@@ -116,7 +116,8 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
 def QA_fetch_get_vwap(code, start_date, end_date, period='1', type='crawl'):
 
     data = QA_fetch_get_stock_vwap(code, start_date, end_date, period=period, type=type)
-    data = data.groupby(['date','code']).agg({'VAMP_C':['min','max','mean','median','std','last',percentile(25),percentile(75)],
+    data = data.groupby(['date','code']).agg({'VAMP_K':['min','max','mean','median','std','last',percentile(25),percentile(75)],
+                                              'VAMPC_K':['min','max','mean','median','std','last',percentile(25),percentile(75)],
                                             'DISTANCE':['min','max','mean','median','std','last',percentile(25),percentile(75)]})
     data.columns = ['_'.join(col).strip().upper() for col in data.columns.values]
     data = data.reset_index()
