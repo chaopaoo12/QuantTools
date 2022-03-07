@@ -828,28 +828,21 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
                                           ]].groupby('code').fillna(method='ffill').fillna(0)
         financial_res = financial(start_date,end_date,code=code)
         financial_res = financial_res[financial_res.DAYS >= 90]
-        print(financial_res.shape)
-        print(pe_res.shape)
         QA_util_log_info(
             'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
         index_res = index(start_date,end_date,code=code)
-        print(index_res.shape)
         QA_util_log_info(
             'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
         hour_res = hour(start_date,end_date,code=code, type= 'day')
-        print(hour_res.shape)
         QA_util_log_info(
             'JOB Get Stock Tech Week data start=%s end=%s' % (start, end))
         week_res = week(QA_util_get_pre_trade_date(start,90),end_date,code=code)
-        print(week_res.shape)
         QA_util_log_info(
             'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
         alpha_res = alpha(start_date,end_date,code=code)
-        print(alpha_res.shape)
         QA_util_log_info(
             'JOB Get Stock Vwap data start=%s end=%s' % (start, end))
         vwap_res = QA_fetch_stock_vwap(code, start, end_date)
-        print(vwap_res.shape)
         res = financial_res.join(index_res).join(week_res).join(alpha_res).join(vwap_res).join(hour_res).join(pe_res).groupby('code').fillna(method='ffill').loc[(rng,code),]
 
         try:
