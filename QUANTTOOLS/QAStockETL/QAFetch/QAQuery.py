@@ -840,10 +840,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
         QA_util_log_info(
             'JOB Get Stock Alpha191 data start=%s end=%s' % (start, end))
         alpha_res = alpha(start_date,end_date,code=code)
-        QA_util_log_info(
-            'JOB Get Stock Vwap data start=%s end=%s' % (start, end))
-        vwap_res = QA_fetch_stock_vwap(code, start, end_date)
-        res = financial_res.join(index_res).join(week_res).join(alpha_res).join(vwap_res).join(hour_res).join(pe_res).groupby('code').fillna(method='ffill').loc[(rng,code),]
+        res = financial_res.join(index_res).join(week_res).join(alpha_res).join(hour_res).join(pe_res).groupby('code').fillna(method='ffill').loc[(rng,code),]
 
         try:
             for columnname in res.columns:
