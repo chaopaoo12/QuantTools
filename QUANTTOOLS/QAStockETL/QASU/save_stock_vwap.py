@@ -101,13 +101,11 @@ def QA_SU_save_stock_vwap_his(codes=None, start_date=None,end_date=None,client=D
             print(error0)
             err.append(str(code))
 
-    k=100
-    for i in range(0, len(codes), k):
-        code = codes[i:i+k]
+    for code in codes:
         QA_util_log_info('The {} of Total {}'.format
-                         ((i +k ), len(codes)))
-        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((i + k) / len(codes) * 100))[0:4] + '%', ui_log)
-        intProgressToLog = int(float((i + k ) / len(codes) * 100 ))
+                         ((codes.index(code) +1), len(codes)))
+        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(code) +1) / len(codes) * 100))[0:4] + '%', ui_log)
+        intProgressToLog = int(float((codes.index(code) +1) / len(codes) * 100))
         QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
         __saving_work(code,start_date,end_date)
 
