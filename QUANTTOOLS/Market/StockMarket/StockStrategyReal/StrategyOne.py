@@ -73,11 +73,11 @@ def signal(buy_list, position, trading_date, mark_tm):
                             code = [str(i) for i in data.reset_index().code])
 
         if time_check_after('09:35:00') is True:
-            data.loc[(data.VAMP_JC == 1) & (data.SKDJ_K <= 20) & (data.CLOSE_K > 0) & (data.close < data.up_price), "signal"] = 1
-            data.loc[(data.VAMP_JC == 1) & (data.SKDJ_K <= 20) & (data.CLOSE_K > 0) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
+            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= 0) & (data.CLOSE_K > 0) & (data.close < data.up_price), "signal"] = 1
+            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= 0) & (data.CLOSE_K > 0) & (data.close < data.up_price), "msg"] = 'VMAP金叉'
 
-            data.loc[(data.VAMP_SC == 1) & (data.SKDJ_K > 20) & (data.CLOSE_K < 0), "signal"] = 0
-            data.loc[(data.VAMP_SC == 1) & (data.SKDJ_K > 20) & (data.CLOSE_K < 0), "msg"] = 'VMAP死叉'
+            data.loc[(data.VAMP_SC == 1) & (data.CLOSE_K < 0), "signal"] = 0
+            data.loc[(data.VAMP_SC == 1) & (data.CLOSE_K < 0), "msg"] = 'VMAP死叉'
 
             #追涨&杀跌
             data.loc[(data.VAMP_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02), "signal"] = 1
