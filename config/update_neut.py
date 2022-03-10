@@ -67,6 +67,5 @@ if __name__ == '__main__':
 
         res = check_stock_neut(mark_day)
         while res is None or len(res[1]) > 100:
-            time.sleep(180)
             QA_SU_save_stock_neutral_day(start_date=mark_day,end_date=mark_day)
             res = check_stock_neut(mark_day)
