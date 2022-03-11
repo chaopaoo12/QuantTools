@@ -103,11 +103,12 @@ def signal(buy_list, position, trading_date, mark_tm):
         data.loc[data.code.isin([i for i in position.code.tolist() if i not in buy_list]) & (data.signal.isin([1])), 'signal'] = None
         #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
         #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
+        QA_util_log_info(data[['VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','SKDJ_K','DISTANCE','close','up_price','signal','msg']], ui_log=None)
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 1], ui_log=None)
+        QA_util_log_info(data[data.signal == 1][['VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','SKDJ_K','DISTANCE','close','up_price','signal','msg']], ui_log=None)
 
         QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal==0], ui_log=None)
+        QA_util_log_info(data[data.signal==0][['VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','SKDJ_K','DISTANCE','close','up_price','signal','msg']], ui_log=None)
 
         # 方案2
         #data['signal'] = None
