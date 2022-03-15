@@ -6,7 +6,7 @@ from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo
 from QUANTTOOLS.Market.MarketTools import on_bar, get_on_time
 import time
-
+import pandas as pd
 
 def signal(buy_list, position, trading_date, mark_tm):
 
@@ -50,8 +50,9 @@ def signal(buy_list, position, trading_date, mark_tm):
 
     if source_data is not None:
         data = source_data.sort_index().loc[(stm,)]
+        close = pd.DataFrame(data.groupby(['date','code'])['day_close'].apply(lambda x: x[-1])).rename({'day_close':'yes_close'}, axis='columns').groupby(['code'])['yes_close'].shift()
         price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
-        data = data.join(price)
+        data = data.join(price).reset_index().set_index(['date','code']).join(close).reset_index().set_index(['datetime','code'])
         QA_util_log_info('##JOB Finished Trading Signal ==================== {}'.format(
             mark_tm), ui_log=None)
 
@@ -73,11 +74,17 @@ def signal(buy_list, position, trading_date, mark_tm):
                             code = [str(i) for i in data.reset_index().code])
 
         if time_check_after('09:35:00') is True:
-            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K > 0) & (data.pct_chg > -6), "signal"] = 1
-            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K > 0) & (data.pct_chg > -6), "msg"] = 'VMAP金叉'
+            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= 0.02) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close), "signal"] = 1
+            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= 0.02) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close), "msg"] = '水线上VMAP金叉'
 
-            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K < 0), "signal"] = 0
-            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K < 0), "msg"] = 'VMAP死叉'
+            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K > 0) & (data.yes_close > data.VAMP), "signal"] = 1
+            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K > 0) & (data.yes_close > data.VAMP), "msg"] = '水线下VMAP金叉'
+
+            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP > data.yes_close), "signal"] = 0
+            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP > data.yes_close), "msg"] = '水线上VMAP死叉'
+
+            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP < data.yes_close), "signal"] = 0
+            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP < data.yes_close), "msg"] = '水线下VMAP死叉'
 
             #追涨&杀跌 只操作早盘
             data.loc[(data.VAMP_K >= 0.2) & (data.DISTANCE < 0.02), "signal"] = 1
