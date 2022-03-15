@@ -5,7 +5,7 @@ from scipy import stats
 import pandas as pd
 import numpy as np
 import math
-from QUANTAXIS.QAIndicator.base import CROSS
+from QUANTAXIS.QAIndicator.base import CROSS,EMA
 
 def first(rows):
     return rows[0]
@@ -102,8 +102,9 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['open_pct'] = data['close'] / data['day_open'] - 1
         data['high_pct'] = data['close'] / data['day_high'] - 1
         data['low_pct'] = data['close'] / data['day_low'] - 1
-        data['VAMP_JC'] = CROSS(data['close'], data['VAMP'])
-        data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
+        data['EMA'] = EMA(data['close'], 9)
+        data['VAMP_JC'] = CROSS(data['EMA'], data['VAMP'])
+        data['VAMP_SC'] = CROSS(data['VAMP'], data['EMA'])
         data[['VAMPC_K']] = data.groupby(['date', 'code']).apply(lambda x: spc(x))[['VAMPC_K']]
         data[['VAMP_K','CLOSE_K']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_K','CLOSE_K']]
     except:
