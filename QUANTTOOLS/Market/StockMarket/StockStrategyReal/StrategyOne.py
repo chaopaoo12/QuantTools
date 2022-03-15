@@ -73,11 +73,11 @@ def signal(buy_list, position, trading_date, mark_tm):
                             code = [str(i) for i in data.reset_index().code])
 
         if time_check_after('09:35:00') is True:
-            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.01) & (data.CLOSE_K > 0) & (data.close < data.up_price) & (data.pct_chg > -6), "signal"] = 1
-            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.01) & (data.CLOSE_K > 0) & (data.close < data.up_price) & (data.pct_chg > -6), "msg"] = 'VMAP金叉'
+            #data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.01) & (data.CLOSE_K > 0) & (data.close < data.up_price) & (data.pct_chg > -6), "signal"] = 1
+            #data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.01) & (data.CLOSE_K > 0) & (data.close < data.up_price) & (data.pct_chg > -6), "msg"] = 'VMAP金叉'
 
-            data.loc[(data.VAMP_SC == 1) & (data.CLOSE_K < 0), "signal"] = 0
-            data.loc[(data.VAMP_SC == 1) & (data.CLOSE_K < 0), "msg"] = 'VMAP死叉'
+            #data.loc[(data.VAMP_SC == 1) & (data.CLOSE_K < 0), "signal"] = 0
+            #data.loc[(data.VAMP_SC == 1) & (data.CLOSE_K < 0), "msg"] = 'VMAP死叉'
 
             #追涨&杀跌
             data.loc[(data.VAMP_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02), "signal"] = 1
@@ -87,11 +87,11 @@ def signal(buy_list, position, trading_date, mark_tm):
             data.loc[(data.VAMP_K <= -0.2), "msg"] = '早盘止损:VMAP下降通道'
 
             #超涨&超跌
-            data.loc[(data.DISTANCE > 0.05) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01) & (data.close < data.up_price), "signal"] = 0
-            data.loc[(data.DISTANCE > 0.05) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
+            data.loc[(data.DISTANCE > 0.03) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01) & (data.close < data.up_price), "signal"] = 0
+            data.loc[(data.DISTANCE > 0.03) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
 
-            data.loc[(data.DISTANCE < -0.04) & (data.SKDJ_K <= 20) & (data.CLOSE_K > 0), "signal"] = 1
-            data.loc[(data.DISTANCE < -0.04) & (data.SKDJ_K <= 20) & (data.CLOSE_K > 0), "msg"] = 'VMAP超跌'
+            data.loc[(data.DISTANCE < -0.02) & (data.VAMP_K > -0.01) & (data.CLOSE_K > 0), "signal"] = 1
+            data.loc[(data.DISTANCE < -0.02) & (data.VAMP_K > -0.01) & (data.CLOSE_K > 0), "msg"] = 'VMAP超跌'
 
         else:
             data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02), "signal"] = 1
