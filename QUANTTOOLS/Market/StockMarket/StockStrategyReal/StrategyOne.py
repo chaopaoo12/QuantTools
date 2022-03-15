@@ -93,12 +93,14 @@ def signal(buy_list, position, trading_date, mark_tm):
             data.loc[(data.DISTANCE < -0.02) & (data.VAMP_K > -0.01) & (data.CLOSE_K > 0), "signal"] = 1
             data.loc[(data.DISTANCE < -0.02) & (data.VAMP_K > -0.01) & (data.CLOSE_K > 0), "msg"] = 'VMAP超跌'
 
-        else:
+        elif time_check_after('09:32:00') is True:
             data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02), "signal"] = 1
             data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02), "msg"] = '早盘追涨:VMAP上升通道'
 
             #data.loc[(data.VAMPC_K <= -0.2), "signal"] = 0
             #data.loc[(data.VAMPC_K <= -0.2), "msg"] = '早盘止损:VMAP下降通道'
+        else:
+            pass
 
         data.loc[data.code.isin([i for i in position.code.tolist() if i not in buy_list]) & (data.signal.isin([1])), 'signal'] = None
         #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
