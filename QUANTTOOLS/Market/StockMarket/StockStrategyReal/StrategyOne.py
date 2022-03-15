@@ -94,9 +94,8 @@ def signal(buy_list, position, trading_date, mark_tm):
             data.loc[(data.DISTANCE < -0.04) & (data.SKDJ_K <= 20) & (data.CLOSE_K > 0), "msg"] = 'VMAP超跌'
 
         else:
-            pass
-            #data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02), "signal"] = 1
-            #data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02), "msg"] = '早盘追涨:VMAP上升通道'
+            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02), "signal"] = 1
+            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02), "msg"] = '早盘追涨:VMAP上升通道'
 
             #data.loc[(data.VAMPC_K <= -0.2), "signal"] = 0
             #data.loc[(data.VAMPC_K <= -0.2), "msg"] = '早盘止损:VMAP下降通道'
