@@ -52,7 +52,7 @@ def signal(buy_list, position, trading_date, mark_tm):
         data = source_data.sort_index().loc[(stm,)]
         close = pd.DataFrame(data.groupby(['date','code'])['day_close'].apply(lambda x: x[-1])).rename({'day_close':'yes_close'}, axis='columns').groupby(['code'])['yes_close'].shift()
         price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
-        data = data.join(price).reset_index().set_index(['date','code']).join(close).reset_index().set_index(['datetime','code'])
+        data = data.reset_index().set_index(['date','code']).join(close).reset_index().set_index(['datetime','code']).join(price)
         QA_util_log_info('##JOB Finished Trading Signal ==================== {}'.format(
             mark_tm), ui_log=None)
 
