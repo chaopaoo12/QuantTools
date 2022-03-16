@@ -49,12 +49,11 @@ def signal(buy_list, position, trading_date, mark_tm):
     source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
 
     if source_data is not None:
-        data = source_data.sort_index().loc[(stm,)]
-        close = pd.DataFrame(data.groupby(['date','code'])['day_close'].apply(lambda x: x[-1])).rename({'day_close':'yes_close'}, axis='columns').groupby(['code'])['yes_close'].shift()
+        close = pd.DataFrame(source_data.groupby(['date','code'])['day_close'].apply(lambda x: x[-1])).rename({'day_close':'yes_close'}, axis='columns').groupby(['code'])['yes_close'].shift()
         price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
-        print(data)
-        print(data.reset_index().set_index(['date','code']).join(close).reset_index().set_index(['datetime','code']))
-        data = data.reset_index().set_index(['date','code']).join(close).reset_index().set_index(['datetime','code']).join(price)
+        source_data = source_data.reset_index().set_index(['date','code']).join(close).reset_index().set_index(['datetime','code']).join(price)
+
+        data = source_data.sort_index().loc[(stm,)]
         QA_util_log_info('##JOB Finished Trading Signal ==================== {}'.format(
             mark_tm), ui_log=None)
 
