@@ -17,6 +17,9 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
         time.sleep(60)
         pass
 
+    # cancel last mark action
+    client.cancel_all(account)
+
     if signal_data is not None:
         for sell_list in signal_data['sell']:
             QA_util_log_info('##JOB Now Start Selling {code} ==== {stm}{msg}'.format(
