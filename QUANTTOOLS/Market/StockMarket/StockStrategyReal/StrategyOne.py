@@ -81,8 +81,8 @@ def signal(buy_list, position, trading_date, mark_tm):
             data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K > 0) & (data.yes_close > data.VAMP), "signal"] = 1
             data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K > 0) & (data.yes_close > data.VAMP), "msg"] = '水线下VMAP金叉'
 
-            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP > data.yes_close), "signal"] = 0
-            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP > data.yes_close), "msg"] = '水线上VMAP死叉'
+            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.VAMP > data.yes_close), "signal"] = 0
+            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.VAMP > data.yes_close), "msg"] = '水线上VMAP死叉'
 
             data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP < data.yes_close), "signal"] = 0
             data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP < data.yes_close), "msg"] = '水线下VMAP死叉'
@@ -102,8 +102,8 @@ def signal(buy_list, position, trading_date, mark_tm):
             data.loc[(data.DISTANCE < -0.02) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0), "msg"] = 'VMAP超跌'
 
         elif time_check_after('09:32:00') is True:
-            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02), "signal"] = 1
-            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02), "msg"] = '早盘追涨:VMAP上升通道'
+            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02) & (data.VAMP > data.yes_close * 0.95), "signal"] = 1
+            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02) & (data.VAMP > data.yes_close * 0.95), "msg"] = '早盘追涨:VMAP上升通道'
 
             #data.loc[(data.VAMPC_K <= -0.2), "signal"] = 0
             #data.loc[(data.VAMPC_K <= -0.2), "msg"] = '早盘止损:VMAP下降通道'
