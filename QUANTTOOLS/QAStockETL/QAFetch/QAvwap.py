@@ -66,7 +66,7 @@ def spc(data, N= 240):
 #    return(data)
 
 def spc5(data, N= 5):
-    data[['VAMP_K','CLOSE_K']]= data.rolling(window=N,min_periods=5).agg({'VAMP':rolling_k,'close':rolling_k})
+    data[['VAMP_K','CLOSE_K']]= data.rolling(window=N,min_periods=3).agg({'VAMP':rolling_k,'close':rolling_k})
     return(data)
 
 def sohlc(data, N= 240):
