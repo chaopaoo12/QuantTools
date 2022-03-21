@@ -35,15 +35,16 @@ def signal(buy_list, position, trading_date, mark_tm):
         mark_tm), ui_log=None)
 
     # 定时执行部分
-    #a = get_on_time(mark_tm, time_index)
-    #if a == '15:00:00':
-    #    stm = QA_util_get_pre_trade_date(trading_date, 1) + ' ' + a
-    #else:
-    #    stm = trading_date + ' ' + a
+    if time_check_before('09:35:00') is True:
+        a = get_on_time(mark_tm, time_index)
+        if a == '15:00:00':
+            stm = QA_util_get_pre_trade_date(trading_date, 1) + ' ' + a
+        else:
+            stm = trading_date + ' ' + a
 
-    #data_15min = QA_fetch_get_stock_quant_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='15min')
-    #if data_15min is not None:
-    #    data_15min = data_15min.sort_index().loc[(stm,)]
+        data_15min = QA_fetch_get_stock_quant_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='15min')
+        if data_15min is not None:
+            data_15min = data_15min.sort_index().loc[(stm,)]
 
     stm = trading_date + ' ' + mark_tm
     source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
@@ -102,6 +103,7 @@ def signal(buy_list, position, trading_date, mark_tm):
             data.loc[(data.DISTANCE < -0.02) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0), "msg"] = 'VMAP超跌'
 
         elif time_check_after('09:33:00') is True:
+            data = data.join(data_15min[['SKDJ_K']])
             data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02) & (data.VAMP > data.yes_close * 0.95), "signal"] = 1
             data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02) & (data.VAMP > data.yes_close * 0.95), "msg"] = '早盘追涨:VMAP上升通道'
 
