@@ -89,8 +89,8 @@ def signal(buy_list, position, trading_date, mark_tm):
             data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP < data.yes_close), "msg"] = '水线下VMAP死叉'
 
             #追涨&杀跌 只操作早盘
-            data.loc[(data.VAMP_K >= 0.2) & (data.DISTANCE < 0.02), "signal"] = 1
-            data.loc[(data.VAMP_K >= 0.2) & (data.DISTANCE < 0.02), "msg"] = '追涨:VMAP上升通道'
+            #data.loc[(data.VAMP_K >= 0.2) & (data.DISTANCE < 0.02), "signal"] = 1
+            #data.loc[(data.VAMP_K >= 0.2) & (data.DISTANCE < 0.02), "msg"] = '追涨:VMAP上升通道'
 
             data.loc[(data.VAMP_K <= -0.2), "signal"] = 0
             data.loc[(data.VAMP_K <= -0.2), "msg"] = '止损:VMAP下降通道'
