@@ -99,8 +99,11 @@ def signal(buy_list, position, trading_date, mark_tm):
             data.loc[(data.DISTANCE > 0.03) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.03) & (data.close < data.up_price), "signal"] = 0
             data.loc[(data.DISTANCE > 0.03) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.03) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
 
-            data.loc[(data.DISTANCE < -0.02) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0), "signal"] = 1
-            data.loc[(data.DISTANCE < -0.02) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0), "msg"] = 'VMAP超跌'
+            data.loc[(data.DISTANCE < -0.05) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close), "signal"] = 1
+            data.loc[(data.DISTANCE < -0.05) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close), "msg"] = '水线上VMAP超跌'
+
+            data.loc[(data.DISTANCE < -0.03) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP < data.yes_close), "signal"] = 1
+            data.loc[(data.DISTANCE < -0.03) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP < data.yes_close), "msg"] = '水线下VMAP超跌'
 
         elif time_check_after('09:33:00') is True:
             data = data.join(data_15min[['SKDJ_K']])
