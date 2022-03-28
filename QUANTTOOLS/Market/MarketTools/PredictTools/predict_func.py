@@ -78,6 +78,7 @@ def load_prediction(name, working_dir= 'D:\\model\\current'):
     return(res)
 
 def check_prediction(prediction, date):
+    print(prediction['date'],date)
     if prediction['date'] >= date and QA_util_get_pre_trade_date(prediction['date'],5) <= date:
         pass
     else:
