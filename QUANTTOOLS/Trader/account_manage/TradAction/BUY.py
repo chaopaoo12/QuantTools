@@ -31,6 +31,9 @@ def BUY(client, account, strategy_id, account_info, trading_date,
             price = price
         else:
             price = round(price-0.01, 2)
+
+        price = close
+
         deal_pos = math.floor(round(deal_capital/price, 0)/100) * 100
 
         if deal_pos == 0:
