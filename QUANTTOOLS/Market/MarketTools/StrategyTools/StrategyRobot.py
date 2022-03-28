@@ -94,7 +94,7 @@ class StrategyRobotBase:
         while time_check_before('15:00:00', test=test):
 
             while time_check_before(mark_tm):
-                time.sleep(60)
+                time.sleep(3)
             QA_util_log_info('##JOB On Time ==== {}'.format(mark_tm), ui_log=None)
 
             sub_accounts, frozen, positions, frozen_positions = check_Client(
@@ -120,7 +120,10 @@ class StrategyRobotBase:
 
             # second time check after 9.30
             # 盘前停顿
-            open_check(self.trading_date)
+            if time_check_before('09:26:30'):
+                open_check(self.trading_date, 180)
+            else:
+                open_check(self.trading_date, 15)
 
             # third time check not suspend
             # 午盘停顿
@@ -128,8 +131,10 @@ class StrategyRobotBase:
 
             # action
             while check_market_time(test=test) is False:
-                if time_check_before('15:00:00'):
-                    time.sleep(60)
+                if time_check_before('12:56:30'):
+                    time.sleep(180)
+                elif time_check_before('15:00:00'):
+                    time.sleep(3)
                 else:
                     break
 

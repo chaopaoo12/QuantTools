@@ -26,7 +26,7 @@ def time_check_before(tm_mark, test=False, ckeck_tm=None):
         return True
 
 
-def time_check_after(tm_mark, test=False, ckeck_tm=None):
+def time_check_after(tm_mark, ckeck_tm=None, test=False):
     if test is False:
         if ckeck_tm is None:
             tm = int(datetime.datetime.now().strftime("%H%M%S"))
@@ -37,7 +37,7 @@ def time_check_after(tm_mark, test=False, ckeck_tm=None):
         return True
 
 
-def open_check(trading_date, test=False, sleep=60):
+def open_check(trading_date, sleep=60, test=False):
     if test is False:
         while time_check_before("09:30:00"):
             time.sleep(sleep)
@@ -46,7 +46,7 @@ def open_check(trading_date, test=False, sleep=60):
     QA_util_log_info('##Check Trading Time Start ==== {}'.format(str(trading_date)), ui_log = None)
 
 
-def close_check(trading_date, test=False, sleep=60):
+def close_check(trading_date, sleep=60, test=False):
     if test is False:
         while time_check_before("15:00:00"):
             time.sleep(sleep)
@@ -55,11 +55,15 @@ def close_check(trading_date, test=False, sleep=60):
     QA_util_log_info('##Check Trading Time Finished ==================== {}'.format(trading_date), ui_log=None)
 
 
-def suspend_check(trading_date, test=False, sleep=60):
+def suspend_check(trading_date, sleep=180, test=False):
     if test is False:
         while time_check_after("11:30:00") and time_check_before("13:00:00"):
-            QA_util_log_info('##Check Suspend Start ==================== {}'.format(trading_date), ui_log=None)
-            time.sleep(sleep)
+            if time_check_after("12:56:00"):
+                QA_util_log_info('##Check Suspend Will Finished ==================== {}'.format(trading_date), ui_log=None)
+                time.sleep(3)
+            else:
+                QA_util_log_info('##Check Suspend Start ==================== {}'.format(trading_date), ui_log=None)
+                time.sleep(sleep)
     else:
         pass
     QA_util_log_info('##Check Suspend Finished ==================== {}'.format(trading_date), ui_log=None)
