@@ -15,7 +15,7 @@ def signal(buy_list, position, trading_date, mark_tm):
     # 输出2 signal 进出信号 signal 1:表示进场信号 0:表示无信号 -1:表示卖出信号
 
     # 提前执行部分
-    time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
+    time_index = on_bar('09:30:00', '15:00:00', 60, [['11:30:00', '13:00:00']])
     # 盘前数据准备
     # 午盘数据准备
     if buy_list is None:
@@ -35,16 +35,20 @@ def signal(buy_list, position, trading_date, mark_tm):
         mark_tm), ui_log=None)
 
     # 定时执行部分
-    if time_check_before('09:35:00') is True:
-        a = get_on_time(mark_tm, time_index)
-        if a == '15:00:00':
-            stm = QA_util_get_pre_trade_date(trading_date, 1) + ' ' + a
-        else:
-            stm = trading_date + ' ' + a
+    #if time_check_before('09:35:00') is True:
+    a = get_on_time(mark_tm, time_index)
+    if a == '15:00:00':
+        stm = QA_util_get_pre_trade_date(trading_date, 1) + ' ' + a
+    else:
+        stm = trading_date + ' ' + a
 
-        data_15min = QA_fetch_get_stock_quant_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='15min')
-        if data_15min is not None:
-            data_15min = data_15min.sort_index().loc[(stm,)]
+    data_15min = QA_fetch_get_stock_quant_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='hour')
+    if data_15min is not None:
+        data_15min = data_15min.sort_index().loc[(stm,)]
+
+    QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
+    QA_util_log_info(data_15min[['SKDJ_K','SKDJ_D']], ui_log=None)
+    buy_list = [i for i in buy_list if i in list(data_15min[data_15min.SKDJ_K <= 30].index)]
 
     stm = trading_date + ' ' + mark_tm
     source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')

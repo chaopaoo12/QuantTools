@@ -81,7 +81,7 @@ def get_on_time(tm, mark_list):
     a = mark_list + [tm]
     a.sort()
 
-    if a.index(tm) <= 1 and a.count(tm) < 2:
+    if a.index(tm) < 1 and a.count(tm) < 2:
         mark_tm = '15:00:00'
     elif tm in mark_list:
         mark_tm = tm
