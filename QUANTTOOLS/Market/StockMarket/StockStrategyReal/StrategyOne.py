@@ -18,6 +18,13 @@ def signal(buy_list, position, trading_date, mark_tm):
     time_index = on_bar('09:30:00', '15:00:00', 60, [['11:30:00', '13:00:00']])
     # 盘前数据准备
     # 午盘数据准备
+    if buy_list is None:
+        buy_list = []
+
+    if position is not None and position.shape[0] > 0:
+        code_list = buy_list + position.code.tolist()
+    else:
+        code_list = list(set(buy_list))
 
     # check data time 在某时某刻之后获准获取数据
     while time_check_before(mark_tm):
@@ -35,7 +42,7 @@ def signal(buy_list, position, trading_date, mark_tm):
     else:
         stm = trading_date + ' ' + a
 
-    data_15min = QA_fetch_get_stock_quant_min(buy_list + position.code.tolist(), QA_util_get_pre_trade_date(trading_date,10), trading_date, type='hour')
+    data_15min = QA_fetch_get_stock_quant_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='hour')
     if data_15min is not None:
         data_15min = data_15min.sort_index().loc[(stm,)]
 
@@ -45,14 +52,7 @@ def signal(buy_list, position, trading_date, mark_tm):
     QA_util_log_info('##Target Pool ====================', ui_log=None)
     QA_util_log_info(data_15min[data_15min.SKDJ_K <= 30][['SKDJ_K','SKDJ_D']], ui_log=None)
     buy_list = [i for i in buy_list if i in list(data_15min[data_15min.SKDJ_K <= 30].index)]
-
-    if buy_list is None:
-        buy_list = []
-
-    if position is not None and position.shape[0] > 0:
-        code_list = buy_list + position.code.tolist()
-    else:
-        code_list = list(set(buy_list))
+    QA_util_log_info('##Update Buy List ==================== {}'.format(buy_list), ui_log=None)
 
     stm = trading_date + ' ' + mark_tm
     source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
