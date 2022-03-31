@@ -1,6 +1,6 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.Trader.account_manage.base_func.trading_message import send_trading_message
-from QUANTTOOLS.Trader.account_manage.base_func.Client import get_StockCapital
+from QUANTTOOLS.Trader.account_manage.base_func.Client import get_StockCapital,get_StockHold
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_realtm_ask
 import math
 
@@ -19,16 +19,20 @@ def SELL(client, account, strategy_id, account_info, trading_date,
         real_capital=real_capital, deal_capital=deal_capital, code=code, date=trading_date), ui_log=None)
 
     if type == 'end':
-
+        real_hold = get_StockHold(code, client, account)
         price = QA_fetch_get_stock_realtm_ask(code)
         if price <= 10:
             price = price
         else:
             price = round(price-0.01, 2)
-        deal_pos = math.floor(round(deal_capital/price, 0)/100) * 100
+
         # 如果只有卖出部分不满100 ?? 单价较贵的票容易有这个问题
         # 应全额卖出 做出if判断
         # 可以继续持有 保持现有代码
+        if deal_capital < real_capital:
+            deal_pos = math.floor(round(deal_capital/price, 0)/100) * 100
+        else:
+            deal_pos = real_hold
 
         QA_util_log_info('##JOB Get Real Time Price {price} 需卖出{deal_pos} Before {code} Selling ===== {date}'.format(
             price=price, code=code, deal_pos=deal_pos, date=trading_date), ui_log = None)

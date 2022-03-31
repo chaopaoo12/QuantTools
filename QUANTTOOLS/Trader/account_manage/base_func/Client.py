@@ -95,6 +95,14 @@ def get_StockCapital(code, client, account=None):
         res = 0
     return(res)
 
+def get_StockHold(code, client, account=None):
+    positions = get_Position(client, account).set_index('code')
+    try:
+        res = float(positions.loc[code]['可用余额'])
+    except:
+        res = 0
+    return(res)
+
 def check_Client(client, account, strategy_id, trading_date, exceptions, ui_log= None):
     logging.basicConfig(level=logging.DEBUG)
     try:
