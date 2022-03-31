@@ -46,10 +46,10 @@ def signal(buy_list, position, trading_date, mark_tm):
     if data_15min is not None:
         data_15min = data_15min.sort_index().loc[(stm,)]
 
-    QA_util_log_info('##Stock Pool ====================', ui_log=None)
+    QA_util_log_info('##Stock Pool ==================== {}'.format(stm), ui_log=None)
     QA_util_log_info(data_15min[['SKDJ_K','SKDJ_D']], ui_log=None)
 
-    QA_util_log_info('##Target Pool ====================', ui_log=None)
+    QA_util_log_info('##Target Pool ==================== {}'.format(stm), ui_log=None)
     QA_util_log_info(data_15min[data_15min.SKDJ_K <= 30][['SKDJ_K','SKDJ_D']], ui_log=None)
     buy_list = [i for i in buy_list if i in list(data_15min[data_15min.SKDJ_K <= 30].index)]
     QA_util_log_info('##Update Buy List ==================== {}'.format(buy_list), ui_log=None)
