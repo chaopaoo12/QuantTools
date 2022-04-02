@@ -9,7 +9,7 @@ from QUANTAXIS.QAUtil import QA_util_if_trade,QA_util_get_pre_trade_date,QA_util
 
 class QAStockModel(QAModel):
 
-    def get_data(self, start, end, code=None, block=False, sub_block=False, type ='model', norm_type='normalization', ST=False,method='value'):
+    def get_data(self, start, end, code=None, block=False, sub_block=False, type ='model', norm_type='normalization', ST=True,method='value'):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block}, ST: {ST} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, ST=ST, _from=start, _to=end), ui_log = None)
         self.data = get_quant_data(start, end, code=code, type = type, block = block, sub_block = sub_block, norm_type=norm_type, ST=ST,method=method)
         self.info['code'] = code
