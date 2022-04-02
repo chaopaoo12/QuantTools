@@ -10,19 +10,19 @@ from QUANTAXIS.QAUtil import QA_util_if_trade,QA_util_get_pre_trade_date,QA_util
 class QAStockModelNeut(QAModel):
 
     def get_data(self, start, end, code=None, block=False, sub_block=False, type ='crawl', norm_type=None, ST=True,method='value'):
-        QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
+        QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block}, ST: {ST} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, ST=ST, _from=start, _to=end), ui_log = None)
         self.data = get_quant_data_neut(start, end, code=code, type = type, block = block, sub_block = sub_block, ST =ST,method=method)
         self.info['code'] = code
         self.info['block'] = block
         self.info['sub_block'] = sub_block
         QA_util_log_info(self.data.shape)
 
-    def model_predict(self, start, end, code = None, type='crawl'):
+    def model_predict(self, start, end, code=None, ST=True, type='crawl'):
         self.get_param()
 
         self.code = code
-        QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.block,sub_block=self.sub_block, _from=start, _to=end, target = self.target), ui_log = None)
-        data = get_quant_data_neut(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block)
+        QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block}, ST: {ST} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.block,sub_block=self.sub_block, ST=ST, _from=start, _to=end, target = self.target), ui_log = None)
+        data = get_quant_data_neut(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block,ST=ST)
         code_all = QA_fetch_get_stockcode_real(QA_fetch_stock_all()['code'].unique().tolist())
         code_old = QA_fetch_code_old()['code'].unique().tolist()
         code_new = QA_fetch_code_new()['code'].unique().tolist()
