@@ -458,7 +458,7 @@ def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block 
         success = False
         while attempts < 3 and not success:
             try:
-                res = QA_fetch_get_index_quant_min(codes, start_date, end_date, 'hour')
+                res = QA_fetch_get_stock_quant_min(codes, start_date, end_date, 'hour')
                 res.columns = [x.upper() + '_HR' for x in res.columns]
                 success = True
             except:
@@ -474,7 +474,7 @@ def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block 
         success = False
         while attempts < 3 and not success:
             try:
-                res1 = QA_fetch_get_index_quant_min(codes, start_date, end_date, '30min')
+                res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '30min')
                 res1.columns = [x.upper() + '_30M' for x in res1.columns]
                 success = True
             except:
