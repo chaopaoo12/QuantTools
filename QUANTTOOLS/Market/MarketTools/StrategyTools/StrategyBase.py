@@ -22,8 +22,8 @@ class StrategyBase:
     def set_percent_func(self, func=None):
         self.percent_func = func
 
-    def signal_run(self, mark_tm):
-        return self.signal_func(self.buy_list, self.position, self.trading_date, mark_tm)
+    def signal_run(self, tmp_list, mark_tm):
+        return self.signal_func(self.buy_list, tmp_list, self.position, self.trading_date, mark_tm)
 
     def percent_run(self, mark_tm):
         if self.percent_func is not None:
@@ -40,11 +40,12 @@ class StrategyBase:
 
         QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(
             mark_tm), ui_log=None)
+        tmp_list = None
         k = 0
         while k <= 2:
             QA_util_log_info('JOB Get Trading Signal {x} times ==================== '.format(
                 x=k+1), ui_log=None)
-            data = self.signal_run(mark_tm)
+            data, tmp_list = self.signal_run(tmp_list, mark_tm)
             if data is None and self.buy_list is not None:
                 time.sleep(5)
                 k += 1
