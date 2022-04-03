@@ -1,6 +1,7 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before,time_check_after
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min, QA_fetch_get_stock_quant_min
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtime
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_30min
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo
@@ -15,7 +16,7 @@ def signal(buy_list, position, trading_date, mark_tm):
     # 输出2 signal 进出信号 signal 1:表示进场信号 0:表示无信号 -1:表示卖出信号
 
     # 提前执行部分
-    time_index = on_bar('09:30:00', '15:00:00', 60, [['11:30:00', '13:00:00']])
+    time_index = on_bar('09:30:00', '15:00:00', 30, [['11:30:00', '13:00:00']])
     # 盘前数据准备
     # 午盘数据准备
     if buy_list is None:
@@ -42,16 +43,16 @@ def signal(buy_list, position, trading_date, mark_tm):
     else:
         stm = trading_date + ' ' + a
 
-    data_15min = QA_fetch_get_stock_quant_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='hour')
+    data_15min = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date,10), trading_date, code_list, type='real')
     if data_15min is not None:
         data_15min = data_15min.sort_index().loc[(stm,)]
 
     QA_util_log_info('##Stock Pool ==================== {}'.format(stm), ui_log=None)
-    QA_util_log_info(data_15min[['SKDJ_K','SKDJ_D']], ui_log=None)
+    QA_util_log_info(data_15min[['SKDJ_K_30M','SKDJ_D_30M','SKDJ_K_HR','SKDJ_D_HR']], ui_log=None)
 
     QA_util_log_info('##Target Pool ==================== {}'.format(stm), ui_log=None)
-    QA_util_log_info(data_15min[data_15min.SKDJ_K <= 30][['SKDJ_K','SKDJ_D']], ui_log=None)
-    buy_list = [i for i in buy_list if i in list(data_15min[data_15min.SKDJ_K <= 30].index)]
+    QA_util_log_info(data_15min[data_15min.SKDJ_K_HR <= 30][['SKDJ_K_30M','SKDJ_D_30M','SKDJ_K_HR','SKDJ_D_HR']], ui_log=None)
+    buy_list = [i for i in buy_list if i in list(data_15min[data_15min.SKDJ_K_HR <= 30].index)]
     QA_util_log_info('##Update Buy List ==================== {}'.format(buy_list), ui_log=None)
 
     stm = trading_date + ' ' + mark_tm
@@ -114,12 +115,12 @@ def signal(buy_list, position, trading_date, mark_tm):
             data.loc[(data.DISTANCE < -0.03) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP < data.yes_close), "msg"] = '水线下VMAP超跌'
 
         elif time_check_after('09:33:00') is True:
-            data = data.join(data_15min[['SKDJ_K']])
-            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02) & (data.VAMP > data.yes_close * 0.95), "signal"] = 1
-            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02) & (data.VAMP > data.yes_close * 0.95), "msg"] = '早盘追涨:水线上VMAP上升通道'
+            data = data.join(data_15min[['SKDJ_K_30M','SKDJ_D_30M','SKDJ_K_HR','SKDJ_D_HR']])
+            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_D_HR <= 20) & (data.DISTANCE < 0.02) & (data.VAMP > data.yes_close * 0.95), "signal"] = 1
+            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_D_HR <= 20) & (data.DISTANCE < 0.02) & (data.VAMP > data.yes_close * 0.95), "msg"] = '早盘追涨:水线上VMAP上升通道'
 
-            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02) & (data.VAMP < data.yes_close), "signal"] = 1
-            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_K <= 20) & (data.DISTANCE < 0.02) & (data.VAMP < data.yes_close), "msg"] = '早盘追涨:水线下VMAP上升通道'
+            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_D_HR <= 20) & (data.DISTANCE < 0.02) & (data.VAMP < data.yes_close), "signal"] = 1
+            data.loc[(data.VAMPC_K >= 0.2) & (data.SKDJ_D_HR <= 20) & (data.DISTANCE < 0.02) & (data.VAMP < data.yes_close), "msg"] = '早盘追涨:水线下VMAP上升通道'
 
             #data.loc[(data.VAMPC_K <= -0.2), "signal"] = 0
             #data.loc[(data.VAMPC_K <= -0.2), "msg"] = '早盘止损:VMAP下降通道'
