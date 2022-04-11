@@ -65,7 +65,7 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
         price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
         source_data = source_data.reset_index().set_index(['date','code']).join(close).reset_index().set_index(['datetime','code']).join(price)
 
-        data = source_data.sort_index().loc[(stm,)]
+        data = source_data.sort_index().loc[(stm,tmp_list),]
         QA_util_log_info('##JOB Finished Trading Signal ==================== {}'.format(
             mark_tm), ui_log=None)
 
@@ -117,7 +117,6 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
             data.loc[(data.DISTANCE < -0.03) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP < data.yes_close), "msg"] = '水线下VMAP超跌'
 
         elif time_check_after('09:33:00') is True:
-            data = data.loc[(slice(None), tmp_list)]
             data.loc[(data.VAMPC_K >= 0.2) & (data.DISTANCE < 0.02) & (data.VAMP > data.yes_close * 0.95), "signal"] = 1
             data.loc[(data.VAMPC_K >= 0.2) & (data.DISTANCE < 0.02) & (data.VAMP > data.yes_close * 0.95), "msg"] = '早盘追涨:水线上VMAP上升通道'
 
