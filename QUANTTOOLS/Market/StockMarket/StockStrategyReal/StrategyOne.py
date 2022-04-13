@@ -37,6 +37,8 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
 
     # 定时执行部分
     if mark_tm in [time_index,'09:30:00'] or tmp_list is None:
+        QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
+            mark_tm), ui_log=None)
         #if time_check_before('09:35:00') is True:
         a = get_on_time(mark_tm, time_index)
         if a == '15:00:00':
@@ -151,9 +153,9 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
         # msg
 
 
-        return(data,tmp_list)
+        return(data, tmp_list)
     else:
-        return(None,tmp_list)
+        return(None, tmp_list)
 
 
 def balance(data, position, sub_account, percent):
