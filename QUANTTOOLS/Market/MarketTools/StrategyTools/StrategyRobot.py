@@ -62,6 +62,7 @@ class StrategyRobotBase:
         if mark_tm == '15:00:00':
             mark_tm = self.time_list[0]
         QA_util_log_info('##JOB Now Init Mark Time ==== {}'.format(str(mark_tm)), ui_log=None)
+        tmp_list = None
 
         # init code
         QA_util_log_info('##JOB Now Init Code List ==== {}'.format(str(self.trading_date)), ui_log=None)
@@ -110,8 +111,9 @@ class StrategyRobotBase:
                                                              'sub_account': sub_accounts
                                                              })
 
-            # prepare signal
-            signal_data = self.strategy.strategy_run(mark_tm)
+            # prepare signal.
+
+            signal_data, tmp_list = self.strategy.strategy_run(mark_tm, tmp_list)
             QA_util_log_info('##Sell List ==== {}'.format(str(self.trading_date)), ui_log=None)
             QA_util_log_info(signal_data['sell'], ui_log=None)
 
