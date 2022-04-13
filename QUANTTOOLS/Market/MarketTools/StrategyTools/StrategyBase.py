@@ -16,14 +16,24 @@ class StrategyBase:
     def set_signal_func(self, func):
         self.signal_func = func
 
+    def set_codsel_func(self, func=None):
+        self.codsel_func = func
+
     def set_balance_func(self, func):
         self.balance_func = func
 
     def set_percent_func(self, func=None):
         self.percent_func = func
 
-    def signal_run(self, tmp_list, mark_tm):
-        return self.signal_func(self.buy_list, tmp_list, self.position, self.trading_date, mark_tm)
+    def code_select(self, mark_tm):
+        QA_util_log_info('##JOB Refresh Code List  ==== {}'.format(mark_tm), ui_log= None)
+        if self.codsel_func is not None:
+            self.tmp_list = self.codsel_func(self.buy_list, self.position, self.trading_date, mark_tm)
+        else:
+            self.tmp_list = self.codsel_func
+
+    def signal_run(self, mark_tm):
+        return self.signal_func(self.buy_list, self.tmp_list, self.position, self.trading_date, mark_tm)
 
     def percent_run(self, mark_tm):
         if self.percent_func is not None:
@@ -34,9 +44,20 @@ class StrategyBase:
     def balance_run(self, signal_data, percent):
         return self.balance_func(signal_data, self.position, self.sub_account, percent)
 
-    def strategy_run(self, mark_tm, tmp_list=None):
+    def strategy_run(self, mark_tm):
 
         QA_util_log_info('##JOB Now Start Trading ==== {}'.format(mark_tm), ui_log= None)
+
+        QA_util_log_info('JOB Selct Code List ==================== {}'.format(
+            mark_tm), ui_log=None)
+        k = 0
+        while k <= 2:
+            QA_util_log_info('JOB Selct Code List {x} times ==================== '.format(
+                x=k+1), ui_log=None)
+            try:
+                self.code_select(mark_tm)
+            except:
+                k += 1
 
         QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(
             mark_tm), ui_log=None)
@@ -44,7 +65,7 @@ class StrategyBase:
         while k <= 2:
             QA_util_log_info('JOB Get Trading Signal {x} times ==================== '.format(
                 x=k+1), ui_log=None)
-            data, tmp_list = self.signal_run(tmp_list, mark_tm)
+            data = self.signal_run(mark_tm)
             if data is None and self.buy_list is not None:
                 time.sleep(5)
                 k += 1
@@ -63,7 +84,7 @@ class StrategyBase:
             mark_tm), ui_log=None)
         signal_data = build_info(balance_data)
 
-        return(signal_data, tmp_list)
+        return(signal_data)
 
 
 def build_info(data):

@@ -9,16 +9,9 @@ from QUANTTOOLS.Market.MarketTools import on_bar, get_on_time
 import time
 import pandas as pd
 
-def signal(buy_list, tmp_list, position, trading_date, mark_tm):
-
-    # 计算信号 提供基础信息 example
-    # 输出1 signal 计划持有的code 目前此方案 1:表示持有 0:表示不持有
-    # 输出2 signal 进出信号 signal 1:表示进场信号 0:表示无信号 -1:表示卖出信号
-
-    # 提前执行部分
+def code_select(buy_list, tmp_list, position, trading_date, mark_tm):
     time_index = on_bar('09:30:00', '15:00:00', 30, [['11:30:00', '13:00:00']])
-    # 盘前数据准备
-    # 午盘数据准备
+
     if buy_list is None:
         buy_list = []
 
@@ -27,15 +20,6 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
     else:
         code_list = list(set(buy_list))
 
-    # check data time 在某时某刻之后获准获取数据
-    while time_check_before(mark_tm):
-        time.sleep(60)
-        pass
-
-    QA_util_log_info('##JOB Crawl Trading Data ==================== {}'.format(
-        mark_tm), ui_log=None)
-
-    # 定时执行部分
     if mark_tm in [time_index,'09:30:00'] or tmp_list is None:
         QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
             mark_tm), ui_log=None)
@@ -58,6 +42,34 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
         buy_list = [i for i in buy_list if i in list(data_15min[data_15min.SKDJ_K_HR <= 30].index)]
         QA_util_log_info('##Update Buy List ==================== {}'.format(buy_list), ui_log=None)
         tmp_list = buy_list
+    return(tmp_list)
+
+
+
+def signal(buy_list, tmp_list, position, trading_date, mark_tm):
+
+    # 计算信号 提供基础信息 example
+    # 输出1 signal 计划持有的code 目前此方案 1:表示持有 0:表示不持有
+    # 输出2 signal 进出信号 signal 1:表示进场信号 0:表示无信号 -1:表示卖出信号
+
+    # 提前执行部分
+    # 盘前数据准备
+    # 午盘数据准备
+    if buy_list is None:
+        buy_list = []
+
+    if position is not None and position.shape[0] > 0:
+        code_list = buy_list + position.code.tolist()
+    else:
+        code_list = list(set(buy_list))
+
+    # check data time 在某时某刻之后获准获取数据
+    while time_check_before(mark_tm):
+        time.sleep(60)
+        pass
+
+    QA_util_log_info('##JOB Crawl Trading Data ==================== {}'.format(
+        mark_tm), ui_log=None)
 
     stm = trading_date + ' ' + mark_tm
     source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
