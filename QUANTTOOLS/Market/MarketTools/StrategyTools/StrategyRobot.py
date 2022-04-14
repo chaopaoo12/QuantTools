@@ -152,8 +152,12 @@ class StrategyRobotBase:
             if time_check_before('15:00:00'):
                 # get next mark_tm
                 QA_util_log_info('##本交易时段 ==================== {}'.format(mark_tm), ui_log=None)
-                mark_tm = self.time_list[(self.time_list.index(mark_tm)+1) % len(self.time_list)]
-                QA_util_log_info('##下一交易时段 ==================== {}'.format(mark_tm), ui_log=None)
+                if mark_tm <= self.time_list[(self.time_list.index(mark_tm)+1) % len(self.time_list)]:
+                    mark_tm = self.time_list[(self.time_list.index(mark_tm)+1) % len(self.time_list)]
+                    QA_util_log_info('##下一交易时段 ==================== {}'.format(mark_tm), ui_log=None)
+                else:
+                    QA_util_log_info('##JOB 已过交易时间 ==================== {}'.format(mark_tm), ui_log=None)
+                    break
 
         if time_check_after('15:00:00'):
             QA_util_log_info('当日交易完成 ==================== {}'.format(

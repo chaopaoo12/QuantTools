@@ -7,6 +7,8 @@ import datetime
 def on_bar(start, end, sep, breaks):
     if sep == 60:
         res_rng = ['10:30:00', '11:30:00', '14:00:00', '15:00:00']
+    elif sep ==30:
+        res_rng = ['10:00:00', '10:30:00', '11:00:00', '11:30:00', '13:00:00', '13:30:00', '14:00:00', '14:30:00', '15:00:00']
     else:
         date = '2022-02-09'
         tm_rng = pd.date_range(date + ' '+start, date + ' '+end, freq=str(sep)+'min')

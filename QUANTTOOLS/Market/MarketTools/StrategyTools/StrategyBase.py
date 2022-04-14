@@ -30,7 +30,7 @@ class StrategyBase:
         if self.codsel_func is not None:
             self.tmp_list = self.codsel_func(self.buy_list, self.tmp_list, self.position, self.trading_date, mark_tm)
         else:
-            self.tmp_list = self.codsel_func
+            self.tmp_list = None
 
     def signal_run(self, mark_tm):
         return self.signal_func(self.buy_list, self.tmp_list, self.position, self.trading_date, mark_tm)
@@ -48,12 +48,10 @@ class StrategyBase:
 
         QA_util_log_info('##JOB Now Start Trading ==== {}'.format(mark_tm), ui_log= None)
 
-        QA_util_log_info('JOB Selct Code List ==================== {}'.format(
-            mark_tm), ui_log=None)
+        QA_util_log_info('JOB Selct Code List ==================== {}'.format(mark_tm), ui_log=None)
         k = 0
         while k <= 2:
-            QA_util_log_info('JOB Selct Code List {x} times ==================== '.format(
-                x=k+1), ui_log=None)
+            QA_util_log_info('JOB Selct Code List {x} times ==================== '.format(x=k+1), ui_log=None)
             try:
                 self.code_select(mark_tm)
                 QA_util_log_info('JOB Selct Code List Done ==================== ', ui_log=None)
@@ -65,8 +63,7 @@ class StrategyBase:
             mark_tm), ui_log=None)
         k = 0
         while k <= 2:
-            QA_util_log_info('JOB Get Trading Signal {x} times ==================== '.format(
-                x=k+1), ui_log=None)
+            QA_util_log_info('JOB Get Trading Signal {x} times ==================== '.format(x=k+1), ui_log=None)
             data = self.signal_run(mark_tm)
             if data is None and self.buy_list is not None:
                 time.sleep(5)
@@ -74,16 +71,13 @@ class StrategyBase:
             else:
                 break
 
-        QA_util_log_info('JOB Init Capital Percent ==================== {}'.format(
-            mark_tm), ui_log=None)
+        QA_util_log_info('JOB Init Capital Percent ==================== {}'.format(mark_tm), ui_log=None)
         percent = self.percent_run(mark_tm)
 
-        QA_util_log_info('JOB Balance Stock Capital ==================== {}'.format(
-            mark_tm), ui_log=None)
+        QA_util_log_info('JOB Balance Stock Capital ==================== {}'.format(mark_tm), ui_log=None)
         balance_data = self.balance_run(data, percent)
 
-        QA_util_log_info('JOB Return Signal Data ==================== {}'.format(
-            mark_tm), ui_log=None)
+        QA_util_log_info('JOB Return Signal Data ==================== {}'.format(mark_tm), ui_log=None)
         signal_data = build_info(balance_data)
 
         return(signal_data)

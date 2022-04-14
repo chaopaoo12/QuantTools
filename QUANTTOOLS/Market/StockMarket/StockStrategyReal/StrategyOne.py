@@ -10,7 +10,7 @@ import time
 import pandas as pd
 
 def code_select(buy_list, tmp_list, position, trading_date, mark_tm):
-    time_index = on_bar('09:30:00', '15:00:00', 30, [['11:30:00', '13:00:00']])
+    time_index = on_bar('09:30:00', '15:00:00', 60, [['11:30:00', '13:00:00']])
 
     if buy_list is None:
         buy_list = []
