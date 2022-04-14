@@ -56,6 +56,7 @@ class StrategyBase:
                 x=k+1), ui_log=None)
             try:
                 self.code_select(mark_tm)
+                QA_util_log_info('JOB Selct Code List Done ==================== ', ui_log=None)
                 break
             except:
                 k += 1
