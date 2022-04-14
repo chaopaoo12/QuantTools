@@ -165,9 +165,9 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
         # msg
 
 
-        return(data)
+        return data
     else:
-        return(None)
+        return None
 
 
 def balance(data, position, sub_account, percent):
