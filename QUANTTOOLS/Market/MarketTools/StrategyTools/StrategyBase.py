@@ -56,6 +56,7 @@ class StrategyBase:
                 x=k+1), ui_log=None)
             try:
                 self.code_select(mark_tm)
+                break
             except:
                 k += 1
 
