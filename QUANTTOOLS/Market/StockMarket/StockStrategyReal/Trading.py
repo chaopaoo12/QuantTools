@@ -2,7 +2,7 @@ from .setting import working_dir, percent, exceptions, strategy_id
 from .concat_predict import concat_predict, concat_predict_neut
 from QUANTTOOLS.Market.MarketTools import load_data, StrategyRobotBase, StrategyBase, on_bar
 from QUANTAXIS.QAUtil import QA_util_get_last_day,QA_util_get_real_date, QA_util_get_pre_trade_date
-from .StrategyOne import signal, balance, tracking_signal, track_balance,code_select
+from .StrategyOne import signal, balance, tracking_signal, track_balance, code_select
 
 
 def trading_new(trading_date, working_dir=working_dir):

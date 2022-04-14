@@ -76,6 +76,8 @@ class StrategyRobotBase:
         if self.code_list is None:
             self.code_list = []
 
+        self.tmp_list = None
+
         QA_util_log_info('##Code List ==== {}'.format(str(self.trading_date)), ui_log=None)
         QA_util_log_info(self.code_list, ui_log=None)
 
@@ -88,6 +90,7 @@ class StrategyRobotBase:
                                                          'position': positions,
                                                          'sub_account': sub_accounts,
                                                          'base_percent': self.percent,
+                                                         'tmp_list': self.tmp_list
                                                          })
 
         # first time check before 15
