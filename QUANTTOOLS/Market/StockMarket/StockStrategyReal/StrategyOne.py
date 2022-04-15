@@ -59,8 +59,8 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
         buy_list = []
 
     if position is not None and position.shape[0] > 0:
-        code_list = buy_list + position.code.tolist()
-        tmp_list = tmp_list + position.code.tolist()
+        code_list = list(set(buy_list + position.code.tolist()))
+        tmp_list = list(set(tmp_list + position.code.tolist()))
     else:
         code_list = list(set(buy_list))
 
