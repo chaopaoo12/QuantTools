@@ -80,7 +80,7 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
         price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
         source_data = source_data.reset_index().set_index(['date','code']).join(close).reset_index().set_index(['datetime','code']).join(price)
 
-        data = source_data.sort_index().loc[(stm,tmp_list),]
+        data = source_data.sort_index().loc[(stm),]
         QA_util_log_info('##JOB Finished Trading Signal ==================== {}'.format(
             mark_tm), ui_log=None)
 
