@@ -9,6 +9,7 @@ from QUANTTOOLS.Market.MarketTools import on_bar, get_on_time
 import time
 import pandas as pd
 
+
 def code_select(buy_list, tmp_list, position, trading_date, mark_tm):
     time_index = on_bar('09:30:00', '15:00:00', 60, [['11:30:00', '13:00:00']])
 
@@ -45,7 +46,6 @@ def code_select(buy_list, tmp_list, position, trading_date, mark_tm):
     return(tmp_list)
 
 
-
 def signal(buy_list, tmp_list, position, trading_date, mark_tm):
 
     # 计算信号 提供基础信息 example
@@ -59,10 +59,10 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
         buy_list = []
 
     if position is not None and position.shape[0] > 0:
-        code_list = list(set(buy_list + position.code.tolist()))
-        tmp_list = list(set(tmp_list + position.code.tolist()))
+        code_list = list(set(tmp_list + position.code.tolist()))
+        #tmp_list = list(set(tmp_list + position.code.tolist()))
     else:
-        code_list = list(set(buy_list))
+        code_list = list(set(tmp_list))
 
     # check data time 在某时某刻之后获准获取数据
     while time_check_before(mark_tm):
