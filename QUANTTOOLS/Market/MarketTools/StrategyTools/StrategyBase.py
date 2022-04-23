@@ -12,6 +12,7 @@ class StrategyBase:
         self.signal_func = None
         self.balance_func = None
         self.percent_func = None
+        self.tmp_list = None
 
     def set_signal_func(self, func):
         self.signal_func = func

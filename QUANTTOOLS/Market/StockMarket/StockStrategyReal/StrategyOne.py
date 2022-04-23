@@ -21,7 +21,7 @@ def code_select(buy_list, tmp_list, position, trading_date, mark_tm):
     else:
         code_list = list(set(buy_list))
 
-    if mark_tm in [time_index,'09:31:00'] or tmp_list is None:
+    if mark_tm in time_index + ['09:31:00'] or tmp_list is None:
         QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
             mark_tm), ui_log=None)
         #if time_check_before('09:35:00') is True:
