@@ -261,7 +261,7 @@ def get_quant_data_hour(start_date, end_date, code=None, type = 'model', block =
     codes = [i for i in codes if i.startswith('688') == False]
     codes = [i for i in codes if i.startswith('787') == False]
     codes = [i for i in codes if i.startswith('789') == False]
-
+    print(codes)
     if type == 'crawl':
         res = QA_fetch_stock_hour_pre(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type)
     elif type == 'model':
@@ -468,7 +468,7 @@ def get_quant_data_30min(start_date, end_date, code=None, type = 'model', block 
                     QA_util_log_info("JOB Failed to get 60min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
 
         QA_util_log_info('time sleep')
-        time.sleep(5)
+        time.sleep(1)
 
         attempts = 0
         success = False
