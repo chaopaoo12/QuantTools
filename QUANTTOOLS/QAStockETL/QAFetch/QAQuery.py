@@ -3088,16 +3088,17 @@ def QA_fetch_stock_quant_hour(code, start, end=None, block = True, norm_type='no
     hour = QA_Sql_Stock_IndexHour
     hhour = QA_Sql_Stock_Index30min
 
-    print(code)
     if QA_util_date_valid(end):
 
         __data = []
         QA_util_log_info(
             'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
         hour_res = hour(start, end, code, type = 'hour').groupby('code').fillna(method='ffill').drop(['date'],axis=1)
+        print(hour_res.shape)
         QA_util_log_info(
             'JOB Get Stock Tech 30Min data start=%s end=%s' % (start, end))
         hhour_res = hhour(start, end, code, type = None).groupby('code').fillna(method='ffill')
+        print(hhour_res.shape)
 
         try:
             res = hhour_res.join(hour_res)
