@@ -3336,7 +3336,7 @@ def QA_fetch_stock_quant_min(code, start, end=None, block = True, norm_type='nor
         __data = []
         QA_util_log_info(
             'JOB Get Stock Tech Hour data start=%s end=%s' % (start, end))
-        hour_res = hour(start, end,'min').groupby('code').fillna(method='ffill').loc[(slice(None),code),]
+        hour_res = hour(start, end, code,'min').groupby('code').fillna(method='ffill').loc[(slice(None),code),]
 
         try:
             res = hour_res

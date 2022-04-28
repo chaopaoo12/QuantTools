@@ -320,9 +320,9 @@ def QA_Sql_Stock_Index30min(from_ , to_,code=None, type = 'day', sql_text = sql_
         code_condition = ' code in (' + ','.join(code) + ') and '
 
     if type == 'day':
-        code_condition = code_condition + " and substr(datetime, 12, 20) = '15:00:00'"
+        code_condition = code_condition + "substr(datetime, 12, 20) = '15:00:00' and "
     elif type == 'hour':
-        code_condition = code_condition + " and substr(datetime, 12) in ('10:30:00','11:30:00','14:00:00','15:00:00')"
+        code_condition = code_condition + "substr(datetime, 12) in ('10:30:00','11:30:00','14:00:00','15:00:00') and "
     else:
         pass
 
