@@ -310,7 +310,6 @@ to_date('{to_}', 'yyyy-mm-dd')
 def QA_Sql_Stock_Index30min(from_ , to_,code=None, type = 'day', sql_text = sql_text, ui_log= None):
     QA_util_log_info(
         '##JOB01 Now Fetch Stock QuantData Index 30Min ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
-    sql_text = sql_text.format(from_=from_,to_=to_)
     conn = cx_Oracle.connect(ORACLE_PATH2)
 
     if code is None or len(code) > 20:
