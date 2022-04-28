@@ -31,7 +31,8 @@ def code_select(buy_list, tmp_list, position, trading_date, mark_tm):
         else:
             stm = trading_date + ' ' + a
 
-        data_15min = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date,10), trading_date, code_list, type='real')
+        data_15min = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date,10),
+                                          trading_date, code_list, type='real')
         if data_15min is not None:
             data_15min = data_15min.sort_index().loc[(stm,)]
 
@@ -39,8 +40,10 @@ def code_select(buy_list, tmp_list, position, trading_date, mark_tm):
         QA_util_log_info(data_15min[['SKDJ_K_30M','SKDJ_D_30M','SKDJ_K_HR','SKDJ_D_HR']], ui_log=None)
 
         QA_util_log_info('##Target Pool ==================== {}'.format(stm), ui_log=None)
-        QA_util_log_info(data_15min[data_15min.SKDJ_K_HR <= 30][['SKDJ_K_30M','SKDJ_D_30M','SKDJ_K_HR','SKDJ_D_HR']], ui_log=None)
-        buy_list = [i for i in buy_list if i in list(data_15min[data_15min.SKDJ_K_HR <= 30].index)]
+        QA_util_log_info(data_15min[(data_15min.SKDJ_K_HR <= 30) & (data_15min.SKDJ_K_30M <= 60)][
+                             ['SKDJ_K_30M','SKDJ_D_30M','SKDJ_K_HR','SKDJ_D_HR']], ui_log=None)
+        buy_list = [i for i in buy_list if i in list(data_15min[(data_15min.SKDJ_K_HR <= 30) &
+                                                                (data_15min.SKDJ_K_30M <= 60)].index)]
         QA_util_log_info('##Update Buy List ==================== {}'.format(buy_list), ui_log=None)
         tmp_list = buy_list
     return(tmp_list)
@@ -102,34 +105,50 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
                             code = [str(i) for i in data.reset_index().code])
 
         if time_check_after('09:35:00') is True:
-            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= 0.02) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close), "signal"] = 1
-            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= 0.02) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close), "msg"] = '水线上VMAP金叉'
+            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= 0.02) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close),
+                     "signal"] = 1
+            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= 0.02) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close),
+                     "msg"] = '水线上VMAP金叉'
 
-            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K > 0) & (data.yes_close > data.VAMP), "signal"] = 1
-            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K > 0) & (data.yes_close > data.VAMP), "msg"] = '水线下VMAP金叉'
+            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K > 0) & (data.yes_close > data.VAMP),
+                     "signal"] = 1
+            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K > 0) & (data.yes_close > data.VAMP),
+                     "msg"] = '水线下VMAP金叉'
 
-            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.VAMP > data.yes_close), "signal"] = 0
-            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.VAMP > data.yes_close), "msg"] = '水线上VMAP死叉'
+            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.VAMP > data.yes_close),
+                     "signal"] = 0
+            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.VAMP > data.yes_close),
+                     "msg"] = '水线上VMAP死叉'
 
-            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP < data.yes_close), "signal"] = 0
-            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP < data.yes_close), "msg"] = '水线下VMAP死叉'
+            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP < data.yes_close),
+                     "signal"] = 0
+            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < -0.02) & (data.CLOSE_K < 0) & (data.VAMP < data.yes_close),
+                     "msg"] = '水线下VMAP死叉'
 
             #追涨&杀跌 只操作早盘
-            data.loc[(data.VAMP_K >= 0.2) & (data.DISTANCE < 0.02) & (data.VAMP < data.yes_close), "signal"] = 1
-            data.loc[(data.VAMP_K >= 0.2) & (data.DISTANCE < 0.02) & (data.VAMP < data.yes_close), "msg"] = '水线下追涨:VMAP上升通道'
+            data.loc[(data.VAMP_K >= 0.2) & (data.DISTANCE < 0.02) & (data.VAMP < data.yes_close),
+                     "signal"] = 1
+            data.loc[(data.VAMP_K >= 0.2) & (data.DISTANCE < 0.02) & (data.VAMP < data.yes_close),
+                     "msg"] = '水线下追涨:VMAP上升通道'
 
             data.loc[(data.VAMP_K <= -0.2) & (data.CLOSE_K < 0), "signal"] = 0
             data.loc[(data.VAMP_K <= -0.2) & (data.CLOSE_K < 0), "msg"] = '止损:VMAP下降通道'
 
             #超涨&超跌
-            data.loc[(data.DISTANCE > 0.03) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.03) & (data.close < data.up_price), "signal"] = 0
-            data.loc[(data.DISTANCE > 0.03) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.03) & (data.close < data.up_price), "msg"] = 'VMAP超涨'
+            data.loc[(data.DISTANCE > 0.03) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.03) & (data.close < data.up_price),
+                     "signal"] = 0
+            data.loc[(data.DISTANCE > 0.03) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.03) & (data.close < data.up_price),
+                     "msg"] = 'VMAP超涨'
 
-            data.loc[(data.DISTANCE < -0.05) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close), "signal"] = 1
-            data.loc[(data.DISTANCE < -0.05) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close), "msg"] = '水线上VMAP超跌'
+            data.loc[(data.DISTANCE < -0.05) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close),
+                     "signal"] = 1
+            data.loc[(data.DISTANCE < -0.05) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close),
+                     "msg"] = '水线上VMAP超跌'
 
-            data.loc[(data.DISTANCE < -0.03) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP < data.yes_close), "signal"] = 1
-            data.loc[(data.DISTANCE < -0.03) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP < data.yes_close), "msg"] = '水线下VMAP超跌'
+            data.loc[(data.DISTANCE < -0.03) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP < data.yes_close),
+                     "signal"] = 1
+            data.loc[(data.DISTANCE < -0.03) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.VAMP < data.yes_close),
+                     "msg"] = '水线下VMAP超跌'
 
             # 强制止损
             data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "signal"] = 0
