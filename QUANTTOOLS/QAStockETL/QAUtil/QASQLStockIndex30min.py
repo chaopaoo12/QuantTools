@@ -301,21 +301,34 @@ CASE
           0
        end as LONG_TR
 from STOCK_TECHNICAL_30MIN
-where order_Date >=
+where {condition} order_Date >=
 to_date('{from_}', 'yyyy-mm-dd')
 and order_Date <=
 to_date('{to_}', 'yyyy-mm-dd')
 '''
 
-def QA_Sql_Stock_Index30min(from_ , to_, type = 'day', sql_text = sql_text, ui_log= None):
+def QA_Sql_Stock_Index30min(from_ , to_,code=None, type = 'day', sql_text = sql_text, ui_log= None):
     QA_util_log_info(
         '##JOB01 Now Fetch Stock QuantData Index 30Min ==== from {from_} to {to_}'.format(from_=from_,to_=to_), ui_log)
     sql_text = sql_text.format(from_=from_,to_=to_)
     conn = cx_Oracle.connect(ORACLE_PATH2)
+
+    if code is None or len(code) > 20:
+        code_condition = ''
+    elif len(code) == 1:
+        code_condition = ' code = ' + ','.join(code) + ' and '
+    else:
+        code_condition = ' code in (' + ','.join(code) + ') and '
+
     if type == 'day':
-        sql_text = sql_text + " and substr(datetime, 12, 20) = '15:00:00'"
+        code_condition = code_condition + " and substr(datetime, 12, 20) = '15:00:00'"
     elif type == 'hour':
-        sql_text = sql_text + " and substr(datetime, 12) in ('10:30:00','11:30:00','14:00:00','15:00:00')"
+        code_condition = code_condition + " and substr(datetime, 12) in ('10:30:00','11:30:00','14:00:00','15:00:00')"
+    else:
+        pass
+
+    sql_text = sql_text.format(condition = code_condition,from_=from_,to_=to_)
+
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
     if type == 'day':

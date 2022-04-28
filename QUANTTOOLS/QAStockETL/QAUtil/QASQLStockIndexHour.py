@@ -320,6 +320,8 @@ def QA_Sql_Stock_IndexHour(from_ , to_,code=None, type = 'day', sql_text = sql_t
 
     if type == 'day':
         code_condition = code_condition + " substr(datetime, 12, 20) = '15:00:00' and "
+    else:
+        pass
 
     sql_text = sql_text.format(condition = code_condition,from_=from_,to_=to_)
 
