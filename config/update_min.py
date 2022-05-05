@@ -13,7 +13,7 @@ if __name__ == '__main__':
         QA_SU_save_stock_aklist()
 
         res = check_stock_1min(mark_day)
-        if res is None or len(res[1]) > 50:
+        if res is None or len(res[1]) > 500:
             QA_SU_save_stock_1min()
 
         res = check_sinastock_1min(mark_day)
@@ -23,6 +23,6 @@ if __name__ == '__main__':
             res = check_sinastock_1min(mark_day)
 
         res = check_stock_vwap(mark_day)
-        if res is None or len(res[1]) > 50:
+        if res is None or len(res[1]) > 500:
             QA_SU_save_stock_vwap_day(start_date=mark_day, end_date=mark_day)
             res = check_stock_vwap(mark_day)

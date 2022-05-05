@@ -60,7 +60,7 @@ if __name__ == '__main__':
         print("download day data")
 
         res = check_stock_day(mark_day)
-        if res is None or len(res[1]) > 50:
+        if res is None or len(res[1]) > 500:
             QA_SU_save_stock_day()
 
         res = check_sinastock_day(mark_day)
@@ -72,7 +72,7 @@ if __name__ == '__main__':
         QA_SU_save_stock_block('tdx')
 
         res = check_stock_adj(mark_day)
-        if res is None or len(res[1]) > 50:
+        if res is None or len(res[1]) > 500:
             QA_SU_save_stock_xdxr()
 
         res = check_sinastock_adj(mark_day)
@@ -118,12 +118,12 @@ if __name__ == '__main__':
         print("write quant data into mongodb")
 
         res = check_stock_fianacial(mark_day)
-        while res is None or len(res[1]) > 50:
+        while res is None or len(res[1]) > 500:
             QA_SU_save_stock_fianacial_momgo(mark_day,mark_day)
             res = check_stock_fianacial(mark_day)
 
         res = check_stock_finper(mark_day)
-        while res is None or len(res[1]) > 50:
+        while res is None or len(res[1]) > 500:
             QA_SU_save_stock_fianacial_percent_day(start_date = mark_day, end_date = mark_day)
             res = check_stock_finper(mark_day)
 

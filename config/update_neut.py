@@ -41,31 +41,31 @@ if __name__ == '__main__':
     if QA_util_if_trade(mark_day):
 
         res = check_stock_alpha191(mark_day)
-        while res is None or len(res[1]) > 20:
+        while res is None or len(res[1]) > 500:
             time.sleep(180)
             res = check_stock_alpha191(mark_day)
 
         res = check_stock_finper(mark_day)
-        while res is None or len(res[1]) > 50:
+        while res is None or len(res[1]) > 500:
             time.sleep(180)
             res = check_stock_finper(mark_day)
 
         res = check_stock_techindex(mark_day)
-        while res is None or len(res[1]) > 50:
+        while res is None or len(res[1]) > 500:
             time.sleep(180)
             res = check_stock_techindex(mark_day)
 
         res = check_stock_techhour(mark_day)
-        while res is None or len(res[1]) > 50:
+        while res is None or len(res[1]) > 500:
             time.sleep(180)
             res =check_stock_techhour(mark_day)
 
         res = check_stock_quant(mark_day)
-        while res is None or len(res[1]) > 100:
+        while res is None or len(res[1]) > 500:
             time.sleep(180)
             res = check_stock_quant(mark_day)
 
         res = check_stock_neut(mark_day)
-        while res is None or len(res[1]) > 100:
+        while res is None or len(res[1]) > 500:
             QA_SU_save_stock_neutral_day(start_date=mark_day,end_date=mark_day)
             res = check_stock_neut(mark_day)
