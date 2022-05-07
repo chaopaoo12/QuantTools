@@ -25,10 +25,12 @@ def indicator(data, type):
 
 def trends_func(func, code, date):
     day = func(code, date)
-    data_ind = indicator(day, 'day')
+    data_index = QA_DataStruct_Stock_day(day.drop('date_stamp',axis=1).set_index(['date','code']))
+    data_ind = indicator(data_index, 'day')
 
     week = day.drop('date_stamp',axis=1).set_index(['date']).resample('W').agg({'code':'last','open':'first','high':'max','low':'min','close':'last'})
-    week_ind = indicator(week, 'week')
+    week_index = QA_DataStruct_Stock_day(week.reset_index().set_index(['date','code']))
+    week_ind = indicator(week_index, 'week')
     return(data_ind, week_ind)
 
 def trends_func1(func, code):
