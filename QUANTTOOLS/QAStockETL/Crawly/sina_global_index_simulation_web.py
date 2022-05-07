@@ -29,7 +29,7 @@ def get_globalindex_day_sina(symbol):
                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
                'Connection': 'keep-alive'
                }
-    url = 'https://stock.finance.sina.com.cn/usstock/api/jsonp.php/var1=/Global_IndexService.getDayLine?symbol={symbol}&num=1000'
+    url = 'https://stock.finance.sina.com.cn/usstock/api/jsonp.php/var1=/Global_IndexService.getDayLine?symbol={symbol}&num=3000'
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
