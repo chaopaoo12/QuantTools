@@ -12,3 +12,4 @@ from QUANTTOOLS.QAStockETL.Crawly.ifzq_simulation_web import read_data_ifzq
 from QUANTTOOLS.QAStockETL.Crawly.sina_btc_simulation_web import get_btc_min_sina, get_btc_day_sina
 from QUANTTOOLS.QAStockETL.Crawly.sina_gold_simulation_web import get_gold_day_sina, get_gold_min_sina
 from QUANTTOOLS.QAStockETL.Crawly.sina_money_simulation_web import get_money_day_sina, get_money_min_sina, get_diniw_min_sina
+from QUANTTOOLS.QAStockETL.Crawly.sina_global_index_simulation_web import get_globalindex_day_sina
