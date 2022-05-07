@@ -13,68 +13,43 @@ def check_hour(data, date):
     res = data.loc[date].reset_index().set_index('code')
     return(res[['SKDJ_TR','SKDJ_CROSS1','SKDJ_CROSS2','MA5']])
 
-def trends_money(MONEY, date):
-    day = QA_fetch_get_money_day(MONEY,date)
+def indicator(data, type):
+    data_ind = get_indicator_short(data, type)
+    data_ind = data_ind.assign(SKDJ_TR=(data_ind.SKDJ_CROSS1*-1+ data_ind.SKDJ_CROSS2*1)/(data_ind.SKDJ_CROSS1+data_ind.SKDJ_CROSS2),
+                           SHORT_TR=(data_ind.SHORT20 > 0)*1,
+                           LONG_TR=(data_ind.LONG60 > 0)*1,
+                           TERNS=((data_ind.SHORT20 > 0) * (data_ind.LONG60 > 0) * (data_ind.LONG_AMOUNT > 0) * 1)
+                           )
+    data_ind.SKDJ_TR = data_ind.SKDJ_TR.fillna(method='ffill')
+    return(data_ind)
+
+def trends_func(func, code, date):
+    day = func(code, date)
+    data_ind = indicator(day, 'day')
+
     week = day.drop('date_stamp',axis=1).set_index(['date']).resample('W').agg({'code':'last','open':'first','high':'max','low':'min','close':'last'})
-    data_money = QA_DataStruct_Stock_day(day.drop('date_stamp',axis=1).set_index(['date','code']))
-    week_money = QA_DataStruct_Stock_day(week.reset_index().set_index(['date','code']))
-    data_money = get_indicator_short(data_money,'day')
-    data_money = data_money.assign(SKDJ_TR = (data_money.SKDJ_CROSS1*-1+ data_money.SKDJ_CROSS2*1)/(data_money.SKDJ_CROSS1+data_money.SKDJ_CROSS2),
-                                 SHORT_TR = (data_money.SHORT20 > 0)*1,
-                                 LONG_TR = (data_money.LONG60 > 0)*1,
-                                 TERNS = ((data_money.SHORT20 > 0) * (data_money.LONG60 > 0) * (data_money.LONG_AMOUNT > 0) * 1)
-                                 )
-    data_money.SKDJ_TR = data_money.SKDJ_TR.fillna(method='ffill')
-    week_money = get_indicator_short(week_money,'week')
-    week_money = week_money.assign(SKDJ_TR = (week_money.SKDJ_CROSS1*-1+ week_money.SKDJ_CROSS2*1)/(week_money.SKDJ_CROSS1+week_money.SKDJ_CROSS2),
-                                   SHORT_TR = (week_money.SHORT20 > 0)*1,
-                                   LONG_TR = (week_money.LONG60 > 0)*1,
-                                   TERNS = ((week_money.SHORT20 > 0) * (week_money.LONG60 > 0) * (week_money.LONG_AMOUNT > 0) * 1)
-                                   )
-    week_money.SKDJ_TR = week_money.SKDJ_TR.fillna(method='ffill')
-    return(data_money, week_money)
+    week_ind = indicator(week, 'week')
+    return(data_ind, week_ind)
+
+def trends_func1(func, code):
+    day = func(code)
+    data_ind = indicator(day, 'day')
+
+    week = day.drop('date_stamp',axis=1).set_index(['date']).resample('W').agg({'code':'last','open':'first','high':'max','low':'min','close':'last'})
+    week_ind = indicator(week, 'week')
+    return(data_ind, week_ind)
+
+def trends_money(MONEY, date):
+    data, week = trends_func(QA_fetch_get_money_day, MONEY, date)
+    return(data, week)
 
 def trends_btc(BTC):
-    day = QA_fetch_get_btc_day(BTC)
-    week = day.drop('date_stamp',axis=1).set_index(['date']).resample('W').agg({'code':'last','open':'first','high':'max','low':'min','close':'last'})
-    data_btc = QA_DataStruct_Stock_day(day.drop('date_stamp',axis=1).set_index(['date','code']))
-    week_btc = QA_DataStruct_Stock_day(week.reset_index().set_index(['date','code']))
-    data_btc = get_indicator_short(data_btc,'day')
-    data_btc = data_btc.assign(SKDJ_TR = (data_btc.SKDJ_CROSS1*-1+ data_btc.SKDJ_CROSS2*1)/(data_btc.SKDJ_CROSS1+data_btc.SKDJ_CROSS2),
-                            SHORT_TR = (data_btc.SHORT20 > 0)*1,
-                            LONG_TR = (data_btc.LONG60 > 0)*1,
-                            TERNS = ((data_btc.SHORT20 > 0) * (data_btc.LONG60 > 0) * (data_btc.LONG_AMOUNT > 0) * 1)
-                            )
-    data_btc.SKDJ_TR = data_btc.SKDJ_TR.fillna(method='ffill')
-    week_btc = get_indicator_short(week_btc,'week')
-    week_btc = week_btc.assign(SKDJ_TR = (week_btc.SKDJ_CROSS1*-1+ week_btc.SKDJ_CROSS2*1)/(week_btc.SKDJ_CROSS1+week_btc.SKDJ_CROSS2),
-                                 SHORT_TR = (week_btc.SHORT20 > 0)*1,
-                                 LONG_TR = (week_btc.LONG60 > 0)*1,
-                                 TERNS = ((week_btc.SHORT20 > 0) * (week_btc.LONG60 > 0) * (week_btc.LONG_AMOUNT > 0) * 1)
-                                 )
-    week_btc.SKDJ_TR = week_btc.SKDJ_TR.fillna(method='ffill')
-    return(data_btc, week_btc)
+    data, week = trends_func1(QA_fetch_get_btc_day, BTC)
+    return(data, week)
 
 def trends_gold(GOLD, date):
-    day = QA_fetch_get_gold_day(GOLD,date)
-    week = day.drop('date_stamp',axis=1).set_index(['date']).resample('W').agg({'code':'last','open':'first','high':'max','low':'min','close':'last'})
-    data_gold = QA_DataStruct_Stock_day(day.drop('date_stamp',axis=1).set_index(['date','code']))
-    week_gold = QA_DataStruct_Stock_day(week.reset_index().set_index(['date','code']))
-    data_gold = get_indicator_short(data_gold,'day')
-    data_gold = data_gold.assign(SKDJ_TR = (data_gold.SKDJ_CROSS1*-1+ data_gold.SKDJ_CROSS2*1)/(data_gold.SKDJ_CROSS1+data_gold.SKDJ_CROSS2),
-                                   SHORT_TR = (data_gold.SHORT20 > 0)*1,
-                                   LONG_TR = (data_gold.LONG60 > 0)*1,
-                                   TERNS = ((data_gold.SHORT20 > 0) * (data_gold.LONG60 > 0) * (data_gold.LONG_AMOUNT > 0) * 1)
-                                   )
-    data_gold.SKDJ_TR = data_gold.SKDJ_TR.fillna(method='ffill')
-    week_gold = get_indicator_short(week_gold,'week')
-    week_gold = week_gold.assign(SKDJ_TR = (week_gold.SKDJ_CROSS1*-1+ week_gold.SKDJ_CROSS2*1)/(week_gold.SKDJ_CROSS1+week_gold.SKDJ_CROSS2),
-                                 SHORT_TR = (week_gold.SHORT20 > 0)*1,
-                                 LONG_TR = (week_gold.LONG60 > 0)*1,
-                                 TERNS = ((week_gold.SHORT20 > 0) * (week_gold.LONG60 > 0) * (week_gold.LONG_AMOUNT > 0) * 1)
-                                 )
-    week_gold.SKDJ_TR = week_gold.SKDJ_TR.fillna(method='ffill')
-    return(data_gold, week_gold)
+    data, week = trends_func(QA_fetch_get_gold_day, GOLD, date)
+    return(data, week)
 
 def trends_stock(code, start_date, end_date, period='day', type='before'):
     day = QA_fetch_get_usstock_day_xq(code, start_date, end_date, period=period, type=type)
@@ -82,17 +57,17 @@ def trends_stock(code, start_date, end_date, period='day', type='before'):
     data_index = QA_DataStruct_Stock_day(day.drop('date_stamp',axis=1).set_index(['date','code']))
     week_index = QA_DataStruct_Stock_day(week.reset_index().set_index(['date','code']))
     data_index = get_indicator_short(data_index,'day')
-    data_index = data_index.assign(SKDJ_TR = (data_index.SKDJ_CROSS1*-1+ data_index.SKDJ_CROSS2*1)/(data_index.SKDJ_CROSS1+data_index.SKDJ_CROSS2),
-                               SHORT_TR = (data_index.SHORT20 > 0)*1,
-                               LONG_TR = (data_index.LONG60 > 0)*1,
-                               TERNS = ((data_index.SHORT20 > 0) * (data_index.LONG60 > 0) * (data_index.LONG_AMOUNT > 0) * 1)
-                               )
+    data_index = data_index.assign(SKDJ_TR=(data_index.SKDJ_CROSS1*-1+ data_index.SKDJ_CROSS2*1)/(data_index.SKDJ_CROSS1+data_index.SKDJ_CROSS2),
+                                   SHORT_TR=(data_index.SHORT20 > 0)*1,
+                                   LONG_TR=(data_index.LONG60 > 0)*1,
+                                   TERNS=((data_index.SHORT20 > 0) * (data_index.LONG60 > 0) * (data_index.LONG_AMOUNT > 0) * 1)
+                                   )
     data_index.SKDJ_TR = data_index.SKDJ_TR.fillna(method='ffill')
     week_index = get_indicator_short(week_index,'week')
-    week_index = week_index.assign(SKDJ_TR = (week_index.SKDJ_CROSS1*-1+ week_index.SKDJ_CROSS2*1)/(week_index.SKDJ_CROSS1+week_index.SKDJ_CROSS2),
-                                   SHORT_TR = (week_index.SHORT20 > 0)*1,
-                                   LONG_TR = (week_index.LONG60 > 0)*1,
-                                   TERNS = ((week_index.SHORT20 > 0) * (week_index.LONG60 > 0) * (week_index.LONG_AMOUNT > 0) * 1)
+    week_index = week_index.assign(SKDJ_TR=(week_index.SKDJ_CROSS1*-1+ week_index.SKDJ_CROSS2*1)/(week_index.SKDJ_CROSS1+week_index.SKDJ_CROSS2),
+                                   SHORT_TR=(week_index.SHORT20 > 0)*1,
+                                   LONG_TR=(week_index.LONG60 > 0)*1,
+                                   TERNS=((week_index.SHORT20 > 0) * (week_index.LONG60 > 0) * (week_index.LONG_AMOUNT > 0) * 1)
                                    )
     week_index.SKDJ_TR = week_index.SKDJ_TR.fillna(method='ffill')
     return(data_index, week_index)

@@ -13,7 +13,7 @@ def btc_daily(BTC):
     incrs = day.iloc[-1:]['MA15_D'].values[0]
     SKDJ_MARK = day.iloc[-1:]['SKDJ_CROSS2'].values[0] + day.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
     SKDJ_MARK_WK = week.iloc[-1:]['SKDJ_CROSS2'].values[0] + week.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
-    return(day_check, week_check, incr, incrs,incr5,incr15,skdj_k,SKDJ_MARK,skdj_k_wk,SKDJ_MARK_WK)
+    return(day_check, week_check, incr, incrs,incr5,incr15,skdj_k,SKDJ_MARK, skdj_k_wk, SKDJ_MARK_WK)
 
 def money_daily(MONEY, date):
     day, week = trends_money(MONEY, date)
