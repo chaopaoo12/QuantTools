@@ -15,7 +15,7 @@ def aotu_report(trading_date):
                                   '日线斜率':res[2], '斜率变动':res[3],
                                   '五日偏离':res[4], '十五日偏离':res[5]}, ignore_index=True)
 
-    for code in GOLD + FUTURE:
+    for code in GOLD:
         res = gold_daily(code, trading_date)
         BTC_RES = BTC_RES.append({'code':code,
                                   'daily':res[0], 'weekly':res[1],
