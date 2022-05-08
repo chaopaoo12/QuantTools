@@ -1070,9 +1070,8 @@ def get_indicator_short(data, type='day'):
 
     res =pd.concat([CCI,MACD,MA,MA_VOL,SKDJ,SAR_V],
                    axis=1).dropna(how='all')
-    data[['mean','per25','per75','perc']] = data['close'].rolling(1800).agg(['mean', per25, per75, perc])
     res = res.groupby('code').apply(spc)
-    res[['mean','per25','per75','perc','close']] = data[['mean','per25','per75','perc','close']]
+    res[['close']] = data[['close']]
     res['SAR_MARK'] = 1 - data['close']/res['SAR']
     res['MA3'] = data['close'] / res['MA3'] - 1
     res['MA5'] = data['close'] / res['MA5'] - 1
