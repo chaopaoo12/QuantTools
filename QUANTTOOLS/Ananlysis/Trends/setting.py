@@ -1,6 +1,6 @@
 BTC=['btcbtcusd','btcbchusd']
 
-GOLD=['GC','XAU']
+GOLD=['GC','XAU','CL','NG','S']
 
 MONEY=['USDCNY','USDJPY','USDEUR','USDGBP','USDHKD','USDAUD','USDCAD']
 
@@ -13,6 +13,6 @@ US_INDEX=['.DJI','.IXIC','.INX']
 
 GLOBAL = ['DAX','NKY','UKX', 'CAC40', 'AS51', 'GSPTSE']
 
-FUTURE=['CL','NG','ZC0','JM0','I0','CU0','S','P0','SR0','CF0']
+FUTURE=['ZC0','JM0','I0','CU0','P0','SR0','CF0']
 
 FA_STOCK = ['APPLE','']
