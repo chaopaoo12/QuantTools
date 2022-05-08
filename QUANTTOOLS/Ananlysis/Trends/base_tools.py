@@ -5,6 +5,20 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_btc_day,QA_fetch_get_btc
                                            QA_fetch_get_globalindex_day)
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
 from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator_short,get_indicator
+import numpy as np
+from scipy import stats
+
+
+def per25(x):
+    return(np.percentile(x, 25))
+
+def per75(x):
+    return(np.percentile(x, 75))
+
+def perc(x):
+    x = list(x)
+    tar = x[-1]
+    return(stats.percentileofscore(x, tar))
 
 def check(data):
     res = data.iloc[-1:].reset_index().set_index('code')
@@ -28,6 +42,8 @@ def trends_func(func, code, date):
     day = func(code, date)
     data_index = QA_DataStruct_Stock_day(day.drop('date_stamp',axis=1).set_index(['date','code']))
     data_ind = indicator(data_index, 'day')
+    data_ind[['mean','per25','per75','perc']] = day['close'].rolling(1800).agg(['mean', per25, per75, perc])
+    data_ind['close'] = day['close']
 
     week = day.drop('date_stamp',axis=1).set_index(['date']).resample('W').agg({'code':'last','open':'first','high':'max','low':'min','close':'last'})
     week_index = QA_DataStruct_Stock_day(week.reset_index().set_index(['date','code']))
@@ -38,6 +54,8 @@ def trends_func1(func, code):
     day = func(code)
     data_index = QA_DataStruct_Stock_day(day.drop('date_stamp',axis=1).set_index(['date','code']))
     data_ind = indicator(data_index, 'day')
+    data_ind[['mean','per25','per75','perc']] = day['close'].rolling(1800).agg(['mean', per25, per75, perc])
+    data_ind['close'] = day['close']
 
     week = day.drop('date_stamp',axis=1).set_index(['date']).resample('W').agg({'code':'last','open':'first','high':'max','low':'min','close':'last'})
     week_index = QA_DataStruct_Stock_day(week.reset_index().set_index(['date','code']))
