@@ -45,7 +45,8 @@ def get_globalindex_day_sina(symbol):
     else:
         return(data)
 
-def get_InnerFut_day_sina(symbol):
+def get_InnerFut_day_sina(symbol, date):
+    date=date.replace('-','_')
     headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                'Accept-Language': 'zh-CN,zh;q=0.9',
                'Cache-Control': 'max-age=0',
@@ -57,7 +58,7 @@ def get_InnerFut_day_sina(symbol):
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
     options.add_argument('headless')
-    res = read_data_from_sina(url.format(symbol=symbol), options)
+    res = read_data_from_sina(url.format(symbol=symbol,date=date), options)
     data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
     data = pd.DataFrame(data)
     data[['open','close','high','low','volume']] = data[['o','c','h','l','v']].apply(pd.to_numeric)
