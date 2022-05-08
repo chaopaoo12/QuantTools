@@ -78,6 +78,7 @@ def trends_stock(code, start_date, end_date, period='day', type='before'):
     data_index = QA_DataStruct_Stock_day(day.drop('date_stamp',axis=1).set_index(['date','code']))
     week_index = QA_DataStruct_Stock_day(week.reset_index().set_index(['date','code']))
     data_index = get_indicator_short(data_index,'day')
+    data_index[['mean','per25','per75','perc']] = data_index['close'].rolling(1800).agg(['mean', per25, per75, perc])
     data_index = data_index.assign(SKDJ_TR=(data_index.SKDJ_CROSS1*-1+ data_index.SKDJ_CROSS2*1)/(data_index.SKDJ_CROSS1+data_index.SKDJ_CROSS2),
                                    SHORT_TR=(data_index.SHORT20 > 0)*1,
                                    LONG_TR=(data_index.LONG60 > 0)*1,

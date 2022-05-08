@@ -3,10 +3,24 @@ from QUANTAXIS.QAUtil import (QA_util_date_stamp,QA_util_get_pre_trade_date,QA_u
 from QUANTTOOLS.QAStockETL.QAUtil import (QA_util_get_trade_range)
 import numpy as np
 
+
+def per25(x):
+    return(np.percentile(x, 25))
+
+def per75(x):
+    return(np.percentile(x, 75))
+
+
 def rolling_calc(data,N=5):
-    data[['PB_M', 'PE_TTM_M', 'PEEGL_TTM_M', 'PEG_M', 'PS_M']] = data[['PB', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PS']].rolling(window=N).mean()
-    data[['PB_2', 'PE_TTM_2', 'PEEGL_TTM_2', 'PEG_2', 'PS_2']] = data[['PB', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PS']].rolling(window=N).agg(lambda x:np.percentile(x, 75))
-    data[['PB_7', 'PE_TTM_7', 'PEEGL_TTM_7', 'PEG_7', 'PS_7']] = data[['PB', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PS']].rolling(window=N).agg(lambda x:np.percentile(x, 25))
+    #todo 可以合并
+    #data[['PB_M', 'PE_TTM_M', 'PEEGL_TTM_M', 'PEG_M', 'PS_M']] = data[['PB', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PS']].rolling(window=N).mean()
+    #data[['PB_2', 'PE_TTM_2', 'PEEGL_TTM_2', 'PEG_2', 'PS_2']] = data[['PB', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PS']].rolling(window=N).agg(lambda x:np.percentile(x, 75))
+    #data[['PB_7', 'PE_TTM_7', 'PEEGL_TTM_7', 'PEG_7', 'PS_7']] = data[['PB', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PS']].rolling(window=N).agg(lambda x:np.percentile(x, 25))
+
+    data[['PB_M', 'PE_TTM_M', 'PEEGL_TTM_M', 'PEG_M', 'PS_M',
+          'PB_2', 'PE_TTM_2', 'PEEGL_TTM_2', 'PEG_2', 'PS_2',
+          'PB_7', 'PE_TTM_7', 'PEEGL_TTM_7', 'PEG_7', 'PS_7']] = data[['PB', 'PE_TTM', 'PEEGL_TTM', 'PEG', 'PS']].rolling(window=N).agg(['mean', per75, per25])
+
     data = data.assign(PB_VAL = data.PB / data.PB_M - 1,
                        PB_DN = data.PB / data.PB_2 - 1,
                        PB_UP = data.PB / data.PB_7 - 1,
