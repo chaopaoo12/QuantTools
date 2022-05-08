@@ -53,7 +53,7 @@ def get_InnerFut_day_sina(symbol, date):
                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
                'Connection': 'keep-alive'
                }
-    url = 'https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var _P02022_5_9=/InnerFuturesNewService.getDailyKLine?symbol={symbol}&_={date}'
+    url = 'https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var1=/InnerFuturesNewService.getDailyKLine?symbol={symbol}&_={date}'
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
