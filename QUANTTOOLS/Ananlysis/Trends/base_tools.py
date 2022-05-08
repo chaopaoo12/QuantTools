@@ -1,7 +1,8 @@
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_btc_day,QA_fetch_get_btc_min,
                                            QA_fetch_get_gold_day,QA_fetch_get_gold_min,
                                            QA_fetch_get_money_day,QA_fetch_get_money_min,QA_fetch_get_diniw_min,
-                                           QA_fetch_get_usstock_day_xq,QA_fetch_get_stock_indicator_realtime)
+                                           QA_fetch_get_usstock_day_xq,QA_fetch_get_stock_indicator_realtime,
+                                           QA_fetch_get_globalindex_day)
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
 from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator_short,get_indicator
 
