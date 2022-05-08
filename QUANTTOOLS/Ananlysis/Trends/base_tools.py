@@ -42,7 +42,7 @@ def trends_func(func, code, date):
     day = func(code, date)
     data_index = QA_DataStruct_Stock_day(day.drop('date_stamp',axis=1).set_index(['date','code']))
     data_ind = indicator(data_index, 'day')
-    data_ind[['mean','per25','per75','perc']] = day['close'].rolling(1800).agg(['mean', per25, per75, perc])
+    day[['mean','per25','per75','perc']] = day['close'].rolling(1800).agg(['mean', per25, per75, perc])
     data_ind[['mean','per25','per75','perc','close']] = day.set_index(['date','code'])[['mean','per25','per75','perc','close']]
 
     week = day.drop('date_stamp',axis=1).set_index(['date']).resample('W').agg({'code':'last','open':'first','high':'max','low':'min','close':'last'})
@@ -54,7 +54,7 @@ def trends_func1(func, code):
     day = func(code)
     data_index = QA_DataStruct_Stock_day(day.drop('date_stamp',axis=1).set_index(['date','code']))
     data_ind = indicator(data_index, 'day')
-    data_ind[['mean','per25','per75','perc']] = day['close'].rolling(1800).agg(['mean', per25, per75, perc])
+    day[['mean','per25','per75','perc']] = day['close'].rolling(1800).agg(['mean', per25, per75, perc])
     data_ind[['mean','per25','per75','perc','close']] = day.set_index(['date','code'])[['mean','per25','per75','perc','close']]
 
     week = day.drop('date_stamp',axis=1).set_index(['date']).resample('W').agg({'code':'last','open':'first','high':'max','low':'min','close':'last'})
