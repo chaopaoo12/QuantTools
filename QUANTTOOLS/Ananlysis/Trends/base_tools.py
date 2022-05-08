@@ -2,7 +2,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_get_btc_day,QA_fetch_get_btc
                                            QA_fetch_get_gold_day,QA_fetch_get_gold_min,
                                            QA_fetch_get_money_day,QA_fetch_get_money_min,QA_fetch_get_diniw_min,
                                            QA_fetch_get_usstock_day_xq,QA_fetch_get_stock_indicator_realtime,
-                                           QA_fetch_get_globalindex_day)
+                                           QA_fetch_get_globalindex_day, QA_fetch_get_innerfuture_day)
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
 from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator_short,get_indicator
 import numpy as np
@@ -70,6 +70,10 @@ def trends_btc(BTC):
 
 def trends_gold(GOLD, date):
     data, week = trends_func(QA_fetch_get_gold_day, GOLD, date)
+    return(data, week)
+
+def trends_future(GOLD, date):
+    data, week = trends_func(QA_fetch_get_innerfuture_day, GOLD, date)
     return(data, week)
 
 def trends_stock(code, start_date, end_date, period='day', type='before'):
