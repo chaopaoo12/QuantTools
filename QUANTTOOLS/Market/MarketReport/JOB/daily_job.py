@@ -1,6 +1,6 @@
 
 from QUANTTOOLS.Ananlysis.Trends.setting import BTC, GOLD, MONEY, CN_INDEX, US_INDEX, FUTURE
-from QUANTTOOLS.Ananlysis.Trends.trends import btc_daily, money_daily, gold_daily, stock_daily, stock_hourly
+from QUANTTOOLS.Ananlysis.Trends.trends import btc_daily, money_daily, gold_daily, stock_daily, stock_hourly, future_daily
 import pandas as pd
 from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
 
@@ -17,6 +17,16 @@ def aotu_report(trading_date):
 
     for code in GOLD:
         res = gold_daily(code, trading_date)
+        BTC_RES = BTC_RES.append({'code':code,
+                                  'daily':res[0], 'weekly':res[1],
+                                  'SKDJ_K':res[6], 'SKDJ_TR':res[7],
+                                  'SKDJ_K_WK':res[8],'SKDJ_TR_WK':res[9],
+                                  '日线斜率':res[2], '斜率变动':res[3],
+                                  '五日偏离':res[4], '十五日偏离':res[5],
+                                  '平均价格水平':res[10], '25%价格水平':res[11],
+                                  '75%价格水平':res[12], '目前价格分位数':res[13]}, ignore_index=True)
+    for code in FUTURE:
+        res = future_daily(code, trading_date)
         BTC_RES = BTC_RES.append({'code':code,
                                   'daily':res[0], 'weekly':res[1],
                                   'SKDJ_K':res[6], 'SKDJ_TR':res[7],

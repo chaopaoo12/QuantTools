@@ -1,5 +1,5 @@
 
-from .base_tools import trends_money, trends_btc, trends_gold, trends_stock, check, trends_stock_hour, check_hour, trends_btc_hour
+from .base_tools import trends_money, trends_btc, trends_gold, trends_stock, check, trends_stock_hour, check_hour, trends_btc_hour, trends_future
 
 def btc_daily(BTC):
     day, week = trends_btc(BTC)
@@ -39,6 +39,24 @@ def money_daily(MONEY, date):
 
 def gold_daily(GOLD, date):
     day, week = trends_gold(GOLD, date)
+    day_check = check(day).loc[GOLD]
+    week_check = check(week).loc[GOLD]
+    skdj_k = day.iloc[-1:]['SKDJ_K'].values[0]
+    skdj_k_wk = week.iloc[-1:]['SKDJ_K'].values[0]
+    incr5 = day.iloc[-1:]['MA5'].values[0]
+    incr15 = day.iloc[-1:]['MA15'].values[0]
+    incr = day.iloc[-1:]['MA15_C'].values[0]
+    incrs = day.iloc[-1:]['MA15_D'].values[0]
+    mean = day.iloc[-1:]['mean'].values[0]
+    per25 = day.iloc[-1:]['per25'].values[0]
+    per75 = day.iloc[-1:]['per75'].values[0]
+    perc = day.iloc[-1:]['perc'].values[0]
+    SKDJ_MARK = day.iloc[-1:]['SKDJ_CROSS2'].values[0] + day.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
+    SKDJ_MARK_WK = week.iloc[-1:]['SKDJ_CROSS2'].values[0] + week.iloc[-1:]['SKDJ_CROSS1'].values[0] * -1
+    return(day_check, week_check, incr, incrs,incr5,incr15,skdj_k,SKDJ_MARK,skdj_k_wk,SKDJ_MARK_WK,mean,per25,per75,perc)
+
+def future_daily(GOLD, date):
+    day, week = trends_future(GOLD, date)
     day_check = check(day).loc[GOLD]
     week_check = check(week).loc[GOLD]
     skdj_k = day.iloc[-1:]['SKDJ_K'].values[0]
