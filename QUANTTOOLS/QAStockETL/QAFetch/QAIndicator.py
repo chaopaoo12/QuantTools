@@ -24,6 +24,17 @@ import numpy as np
 import pandas as pd
 import math
 
+def per25(x):
+    return(np.percentile(x, 25))
+
+def per75(x):
+    return(np.percentile(x, 75))
+
+def perc(x):
+    x = list(x)
+    tar = x[-1]
+    return(stats.percentileofscore(x, tar))
+
 def QA_indicator_MACD(DataFrame, short=12, long=26, mid=9):
     """
     MACD CALC
@@ -1059,7 +1070,9 @@ def get_indicator_short(data, type='day'):
 
     res =pd.concat([CCI,MACD,MA,MA_VOL,SKDJ,SAR_V],
                    axis=1).dropna(how='all')
+    data[['mean','per25','per75','perc']] = data['close'].rolling(1800).agg(['mean', per25, per75, perc])
     res = res.groupby('code').apply(spc)
+    res[['mean','per25','per75','perc','close']] = data[['mean','per25','per75','perc','close']]
     res['SAR_MARK'] = 1 - data['close']/res['SAR']
     res['MA3'] = data['close'] / res['MA3'] - 1
     res['MA5'] = data['close'] / res['MA5'] - 1
