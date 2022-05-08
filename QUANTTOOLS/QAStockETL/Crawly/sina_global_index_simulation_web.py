@@ -45,5 +45,28 @@ def get_globalindex_day_sina(symbol):
     else:
         return(data)
 
+def get_InnerFut_day_sina(symbol):
+    headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+               'Accept-Language': 'zh-CN,zh;q=0.9',
+               'Cache-Control': 'max-age=0',
+               'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
+               'Connection': 'keep-alive'
+               }
+    url = 'https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var _P02022_5_9=/InnerFuturesNewService.getDailyKLine?symbol={symbol}&_={date}'
+    options = webdriver.ChromeOptions()
+    for (key,value) in headers.items():
+        options.add_argument('%s="%s"' % (key, value))
+    options.add_argument('headless')
+    res = read_data_from_sina(url.format(symbol=symbol), options)
+    data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
+    data = pd.DataFrame(data)
+    data[['open','close','high','low','volume']] = data[['o','c','h','l','v']].apply(pd.to_numeric)
+    data = data.assign(date = data.d.apply(lambda x:pd.to_datetime(x)),
+                       code = symbol)
+    if data is None:
+        return None
+    else:
+        return(data)
+
 if __name__ == '__main__':
     pass
