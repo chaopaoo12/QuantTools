@@ -6,7 +6,7 @@ from QUANTTOOLS.Market.MarketReport.JOB.daily_job import aotu_report
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
-    aotu_report(mark_day)
+
     if QA_util_if_trade(mark_day):
         QA_SU_save_stock_list('tdx')
         #QA_SU_save_stock_info_tushare()
@@ -17,3 +17,4 @@ if __name__ == '__main__':
         #QA_SU_save_stock_industryinfo()
         #QA_SU_save_stock_info()
         res = check_stock_code()
+    aotu_report(mark_day)
