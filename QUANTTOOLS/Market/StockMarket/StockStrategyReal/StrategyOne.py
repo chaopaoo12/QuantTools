@@ -74,6 +74,8 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
 
     QA_util_log_info('##JOB Crawl Trading Data ==================== {}'.format(
         mark_tm), ui_log=None)
+    QA_util_log_info('##JOB Code List ====================', ui_log=None)
+    QA_util_log_info(code_list, ui_log=None)
 
     stm = trading_date + ' ' + mark_tm
     source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
