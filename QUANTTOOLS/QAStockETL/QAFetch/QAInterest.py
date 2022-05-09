@@ -1,7 +1,42 @@
-from QUANTAXIS.QAUtil import QA_util_date_stamp
+from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_today_str
 import tushare as ts
 import pandas as pd
-from QUANTAXIS.QAUtil import QA_util_today_str
+import akshare as ak
+import numpy as np
+from scipy import stats
+
+def per25(x):
+    return(np.percentile(x, 25))
+
+def per75(x):
+    return(np.percentile(x, 75))
+
+def perc(x):
+    x = list(x)
+    tar = x[-1]
+    return(stats.percentileofscore(x, tar))
+
+def get_globalinterest_rate():
+    macro_bank_usa_interest_rate_df = ak.macro_bank_usa_interest_rate()
+    macro_bank_euro_interest_rate_df = ak.macro_bank_euro_interest_rate()
+    macro_bank_newzealand_interest_rate_df = ak.macro_bank_newzealand_interest_rate()
+    macro_bank_china_interest_rate_df = ak.macro_bank_china_interest_rate()
+    macro_bank_switzerland_interest_rate_df = ak.macro_bank_switzerland_interest_rate()
+    macro_bank_english_interest_rate_df = ak.macro_bank_english_interest_rate()
+    macro_bank_australia_interest_rate_df = ak.macro_bank_australia_interest_rate()
+    macro_bank_japan_interest_rate_df = ak.macro_bank_japan_interest_rate()
+    macro_bank_russia_interest_rate_df = ak.macro_bank_russia_interest_rate()
+    macro_bank_india_interest_rate_df = ak.macro_bank_india_interest_rate()
+    macro_bank_brazil_interest_rate_df = ak.macro_bank_brazil_interest_rate()
+    res=[]
+    for i in [macro_bank_usa_interest_rate_df,macro_bank_euro_interest_rate_df,macro_bank_newzealand_interest_rate_df,
+              macro_bank_china_interest_rate_df,macro_bank_switzerland_interest_rate_df,macro_bank_english_interest_rate_df,
+              macro_bank_australia_interest_rate_df,macro_bank_japan_interest_rate_df,macro_bank_russia_interest_rate_df,
+              macro_bank_india_interest_rate_df,macro_bank_brazil_interest_rate_df]:
+        i = i.rename(columns={'商品':'code','日期':'date','今值':'vars'}).dropna(subset=['vars']).set_index(['code','date']).sort_index().reset_index()
+        i[['mean','per25','per75','perc']] = i[['vars']].rolling(100, min_periods=10).agg(['mean',per25,per75,perc])
+        res.append(i)
+    return(pd.concat(res))
 
 def get_interest_rate():
     deposit= ts.get_deposit_rate()
