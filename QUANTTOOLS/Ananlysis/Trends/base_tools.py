@@ -72,6 +72,10 @@ def trends_gold(GOLD, date):
     data, week = trends_func(QA_fetch_get_gold_day, GOLD, date)
     return(data, week)
 
+def trends_globalindex(GOLD, date):
+    data, week = trends_func(QA_fetch_get_globalindex_day, GOLD, date)
+    return(data, week)
+
 def trends_future(GOLD, date):
     data, week = trends_func(QA_fetch_get_innerfuture_day, GOLD, date)
     return(data, week)
