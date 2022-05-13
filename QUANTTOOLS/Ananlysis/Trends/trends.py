@@ -92,7 +92,7 @@ def stock_daily(stock, start_date, end_date):
     return(day_check, week_check, incr, incrs,incr5, incr15,skdj_k,SKDJ_MARK,skdj_k_wk,SKDJ_MARK_WK,mean,per25,per75,perc)
 
 def globalindex_daily(stock, date):
-    day, week = trends_globalindex(stock, date)
+    day, week = trends_globalindex(stock)
     day_check = check(day).loc[stock]
     week_check = check(week).loc[stock]
     skdj_k = day.iloc[-1:]['SKDJ_K'].values[0]
