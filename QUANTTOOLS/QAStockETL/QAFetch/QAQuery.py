@@ -829,7 +829,7 @@ def QA_fetch_stock_quant_data(code, start, end=None, block = True, norm_type='no
         print('pe_res',len(pe_res))
         financial_res = financial(start_date,end_date,code=code)
         print('financial_res',len(pe_res))
-        financial_res = financial_res[financial_res.DAYS >= 90]
+        financial_res = financial_res#[financial_res.DAYS >= 90]
         print('financial_res',len(financial_res))
         QA_util_log_info(
             'JOB Get Stock Tech Index data start=%s end=%s' % (start, end))
