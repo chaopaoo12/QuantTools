@@ -78,7 +78,11 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
     QA_util_log_info(code_list, ui_log=None)
 
     stm = trading_date + ' ' + mark_tm
-    source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
+    try:
+        source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
+    except:
+        QA_util_log_info('##JOB Signal Failed ====================', ui_log=None)
+        source_data = None
 
     if source_data is not None:
         close = pd.DataFrame(source_data.groupby(['date','code'])['day_close'].apply(lambda x: x[-1])).rename({'day_close':'yes_close'}, axis='columns').groupby(['code'])['yes_close'].shift()
