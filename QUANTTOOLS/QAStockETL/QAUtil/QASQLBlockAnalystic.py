@@ -456,4 +456,4 @@ def QA_Sql_BlockAnalystic(from_ , to_, code=None, sql_text = sql_text, ui_log= N
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
-    return(data.drop_duplicates((['code', 'date'])).set_index(['date','code']))
+    return(data.drop_duplicates((['code'])).set_index(['code']))
