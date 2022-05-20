@@ -438,7 +438,7 @@ sql_text = '''select g.*,
                                    and order_date <=
                                    to_date('{to_}', 'yyyy-mm-dd')) b
                     on a.code = b.code) h) g
- where code is not null;
+ where code is not null
 '''
 
 def QA_Sql_BlockAnalystic(from_ , to_, code=None, sql_text = sql_text, ui_log= None):
