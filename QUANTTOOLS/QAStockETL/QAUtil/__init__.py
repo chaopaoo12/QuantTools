@@ -69,3 +69,5 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockIndexWeekNEUT import QA_Sql_Stock_In
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191NEUT import QA_Sql_Stock_Alpha191_neut
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancialNEUT import QA_Sql_Stock_Financial_neut
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancialPENEUT import QA_Sql_Stock_FinancialPercent_neut
+
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLBlockAnalystic import QA_Sql_BlockAnalystic
