@@ -70,4 +70,4 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191NEUT import QA_Sql_Stock_Alp
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancialNEUT import QA_Sql_Stock_Financial_neut
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancialPENEUT import QA_Sql_Stock_FinancialPercent_neut
 
-from QUANTTOOLS.QAStockETL.QAUtil.QASQLBlockAnalystic import QA_Sql_BlockAnalystic
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLBlockAnalystic import QA_Sql_BlockAnalystic,QA_Sql_BlockAnalysticS
