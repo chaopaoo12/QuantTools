@@ -434,9 +434,9 @@ sql_text = '''select g.*,
                                           2) as PBG
                               from stock_analysis_data a
                              where order_date >=
-                                   to_date({from_}, 'yyyy-mm-dd')
+                                   to_date('{from_}', 'yyyy-mm-dd')
                                    and order_date <=
-                                   to_date({to_}, 'yyyy-mm-dd')) b
+                                   to_date('{to_}', 'yyyy-mm-dd')) b
                     on a.code = b.code) h) g
  where code is not null;
 '''
