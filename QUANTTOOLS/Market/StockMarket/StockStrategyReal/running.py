@@ -67,12 +67,13 @@ def predict_watch(trading_date, working_dir=working_dir):
     trading_date = QA_util_get_real_date(trading_date)
     data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
 
-    codelist = data[(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 10)&(data.PB < 2)&(data.ROE >= 1)&(data.SHORT10.abs() < 0.01)&(data.SHORT20.abs() < 0.02)&(data.LONG60.abs() < 0.05)].loc[QA_util_get_trade_range(QA_util_get_pre_trade_date(trading_date,1),trading_date)].reset_index().code.unique().tolist()
-    res = data.loc[(trading_date,codelist),][['INDUSTRY','NETPROFIT_INRATE','ROE_TTM','PE_TTM','SHORT10','SHORT20','LONG60','AVG5','MA60_C','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','MA60']]
+    codelist = data[(data.NETPROFIT_INRATE > 50)&(data.ROE_TTM >= 10)&(data.PE_TTM <= 10)&(data.PB > 0)&(data.ROE >= 0)].loc[QA_util_get_trade_range(QA_util_get_pre_trade_date(trading_date,1),trading_date)][['INDUSTRY','NETPROFIT_INRATE','ROE_TTM','PB','PE_TTM','ROE','GROSSMARGIN','SKDJ_K','SKDJ_K_WK']].sort_values('SKDJ_K_WK')
+    res = data.loc[(trading_date,codelist.reset_index().code.unique().tolist()),][['INDUSTRY','NETPROFIT_INRATE','ROE_TTM','PE_TTM','SHORT10','SHORT20','LONG60','AVG5','MA60_C','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','MA60']]
 
     base_report(trading_date, '观察报告', **{'爆发清单':res[((res.SHORT10.abs() < 0.01)&(res.SHORT20.abs() < 0.02)&(res.LONG60.abs() < 0.05))&(res.AVG5 >= 5)],
                                          '下跌清单':res[((res.SHORT10.abs() < 0.01)&(res.SHORT20.abs() < 0.02)&(res.LONG60.abs() < 0.05))&(res.AVG5 <= -1)],
-                                         'stay清单':res[((res.SHORT10.abs() < 0.01)&(res.SHORT20.abs() < 0.02)&(res.LONG60.abs() < 0.05))&(res.AVG5 < 5)&(res.AVG5 > -1)]})
+                                         'stay清单':res[((res.SHORT10.abs() < 0.01)&(res.SHORT20.abs() < 0.02)&(res.LONG60.abs() < 0.05))&(res.AVG5 < 5)&(res.AVG5 > -1)],
+                                         '观察清单':codelist})
 
 
 def index_predict_watch(trading_date, working_dir=working_dir):
