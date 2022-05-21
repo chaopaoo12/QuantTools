@@ -34,7 +34,7 @@ sql_text = '''select g.*,
                avg(roe_ttm) over(partition by index_code) as i_roe_ttm,
                avg(operatingRinrate) over(partition by index_code) as i_operatingRinrate
           from (select b.*, a.index_code
-                  from (select code as index_code, stock as code from index_stock) a
+                  from (select code as index_code, stock as code from index_stock where code not like '8802%' and stock is not null) a
                   left join (
                             
                             select a.code,
