@@ -10,6 +10,9 @@ from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date,QA_util_get_real_date
 from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import (QA_util_get_trade_range)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_name
 from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLBlockAnalystic import QA_Sql_BlockAnalystic,QA_Sql_BlockAnalysticS
+from QUANTAXIS import QA_fetch_stock_block,QA_fetch_index_list_adv
+import numpy as np
 
 def predict(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict, model_name = 'stock_xg', file_name = 'prediction', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
@@ -144,3 +147,19 @@ def predict_target(trading_date, working_dir=working_dir):
                                            #'进场信号':in_list,
                                            #'出场信号':out_ist
     })
+
+def block_watch(trading_date, working_dir=working_dir):
+    trading_date = QA_util_get_real_date(trading_date)
+    #data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
+    data = QA_Sql_BlockAnalystic(trading_date,trading_date)
+    index_info = QA_fetch_index_list_adv()
+    data = data.set_index('INDEX_CODE').join(index_info.rename(columns={'name':'BLOCKNAME'})['BLOCKNAME']).reset_index()
+    res = data.drop_duplicates((['BLOCKNAME']))[['index','BLOCKNAME','I_GROSSMARGIN','I_TURNOVERRATIOOFTOTALASSETS','I_ROE_TTM','I_PB','I_PE_TTM','I_OPERATINGRINRATE']]
+    GROSSMARGIN_line = np.nanpercentile(res.I_GROSSMARGIN,80)
+    TURNOVER_line = np.nanpercentile(res.I_TURNOVERRATIOOFTOTALASSETS,80)
+    area1 = data[data.BLOCKNAME.isin(res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS >= TURNOVER_line)].BLOCKNAME)]
+    area2 = data[data.BLOCKNAME.isin(res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS >= TURNOVER_line)].BLOCKNAME)]
+    base_report(trading_date, '板块报告', **{'优质板块':res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS >= TURNOVER_line)],
+                                         '优质板块选股':area1[((area1.GROSSMARGIN_RATE > 1) & (area1.TURNOVERRATIO_RATE > 1))][[i for i in data.columns if i.startswith('I_') is not True]],
+                                         '高潜板块':res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS < TURNOVER_line)],
+                                         '高潜板块选股':area2[((area2.GROSSMARGIN_RATE > 1) & (area2.TURNOVERRATIO_RATE > 1))][[i for i in data.columns if i.startswith('I_') is not True]]})
