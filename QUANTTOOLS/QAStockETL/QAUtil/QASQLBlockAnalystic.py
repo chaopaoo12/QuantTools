@@ -34,7 +34,10 @@ sql_text = '''select g.*,
                MEDIAN(roe_ttm) over(partition by index_code) as i_roe_ttm,
                MEDIAN(operatingRinrate) over(partition by index_code) as i_operatingRinrate
           from (select b.*, a.index_code
-                  from (select code as index_code, stock as code from index_stock where code not like '8802%' and stock is not null) a
+                  from (select code as index_code, stock as code
+                          from index_stock
+                         where code not like '8802%'
+                           and stock is not null) a
                   left join (
                             
                             select a.code,
@@ -460,13 +463,13 @@ sql_text1 = '''select g.*,
                h.pb,
                h.pe_ttm,
                h.roe_ttm,
-               avg(grossMargin) over(partition by blk, blockname) as i_grossMargin,
+               median(grossMargin) over(partition by blk, blockname) as i_grossMargin,
                avg(total_market) over(partition by blk, blockname) as i_total_market,
-               avg(turnoverRatioOfTotalAssets) over(partition by blk, blockname) as i_turnoverRatioOfTotalAssets,
-               avg(pb) over(partition by blk, blockname) as i_pb,
-               avg(pe_ttm) over(partition by blk, blockname) as i_pe_ttm,
-               avg(roe_ttm) over(partition by blk, blockname) as i_roe_ttm,
-               avg(operatingRinrate) over(partition by blk, blockname) as i_operatingRinrate
+               median(turnoverRatioOfTotalAssets) over(partition by blk, blockname) as i_turnoverRatioOfTotalAssets,
+               median(pb) over(partition by blk, blockname) as i_pb,
+               median(pe_ttm) over(partition by blk, blockname) as i_pe_ttm,
+               median(roe_ttm) over(partition by blk, blockname) as i_roe_ttm,
+               median(operatingRinrate) over(partition by blk, blockname) as i_operatingRinrate
           from (select b.*, a.blk, a.blockname
                   from (select type as blk, code, blockname
                           from stock_block
