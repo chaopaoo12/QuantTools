@@ -160,7 +160,7 @@ def block_func(trading_date):
     GROSSMARGIN_line = np.nanpercentile(res.I_GROSSMARGIN,80)
     TURNOVER_line = np.nanpercentile(res.I_TURNOVERRATIOOFTOTALASSETS,80)
     area1 = data[data.BLOCKNAME.isin(res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS >= TURNOVER_line)].BLOCKNAME)]
-    area2 = data[data.BLOCKNAME.isin(res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS >= TURNOVER_line)].BLOCKNAME)]
+    area2 = data[data.BLOCKNAME.isin(res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS < TURNOVER_line)].BLOCKNAME)]
     return(res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS >= TURNOVER_line)],
            area1[((area1.GROSSMARGIN_RATE > 1) & (area1.TURNOVERRATIO_RATE > 1))][[i for i in data.columns if i.startswith('I_') is not True]],
            res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS < TURNOVER_line)],
@@ -186,10 +186,11 @@ def block_watch(trading_date, working_dir=working_dir):
     res_c = pd.concat(res_c).rename(columns={'index':'code'}).set_index(['date','code'])
     res_d = pd.concat(res_d).rename(columns={'CODE':'code'}).set_index(['date','code'])
 
-    stock_target = QA_fetch_stock_target(list(set(res_b.reset_index().code.tolist() + res_d.reset_index().code.tolist())), start_date, end_date)
-    index_target = QA_fetch_index_target(list(set(res_a.reset_index().code.tolist() + res_c.reset_index().code.tolist())), start_date, end_date)
+    stock_target = get_quant_data(start_date, end_date,list(set(res_b.reset_index().code.tolist() + res_d.reset_index().code.tolist())), type='crawl', block=False, sub_block=False,norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
+    index_target = get_index_quant_data(start_date, end_date, list(set(res_a.reset_index().code.tolist() + res_c.reset_index().code.tolist())), type='crawl', norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
 
-    base_report(trading_date, '板块报告', **{'优质板块':res_a.join(index_target),
-                                         '优质板块选股':res_b.join(stock_target),
-                                         '高潜板块':res_c.join(index_target),
-                                         '高潜板块选股':res_d.join(stock_target)})
+    rrr = res_b.join(stock_target)
+
+    base_report(trading_date, '板块报告一', **{'优质板块':res_a.join(index_target),
+                                          '高潜板块':res_c.join(index_target)})
+    base_report(trading_date, '板块报告二', **{'优质板块选股':rrr[((rrr.ROE_TTM > 0)&(rrr.OPERATINGRINRATE > 0))]})
