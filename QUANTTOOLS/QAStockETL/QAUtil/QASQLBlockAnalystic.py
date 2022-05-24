@@ -11,7 +11,7 @@ ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Or
 sql_text = '''select g.*,
        (grossMargin - i_grossMargin)/abs(i_grossMargin) as grossMargin_RATE,
        (turnoverRatioOfTotalAssets - i_turnoverRatioOfTotalAssets)/abs(i_turnoverRatioOfTotalAssets) as turnoverRatio_RATE,
-       if(i_operatingRinrate =0, operatingRinrate - i_operatingRinrate, (operatingRinrate - i_operatingRinrate)/abs(i_operatingRinrate)) as OR_rate,
+       if i_operatingRinrate =0 then operatingRinrate - i_operatingRinrate else (operatingRinrate - i_operatingRinrate)/abs(i_operatingRinrate) as OR_rate,
        (pb - i_pb)/abs(i_pb) as PB_RATE,
        (pe_ttm - i_pe_ttm)/abs(i_pe_ttm) as PE_RATE,
        (total_market - i_total_market)/abs(i_total_market) as total_market_RATE
@@ -447,7 +447,7 @@ sql_text = '''select g.*,
 sql_text1 = '''select g.*,
        (grossMargin - i_grossMargin)/abs(i_grossMargin) as grossMargin_RATE,
        (turnoverRatioOfTotalAssets - i_turnoverRatioOfTotalAssets)/abs(i_turnoverRatioOfTotalAssets) as turnoverRatio_RATE,
-       if(i_operatingRinrate =0, operatingRinrate - i_operatingRinrate, (operatingRinrate - i_operatingRinrate)/abs(i_operatingRinrate)) as OR_rate,
+       if i_operatingRinrate =0 then operatingRinrate - i_operatingRinrate else (operatingRinrate - i_operatingRinrate)/abs(i_operatingRinrate) end as OR_rate,
        (pb - i_pb)/abs(i_pb) as PB_RATE,
        (pe_ttm - i_pe_ttm)/abs(i_pe_ttm) as PE_RATE,
        (total_market - i_total_market)/abs(i_total_market) as total_market_RATE
