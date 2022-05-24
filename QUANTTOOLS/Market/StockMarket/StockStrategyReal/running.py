@@ -12,7 +12,9 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_name
 from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLBlockAnalystic import QA_Sql_BlockAnalystic,QA_Sql_BlockAnalysticS
 from QUANTAXIS import QA_fetch_stock_block,QA_fetch_index_list_adv
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_target,QA_fetch_index_target
 import numpy as np
+import pandas as pd
 
 def predict(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict, model_name = 'stock_xg', file_name = 'prediction', top_num=top_num, percent=percent, working_dir=working_dir, exceptions=exceptions)
@@ -148,7 +150,7 @@ def predict_target(trading_date, working_dir=working_dir):
                                            #'出场信号':out_ist
     })
 
-def block_watch(trading_date, working_dir=working_dir):
+def block_func(trading_date):
     trading_date = QA_util_get_real_date(trading_date)
     #data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
     data = QA_Sql_BlockAnalystic(trading_date,trading_date)
@@ -159,7 +161,35 @@ def block_watch(trading_date, working_dir=working_dir):
     TURNOVER_line = np.nanpercentile(res.I_TURNOVERRATIOOFTOTALASSETS,80)
     area1 = data[data.BLOCKNAME.isin(res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS >= TURNOVER_line)].BLOCKNAME)]
     area2 = data[data.BLOCKNAME.isin(res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS >= TURNOVER_line)].BLOCKNAME)]
-    base_report(trading_date, '板块报告', **{'优质板块':res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS >= TURNOVER_line)],
-                                         '优质板块选股':area1[((area1.GROSSMARGIN_RATE > 1) & (area1.TURNOVERRATIO_RATE > 1))][[i for i in data.columns if i.startswith('I_') is not True]],
-                                         '高潜板块':res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS < TURNOVER_line)],
-                                         '高潜板块选股':area2[((area2.GROSSMARGIN_RATE > 1) & (area2.TURNOVERRATIO_RATE > 1))][[i for i in data.columns if i.startswith('I_') is not True]]})
+    return(res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS >= TURNOVER_line)],
+           area1[((area1.GROSSMARGIN_RATE > 1) & (area1.TURNOVERRATIO_RATE > 1))][[i for i in data.columns if i.startswith('I_') is not True]],
+           res[(res.I_GROSSMARGIN >= GROSSMARGIN_line)&(res.I_TURNOVERRATIOOFTOTALASSETS < TURNOVER_line)],
+           area2[((area2.GROSSMARGIN_RATE > 1) & (area2.TURNOVERRATIO_RATE > 1))][[i for i in data.columns if i.startswith('I_') is not True]])
+
+
+def block_watch(trading_date, working_dir=working_dir):
+    start_date = QA_util_get_pre_trade_date(trading_date,20)
+    end_date = trading_date
+
+    res_a =[]
+    res_b =[]
+    res_c =[]
+    res_d =[]
+    for i in QA_util_get_trade_range(start_date, end_date):
+        a,b,c,d=block_func(i)
+        res_a.append(a.assign(date=i))
+        res_b.append(b.assign(date=i))
+        res_c.append(c.assign(date=i))
+        res_d.append(d.assign(date=i))
+    res_a = pd.concat(res_a).rename(columns={'index':'code'}).set_index(['date','code'])
+    res_b = pd.concat(res_b).rename(columns={'CODE':'code'}).set_index(['date','code'])
+    res_c = pd.concat(res_c).rename(columns={'index':'code'}).set_index(['date','code'])
+    res_d = pd.concat(res_d).rename(columns={'CODE':'code'}).set_index(['date','code'])
+
+    stock_target = QA_fetch_stock_target(list(set(res_b.reset_index().code.tolist() + res_d.reset_index().code.tolist())), start_date, end_date)
+    index_target = QA_fetch_index_target(list(set(res_a.reset_index().code.tolist() + res_c.reset_index().code.tolist())), start_date, end_date)
+
+    base_report(trading_date, '板块报告', **{'优质板块':res_a.join(index_target),
+                                         '优质板块选股':res_b.join(stock_target),
+                                         '高潜板块':res_c.join(index_target),
+                                         '高潜板块选股':res_d.join(stock_target)})
