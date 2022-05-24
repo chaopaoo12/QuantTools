@@ -40,6 +40,7 @@ sql_text = '''select g.*,
           total_market - i_total_market
          else
           (total_market - i_total_market) / abs(i_total_market)
+       end as total_market_RATE
   from (select h.index_code,
                h.code,
                h.name,
@@ -501,6 +502,7 @@ sql_text1 = '''select g.*,
           total_market - i_total_market
          else
           (total_market - i_total_market) / abs(i_total_market)
+       end as total_market_RATE
   from (select h.blk,
                h.blockname,
                h.code,
