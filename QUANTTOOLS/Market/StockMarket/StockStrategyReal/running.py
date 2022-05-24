@@ -188,12 +188,20 @@ def block_watch(trading_date, working_dir=working_dir):
     res_c = pd.concat(res_c).rename(columns={'index':'code'}).set_index(['date','code'])
     res_d = pd.concat(res_d).rename(columns={'CODE':'code'}).set_index(['date','code'])
 
+    r_tar, xg, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg', 'prediction')
+    r_tar, xg_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg_nn', 'prediction_stock_xg_nn')
+    r_tar, mars_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_nn', 'prediction_stock_mars_nn')
+    r_tar, mars_day, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_day', 'prediction_stock_mars_day')
     stock_target = get_quant_data(start_date, end_date,list(set(res_b.reset_index().code.tolist() + res_d.reset_index().code.tolist())), type='crawl', block=False, sub_block=False,norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
     index_target = get_index_quant_data(start_date, end_date, list(set(res_a.reset_index().code.tolist() + res_c.reset_index().code.tolist())), type='crawl', norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
 
     res_b['BLN'] = res_b[['BLN']].groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
-    rrr = res_b.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']).join(stock_target)
-
+    rrr = res_b.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code'])\
+        .join(stock_target)\
+        .join(xg[['O_PROB']].rename(columns={'O_PROB':'xg'}))\
+        .join(xg_nn[['O_PROB']].rename(columns={'O_PROB':'xg_nn'}))\
+        .join(mars_nn[['O_PROB']].rename(columns={'O_PROB':'mars_nn'}))\
+        .join(mars_day[['O_PROB']].rename(columns={'O_PROB':'mars_day'}))
     base_report(trading_date, '板块报告 一', **{'优质板块':res_a.join(index_target),
                                           '高潜板块':res_c.join(index_target)})
     base_report(trading_date, '板块报告 二', **{'优质板块选股':rrr[((rrr.ROE_TTM > 0)&(rrr.OPERATINGRINRATE > 0))]})
