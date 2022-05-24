@@ -192,7 +192,7 @@ def block_watch(trading_date, working_dir=working_dir):
     index_target = get_index_quant_data(start_date, end_date, list(set(res_a.reset_index().code.tolist() + res_c.reset_index().code.tolist())), type='crawl', norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
 
     res_b['BLN'] = res_b[['BLN']].groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
-    rrr = res_b.join(stock_target)
+    rrr = res_b.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']).join(stock_target)
 
     base_report(trading_date, '板块报告 一', **{'优质板块':res_a.join(index_target),
                                           '高潜板块':res_c.join(index_target)})
