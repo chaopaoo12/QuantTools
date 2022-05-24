@@ -13,10 +13,14 @@ sql_text = '''select g.*,
          when 0 then
           grossMargin - i_grossMargin
          else
-          (grossMargin - i_grossMargin) / abs(i_operatingRinrate)
+          (grossMargin - i_grossMargin) / abs(i_grossMargin)
        end as grossMargin_RATE,
-       (turnoverRatioOfTotalAssets - i_turnoverRatioOfTotalAssets) /
-       abs(i_turnoverRatioOfTotalAssets) as turnoverRatio_RATE,
+       case i_turnoverRatioOfTotalAssets
+         when 0 then
+          turnoverRatioOfTotalAssets - i_turnoverRatioOfTotalAssets
+         else
+          (turnoverRatioOfTotalAssets - i_turnoverRatioOfTotalAssets) / abs(i_turnoverRatioOfTotalAssets)
+       end as turnoverRatio_RATE,
        case i_operatingRinrate
          when 0 then
           operatingRinrate - i_operatingRinrate
@@ -475,10 +479,14 @@ sql_text1 = '''select g.*,
          when 0 then
           grossMargin - i_grossMargin
          else
-          (grossMargin - i_grossMargin) / abs(i_operatingRinrate)
+          (grossMargin - i_grossMargin) / abs(i_grossMargin)
        end as grossMargin_RATE,
-       (turnoverRatioOfTotalAssets - i_turnoverRatioOfTotalAssets) /
-       abs(i_turnoverRatioOfTotalAssets) as turnoverRatio_RATE,
+       case i_turnoverRatioOfTotalAssets
+         when 0 then
+          turnoverRatioOfTotalAssets - i_turnoverRatioOfTotalAssets
+         else
+          (turnoverRatioOfTotalAssets - i_turnoverRatioOfTotalAssets) / abs(i_turnoverRatioOfTotalAssets)
+       end as turnoverRatio_RATE,
        case i_operatingRinrate
          when 0 then
           operatingRinrate - i_operatingRinrate
