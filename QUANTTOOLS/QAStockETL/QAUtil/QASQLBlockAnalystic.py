@@ -9,17 +9,37 @@ from QUANTTOOLS.QAStockETL.QAData.database_settings import (Oracle_Database, Ora
 ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Oracle_Database, password = Oracle_Password, server = Oralce_Server, user = Oracle_User)
 
 sql_text = '''select g.*,
-       (grossMargin - i_grossMargin)/abs(i_grossMargin) as grossMargin_RATE,
-       (turnoverRatioOfTotalAssets - i_turnoverRatioOfTotalAssets)/abs(i_turnoverRatioOfTotalAssets) as turnoverRatio_RATE,
+        case i_grossMargin
+         when 0 then
+          grossMargin - i_grossMargin
+         else
+          (grossMargin - i_grossMargin) / abs(i_operatingRinrate)
+       end as grossMargin_RATE,
+       (turnoverRatioOfTotalAssets - i_turnoverRatioOfTotalAssets) /
+       abs(i_turnoverRatioOfTotalAssets) as turnoverRatio_RATE,
        case i_operatingRinrate
          when 0 then
           operatingRinrate - i_operatingRinrate
          else
           (operatingRinrate - i_operatingRinrate) / abs(i_operatingRinrate)
        end as OR_rate,
-       (pb - i_pb)/abs(i_pb) as PB_RATE,
-       (pe_ttm - i_pe_ttm)/abs(i_pe_ttm) as PE_RATE,
-       (total_market - i_total_market)/abs(i_total_market) as total_market_RATE
+       case i_pb
+         when 0 then
+          pb - i_pb
+         else
+          (pb - i_pb) / abs(i_pb)
+       end as PB_RATE,
+       case i_pe_ttm
+         when 0 then
+          pe_ttm - i_pe_ttm
+         else
+          (pe_ttm - i_pe_ttm) / abs(i_pe_ttm)
+       end as PE_RATE,
+       case i_total_market
+         when 0 then
+          total_market - i_total_market
+         else
+          (total_market - i_total_market) / abs(i_total_market)
   from (select h.index_code,
                h.code,
                h.name,
@@ -450,17 +470,37 @@ sql_text = '''select g.*,
 '''
 
 sql_text1 = '''select g.*,
-       (grossMargin - i_grossMargin)/abs(i_grossMargin) as grossMargin_RATE,
-       (turnoverRatioOfTotalAssets - i_turnoverRatioOfTotalAssets)/abs(i_turnoverRatioOfTotalAssets) as turnoverRatio_RATE,
+       case i_grossMargin
+         when 0 then
+          grossMargin - i_grossMargin
+         else
+          (grossMargin - i_grossMargin) / abs(i_operatingRinrate)
+       end as grossMargin_RATE,
+       (turnoverRatioOfTotalAssets - i_turnoverRatioOfTotalAssets) /
+       abs(i_turnoverRatioOfTotalAssets) as turnoverRatio_RATE,
        case i_operatingRinrate
          when 0 then
           operatingRinrate - i_operatingRinrate
          else
           (operatingRinrate - i_operatingRinrate) / abs(i_operatingRinrate)
        end as OR_rate,
-       (pb - i_pb)/abs(i_pb) as PB_RATE,
-       (pe_ttm - i_pe_ttm)/abs(i_pe_ttm) as PE_RATE,
-       (total_market - i_total_market)/abs(i_total_market) as total_market_RATE
+       case i_pb
+         when 0 then
+          pb - i_pb
+         else
+          (pb - i_pb) / abs(i_pb)
+       end as PB_RATE,
+       case i_pe_ttm
+         when 0 then
+          pe_ttm - i_pe_ttm
+         else
+          (pe_ttm - i_pe_ttm) / abs(i_pe_ttm)
+       end as PE_RATE,
+       case i_total_market
+         when 0 then
+          total_market - i_total_market
+         else
+          (total_market - i_total_market) / abs(i_total_market)
   from (select h.blk,
                h.blockname,
                h.code,
