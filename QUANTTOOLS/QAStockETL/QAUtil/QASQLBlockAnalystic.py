@@ -26,13 +26,13 @@ sql_text = '''select g.*,
                h.pb,
                h.pe_ttm,
                h.roe_ttm,
-               median(grossMargin) over(partition by index_code) as i_grossMargin,
+               MEDIAN(grossMargin) over(partition by index_code) as i_grossMargin,
                avg(total_market) over(partition by index_code) as i_total_market,
-               median(turnoverRatioOfTotalAssets) over(partition by index_code) as i_turnoverRatioOfTotalAssets,
-               median(pb) over(partition by index_code) as i_pb,
-               median(pe_ttm) over(partition by index_code) as i_pe_ttm,
-               median(roe_ttm) over(partition by index_code) as i_roe_ttm,
-               median(operatingRinrate) over(partition by index_code) as i_operatingRinrate
+               MEDIAN(turnoverRatioOfTotalAssets) over(partition by index_code) as i_turnoverRatioOfTotalAssets,
+               MEDIAN(pb) over(partition by index_code) as i_pb,
+               MEDIAN(pe_ttm) over(partition by index_code) as i_pe_ttm,
+               MEDIAN(roe_ttm) over(partition by index_code) as i_roe_ttm,
+               MEDIAN(operatingRinrate) over(partition by index_code) as i_operatingRinrate
           from (select b.*, a.index_code
                   from (select code as index_code, stock as code from index_stock where code not like '8802%' and stock is not null) a
                   left join (
