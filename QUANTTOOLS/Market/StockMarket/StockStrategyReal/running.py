@@ -164,9 +164,9 @@ def block_func(trading_date):
     area1 = data[data.BLN.isin(res[(res.I_GM >= GROSSMARGIN_line)&(res.I_TURNR >= TURNOVER_line)].BLN)]
     area2 = data[data.BLN.isin(res[(res.I_GM >= GROSSMARGIN_line)&(res.I_TURNR >= TURNOVER_line)].BLN)]
     return(res[(res.I_GM >= GROSSMARGIN_line)&(res.I_TURNR >= TURNOVER_line)],
-           area1[((area1.I_GM > 1) & (area1.I_TURNR > 1))][[i for i in data.columns if i.startswith('I_') is not True]],
+           area1[((area1.GROSSMARGIN_RATE > 1) & (area1.TURNOVERRATIO_RATE > 1))][[i for i in data.columns if i.startswith('I_') is not True]],
            res[(res.I_GM >= GROSSMARGIN_line)&(res.I_TURNR < TURNOVER_line)],
-           area2[((area2.I_GM > 1) & (area2.I_TURNR > 1))][[i for i in data.columns if i.startswith('I_') is not True]])
+           area2[((area2.GROSSMARGIN_RATE > 1) & (area2.TURNOVERRATIO_RATE > 1))][[i for i in data.columns if i.startswith('I_') is not True]])
 
 
 def block_watch(trading_date, working_dir=working_dir):
