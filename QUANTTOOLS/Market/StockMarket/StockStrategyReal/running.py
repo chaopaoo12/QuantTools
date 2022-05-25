@@ -150,24 +150,49 @@ def predict_target(trading_date, working_dir=working_dir):
                                            #'出场信号':out_ist
     })
 
+def trimmean(arr, percent):
+    n = len(arr)
+    k = int(round(n*(float(percent)/100)/2))
+    return np.nanmean(arr[k+1:n-k])
+
+def f(x):
+    return trimmean(x, 0.1)
+
+def divv(x, y):
+    if y == 0:
+        return x - y
+    else:
+        return (x - y) / abs(y)
+
 def block_func(trading_date):
     trading_date = QA_util_get_real_date(trading_date)
     #data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
     data = QA_Sql_BlockAnalystic(trading_date,trading_date)
     index_info = QA_fetch_index_list_adv()
     data = data.set_index('INDEX_CODE').join(index_info.rename(columns={'name':'BLN'})['BLN']).reset_index().rename(
-        columns={'BLOCKNAME':'BLN','I_GROSSMARGIN':'I_GM','I_TURNOVERRATIOOFTOTALASSETS':'I_TURNR','I_OPERATINGRINRATE':'I_OPINR','I_ROE_TTM':'I_ROE','I_PE_TTM':'I_PE'})
-    res = data.drop_duplicates((['BLN']))[['index','BLN','I_GM','I_TURNR','I_ROE','I_PB','I_PE','I_OPINR']]
+        columns={'BLOCKNAME':'BLN'})
+    res = data.groupby(['index','BLN'])[['TOTAL_MARKET','GROSSMARGIN','TURNOVERRATIOOFTOTALASSETS','OPERATINGRINRATE','PB','PE_TTM','ROE_TTM']].agg(f).rename(
+        columns={'TOTAL_MARKET':'I_TM','GROSSMARGIN':'I_GM','TURNOVERRATIOOFTOTALASSETS':'I_TURNR','OPERATINGRINRATE':'I_OPINR','ROE_TTM':'I_ROE','PE_TTM':'I_PE','PB':'I_PB'})
+    data = data.set_index(['index','BLN']).join(res).reset_index()
+    data = data.assign(GM_RATE=(data.GROSSMARGIN-data.I_GM)/data.I_GM,
+                       TURN_RATE=(data.TURNOVERRATIOOFTOTALASSETS-data.I_TURNR)/data.I_TURNR,
+                       TM_RATE=(data.TOTAL_MARKET-data.I_TM)/data.I_TM,
+                       OPINR_RATE=(data.OPERATINGRINRATE-data.I_OPINR)/data.I_OPINR,
+                       PB_RATE=(data.PB-data.I_PB)/data.I_PB,
+                       PE_RATE=(data.PE_TTM-data.I_PE)/data.I_PE,
+                       ROE_RATE=(data.ROE_TTM-data.I_ROE)/data.I_ROE
+                       )
+    res = res.reset_index()
     res = res[~res.BLN.isin(['珠三角','次新股'])]
     GROSSMARGIN_line = np.nanpercentile(res.I_GM,80)
     TURNOVER_line = np.nanpercentile(res.I_TURNR,80)
+    data = data[data.CODE.isin([i for i in data.CODE.unique().tolist() if i.startswith('688') == False])]
     area1 = data[data.BLN.isin(res[(res.I_GM >= GROSSMARGIN_line)&(res.I_TURNR >= TURNOVER_line)].BLN)]
     area2 = data[data.BLN.isin(res[(res.I_GM >= GROSSMARGIN_line)&(res.I_TURNR < TURNOVER_line)].BLN)]
     return(res[(res.I_GM >= GROSSMARGIN_line)&(res.I_TURNR >= TURNOVER_line)],
-           area1[((area1.GROSSMARGIN_RATE > 0) & (area1.TURNOVERRATIO_RATE > 0))][[i for i in data.columns if i.startswith('I_') is not True]],
+           area1,
            res[(res.I_GM >= GROSSMARGIN_line)&(res.I_TURNR < TURNOVER_line)],
-           area2[((area2.GROSSMARGIN_RATE > 0) & (area2.TURNOVERRATIO_RATE > 0))][[i for i in data.columns if i.startswith('I_') is not True]])
-
+           area2)
 
 def block_watch(trading_date, working_dir=working_dir):
     start_date = QA_util_get_pre_trade_date(trading_date,5)
