@@ -196,12 +196,24 @@ def block_watch(trading_date, working_dir=working_dir):
     index_target = get_index_quant_data(start_date, end_date, list(set(res_a.reset_index().code.tolist() + res_c.reset_index().code.tolist())), type='crawl', norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
 
     res_b['BLN'] = res_b[['BLN']].groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
-    rrr = res_b.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code'])\
-        .join(stock_target)\
-        .join(xg[['O_PROB']].rename(columns={'O_PROB':'xg'}))\
-        .join(xg_nn[['O_PROB']].rename(columns={'O_PROB':'xg_nn'}))\
-        .join(mars_nn[['O_PROB']].rename(columns={'O_PROB':'mars_nn'}))\
+    rrr = res_b.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']) \
+        .join(stock_target) \
+        .join(xg[['O_PROB']].rename(columns={'O_PROB':'xg'})) \
+        .join(xg_nn[['O_PROB']].rename(columns={'O_PROB':'xg_nn'})) \
+        .join(mars_nn[['O_PROB']].rename(columns={'O_PROB':'mars_nn'})) \
         .join(mars_day[['O_PROB']].rename(columns={'O_PROB':'mars_day'}))
+
+    res_d['BLN'] = res_d[['BLN']].groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
+    rrr1 = res_d.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']) \
+        .join(stock_target) \
+        .join(xg[['O_PROB']].rename(columns={'O_PROB':'xg'})) \
+        .join(xg_nn[['O_PROB']].rename(columns={'O_PROB':'xg_nn'})) \
+        .join(mars_nn[['O_PROB']].rename(columns={'O_PROB':'mars_nn'})) \
+        .join(mars_day[['O_PROB']].rename(columns={'O_PROB':'mars_day'}))
+
     base_report(trading_date, '板块报告 一', **{'优质板块':res_a.join(index_target),
                                           '高潜板块':res_c.join(index_target)})
-    base_report(trading_date, '板块报告 二', **{'优质板块选股':rrr})
+    base_report(trading_date, '优质板块选股 二', **{'低谷清单':rrr[(rrr.SKDJ_K_WK <= 20)&(rrr.SKDJ_K <= 20)],
+                                             '总清单':rrr})
+    base_report(trading_date, '潜力板块选股 二', **{'低谷清单':rrr1[(rrr1.SKDJ_K_WK <= 20)&(rrr1.SKDJ_K <= 20)]
+                                             })
