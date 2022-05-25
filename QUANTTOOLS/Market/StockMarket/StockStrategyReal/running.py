@@ -170,7 +170,7 @@ def block_func(trading_date):
 
 
 def block_watch(trading_date, working_dir=working_dir):
-    start_date = QA_util_get_pre_trade_date(trading_date,10)
+    start_date = QA_util_get_pre_trade_date(trading_date,5)
     end_date = trading_date
 
     res_a =[]
