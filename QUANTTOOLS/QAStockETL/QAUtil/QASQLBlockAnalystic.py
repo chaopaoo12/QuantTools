@@ -56,13 +56,13 @@ sql_text = '''select g.*,
                h.pb,
                h.pe_ttm,
                h.roe_ttm,
-               avg(grossMargin) over(partition by index_code) as i_grossMargin,
+               median(grossMargin) over(partition by index_code) as i_grossMargin,
                avg(total_market) over(partition by index_code) as i_total_market,
-               avg(turnoverRatioOfTotalAssets) over(partition by index_code) as i_turnoverRatioOfTotalAssets,
-               avg(pb) over(partition by index_code) as i_pb,
-               avg(pe_ttm) over(partition by index_code) as i_pe_ttm,
-               avg(roe_ttm) over(partition by index_code) as i_roe_ttm,
-               avg(operatingRinrate) over(partition by index_code) as i_operatingRinrate
+               median(turnoverRatioOfTotalAssets) over(partition by index_code) as i_turnoverRatioOfTotalAssets,
+               median(pb) over(partition by index_code) as i_pb,
+               median(pe_ttm) over(partition by index_code) as i_pe_ttm,
+               median(roe_ttm) over(partition by index_code) as i_roe_ttm,
+               median(operatingRinrate) over(partition by index_code) as i_operatingRinrate
           from (select b.*, a.index_code
                   from (select code as index_code, stock as code
                           from index_stock
