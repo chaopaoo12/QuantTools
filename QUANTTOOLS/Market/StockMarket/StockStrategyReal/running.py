@@ -184,15 +184,15 @@ def block_func(trading_date):
                        )
     res = res.reset_index()
     res = res[~res.BLN.isin(['珠三角','次新股'])]
-    GROSSMARGIN_line = np.nanpercentile(res.I_GM,80)
-    TURNOVER_line = np.nanpercentile(res.I_TURNR,80)
+    ROE_line = np.nanpercentile(res.I_ROE,80)
+    OPINR_line = np.nanpercentile(res.I_OPINR,80)
     data = data[data.CODE.isin([i for i in data.CODE.unique().tolist() if i.startswith('688') == False])]
-    area1 = data[data.BLN.isin(res[(res.I_GM >= GROSSMARGIN_line)&(res.I_TURNR >= TURNOVER_line)].BLN)]
-    area2 = data[data.BLN.isin(res[(res.I_GM >= GROSSMARGIN_line)&(res.I_TURNR < TURNOVER_line)].BLN)]
-    return(res[(res.I_GM >= GROSSMARGIN_line)&(res.I_TURNR >= TURNOVER_line)],
-           area1,
-           res[(res.I_GM >= GROSSMARGIN_line)&(res.I_TURNR < TURNOVER_line)],
-           area2)
+    area1 = data[data.BLN.isin(res[(res.I_ROE >= ROE_line)&(res.I_OPINR >= OPINR_line)].BLN)]
+    area2 = data[data.BLN.isin(res[(res.I_ROE >= ROE_line)&(res.I_OPINR < OPINR_line)].BLN)]
+    return(res[(res.I_GM >= ROE_line)&(res.I_TURNR >= OPINR_line)],
+           area1[((area1.GROSSMARGIN > area1.I_GM)&(area1.OPERATINGRINRATE > area1.I_OPINR))],
+           res[(res.I_GM >= ROE_line)&(res.I_TURNR < OPINR_line)],
+           area2[((area1.GROSSMARGIN > area1.I_GM)&(area1.OPERATINGRINRATE > area1.I_OPINR))])
 
 def block_watch(trading_date, working_dir=working_dir):
     start_date = QA_util_get_pre_trade_date(trading_date,5)
@@ -238,7 +238,9 @@ def block_watch(trading_date, working_dir=working_dir):
 
     base_report(trading_date, '板块报告 一', **{'优质板块':res_a.join(index_target),
                                           '高潜板块':res_c.join(index_target)})
-    base_report(trading_date, '优质板块选股 二', **{'低谷清单':rrr[((rrr.TURNOVERRATIOOFTOTALASSETS > rrr.I_TURNR)&((rrr.SKDJ_K_WK <= 20)|(rrr.SKDJ_K <= 20)))]
+    base_report(trading_date, '优质板块选股 二', **{'低谷清单':rrr[((rrr.TURNOVERRATIOOFTOTALASSETS > rrr.I_TURNR)&((rrr.SKDJ_K_WK <= 20)|(rrr.SKDJ_K <= 20)))],
+                                             '股池清单':rrr
                                              })
-    base_report(trading_date, '潜力板块选股 二', **{'低谷清单':rrr1[((rrr1.TURNOVERRATIOOFTOTALASSETS > rrr1.I_TURNR)&((rrr1.SKDJ_K_WK <= 20)|(rrr1.SKDJ_K <= 20)))]
+    base_report(trading_date, '潜力板块选股 二', **{'低谷清单':rrr1[((rrr1.TURNOVERRATIOOFTOTALASSETS > rrr1.I_TURNR)&((rrr1.SKDJ_K_WK <= 20)|(rrr1.SKDJ_K <= 20)))],
+                                             '股池清单':rrr1
                                              })
