@@ -236,7 +236,7 @@ def watch_func(trading_date, working_dir=working_dir):
         .join(mars_nn[['O_PROB']].rename(columns={'O_PROB':'mars_nn'})) \
         .join(mars_day[['O_PROB']].rename(columns={'O_PROB':'mars_day'}))
 
-    return(res_a.join(index_target), res_b, res_c.join(index_target), res_d)
+    return(res_a.join(index_target), rrr, res_c.join(index_target), rrr1)
 
 def block_watch(trading_date):
 
