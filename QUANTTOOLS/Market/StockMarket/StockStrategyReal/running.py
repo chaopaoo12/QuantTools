@@ -242,6 +242,14 @@ def block_watch(trading_date):
 
     res_a, res_b, res_c, res_d = watch_func(trading_date)
 
+    r_tar, xg, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'block_day', 'block_prediction')
+
+    res_b = res_b.join(xg[['O_PROB']].rename(columns={'O_PROB':'block_xg'}))
+    res_b['RANK'] = res_b['O_PROB'].groupby('date').rank(ascending=False)
+
+    res_d = res_d.join(xg[['O_PROB']].rename(columns={'O_PROB':'block_xg'}))
+    res_d['RANK'] = res_d['O_PROB'].groupby('date').rank(ascending=False)
+
     base_report(trading_date, '板块报告 一', **{'优质板块':res_a,
                                           '高潜板块':res_c})
     base_report(trading_date, '优质板块选股 二', **{'低谷清单':res_b[((res_b.SKDJ_K_WK <= 20)|(res_b.SKDJ_K <= 20))],
