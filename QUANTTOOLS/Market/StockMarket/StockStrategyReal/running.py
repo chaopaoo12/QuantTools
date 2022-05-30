@@ -194,7 +194,7 @@ def block_func(trading_date):
            res[(res.I_GM >= ROE_line)&(res.I_TURNR < OPINR_line)],
            area2[((area1.GROSSMARGIN > area1.I_GM)&(area1.OPERATINGRINRATE > area1.I_OPINR))])
 
-def block_watch(trading_date, working_dir=working_dir):
+def watch_func(trading_date, working_dir=working_dir):
     start_date = QA_util_get_pre_trade_date(trading_date,5)
     end_date = trading_date
 
@@ -236,11 +236,17 @@ def block_watch(trading_date, working_dir=working_dir):
         .join(mars_nn[['O_PROB']].rename(columns={'O_PROB':'mars_nn'})) \
         .join(mars_day[['O_PROB']].rename(columns={'O_PROB':'mars_day'}))
 
-    base_report(trading_date, '板块报告 一', **{'优质板块':res_a.join(index_target),
-                                          '高潜板块':res_c.join(index_target)})
-    base_report(trading_date, '优质板块选股 二', **{'低谷清单':rrr[((rrr.SKDJ_K_WK <= 20)|(rrr.SKDJ_K <= 20))],
-                                             '股池清单':rrr
+    return(res_a.join(index_target), res_b, res_c.join(index_target), res_d)
+
+def block_watch(trading_date):
+
+    res_a, res_b, res_c, res_d = watch_func(trading_date)
+
+    base_report(trading_date, '板块报告 一', **{'优质板块':res_a,
+                                          '高潜板块':res_c})
+    base_report(trading_date, '优质板块选股 二', **{'低谷清单':res_b[((res_b.SKDJ_K_WK <= 20)|(res_b.SKDJ_K <= 20))],
+                                             '股池清单':res_b
                                              })
-    base_report(trading_date, '潜力板块选股 二', **{'低谷清单':rrr1[((rrr1.SKDJ_K_WK <= 20)|(rrr1.SKDJ_K <= 20))],
-                                             '股池清单':rrr1
+    base_report(trading_date, '潜力板块选股 二', **{'低谷清单':res_d[((res_d.SKDJ_K_WK <= 20)|(res_d.SKDJ_K <= 20))],
+                                             '股池清单':res_d
                                              })
