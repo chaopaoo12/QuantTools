@@ -214,30 +214,78 @@ def watch_func(trading_date, working_dir=working_dir):
     res_c = pd.concat(res_c).rename(columns={'index':'code'}).set_index(['date','code'])
     res_d = pd.concat(res_d).rename(columns={'CODE':'code'}).set_index(['date','code'])
 
-    r_tar, xg, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg', 'prediction')
-    r_tar, xg_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg_nn', 'prediction_stock_xg_nn')
-    r_tar, mars_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_nn', 'prediction_stock_mars_nn')
-    r_tar, mars_day, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_day', 'prediction_stock_mars_day')
     stock_target = get_quant_data(start_date, end_date,list(set(res_b.reset_index().code.tolist() + res_d.reset_index().code.tolist())), type='crawl', block=False, sub_block=False,norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
     index_target = get_index_quant_data(start_date, end_date, list(set(res_a.reset_index().code.tolist() + res_c.reset_index().code.tolist())), type='crawl', norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
 
-    res_b['BLN'] = res_b[['BLN']].groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
+    res_b['BLN'] = res_b.groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
     rrr = res_b.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']) \
-        .join(stock_target) \
-        .join(xg[['O_PROB']].rename(columns={'O_PROB':'xg'})) \
-        .join(xg_nn[['O_PROB']].rename(columns={'O_PROB':'xg_nn'})) \
-        .join(mars_nn[['O_PROB']].rename(columns={'O_PROB':'mars_nn'})) \
-        .join(mars_day[['O_PROB']].rename(columns={'O_PROB':'mars_day'}))
+        .join(stock_target)
 
-    res_d['BLN'] = res_d[['BLN']].groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
+    res_d['BLN'] = res_d.groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
     rrr1 = res_d.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']) \
-        .join(stock_target) \
-        .join(xg[['O_PROB']].rename(columns={'O_PROB':'xg'})) \
-        .join(xg_nn[['O_PROB']].rename(columns={'O_PROB':'xg_nn'})) \
-        .join(mars_nn[['O_PROB']].rename(columns={'O_PROB':'mars_nn'})) \
-        .join(mars_day[['O_PROB']].rename(columns={'O_PROB':'mars_day'}))
+        .join(stock_target)
 
     return(res_a.join(index_target), rrr, res_c.join(index_target), rrr1)
+
+def block_func1(trading_date):
+    trading_date = QA_util_get_real_date(trading_date)
+    #data = get_quant_data(QA_util_get_pre_trade_date(trading_date,5),trading_date,type='crawl', block=False, sub_block=False,norm_type=None)
+    data = QA_Sql_BlockAnalysticS(trading_date,trading_date).rename(
+        columns={'BLOCKNAME':'BLN'})
+    res = data.groupby(['BLN'])[['TOTAL_MARKET','GROSSMARGIN','TURNOVERRATIOOFTOTALASSETS','OPERATINGRINRATE','PB','PE_TTM','ROE_TTM']].agg(f).rename(
+        columns={'TOTAL_MARKET':'I_TM','GROSSMARGIN':'I_GM','TURNOVERRATIOOFTOTALASSETS':'I_TURNR','OPERATINGRINRATE':'I_OPINR','ROE_TTM':'I_ROE','PE_TTM':'I_PE','PB':'I_PB'})
+    data = data.set_index(['BLN']).join(res).reset_index()
+    data = data.assign(GM_RATE=(data.GROSSMARGIN-data.I_GM)/data.I_GM,
+                       TURN_RATE=(data.TURNOVERRATIOOFTOTALASSETS-data.I_TURNR)/data.I_TURNR,
+                       TM_RATE=(data.TOTAL_MARKET-data.I_TM)/data.I_TM,
+                       OPINR_RATE=(data.OPERATINGRINRATE-data.I_OPINR)/data.I_OPINR,
+                       PB_RATE=(data.PB-data.I_PB)/data.I_PB,
+                       PE_RATE=(data.PE_TTM-data.I_PE)/data.I_PE,
+                       ROE_RATE=(data.ROE_TTM-data.I_ROE)/data.I_ROE
+                       )
+    res = res.reset_index()
+    res = res[~res.BLN.isin(['珠三角','次新股'])]
+    ROE_line = np.nanpercentile(res.I_ROE,80)
+    OPINR_line = np.nanpercentile(res.I_OPINR,80)
+    data = data[data.CODE.isin([i for i in data.CODE.unique().tolist() if i.startswith('688') == False])]
+    area1 = data[data.BLN.isin(res[(res.I_ROE >= ROE_line)&(res.I_OPINR >= OPINR_line)].BLN)].sort_index()
+    area2 = data[data.BLN.isin(res[(res.I_ROE >= ROE_line)&(res.I_OPINR < OPINR_line)].BLN)].sort_index()
+    return(res[(res.I_GM >= ROE_line)&(res.I_TURNR >= OPINR_line)],
+           area1[((area1.GROSSMARGIN > area1.I_GM)&(area1.OPERATINGRINRATE > area1.I_OPINR))],
+           res[(res.I_GM >= ROE_line)&(res.I_TURNR < OPINR_line)],
+           area2[((area2.GROSSMARGIN > area2.I_GM)&(area2.OPERATINGRINRATE > area2.I_OPINR))])
+
+def watch_func1(trading_date, working_dir=working_dir):
+    start_date = QA_util_get_pre_trade_date(trading_date,5)
+    end_date = trading_date
+
+    res_a =[]
+    res_b =[]
+    res_c =[]
+    res_d =[]
+    for i in QA_util_get_trade_range(start_date, end_date):
+        a,b,c,d=block_func1(i)
+        res_a.append(a.assign(date=i))
+        res_b.append(b.assign(date=i))
+        res_c.append(c.assign(date=i))
+        res_d.append(d.assign(date=i))
+    res_a = pd.concat(res_a).rename(columns={'BLN':'code'}).set_index(['date','code'])
+    res_b = pd.concat(res_b).rename(columns={'CODE':'code'}).set_index(['date','code'])
+    res_c = pd.concat(res_c).rename(columns={'BLN':'code'}).set_index(['date','code'])
+    res_d = pd.concat(res_d).rename(columns={'CODE':'code'}).set_index(['date','code'])
+
+    stock_target = get_quant_data(start_date, end_date, type='crawl', block=False, sub_block=False,norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
+
+    res_b['BLN'] = res_b.groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
+    rrr = res_b.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code'])\
+        .join(stock_target)
+
+    res_d['BLN'] = res_d.groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
+    rrr1 = res_d.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code'])\
+        .join(stock_target)
+
+    return(res_a, rrr, res_c, rrr1)
+
 
 def block_watch(trading_date):
 
