@@ -189,6 +189,7 @@ def block_func(trading_date):
     data = data[data.CODE.isin([i for i in data.CODE.unique().tolist() if i.startswith('688') == False])]
     area1 = data[data.BLN.isin(res[(res.I_ROE >= ROE_line)&(res.I_OPINR >= OPINR_line)].BLN)].reset_index()
     area2 = data[data.BLN.isin(res[(res.I_ROE >= ROE_line)&(res.I_OPINR < OPINR_line)].BLN)].reset_index()
+    print(((area2.GROSSMARGIN > area2.I_GM)&(area2.OPERATINGRINRATE > area2.I_OPINR)))
     return(res[(res.I_GM >= ROE_line)&(res.I_TURNR >= OPINR_line)],
            area1[((area1.GROSSMARGIN > area1.I_GM)&(area1.OPERATINGRINRATE > area1.I_OPINR))],
            res[(res.I_GM >= ROE_line)&(res.I_TURNR < OPINR_line)],
