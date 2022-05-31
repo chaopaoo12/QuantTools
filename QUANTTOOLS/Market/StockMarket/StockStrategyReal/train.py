@@ -6,7 +6,7 @@ from QUANTTOOLS.Model.IndexModel.IndexXGboost import QAIndexXGBoost
 from QUANTTOOLS.Market.StockMarket.StockStrategyReal.setting import working_dir, stock_day_set, index_day_set, stock_xg_set, index_xg_set, stock_day_nn, stock_xg_nn
 from QUANTTOOLS.Market.MarketTools.TrainTools import start_train, save_report, load_data, prepare_data, set_target
 from QUANTTOOLS.QAStockETL.QAUtil.QADate_trade import QA_util_get_real_date,QA_util_get_last_day
-from QUANTTOOLS.Market.StockMarket.StockStrategyReal.running import block_func, watch_func
+from QUANTTOOLS.Market.StockMarket.StockStrategyReal.running import watch_func1, watch_func
 
 def neut_model(date, working_dir=working_dir):
     stock_model = QAStockXGBoostNeut()
@@ -95,7 +95,7 @@ def daymodel_train(date, working_dir=working_dir):
 
     res_a, res_b, res_c, res_d = watch_func(end_date)
 
-    stock_model.data = stock_model.data.reindex(res_b[((res_b.GROSSMARGIN > res_b.I_GM)&(res_b.OPERATINGRINRATE > res_b.I_OPINR))].reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']).index)
+    stock_model.data = stock_model.data.reindex(res_b.index)
     stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 3, col = 'TARGET', type='value')
 
     stock_model = prepare_data(stock_model, None, 0, 0.95)
