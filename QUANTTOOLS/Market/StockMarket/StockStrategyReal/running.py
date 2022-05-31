@@ -192,7 +192,7 @@ def block_func(trading_date):
     return(res[(res.I_GM >= ROE_line)&(res.I_TURNR >= OPINR_line)],
            area1[((area1.GROSSMARGIN > area1.I_GM)&(area1.OPERATINGRINRATE > area1.I_OPINR))],
            res[(res.I_GM >= ROE_line)&(res.I_TURNR < OPINR_line)],
-           area2[((area2.GROSSMARGIN > area2.I_GM)&(area2.OPERATINGRINRATE > area2.I_OPINR))])
+           area2[(area2.GROSSMARGIN > area2.I_GM)&(area2.OPERATINGRINRATE > area2.I_OPINR)])
 
 def watch_func(trading_date, working_dir=working_dir):
     start_date = QA_util_get_pre_trade_date(trading_date,5)
