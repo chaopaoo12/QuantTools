@@ -195,9 +195,7 @@ def block_func(trading_date):
     res_d = area2[(area2.GROSSMARGIN > area2.I_GM)&(area2.OPERATINGRINRATE > area2.I_OPINR)]
     return(res_a,res_b,res_c,res_d)
 
-def watch_func(trading_date, working_dir=working_dir):
-    start_date = QA_util_get_pre_trade_date(trading_date,5)
-    end_date = trading_date
+def watch_func(start_date, end_date, working_dir=working_dir):
 
     res_a =[]
     res_b =[]
@@ -214,18 +212,13 @@ def watch_func(trading_date, working_dir=working_dir):
     res_c = pd.concat(res_c).rename(columns={'index':'code'}).set_index(['date','code'])
     res_d = pd.concat(res_d).rename(columns={'CODE':'code'}).set_index(['date','code'])
 
-    stock_target = get_quant_data(start_date, end_date,list(set(res_b.reset_index().code.tolist() + res_d.reset_index().code.tolist())), type='crawl', block=False, sub_block=False,norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
-    index_target = get_index_quant_data(start_date, end_date, list(set(res_a.reset_index().code.tolist() + res_c.reset_index().code.tolist())), type='crawl', norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
 
     res_b['BLN'] = res_b.groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
-    rrr = res_b.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']) \
-        .join(stock_target)
+    rrr = res_b.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code'])
 
     res_d['BLN'] = res_d.groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
-    rrr1 = res_d.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']) \
-        .join(stock_target)
-
-    return(res_a.join(index_target), rrr, res_c.join(index_target), rrr1)
+    rrr1 = res_d.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code'])
+    return(res_a, rrr, res_c, rrr1)
 
 def block_func1(trading_date):
     trading_date = QA_util_get_real_date(trading_date)
@@ -255,9 +248,7 @@ def block_func1(trading_date):
            res[(res.I_GM >= ROE_line)&(res.I_TURNR < OPINR_line)],
            area2[((area2.GROSSMARGIN > area2.I_GM)&(area2.OPERATINGRINRATE > area2.I_OPINR))])
 
-def watch_func1(trading_date, working_dir=working_dir):
-    start_date = QA_util_get_pre_trade_date(trading_date,5)
-    end_date = trading_date
+def watch_func1(start_date, end_date, working_dir=working_dir):
 
     res_a =[]
     res_b =[]
@@ -288,8 +279,17 @@ def watch_func1(trading_date, working_dir=working_dir):
 
 
 def block_watch(trading_date):
+    start_date = QA_util_get_pre_trade_date(trading_date,5)
+    end_date = trading_date
+    res_a, res_b, res_c, res_d = watch_func(start_date, end_date)
 
-    res_a, res_b, res_c, res_d = watch_func(trading_date)
+    stock_target = get_quant_data(start_date, end_date,list(set(res_b.reset_index().code.tolist() + res_d.reset_index().code.tolist())), type='crawl', block=False, sub_block=False,norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
+    index_target = get_index_quant_data(start_date, end_date, list(set(res_a.reset_index().code.tolist() + res_c.reset_index().code.tolist())), type='crawl', norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+
+    res_a = res_a.join(index_target)
+    res_b = res_b.join(stock_target)
+    res_c = res_c.join(index_target)
+    res_d = res_d.join(stock_target)
 
     r_tar, xg, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'block_day', 'block_prediction')
 
