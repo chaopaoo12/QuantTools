@@ -187,8 +187,8 @@ def block_func(trading_date):
     ROE_line = np.nanpercentile(res.I_ROE,80)
     OPINR_line = np.nanpercentile(res.I_OPINR,80)
     data = data[data.CODE.isin([i for i in data.CODE.unique().tolist() if i.startswith('688') == False])]
-    area1 = data[data.BLN.isin(res[(res.I_ROE >= ROE_line)&(res.I_OPINR >= OPINR_line)].BLN)]
-    area2 = data[data.BLN.isin(res[(res.I_ROE >= ROE_line)&(res.I_OPINR < OPINR_line)].BLN)]
+    area1 = data[data.BLN.isin(res[(res.I_ROE >= ROE_line)&(res.I_OPINR >= OPINR_line)].BLN)].sort_index()
+    area2 = data[data.BLN.isin(res[(res.I_ROE >= ROE_line)&(res.I_OPINR < OPINR_line)].BLN)].sort_index()
     return(res[(res.I_GM >= ROE_line)&(res.I_TURNR >= OPINR_line)],
            area1[((area1.GROSSMARGIN > area1.I_GM)&(area1.OPERATINGRINRATE > area1.I_OPINR))],
            res[(res.I_GM >= ROE_line)&(res.I_TURNR < OPINR_line)],
