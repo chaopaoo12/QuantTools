@@ -121,6 +121,7 @@ class QAStockModel(QAModel):
                                   )
 
         try:
+            target_code = [i for i in code_all if i not in code_new + ST + code_688]
             short_of_data = [i for i in target_code if i not in train.loc[QA_util_get_real_date(end)].reset_index().code.unique().tolist()]
 
             if len(short_of_data) > 0:
