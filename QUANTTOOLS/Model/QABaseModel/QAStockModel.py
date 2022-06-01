@@ -41,30 +41,35 @@ class QAStockModel(QAModel):
         codes = list(codes['code'])
         code_688 = [i for i in codes if i.startswith('688') == True] + [i for i in codes if i.startswith('787') == True] + [i for i in codes if i.startswith('789') == True]
 
-        target_code = [i for i in code_all if i not in code_new + ST + code_688]
+        try:
+            short_of_code = [i for i in code_all if i not in code_old + code_new]
+            if len(short_of_code) > 0:
+                QA_util_log_info('##JOB {} Short of Code: {} ===== from {_from} to {_to}'.format(len(short_of_code), short_of_code,_from=start,_to = end), ui_log = None)
+                send_actionnotice('股票列表数据缺失',
+                                  '缺失警告:{}'.format(end),
+                                  "缺少股票".format(len(short_of_code)),
+                                  direction = 'WARNING',
+                                  offset='WARNING',
+                                  volume=None
+                                  )
+        except:
+            pass
 
-        short_of_code = [i for i in code_all if i not in code_old + code_new]
-        short_of_data = [i for i in target_code if i not in data.loc[QA_util_get_real_date(end)].reset_index().code.unique().tolist()]
+        try:
+            target_code = [i for i in code_all if i not in code_new + ST + code_688]
+            short_of_data = [i for i in target_code if i not in data.loc[QA_util_get_real_date(end)].reset_index().code.unique().tolist()]
 
-        if len(short_of_code) > 0:
-            QA_util_log_info('##JOB {} Short of Code: {} ===== from {_from} to {_to}'.format(len(short_of_code), short_of_code,_from=start,_to = end), ui_log = None)
-            send_actionnotice('股票列表数据缺失',
-                              '缺失警告:{}'.format(end),
-                              "缺少股票".format(len(short_of_code)),
-                              direction = 'WARNING',
-                              offset='WARNING',
-                              volume=None
-                              )
-
-        if len(short_of_data) > 0:
-            QA_util_log_info('##JOB {} Short of Data: {} ===== from {_from} to {_to}'.format(len(short_of_data), short_of_data,_from=start,_to = end), ui_log = None)
-            send_actionnotice('基础数据缺失',
-                              '缺失警告:{}'.format(end),
-                              "缺少数量".format(len(short_of_data)),
-                              direction = 'WARNING',
-                              offset='WARNING',
-                              volume=None
-                              )
+            if len(short_of_data) > 0:
+                QA_util_log_info('##JOB {} Short of Data: {} ===== from {_from} to {_to}'.format(len(short_of_data), short_of_data,_from=start,_to = end), ui_log = None)
+                send_actionnotice('基础数据缺失',
+                                  '缺失警告:{}'.format(end),
+                                  "缺少数量".format(len(short_of_data)),
+                                  direction = 'WARNING',
+                                  offset='WARNING',
+                                  volume=None
+                                  )
+        except:
+            pass
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','date','datetime',
