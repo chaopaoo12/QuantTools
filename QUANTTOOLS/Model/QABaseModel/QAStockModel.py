@@ -1,5 +1,5 @@
 import pandas as pd
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_realtime,get_quant_data_train,get_quant_data
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_realtime,get_quant_data_train,get_quant_data,get_index_quant_data
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAModel import QAModel
 from QUANTTOOLS.Message import send_email, send_actionnotice
@@ -24,6 +24,10 @@ class QAStockModel(QAModel):
         self.code = code
         QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block}, ST: {ST} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.block,sub_block=self.sub_block, ST=ST, _from=start, _to=end, target = self.target), ui_log = None)
         data = get_quant_data(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, ST=ST, norm_type=self.norm_type)
+        index_target = get_index_quant_data(start, end,code=['000001','399006'],type='crawl', norm_type=None)
+        index_feature = pd.pivot(index_target.loc[(slice(None),['000001','399006']),['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK']].reset_index(),index='date',columns='code',values=['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK'])
+        index_feature.columns= ['SKDJ_K1','SKDJ_K6','SKDJ_TR1','SKDJ_TR6','SKDJ_K_WK1','SKDJ_K_WK6','SKDJ_TR_WK1','SKDJ_TR_WK6']
+        data = data.join(index_feature)
         code_all = QA_fetch_stock_all()['code'].unique().tolist()
         code_old = QA_fetch_code_old()['code'].unique().tolist()
         code_new = QA_fetch_code_new()['code'].unique().tolist()
