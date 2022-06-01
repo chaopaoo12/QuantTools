@@ -291,7 +291,7 @@ def block_watch(trading_date):
     res_c = res_c.join(index_target)
     res_d = res_d.join(stock_target)
 
-    r_tar, xg, prediction = load_data(concat_predict, trading_date, working_dir, 'block_day', 'block_prediction',code=res_b.reset_index().code.tolist())
+    r_tar, xg, prediction = load_data(concat_predict, trading_date, working_dir, 'block_day', 'block_prediction')
 
     res_b = res_b.join(xg[['O_PROB','RANK']].rename(columns={'O_PROB':'block_xg'}))
     res_b['block_RANK'] = res_b['block_xg'].groupby('date').rank(ascending=False)
