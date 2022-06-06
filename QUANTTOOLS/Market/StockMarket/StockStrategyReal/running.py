@@ -153,6 +153,8 @@ def predict_target(trading_date, working_dir=working_dir):
 def trimmean(arr, percent):
     n = len(arr)
     k = int(round(n*(float(percent)/100)/2))
+    if k < 1:
+        k = 1
     return np.nanmean(arr[k+1:n-k])
 
 def f(x):
