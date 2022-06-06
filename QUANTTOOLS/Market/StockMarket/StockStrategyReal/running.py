@@ -150,15 +150,13 @@ def predict_target(trading_date, working_dir=working_dir):
                                            #'出场信号':out_ist
     })
 
-def trimmean(arr, percent):
-    n = len(arr)
-    k = int(round(n*(float(percent)/100)/2))
-    if k < 1:
-        k = 1
-    return np.nanmean(arr[k+1:n-k])
+def filter_extreme_percentile(series, min = 0.10, max = 0.90):
+    series = series.sort_values()
+    q = series.quantile([min,max])
+    return np.clip(series, q.iloc[0], q.iloc[1])
 
 def f(x):
-    return trimmean(x, 10)
+    return np.nanmean(filter_extreme_percentile(x), 10)
 
 def divv(x, y):
     if y == 0:
