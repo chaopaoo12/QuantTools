@@ -156,7 +156,7 @@ def filter_extreme_percentile(series, min = 0.10, max = 0.90):
     return np.clip(series, q.iloc[0], q.iloc[1])
 
 def f(x):
-    return np.nanmean(filter_extreme_percentile(x), 10)
+    return np.nanmean(filter_extreme_percentile(x))
 
 def divv(x, y):
     if y == 0:
