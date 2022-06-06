@@ -158,7 +158,7 @@ def trimmean(arr, percent):
     return np.nanmean(arr[k+1:n-k])
 
 def f(x):
-    return trimmean(x, 0.1)
+    return trimmean(x, 10)
 
 def divv(x, y):
     if y == 0:
