@@ -302,8 +302,10 @@ def block_watch(trading_date):
     base_report(trading_date, '板块报告 一', **{'优质板块':res_a,
                                           '高潜板块':res_c})
     base_report(trading_date, '优质板块选股 二', **{'低谷清单':res_b[((res_b.SKDJ_K_WK <= 20)|(res_b.SKDJ_K <= 20))],
+                                             '轮动清单':res_b[res_b.block_RANK <= 5],
                                              '股池清单':res_b
                                              })
     base_report(trading_date, '潜力板块选股 二', **{'低谷清单':res_d[((res_d.SKDJ_K_WK <= 20)|(res_d.SKDJ_K <= 20))],
+                                             '轮动清单':res_d[res_d.block_RANK <= 5],
                                              '股池清单':res_d
                                              })
