@@ -947,7 +947,7 @@ def get_indicator_short(data, type='day'):
         MA['MIN_V'] = MA[['MA5','MA10','MA20','MA60']].min(axis=1)
         MA['MAX_V'] = MA[['MA5','MA10','MA20','MA60']].max(axis=1)
         MA['C_V'] = MA['MAX_V'] - MA['MIN_V']
-        MA['RRNG'] = MA.apply(lambda x: x['C_V']/x['MIN_V'] if x['MA5'] < x['MA10'] else -x['C_V']/x['MIN_V'])
+        MA['RRNG'] = MA.apply(lambda x: x['C_V']/x['MIN_V'] if x['MA3'] < x['MA10'] else -x['C_V']/x['MIN_V'])
 
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
@@ -979,7 +979,7 @@ def get_indicator_short(data, type='day'):
         MA['MIN_V'] = MA[['MA5','MA10','MA20','MA60']].min(axis=1)
         MA['MAX_V'] = MA[['MA5','MA10','MA20','MA60']].max(axis=1)
         MA['C_V'] = MA['MAX_V'] - MA['MIN_V']
-        MA['RRNG'] = MA.apply(lambda x: x['C_V']/x['MIN_V'] if x['MA5'] < x['MA10'] else -x['C_V']/x['MIN_V'])
+        MA['RRNG'] = MA.apply(lambda x: x['C_V']/x['MIN_V'] if x['MA3'] < x['MA10'] else -x['C_V']/x['MIN_V'])
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
