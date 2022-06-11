@@ -294,6 +294,11 @@ def get_indicator(data, type='day'):
                                                                                             'MIKE_WRSC','MIKE_WRJC','MIKE_WSSC','MIKE_WSJC','MIKE_TR']]
     try:
         MA = data.add_func(QA_indicator_MA,3,5,8,10,12,15,20,30,35,40,45,50,60)
+        MA['MIN_V'] = MA[['MA5','MA10','MA20','MA60']].min(axis=1)
+        MA['MAX_V'] = MA[['MA5','MA10','MA20','MA60']].max(axis=1)
+        MA['C_V'] = MA['MAX_V'] - MA['MIN_V']
+        MA['TAR'] = np.sign(MA['MA60']-MA['MA5'])
+        MA['RRNG'] = MA['C_V']/MA['MIN_V'] * MA['TAR']
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
@@ -321,7 +326,11 @@ def get_indicator(data, type='day'):
     except:
         MA = data.data.assign(MA3=None,MA5=None,MA8=None,MA10=None,MA12=None,MA15=None,MA20=None,
                               MA30=None,MA35=None,MA40=None,MA45=None,MA50=None,MA60=None)[['MA3','MA5','MA8','MA10','MA12','MA15','MA20','MA30','MA35','MA40','MA45','MA50','MA60']]
-
+        MA['MIN_V'] = MA[['MA5','MA10','MA20','MA60']].min(axis=1)
+        MA['MAX_V'] = MA[['MA5','MA10','MA20','MA60']].max(axis=1)
+        MA['C_V'] = MA['MAX_V'] - MA['MIN_V']
+        MA['TAR'] = np.sign(MA['MA60']-MA['MA5'])
+        MA['RRNG'] = MA['C_V']/MA['MIN_V'] * MA['TAR']
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
