@@ -944,8 +944,8 @@ def get_indicator_short(data, type='day'):
     try:
         MA = data.add_func(QA_indicator_MA,3,5,8,10,12,15,20,30,35,40,45,50,60)
 
-        MA['MIN_V'] = min(MA['MA5'],MA['MA10'],MA['MA20'],MA['MA60'])
-        MA['MAX_V'] = max(MA['MA5'],MA['MA10'],MA['MA20'],MA['MA60'])
+        MA['MIN_V'] = MA[['MA5','MA10','MA20','MA60']].min(axis=1)
+        MA['MAX_V'] = MA[['MA5','MA10','MA20','MA60']].max(axis=1)
         MA['C_V'] =  MA['MAX_V'] - MA['MIN_V']
         MA['RRNG'] = np.where(MA['MA5'] < MA['MA60'], MA['C_V']/MA['MIN_V'], -MA['C_V']/MA['MIN_V'])
 
@@ -976,8 +976,8 @@ def get_indicator_short(data, type='day'):
     except:
         MA = data.data.assign(MA3=None,MA5=None,MA8=None,MA10=None,MA12=None,MA15=None,MA20=None,
                               MA30=None,MA35=None,MA40=None,MA45=None,MA50=None,MA60=None)[['MA3','MA5','MA8','MA10','MA12','MA15','MA20','MA30','MA35','MA40','MA45','MA50','MA60']]
-        MA['MIN_V'] = min(MA['MA5'],MA['MA10'],MA['MA20'],MA['MA60'])
-        MA['MAX_V'] = max(MA['MA5'],MA['MA10'],MA['MA20'],MA['MA60'])
+        MA['MIN_V'] = MA[['MA5','MA10','MA20','MA60']].min(axis=1)
+        MA['MAX_V'] = MA[['MA5','MA10','MA20','MA60']].max(axis=1)
         MA['C_V'] =  MA['MAX_V'] - MA['MIN_V']
         MA['RRNG'] = np.where(MA['MA5'] < MA['MA60'], MA['C_V']/MA['MIN_V'], -MA['C_V']/MA['MIN_V'])
 
