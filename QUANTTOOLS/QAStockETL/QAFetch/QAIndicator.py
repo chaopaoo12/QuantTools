@@ -946,8 +946,8 @@ def get_indicator_short(data, type='day'):
 
         MA['MIN_V'] = MA[['MA5','MA10','MA20','MA60']].min(axis=1)
         MA['MAX_V'] = MA[['MA5','MA10','MA20','MA60']].max(axis=1)
-        MA['C_V'] =  MA['MAX_V'] - MA['MIN_V']
-        MA['RRNG'] = np.where(MA['MA5'] < MA['MA60'], MA['C_V']/MA['MIN_V'], -MA['C_V']/MA['MIN_V'])
+        MA['C_V'] = MA['MAX_V'] - MA['MIN_V']
+        MA['RRNG'] = MA.apply(lambda x: np.where(x.MA5 < x.MA10, x.C_V/x.MIN_V, -x.C_V/x.MIN_V))
 
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
@@ -978,9 +978,8 @@ def get_indicator_short(data, type='day'):
                               MA30=None,MA35=None,MA40=None,MA45=None,MA50=None,MA60=None)[['MA3','MA5','MA8','MA10','MA12','MA15','MA20','MA30','MA35','MA40','MA45','MA50','MA60']]
         MA['MIN_V'] = MA[['MA5','MA10','MA20','MA60']].min(axis=1)
         MA['MAX_V'] = MA[['MA5','MA10','MA20','MA60']].max(axis=1)
-        MA['C_V'] =  MA['MAX_V'] - MA['MIN_V']
-        MA['RRNG'] = np.where(MA['MA5'] < MA['MA60'], MA['C_V']/MA['MIN_V'], -MA['C_V']/MA['MIN_V'])
-
+        MA['C_V'] = MA['MAX_V'] - MA['MIN_V']
+        MA['RRNG'] = MA.apply(lambda x: np.where(x.MA5 < x.MA10, x.C_V/x.MIN_V, -x.C_V/x.MIN_V))
         MA['SHORT10'] = MA['MA5']/MA['MA10']-1
         MA['SHORT20'] = MA['MA10']/MA['MA20']-1
         MA['SHORT60'] = MA['MA10']/MA['MA60']-1
