@@ -265,7 +265,7 @@ def watch_func1(start_date, end_date, working_dir=working_dir):
     res_c = pd.concat(res_c).rename(columns={'BLN':'code'}).set_index(['date','code'])
     res_d = pd.concat(res_d).rename(columns={'CODE':'code'}).set_index(['date','code'])
 
-    stock_target = get_quant_data(start_date, end_date, type='crawl', block=False, sub_block=False,norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
+    stock_target = get_quant_data(start_date, end_date, type='crawl', block=False, sub_block=False,norm_type=None)[['RRNG','MA60_C','MA60_D','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
 
     res_b['BLN'] = res_b.groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
     rrr = res_b.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code'])\
@@ -283,8 +283,8 @@ def block_watch(trading_date):
     end_date = trading_date
     res_a, res_b, res_c, res_d = watch_func(start_date, end_date)
 
-    stock_target = get_quant_data(start_date, end_date,list(set(res_b.reset_index().code.tolist() + res_d.reset_index().code.tolist())), type='crawl', block=False, sub_block=False,norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
-    index_target = get_index_quant_data(start_date, end_date, list(set(res_a.reset_index().code.tolist() + res_c.reset_index().code.tolist())), type='crawl', norm_type=None)[['SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
+    stock_target = get_quant_data(start_date, end_date,list(set(res_b.reset_index().code.tolist() + res_d.reset_index().code.tolist())), type='crawl', block=False, sub_block=False,norm_type=None)[['RRNG','MA60_C','MA60_D','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
+    index_target = get_index_quant_data(start_date, end_date, list(set(res_a.reset_index().code.tolist() + res_c.reset_index().code.tolist())), type='crawl', norm_type=None)[['RRNG','MA60_C','MA60_D','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
 
     res_a = res_a.join(index_target)
     res_b = res_b.join(stock_target)
@@ -302,10 +302,12 @@ def block_watch(trading_date):
     base_report(trading_date, '板块报告 一', **{'优质板块':res_a,
                                           '高潜板块':res_c})
     base_report(trading_date, '优质板块选股 二', **{'低谷清单':res_b[((res_b.SKDJ_K_WK <= 20)|(res_b.SKDJ_K <= 20))],
+                                             '均线清单':res_b[res_b.RRNG.abs() <= 0.05],
                                              '轮动清单':res_b[res_b.block_RANK <= 5],
                                              '股池清单':res_b
                                              })
     base_report(trading_date, '潜力板块选股 二', **{'低谷清单':res_d[((res_d.SKDJ_K_WK <= 20)|(res_d.SKDJ_K <= 20))],
+                                             '均线清单':res_b[res_b.RRNG.abs() <= 0.05],
                                              '轮动清单':res_d[res_d.block_RANK <= 5],
                                              '股池清单':res_d
                                              })
