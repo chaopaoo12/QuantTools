@@ -291,6 +291,9 @@ def block_watch(trading_date):
     res_c = res_c.join(index_target)
     res_d = res_d.join(stock_target)
 
+    base_report(trading_date, '板块报告 一', **{'优质板块':res_a,
+                                           '高潜板块':res_c})
+
     r_tar, xg, prediction = load_data(concat_predict, trading_date, working_dir, 'block_day', 'block_prediction')
 
     res_b = res_b.join(xg[['O_PROB','RANK']].rename(columns={'O_PROB':'block_xg'}))
@@ -299,8 +302,7 @@ def block_watch(trading_date):
     res_d = res_d.join(xg[['O_PROB','RANK']].rename(columns={'O_PROB':'block_xg'}))
     res_d['block_RANK'] = res_d['block_xg'].groupby('date').rank(ascending=False)
 
-    base_report(trading_date, '板块报告 一', **{'优质板块':res_a,
-                                          '高潜板块':res_c})
+
     base_report(trading_date, '优质板块选股 二', **{'低谷清单':res_b[((res_b.SKDJ_K_WK <= 20)|(res_b.SKDJ_K <= 20))],
                                              '均线清单':res_b[res_b.RRNG.abs() <= 0.05],
                                              '轮动清单':res_b[res_b.block_RANK <= 5],
@@ -312,4 +314,4 @@ def block_watch(trading_date):
                                              '股池清单':res_d
                                              })
     base_report(trading_date, '综合选股报告 一', **{'综合选股':res_b[(res_b.RRNG.abs() <= 0.05)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)]
-                                           })
+                                             })
