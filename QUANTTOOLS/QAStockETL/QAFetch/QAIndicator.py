@@ -5,6 +5,7 @@ from QUANTAXIS import (QA_indicator_VR,QA_indicator_VRSI,QA_indicator_VSTD,
                        QA_indicator_BIAS,QA_indicator_ADTM,QA_indicator_DMI,QA_indicator_PBX,
                        QA_indicator_BBI,QA_indicator_MFI,QA_indicator_DDI,QA_indicator_shadow)
 from QUANTAXIS.QAIndicator.base import CROSS,REF,MA,SUM,LLV,HHV,ABS,STD
+import QUANTAXIS.QAIndicator.base as bbase
 from QUANTAXIS.QAIndicator.talib_indicators import (CDL2CROWS,CDL3BLACKCROWS,CDL3INSIDE,CDL3LINESTRIKE,CDL3OUTSIDE,
                                                     CDL3STARSINSOUTH,CDL3WHITESOLDIERS,CDLABANDONEDBABY,CDLADVANCEBLOCK,
                                                     CDLBELTHOLD,CDLBREAKAWAY,CDLCLOSINGMARUBOZU,CDLCONCEALBABYSWALL,
@@ -239,7 +240,7 @@ def indicator_ATR(DataFrame, N=14):
     C = DataFrame['close']
     H = DataFrame['high']
     L = DataFrame['low']
-    TR = max(max((H - L), ABS(REF(C, 1) - H)), ABS(REF(C, 1) - L))
+    TR = bbase.MAX(bbase.MAX((H - L), ABS(REF(C, 1) - H)), ABS(REF(C, 1) - L))
     atr = MA(TR, N)
     atrc = atr / REF(C, 1)
     return pd.DataFrame({'TR': TR, 'ATR': atr, 'ATRR':atrc})
