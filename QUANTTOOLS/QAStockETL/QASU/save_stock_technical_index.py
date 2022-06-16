@@ -738,16 +738,19 @@ def QA_SU_save_stock_technical_hour_day(codes=None, start_date=None,end_date=Non
             print(error0)
             err.append(str(code))
 
-    for item in codes:
+    date_rng = QA_util_get_trade_range(start_date, end_date)
 
-        QA_util_log_info('The {} of Total {}'.format
-                         ((codes.index(item) +1), len(codes)))
+    if len(date_rng) > 10:
+        for item in codes:
 
-        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(item) +1) / len(codes) * 100))[0:4] + '%', ui_log)
-        intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
-        QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+            QA_util_log_info('The {} of Total {}'.format
+                             ((codes.index(item) +1), len(codes)))
 
-        __saving_work( item,start_date,end_date)
+            strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(item) +1) / len(codes) * 100))[0:4] + '%', ui_log)
+            intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
+            QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+
+            __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_hour ^_^',  ui_log)
@@ -799,16 +802,19 @@ def QA_SU_save_stock_technical_hour_his(codes=None, start_date=None,end_date=Non
             print(error0)
             err.append(str(code))
 
-    for item in codes:
+    date_rng = QA_util_get_trade_range(start_date, end_date)
 
-        QA_util_log_info('The {} of Total {}'.format
-                         ((codes.index(item) +1), len(codes)))
+    if len(date_rng) > 10:
+        for item in codes:
 
-        strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(item) +1) / len(codes) * 100))[0:4] + '%', ui_log)
-        intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
-        QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+            QA_util_log_info('The {} of Total {}'.format
+                             ((codes.index(item) +1), len(codes)))
 
-        __saving_work( item,start_date,end_date)
+            strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((codes.index(item) +1) / len(codes) * 100))[0:4] + '%', ui_log)
+            intProgressToLog = int(float((codes.index(item) +1) / len(codes) * 100))
+            QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+
+            __saving_work( item,start_date,end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_hour ^_^',  ui_log)
