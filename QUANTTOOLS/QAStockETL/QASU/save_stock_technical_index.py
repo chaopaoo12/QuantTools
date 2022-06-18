@@ -751,6 +751,16 @@ def QA_SU_save_stock_technical_hour_day(codes=None, start_date=None,end_date=Non
             QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
             __saving_work( item,start_date,end_date)
+    else:
+        k=100
+        for i in range(0, len(codes), k):
+            code = codes[i:i+k]
+            QA_util_log_info('The {} of Total {}'.format
+                             ((i +k ), len(codes)))
+            strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((i + k) / len(codes) * 100))[0:4] + '%', ui_log)
+            intProgressToLog = int(float((i + k ) / len(codes) * 100 ))
+            QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+            __saving_work(code, start_date, end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_hour ^_^',  ui_log)
@@ -801,7 +811,6 @@ def QA_SU_save_stock_technical_hour_his(codes=None, start_date=None,end_date=Non
         except Exception as error0:
             print(error0)
             err.append(str(code))
-
     date_rng = QA_util_get_trade_range(start_date, end_date)
 
     if len(date_rng) > 10:
@@ -815,6 +824,16 @@ def QA_SU_save_stock_technical_hour_his(codes=None, start_date=None,end_date=Non
             QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
 
             __saving_work( item,start_date,end_date)
+    else:
+        k=100
+        for i in range(0, len(codes), k):
+            code = codes[i:i+k]
+            QA_util_log_info('The {} of Total {}'.format
+                             ((i +k ), len(codes)))
+            strProgressToLog = 'DOWNLOAD PROGRESS {}'.format(str(float((i + k) / len(codes) * 100))[0:4] + '%', ui_log)
+            intProgressToLog = int(float((i + k ) / len(codes) * 100 ))
+            QA_util_log_info(strProgressToLog, ui_log= ui_log, ui_progress= ui_progress, ui_progress_int_value= intProgressToLog)
+            __saving_work(code, start_date, end_date)
 
     if len(err) < 1:
         QA_util_log_info('SUCCESS save stock_technical_hour ^_^',  ui_log)
