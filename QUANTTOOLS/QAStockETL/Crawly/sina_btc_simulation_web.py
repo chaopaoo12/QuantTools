@@ -19,6 +19,7 @@ def get_btc_day_sina(symbol):
 
     headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                'Accept-Language': 'zh-CN,zh;q=0.9',
+               'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
                'Cache-Control': 'max-age=0',
                'Connection': 'keep-alive'
                }
@@ -27,6 +28,10 @@ def get_btc_day_sina(symbol):
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
     options.add_argument('headless')
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-dev-shm-usage')
     res = read_data_from_sina(url.format(symbol=symbol), options)
     data = json.loads(res.text.split('var1=')[1].replace('(','').replace(')',''))['result']['data']
     data = pd.DataFrame([i.split(',') for i in data.split('|')], columns = ['date','open','low','high','close','vol'])
