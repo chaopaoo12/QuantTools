@@ -4,11 +4,19 @@ from QUANTTOOLS.QAStockETL.QASU import QA_SU_save_stock_aklist,QA_SU_save_stock_
 from QUANTAXIS.QASU.main import (QA_SU_save_stock_list)
 from QUANTTOOLS.Market.MarketReport.JOB.daily_job import aotu_report
 import chromedriver_autoinstaller
+import os
+import shutil
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
 
-    chromedriver_autoinstaller.install()
+    new_file = chromedriver_autoinstaller.install()
+    try:
+        os.remove("D:\\Anaconda3\\chromedriver.exe")
+    except:
+        pass
+    shutil.move(new_file,"D:\\Anaconda3")
+
     if QA_util_if_trade(mark_day):
         QA_SU_save_stock_list('tdx')
         #QA_SU_save_stock_info_tushare()
