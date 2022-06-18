@@ -317,7 +317,7 @@ def block_watch(trading_date):
 
 
 def summary_wach(trading_date):
-    start_date = QA_util_get_pre_trade_date(trading_date,5)
+    start_date = QA_util_get_pre_trade_date(trading_date,14)
     end_date = trading_date
     r_tar, xg, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg', 'prediction')
     r_tar, xg_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg_nn', 'prediction_stock_xg_nn')
