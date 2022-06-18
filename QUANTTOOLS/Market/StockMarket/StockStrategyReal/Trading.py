@@ -4,6 +4,7 @@ from QUANTTOOLS.Market.MarketTools import load_data, StrategyRobotBase, Strategy
 from QUANTAXIS.QAUtil import QA_util_get_last_day,QA_util_get_real_date, QA_util_get_pre_trade_date
 from .StrategyOne import signal, balance, tracking_signal, track_balance, code_select
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_data,get_quant_data
+import pandas as pd
 
 def trading_new(trading_date, working_dir=working_dir):
     try:
@@ -14,20 +15,22 @@ def trading_new(trading_date, working_dir=working_dir):
 
         stock_target = get_quant_data(QA_util_get_pre_trade_date(trading_date,1), trading_date, type='model', block=False, sub_block=False,norm_type=None)[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
 
-        xg = xg.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']])
-        xg_nn = xg_nn.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']])
-        mars_nn = mars_nn.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']])
-        mars_day = mars_day.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']])
+        xg = xg.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']]).assign(model='xg')
+        xg_nn = xg_nn.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']]).assign(model='xg_nn')
+        mars_nn = mars_nn.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']]).assign(model='mars_nn')
+        mars_day = mars_day.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']]).assign(model='mars_day')
 
-        prediction_xg = xg.loc[QA_util_get_pre_trade_date(trading_date,1)]
-        prediction_xg_nn = xg_nn.loc[QA_util_get_pre_trade_date(trading_date,1)]
-        prediction_mars_nn = mars_nn.loc[QA_util_get_pre_trade_date(trading_date,1)]
-        prediction_mars_day = mars_day.loc[QA_util_get_pre_trade_date(trading_date,1)]
+        res = pd.concat([mars_day[(mars_day.y_pred==1)&(mars_day.RRNG.abs() < 0.1)],
+                         mars_nn[(mars_nn.y_pred==1)&(mars_nn.RRNG.abs() < 0.1)],
+                         xg_nn[(xg_nn.y_pred==1)&(xg_nn.RRNG.abs() < 0.1)],
+                         xg[(xg.y_pred==1)&(xg.RRNG.abs() < 0.1)]])
 
-        code_list = list(set(prediction_xg[(prediction_xg.y_pred == 1)&(prediction_xg.RRNG.abs() < 0.1)].reset_index().code.unique().tolist()
-        + prediction_xg_nn[(prediction_xg_nn.y_pred == 1)&(prediction_xg_nn.RRNG.abs() < 0.1)].reset_index().code.unique().tolist()
-        + prediction_mars_nn[(prediction_mars_nn.y_pred == 1)&(prediction_mars_nn.RRNG.abs() < 0.1)].reset_index().code.unique().tolist()
-        + prediction_mars_day[(prediction_mars_day.y_pred == 1)&(prediction_mars_day.RRNG.abs() < 0.1)].reset_index().code.unique().tolist()
+        try:
+            res = res.loc[QA_util_get_pre_trade_date(trading_date,1)]
+        except:
+            res = None
+
+        code_list = list(set(res[(res.y_pred == 1)&(res.RRNG.abs() < 0.1)].reset_index().code.unique().tolist()
         ))
 
     except:

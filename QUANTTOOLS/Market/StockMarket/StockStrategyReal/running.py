@@ -327,16 +327,19 @@ def summary_wach(trading_date):
 
     stock_target = get_quant_data(start_date, end_date, type='crawl', block=False, sub_block=False,norm_type=None)[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
 
-    xg = xg.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']])
-    xg_nn = xg_nn.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']])
-    mars_nn = mars_nn.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']])
-    mars_day = mars_day.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']])
+    xg = xg.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']]).assign(model='xg')
+    xg_nn = xg_nn.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']]).assign(model='xg_nn')
+    mars_nn = mars_nn.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']]).assign(model='mars_nn')
+    mars_day = mars_day.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']]).assign(model='mars_day')
 
-    res = pd.concat([
-    mars_day[(mars_day.y_pred==1)&(mars_day.RRNG.abs() < 0.1)].loc[trading_date].assign(model='mars_day'),
-    mars_nn[(mars_nn.y_pred==1)&(mars_nn.RRNG.abs() < 0.1)].loc[trading_date].assign(model='mars_nn'),
-    xg_nn[(xg_nn.y_pred==1)&(xg_nn.RRNG.abs() < 0.1)].loc[trading_date].assign(model='xg_nn'),
-    xg[(xg.y_pred==1)&(xg.RRNG.abs() < 0.1)].loc[trading_date].assign(model='xg')])
+    res = pd.concat([mars_day[(mars_day.y_pred==1)&(mars_day.RRNG.abs() < 0.1)],
+                     mars_nn[(mars_nn.y_pred==1)&(mars_nn.RRNG.abs() < 0.1)],
+                     xg_nn[(xg_nn.y_pred==1)&(xg_nn.RRNG.abs() < 0.1)],
+                     xg[(xg.y_pred==1)&(xg.RRNG.abs() < 0.1)]])
+    try:
+        res = res.loc[trading_date]
+    except:
+        res = None
 
     base_report(trading_date, '目标股池', **{'SUMMARY':res,
                                         'MARKS_DAY':mars_day[(mars_day.y_pred==1)&(mars_day.RRNG.abs() < 0.1)],
