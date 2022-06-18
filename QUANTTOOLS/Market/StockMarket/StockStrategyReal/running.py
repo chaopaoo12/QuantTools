@@ -339,15 +339,18 @@ def summary_func(trading_date):
 
     res['model'] = res.groupby(['date','code'])['model'].transform(lambda x: ','.join(x))
     res = res.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']).sort_index()
-    try:
-        res = res.loc[trading_date]
-    except:
-        res = None
+
     return(res,xg,xg_nn,mars_nn,mars_day)
 
 def summary_watch(trading_date):
     res,xg,xg_nn,mars_nn,mars_day = summary_func(trading_date)
+    try:
+        rrr = res.loc[trading_date]
+    except:
+        rrr = None
+
     base_report(trading_date, '目标股池', **{'SUMMARY':res,
+                                         'TARGET':rrr,
                                         'MARKS_DAY':mars_day[(mars_day.y_pred==1)&(mars_day.RRNG.abs() < 0.1)],
                                          'MARKS_NN':mars_nn[(mars_nn.y_pred==1)&(mars_nn.RRNG.abs() < 0.1)],
                                          'XG':xg[(xg.y_pred==1)&(xg.RRNG.abs() < 0.1)],
