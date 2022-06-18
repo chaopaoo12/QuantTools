@@ -316,10 +316,16 @@ def block_watch(trading_date):
     base_report(trading_date, '综合选股报告 一', **{'综合选股':res_b[(res_b.RRNG.abs() <= 0.05)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)]
                                              })
 
+
+def summary_wach(trading_date):
+    start_date = QA_util_get_pre_trade_date(trading_date,14)
+    end_date = trading_date
     r_tar, xg, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg', 'prediction')
     r_tar, xg_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg_nn', 'prediction_stock_xg_nn')
     r_tar, mars_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_nn', 'prediction_stock_mars_nn')
     r_tar, mars_day, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_day', 'prediction_stock_mars_day')
+
+    stock_target = get_quant_data(start_date, end_date, type='crawl', block=False, sub_block=False,norm_type=None)[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
 
     xg = xg.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']])
     xg_nn = xg_nn.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']])
@@ -327,7 +333,7 @@ def block_watch(trading_date):
     mars_day = mars_day.join(stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']])
 
     base_report(trading_date, '目标股池', **{'MARKS_DAY':mars_day[(mars_day.y_pred==1)&(mars_day.RRNG.abs() < 0.1)],
-                                             'MARKS_NN':mars_nn[(mars_nn.y_pred==1)&(mars_nn.RRNG.abs() < 0.1)],
-                                             'XG':xg[(xg.y_pred==1)&(xg.RRNG.abs() < 0.1)],
-                                             'XG_NN':xg_nn[(xg_nn.y_pred==1)&(xg_nn.RRNG.abs() < 0.1)]
-                                             })
+                                         'MARKS_NN':mars_nn[(mars_nn.y_pred==1)&(mars_nn.RRNG.abs() < 0.1)],
+                                         'XG':xg[(xg.y_pred==1)&(xg.RRNG.abs() < 0.1)],
+                                         'XG_NN':xg_nn[(xg_nn.y_pred==1)&(xg_nn.RRNG.abs() < 0.1)]
+                                         })
