@@ -326,10 +326,11 @@ def summary_wach(trading_date):
 
     stock_target = get_quant_data(start_date, end_date, type='crawl', block=False, sub_block=False,norm_type=None)[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
     stock_res = stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']]
-    xg = stock_res.join(xg).assign(model='xg')
-    xg_nn = stock_res.join(xg_nn).assign(model='xg_nn')
-    mars_nn = stock_res.join(mars_nn).assign(model='mars_nn')
-    mars_day = stock_res.join(mars_day).assign(model='mars_day')
+    cols_name = ['RRNG','RRNG_HR','SHORT10','SHORT20','LONG60','AVG5','MA60_C','PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10', 'RANK']
+    xg = stock_res.join(xg).assign(model='xg')[cols_name]
+    xg_nn = stock_res.join(xg_nn).assign(model='xg_nn')[cols_name]
+    mars_nn = stock_res.join(mars_nn).assign(model='mars_nn')[cols_name]
+    mars_day = stock_res.join(mars_day).assign(model='mars_day')[cols_name]
 
     res = pd.concat([mars_day[(mars_day.y_pred==1)&(mars_day.RRNG.abs() < 0.1)],
                      mars_nn[(mars_nn.y_pred==1)&(mars_nn.RRNG.abs() < 0.1)],
