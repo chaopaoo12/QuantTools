@@ -303,12 +303,12 @@ def block_watch(trading_date):
     res_d['block_RANK'] = res_d['block_xg'].groupby('date').rank(ascending=False)
 
 
-    base_report(trading_date, '优质板块选股 二', **{'低谷清单':res_b[((res_b.SKDJ_K_WK <= 20)|(res_b.SKDJ_K <= 20))],
+    base_report(trading_date, '优质板块选股 二', **{
                                              '均线清单':res_b[res_b.RRNG.abs() <= 0.05],
                                              '轮动清单':res_b[res_b.block_RANK <= 5],
                                              '股池清单':res_b
                                              })
-    base_report(trading_date, '潜力板块选股 二', **{'低谷清单':res_d[((res_d.SKDJ_K_WK <= 20)|(res_d.SKDJ_K <= 20))],
+    base_report(trading_date, '潜力板块选股 二', **{
                                              '均线清单':res_d[res_d.RRNG.abs() <= 0.05],
                                              '轮动清单':res_d[res_d.block_RANK <= 5],
                                              '股池清单':res_d
