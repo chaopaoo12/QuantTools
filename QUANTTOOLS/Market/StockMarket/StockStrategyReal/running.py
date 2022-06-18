@@ -316,7 +316,7 @@ def block_watch(trading_date):
                                              })
 
 
-def summary_wach(trading_date):
+def summary_func(trading_date):
     start_date = QA_util_get_pre_trade_date(trading_date,14)
     end_date = trading_date
     r_tar, xg, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg', 'prediction')
@@ -326,7 +326,7 @@ def summary_wach(trading_date):
 
     stock_target = get_quant_data(start_date, end_date, type='crawl', block=False, sub_block=False,norm_type=None)[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
     stock_res = stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']]
-    cols_name = ['RRNG','RRNG_HR','SHORT10','SHORT20','LONG60','AVG5','MA60_C','PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10', 'y_pred', 'RANK']
+    cols_name = ['RRNG','RRNG_HR','SHORT10','SHORT20','LONG60','AVG5','MA60_C','PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10', 'y_pred', 'model', 'RANK']
     xg = stock_res.join(xg).assign(model='xg')
     xg_nn = stock_res.join(xg_nn).assign(model='xg_nn')
     mars_nn = stock_res.join(mars_nn).assign(model='mars_nn')
@@ -336,11 +336,17 @@ def summary_wach(trading_date):
                      mars_nn[(mars_nn.y_pred==1)&(mars_nn.RRNG.abs() < 0.1)][cols_name],
                      xg_nn[(xg_nn.y_pred==1)&(xg_nn.RRNG.abs() < 0.1)][cols_name],
                      xg[(xg.y_pred==1)&(xg.RRNG.abs() < 0.1)][cols_name]])
+
+    res['model'] = res.groupby(['date','code'])['model'].transform(lambda x: ','.join(x))
+    res = res.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']).sort_index()
     try:
         res = res.loc[trading_date]
     except:
         res = None
+    return(res,xg,xg_nn,mars_nn,mars_day)
 
+def summary_watch(trading_date):
+    res,xg,xg_nn,mars_nn,mars_day = summary_func(trading_date)
     base_report(trading_date, '目标股池', **{'SUMMARY':res,
                                         'MARKS_DAY':mars_day[(mars_day.y_pred==1)&(mars_day.RRNG.abs() < 0.1)],
                                          'MARKS_NN':mars_nn[(mars_nn.y_pred==1)&(mars_nn.RRNG.abs() < 0.1)],
