@@ -1,8 +1,10 @@
 
+from QUANTTOOLS.Ananlysis.Trends.Cbond import CBond
 from QUANTTOOLS.Ananlysis.Trends.setting import BTC, GOLD, MONEY, CN_INDEX, US_INDEX, FUTURE, GLOBAL
 from QUANTTOOLS.Ananlysis.Trends.trends import btc_daily, money_daily, gold_daily, stock_daily, stock_hourly, future_daily, globalindex_daily
 import pandas as pd
 from QUANTTOOLS.Message import build_head, build_table, build_email, send_email, send_actionnotice
+from QUANTTOOLS.Market.MarketTools import predict_base, predict_index_base, predict_index_dev, predict_stock_dev,base_report, load_data
 
 def aotu_report(trading_date):
     BTC_RES = pd.DataFrame(columns=('code', 'daily', 'weekly'))
@@ -89,3 +91,12 @@ def aotu_report(trading_date):
     msg = build_email(build_head(),target_body)
     send_email('金融产品价格趋势' + trading_date, msg, trading_date)
     return(BTC_RES)
+
+def aotu_bond(trading_date):
+    df = CBond(trading_date)
+
+    base_report(trading_date, '可转债跟踪', **{'可转债排名':df[df.RANK <= 5][['stock_50','收盘价', '纯债价值', '转股价值', '纯债溢价率', '转股溢价率', '转债名称', '正股名称', '转股价', '回售触发价',
+                                                                    '强赎触发价', '到期赎回价', '开始转股日', '上市日期', 'bond_gap', 'stock_gap', 'RRNG',
+                                                                    'RRNG_HR', 'PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5',
+                                                                    'TARGET10', 'RANK']]
+                                         })
