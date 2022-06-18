@@ -302,7 +302,6 @@ def block_watch(trading_date):
     res_d = res_d.join(xg[['O_PROB','RANK']].rename(columns={'O_PROB':'block_xg'}))
     res_d['block_RANK'] = res_d['block_xg'].groupby('date').rank(ascending=False)
 
-
     base_report(trading_date, '优质板块选股 二', **{
                                              '均线清单':res_b[res_b.RRNG.abs() <= 0.05],
                                              '轮动清单':res_b[res_b.block_RANK <= 5],
