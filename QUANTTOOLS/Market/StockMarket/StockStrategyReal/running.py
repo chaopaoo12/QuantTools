@@ -326,7 +326,7 @@ def summary_func(trading_date):
 
     stock_target = get_quant_data(start_date, end_date, type='crawl', block=False, sub_block=False,norm_type=None)[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
     stock_res = stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','MIN_V','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']]
-    cols_name = ['RRNG','RRNG_HR','SHORT10','SHORT20','LONG60','AVG5','MA60_C','PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10', 'y_pred', 'model', 'RANK']
+    cols_name = ['RRNG','RRNG_HR','SHORT10','SHORT20','LONG60','MIN_V','AVG5','MA60_C','PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10', 'y_pred', 'model', 'RANK']
     xg = stock_res.join(xg).assign(model='xg')
     xg_nn = stock_res.join(xg_nn).assign(model='xg_nn')
     mars_nn = stock_res.join(mars_nn).assign(model='mars_nn')
