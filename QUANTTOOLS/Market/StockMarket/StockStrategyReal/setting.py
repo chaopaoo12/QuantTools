@@ -1,4 +1,12 @@
 #coding :utf-8
+from QUANTAXIS.QAUtil.QASetting import QA_Setting
+
+QASETTING = QA_Setting()
+
+yun_ip = QASETTING.get_config('EASYTRADE','ip')
+yun_port = QASETTING.get_config('EASYTRADE','port')
+easytrade_password = QASETTING.get_config('EASYTRADE','password')
+
 
 working_dir = 'D:\\model\\current'
 top = 20
@@ -11,6 +19,17 @@ strategy_id = {'account': 'name:client-1',
                'percent': 1,
                'trader_path': None,
                }
+
+trading_setting = {
+    'path': None,
+    'host':yun_ip,
+    'port':yun_port,
+    'key':easytrade_password,
+    'token':'4813c3ab28f5d9222a8c810419471ccebf33f1a6',
+    'server':'api.myquant.cn:9000',
+    'account':'b946f0c1-f06d-11ec-8600-00163e18a8b3',
+    'name':'实验测试一号'
+}
 
 stock_xg_set = ['AVG30_RNG',
                  'AVG20_RNG',
