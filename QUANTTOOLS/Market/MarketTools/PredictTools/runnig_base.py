@@ -4,10 +4,10 @@ from QUANTTOOLS.Market.MarketTools.PredictTools import save_prediction, predicti
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_get_real_date
 import pandas as pd
 
-def predict_base(trading_date, predict_func, model_name, file_name, top_num, percent, working_dir, exceptions):
+def predict_base(trading_date, predict_func, model_name, file_name, top_num, percent, working_dir, client_setting, exceptions):
     stock_tar, stock_b, start, end, model_date, model_name, target = predict_func(trading_date, model_name = model_name,  working_dir=working_dir)
     save_prediction({'date': trading_date, 'target_pool':stock_tar, 'prediction':stock_b}, file_name, working_dir)
-    prediction_report(QA_util_get_real_date(trading_date), stock_tar, stock_b, model_date, model_name, target, top_num, exceptions, percent, account='name:client-1', ui_log = None)
+    prediction_report(QA_util_get_real_date(trading_date), stock_tar, stock_b, model_date, model_name, target, top_num, client_setting, exceptions, percent, account='name:client-1', ui_log = None)
 
 def predict_index_base(trading_date, predict_func, model_name, file_name, top_num, working_dir):
     stock_tar, stock_b, start, end, model_date = predict_func(trading_date, model_name = model_name,  working_dir=working_dir)
@@ -46,7 +46,7 @@ def predict_index_dev(trading_date, predict_func1, predict_func2, predict_func3,
     Index_Report(QA_util_get_real_date(trading_date), res['prediction'], res['hour_prediction'], model_date, )
 
 
-def predict_stock_dev(trading_date, xg_predict_func, predict_func1, predict_func2, predict_func3, xg_model, day_moel, hour_model, min_model, file_name, top_num, percent, working_dir, exceptions):
+def predict_stock_dev(trading_date, xg_predict_func, predict_func1, predict_func2, predict_func3, xg_model, day_moel, hour_model, min_model, file_name, top_num, client_setting, percent, working_dir, exceptions):
     stock_b = pd.DataFrame()
     res = dict()
     if xg_predict_func is not None:
@@ -81,7 +81,7 @@ def predict_stock_dev(trading_date, xg_predict_func, predict_func1, predict_func
     res['prediction'] = stock_b
 
     save_prediction(res, file_name, working_dir)
-    prediction_report(QA_util_get_real_date(trading_date), stock_tar, stock_b, model_date, top_num, exceptions, percent,
+    prediction_report(QA_util_get_real_date(trading_date), stock_tar, stock_b, model_date, top_num, client_setting, exceptions, percent,
                       name_list = ['NAME','INDUSTRY','SKDJ_TR'],
                       value_ist = ['SKDJ_K','SKDJ_K_HR','O_PROB','RANK','DAY_PROB','DAY_RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK','UB','LB','WIDTH','UB_HR','LB_HR','WIDTH_HR','RSI1','RSI3'],
                       sort_mark ='DAY_RANK',

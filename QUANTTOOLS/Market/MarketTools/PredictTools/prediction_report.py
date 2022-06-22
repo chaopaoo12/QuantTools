@@ -44,14 +44,14 @@ def Funding_Decision(trading_date, target_pool, sub_accounts, frozen, percent, s
 
 def prediction_report(trading_date, target_pool, prediction, model_date,
                       model_name, target,
-                      top_num, exceptions, percent,
+                      top_num, client_setting, exceptions, percent,
                       name_list = ['NAME','INDUSTRY'],
                       value_ist = ['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
                       sort_mark ='RANK',
                       selec_list=['NAME','INDUSTRY','Z_PROB','O_PROB','RANK'],
                       account='name:client-1',  ui_log = None):
     QA_util_log_info('##JOB## Now Got Account Info ==== {}'.format(str(trading_date)), ui_log)
-    client = get_Client(trader_path = None)
+    client = get_Client(client_setting)
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, "prediction_report", trading_date, exceptions=exceptions)
 
     ###XG股池 + 交易成绩
