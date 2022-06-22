@@ -1,4 +1,3 @@
-
 import logging
 import strategyease_sdk
 import easytrader
@@ -10,52 +9,92 @@ from QUANTTOOLS.QAStockETL.QAUtil import QA_util_get_days_to_today
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_to_market_date
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_industry,QA_fetch_stock_name,QA_fetch_stock_industryinfo
 import pandas as pd
+import gmtrade.api
 
-def get_Client(host=yun_ip, port=yun_port, key=easytrade_password, trader_path=None):
-    if trader_path is None:
+class Proxy_client():
+
+    def __init__(self, client, type, **kwargs):
+        self.client = client
+        self.type = type
+
+def get_Client(type='yun_ease',**kwargs):
+    if type == 'yun_ease':
         logging.basicConfig(level=logging.DEBUG)
-        client = strategyease_sdk.Client(host=host, port=port, key=key)
-        client.type = 'online'
+        client = strategyease_sdk.Client(host=kwargs['host'], port=kwargs['port'], key=kwargs['key'])
+        client = Proxy_client(client, type=type)
         QA_util_log_info(
             '##JOB Now Get Account Server Online')
-    elif trader_path is not None:
+    elif type == 'local':
         client = easytrader.use("ths")
-        client.connect(trader_path)
-        client.type = 'local'
+        client.connect(trader_path=kwargs['trader_path'])
+        client = Proxy_client(client, type=type)
         QA_util_log_info(
             '##JOB Now Get Account Server Local')
+    elif type == 'sim_myquant':
+        gmtrade.api.set_token(kwargs['token'])
+        gmtrade.api.set_endpoint(kwargs['server'])
+        account = gmtrade.api.account(account_id=kwargs['account'], account_alias=kwargs['name'])
+        gmtrade.api.login(account)
+        client = Proxy_client(account, type=type)
     else:
         QA_util_log_info(
             '##JOB Now Get Account Server Failed')
     return(client)
 
 def get_UseCapital(client, account=None):
-    if client.type == 'online':
-        res = client.get_positions(account)
+    if client.type == 'yun_ease':
+        res = client.client.get_positions(account)
         capital = float(res['sub_accounts']['可用金额'])
         return(capital)
     elif client.type == 'local':
-        capital = client.balance['资金余额']
+        capital = client.client.balance['资金余额']
         return(capital)
+    elif client.type == 'sim_myquant':
+        return(gmtrade.api.get_cash(client.client).available)
     else:
         pass
 
 def get_AllCapital(client, account=None):
-    if client.type == 'online':
-        res = client.get_positions(account)
+    if client.type == 'yun_ease':
+        res = client.client.get_positions(account)
         capital = float(res['sub_accounts']['可用金额'])
         return(capital)
     elif client.type == 'local':
-        capital = client.balance['总资产']
+        capital = client.client.balance['总资产']
         return(capital)
+    elif client.type == 'sim_myquant':
+        return(gmtrade.api.get_cash(client.client).nav)
     else:
         pass
 
 def get_Position(client, account=None):
-    if client.type == 'local':
+    if client.type == 'yun_ease':
         positions = pd.DataFrame(client.position)
     elif client.type == 'online':
         positions = client.get_positions(account)['positions'][['证券代码','证券名称','市值','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
+    elif client.type == 'sim_myquant':
+        positions = gmtrade.api.get_positions(client.client)
+
+        if len(positions) > 0:
+            symbol = []
+            amount = []
+            volume = []
+            available = []
+            volume_today = []
+            fpnl = []
+            fpnl_per = []
+
+
+            for item in positions:
+                symbol.append(item.symbol[5:])
+                amount.append(item.amount)
+                volume.append(item.volume)
+                available.append(item.volume-item.volume_today)
+                volume_today.append(item.volume_today)
+                fpnl.append(item.fpnl)
+                fpnl_per.append(item.fpnl/item.amount)
+
+            positions = pd.DataFrame({'证券代码':symbol,'证券名称':None,'市值':amount, '股票余额':volume, '可用余额':available, '冻结数量':volume_today, '参考盈亏':fpnl, '盈亏比例(%)':fpnl_per})
 
     positions=positions.astype({'市值':'float','股票余额':'float','可用余额':'float'})
     positions = positions[positions['股票余额'] > 0]
@@ -66,17 +105,7 @@ def get_Position(client, account=None):
     return(positions)
 
 def get_hold(client, account=None):
-    logging.basicConfig(level=logging.DEBUG)
-    try:
-        if client.type == 'online':
-            res = client.get_positions(account)
-            hold = float(res['sub_accounts']['股票市值'])/float(res['sub_accounts']['总 资 产'])
-        elif client.type == 'local':
-            res = client.balance
-            hold = float(res['股票市值'])/float(res['总 资 产'])
-
-    except:
-        hold = 0
+    hold = 1 - get_UseCapital(client, account)/get_AllCapital(client, account)
     return(hold)
 
 def get_StockPos(code, client, account=None):
@@ -103,16 +132,14 @@ def get_StockHold(code, client, account=None):
         res = 0
     return(res)
 
+
 def check_Client(client, account, strategy_id, trading_date, exceptions, ui_log= None):
     logging.basicConfig(level=logging.DEBUG)
     try:
         QA_util_log_info(
             '##JOB Now Check Account Server ==== {}'.format(str(trading_date)), ui_log)
         QA_util_log_info('##JOB Now Get Sub_Accounts ==== {}'.format(str(trading_date)), ui_log)
-        if client.type == 'online':
-            sub_accounts = get_AllCapital(client, account)
-        elif client.type == 'local':
-            sub_accounts = get_AllCapital(client)
+        sub_accounts = get_AllCapital(client, account)
 
     except:
         QA_util_log_info('##JOB Now Get Sub_Accounts Failed ==== {}'.format(str(trading_date)), ui_log)
