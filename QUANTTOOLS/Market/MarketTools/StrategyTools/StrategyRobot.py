@@ -36,12 +36,34 @@ class StrategyRobotBase:
         self.percent = strategy_id['percent']
         self.trader_path = strategy_id['trader_path']
 
-    def get_account(self, trader_path=None):
-        if self.trader_path is not None:
-            pass
-        else:
-            self.trader_path = trader_path
-        self.client = get_Client(trader_path=self.trader_path)
+    def get_account(self,type='yun_ease',**kwargs):
+        try:
+            trader_path=kwargs['path']
+        except:
+            trader_path=None
+
+        try:
+            host=kwargs['host']
+            port=kwargs['port']
+            key=kwargs['key']
+        except:
+            host=None
+            port=None
+            key=None
+        try:
+            token=kwargs['token']
+            server=kwargs['server']
+            account=kwargs['account']
+            name=kwargs['name']
+        except:
+            token=None
+            server=None
+            account=None
+            name=None
+
+        self.client = get_Client(type,
+                                 trader_path=trader_path,host=host,port=port,key=key,
+                                 token=token,server=server,account=account,name=name)
 
 
     def set_strategy(self, strategy):
