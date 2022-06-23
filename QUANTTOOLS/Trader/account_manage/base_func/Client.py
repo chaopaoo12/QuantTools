@@ -38,6 +38,7 @@ def get_Client(type='yun_ease',**kwargs):
     else:
         QA_util_log_info(
             '##JOB Now Get Account Server Failed')
+        client = None
     return(client)
 
 def get_UseCapital(client, account=None):
