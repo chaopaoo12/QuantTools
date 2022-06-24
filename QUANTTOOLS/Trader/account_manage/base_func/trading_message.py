@@ -19,7 +19,7 @@ def Sell(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, pric
                 symbol = 'SZSE.' + symbol
             QA_util_log_info('最优五档卖出 {code}({NAME},{INDUSTRY}) {cnt}股'.format(code=symbol, NAME= NAME,
                                                                               INDUSTRY= INDUSTRY,cnt=amount), ui_log=None)
-            message = gmtrade.api.order_volume(symbol=symbol, volume=amount, side=2, order_type=2, position_effect=2, price=price)
+            message = gmtrade.api.order_volume(symbol=symbol, volume=amount, side=2, order_type=2, position_effect=2)
     elif type == 'LIMIT':
         QA_util_log_info('限价卖出 {code}({NAME},{INDUSTRY}) {cnt}股 单价:{price} 总价:{tar}'.format(code=symbol, NAME= NAME,
                                                                                             INDUSTRY= INDUSTRY,cnt=amount, price=price, tar=price*amount), ui_log=None)
