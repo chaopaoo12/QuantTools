@@ -33,7 +33,7 @@ def Sell(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, pric
                 symbol = 'SHSE' + symbol
             elif symbol[0:3] in ['000','002','300']:
                 symbol = 'SZSE' + symbol
-            message = order_volume(symbol=symbol, volume=amount, side=2, order_type=1, position_effect=2, price=price)
+            message = order_volume(symbol=symbol, volume=int(amount), side=2, order_type=1, position_effect=2, price=price)
     else:
         QA_util_log_info('Direction 参数错误 type{type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
         message = None
