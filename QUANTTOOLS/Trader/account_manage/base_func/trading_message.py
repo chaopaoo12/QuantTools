@@ -1,6 +1,6 @@
 from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 from QUANTAXIS.QAUtil import QA_util_log_info
-import gmtrade.api
+from gmtrade.api import order_volume
 
 def Sell(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, price):
     if type == 'MARKET':
@@ -19,7 +19,7 @@ def Sell(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, pric
                 symbol = 'SZSE.' + symbol
             QA_util_log_info('最优五档卖出 {code}({NAME},{INDUSTRY}) {cnt}股'.format(code=symbol, NAME= NAME,
                                                                               INDUSTRY= INDUSTRY,cnt=amount), ui_log=None)
-            message = gmtrade.api.order_volume(symbol=symbol, volume=int(amount), side=2, order_type=2, position_effect=2)
+            message = order_volume(symbol=symbol, volume=int(amount), side=2, order_type=2, position_effect=2)
     elif type == 'LIMIT':
         QA_util_log_info('限价卖出 {code}({NAME},{INDUSTRY}) {cnt}股 单价:{price} 总价:{tar}'.format(code=symbol, NAME= NAME,
                                                                                             INDUSTRY= INDUSTRY,cnt=amount, price=price, tar=price*amount), ui_log=None)
@@ -33,7 +33,7 @@ def Sell(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, pric
                 symbol = 'SHSE' + symbol
             elif symbol[0:3] in ['000','002','300']:
                 symbol = 'SZSE' + symbol
-            message = gmtrade.api.order_volume(symbol=symbol, volume=amount, side=2, order_type=1, position_effect=2, price=price)
+            message = order_volume(symbol=symbol, volume=amount, side=2, order_type=1, position_effect=2, price=price)
     else:
         QA_util_log_info('Direction 参数错误 type{type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
         message = None
@@ -54,7 +54,7 @@ def Buy(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, price
                 symbol = 'SHSE' + symbol
             elif symbol[0:3] in ['000','002','300']:
                 symbol = 'SZSE' + symbol
-            message = gmtrade.api.order_volume(symbol=symbol, volume=amount, side=1, order_type=2, position_effect=1, price=price)
+            message = order_volume(symbol=symbol, volume=amount, side=1, order_type=2, position_effect=1, price=price)
     elif type == 'LIMIT':
         QA_util_log_info('限价买入 {code}({NAME},{INDUSTRY}) {cnt}股 单价:{price} 总价:{tar}'.format(code=symbol, NAME= NAME,
                                                                                             INDUSTRY= INDUSTRY,cnt=amount, price=price, tar=price*amount), ui_log=None)
@@ -68,7 +68,7 @@ def Buy(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, price
                 symbol = 'SHSE' + symbol
             elif symbol[0:3] in ['000','002','300']:
                 symbol = 'SZSE' + symbol
-            message = gmtrade.api.order_volume(symbol=symbol, volume=amount, side=1, order_type=1, position_effect=1, price=price)
+            message = order_volume(symbol=symbol, volume=amount, side=1, order_type=1, position_effect=1, price=price)
     else:
         message = None
         QA_util_log_info('Direction 参数错误 {type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
