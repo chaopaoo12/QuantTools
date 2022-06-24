@@ -31,7 +31,7 @@ def BUY(client, account, strategy_id, account_info, trading_date,
             price = price
         else:
             price = round(price-0.01, 2)
-
+        print(price)
         if price <= close * 1.005:
             pass
         else:
