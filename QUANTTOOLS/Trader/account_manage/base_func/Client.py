@@ -92,7 +92,7 @@ def get_Position(client, account=None):
                 available.append(item.volume-item.volume_today)
                 volume_today.append(item.volume_today)
                 fpnl.append(item.fpnl)
-                fpnl_per.append(item.fpnl/item.amount)
+                fpnl_per.append(item.fpnl/(item.amount+0.01))
 
             positions = pd.DataFrame({'证券代码':symbol,'证券名称':None,'市值':amount, '股票余额':volume, '可用余额':available, '冻结数量':volume_today, '参考盈亏':fpnl, '盈亏比例(%)':fpnl_per})
 
