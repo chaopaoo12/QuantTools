@@ -4,7 +4,7 @@ from QUANTTOOLS.Trader.account_manage.TradAction.BUY import BUY
 from QUANTTOOLS.Trader.account_manage.TradAction.SELL import SELL
 import time
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import check_market_time
-
+from gmtrade.api import order_cancel_all
 
 def trading_robot(client, account, account_info, signal_data, trading_date, mark_tm, title, test=False):
 
@@ -19,7 +19,12 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
 
     # cancel last mark action
     if signal_data is not None:
-        client.cancel_all(account)
+        if client.type == '':
+            client.cancel_all(account)
+        elif client.type == 'sim_myquant':
+            order_cancel_all()
+        else:
+            pass
 
     if signal_data is not None:
         for sell_list in signal_data['sell']:

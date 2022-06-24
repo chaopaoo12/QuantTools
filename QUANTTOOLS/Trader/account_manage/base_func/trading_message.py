@@ -51,9 +51,9 @@ def Buy(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, price
             message = None
         elif client.type == 'sim_myquant':
             if symbol[0:2] == '60':
-                symbol = 'SHSE' + symbol
+                symbol = 'SHSE.' + symbol
             elif symbol[0:3] in ['000','002','300']:
-                symbol = 'SZSE' + symbol
+                symbol = 'SZSE.' + symbol
             message = order_volume(symbol=symbol, volume=amount, side=1, order_type=2, position_effect=1, price=price)
     elif type == 'LIMIT':
         QA_util_log_info('限价买入 {code}({NAME},{INDUSTRY}) {cnt}股 单价:{price} 总价:{tar}'.format(code=symbol, NAME= NAME,
