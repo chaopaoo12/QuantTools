@@ -14,9 +14,9 @@ def Sell(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, pric
             message = None
         elif client.type == 'sim_myquant':
             if symbol[0:2] == '60':
-                symbol = 'SHSE' + symbol
+                symbol = 'SHSE.' + symbol
             elif symbol[0:3] in ['000','002','300']:
-                symbol = 'SZSE' + symbol
+                symbol = 'SZSE.' + symbol
             QA_util_log_info('最优五档卖出 {code}({NAME},{INDUSTRY}) {cnt}股'.format(code=symbol, NAME= NAME,
                                                                               INDUSTRY= INDUSTRY,cnt=amount), ui_log=None)
             message = gmtrade.api.order_volume(symbol=symbol, volume=amount, side=2, order_type=2, position_effect=2, price=price)
