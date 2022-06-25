@@ -10,13 +10,13 @@ from scipy import stats
 
 
 def per25(x):
-    return(np.percentile(x, 25))
+    return(np.nanpercentile(x, 25))
 
 def per75(x):
-    return(np.percentile(x, 75))
+    return(np.nanpercentile(x, 75))
 
 def perc(x):
-    x = list(x.abs())
+    x = list(x[~np.isnan(x)].abs())
     tar = x[-1]
     return(stats.percentileofscore(x, tar))
 
