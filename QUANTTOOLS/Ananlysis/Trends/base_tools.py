@@ -87,18 +87,8 @@ def trends_stock(code, start_date, end_date, period='day', type='before'):
     week_index = QA_DataStruct_Stock_day(week.reset_index().set_index(['date','code']))
     data_index = get_indicator_short(data_index,'day')
     data_index[['mean','per25','per75','perc']] = data_index['RRNG'].rolling(1800).agg(['mean', per25, per75, perc])
-    data_index = data_index.assign(SKDJ_TR=(data_index.SKDJ_CROSS1*-1+ data_index.SKDJ_CROSS2*1)/(data_index.SKDJ_CROSS1+data_index.SKDJ_CROSS2),
-                                   SHORT_TR=(data_index.SHORT20 > 0)*1,
-                                   LONG_TR=(data_index.LONG60 > 0)*1,
-                                   TERNS=((data_index.SHORT20 > 0) * (data_index.LONG60 > 0) * (data_index.LONG_AMOUNT > 0) * 1)
-                                   )
     data_index.SKDJ_TR = data_index.SKDJ_TR.fillna(method='ffill')
     week_index = get_indicator_short(week_index,'week')
-    week_index = week_index.assign(SKDJ_TR=(week_index.SKDJ_CROSS1*-1+ week_index.SKDJ_CROSS2*1)/(week_index.SKDJ_CROSS1+week_index.SKDJ_CROSS2),
-                                   SHORT_TR=(week_index.SHORT20 > 0)*1,
-                                   LONG_TR=(week_index.LONG60 > 0)*1,
-                                   TERNS=((week_index.SHORT20 > 0) * (week_index.LONG60 > 0) * (week_index.LONG_AMOUNT > 0) * 1)
-                                   )
     week_index.SKDJ_TR = week_index.SKDJ_TR.fillna(method='ffill')
     return(data_index, week_index)
 
@@ -111,10 +101,5 @@ def trends_btc_hour(BTC):
     data_btc = day.set_index(['datetime','code']).rename(columns={'vol':'volume'}).assign(amount=0)
     data_btc = QA_DataStruct_Stock_min(data_btc)
     data_btc = get_indicator_short(data_btc,'min')
-    data_btc = data_btc.assign(SKDJ_TR = (data_btc.SKDJ_CROSS1*-1+ data_btc.SKDJ_CROSS2*1)/(data_btc.SKDJ_CROSS1+data_btc.SKDJ_CROSS2),
-                       SHORT_TR = (data_btc.SHORT20 > 0)*1,
-                       LONG_TR = (data_btc.LONG60 > 0)*1,
-                       TERNS = ((data_btc.SHORT20 > 0) * (data_btc.LONG60 > 0) * (data_btc.LONG_AMOUNT > 0) * 1)
-                       )
     data_btc.SKDJ_TR = data_btc.SKDJ_TR.fillna(method='ffill')
     return(data_btc)
