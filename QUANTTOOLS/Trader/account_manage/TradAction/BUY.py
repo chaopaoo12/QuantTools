@@ -24,7 +24,7 @@ def BUY(client, account, strategy_id, account_info, trading_date,
     QA_util_log_info('##JOB Get Real Time Postition {real_capital} Before {code} Buying {deal_capital} ===== {date}'.format(
             real_capital=real_capital, deal_capital=deal_capital, code=code, date=trading_date), ui_log=None)
 
-    if type == 'end':
+    if type == 'LIMIT':
 
         price = QA_fetch_get_stock_realtm_bid(code)
         if price <= 10:
@@ -66,7 +66,7 @@ def BUY(client, account, strategy_id, account_info, trading_date,
             QA_util_log_info('Test Mode', ui_log=None)
         time.sleep(5)
 
-    elif type == 'morning':
+    elif type == 'MARKET':
         if str(code).startswith('300') is True:
             low_value = 0.1995
         else:
@@ -82,13 +82,13 @@ def BUY(client, account, strategy_id, account_info, trading_date,
             price=price, target_capital=target_capital), ui_log=None)
         if test is False:
             e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos,
-                                     direction='BUY', type='LIMIT', priceType=None, price=price, client=client)
+                                     direction='BUY', type='MARKET', priceType=None, price=price, client=client)
         else:
             QA_util_log_info('Test Mode', ui_log=None)
 
         time.sleep(5)
     else:
-        QA_util_log_info('type 参数错误 {type} 必须为 [morning, end]'.format(type=type), ui_log=None)
+        QA_util_log_info('type 参数错误 {type} 必须为 [MARKET, LIMIT]'.format(type=type), ui_log=None)
 
 if __name__ == 'main':
     pass

@@ -18,7 +18,7 @@ def SELL(client, account, strategy_id, account_info, trading_date,
     QA_util_log_info('##JOB Get Real Time Postition {real_capital} Before {code} Selling {deal_capital} ===== {date}'.format(
         real_capital=real_capital, deal_capital=deal_capital, code=code, date=trading_date), ui_log=None)
 
-    if type == 'end':
+    if type == 'LIMIT':
         real_hold = get_StockHold(code, client, account)
         price = QA_fetch_get_stock_realtm_ask(code)
         if price <= 10:
@@ -37,17 +37,17 @@ def SELL(client, account, strategy_id, account_info, trading_date,
         QA_util_log_info('##JOB Get Real Time Price {price} 需卖出{deal_pos} Before {code} Selling ===== {date}'.format(
             price=price, code=code, deal_pos=deal_pos, date=trading_date), ui_log = None)
 
-        QA_util_log_info('卖出 {code}({NAME},{INDUSTRY}){deal_pos}股, 目标持仓金额:{target_capital}====={trading_date}'.format(
+        QA_util_log_info('限价挂单卖出 {code}({NAME},{INDUSTRY}){deal_pos}股, 目标持仓金额:{target_capital}====={trading_date}'.format(
             code=code, NAME= name, INDUSTRY=industry, deal_pos=abs(deal_pos),
             target_capital=target_capital, price=price, trading_date=trading_date),ui_log=None)
         if test is False:
             e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos,
-                                     direction='SELL', type='MARKET', priceType=4, price=None, client=client)
+                                     direction='SELL', type='LIMIT', priceType=4, price=price, client=client)
             # e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos, direction = 'SELL', type='LIMIT', priceType=None, price=price, client=client)
         else:
             QA_util_log_info('Test Mode', ui_log=None)
 
-    elif type == 'morning':
+    elif type == 'MARKET':
         if str(code).startswith('300') is True:
             low_value = 0.1995
         else:
@@ -61,18 +61,18 @@ def SELL(client, account, strategy_id, account_info, trading_date,
         QA_util_log_info('##JOB Get Down Price {price} 需卖出{deal_pos} Before {code} Selling ===== {date}'.format(
             price=price, code=code, deal_pos=deal_pos, date=trading_date), ui_log=None)
 
-        QA_util_log_info('早盘挂单卖出 {code}({NAME},{INDUSTRY}){deal_pos}股,目标持仓金额:{target_capital}====={trading_date}'.format(
+        QA_util_log_info('市价卖出 {code}({NAME},{INDUSTRY}){deal_pos}股,目标持仓金额:{target_capital}====={trading_date}'.format(
             code=code, NAME=name, INDUSTRY=industry, deal_pos=abs(deal_pos),
             target_capital=target_capital, price=price,
             trading_date=trading_date), ui_log=None)
 
         if test is False:
             e = send_trading_message(account, strategy_id, account_info, code, name, industry, deal_pos,
-                                     direction='SELL', type='LIMIT', priceType=None, price=price, client=client)
+                                     direction='SELL', type='MARKET', priceType=None, price=price, client=client)
         else:
             QA_util_log_info('Test Mode', ui_log=None)
     else:
-        QA_util_log_info('type 参数错误 {type} 必须为 [morning, end]====={trading_date}'.format(
+        QA_util_log_info('type 参数错误 {type} 必须为 [MARKET, LIMIT]====={trading_date}'.format(
             type=type, trading_date=trading_date), ui_log=None)
 
 if __name__ == 'main':

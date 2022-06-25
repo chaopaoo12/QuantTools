@@ -35,7 +35,7 @@ def Sell(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, pric
                 symbol = 'SZSE' + symbol
             message = order_volume(symbol=symbol, volume=int(amount), side=2, order_type=1, position_effect=2, price=price)
     else:
-        QA_util_log_info('Direction 参数错误 type{type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
+        QA_util_log_info('Direction 参数错误 type{type} 必须为 [MARKET, LIMIT]'.format(type=type), ui_log=None)
         message = None
     return(message)
 
@@ -71,7 +71,7 @@ def Buy(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, price
             message = order_volume(symbol=symbol, volume=amount, side=1, order_type=1, position_effect=1, price=price)
     else:
         message = None
-        QA_util_log_info('Direction 参数错误 {type} 必须为 [SELL, LIMIT]'.format(type=type), ui_log=None)
+        QA_util_log_info('Direction 参数错误 {type} 必须为 [MARKET, LIMIT]'.format(type=type), ui_log=None)
     return(message)
 
 def send_trading_message(account1, strategy_id, account_info, code, NAME, INDUSTRY, mark, direction, type, priceType, price, client):

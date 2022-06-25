@@ -40,7 +40,7 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
             SELL(client, account, title, account_info, trading_date,
                  sell_list['code'], sell_list['name'], sell_list['industry'],
                  target_capital=sell_list['target_capital'], close=sell_list['close'],
-                 type='end', test=test)
+                 type='LIMIT', test=test)
 
         for buy_list in signal_data['buy']:
             QA_util_log_info('##JOB Now Start Buying {code} ===== {stm}{msg}'.format(
@@ -53,7 +53,7 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
             BUY(client, account, title, account_info, trading_date,
                 buy_list['code'], buy_list['name'], buy_list['industry'],
                 target_capital=buy_list['target_capital'], close=buy_list['close'],
-                type='end', test=test)
+                type='LIMIT', test=test)
 
         QA_util_log_info('本时段交易完成 ==================== {} {}'.format(
             trading_date, mark_tm), ui_log=None)
