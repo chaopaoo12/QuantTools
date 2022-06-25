@@ -37,11 +37,11 @@ def code_select(buy_list, tmp_list, position, trading_date, mark_tm):
             data_15min = data_15min.sort_index().loc[(stm,)]
 
         QA_util_log_info('##Stock Pool ==================== {}'.format(stm), ui_log=None)
-        QA_util_log_info(data_15min[['RRNG','SKDJ_K_30M','SKDJ_D_30M','SKDJ_K_HR','SKDJ_D_HR']], ui_log=None)
+        QA_util_log_info(data_15min[['RRNG','RRNG_30M','SKDJ_K_30M','SKDJ_D_30M','SKDJ_K_HR','SKDJ_D_HR']], ui_log=None)
 
         QA_util_log_info('##Target Pool ==================== {}'.format(stm), ui_log=None)
-        QA_util_log_info(data_15min[(data_15min.RRNG <= 0.1)][
-                             ['RRNG','SKDJ_K_30M','SKDJ_D_30M','SKDJ_K_HR','SKDJ_D_HR']], ui_log=None)
+        QA_util_log_info(data_15min[(data_15min.RRNG.abs() <= 0.1)|(data_15min.RRNG_30M.abs() <= 0.1)][
+                             ['RRNG','RRNG_30M','SKDJ_K_30M','SKDJ_D_30M','SKDJ_K_HR','SKDJ_D_HR']], ui_log=None)
         buy_list = [i for i in buy_list if i in list(data_15min[(data_15min.RRNG <= 0.1)].index)]
         QA_util_log_info('##Update Buy List ==================== {}'.format(buy_list), ui_log=None)
         tmp_list = buy_list
