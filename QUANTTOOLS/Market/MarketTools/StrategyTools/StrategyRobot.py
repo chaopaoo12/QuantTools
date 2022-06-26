@@ -18,9 +18,6 @@ class StrategyRobotBase:
     # 整合
 
     def __init__(self, strategy):
-        self.target_list = None
-        self.time_list = None
-        self.trading_date = None
         self.strategy = strategy
         self.account = None
         self.exceptions = None
