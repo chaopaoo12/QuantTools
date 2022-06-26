@@ -535,7 +535,7 @@ def QA_fetch_get_index_quant_min(code, start_date, end_date, type='30min'):
         res = QA_fetch_get_index_indicator_realtime(code[0], start_date=start_date, end_date=end_date, type=type)
         return(res)
 
-def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min'):
+def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min', keep = False):
 
     pool = multiprocessing.Pool(15)
 
@@ -543,7 +543,7 @@ def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min'):
     while k <= 5:
         try:
             with pool as p:
-                res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type=type), code)
+                res = p.map(partial(QA_fetch_get_stock_indicator_realtime, start_date=start_date, end_date=end_date, type=type, keep=keep), code)
             QA_util_log_info('##JOB QA_fetch_get_stock_quant_min finish with {k} times  ===================='.format(k=k), ui_log=None)
             break
         except:

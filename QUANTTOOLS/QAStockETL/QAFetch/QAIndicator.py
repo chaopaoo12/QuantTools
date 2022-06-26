@@ -253,7 +253,7 @@ def function1(a, b):
     else:
         return 0
 
-def get_indicator(data, type='day'):
+def get_indicator(data, type='day', keep = False):
     try:
         # todo
         #A.低价区域：70~40——为可买进区域
@@ -923,9 +923,13 @@ def get_indicator(data, type='day'):
         res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
         res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
         res = res.set_index(['datetime','code']).dropna(how='all')
+
+    if keep is True:
+        res[['open','high','low','close','volume']] = data[['open','high','low','close','volume']]
+
     return(res)
 
-def get_indicator_short(data, type='day'):
+def get_indicator_short(data, type='day', keep=False):
 
     #try:
     #    BOLL = data.add_func(QA_indicator_BOLL)
@@ -1127,6 +1131,10 @@ def get_indicator_short(data, type='day'):
         res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
         res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
         res = res.set_index(['datetime','code']).dropna(how='all')
+
+    if keep is True:
+        res[['open','high','low','close','volume']] = data[['open','high','low','close','volume']]
+
     return(res)
 
 def get_LLV(data, type='day'):
@@ -1155,6 +1163,7 @@ def get_LLV(data, type='day'):
         res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
         res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
         res = res.set_index(['datetime','code']).dropna(how='all')
+
     return(res)
 
 def get_LLValue(data, type='day'):

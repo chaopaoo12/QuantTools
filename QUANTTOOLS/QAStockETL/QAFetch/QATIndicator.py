@@ -378,7 +378,7 @@ def QA_fetch_get_index_indicator_short(code, start_date, end_date, type = 'day')
         data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
 
-def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'day'):
+def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'day', keep=False):
 
     if type == '15min':
         period = '15'
@@ -404,7 +404,7 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
     if data is None:
         return None
     else:
-        data = get_indicator(data, type)
+        data = get_indicator(data, type, keep)
         data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]]
         #if type in ['15min','30min','min','hour']:
         #    data = data[data.date.isin(rng1)]
