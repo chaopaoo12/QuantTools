@@ -29,6 +29,7 @@ def trading_sim(trading_date, working_dir=working_dir):
     strategy.set_percent_func()
 
     robot = StrategyRobotBase(strategy)
+    robot.set_strategy()
     robot.set_account(strategy_id)
     robot.get_account(trading_setting)
 
@@ -50,18 +51,19 @@ def trading_new(trading_date, working_dir=working_dir):
         code_list = None
 
     time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
+    time_index = on_bar('09:30:00', '15:00:00', 30, [['11:30:00', '13:00:00']])
 
-    robot = StrategyRobotBase(code_list, time_list, trading_date)
-    robot.set_account(strategy_id)
-
-    strategy = StrategyBase(buy_list=code_list, base_percent=1, trading_date=trading_date)
-    strategy.set_codsel_func(code_select)
-    strategy.set_signal_func(signal)
+    strategy = StrategyBase(target_list=code_list, base_percent=1, trading_date=trading_date)
+    strategy.set_codsel_func(code_select, time_index)
+    strategy.set_signal_func(signal, time_list)
     strategy.set_balance_func(balance)
     strategy.set_percent_func()
 
-    robot.set_strategy(strategy)
-    robot.get_account()
+    robot = StrategyRobotBase(strategy)
+    robot.set_strategy()
+    robot.set_account(strategy_id)
+    robot.get_account(trading_setting)
+
     robot.run(test=False)
 
 
@@ -69,20 +71,20 @@ def tracking_new(trading_date):
 
     code_list = None
 
-    #[i.strftime('%H:%M:%S') for i in pd.date_range(start='2019-01-09 09:30:00',end = '2019-01-09 15:00:00',freq='5T')]
     time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
+    time_index = on_bar('09:30:00', '15:00:00', 30, [['11:30:00', '13:00:00']])
 
-    robot = StrategyRobotBase(code_list, time_list, trading_date)
-    robot.set_account(strategy_id)
-
-    strategy = StrategyBase()
-    strategy.set_signal_func(tracking_signal)
-    strategy.set_balance_func(track_balance)
+    strategy = StrategyBase(target_list=code_list, base_percent=1, trading_date=trading_date)
+    strategy.set_codsel_func(code_select, time_index)
+    strategy.set_signal_func(signal, time_list)
+    strategy.set_balance_func(balance)
     strategy.set_percent_func()
 
-    robot.set_strategy(strategy)
-    robot.ckeck_market_open()
-    robot.get_account()
+    robot = StrategyRobotBase(strategy)
+    robot.set_strategy()
+    robot.set_account(strategy_id)
+    robot.get_account(trading_setting)
+
     robot.run(test=True)
 
 
