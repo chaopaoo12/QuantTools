@@ -94,7 +94,7 @@ class StrategyRobotBase:
         else:
             pass
 
-        account_info = self.client.get_account(self.account)
+        account_info = self.client.client.get_account(self.account)
         # init add data
 
         # strategy body
