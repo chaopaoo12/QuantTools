@@ -17,11 +17,11 @@ def prepare_strategy(strategy, args_dict: dict):
 class StrategyRobotBase:
     # 整合
 
-    def __init__(self, code_list, time_list, trading_date):
-        self.code_list = code_list
-        self.time_list = time_list
-        self.trading_date = trading_date
-        self.strategy = None
+    def __init__(self, strategy):
+        self.target_list = None
+        self.time_list = None
+        self.trading_date = None
+        self.strategy = strategy
         self.account = None
         self.exceptions = None
         self.strategy_id = None
@@ -66,8 +66,10 @@ class StrategyRobotBase:
                                  token=token,server=server,account=account,name=name)
 
 
-    def set_strategy(self, strategy):
-        self.strategy = strategy
+    def set_strategy(self):
+        self.time_list = self.strategy.signaltime_list
+        self.target_list = self.strategy.target_list
+        self.trading_date = self.strategy.trading_date
 
     def ckeck_market_open(self):
         open_check(self.trading_date)
@@ -95,24 +97,12 @@ class StrategyRobotBase:
         else:
             pass
 
-        if self.code_list is None:
-            self.code_list = []
-
-        self.tmp_list = None
-
-        QA_util_log_info('##Code List ==== {}'.format(str(self.trading_date)), ui_log=None)
-        QA_util_log_info(self.code_list, ui_log=None)
-
         account_info = self.client.get_account(self.account)
         # init add data
 
         # strategy body
-        self.strategy = prepare_strategy(self.strategy, {'buy_list': self.code_list,
-                                                         'trading_date': self.trading_date,
-                                                         'position': positions,
+        self.strategy = prepare_strategy(self.strategy, {'position': positions,
                                                          'sub_account': sub_accounts,
-                                                         'base_percent': self.percent,
-                                                         'tmp_list': self.tmp_list
                                                          })
 
         # first time check before 15

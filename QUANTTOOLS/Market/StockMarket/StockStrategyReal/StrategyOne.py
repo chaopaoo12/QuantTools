@@ -10,42 +10,44 @@ import time
 import pandas as pd
 
 
-def code_select(buy_list, tmp_list, position, trading_date, mark_tm):
-    time_index = on_bar('09:30:00', '15:00:00', 30, [['11:30:00', '13:00:00']])
+def code_select(target_list, buy_list, position, trading_date, mark_tm):
 
-    if buy_list is None:
-        buy_list = []
+
+    if target_list is None:
+        target_list = []
 
     if position is not None and position.shape[0] > 0:
-        code_list = buy_list + position.code.tolist()
+        code_list = target_list + position.code.tolist()
     else:
-        code_list = list(set(buy_list))
+        code_list = list(set(target_list))
 
-    if mark_tm in time_index + ['09:31:00'] or tmp_list is None:
-        QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
-            mark_tm), ui_log=None)
-        #if time_check_before('09:35:00') is True:
-        a = get_on_time(mark_tm, time_index)
-        if a == '15:00:00':
-            stm = QA_util_get_pre_trade_date(trading_date, 1) + ' ' + a
-        else:
-            stm = trading_date + ' ' + a
+    QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
+        mark_tm), ui_log=None)
+    #if time_check_before('09:35:00') is True:
+    if mark_tm == '09:30:00':
+        stm = QA_util_get_pre_trade_date(trading_date, 1) + ' ' + '15:00:00'
+    else:
+        stm = trading_date + ' ' + mark_tm
 
-        data_15min = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date,10),
-                                          trading_date, code_list, type='real')
-        if data_15min is not None:
-            data_15min = data_15min.sort_index().loc[(stm,)]
+    data_15min = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date,10),
+                                      trading_date, code_list, type='real')
+    if data_15min is not None:
+        data_15min = data_15min.sort_index().loc[(stm,)]
 
-        QA_util_log_info('##Stock Pool ==================== {}'.format(stm), ui_log=None)
-        QA_util_log_info(data_15min[['RRNG_HR','RRNG_30M','CLOSE_HR','MIN_V_HR','CLOSE_30M','MIN_V_30M','MA5_HR','MA10_HR','MA20_HR','MA60_HR',
-                                     'MA5_30M','MA10_30M','MA20_30M','MA60_30M']], ui_log=None)
+    QA_util_log_info('##Stock Pool ==================== {}'.format(stm), ui_log=None)
+    QA_util_log_info(data_15min[['RRNG_HR','RRNG_30M','CLOSE_HR','MIN_V_HR','MAX_V_HR','CLOSE_30M','MIN_V_30M',
+                                 'MAX_V_30M','MA5_HR','MA10_HR','MA20_HR','MA60_HR',
+                                 'MA5_30M','MA10_30M','MA20_30M','MA60_30M']], ui_log=None)
 
-        QA_util_log_info('##Target Pool ==================== {}'.format(stm), ui_log=None)
-        QA_util_log_info(data_15min[(data_15min.CLOSE_30M <= data_15min.MIN_V_30M)&(data_15min.CLOSE_HR <= data_15min.MIN_V_HR)][
-                             ['RRNG_HR','RRNG_30M','CLOSE_HR','MIN_V_HR','CLOSE_30M','MIN_V_30M','MA5_HR','MA10_HR','MA20_HR','MA60_HR',
-                              'MA5_30M','MA10_30M','MA20_30M','MA60_30M']], ui_log=None)
-        tmp_list = data_15min[(data_15min.CLOSE_30M <= data_15min.MIN_V_30M)&(data_15min.CLOSE_HR <= data_15min.MIN_V_HR)]
-    return(tmp_list)
+    QA_util_log_info('##Target Pool ==================== {}'.format(stm), ui_log=None)
+    QA_util_log_info(data_15min[(data_15min.CLOSE_30M <= data_15min.MIN_V_30M)&(data_15min.CLOSE_30M <= data_15min.MIN_V_HR)][
+                         ['RRNG_HR','RRNG_30M','CLOSE_HR','MIN_V_HR','MAX_V_HR','CLOSE_30M','MIN_V_30M',
+                          'MAX_V_30M','MA5_HR','MA10_HR','MA20_HR','MA60_HR',
+                          'MA5_30M','MA10_30M','MA20_30M','MA60_30M']], ui_log=None)
+    buy_list = list(set(data_15min[(data_15min.CLOSE_30M <= data_15min.MIN_V_30M)&(data_15min.CLOSE_30M <= data_15min.MIN_V_HR)].index))
+
+    return(buy_list, data_15min)
+
 
 
 def signal(buy_list, tmp_list, position, trading_date, mark_tm):
@@ -88,7 +90,7 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
         price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
         source_data = source_data\
             .reset_index().set_index(['date','code']).join(close) \
-            .reset_index().set_index(['code']).join(tmp_list[['CLOSE_30M','MIN_V_30M','CLOSE_HR','MIN_V_HR']]) \
+            .reset_index().set_index(['code']).join(tmp_list[['CLOSE_30M','MIN_V_30M','MAX_V_30M','CLOSE_HR','MIN_V_HR','MAX_V_HR']]) \
             .reset_index().set_index(['datetime','code']).join(price)
 
         data = source_data.sort_index().loc[(stm),]
@@ -113,15 +115,10 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
                             code = [str(i) for i in data.reset_index().code])
 
         if time_check_after('09:35:00') is True:
-            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= 0.02) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close),
+            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_30M > data.CLOSE_30M) & (data.MIN_V_HR > data.CLOSE_30M),
                      "signal"] = 1
-            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= 0.02) & (data.CLOSE_K > 0) & (data.VAMP > data.yes_close),
-                     "msg"] = '水线上VMAP金叉'
-
-            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K > 0) & (data.yes_close > data.VAMP),
-                     "signal"] = 1
-            data.loc[(data.VAMP_JC == 1) & (data.VAMP_K >= -0.03) & (data.CLOSE_K > 0) & (data.yes_close > data.VAMP),
-                     "msg"] = '水线下VMAP金叉'
+            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_30M > data.CLOSE_30M) & (data.MIN_V_HR > data.CLOSE_30M),
+                     "msg"] = 'VMAP金叉'
 
             data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.VAMP > data.yes_close),
                      "signal"] = 0

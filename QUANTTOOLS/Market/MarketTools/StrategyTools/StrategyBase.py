@@ -3,8 +3,8 @@ import time
 
 class StrategyBase:
 
-    def __init__(self, buy_list=None, position=None, sub_account=None, base_percent=None, trading_date=None):
-        self.buy_list = buy_list
+    def __init__(self, target_list=None, position=None, sub_account=None, base_percent=None, trading_date=None):
+        self.target_list = target_list
         self.trading_date = trading_date
         self.position = position
         self.sub_account = sub_account
@@ -12,13 +12,16 @@ class StrategyBase:
         self.signal_func = None
         self.balance_func = None
         self.percent_func = None
-        self.tmp_list = None
+        self.buy_list = None
+        self.tmp_data = None
 
-    def set_signal_func(self, func):
+    def set_signal_func(self, func, signaltime_list=None):
         self.signal_func = func
+        self.signaltime_list = signaltime_list
 
-    def set_codsel_func(self, func=None):
+    def set_codsel_func(self, func=None, codseltime_list=None):
         self.codsel_func = func
+        self.codseltime_list = codseltime_list
 
     def set_balance_func(self, func):
         self.balance_func = func
@@ -29,16 +32,17 @@ class StrategyBase:
     def code_select(self, mark_tm):
         QA_util_log_info('##JOB Refresh Tmp Code List  ==== {}'.format(mark_tm), ui_log= None)
         if self.codsel_func is not None:
-            self.tmp_list = self.codsel_func(self.buy_list, self.tmp_list, self.position, self.trading_date, mark_tm)
+            self.buy_list, self.tmp_data = self.codsel_func(self.target_list, self.buy_list, self.position, self.trading_date, mark_tm)
         else:
-            self.tmp_list = None
+            self.buy_list = None
+            self.tmp_data = None
 
     def signal_run(self, mark_tm):
-        return self.signal_func(self.buy_list, self.tmp_list, self.position, self.trading_date, mark_tm)
+        return self.signal_func(self.target_list, self.buy_list, self.position, self.trading_date, mark_tm)
 
     def percent_run(self, mark_tm):
         if self.percent_func is not None:
-            return self.percent_func(self.buy_list, self.position, self.trading_date, mark_tm)
+            return self.percent_func(self.target_list, self.buy_list, self.position, self.trading_date, mark_tm)
         else:
             return self.base_percent
 
@@ -49,39 +53,41 @@ class StrategyBase:
 
         QA_util_log_info('##JOB Now Start Trading ==== {}'.format(mark_tm), ui_log= None)
 
-        QA_util_log_info('JOB Selct Code List ==================== {}'.format(mark_tm), ui_log=None)
-        k = 0
-        while k <= 2:
-            QA_util_log_info('JOB Selct Code List {x} times ==================== '.format(x=k+1), ui_log=None)
-            try:
-                self.code_select(mark_tm)
-                QA_util_log_info('JOB Selct Code List Done ==================== ', ui_log=None)
-                break
-            except:
-                k += 1
+        if mark_tm in self.codseltime_list:
+            QA_util_log_info('JOB Selct Code List ==================== {}'.format(mark_tm), ui_log=None)
+            k = 0
+            while k <= 2:
+                QA_util_log_info('JOB Selct Code List {x} times ==================== '.format(x=k+1), ui_log=None)
+                try:
+                    self.code_select(mark_tm)
+                    QA_util_log_info('JOB Selct Code List Done ==================== ', ui_log=None)
+                    break
+                except:
+                    k += 1
 
-        QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(
-            mark_tm), ui_log=None)
-        k = 0
-        while k <= 2:
-            QA_util_log_info('JOB Get Trading Signal {x} times ==================== '.format(x=k+1), ui_log=None)
-            data = self.signal_run(mark_tm)
-            if data is None and self.buy_list is not None:
-                time.sleep(5)
-                k += 1
-            else:
-                break
+        if mark_tm in self.signaltime_list:
+            QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(
+                mark_tm), ui_log=None)
+            k = 0
+            while k <= 2:
+                QA_util_log_info('JOB Get Trading Signal {x} times ==================== '.format(x=k+1), ui_log=None)
+                data = self.signal_run(mark_tm)
+                if data is None and self.buy_list is not None:
+                    time.sleep(5)
+                    k += 1
+                else:
+                    break
 
-        QA_util_log_info('JOB Init Capital Percent ==================== {}'.format(mark_tm), ui_log=None)
-        percent = self.percent_run(mark_tm)
+            QA_util_log_info('JOB Init Capital Percent ==================== {}'.format(mark_tm), ui_log=None)
+            percent = self.percent_run(mark_tm)
 
-        QA_util_log_info('JOB Balance Stock Capital ==================== {}'.format(mark_tm), ui_log=None)
-        balance_data = self.balance_run(data, percent)
+            QA_util_log_info('JOB Balance Stock Capital ==================== {}'.format(mark_tm), ui_log=None)
+            balance_data = self.balance_run(data, percent)
 
-        QA_util_log_info('JOB Return Signal Data ==================== {}'.format(mark_tm), ui_log=None)
-        signal_data = build_info(balance_data)
+            QA_util_log_info('JOB Return Signal Data ==================== {}'.format(mark_tm), ui_log=None)
+            signal_data = build_info(balance_data)
 
-        return(signal_data)
+            return(signal_data)
 
 
 def build_info(data):
