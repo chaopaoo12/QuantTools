@@ -44,9 +44,7 @@ def code_select(buy_list, tmp_list, position, trading_date, mark_tm):
         QA_util_log_info(data_15min[(data_15min.CLOSE_30M <= data_15min.MIN_V_30M)&(data_15min.CLOSE_HR <= data_15min.MIN_V_HR)][
                              ['RRNG_HR','RRNG_30M','CLOSE_HR','MIN_V_HR','CLOSE_30M','MIN_V_30M','MA5_HR','MA10_HR','MA20_HR','MA60_HR',
                               'MA5_30M','MA10_30M','MA20_30M','MA60_30M']], ui_log=None)
-        buy_list = [i for i in buy_list if i in list(data_15min[(data_15min.CLOSE_30M <= data_15min.MIN_V_30M)&(data_15min.CLOSE_HR <= data_15min.MIN_V_HR)].index)]
-        QA_util_log_info('##Update Buy List ==================== {}'.format(buy_list), ui_log=None)
-        tmp_list = buy_list
+        tmp_list = data_15min[(data_15min.CLOSE_30M <= data_15min.MIN_V_30M)&(data_15min.CLOSE_HR <= data_15min.MIN_V_HR)]
     return(tmp_list)
 
 
@@ -63,10 +61,10 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
         buy_list = []
 
     if position is not None and position.shape[0] > 0:
-        code_list = list(set(tmp_list + position.code.tolist()))
+        code_list = list(set(list(tmp_list.index) + position.code.tolist()))
         #tmp_list = list(set(tmp_list + position.code.tolist()))
     else:
-        code_list = list(set(tmp_list))
+        code_list = list(set(tmp_list.index))
 
     # check data time 在某时某刻之后获准获取数据
     while time_check_before(mark_tm):
@@ -88,7 +86,10 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
     if source_data is not None:
         close = pd.DataFrame(source_data.groupby(['date','code'])['day_close'].apply(lambda x: x[-1])).rename({'day_close':'yes_close'}, axis='columns').groupby(['code'])['yes_close'].shift()
         price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
-        source_data = source_data.reset_index().set_index(['date','code']).join(close).reset_index().set_index(['datetime','code']).join(price)
+        source_data = source_data\
+            .reset_index().set_index(['date','code']).join(close) \
+            .reset_index().set_index(['code']).join(tmp_list[['CLOSE_30M','MIN_V_30M','CLOSE_HR','MIN_V_HR']]) \
+            .reset_index().set_index(['datetime','code']).join(price)
 
         data = source_data.sort_index().loc[(stm),]
         QA_util_log_info('##JOB Finished Trading Signal ==================== {}'.format(
