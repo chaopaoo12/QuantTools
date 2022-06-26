@@ -45,9 +45,7 @@ def code_select(target_list, buy_list, position, trading_date, mark_tm):
                           'MAX_V_30M','MA5_HR','MA10_HR','MA20_HR','MA60_HR',
                           'MA5_30M','MA10_30M','MA20_30M','MA60_30M']], ui_log=None)
     buy_list = list(set(data_15min[(data_15min.CLOSE_30M <= data_15min.MIN_V_30M)&(data_15min.CLOSE_30M <= data_15min.MIN_V_HR)].index))
-
     return(buy_list, data_15min)
-
 
 
 def signal(buy_list, tmp_list, position, trading_date, mark_tm):
