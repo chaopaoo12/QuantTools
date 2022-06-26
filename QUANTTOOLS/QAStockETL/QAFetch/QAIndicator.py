@@ -925,7 +925,7 @@ def get_indicator(data, type='day', keep = False):
         res = res.set_index(['datetime','code']).dropna(how='all')
 
     if keep is True:
-        res = res.join(data[['open','high','low','close','volume']])
+        res = res.join(data.data[['open','high','low','close','volume']])
 
     return(res)
 
@@ -1133,7 +1133,7 @@ def get_indicator_short(data, type='day', keep=False):
         res = res.set_index(['datetime','code']).dropna(how='all')
 
     if keep is True:
-        res = res.join(data[['open','high','low','close','volume']])
+        res = res.join(data.data[['open','high','low','close','volume']])
 
     return(res)
 
