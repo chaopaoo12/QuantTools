@@ -63,7 +63,7 @@ class StrategyBase:
             mark_tm = get_on_time(tm, self.codseltime_list)
             if mark_tm == '15:00:00':
                 mark_tm = self.codseltime_list[0]
-            QA_util_log_info('##JOB Now Init Mark Time ==== {}'.format(str(mark_tm)), ui_log=None)
+            QA_util_log_info('##JOB Now Init Codselt Mark Time ==== {}'.format(str(mark_tm)), ui_log=None)
 
             QA_util_log_info('JOB Selct Code List ==================== {}'.format(mark_tm), ui_log=None)
             k = 0
