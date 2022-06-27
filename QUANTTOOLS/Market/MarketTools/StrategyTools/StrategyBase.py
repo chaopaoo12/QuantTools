@@ -51,7 +51,7 @@ class StrategyBase:
     def balance_run(self, signal_data, percent):
         return self.balance_func(signal_data, self.position, self.sub_account, percent)
 
-    def strategy_run(self, mark_tm, start_status):
+    def strategy_run(self, mark_tm):
 
         QA_util_log_info('##JOB Now Start Trading ==== {}'.format(mark_tm), ui_log= None)
 
