@@ -15,6 +15,9 @@ class Proxy_client():
     def __init__(self, client, type, **kwargs):
         self.client = client
         self.type = type
+        for k, v in kwargs.items():
+            QA_util_log_info('{} : {}'.format(k, v))
+            setattr(self, k, v)
 
 def get_Account(client, account=None):
     if client.type == 'yun_ease':
