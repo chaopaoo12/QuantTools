@@ -158,12 +158,15 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
         data.loc[data.code.isin([i for i in code_list if i not in buy_list]) & (data.signal.isin([1])), 'signal'] = None
         #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
         #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
-        QA_util_log_info(data[['RRNG','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE','close','up_price','signal','msg']], ui_log=None)
+        QA_util_log_info(data[['RRNG_HR','RRNG_30M','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE',
+                               'close','MIN_V_30M','MIN_V_HR','MAX_V_30M','MAX_V_HR','up_price','signal','msg']], ui_log=None)
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 1][['RRNG','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE','close','up_price','signal','msg']], ui_log=None)
+        QA_util_log_info(data[data.signal == 1][['RRNG_HR','RRNG_30M','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE',
+                                                 'close','MIN_V_30M','MIN_V_HR','MAX_V_30M','MAX_V_HR','up_price','signal','msg']], ui_log=None)
 
         QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 0][['RRNG','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE','close','up_price','signal','msg']], ui_log=None)
+        QA_util_log_info(data[data.signal == 0][['RRNG_HR','RRNG_30M','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE',
+                                                 'close','MIN_V_30M','MIN_V_HR','MAX_V_30M','MAX_V_HR','up_price','signal','msg']], ui_log=None)
 
         # 方案2
         #data['signal'] = None
