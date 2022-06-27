@@ -1,5 +1,7 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
+from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, close_check, suspend_check, get_on_time,time_check_before, check_market_time,time_check_after
 import time
+import datetime
 
 class StrategyBase:
 
@@ -32,7 +34,7 @@ class StrategyBase:
     def code_select(self, mark_tm):
         QA_util_log_info('##JOB Refresh Tmp Code List  ==== {}'.format(mark_tm), ui_log= None)
         if self.codsel_func is not None:
-            self.buy_list, self.tmp_data = self.codsel_func(self.target_list, self.buy_list, self.position, self.trading_date, mark_tm)
+            self.buy_list, self.tmp_data = self.codsel_func(self.target_list, self.position, self.trading_date, mark_tm)
         else:
             self.buy_list = None
             self.tmp_data = None
@@ -49,11 +51,20 @@ class StrategyBase:
     def balance_run(self, signal_data, percent):
         return self.balance_func(signal_data, self.position, self.sub_account, percent)
 
-    def strategy_run(self, mark_tm):
+    def strategy_run(self, mark_tm, start_status):
 
         QA_util_log_info('##JOB Now Start Trading ==== {}'.format(mark_tm), ui_log= None)
 
-        if mark_tm in self.codseltime_list:
+        if mark_tm in self.codseltime_list or start_status == True:
+
+            # init codseltime
+            self.start_status = True
+            tm = datetime.datetime.now().strftime("%H:%M:%S")
+            mark_tm = get_on_time(tm, self.codseltime_list)
+            if mark_tm == '15:00:00':
+                mark_tm = self.codseltime_list[0]
+            QA_util_log_info('##JOB Now Init Mark Time ==== {}'.format(str(mark_tm)), ui_log=None)
+
             QA_util_log_info('JOB Selct Code List ==================== {}'.format(mark_tm), ui_log=None)
             k = 0
             while k <= 2:
