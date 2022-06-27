@@ -87,7 +87,7 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
         price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
         source_data = source_data\
             .reset_index().set_index(['date','code']).join(close) \
-            .reset_index().set_index(['code']).join(tmp_data[['CLOSE_30M','MIN_V_30M','MAX_V_30M','CLOSE_HR','MIN_V_HR','MAX_V_HR']]) \
+            .reset_index().set_index(['code']).join(tmp_data[['MIN_V_30M','MAX_V_30M','MIN_V_HR','MAX_V_HR']]) \
             .reset_index().set_index(['datetime','code']).join(price)
 
         data = source_data.sort_index().loc[(stm),]
