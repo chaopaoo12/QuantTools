@@ -16,6 +16,18 @@ class Proxy_client():
         self.client = client
         self.type = type
 
+def get_Account(client, account=None):
+    if client.type == 'yun_ease':
+        name = client.client.get_account(account)
+        return(name)
+    elif client.type == 'local':
+        name = client.name
+        return(name)
+    elif client.type == 'sim_myquant':
+        return(client.name)
+    else:
+        pass
+
 def get_Client(type='yun_ease',**kwargs):
     if type == 'yun_ease':
         logging.basicConfig(level=logging.DEBUG)
@@ -34,7 +46,7 @@ def get_Client(type='yun_ease',**kwargs):
         gmtrade.api.set_endpoint(kwargs['server'])
         account = gmtrade.api.account(account_id=kwargs['account'], account_alias=kwargs['name'])
         gmtrade.api.login(account)
-        client = Proxy_client(account, type=type)
+        client = Proxy_client(account, type=type, name=kwargs['name'])
     else:
         QA_util_log_info(
             '##JOB Now Get Account Server Failed')

@@ -25,6 +25,9 @@ class StrategyRobotBase:
         self.percent = None
         self.trader_path = None
         self.client = None
+        self.time_list = None
+        self.target_list = None
+        self.trading_date = None
 
     def set_account(self, strategy_id):
         self.account = strategy_id['account']
@@ -61,7 +64,6 @@ class StrategyRobotBase:
         self.client = get_Client(type,
                                  trader_path=trader_path,host=host,port=port,key=key,
                                  token=token,server=server,account=account,name=name)
-
 
     def set_strategy(self):
         self.time_list = self.strategy.signaltime_list
