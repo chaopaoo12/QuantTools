@@ -10,8 +10,7 @@ import time
 import pandas as pd
 
 
-def code_select(target_list, buy_list, position, trading_date, mark_tm):
-
+def code_select(target_list, position, trading_date, mark_tm):
 
     if target_list is None:
         target_list = []
@@ -19,7 +18,7 @@ def code_select(target_list, buy_list, position, trading_date, mark_tm):
     if position is not None and position.shape[0] > 0:
         code_list = target_list + position.code.tolist()
     else:
-        code_list = list(set(target_list))
+        code_list = target_list
 
     QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
         mark_tm), ui_log=None)
@@ -48,7 +47,7 @@ def code_select(target_list, buy_list, position, trading_date, mark_tm):
     return(buy_list, data_15min)
 
 
-def signal(buy_list, tmp_list, position, trading_date, mark_tm):
+def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
 
     # 计算信号 提供基础信息 example
     # 输出1 signal 计划持有的code 目前此方案 1:表示持有 0:表示不持有
@@ -61,10 +60,10 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
         buy_list = []
 
     if position is not None and position.shape[0] > 0:
-        code_list = list(set(list(tmp_list.index) + position.code.tolist()))
+        code_list = list(set(list(target_list.index) + position.code.tolist()))
         #tmp_list = list(set(tmp_list + position.code.tolist()))
     else:
-        code_list = list(set(tmp_list.index))
+        code_list = list(set(target_list.index))
 
     # check data time 在某时某刻之后获准获取数据
     while time_check_before(mark_tm):
@@ -88,7 +87,7 @@ def signal(buy_list, tmp_list, position, trading_date, mark_tm):
         price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
         source_data = source_data\
             .reset_index().set_index(['date','code']).join(close) \
-            .reset_index().set_index(['code']).join(tmp_list[['CLOSE_30M','MIN_V_30M','MAX_V_30M','CLOSE_HR','MIN_V_HR','MAX_V_HR']]) \
+            .reset_index().set_index(['code']).join(tmp_data[['CLOSE_30M','MIN_V_30M','MAX_V_30M','CLOSE_HR','MIN_V_HR','MAX_V_HR']]) \
             .reset_index().set_index(['datetime','code']).join(price)
 
         data = source_data.sort_index().loc[(stm),]
