@@ -19,7 +19,7 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
 
     # cancel last mark action
     if signal_data is not None:
-        if client.type == '':
+        if client.type in ['yun_ease','loacl']:
             client.cancel_all(account)
         elif client.type == 'sim_myquant':
             order_cancel_all()
@@ -35,7 +35,7 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
                 code=sell_list['code'], name=sell_list['name'], stm=mark_tm, msg=sell_list['msg']),
                               '卖出信号', direction='SELL', offset=mark_tm, volume=None)
             # sell
-            if client.type == '':
+            if client.type in ['yun_ease','loacl']:
                 client.cancel_all(account)
             elif client.type == 'sim_myquant':
                 order_cancel_all()
