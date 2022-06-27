@@ -1,6 +1,6 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
-from QUANTTOOLS.Trader.account_manage.base_func.Client import get_Client,check_Client
+from QUANTTOOLS.Trader.account_manage.base_func.Client import get_Client,check_Client,get_Account
 import time
 import datetime
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, close_check, suspend_check, get_on_time,time_check_before, check_market_time,time_check_after
@@ -96,7 +96,7 @@ class StrategyRobotBase:
         else:
             pass
 
-        account_info = self.client.client.get_account(self.account)
+        account_info = get_Account(self.client, self.account)
         # init add data
 
         # strategy body
