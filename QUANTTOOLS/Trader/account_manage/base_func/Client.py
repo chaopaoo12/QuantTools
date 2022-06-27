@@ -68,9 +68,9 @@ def get_AllCapital(client, account=None):
         pass
 
 def get_Position(client, account=None):
-    if client.type == 'yun_ease':
-        positions = pd.DataFrame(client.position)
-    elif client.type == 'online':
+    if client.type == 'local':
+        positions = pd.DataFrame(client.client.position)
+    elif client.type == 'yun_ease':
         positions = client.get_positions(account)['positions'][['证券代码','证券名称','市值','股票余额','可用余额','冻结数量','参考盈亏','盈亏比例(%)']]
     elif client.type == 'sim_myquant':
         positions = gmtrade.api.get_positions(client.client)
