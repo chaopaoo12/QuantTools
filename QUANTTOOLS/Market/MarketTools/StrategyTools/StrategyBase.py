@@ -34,7 +34,10 @@ class StrategyBase:
     def code_select(self, mark_tm):
         QA_util_log_info('##JOB Refresh Tmp Code List  ==== {}'.format(mark_tm), ui_log= None)
         if self.codsel_func is not None:
-            self.buy_list, self.tmp_data = self.codsel_func(self.target_list, self.position, self.trading_date, mark_tm)
+            self.buy_list, self.tmp_data = self.codsel_func(target_list = self.target_list,
+                                                            position =self.position,
+                                                            trading_date = self.trading_date,
+                                                            mark_tm=mark_tm)
         else:
             self.buy_list = None
             self.tmp_data = None
