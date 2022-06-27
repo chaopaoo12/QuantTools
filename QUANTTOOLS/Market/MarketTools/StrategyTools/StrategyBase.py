@@ -55,7 +55,7 @@ class StrategyBase:
 
         QA_util_log_info('##JOB Now Start Trading ==== {}'.format(mark_tm), ui_log= None)
 
-        if mark_tm in self.codseltime_list or start_status == True:
+        if mark_tm in self.codseltime_list or self.tmp_data is None:
 
             # init codseltime
             self.start_status = True

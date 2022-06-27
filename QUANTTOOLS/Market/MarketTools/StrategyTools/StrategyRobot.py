@@ -78,7 +78,6 @@ class StrategyRobotBase:
         QA_util_log_info('##JOB Now Check Timing ==== {}'.format(str(self.trading_date)), ui_log=None)
 
         # init tm
-        self.start_status = True
         tm = datetime.datetime.now().strftime("%H:%M:%S")
         mark_tm = get_on_time(tm, self.time_list)
         if mark_tm == '15:00:00':
@@ -125,7 +124,7 @@ class StrategyRobotBase:
 
             # prepare signal.
 
-            signal_data = self.strategy.strategy_run(mark_tm, start_status=self.start_status)
+            signal_data = self.strategy.strategy_run(mark_tm)
             self.start_status = False
             QA_util_log_info('##Sell List ==== {}'.format(str(self.trading_date)), ui_log=None)
             QA_util_log_info(signal_data['sell'], ui_log=None)
