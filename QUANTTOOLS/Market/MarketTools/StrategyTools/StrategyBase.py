@@ -43,11 +43,20 @@ class StrategyBase:
             self.tmp_data = None
 
     def signal_run(self, mark_tm):
-        return self.signal_func(self.target_list, self.buy_list, self.position, self.trading_date, mark_tm)
+        return self.signal_func(target_list = self.target_list,
+                                buy_list = self.buy_list,
+                                position = self.position,
+                                tmp_data = self.tmp_data,
+                                trading_date = self.trading_date,
+                                mark_tm = mark_tm)
 
     def percent_run(self, mark_tm):
         if self.percent_func is not None:
-            return self.percent_func(self.target_list, self.buy_list, self.position, self.trading_date, mark_tm)
+            return self.percent_func(target_list = self.target_list,
+                                     buy_list = self.buy_list,
+                                     position = self.position,
+                                     trading_date = self.trading_date,
+                                     mark_tm = mark_tm)
         else:
             return self.base_percent
 
