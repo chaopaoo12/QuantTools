@@ -121,15 +121,15 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
             data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close),
                      "msg"] = 'VMAP金叉'
 
-            #底部追涨
-            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close), "signal"] = 1
-            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close), "msg"] = '追涨:VMAP上升通道'
-
             #超跌
             data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close),
                      "signal"] = 1
             data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close),
                      "msg"] = 'VMAP超跌'
+
+            #底部追涨
+            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close), "signal"] = 1
+            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close), "msg"] = '追涨:VMAP上升通道'
 
             #顶部死叉
             data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.close * k_per > data.MAX_V_30M) & (data.close * k_per > data.MAX_V_HR),
