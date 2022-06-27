@@ -60,10 +60,10 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
         buy_list = []
 
     if position is not None and position.shape[0] > 0:
-        code_list = list(set(list(target_list.index) + position.code.tolist()))
+        code_list = list(set(list(target_list) + position.code.tolist()))
         #tmp_list = list(set(tmp_list + position.code.tolist()))
     else:
-        code_list = list(set(target_list.index))
+        code_list = list(set(target_list))
 
     # check data time 在某时某刻之后获准获取数据
     while time_check_before(mark_tm):
