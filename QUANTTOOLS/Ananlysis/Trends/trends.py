@@ -13,7 +13,8 @@ def btc_daily(BTC):
     per25 = day.iloc[-1:]['per25'].values[0]
     per75 = day.iloc[-1:]['per75'].values[0]
     perc = day.iloc[-1:]['perc'].values[0]
-    return(day_check, week_check, incr, incrs, incr5,incr15,mean,per25,per75,perc)
+    percs = day.iloc[-1:]['percs'].values[0]
+    return(day_check, week_check, incr, incrs, incr5,incr15,mean,per25,per75,perc,percs)
 
 def money_daily(MONEY, date):
     day, week = trends_money(MONEY, date)
@@ -27,7 +28,8 @@ def money_daily(MONEY, date):
     per25 = day.iloc[-1:]['per25'].values[0]
     per75 = day.iloc[-1:]['per75'].values[0]
     perc = day.iloc[-1:]['perc'].values[0]
-    return(day_check, week_check, incr, incrs,incr5,incr15,mean,per25,per75,perc)
+    percs = day.iloc[-1:]['percs'].values[0]
+    return(day_check, week_check, incr, incrs,incr5,incr15,mean,per25,per75,perc,percs)
 
 def gold_daily(GOLD, date):
     day, week = trends_gold(GOLD, date)
@@ -41,7 +43,8 @@ def gold_daily(GOLD, date):
     per25 = day.iloc[-1:]['per25'].values[0]
     per75 = day.iloc[-1:]['per75'].values[0]
     perc = day.iloc[-1:]['perc'].values[0]
-    return(day_check, week_check, incr, incrs,incr5,incr15,mean,per25,per75,perc)
+    percs = day.iloc[-1:]['percs'].values[0]
+    return(day_check, week_check, incr, incrs,incr5,incr15,mean,per25,per75,perc,percs)
 
 def future_daily(GOLD, date):
     day, week = trends_future(GOLD, date)
@@ -55,7 +58,8 @@ def future_daily(GOLD, date):
     per25 = day.iloc[-1:]['per25'].values[0]
     per75 = day.iloc[-1:]['per75'].values[0]
     perc = day.iloc[-1:]['perc'].values[0]
-    return(day_check, week_check, incr, incrs,incr5,incr15,mean,per25,per75,perc)
+    percs = day.iloc[-1:]['percs'].values[0]
+    return(day_check, week_check, incr, incrs,incr5,incr15,mean,per25,per75,perc,percs)
 
 def stock_daily(stock, start_date, end_date):
     day, week = trends_stock(stock,start_date,end_date)
@@ -69,7 +73,8 @@ def stock_daily(stock, start_date, end_date):
     per25 = day.iloc[-1:]['per25'].values[0]
     per75 = day.iloc[-1:]['per75'].values[0]
     perc = day.iloc[-1:]['perc'].values[0]
-    return(day_check, week_check, incr, incrs,incr5, incr15,mean,per25,per75,perc)
+    percs = day.iloc[-1:]['percs'].values[0]
+    return(day_check, week_check, incr, incrs,incr5, incr15,mean,per25,per75,perc,percs)
 
 def globalindex_daily(stock, date):
     day, week = trends_globalindex(stock, date)
@@ -83,7 +88,8 @@ def globalindex_daily(stock, date):
     per25 = day.iloc[-1:]['per25'].values[0]
     per75 = day.iloc[-1:]['per75'].values[0]
     perc = day.iloc[-1:]['perc'].values[0]
-    return(day_check, week_check, incr, incrs,incr5, incr15,mean,per25,per75,perc)
+    percs = day.iloc[-1:]['percs'].values[0]
+    return(day_check, week_check, incr, incrs,incr5, incr15,mean,per25,per75,perc,percs)
 
 def stock_hourly(stock, start_date, end_date, date_type):
     hour = trends_stock_hour(stock,start_date,end_date)
