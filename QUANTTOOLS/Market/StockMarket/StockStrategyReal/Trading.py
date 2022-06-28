@@ -48,7 +48,7 @@ def trading_new(trading_date, working_dir=working_dir):
         ))
 
     except:
-        code_list = None
+        code_list = []
 
     time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
     time_index = on_bar('09:30:00', '15:00:00', 30, [['11:30:00', '13:00:00']])
