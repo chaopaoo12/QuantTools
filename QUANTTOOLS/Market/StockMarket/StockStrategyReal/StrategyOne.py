@@ -1,13 +1,14 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before,time_check_after
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min, QA_fetch_get_stock_quant_min
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtime
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_30min
+from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_30min,get_quant_data_15min
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo
 from QUANTTOOLS.Market.MarketTools import on_bar, get_on_time
 import time
 import pandas as pd
+import numpy as np
 
 
 def code_select(target_list, position, trading_date, mark_tm):
@@ -28,22 +29,22 @@ def code_select(target_list, position, trading_date, mark_tm):
     else:
         stm = trading_date + ' ' + mark_tm
 
-    data_15min = get_quant_data_30min(QA_util_get_pre_trade_date(trading_date,10),
+    data_15min = get_quant_data_15min(QA_util_get_pre_trade_date(trading_date,10),
                                       trading_date, code_list, type='real')
+    data_15min['SIGN_30M'] = np.sign(data_15min.groupby('code')['CLOSE_30M'].shift(2) - data_15min.groupby('code')['MAX_V_30M'].shift(2)) \
+                             + np.sign(data_15min['CLOSE_30M'] - data_15min['MAX_V_30M'])
     if data_15min is not None:
         data_15min = data_15min.sort_index().loc[(stm,)]
 
     QA_util_log_info('##Stock Pool ==================== {}'.format(stm), ui_log=None)
-    QA_util_log_info(data_15min[['RRNG_HR','RRNG_30M','MIN_V_HR','MAX_V_HR','CLOSE_30M','MIN_V_30M',
-                                 'MAX_V_30M','MA5_HR','MA10_HR','MA20_HR','MA60_HR',
-                                 'MA5_30M','MA10_30M','MA20_30M','MA60_30M']], ui_log=None)
+    QA_util_log_info(data_15min[['SIGN_30M','RRNG_30M','MAX_V_15M','CLOSE_15M','MIN_V_15M',
+                                 'MAX_V_15M','MA60_C_15M','MA5_15M','MA10_15M','MA20_15M','MA60_15M']], ui_log=None)
 
     QA_util_log_info('##Target Pool ==================== {}'.format(stm), ui_log=None)
-    QA_util_log_info(data_15min[(data_15min.RRNG_HR.abs() < 0.05)|(data_15min.RRNG_30M.abs() < 0.05)][
-                         ['RRNG_HR','RRNG_30M','MIN_V_HR','MAX_V_HR','CLOSE_30M','MIN_V_30M',
-                          'MAX_V_30M','MA5_HR','MA10_HR','MA20_HR','MA60_HR',
-                          'MA5_30M','MA10_30M','MA20_30M','MA60_30M']], ui_log=None)
-    buy_list = list(set(data_15min[(data_15min.RRNG_HR.abs() < 0.05)|(data_15min.RRNG_30M.abs() < 0.05)].index))
+    QA_util_log_info(data_15min[(data_15min.RRNG_15M.abs() < 0.03)&(data_15min.MA60_C_15M > 0)][
+                         ['SIGN_30M','RRNG_30M','MAX_V_15M','CLOSE_15M','MIN_V_15M',
+                          'MAX_V_15M','MA60_C_15M','MA5_15M','MA10_15M','MA20_15M','MA60_15M']], ui_log=None)
+    buy_list = list(set(data_15min[(data_15min.RRNG_15M.abs() < 0.03)&(data_15min.MA60_C_15M > 0)].index))
     return(buy_list, data_15min)
 
 
@@ -115,35 +116,35 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
 
         if time_check_after('09:35:00') is True:
             #底部金叉
-            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close),
+            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
                      "signal"] = 1
-            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close),
+            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
                      "msg"] = 'VMAP金叉'
 
             #超跌
-            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close),
+            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
                      "signal"] = 1
-            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close),
+            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
                      "msg"] = 'VMAP超跌'
 
             #底部追涨
-            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close), "signal"] = 1
-            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close), "msg"] = '追涨:VMAP上升通道'
+            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_15M * k_per > data.close), "signal"] = 1
+            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_15M * k_per > data.close), "msg"] = '追涨:VMAP上升通道'
 
             #顶部死叉
-            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.close * k_per > data.MAX_V_30M) & (data.close * k_per > data.MAX_V_HR),
+            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.SIGN_30M <= -2),
                      "signal"] = 0
-            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.close * k_per > data.MAX_V_30M) & (data.close * k_per > data.MAX_V_HR),
+            data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.SIGN_30M <= -2),
                      "msg"] = 'VMAP死叉'
 
             #顶部下降通道
-            data.loc[(data.VAMP_K <= -0.2) & (data.CLOSE_K < 0) & (data.close * k_per > data.MAX_V_30M) & (data.close * k_per > data.MAX_V_HR), "signal"] = 0
-            data.loc[(data.VAMP_K <= -0.2) & (data.CLOSE_K < 0) & (data.close * k_per > data.MAX_V_30M) & (data.close * k_per > data.MAX_V_HR), "msg"] = '止损:VMAP下降通道'
+            data.loc[(data.VAMP_K <= -0.2) & (data.CLOSE_K < 0) & (data.SIGN_30M <= -2), "signal"] = 0
+            data.loc[(data.VAMP_K <= -0.2) & (data.CLOSE_K < 0) & (data.SIGN_30M <= -2), "msg"] = '止损:VMAP下降通道'
 
             #超涨&顶部滞涨
-            data.loc[(data.DISTANCE > 0.05) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.03) & (data.close * k_per > data.MAX_V_30M) & (data.close * k_per > data.MAX_V_HR),
+            data.loc[(data.DISTANCE > 0.05) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.03) & (data.SIGN_30M <= -2),
                      "signal"] = 0
-            data.loc[(data.DISTANCE > 0.05) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.03) & (data.close * k_per > data.MAX_V_30M) & (data.close * k_per > data.MAX_V_HR),
+            data.loc[(data.DISTANCE > 0.05) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.03) & (data.SIGN_30M <= -2),
                      "msg"] = 'VMAP超涨'
 
             # 强制止损
@@ -151,8 +152,8 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
             data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "msg"] = '强制止损'
 
         elif time_check_after('09:33:00') is True:
-            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close), "signal"] = 1
-            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_HR * k_per > data.close), "msg"] = '早盘追涨:VMAP上升通道'
+            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_30M * k_per > data.close), "signal"] = 1
+            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_30M * k_per > data.close), "msg"] = '早盘追涨:VMAP上升通道'
 
             #data.loc[(data.VAMPC_K <= -0.2), "signal"] = 0
             #data.loc[(data.VAMPC_K <= -0.2), "msg"] = '早盘止损:VMAP下降通道'
@@ -162,15 +163,15 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
         data.loc[data.code.isin([i for i in code_list if i not in buy_list]) & (data.signal.isin([1])), 'signal'] = None
         #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
         #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
-        QA_util_log_info(data[['RRNG_HR','RRNG_30M','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE',
-                               'close','MIN_V_30M','MIN_V_HR','MAX_V_30M','MAX_V_HR','up_price','signal','msg']], ui_log=None)
+        QA_util_log_info(data[['SIGN_30M','RRNG_30M','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE',
+                               'close','MIN_V_30M','MAX_V_30M','up_price','signal','msg']], ui_log=None)
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 1][['RRNG_HR','RRNG_30M','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE',
-                                                 'close','MIN_V_30M','MIN_V_HR','MAX_V_30M','MAX_V_HR','up_price','signal','msg']], ui_log=None)
+        QA_util_log_info(data[data.signal == 1][['SIGN_30M','RRNG_30M','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE',
+                                                 'close','MIN_V_30M','MAX_V_30M','up_price','signal','msg']], ui_log=None)
 
         QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 0][['RRNG_HR','RRNG_30M','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE',
-                                                 'close','MIN_V_30M','MIN_V_HR','MAX_V_30M','MAX_V_HR','up_price','signal','msg']], ui_log=None)
+        QA_util_log_info(data[data.signal == 0][['SIGN_30M','RRNG_30M','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE',
+                                                 'close','MIN_V_30M','MAX_V_30M','up_price','signal','msg']], ui_log=None)
 
         # 方案2
         #data['signal'] = None
