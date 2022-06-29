@@ -30,9 +30,9 @@ def Sell(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, pric
             message = client.client.sell(symbol=symbol, price = price, amount=amount)
         elif client.type == 'sim_myquant':
             if symbol[0:2] == '60':
-                symbol = 'SHSE' + symbol
+                symbol = 'SHSE.' + symbol
             elif symbol[0:3] in ['000','002','300']:
-                symbol = 'SZSE' + symbol
+                symbol = 'SZSE.' + symbol
             message = order_volume(symbol=symbol, volume=int(amount), side=2, order_type=1, position_effect=2, price=price)
     else:
         QA_util_log_info('Direction 参数错误 type{type} 必须为 [MARKET, LIMIT]'.format(type=type), ui_log=None)
@@ -65,9 +65,9 @@ def Buy(client, account1, symbol, NAME, INDUSTRY, type, priceType, amount, price
             message = client.client.buy(symbol=symbol, price=price, amount=amount)
         elif client.type == 'sim_myquant':
             if symbol[0:2] == '60':
-                symbol = 'SHSE' + symbol
+                symbol = 'SHSE.' + symbol
             elif symbol[0:3] in ['000','002','300']:
-                symbol = 'SZSE' + symbol
+                symbol = 'SZSE.' + symbol
             message = order_volume(symbol=symbol, volume=amount, side=1, order_type=1, position_effect=1, price=price)
     else:
         message = None
