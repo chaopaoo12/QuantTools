@@ -108,7 +108,7 @@ def tracking_new(trading_date):
     code_list = None
 
     time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
-    time_index = on_bar('09:30:00', '15:00:00', 30, [['11:30:00', '13:00:00']])
+    time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
 
     strategy = StrategyBase(target_list=code_list, base_percent=1, trading_date=trading_date)
     strategy.set_codsel_func(code_select, time_index)
