@@ -154,7 +154,7 @@ class StrategyRobotBase:
                 else:
                     break
 
-            if check_market_time(test=test) is True:
+            if check_market_time() is True:
                 QA_util_log_info('##Trading Test Mode {} ==================== {}'.format(test, mark_tm), ui_log=None)
                 if signal_data['sell'] is not None or signal_data['buy'] is not None:
                     trading_robot(self.client, self.account, account_info, signal_data,
