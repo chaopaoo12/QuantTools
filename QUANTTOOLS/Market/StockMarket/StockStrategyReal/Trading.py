@@ -30,7 +30,7 @@ def trading_sim(trading_date, working_dir=working_dir):
 
         res_a, res_b, res_c, res_d = watch_func(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1))
 
-        res_b = res_b.join(stock_target)
+        res_b = res_b.join(stock_target[['RRNG']])
 
         code_list = list(set(stock_target[stock_target['RRNG'] < 0.1].loc[QA_util_get_pre_trade_date(trading_date,1)].reset_index().code.tolist()
                              + res_b[(res_b.RRNG.abs() <= 0.05)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()))
@@ -78,7 +78,7 @@ def trading_new(trading_date, working_dir=working_dir):
 
         res_a, res_b, res_c, res_d = watch_func(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1))
 
-        res_b = res_b.join(stock_target)
+        res_b = res_b.join(stock_target[['RRNG']])
 
         code_list = list(set(stock_target[stock_target['RRNG'] < 0.1].loc[QA_util_get_pre_trade_date(trading_date,1)].reset_index().code.tolist()
                              + res_b[(res_b.RRNG.abs() <= 0.05)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()))
