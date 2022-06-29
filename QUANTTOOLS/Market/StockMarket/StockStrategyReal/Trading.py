@@ -2,7 +2,7 @@ from .setting import working_dir, percent, exceptions, strategy_id,trading_setti
 from .concat_predict import (concat_predict,concat_predict_hour,concat_predict_15min,concat_predict_hourmark,
                             concat_predict_real,concat_predict_crawl,concat_predict_hedge,concat_predict_neut,
                             concat_predict_index,concat_predict_indexhour,concat_predict_index15min)
-from .running import summary_func
+from .running import summary_func,watch_func
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_data,get_quant_data,get_quant_data_15min
 from QUANTTOOLS.Market.MarketTools import load_data, StrategyRobotBase, StrategyBase, on_bar
 from QUANTAXIS.QAUtil import QA_util_get_last_day,QA_util_get_real_date, QA_util_get_pre_trade_date
@@ -30,7 +30,12 @@ def trading_sim(trading_date, working_dir=working_dir):
                                                mars_nn.reset_index().code.tolist() + mars_day.reset_index().code.tolist())),
                                       type='crawl', block=False, sub_block=False,norm_type=None)
 
-        code_list = list(set(stock_target[stock_target['RRNG'] < 0.1].loc[QA_util_get_pre_trade_date(trading_date,1)].reset_index().code.tolist()))
+        res_a, res_b, res_c, res_d = watch_func(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1))
+
+        res_b = res_b.join(stock_target)
+
+        code_list = list(set(stock_target[stock_target['RRNG'] < 0.1].loc[QA_util_get_pre_trade_date(trading_date,1)].reset_index().code.tolist()
+                             + res_b[(res_b.RRNG.abs() <= 0.05)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()))
 
     except:
         code_list = []
@@ -73,7 +78,12 @@ def trading_new(trading_date, working_dir=working_dir):
                                                mars_nn.reset_index().code.tolist() + mars_day.reset_index().code.tolist())),
                                       type='crawl', block=False, sub_block=False,norm_type=None)
 
-        code_list = list(set(stock_target[stock_target['RRNG'] < 0.1].loc[QA_util_get_pre_trade_date(trading_date,1)].reset_index().code.tolist()))
+        res_a, res_b, res_c, res_d = watch_func(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1))
+
+        res_b = res_b.join(stock_target)
+
+        code_list = list(set(stock_target[stock_target['RRNG'] < 0.1].loc[QA_util_get_pre_trade_date(trading_date,1)].reset_index().code.tolist()
+                             + res_b[(res_b.RRNG.abs() <= 0.05)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()))
 
     except:
         code_list = []
