@@ -98,7 +98,7 @@ def trading_new(trading_date, working_dir=working_dir):
     robot = StrategyRobotBase(strategy)
     robot.set_strategy()
     robot.set_account(strategy_id)
-    robot.get_account(trading_setting)
+    robot.get_account(type='yun_ease',trader_path=None,host=trading_setting['host'],port=trading_setting['port'],key=trading_setting['key'])
 
     robot.run(test=False)
 
