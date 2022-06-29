@@ -50,6 +50,7 @@ class StrategyRobotBase:
             host=None
             port=None
             key=None
+
         try:
             token=kwargs['token']
             server=kwargs['server']
