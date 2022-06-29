@@ -87,7 +87,7 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
         price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
         source_data = source_data\
             .reset_index().set_index(['date','code']).join(close) \
-            .reset_index().set_index(['code']).join(tmp_data[['RRNG_15M','MIN_V_15M','MAX_V_15M','SIGN_30M']]) \
+            .reset_index().set_index(['code']).join(tmp_data[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M']]) \
             .reset_index().set_index(['datetime','code']).join(price)
 
         data = source_data.sort_index().loc[(stm),]
@@ -137,20 +137,20 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
             data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "msg"] = '强制止损'
 
             #底部金叉
-            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
+            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close) & (data.MA60_C_15M > 0),
                      "signal"] = 1
-            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
+            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close) & (data.MA60_C_15M > 0),
                      "msg"] = 'VMAP金叉'
 
             #超跌
-            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
+            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close) & (data.MA60_C_15M > 0),
                      "signal"] = 1
-            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
+            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close) & (data.MA60_C_15M > 0),
                      "msg"] = 'VMAP超跌'
 
             #底部追涨
-            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_15M * k_per > data.close), "signal"] = 1
-            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_15M * k_per > data.close), "msg"] = '追涨:VMAP上升通道'
+            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < -0.03), "signal"] = 1
+            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < -0.03), "msg"] = '追涨:VMAP上升通道'
 
         elif time_check_after('09:33:00') is True:
             data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_30M * k_per > data.close), "signal"] = 1
