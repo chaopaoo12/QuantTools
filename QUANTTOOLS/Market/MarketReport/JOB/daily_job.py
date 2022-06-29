@@ -79,7 +79,7 @@ def aotu_report(trading_date):
 
     BTC_RES['name'] = BTC_RES['code'].apply(lambda x:view_dict[x])
     #BTC_RES = BTC_RES.rename(columns={'code':'标的', 'daily':'日线走势', 'weekly':'周线走势'}, inplace = True)
-    target_body = build_table(BTC_RES[['code','daily','weekly',
+    target_body = build_table(BTC_RES[['code','name','daily','weekly',
                                        '中位数','百分位25数','百分位75数','百分位数','距离百分位数',
                                        '日线斜率','斜率变动','五日偏离','十五日偏离'
                                        ]], '市场价格监控')
