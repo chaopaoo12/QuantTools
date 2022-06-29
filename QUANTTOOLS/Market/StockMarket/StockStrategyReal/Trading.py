@@ -1,7 +1,5 @@
 from .setting import working_dir, percent, exceptions, strategy_id,trading_setting
-from .concat_predict import (concat_predict,concat_predict_hour,concat_predict_15min,concat_predict_hourmark,
-                            concat_predict_real,concat_predict_crawl,concat_predict_hedge,concat_predict_neut,
-                            concat_predict_index,concat_predict_indexhour,concat_predict_index15min)
+from .concat_predict import (concat_predict,concat_predict_neut)
 from .running import summary_func,watch_func
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_data,get_quant_data,get_quant_data_15min
 from QUANTTOOLS.Market.MarketTools import load_data, StrategyRobotBase, StrategyBase, on_bar
