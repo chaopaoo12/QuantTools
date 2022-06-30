@@ -23,8 +23,7 @@ def code_select(target_list, position, trading_date, mark_tm):
 
     QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
         mark_tm), ui_log=None)
-    QA_util_log_info('##JOB Source Code List ==================== {}'.format(
-        code_list), ui_log=None)
+
     #if time_check_before('09:35:00') is True:
     if mark_tm == '09:30:00':
         stm = QA_util_get_pre_trade_date(trading_date, 1) + ' ' + '15:00:00'
