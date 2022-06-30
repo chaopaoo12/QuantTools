@@ -33,6 +33,7 @@ class StrategyBase:
 
     def code_select(self, mark_tm):
         QA_util_log_info('##JOB Refresh Tmp Code List  ==== {}'.format(mark_tm), ui_log= None)
+        QA_util_log_info('##JOB Init Code List  ==== {}'.format(self.target_list), ui_log= None)
         if self.codsel_func is not None:
             self.buy_list, self.tmp_data = self.codsel_func(target_list = self.target_list,
                                                             position =self.position,
