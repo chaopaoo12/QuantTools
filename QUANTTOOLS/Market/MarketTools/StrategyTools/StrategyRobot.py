@@ -70,6 +70,8 @@ class StrategyRobotBase:
         self.time_list = self.strategy.signaltime_list
         self.target_list = self.strategy.target_list
         self.trading_date = self.strategy.trading_date
+        QA_util_log_info('##JOB Source Code List ==================== {}'.format(
+            self.target_list), ui_log=None)
 
     def ckeck_market_open(self):
         open_check(self.trading_date)
