@@ -23,27 +23,27 @@ def trading_sim(trading_date, working_dir=working_dir):
         mars_nn=mars_nn[mars_nn.y_pred==1]
         mars_day=mars_day[mars_day.y_pred==1]
 
+        res_a, res_b, res_c, res_d = watch_func(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1))
+
         stock_list = list(set(xg.reset_index().code.tolist() + xg_nn.reset_index().code.tolist() +
                               mars_nn.reset_index().code.tolist() + mars_day.reset_index().code.tolist()))
 
         stock_target = get_quant_data(QA_util_get_pre_trade_date(trading_date,5), QA_util_get_pre_trade_date(trading_date,1),
+                                      list(set(xg.reset_index().code.tolist() + xg_nn.reset_index().code.tolist() +
+                                               mars_nn.reset_index().code.tolist() + mars_day.reset_index().code.tolist()
+                                               + res_b.reset_index().code.tolist())),
                                       type='crawl', block=False, sub_block=False,norm_type=None)
-
-        res_a, res_b, res_c, res_d = watch_func(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1))
 
         res_b = res_b.join(stock_target[['RRNG']])
 
-        stock_target = stock_target.loc[(QA_util_get_pre_trade_date(trading_date,1),stock_list),]
-
         try:
-            code_list = list(set(stock_target[stock_target['RRNG'].abs() < 0.1].reset_index().code.tolist()
+            code_list = list(set(stock_target[stock_target['RRNG'].abs() < 0.1].loc[(QA_util_get_pre_trade_date(trading_date,1),stock_list),]
                                  + res_b[(res_b.RRNG.abs() <= 0.05)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()))
         except:
             code_list = res_b[(res_b.RRNG.abs() <= 0.05)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()
 
     except:
         code_list = []
-
 
     time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
     time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
@@ -78,20 +78,21 @@ def trading_new(trading_date, working_dir=working_dir):
         mars_nn=mars_nn[mars_nn.y_pred==1]
         mars_day=mars_day[mars_day.y_pred==1]
 
+        res_a, res_b, res_c, res_d = watch_func(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1))
+
         stock_list = list(set(xg.reset_index().code.tolist() + xg_nn.reset_index().code.tolist() +
                               mars_nn.reset_index().code.tolist() + mars_day.reset_index().code.tolist()))
 
         stock_target = get_quant_data(QA_util_get_pre_trade_date(trading_date,5), QA_util_get_pre_trade_date(trading_date,1),
+                                      list(set(xg.reset_index().code.tolist() + xg_nn.reset_index().code.tolist() +
+                                               mars_nn.reset_index().code.tolist() + mars_day.reset_index().code.tolist()
+                                               + res_b.reset_index().code.tolist())),
                                       type='crawl', block=False, sub_block=False,norm_type=None)
-
-        res_a, res_b, res_c, res_d = watch_func(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1))
 
         res_b = res_b.join(stock_target[['RRNG']])
 
-        stock_target = stock_target.loc[(QA_util_get_pre_trade_date(trading_date,1),stock_list),]
-
         try:
-            code_list = list(set(stock_target[stock_target['RRNG'].abs() < 0.1].reset_index().code.tolist()
+            code_list = list(set(stock_target[stock_target['RRNG'].abs() < 0.1].loc[(QA_util_get_pre_trade_date(trading_date,1),stock_list),]
                                  + res_b[(res_b.RRNG.abs() <= 0.05)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()))
         except:
             code_list = res_b[(res_b.RRNG.abs() <= 0.05)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()
