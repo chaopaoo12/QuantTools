@@ -85,7 +85,12 @@ def trading_new(trading_date, working_dir=working_dir):
 
         res_b = res_b.join(stock_target[['RRNG']])
 
-        code_list = list(set(stock_target[stock_target['RRNG'].abs() < 0.1].loc[QA_util_get_pre_trade_date(trading_date,1)].reset_index().code.tolist()
+        try:
+            stock_list = stock_target[stock_target['RRNG'].abs() < 0.1].loc[QA_util_get_pre_trade_date(trading_date,1)].reset_index().code.tolist()
+        except:
+            stock_list = []
+
+        code_list = list(set(stock_list
                              + res_b[(res_b.RRNG.abs() <= 0.05)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()))
 
     except:
