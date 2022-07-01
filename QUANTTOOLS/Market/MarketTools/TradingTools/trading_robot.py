@@ -17,7 +17,9 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
         time.sleep(60)
         pass
 
-    # cancel last mark action
+    # cancel last mark time action
+    QA_util_log_info('JOB Cancel Last Mark Time Trading Action ==================== {}'.format(
+        mark_tm), ui_log=None)
     if signal_data is not None and test is False:
         if client.type in ['yun_ease','loacl']:
             client.client.cancel_all(account)
