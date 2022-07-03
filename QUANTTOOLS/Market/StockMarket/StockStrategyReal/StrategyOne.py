@@ -34,17 +34,19 @@ def code_select(target_list, position, trading_date, mark_tm):
                                       trading_date, code_list, type='real')
     data_15min['SIGN_30M'] = np.sign(data_15min.groupby('code')['CLOSE_30M'].shift(2) - data_15min.groupby('code')['MAX_V_30M'].shift(2)) \
                              + np.sign(data_15min['CLOSE_30M'] - data_15min['MAX_V_30M'])
+    data_15min['SIGN_DW_30M'] = np.sign(data_15min.groupby('code')['MIN_V_30M'].shift(2) - data_15min.groupby('code')['CLOSE_30M'].shift(2)) \
+                             + np.sign(data_15min['MIN_V_30M'] - data_15min['CLOSE_30M'])
     if data_15min is not None:
         data_15min = data_15min.sort_index().loc[(stm,)]
 
     QA_util_log_info('##Stock Pool ==================== {}'.format(stm), ui_log=None)
-    QA_util_log_info(data_15min[['SIGN_30M','RRNG_30M','MAX_V_15M','CLOSE_15M','MIN_V_15M',
-                                 'MAX_V_15M','MA60_C_15M','MA5_15M','MA10_15M','MA20_15M','MA60_15M']], ui_log=None)
+    QA_util_log_info(data_15min[['SIGN_30M','SIGN_DW_30M','RRNG_30M','MAX_V_15M','CLOSE_15M','MIN_V_15M',
+                                 'MAX_V_15M','SIGN_DW_30M','MA60_C_15M','MA5_15M','MA10_15M','MA20_15M','MA60_15M']], ui_log=None)
 
     QA_util_log_info('##Target Pool ==================== {}'.format(stm), ui_log=None)
     QA_util_log_info(data_15min[(data_15min.RRNG_15M.abs() < 0.03)&(data_15min.MA60_C_15M > 0)][
-                         ['SIGN_30M','RRNG_30M','MAX_V_15M','CLOSE_15M','MIN_V_15M',
-                          'MAX_V_15M','MA60_C_15M','MA5_15M','MA10_15M','MA20_15M','MA60_15M']], ui_log=None)
+                         ['SIGN_30M','SIGN_DW_30M','RRNG_30M','MAX_V_15M','CLOSE_15M','MIN_V_15M',
+                          'MAX_V_15M','SIGN_DW_30M','MA60_C_15M','MA5_15M','MA10_15M','MA20_15M','MA60_15M']], ui_log=None)
     buy_list = list(set(data_15min[(data_15min.RRNG_15M.abs() < 0.03)&(data_15min.MA60_C_15M > 0)].index))
     return(buy_list, data_15min)
 
