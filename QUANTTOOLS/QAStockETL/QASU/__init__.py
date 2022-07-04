@@ -54,6 +54,7 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_fianacialTTM_momgo,QA_SU
 from QUANTTOOLS.QAStockETL.QASU.main import (
                                              QA_SU_save_index_alpha_day,QA_SU_save_index_alpha_his,
                                              QA_SU_save_index_technical_15min_day,QA_SU_save_index_technical_15min_his,
+                                             QA_SU_save_index_technical_30min_day,QA_SU_save_index_technical_30min_his,
                                              QA_SU_save_index_technical_hour_day,QA_SU_save_index_technical_hour_his,
                                              QA_SU_save_index_technical_index_day,QA_SU_save_index_technical_index_his,
                                              QA_SU_save_index_technical_week_day,QA_SU_save_index_technical_week_his,
