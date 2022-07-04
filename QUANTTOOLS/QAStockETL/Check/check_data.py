@@ -223,6 +223,12 @@ def QA_fetch_index_15min(code, start, end):
 def check_index_15min(mark_day = None):
     return(check_index_data(func = QA_fetch_index_15min, mark_day = mark_day, title = 'Index 15Min'))
 
+def QA_fetch_index_30min(code, start, end):
+    return(QA_fetch_index_min_adv(code, start, end, frequence='30min').data)
+
+def check_index_30min(mark_day = None):
+    return(check_index_data(func = QA_fetch_index_30min, mark_day = mark_day, title = 'Index 30Min'))
+
 def QA_fetch_index_60min(code, start, end):
     return(QA_fetch_index_min_adv(code, start, end, frequence='60min').data)
 
@@ -252,6 +258,12 @@ def QA_fetch_index_tech15min(code, start, end):
 
 def check_index_tech15min(mark_day = None):
     return(check_index_data(func = QA_fetch_index_tech15min, mark_day = mark_day, title = 'Index Tech15min'))
+
+def QA_fetch_index_tech30min(code, start, end):
+    return(QA_fetch_index_technical_index_adv(code, start, end, type='30min').data)
+
+def check_index_tech30min(mark_day = None):
+    return(check_index_data(func = QA_fetch_index_tech30min, mark_day = mark_day, title = 'Index Tech30min'))
 
 def QA_fetch_index_techhour(code, start, end):
     return(QA_fetch_index_technical_index_adv(code, start, end, type='hour').data)

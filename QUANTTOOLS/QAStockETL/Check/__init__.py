@@ -19,9 +19,9 @@ from QUANTTOOLS.QAStockETL.Check.check_data import (check_stock_day, check_sinas
                                                     check_realstock_alpha101half, check_realstock_alpha191half,
                                                     check_stock_quant, check_stock_neut,
 
-                                                    check_index_day, check_index_15min, check_index_60min,
+                                                    check_index_day, check_index_15min, check_index_30min, check_index_60min,
                                                     check_index_alpha101, check_index_alpha191,
-                                                    check_index_tech15min, check_index_techhour,
+                                                    check_index_tech15min, check_index_tech30min, check_index_techhour,
                                                     check_index_techindex, check_index_techweek,
                                                     check_index_quant)
 
