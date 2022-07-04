@@ -14,6 +14,7 @@ from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_stock_day,QA_SU_save_sto
 ###index basic data
 from QUANTTOOLS.QAStockETL.QASU.main import (QA_SU_save_index_info,
                                              QA_SU_save_index_15min,QA_SU_save_single_index_15min,
+                                             QA_SU_save_index_30min,QA_SU_save_single_index_30min,
                                              QA_SU_save_index_hour,QA_SU_save_single_index_hour,
                                              QA_SU_save_index_week,QA_SU_save_index_month,QA_SU_save_index_year)
 

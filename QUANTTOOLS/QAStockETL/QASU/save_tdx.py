@@ -1547,6 +1547,22 @@ def QA_SU_save_index_hour(client=DATABASE, ui_log=None, ui_progress=None):
     """
     QA_SU_save_index_min(['60min'])
 
+def QA_SU_save_index_30min(client=DATABASE, ui_log=None, ui_progress=None):
+    """save index_min
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+    QA_SU_save_index_min(['30min'])
+
+def QA_SU_save_single_index_30min(code : str):
+    """save single index_min
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+    QA_SU_save_single_index_min(code, ['30min'])
+
 def QA_SU_save_index_15min(client=DATABASE, ui_log=None, ui_progress=None):
     """save index_min
 

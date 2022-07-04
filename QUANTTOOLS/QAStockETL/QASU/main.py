@@ -322,6 +322,12 @@ def QA_SU_save_index_15min():
 def QA_SU_save_single_index_15min(code):
     save_tdx.QA_SU_save_single_index_15min(code)
 
+def QA_SU_save_index_30min():
+    save_tdx.QA_SU_save_index_30min()
+
+def QA_SU_save_single_index_30min(code):
+    save_tdx.QA_SU_save_single_index_30min(code)
+
 def QA_SU_save_single_stock_xdxr(code):
     save_tdx.QA_SU_save_single_stock_xdxr(code)
 
