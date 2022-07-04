@@ -793,6 +793,21 @@ def QA_etl_index_technical_15min(start_date = QA_util_today_str(), end_date= Non
         QA_util_sql_store_mysql(data, "index_technical_15min",if_exists='append')
         QA_util_log_info('##JOB ETL INDEX TECHNICAL 15min HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
 
+def QA_etl_index_technical_30min(start_date = QA_util_today_str(), end_date= None, ui_log= None):
+    if end_date is None:
+        end_date = QA_util_today_str()
+    QA_util_log_info('##JOB Now ETL INDEX TECHNICAL 30min ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    codes = list(QA_fetch_index_list_adv().code)
+    data = QA_fetch_index_technical_index_adv(codes, start_date, end_date,type='30min').data
+    if data is None:
+        QA_util_log_info(
+            '##JOB NO INDEX TECHNICAL 30min HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+    else:
+        data = data.reset_index()
+        data = data.assign(date=data.date.apply(lambda x:datetime.datetime.strptime(x,'%Y-%m-%d')))
+        QA_util_sql_store_mysql(data, "index_technical_30min",if_exists='append')
+        QA_util_log_info('##JOB ETL INDEX TECHNICAL 30min HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
+
 def QA_etl_index_to_stock(ui_log= None):
     index_list = QA_fetch_index_list_adv()
     code_list = QA_fetch_index_info(list(index_list.code))
