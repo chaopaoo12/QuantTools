@@ -28,7 +28,7 @@ def trading_sim(trading_date, working_dir=working_dir):
         stock_list = list(set(xg.reset_index().code.tolist() + xg_nn.reset_index().code.tolist() +
                               mars_nn.reset_index().code.tolist() + mars_day.reset_index().code.tolist()))
 
-        stock_target = get_quant_data(QA_util_get_pre_trade_date(trading_date,5), QA_util_get_pre_trade_date(trading_date,1),
+        stock_target = get_quant_data(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1),
                                       list(set(xg.reset_index().code.tolist() + xg_nn.reset_index().code.tolist() +
                                                mars_nn.reset_index().code.tolist() + mars_day.reset_index().code.tolist()
                                                + res_b.reset_index().code.tolist())),
@@ -83,7 +83,7 @@ def trading_new(trading_date, working_dir=working_dir):
         stock_list = list(set(xg.reset_index().code.tolist() + xg_nn.reset_index().code.tolist() +
                               mars_nn.reset_index().code.tolist() + mars_day.reset_index().code.tolist()))
 
-        stock_target = get_quant_data(QA_util_get_pre_trade_date(trading_date,5), QA_util_get_pre_trade_date(trading_date,1),
+        stock_target = get_quant_data(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1),
                                       list(set(xg.reset_index().code.tolist() + xg_nn.reset_index().code.tolist() +
                                                mars_nn.reset_index().code.tolist() + mars_day.reset_index().code.tolist()
                                                + res_b.reset_index().code.tolist())),
