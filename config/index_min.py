@@ -65,7 +65,7 @@ if __name__ == '__main__':
 
         res = check_index_tech30min(mark_day)
         while res is None or (len(res[0]) + len(res[1])) > 100:
-            QA_etl_index_technical_30min(start_date = mark_day, end_date = mark_day)
+            QA_SU_save_index_technical_30min_day(start_date = mark_day, end_date = mark_day)
             res = check_index_tech30min(mark_day)
 
         #res = check_index_15min(mark_day)
