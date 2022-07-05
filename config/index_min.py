@@ -35,7 +35,7 @@ from QUANTTOOLS.QAStockETL import (QA_SU_save_index_30min,
 from QUANTAXIS.QASU.main import (QA_SU_save_index_day,QA_SU_save_index_list)
 from QUANTTOOLS.QAStockETL.Check import (check_index_day,check_index_30min,check_index_60min)
 from QUANTTOOLS.QAStockETL.Check import (check_index_tech30min,check_index_techhour)
-from QUANTTOOLS.QAStockETL import (QA_etl_index_technical_15min,QA_etl_index_technical_30min,QA_etl_index_technical_hour)
+from QUANTTOOLS.QAStockETL import (QA_etl_index_technical_15min,QA_etl_index_technical_hour)
 from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_if_trade
 
 if __name__ == '__main__':
