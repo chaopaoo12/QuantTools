@@ -1,6 +1,6 @@
 
 #通达信股票列表转自选股数据转
-path = 'E:\\Program Files\\new_tdx\\T0002\\blocknew\\ZXG.blk'
+path = 'D:\\new_tdx_zcgl\\T0002\\blocknew\\ZXG.blk'
 
 
 def putzxg(code):
