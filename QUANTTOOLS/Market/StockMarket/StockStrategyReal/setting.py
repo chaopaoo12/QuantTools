@@ -31,7 +31,7 @@ trading_setting = {
     'name':'实验测试一号'
 }
 
-stock_xg_set = ['AVG30_RNG',
+stock_xg_set = ['ATRR','ATRR_HR','AVG30_RNG',
                  'AVG20_RNG',
                  'AVG60_RNG',
                  'LONG_AMOUNT_HR',
@@ -132,7 +132,7 @@ stock_xg_set = ['AVG30_RNG',
                 'S_大盘股',
                 'S_300非周']
 
-stock_day_set = ['AVG20_RNG',
+stock_day_set = ['ATRR','ATRR_HR','AVG20_RNG',
                 'AVG10_RNG',
                 'AVG30_RNG',
                 'ALPHA_174',
