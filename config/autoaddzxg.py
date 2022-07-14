@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
     if QA_util_if_trade(QA_util_today_str()):
         check_day = QA_util_get_pre_trade_date(QA_util_today_str(),1)
-        htmlbody=reademail('交易报告{}'.format(check_day))
-        data = pd.read_html(htmlbody[0], encoding='gbk', header=0)[7]
-        data=data[data.NAME.notna()].rename(columns={'Unnamed: 0':'date','Unnamed: 1':'code'})
+        htmlbody=reademail('目标股池{}'.format(check_day))
+        data = pd.read_html(htmlbody[0], encoding='gbk', header=0)[1]
+        data=data[data.RANK.notna()].rename(columns={'Unnamed: 0':'code'})
         putzxgfile(data.code.unique().tolist())
