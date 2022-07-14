@@ -37,6 +37,7 @@ def reademail(mail_title,smtpserver=smtpserver,msg_from=msg_from,passwd=passwd,s
         all_inbox_messages = imbox.messages(folder='&UXZO1mWHTvZZOQ-/Report', unread=True)
         for uid, message in all_inbox_messages:
             if message.subject == mail_title:
+                print(mail_title)
                 htmlbody=message.body['html']
                 if seen == True:
                     imbox.mark_seen(uid)
