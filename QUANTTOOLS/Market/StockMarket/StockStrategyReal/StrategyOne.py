@@ -140,9 +140,9 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
             data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "msg"] = '强制止损'
 
             #底部金叉
-            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close) & (data.MA60_C_15M > 0),
+            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
                      "signal"] = 1
-            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close) & (data.MA60_C_15M > 0),
+            data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
                      "msg"] = 'VMAP金叉'
 
             #超跌
