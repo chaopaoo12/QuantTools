@@ -146,9 +146,9 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
                      "msg"] = 'VMAP金叉'
 
             #超跌
-            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close) & (data.MA60_C_15M > 0),
+            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
                      "signal"] = 1
-            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close) & (data.MA60_C_15M > 0),
+            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
                      "msg"] = 'VMAP超跌'
 
             #底部追涨
