@@ -11,7 +11,7 @@ if __name__ == '__main__':
         htmlbody=reademail('目标股池{}'.format(check_day))
         data1 = pd.read_html(htmlbody[0], encoding='gbk', header=0)[1]
         htmlbody=reademail('综合选股报告 一{}'.format(check_day))
-        data2 = pd.read_html(htmlbody[0], encoding='gbk', header=0)[1]
+        data2 = pd.read_html(htmlbody[0], encoding='gbk', header=0)[0]
         data1=data1[data1.RANK.notna()].rename(columns={'Unnamed: 0':'code'})
         data2=data2[data2.RANK.notna()].rename(columns={'Unnamed: 1':'code'})
         putzxgfile(data1.code.unique().tolist() + data2.code.unique().tolist())
