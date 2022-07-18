@@ -73,17 +73,15 @@ class StrategyBase:
             # init codseltime
             self.start_status = True
             tm = datetime.datetime.now().strftime("%H:%M:%S")
-            mark_tm = get_on_time(tm, self.codseltime_list)
-            if mark_tm == '15:00:00':
-                mark_tm = self.codseltime_list[0]
-            QA_util_log_info('##JOB Now Init Codselt Mark Time ==== {}'.format(str(mark_tm)), ui_log=None)
+            codsel_tmmark = get_on_time(tm, self.codseltime_list)
+            QA_util_log_info('##JOB Now Init Codselt Mark Time ==== {}'.format(str(codsel_tmmark)), ui_log=None)
 
-            QA_util_log_info('JOB Selct Code List ==================== {}'.format(mark_tm), ui_log=None)
+            QA_util_log_info('JOB Selct Code List ==================== {}'.format(codsel_tmmark), ui_log=None)
             k = 0
             while k <= 2:
                 QA_util_log_info('JOB Selct Code List {x} times ==================== '.format(x=k+1), ui_log=None)
                 try:
-                    self.code_select(mark_tm)
+                    self.code_select(codsel_tmmark)
                     QA_util_log_info('JOB Selct Code List Done ==================== ', ui_log=None)
                     break
                 except:
