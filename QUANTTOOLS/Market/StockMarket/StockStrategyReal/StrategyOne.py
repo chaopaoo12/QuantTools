@@ -25,7 +25,7 @@ def code_select(target_list, position, trading_date, mark_tm):
         mark_tm), ui_log=None)
 
     #if time_check_before('09:35:00') is True:
-    if mark_tm == '09:30:00':
+    if mark_tm == '15:00:00':
         stm = QA_util_get_pre_trade_date(trading_date, 1) + ' ' + '15:00:00'
     else:
         stm = trading_date + ' ' + mark_tm
