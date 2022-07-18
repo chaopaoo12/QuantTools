@@ -39,7 +39,7 @@ def trading_sim(trading_date, working_dir=working_dir):
                          + res_b[(res_b.RRNG.abs() < 0.1)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()))
 
     time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
-    time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
+    time_index = ['09:30:00'] + on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
 
     strategy = StrategyBase(target_list=code_list, base_percent=1, trading_date=trading_date)
     strategy.set_codsel_func(code_select, time_index)
@@ -87,7 +87,7 @@ def trading_new(trading_date, working_dir=working_dir):
                          + res_b[(res_b.RRNG.abs() < 0.1)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()))
 
     time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
-    time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
+    time_index = ['09:30:00'] + on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
 
     strategy = StrategyBase(target_list=code_list, base_percent=1, trading_date=trading_date)
     strategy.set_codsel_func(code_select, time_index)
