@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
         res = check_stock_finper(mark_day)
         while res is None or len(res[1]) > 500:
-            time.sleep(180)
+            time.sleep(600)
             res = check_stock_finper(mark_day)
 
         res = check_stock_techindex(mark_day)
@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
         res = check_stock_techhour(mark_day)
         while res is None or len(res[1]) > 500:
-            time.sleep(180)
+            time.sleep(600)
             res =check_stock_techhour(mark_day)
 
         res = check_stock_quant(mark_day)
