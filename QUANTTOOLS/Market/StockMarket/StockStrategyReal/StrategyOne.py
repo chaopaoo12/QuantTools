@@ -115,7 +115,7 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
                             code = [str(i) for i in data.reset_index().code])
 
         #误差
-        k_per = 1.005
+        k_per = 1.01
 
         if time_check_after('09:35:00') is True:
 
@@ -146,14 +146,14 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
                      "msg"] = 'VMAP金叉'
 
             #超跌
-            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
+            data.loc[(data.DISTANCE < -0.03) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
                      "signal"] = 1
-            data.loc[(data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
+            data.loc[(data.DISTANCE < -0.03) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close),
                      "msg"] = 'VMAP超跌'
 
             #底部追涨
-            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < -0.03), "signal"] = 1
-            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < -0.03), "msg"] = '追涨:VMAP上升通道'
+            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < 0.01), "signal"] = 1
+            data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < 0.01), "msg"] = '追涨:VMAP上升通道'
 
         elif time_check_after('09:33:00') is True:
             data.loc[(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_30M * k_per > data.close), "signal"] = 1
