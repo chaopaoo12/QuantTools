@@ -44,10 +44,10 @@ def code_select(target_list, position, trading_date, mark_tm):
                                  'MAX_V_15M','SIGN_DW_30M','MA60_C_15M','MA5_15M','MA10_15M','MA20_15M','MA60_15M']], ui_log=None)
 
     QA_util_log_info('##Target Pool ==================== {}'.format(stm), ui_log=None)
-    QA_util_log_info(data_15min[(data_15min.RRNG_15M.abs() < 0.03)&(data_15min.MA60_C_15M > 0)][
+    QA_util_log_info(data_15min[(data_15min.RRNG_15M.abs() < 0.03)][
                          ['SIGN_30M','SIGN_DW_30M','RRNG_30M','MAX_V_15M','CLOSE_15M','MIN_V_15M',
                           'MAX_V_15M','SIGN_DW_30M','MA60_C_15M','MA5_15M','MA10_15M','MA20_15M','MA60_15M']], ui_log=None)
-    buy_list = list(set(data_15min[(data_15min.RRNG_15M.abs() < 0.03)&(data_15min.MA60_C_15M > 0)].index))
+    buy_list = list(set(data_15min[(data_15min.RRNG_15M.abs() < 0.03)].index))
     return(buy_list, data_15min)
 
 
