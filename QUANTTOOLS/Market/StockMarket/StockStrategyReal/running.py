@@ -332,10 +332,10 @@ def summary_func(trading_date):
     mars_nn = stock_res.join(mars_nn).assign(model='mars_nn')
     mars_day = stock_res.join(mars_day).assign(model='mars_day')
 
-    res = pd.concat([mars_day[(mars_day.y_pred==1)&(mars_day.RRNG.abs() < 0.1)][cols_name],
-                     mars_nn[(mars_nn.y_pred==1)&(mars_nn.RRNG.abs() < 0.1)][cols_name],
-                     xg_nn[(xg_nn.y_pred==1)&(xg_nn.RRNG.abs() < 0.1)][cols_name],
-                     xg[(xg.y_pred==1)&(xg.RRNG.abs() < 0.1)][cols_name]])
+    res = pd.concat([mars_day[(mars_day.RANK<=20)&(mars_day.RRNG.abs() < 0.1)][cols_name],
+                     mars_nn[(mars_nn.RANK<=20)&(mars_nn.RRNG.abs() < 0.1)][cols_name],
+                     xg_nn[(xg_nn.RANK<=20)&(xg_nn.RRNG.abs() < 0.1)][cols_name],
+                     xg[(xg.RANK<=20)&(xg.RRNG.abs() < 0.1)][cols_name]])
 
     res['model'] = res.groupby(['date','code'])['model'].transform(lambda x: ','.join(x))
     res = res.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']).sort_index()
