@@ -351,8 +351,8 @@ def summary_watch(trading_date):
 
     base_report(trading_date, '目标股池', **{'SUMMARY':res,
                                          'TARGET':rrr,
-                                        'MARKS_DAY':mars_day[(mars_day.y_pred==1)&(mars_day.RRNG.abs() < 0.1)],
-                                         'MARKS_NN':mars_nn[(mars_nn.y_pred==1)&(mars_nn.RRNG.abs() < 0.1)],
-                                         'XG':xg[(xg.y_pred==1)&(xg.RRNG.abs() < 0.1)],
-                                         'XG_NN':xg_nn[(xg_nn.y_pred==1)&(xg_nn.RRNG.abs() < 0.1)]
+                                        'MARKS_DAY':mars_day[(mars_day.RANK<=20)&(mars_day.RRNG.abs() < 0.1)],
+                                         'MARKS_NN':mars_nn[(mars_nn.RANK<=20)&(mars_nn.RRNG.abs() < 0.1)],
+                                         'XG':xg[(xg.RANK<=20)&(xg.RRNG.abs() < 0.1)],
+                                         'XG_NN':xg_nn[(xg_nn.RANK<=20)&(xg_nn.RRNG.abs() < 0.1)]
                                          })
