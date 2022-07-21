@@ -18,8 +18,8 @@ def data_collect(code_list,trading_date,data_15min,k_per=1.01):
         price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
         data = source_data \
             .reset_index().set_index(['date','code']).join(close) \
-            .reset_index().set_index(['datetime','code']).join(price) \
-            .join(data_15min[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M']])
+            .reset_index().set_index(['code']).join(price) \
+            .reset_index().set_index(['datetime','code']).join(data_15min[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M']])
         data[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M']] = data.groupby('code')[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M']].fillna(method='ffill')
 
         # 方案1
@@ -71,8 +71,6 @@ def data_collect(code_list,trading_date,data_15min,k_per=1.01):
         data.loc[(data.RRNG_15M.abs() < 0.03)&(data.VAMPC_K >= 0.2) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < 0.01), "signal"] = 1
         data.loc[(data.RRNG_15M.abs() < 0.03)&(data.VAMPC_K >= 0.2) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < 0.01), "msg"] = '追涨:VMAP上升通道'
 
-        data.loc[(data.RRNG_15M.abs() < 0.03)&(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_30M * k_per > data.close), "signal"] = 1
-        data.loc[(data.RRNG_15M.abs() < 0.03)&(data.VAMPC_K >= 0.2) & (data.MIN_V_30M * k_per > data.close) & (data.MIN_V_30M * k_per > data.close), "msg"] = '早盘追涨:VMAP上升通道'
         return(data)
     except:
         return None
