@@ -109,8 +109,8 @@ def code_select(target_list, position, trading_date, mark_tm):
     QA_util_log_info(data_15min[(data_15min.RRNG_15M.abs() < 0.1)][
                          ['SIGN_30M','SIGN_DW_30M','RRNG_30M','MAX_V_15M','CLOSE_15M','MIN_V_15M',
                           'MAX_V_15M','SIGN_DW_30M','MA60_C_15M','MA5_15M','MA10_15M','MA20_15M','MA60_15M']], ui_log=None)
-    buy_list = list(set(data_15min[(data_15min.RRNG_15M.abs() < 0.1)].index))
-    QA_util_log_info('##buy_list ==================== {}'.format(buy_list), ui_log=None)
+    buy_list = data_15min[(data_15min.RRNG_15M.abs() < 0.1)]
+
     return(buy_list, data_15min)
 
 
@@ -150,6 +150,9 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
 
     if data is not None:
         data = data.sort_index().loc[(stm),]
+        buy_list = buy_list.sort_index().loc[(stm),]
+        buy_list = buy_list[(buy_list.RRNG_15M.abs() < 0.1)].reset_index().code.unique().tolist()
+        QA_util_log_info('##buy_list ==================== {}'.format(buy_list), ui_log=None)
         QA_util_log_info('##JOB Finished Trading Signal ==================== {}'.format(
             mark_tm), ui_log=None)
 
