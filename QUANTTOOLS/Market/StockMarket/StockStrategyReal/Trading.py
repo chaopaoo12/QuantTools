@@ -65,10 +65,10 @@ def trading_new(trading_date, working_dir=working_dir):
     mars_nn=mars_nn.loc[QA_util_get_pre_trade_date(trading_date,1)]
     mars_day=mars_day.loc[QA_util_get_pre_trade_date(trading_date,1)]
 
-    xg=xg[xg.RANK<=20]
-    xg_nn=xg_nn[xg_nn.RANK<=20]
-    mars_nn=mars_nn[mars_nn.RANK<=20]
-    mars_day=mars_day[mars_day.RANK<=20]
+    xg=xg[xg.y_pred==1]
+    xg_nn=xg_nn[xg_nn.y_pred==1]
+    mars_nn=mars_nn[mars_nn.y_pred==1]
+    mars_day=mars_day[mars_day.y_pred==1]
 
     res_a, res_b, res_c, res_d = watch_func(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1))
 
