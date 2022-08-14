@@ -145,7 +145,7 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
             QA_util_log_info("JOB No Week data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
 
     elif type == 'month':
-        start = QA_util_get_pre_trade_date(start_date,220)
+        start = QA_util_get_pre_trade_date(start_date,420)
         rng1 = QA_util_get_trade_range(start_date, end_date)
         try:
             data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().month)
