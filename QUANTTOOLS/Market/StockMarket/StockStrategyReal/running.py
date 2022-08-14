@@ -326,16 +326,16 @@ def summary_func(trading_date):
 
     stock_target = get_quant_data(start_date, end_date, type='crawl', block=False, sub_block=False,norm_type=None)[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','TAR','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
     stock_res = stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','TAR','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK']]
-    cols_name = ['RRNG','RRNG_HR','SHORT10','SHORT20','LONG60','TAR','AVG5','MA60_C','PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10', 'y_pred', 'model', 'RANK']
+    cols_name = ['RRNG','RRNG_HR','RRNG_WK','SHORT10','SHORT20','LONG60','TAR','AVG5','MA60_C','PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10', 'y_pred', 'model', 'RANK']
     xg = stock_res.join(xg).assign(model='xg')
     xg_nn = stock_res.join(xg_nn).assign(model='xg_nn')
     mars_nn = stock_res.join(mars_nn).assign(model='mars_nn')
     mars_day = stock_res.join(mars_day).assign(model='mars_day')
 
-    res = pd.concat([mars_day[(mars_day.RANK<=20)&(mars_day.RRNG.abs() < 0.1)][cols_name],
-                     mars_nn[(mars_nn.RANK<=20)&(mars_nn.RRNG.abs() < 0.1)][cols_name],
-                     xg_nn[(xg_nn.RANK<=20)&(xg_nn.RRNG.abs() < 0.1)][cols_name],
-                     xg[(xg.RANK<=20)&(xg.RRNG.abs() < 0.1)][cols_name]])
+    res = pd.concat([mars_day[(mars_day.RANK<=20)&(mars_day.RRNG_WK.abs() < 0.1)][cols_name],
+                     mars_nn[(mars_nn.RANK<=20)&(mars_nn.RRNG_WK.abs() < 0.1)][cols_name],
+                     xg_nn[(xg_nn.RANK<=20)&(xg_nn.RRNG_WK.abs() < 0.1)][cols_name],
+                     xg[(xg.RANK<=20)&(xg.RRNG_WK.abs() < 0.1)][cols_name]])
 
     res['model'] = res.groupby(['date','code'])['model'].transform(lambda x: ','.join(x))
     res = res.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']).sort_index()
@@ -351,8 +351,8 @@ def summary_watch(trading_date):
 
     base_report(trading_date, '目标股池', **{'SUMMARY':res,
                                          'TARGET':rrr,
-                                        'MARKS_DAY':mars_day[(mars_day.RANK<=20)&(mars_day.RRNG.abs() < 0.1)],
-                                         'MARKS_NN':mars_nn[(mars_nn.RANK<=20)&(mars_nn.RRNG.abs() < 0.1)],
-                                         'XG':xg[(xg.RANK<=20)&(xg.RRNG.abs() < 0.1)],
-                                         'XG_NN':xg_nn[(xg_nn.RANK<=20)&(xg_nn.RRNG.abs() < 0.1)]
+                                        'MARKS_DAY':mars_day[(mars_day.RANK<=20)&(mars_day.RRNG_WK.abs() < 0.1)],
+                                         'MARKS_NN':mars_nn[(mars_nn.RANK<=20)&(mars_nn.RRNG_WK.abs() < 0.1)],
+                                         'XG':xg[(xg.RANK<=20)&(xg.RRNG_WK.abs() < 0.1)],
+                                         'XG_NN':xg_nn[(xg_nn.RANK<=20)&(xg_nn.RRNG_WK.abs() < 0.1)]
                                          })
