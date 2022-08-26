@@ -65,10 +65,10 @@ def trading_new(trading_date, working_dir=working_dir):
     mars_nn=mars_nn.loc[QA_util_get_pre_trade_date(trading_date,1)]
     mars_day=mars_day.loc[QA_util_get_pre_trade_date(trading_date,1)]
 
-    xg=xg[xg.RANK<=20]
-    xg_nn=xg_nn[xg_nn.RANK<=20]
-    mars_nn=mars_nn[mars_nn.RANK<=20]
-    mars_day=mars_day[mars_day.RANK<=20]
+    xg=xg[xg.y_pred==1]
+    xg_nn=xg_nn[xg_nn.y_pred==1]
+    mars_nn=mars_nn[mars_nn.y_pred==1]
+    mars_day=mars_day[mars_day.y_pred==1]
 
     res_a, res_b, res_c, res_d = watch_func(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1))
 
@@ -83,8 +83,8 @@ def trading_new(trading_date, working_dir=working_dir):
 
     res_b = res_b.join(stock_target[['RRNG','RRNG_WK']])
 
-    code_list = list(set(stock_target[stock_target['RRNG_WK'].abs() < 0.1].loc[(QA_util_get_pre_trade_date(trading_date,1),stock_list),].reset_index().code.tolist()
-                         + res_b[(res_b.RRNG_WK.abs() < 0.1)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()))
+    code_list = list(set(stock_target[stock_target['RRNG'].abs() < 0.1].loc[(QA_util_get_pre_trade_date(trading_date,1),stock_list),].reset_index().code.tolist()
+                         + res_b[(res_b.RRNG.abs() < 0.1)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()))
 
     time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
     time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
