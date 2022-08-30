@@ -12,8 +12,8 @@ def load_data(model, start_date, end_date, type ='model', norm_type=None, sub_bl
     model.get_data(start=start_date, end= end_date, type =type,sub_block=sub_block, norm_type=norm_type, ST=ST)
     return(model)
 
-def shuffle(model, n_in = None):
-    model.shuffle(n_in)
+def shuffle(model, cols, n_in = None):
+    model.shuffle(cols, n_in)
     return(model)
 
 def set_target(model, start_date, end_date, mark = 0.3, col = 'TARGET5', type = 'percent', shift = None, ui_log = None ):
