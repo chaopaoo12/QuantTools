@@ -1,12 +1,9 @@
 from QUANTTOOLS.Market.MarketTools import load_prediction,check_prediction
 from QUANTTOOLS.Message import send_email
 from QUANTAXIS.QAUtil import QA_util_log_info
-import os
-
 
 def load_data(func, trading_date, working_dir, model_name, file_name, code=None):
     QA_util_log_info('##JOB Now Predict ==== {}'.format(str(trading_date)))
-    os.path.exists(working_dir+'\\'+file_name)
     try:
         prediction = load_prediction(file_name, working_dir)
         check_prediction(prediction, trading_date)
