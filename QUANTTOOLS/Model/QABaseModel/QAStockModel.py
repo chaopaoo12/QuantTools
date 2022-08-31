@@ -78,8 +78,10 @@ class QAStockModel(QAModel):
                                                        'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
                                                        'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]
         if self.n_in is not None:
-            data = data[[i for i in self.data.columns if i not in ['next_date','PRE_DATE','PASS_MARK','TARGET',
-                                                                             'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(series_to_supervised, n_in = self.n_in).join(data[['next_date','PRE_DATE','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']])
+            shuffle_data = data[[i for i in self.data.columns if i not in ['next_date','PRE_DATE','PASS_MARK','TARGET',
+                                                                             'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(series_to_supervised, n_in = self.n_in)
+
+            data = shuffle_data.join(data)
 
         train = pd.DataFrame()
         n_cols = []
