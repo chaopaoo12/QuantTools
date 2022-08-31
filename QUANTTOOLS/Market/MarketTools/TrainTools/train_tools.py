@@ -12,7 +12,7 @@ def load_data(model, start_date, end_date, type ='model', norm_type=None, sub_bl
     model.get_data(start=QA_util_get_last_day(QA_util_get_real_date(start_date), 30), end= end_date, type =type,sub_block=sub_block, norm_type=norm_type, ST=ST)
     return(model)
 
-def shuffle(model, cols, n_in = None):
+def shuffle(model, cols = None, n_in = None):
     model.shuffle(cols, n_in)
     return(model)
 
