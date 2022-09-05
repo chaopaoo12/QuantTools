@@ -97,7 +97,7 @@ def daymodel_train(date, working_dir=working_dir):
     res_a, res_b, res_c, res_d = watch_func(start_date, end_date)
 
     stock_model.data = stock_model.data.reindex(res_b.index)
-    stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 3, col = 'TARGET', type='value')
+    stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 5, col = 'TARGET', type='value')
 
     stock_model = prepare_data(stock_model, None, 0, 0.95)
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,

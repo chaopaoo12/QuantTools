@@ -302,6 +302,10 @@ def block_watch(trading_date):
     res_d = res_d.join(xg[['O_PROB','RANK']].rename(columns={'O_PROB':'block_xg'}))
     res_d['block_RANK'] = res_d['block_xg'].groupby('date').rank(ascending=False)
 
+    base_report(trading_date, 'block选股报告 一', **{'综合选股':xg[(res_b.RANK < 5)],
+                                                '目标清单':xg[(res_b.y_pred == 1)],
+                                             })
+
     base_report(trading_date, '优质板块选股 二', **{
                                              '均线清单':res_b[res_b.RRNG.abs() <= 0.05],
                                              '轮动清单':res_b[res_b.block_RANK <= 5],
@@ -356,3 +360,6 @@ def summary_watch(trading_date):
                                          'XG':xg[(xg.RANK<=20)&(xg.RRNG.abs() < 0.1)],
                                          'XG_NN':xg_nn[(xg_nn.RANK<=20)&(xg_nn.RRNG.abs() < 0.1)]
                                          })
+
+def predict_sh(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
+    predict_base(trading_date, concat_predict, model_name = 'stock_sh', file_name = 'prediction_sh', top_num=top_num,client_setting=trading_setting, percent=percent, working_dir=working_dir, exceptions=exceptions)
