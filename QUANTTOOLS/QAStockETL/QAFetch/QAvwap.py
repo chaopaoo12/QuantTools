@@ -102,7 +102,7 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['AMT_UP'] = data['camt'] / data['AMT_P'] - 1
         data['VAMP'] = data['camt'] / data['cvolume'] / 100
         data['DISTANCE'] = data['close'] / data['VAMP'] - 1
-        data['camt_vol'] = data['camt'] / ((data.groupby('code')['camt'].shift(241*2) + data.groupby('code')['camt'].shift(241*3) + data.groupby('code')['camt'].shift(241)  + data['camt']) /4)
+        data['camt_vol'] = data['camt'] / ((data.groupby('code')['camt'].shift(241*2) + data.groupby('code')['camt'].shift(241*3) + data.groupby('code')['camt'].shift(241)) /3)
         data['camt_k'] = data.groupby(['date', 'code']).apply(lambda x: spcc5(x))[['camt_k']]
         data[['day_open', 'day_close', 'day_high', 'day_low']] = data.groupby(['date','code']).apply(lambda x: sohlc(x))[['day_open', 'day_close', 'day_high', 'day_low']]
         data['open_pct'] = data['close'] / data['day_open'] - 1
