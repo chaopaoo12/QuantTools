@@ -59,7 +59,7 @@ def trading_new(trading_date, working_dir=working_dir):
     r_tar, xg_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg_nn', 'prediction_stock_xg_nn')
     r_tar, mars_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_nn', 'prediction_stock_mars_nn')
     r_tar, mars_day, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_day', 'prediction_stock_mars_day')
-    r_tar, xg_sh, prediction = load_data(concat_predict, trading_date, working_dir, 'stock_sh', 'prediction_sh')
+    r_tar, xg_sh, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_sh', 'prediction_sh')
 
     xg=xg.loc[QA_util_get_pre_trade_date(trading_date,1)]
     xg_nn=xg_nn.loc[QA_util_get_pre_trade_date(trading_date,1)]
