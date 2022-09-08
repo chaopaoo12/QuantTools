@@ -115,7 +115,7 @@ def code_select(target_list, position, trading_date, mark_tm):
 
 
 def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
-    print(target_list)
+    QA_util_log_info(target_list)
     # 计算信号 提供基础信息 example
     # 输出1 signal 计划持有的code 目前此方案 1:表示持有 0:表示不持有
     # 输出2 signal 进出信号 signal 1:表示进场信号 0:表示无信号 -1:表示卖出信号
