@@ -147,6 +147,8 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
         data = None
 
     QA_util_log_info('##JOB 300910 ====================', ui_log=None)
+    QA_util_log_info(data[(data.code == '300910')&(data.date == trading_date)][['RRNG_15M','VAMP_JC','CLOSE_K','VAMPC_K','VAMP_K','DISTANCE','close','MIN_V_15M','camt_vol','signal','msg']]
+                     )
     QA_util_log_info(data[(data.code == '300910')&(data.date == trading_date)&(data.signal == 1)][['RRNG_15M','VAMP_JC','CLOSE_K','VAMPC_K','VAMP_K','DISTANCE','close','MIN_V_15M','camt_vol','signal','msg']]
                      )
 
