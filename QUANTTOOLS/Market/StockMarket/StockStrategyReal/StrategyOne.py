@@ -62,9 +62,9 @@ def data_collect(code_list,trading_date,data_15min,k_per=1.03):
                  "msg"] = 'VMAP金叉'
 
         #放量金叉
-        data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.VAMP_K >= 0.005) & (data.camt_vol > 1),
+        data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.VAMP_K >= 0.005) & (data.camt_vol > 1) & (data.DISTANCE < 0.01),
                  "signal"] = 1
-        data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.VAMP_K >= 0.005) & (data.camt_vol > 1),
+        data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0) & (data.VAMP_K >= 0.005) & (data.camt_vol > 1) & (data.DISTANCE < 0.01),
                  "msg"] = 'VMAP放量金叉'
 
         #超跌
