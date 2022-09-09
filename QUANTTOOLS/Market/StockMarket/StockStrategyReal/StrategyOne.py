@@ -68,8 +68,8 @@ def data_collect(code_list,trading_date,data_15min,k_per=1.03):
                  "msg"] = 'VMAP超跌'
 
         #底部追涨
-        data.loc[(data.VAMPC_K >= 0.2) & (data.VAMP_K > 0.02) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < 0.02) & (data.camt_vol > 0.8), "signal"] = 1
-        data.loc[(data.VAMPC_K >= 0.2) & (data.VAMP_K > 0.02) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < 0.02) & (data.camt_vol > 0.8), "msg"] = '追涨:VMAP上升通道'
+        data.loc[(data.VAMPC_K >= 0.2) & (data.VAMP_K > 0.2) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < 0.02), "signal"] = 1
+        data.loc[(data.VAMPC_K >= 0.2) & (data.VAMP_K > 0.2) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < 0.02), "msg"] = '追涨:VMAP上升通道'
 
         return(data)
     except:
