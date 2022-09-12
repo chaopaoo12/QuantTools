@@ -3,6 +3,8 @@ from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_data
 from QUANTTOOLS.Model.QABaseModel.QAModel import QAModel
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.Message import send_email, send_actionnotice
+from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize,series_to_supervised
+import re
 
 class QAIndexModel(QAModel):
 
@@ -25,6 +27,13 @@ class QAIndexModel(QAModel):
                                                        'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
                                                        'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
                                                        'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]
+
+        if self.n_in is not None:
+
+            shuffle_data = data[list(set([re.sub(r"\((.*?)\)|\{(.*?)\}|\[(.*?)\]", "", i) for i in self.cols]))].groupby('code').apply(series_to_supervised, n_in = self.n_in)
+
+            data = shuffle_data.join(data)
+
         train = pd.DataFrame()
         n_cols = []
         for i in self.cols:
