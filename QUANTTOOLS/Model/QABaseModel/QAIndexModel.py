@@ -15,6 +15,26 @@ class QAIndexModel(QAModel):
         self.info['norm_type'] = norm_type
         print(self.data.shape)
 
+    def shuffle(self, cols, n_in = None):
+        QA_util_log_info('##JOB01 Now Data shuffle {}'.format(n_in))
+        if n_in is not None:
+            if cols is not None:
+                shuffle_data = self.data[cols].groupby('code').apply(series_to_supervised, n_in = n_in)
+            else:
+                shuffle_data = self.data[[i for i in self.data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','date','datetime','TARGET20',
+                                                                                      'OPEN_MARK','PASS_MARK','TARGET','TARGET3',
+                                                                                      'TARGET4','TARGET5','TARGET10','AVG_TARGET','INDEX_TARGET',
+                                                                                      'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
+                                                                                      'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]].groupby('code').apply(series_to_supervised, n_in = n_in)
+
+            self.data = shuffle_data.join(self.data[['PASS_MARK','INDEX_TARGET',
+                                                     'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
+                                                     'INDEX_TARGET10','INDEX_TARGET20']])
+
+        self.info['n_in'] = n_in
+        QA_util_log_info('##JOB01 Now Data shuffle Finish')
+        QA_util_log_info(self.data.shape)
+
     def model_predict(self, start, end, code = None, type='crawl'):
         if code is not None:
             self.code = code

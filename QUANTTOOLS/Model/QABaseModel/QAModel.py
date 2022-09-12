@@ -38,21 +38,6 @@ class QAModel():
         self.info['target'] = self.target
         QA_util_log_info('##save used columns ==== {}'.format(self.info['date']), ui_log = None)
 
-    def shuffle(self, cols, n_in = None):
-        QA_util_log_info('##JOB01 Now Data shuffle {}'.format(n_in))
-        if n_in is not None:
-            if cols is not None:
-                shuffle_data = self.data[cols].groupby('code').apply(series_to_supervised, n_in = n_in)
-            else:
-                shuffle_data = self.data[[i for i in self.data.columns if i not in ['next_date','OPEN_MARK','PRE_DATE','PASS_MARK','TARGET',
-                                                                                    'TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(series_to_supervised, n_in = n_in)
-
-            self.data = shuffle_data.join(self.data[['next_date','OPEN_MARK','PRE_DATE','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']])
-
-        self.info['n_in'] = n_in
-        QA_util_log_info('##JOB01 Now Data shuffle Finish')
-        QA_util_log_info(self.data.shape)
-
 
     def set_train_rng(self, train_start, train_end):
         QA_util_log_info('##JOB Set Train Range from {_from} to {_to} ===== {date}'.format(_from=train_start,_to=train_end, date=self.info['date']), ui_log = None)
