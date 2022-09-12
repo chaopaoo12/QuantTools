@@ -8,7 +8,7 @@ import re
 
 class QAIndexModel(QAModel):
 
-    def get_data(self, start, end, code=None, type ='model', norm_type=None):
+    def get_data(self, start, end, code=None, type ='model', norm_type=None, block=False, sub_block=False, ST=False):
         QA_util_log_info('##JOB Got Index Data by {type} ==== from {_from} to {_to}'.format(type=type, _from=start, _to=end), ui_log = None)
         self.data = get_index_quant_data(start, end, code=code, type = type, norm_type=norm_type)
         self.info['code'] = code
