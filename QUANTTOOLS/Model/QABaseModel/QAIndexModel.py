@@ -39,7 +39,7 @@ class QAIndexModel(QAModel):
         if code is not None:
             self.code = code
         QA_util_log_info('##JOB Got Index Quant Data by {type} ==== from {_from} to {_to} target:{target}'.format(type=type, _from=start, _to=end, target = self.target), ui_log = None)
-        data = get_index_quant_data(start, end, type= type, norm_type=self.norm_type)
+        data = get_index_quant_data(start, end, type= type)
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','date','datetime','TARGET20',
