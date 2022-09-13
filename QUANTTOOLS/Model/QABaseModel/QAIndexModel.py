@@ -36,6 +36,8 @@ class QAIndexModel(QAModel):
         QA_util_log_info(self.data.shape)
 
     def model_predict(self, start, end, code = None, type='crawl'):
+        self.get_param()
+
         if code is not None:
             self.code = code
         QA_util_log_info('##JOB Got Index Quant Data by {type} ==== from {_from} to {_to} target:{target}'.format(type=type, _from=start, _to=end, target = self.target), ui_log = None)
