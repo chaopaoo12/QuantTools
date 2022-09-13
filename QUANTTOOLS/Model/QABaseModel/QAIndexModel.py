@@ -28,7 +28,7 @@ class QAIndexModel(QAModel):
                                                                                       'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]].groupby('code').apply(series_to_supervised, n_in = n_in)
 
             self.data = shuffle_data.join(self.data[['PASS_MARK','INDEX_TARGET',
-                                                     'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
+                                                     'INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
                                                      'INDEX_TARGET10','INDEX_TARGET20']])
 
         self.info['n_in'] = n_in
