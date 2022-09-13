@@ -58,6 +58,7 @@ class QAIndexModel(QAModel):
 
         train = pd.DataFrame()
         n_cols = []
+        print(cols1)
         for i in self.cols:
             if i in cols1:
                 train[i] = data[i].astype('float')
