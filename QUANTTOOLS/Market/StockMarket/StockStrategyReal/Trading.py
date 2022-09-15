@@ -71,7 +71,7 @@ def trading_new(trading_date, working_dir=working_dir):
     xg_nn=xg_nn[xg_nn.RANK<=20]
     mars_nn=mars_nn[mars_nn.RANK<=20]
     mars_day=mars_day[mars_day.RANK<=20]
-    xg_sh=xg_sh[xg_sh.RANK<=20]
+    xg_sh=xg_sh[(xg_sh.RANK<=20)&(xg_sh.O_PROB>=0.4)]
 
     #res_a, res_b, res_c, res_d = watch_func(QA_util_get_pre_trade_date(trading_date,1), QA_util_get_pre_trade_date(trading_date,1))
 
