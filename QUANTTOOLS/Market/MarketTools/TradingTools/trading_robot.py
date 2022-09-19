@@ -22,7 +22,10 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
         mark_tm), ui_log=None)
     if signal_data is not None and test is False:
         if client.type in ['yun_ease','loacl']:
-            client.client.cancel_all(account)
+            try:
+                client.client.cancel_all(account)
+            except:
+                QA_util_log_info('JOB Cancel Last Mark Time Trading Action Failed')
         elif client.type == 'sim_myquant':
             order_cancel_all()
         else:
