@@ -42,7 +42,10 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
             # sell
             if test is False:
                 if client.type in ['yun_ease','loacl']:
-                    client.client.cancel_all(account)
+                    try:
+                        client.client.cancel_all(account)
+                    except:
+                        QA_util_log_info('JOB Cancel Last Trading Action Failed')
                 elif client.type == 'sim_myquant':
                     order_cancel_all()
                 else:
