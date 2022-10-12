@@ -628,6 +628,7 @@ financial_dict = {
     '584未知584':'unknown584',
     '585未知585':'unknown585',
     '586未知586':'unknown586',
+    '587未知587':'unknown587',
 }
 
 financial_dict1 = {
