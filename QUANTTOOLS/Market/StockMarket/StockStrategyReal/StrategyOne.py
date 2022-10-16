@@ -56,9 +56,9 @@ def data_collect(code_list,trading_date,data_15min,k_per=1.03):
         data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "msg"] = '强制止损'
 
         #底部金叉
-        data.loc[(data.RRNG_15M.abs() < 0.03)&(data.VAMP_JC == 1) & (data.VAMPC_K >= 0.1)  & (data.CLOSE_K > 0) & (data.VAMP_K >= 0.005) & (data.MIN_V_15M * k_per > data.close),
+        data.loc[(data.RRNG_15M.abs() < 0.03)&(data.VAMP_JC == 1) & (data.VAMPC_K >= 0.01)  & (data.CLOSE_K > 0) & (data.VAMP_K >= 0) & (data.MIN_V_15M * k_per > data.close),
                  "signal"] = 1
-        data.loc[(data.RRNG_15M.abs() < 0.03)&(data.VAMP_JC == 1) & (data.VAMPC_K >= 0.1)  & (data.CLOSE_K > 0) & (data.VAMP_K >= 0.005) & (data.MIN_V_15M * k_per > data.close),
+        data.loc[(data.RRNG_15M.abs() < 0.03)&(data.VAMP_JC == 1) & (data.VAMPC_K >= 0.01)  & (data.CLOSE_K > 0) & (data.VAMP_K >= 0) & (data.MIN_V_15M * k_per > data.close),
                  "msg"] = 'VMAP金叉'
 
         #放量金叉
