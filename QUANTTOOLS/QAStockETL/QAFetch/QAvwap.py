@@ -100,7 +100,10 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
             data.groupby(['date','code'])[['open','close','high','low']].shift(2)
         data[['AMT_P','VOL_P']] = data.groupby(['HM','code'])[['camt','cvolume']].shift()
         data['AMT_UP'] = data['camt'] / data['AMT_P'] - 1
-        data['VAMP'] = data['camt'] / data['cvolume']
+        if type == 'crawl':
+            data['VAMP'] = data['camt'] / data['cvolume']
+        else:
+            data['VAMP'] = data['camt'] / data['cvolume'] / 100
         data['DISTANCE'] = data['close'] / data['VAMP'] - 1
         data['camt_vol'] = data['camt'] / ((data.groupby('code')['camt'].shift(241*2) + data.groupby('code')['camt'].shift(241*3) + data.groupby('code')['camt'].shift(241)) /3)
         data['camt_k'] = data.groupby(['date', 'code']).apply(lambda x: spcc5(x))[['camt_k']]
