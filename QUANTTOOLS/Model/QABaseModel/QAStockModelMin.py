@@ -9,10 +9,10 @@ from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
 
 class QAStockModelMin(QAModel):
 
-    def get_data(self, start, end, code =None, block=False, sub_block=False, type = None, norm_type=None, ST=True):
+    def get_data(self, start, end, code =None, block=False, sub_block=False, type = 'crawl', norm_type=None, ST=True):
         QA_util_log_info('##JOB Got Data by {type}, block: {block}, sub_block: {sub_block} ==== from {_from} to {_to}'.format(type=type, block=block,sub_block=sub_block, _from=start, _to=end), ui_log = None)
-        data = QA_fetch_get_stock_vwap(code, start, end, period = '1', type = 'crawl')
-        data_15min = get_quant_data_15min(QA_util_get_pre_trade_date(start,1), end, code, type='real')
+        data = QA_fetch_get_stock_vwap(code, start, end, period = '1', type = type)
+        data_15min = get_quant_data_15min(QA_util_get_pre_trade_date(start,1), end, code, type=type)
         last = data.groupby(['date','code'])['close'].agg([('last1','last')])
         last = last.assign(yes_close=last.groupby('code').shift())
 
