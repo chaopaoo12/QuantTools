@@ -75,7 +75,13 @@ def QA_fetch_get_stock_min_sina(code, period='30', type=''):
     #    code1 = 'SZ'+code
     #else:
     #    code1 = code
-    data = stock_zh_a_hist_min_em(symbol=code, period=period, adjust=type)
+    if isinstance(code,list):
+        data = pd.concat([stock_zh_a_hist_min_em(symbol=i, period=period, adjust=type) for i in code])
+
+    elif isinstance(code,str):
+        data = stock_zh_a_hist_min_em(symbol=code, period=period, adjust=type)
+    else:
+        data=None
     try:
         data = data.rename(columns={'时间':'datetime',
                                     '开盘':'open',
