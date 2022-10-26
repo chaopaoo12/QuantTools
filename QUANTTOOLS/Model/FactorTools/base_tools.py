@@ -214,3 +214,47 @@ def combine_index(index_d, safe_d, start, end):
         return(res.drop_duplicates())
     else:
         return(None)
+
+
+def desribute_check(data, cols, drop):
+    s_res = data[cols].describe().T
+    s_res = s_res.assign(rate = s_res['count']/data.shape[0])
+    non_cols = list(s_res[s_res.rate < drop].index)
+    return(non_cols)
+
+def thresh_chek(data, cols, thresh):
+    nan_num = (data[cols].isnull().sum(axis=1)> 0).sum()
+    #QA_util_log_info('##JOB Clean Data With {NAN_NUM}({per}) in {shape} Contain NAN ==== '.format(
+    #    NAN_NUM = nan_num, per=nan_num/data.shape[0], shape=data.shape[0]), ui_log = None)
+    if thresh == 0:
+        data = data[cols].dropna()
+    else:
+        data = data[cols].dropna(thresh=(len(cols) - thresh))
+
+    #send_email('模型训练报告', "数据损失比例 {}".format(nan_num/train.shape[0]), self.info['date'])
+    return (data, nan_num/data.shape[0])
+
+
+def data_reshape(data, cols):
+
+    cols1 = [i for i in data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','date','datetime',
+                                                   'OPEN_MARK','PASS_MARK','TARGET','TARGET3',
+                                                   'TARGET4','TARGET5','TARGET10','TARGET20','AVG_TARGET','INDEX_TARGET',
+                                                   'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
+                                                   'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]
+
+    train = pd.DataFrame()
+    n_cols = []
+    for i in cols:
+        if i in cols1:
+            train[i] = data[i].astype('float')
+        else:
+            train[i] = 0
+            n_cols.append(i)
+    train.index = data.index
+
+    return(train, n_cols)
+
+
+def code_check(data):
+    pass

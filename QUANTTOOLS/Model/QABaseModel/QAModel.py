@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old,QA_fetch_stock_all,QA_fetch_code_new,QA_fetch_stock_om_all
 import numpy as np
 import pandas as pd
-
+import re
 
 class QAModel():
 
@@ -185,10 +185,10 @@ class QAModel():
         self.data[['Z_PROB','O_PROB']] = bina
         self.data = self.data[self.data['O_PROB'].notna()]
 
-    def desribute_check(self, drop):
+    def desribute_check(self):
         s_res = self.data[self.cols].describe().T
         s_res = s_res.assign(rate = s_res['count']/self.data.shape[0])
-        non_cols = list(s_res[s_res.rate < drop].index)
+        non_cols = list(s_res[s_res.rate < self.drop].index)
         return(non_cols)
 
     def thresh_check(self):
@@ -245,7 +245,7 @@ class QAModel():
 
         short_of_code = [i for i in code_all if i not in code_old + code_new]
         if len(short_of_code) > 0:
-            QA_util_log_info('##JOB {} Short of Code: {} ===== {self.trading_date}'.format(
+            QA_util_log_info('##JOB {} Short of Code: {} ===== {}'.format(
                 len(short_of_code), short_of_code, self.trading_date), ui_log = None)
 
             send_actionnotice('股票列表数据缺失',
@@ -257,7 +257,8 @@ class QAModel():
                               )
 
         target_code = [i for i in code_all if i not in code_new + ST + code_688]
-        short_of_data = [i for i in target_code if i not in self.data.loc[self.trading_date].reset_index().code.unique().tolist()]
+        short_of_data = [i for i in target_code if i not in
+                         self.data.loc[self.trading_date].reset_index().code.unique().tolist()]
 
         if len(short_of_data) > 0:
             QA_util_log_info('##JOB {} Short of Data: {} ===== {_from}'.format(
@@ -271,6 +272,31 @@ class QAModel():
                               )
 
         return(short_of_code, short_of_data)
+
+    def shuffle(self):
+
+        QA_util_log_info('##JOB01 Now Data shuffle {}'.format(self.n_in))
+
+        cols = list(set([re.sub(r"\((.*?)\)|\{(.*?)\}|\[(.*?)\]", "", i) for i in self.cols]))
+
+        if self.n_in is not None:
+            if cols is not None:
+                shuffle_data = self.data[cols].groupby('code').apply(series_to_supervised, n_in = self.n_in)
+            else:
+                shuffle_data = self.data[
+                    [i for i in self.data.columns if i not in
+                     ['next_date','OPEN_MARK','PRE_DATE','PASS_MARK',
+                      'TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(
+                    series_to_supervised, n_in = self.n_in)
+
+            self.data = shuffle_data.join(
+                self.data[[i for i in ['next_date','OPEN_MARK','PRE_DATE','PASS_MARK',
+                                       'TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']
+                           if i in self.data.columns]])
+        self.info['n_in'] = self.n_in
+        QA_util_log_info('##JOB01 Now Data shuffle Finish')
+        QA_util_log_info(self.data.shape)
+
 
 if __name__ == 'main':
     pass
