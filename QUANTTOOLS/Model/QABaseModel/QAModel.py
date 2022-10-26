@@ -197,9 +197,9 @@ class QAModel():
         QA_util_log_info('##JOB Clean Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
             NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
         if self.thresh == 0 or self.thresh is None:
-            self.data = self.data[self.cols].dropna()
+            self.data = self.data.dropna(subset=self.cols)
         else:
-            self.data = self.data[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
+            self.data = self.data.dropna(subset=self.cols,thresh=(len(self.cols) - self.thresh))
 
         send_email('模型训练报告', "数据损失比例 {}".format(loss_rate), self.info['date'])
         if loss_rate >= 0.01:
