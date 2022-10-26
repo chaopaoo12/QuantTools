@@ -289,6 +289,8 @@ class QAModel():
 
             self.data = shuffle_data.join(
                 self.data[[i for i in self.data.columns if i not in shuffle_data.columns]])
+            print('shuffle_data',shuffle_data)
+            print('data',self.data)
         self.info['n_in'] = self.n_in
         QA_util_log_info('##JOB01 Now Data shuffle Finish')
         QA_util_log_info(self.data.shape)
