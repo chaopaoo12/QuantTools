@@ -20,7 +20,7 @@ class QAStockModelMin(QAModel):
         data = data.assign(TARGET = data.day_close/data.last1-1,
                            pct= data.day_close/data.yes_close-1)
         self.data = data[['date','open_pct', 'high_pct', 'low_pct', 'VAMP_JC', 'VAMP_SC', 'VAMPC_K', 'VAMP_K', 'CLOSE_K', 'TARGET', 'pct', 'AMT_UP', 'DISTANCE', 'camt_vol', 'camt_k']].join(data_15min)
-        self.data = data.groupby('code').fillna(method='ffill')
+        self.data = self.data.groupby('code').fillna(method='ffill')
 
         self.info['code'] = code
         self.info['norm_type'] = norm_type
