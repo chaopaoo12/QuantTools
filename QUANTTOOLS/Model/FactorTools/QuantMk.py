@@ -9,6 +9,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_index_
                                            QA_fetch_stock_quant_hour,QA_fetch_stock_hour_pre,
                                            QA_fetch_index_quant_min,QA_fetch_index_min_pre,
                                            QA_fetch_stock_quant_min,QA_fetch_stock_min_pre,
+                                           QA_fetch_get_stock_indicator,
                                            QA_fetch_stock_quant_neut_adv,QA_fetch_stock_quant_neut)
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_quant_hour,QA_fetch_get_stock_quant_min,QA_fetch_get_index_quant_hour,QA_fetch_get_index_quant_min
 from QUANTAXIS import QA_fetch_stock_block,QA_fetch_index_list_adv
@@ -394,7 +395,34 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
     if type == 'crawl':
         res = QA_fetch_stock_min_pre(codes,start_date,end_date, block = sub_block, method=method, norm_type =norm_type)
     elif type == 'model':
-        res = QA_fetch_stock_quant_min(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res = QA_fetch_get_stock_indicator(codes, start_date, end_date, '30min')
+                res.columns = [x.upper() + '_30M' for x in res.columns]
+                success = True
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 30min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 30min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
+        attempts = 0
+        success = False
+        while attempts < 3 and not success:
+            try:
+                res1 = QA_fetch_get_stock_indicator(codes, start_date, end_date, '15min')
+                res1.columns = [x.upper() + '_15M' for x in res1.columns]
+                success = True
+            except:
+                attempts += 1
+                QA_util_log_info("JOB Try {} times for 15min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
+                if attempts == 3:
+                    QA_util_log_info("JOB Failed to get 15min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
+
+        res = res1.join(res).groupby('code').fillna(method='ffill')
+
     elif type == 'real':
         attempts = 0
         success = False

@@ -6,43 +6,44 @@ from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_S
 from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq, QA_fetch_get_stock_min_sina,QA_fetch_get_index_min_sina
 
 def QA_fetch_get_stock_llvalue(code, start_date, end_date, type = 'day'):
-    if type == 'min':
+    if type == '1min':
+        start = QA_util_get_pre_trade_date(start_date,2)
+    elif type == '5min':
+        start = QA_util_get_pre_trade_date(start_date,3)
+    elif type == '15min':
+        start = QA_util_get_pre_trade_date(start_date,6)
+    elif type == '30min':
         start = QA_util_get_pre_trade_date(start_date,12)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_stock_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='30min').to_qfq()
-        except:
-            QA_util_log_info("JOB No Minly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'hour':
+    elif type == 'hour' or type == '60min':
+        type = '60min'
         start = QA_util_get_pre_trade_date(start_date,55)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_stock_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='60min').to_qfq()
-        except:
-            QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'day':
+    else:
         start = QA_util_get_pre_trade_date(start_date,200)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_stock_day_adv(code,start,end_date).to_qfq()
-        except:
-            QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'week':
-        start = QA_util_get_pre_trade_date(start_date,200)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().week)
-        except:
-            QA_util_log_info("JOB No Week data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
 
-    elif type == 'month':
-        start = QA_util_get_pre_trade_date(start_date,220)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().month)
-        except:
-            QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
+    rng1 = QA_util_get_trade_range(start_date, end_date)
 
+    if type in ['1min','5min','15min','30min','60min','hour']:
+        try:
+            data = QA_fetch_stock_min_adv(code, start+' 09:30:00',end_date + ' 15:00:00', frequence=type).to_qfq()
+        except:
+            data = None
+            QA_util_log_info("JOB No {frequence} Stock data for {code} ======= from {start_date} to {end_date}".format(
+                frequence=type, code=code, start_date=start_date,end_date=end_date))
+    else:
+        try:
+            if type == 'day':
+                data = QA_fetch_stock_day_adv(code,start,end_date).to_qfq()
+            elif type == 'week':
+                data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().week)
+            elif type == 'month':
+                data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().month)
+            else:
+                data = None
+                QA_util_log_info("Type Must In ['day','week','month']")
+        except:
+            data = None
+            QA_util_log_info("JOB No {frequence} Stock data for {code} ======= from {start_date} to {end_date}".format(
+                frequence=type, code=code, start_date=start_date,end_date=end_date))
     if data is None:
         return None
     else:
@@ -53,43 +54,44 @@ def QA_fetch_get_stock_llvalue(code, start_date, end_date, type = 'day'):
         return(data)
 
 def QA_fetch_get_stock_llv(code, start_date, end_date, type = 'day'):
-    if type == 'min':
+    if type == '1min':
+        start = QA_util_get_pre_trade_date(start_date,2)
+    elif type == '5min':
+        start = QA_util_get_pre_trade_date(start_date,3)
+    elif type == '15min':
+        start = QA_util_get_pre_trade_date(start_date,6)
+    elif type == '30min':
         start = QA_util_get_pre_trade_date(start_date,12)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_stock_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='30min').to_qfq()
-        except:
-            QA_util_log_info("JOB No Minly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'hour':
+    elif type == 'hour' or type == '60min':
+        type = '60min'
         start = QA_util_get_pre_trade_date(start_date,55)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_stock_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='60min').to_qfq()
-        except:
-            QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'day':
+    else:
         start = QA_util_get_pre_trade_date(start_date,200)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_stock_day_adv(code,start,end_date).to_qfq()
-        except:
-            QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'week':
-        start = QA_util_get_pre_trade_date(start_date,200)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().week)
-        except:
-            QA_util_log_info("JOB No Week data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
 
-    elif type == 'month':
-        start = QA_util_get_pre_trade_date(start_date,220)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().month)
-        except:
-            QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
+    rng1 = QA_util_get_trade_range(start_date, end_date)
 
+    if type in ['1min','5min','15min','30min','60min','hour']:
+        try:
+            data = QA_fetch_stock_min_adv(code, start+' 09:30:00',end_date + ' 15:00:00', frequence=type).to_qfq()
+        except:
+            data = None
+            QA_util_log_info("JOB No {frequence} Stock data for {code} ======= from {start_date} to {end_date}".format(
+                frequence=type, code=code, start_date=start_date,end_date=end_date))
+    else:
+        try:
+            if type == 'day':
+                data = QA_fetch_stock_day_adv(code,start,end_date).to_qfq()
+            elif type == 'week':
+                data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().week)
+            elif type == 'month':
+                data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().month)
+            else:
+                data = None
+                QA_util_log_info("Type Must In ['day','week','month']")
+        except:
+            data = None
+            QA_util_log_info("JOB No {frequence} Stock data for {code} ======= from {start_date} to {end_date}".format(
+                frequence=type, code=code, start_date=start_date,end_date=end_date))
     if data is None:
         return None
     else:
@@ -115,42 +117,44 @@ def QA_fetch_get_future_indicator(code, start_date, end_date, frequence = 'day')
     return(data)
 
 def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
-    if type == 'min':
+    if type == '1min':
+        start = QA_util_get_pre_trade_date(start_date,2)
+    elif type == '5min':
+        start = QA_util_get_pre_trade_date(start_date,3)
+    elif type == '15min':
+        start = QA_util_get_pre_trade_date(start_date,6)
+    elif type == '30min':
         start = QA_util_get_pre_trade_date(start_date,12)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_stock_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='30min').to_qfq()
-        except:
-            QA_util_log_info("JOB No Minly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'hour':
+    elif type == 'hour' or type == '60min':
+        type = '60min'
         start = QA_util_get_pre_trade_date(start_date,55)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_stock_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='60min').to_qfq()
-        except:
-            QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'day':
+    else:
         start = QA_util_get_pre_trade_date(start_date,200)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_stock_day_adv(code,start,end_date).to_qfq()
-        except:
-            QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'week':
-        start = QA_util_get_pre_trade_date(start_date,200)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().week)
-        except:
-            QA_util_log_info("JOB No Week data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
 
-    elif type == 'month':
-        start = QA_util_get_pre_trade_date(start_date,420)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
+    rng1 = QA_util_get_trade_range(start_date, end_date)
+
+    if type in ['1min','5min','15min','30min','60min','hour']:
         try:
-            data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().month)
+            data = QA_fetch_stock_min_adv(code, start+' 09:30:00',end_date + ' 15:00:00', frequence=type).to_qfq()
         except:
-            QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
+            data = None
+            QA_util_log_info("JOB No {frequence} Stock data for {code} ======= from {start_date} to {end_date}".format(
+                frequence=type, code=code, start_date=start_date,end_date=end_date))
+    else:
+        try:
+            if type == 'day':
+                data = QA_fetch_stock_day_adv(code,start,end_date).to_qfq()
+            elif type == 'week':
+                data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().week)
+            elif type == 'month':
+                data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().month)
+            else:
+                data = None
+                QA_util_log_info("Type Must In ['day','week','month']")
+        except:
+            data = None
+            QA_util_log_info("JOB No {frequence} Stock data for {code} ======= from {start_date} to {end_date}".format(
+                frequence=type, code=code, start_date=start_date,end_date=end_date))
 
     if data is None:
         return None
@@ -162,42 +166,44 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
         return(data)
 
 def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
-    if type == 'min':
+    if type == '1min':
+        start = QA_util_get_pre_trade_date(start_date,2)
+    elif type == '5min':
+        start = QA_util_get_pre_trade_date(start_date,3)
+    elif type == '15min':
+        start = QA_util_get_pre_trade_date(start_date,6)
+    elif type == '30min':
         start = QA_util_get_pre_trade_date(start_date,12)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_index_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='30min')
-        except:
-            QA_util_log_info("JOB No Minly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'hour':
+    elif type == 'hour' or type == '60min':
+        type = '60min'
         start = QA_util_get_pre_trade_date(start_date,55)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_index_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='60min')
-        except:
-            QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'day':
-        start = QA_util_get_pre_trade_date(start_date,180)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_index_day_adv(code,start,end_date)
-        except:
-            QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'week':
-        start = QA_util_get_pre_trade_date(start_date,187)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).week)
-        except:
-            QA_util_log_info("JOB No Week data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
+    else:
+        start = QA_util_get_pre_trade_date(start_date,200)
 
-    elif type == 'month':
-        start = QA_util_get_pre_trade_date(start_date,210)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
+    rng1 = QA_util_get_trade_range(start_date, end_date)
+
+    if type in ['1min','5min','15min','30min','60min','hour']:
         try:
-            data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).month)
+            data = QA_fetch_index_min_adv(code, start+' 09:30:00',end_date + ' 15:00:00', frequence=type)
         except:
-            QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
+            data = None
+            QA_util_log_info("JOB No {frequence} Index data for {code} ======= from {start_date} to {end_date}".format(
+                frequence=type, code=code, start_date=start_date,end_date=end_date))
+    else:
+        try:
+            if type == 'day':
+                data = QA_fetch_index_day_adv(code,start,end_date).to_qfq()
+            elif type == 'week':
+                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).to_qfq().week)
+            elif type == 'month':
+                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).to_qfq().month)
+            else:
+                data = None
+                QA_util_log_info("Type Must In ['day','week','month']")
+        except:
+            data = None
+            QA_util_log_info("JOB No {frequence} Index data for {code} ======= from {start_date} to {end_date}".format(
+                frequence=type, code=code, start_date=start_date,end_date=end_date))
 
     if data is None:
         return None
@@ -283,42 +289,44 @@ def QA_fetch_get_stock_indicator_halfreal(code, start_date, end_date, type = 'da
         return(data)
 
 def QA_fetch_get_stock_indicator_short(code, start_date, end_date, type = 'day'):
-    if type == 'min':
+    if type == '1min':
+        start = QA_util_get_pre_trade_date(start_date,2)
+    elif type == '5min':
+        start = QA_util_get_pre_trade_date(start_date,3)
+    elif type == '15min':
+        start = QA_util_get_pre_trade_date(start_date,6)
+    elif type == '30min':
         start = QA_util_get_pre_trade_date(start_date,12)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_stock_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='30min').to_qfq()
-        except:
-            QA_util_log_info("JOB No Minly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'hour':
+    elif type == 'hour' or type == '60min':
+        type = '60min'
         start = QA_util_get_pre_trade_date(start_date,55)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_stock_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='60min').to_qfq()
-        except:
-            QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'day':
+    else:
         start = QA_util_get_pre_trade_date(start_date,200)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_stock_day_adv(code,start,end_date).to_qfq()
-        except:
-            QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'week':
-        start = QA_util_get_pre_trade_date(start_date,200)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().week)
-        except:
-            QA_util_log_info("JOB No Week data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
 
-    elif type == 'month':
-        start = QA_util_get_pre_trade_date(start_date,220)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
+    rng1 = QA_util_get_trade_range(start_date, end_date)
+
+    if type in ['1min','5min','15min','30min','60min','hour']:
         try:
-            data = QA_DataStruct_Stock_day(QA_fetch_stock_day_adv(code,start,end_date).to_qfq().month)
+            data = QA_fetch_index_min_adv(code, start+' 09:30:00',end_date + ' 15:00:00', frequence=type)
         except:
-            QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
+            data = None
+            QA_util_log_info("JOB No {frequence} Index data for {code} ======= from {start_date} to {end_date}".format(
+                frequence=type, code=code, start_date=start_date,end_date=end_date))
+    else:
+        try:
+            if type == 'day':
+                data = QA_fetch_index_day_adv(code,start,end_date).to_qfq()
+            elif type == 'week':
+                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).to_qfq().week)
+            elif type == 'month':
+                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).to_qfq().month)
+            else:
+                data = None
+                QA_util_log_info("Type Must In ['day','week','month']")
+        except:
+            data = None
+            QA_util_log_info("JOB No {frequence} Index data for {code} ======= from {start_date} to {end_date}".format(
+                frequence=type, code=code, start_date=start_date,end_date=end_date))
 
     if data is None:
         return None
@@ -330,44 +338,44 @@ def QA_fetch_get_stock_indicator_short(code, start_date, end_date, type = 'day')
         return(data)
 
 def QA_fetch_get_index_indicator_short(code, start_date, end_date, type = 'day'):
-    if type == 'min':
+    if type == '1min':
+        start = QA_util_get_pre_trade_date(start_date,2)
+    elif type == '5min':
+        start = QA_util_get_pre_trade_date(start_date,3)
+    elif type == '15min':
+        start = QA_util_get_pre_trade_date(start_date,6)
+    elif type == '30min':
         start = QA_util_get_pre_trade_date(start_date,12)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_index_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='30min')
-        except:
-            QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'hour':
+    elif type == 'hour' or type == '60min':
+        type = '60min'
         start = QA_util_get_pre_trade_date(start_date,55)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_index_min_adv(code,start+' 09:30:00',end_date + ' 15:00:00',frequence='60min')
-        except:
-            QA_util_log_info("JOB No Hourly data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'day':
-        start = QA_util_get_pre_trade_date(start_date,80)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_fetch_index_day_adv(code,start,end_date)
-        except:
-            QA_util_log_info("JOB No Daily data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-    elif type == 'week':
-        start = QA_util_get_pre_trade_date(start_date,80)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
-        try:
-            data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).week)
-        except:
-            QA_util_log_info("JOB No Week data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
-            data=None
+    else:
+        start = QA_util_get_pre_trade_date(start_date,200)
 
-    elif type == 'month':
-        start = QA_util_get_pre_trade_date(start_date,80)
-        rng1 = QA_util_get_trade_range(start_date, end_date)
+    rng1 = QA_util_get_trade_range(start_date, end_date)
+
+    if type in ['1min','5min','15min','30min','60min','hour']:
         try:
-            data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).month)
+            data = QA_fetch_index_min_adv(code, start+' 09:30:00',end_date + ' 15:00:00', frequence=type)
         except:
-            QA_util_log_info("JOB No Month data for {code} ======= from {start_date} to {end_date}".format(code=code, start_date=start_date,end_date=end_date))
             data = None
+            QA_util_log_info("JOB No {frequence} Index data for {code} ======= from {start_date} to {end_date}".format(
+                frequence=type, code=code, start_date=start_date,end_date=end_date))
+    else:
+        try:
+            if type == 'day':
+                data = QA_fetch_index_day_adv(code,start,end_date).to_qfq()
+            elif type == 'week':
+                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).to_qfq().week)
+            elif type == 'month':
+                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).to_qfq().month)
+            else:
+                data = None
+                QA_util_log_info("Type Must In ['day','week','month']")
+        except:
+            data = None
+            QA_util_log_info("JOB No {frequence} Index data for {code} ======= from {start_date} to {end_date}".format(
+                frequence=type, code=code, start_date=start_date,end_date=end_date))
 
     if data is None:
         return None
