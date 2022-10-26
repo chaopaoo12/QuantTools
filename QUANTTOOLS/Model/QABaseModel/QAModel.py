@@ -288,9 +288,7 @@ class QAModel():
                     series_to_supervised, n_in = self.n_in)
 
             self.data = shuffle_data.join(
-                self.data[[i for i in ['next_date','OPEN_MARK','PRE_DATE','PASS_MARK',
-                                       'TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']
-                           if i in self.data.columns]])
+                self.data[[i for i in self.data.columns if i not in shuffle_data.columns]])
         self.info['n_in'] = self.n_in
         QA_util_log_info('##JOB01 Now Data shuffle Finish')
         QA_util_log_info(self.data.shape)
