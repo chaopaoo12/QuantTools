@@ -6,7 +6,10 @@ from QUANTTOOLS.QAStockETL.FuncTools.base_func import mkdir
 from sklearn.utils import shuffle
 from QUANTTOOLS.Message import send_email, send_actionnotice
 from QUANTTOOLS.QAStockETL.FuncTools.TransForm import normalization, standardize, series_to_supervised
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_code_old,QA_fetch_stock_all,QA_fetch_code_new,QA_fetch_stock_om_all
 import numpy as np
+import pandas as pd
+
 
 class QAModel():
 
@@ -15,6 +18,10 @@ class QAModel():
         self.info['date'] = QA_util_today_str()
         self.info['train_status']=dict()
         self.info['rng_status']=dict()
+
+    def set_data(self, data):
+        self.data = data
+        QA_util_log_info(self.data.shape)
 
     def set_target(self, col, mark, type = 'value', shift= None):
         self.target = col
@@ -171,6 +178,99 @@ class QAModel():
         else:
             self.normoalize = None
 
+    def base_predict(self):
+        self.data = self.data.assign(y_pred = self.model.predict(self.data[self.cols]))
+        bina = pd.DataFrame(self.model.predict_proba(self.data[self.cols]))[[0,1]]
+        bina.index = self.data.index
+        self.data[['Z_PROB','O_PROB']] = bina
+        self.data = self.data[self.data['O_PROB'].notna()]
+
+    def desribute_check(self, drop):
+        s_res = self.data[self.cols].describe().T
+        s_res = s_res.assign(rate = s_res['count']/self.data.shape[0])
+        non_cols = list(s_res[s_res.rate < drop].index)
+        return(non_cols)
+
+    def thresh_check(self):
+        nan_num = (self.data[self.cols].isnull().sum(axis=1)> 0).sum()
+        loss_rate = nan_num/self.data.shape[0]
+        QA_util_log_info('##JOB Clean Data With per ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
+            NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
+        if self.thresh == 0:
+            self.data = self.data[self.cols].dropna()
+        else:
+            self.data = self.data[self.cols].dropna(thresh=(len(self.cols) - self.thresh))
+
+        send_email('模型训练报告', "数据损失比例 {}".format(loss_rate), self.info['date'])
+        if loss_rate >= 0.01:
+            send_actionnotice('模型运行报告',
+                              '数据检查报告:',
+                              "数据损失比例过高 {}".format(loss_rate),
+                              direction = 'WARNING',
+                              offset='WARNING',
+                              volume=None
+                              )
+        return(loss_rate)
+
+    def data_reshape(self):
+        cols1 = [i for i in self.data.columns if i not in [ 'moon','star','mars','venus','sun','MARK','date','datetime',
+                                                       'OPEN_MARK','PASS_MARK','TARGET','TARGET3',
+                                                       'TARGET4','TARGET5','TARGET10','TARGET20','AVG_TARGET','INDEX_TARGET',
+                                                       'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
+                                                       'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]
+        train = pd.DataFrame()
+        n_cols = []
+        for i in self.cols:
+            if i in cols1:
+                train[i] = self.data[i].astype('float')
+            else:
+                train[i] = 0
+                n_cols.append(i)
+        train.index = self.data.index
+        return(train, n_cols)
+
+    def code_check(self):
+        code_all = QA_fetch_stock_all()['code'].unique().tolist()
+        code_old = QA_fetch_code_old()['code'].unique().tolist()
+        code_new = QA_fetch_code_new()['code'].unique().tolist()
+        codes = QA_fetch_stock_om_all()
+        if self.code is None:
+            codes = codes
+        else:
+            codes = codes[codes.code.isin(self.code)]
+
+        ST = list(codes[codes.name.apply(lambda x:x.count('ST')) == 1]['code']) + list(codes[codes.name.apply(lambda x:x.count('退')) == 1]['code'])
+        codes = list(codes['code'])
+        code_688 = [i for i in codes if i.startswith('688') == True] + [i for i in codes if i.startswith('787') == True] + [i for i in codes if i.startswith('789') == True]
+
+        short_of_code = [i for i in code_all if i not in code_old + code_new]
+        if len(short_of_code) > 0:
+            QA_util_log_info('##JOB {} Short of Code: {} ===== {self.trading_date}'.format(
+                len(short_of_code), short_of_code, self.trading_date), ui_log = None)
+
+            send_actionnotice('股票列表数据缺失',
+                              '缺失警告',
+                              "缺少股票".format(len(short_of_code)),
+                              direction = 'WARNING',
+                              offset='WARNING',
+                              volume=None
+                              )
+
+        target_code = [i for i in code_all if i not in code_new + ST + code_688]
+        short_of_data = [i for i in target_code if i not in self.data.loc[self.trading_date].reset_index().code.unique().tolist()]
+
+        if len(short_of_data) > 0:
+            QA_util_log_info('##JOB {} Short of Data: {} ===== {_from}'.format(
+                len(short_of_data), short_of_data, _from=self.trading_date), ui_log = None)
+            send_actionnotice('基础数据缺失',
+                              '缺失警告:{}'.format(self.trading_date),
+                              "缺少数量".format(len(short_of_data)),
+                              direction = 'WARNING',
+                              offset='WARNING',
+                              volume=None
+                              )
+
+        return(short_of_code, short_of_data)
 
 if __name__ == 'main':
     pass
