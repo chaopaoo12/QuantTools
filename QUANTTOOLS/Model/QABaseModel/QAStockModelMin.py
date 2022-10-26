@@ -46,7 +46,7 @@ class QAStockModelMin(QAModel):
 
             self.data = shuffle_data.join(self.data)
 
-        self.data, n_cols = self.data_reshape()
+        n_cols = self.data_reshape()
         QA_util_log_info(n_cols)
         QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
 

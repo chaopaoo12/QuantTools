@@ -222,12 +222,11 @@ class QAModel():
         n_cols = []
         for i in self.cols:
             if i in cols1:
-                train[i] = self.data[i].astype('float')
+                pass
             else:
-                train[i] = 0
+                self.data[i] = 0
                 n_cols.append(i)
-        train.index = self.data.index
-        return(train, n_cols)
+        return(n_cols)
 
     def code_check(self):
         code_all = QA_fetch_stock_all()['code'].unique().tolist()
