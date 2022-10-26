@@ -420,7 +420,8 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
                 QA_util_log_info("JOB Try {} times for 15min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
                 if attempts == 3:
                     QA_util_log_info("JOB Failed to get 15min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
-
+        print('res',res)
+        print('res1',res1)
         res = res1.join(res).groupby('code').fillna(method='ffill')
 
     elif type == 'real':
