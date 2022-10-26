@@ -399,7 +399,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
         success = False
         while attempts < 3 and not success:
             try:
-                res = QA_fetch_get_stock_indicator(codes, start_date, end_date, '30min')
+                res = QA_fetch_get_stock_indicator(codes, start_date, end_date, '30min').set_index(['datetime','code'])
                 res.columns = [x.upper() + '_30M' for x in res.columns]
                 success = True
             except:
@@ -412,7 +412,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
         success = False
         while attempts < 3 and not success:
             try:
-                res1 = QA_fetch_get_stock_indicator(codes, start_date, end_date, '15min')
+                res1 = QA_fetch_get_stock_indicator(codes, start_date, end_date, '15min').set_index(['datetime','code'])
                 res1.columns = [x.upper() + '_15M' for x in res1.columns]
                 success = True
             except:
@@ -420,9 +420,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
                 QA_util_log_info("JOB Try {} times for 15min data from {start_date} to {end_date}".format(attempts,start_date=start_date,end_date=end_date))
                 if attempts == 3:
                     QA_util_log_info("JOB Failed to get 15min data from {start_date} to {end_date}".format(start_date=start_date,end_date=end_date))
-        print('res',res)
-        print('res1',res1)
-        print('join',res1.join(res))
+
         res = res1.join(res).groupby('code').fillna(method='ffill')
 
     elif type == 'real':
