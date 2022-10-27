@@ -16,9 +16,11 @@ class QAStockModel(QAModel):
         QA_util_log_info(self.data.shape)
 
     def model_predict(self, start, end, code=None, ST=True, type='crawl'):
+
         self.get_param()
         self.trading_date = QA_util_get_real_date(end)
         rng = QA_util_get_trade_range(start,end)
+        print(self.n_in)
         self.code = code
         QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block}, ST: {ST} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.block,sub_block=self.sub_block, ST=ST, _from=start, _to=end, target = self.target), ui_log = None)
         if self.n_in is not None:
