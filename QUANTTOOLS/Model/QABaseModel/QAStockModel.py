@@ -33,10 +33,8 @@ class QAStockModel(QAModel):
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
 
         self.shuffle()
-        print('shuffle_data')
         QA_util_log_info(self.data.shape)
         n_cols = self.data_reshape()
-        print('data_reshape')
         QA_util_log_info(self.data.shape)
         QA_util_log_info(n_cols)
         QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
@@ -45,7 +43,9 @@ class QAStockModel(QAModel):
         print('desribute_check')
         QA_util_log_info(self.data.shape)
         QA_util_log_info([i for i in non_cols if i in self.cols])
+        ccc= ['ATRR(t-10)', 'AVG30_RNG(t-10)', 'AVG20_RNG(t-10)', 'AVG60_RNG(t-10)', 'ALPHA_154(t-10)', 'ALPHA_024(t-10)', 'WR(t-10)', 'ASIT(t-10)', 'ALPHA_021(t-10)', 'ALPHA_056(t-10)', 'LONG_TR(t-10)', 'AVG60_TR(t-10)', 'MA_VOL45(t-10)', 'ALPHA_006(t-10)', 'AVG60_C_MARKET(t-10)', 'ALPHA_041(t-10)', 'ALPHA_082(t-10)', 'MA30(t-10)', 'ALPHA_057(t-10)', 'MA_VOL60(t-10)', 'SHORT_AMOUNT(t-10)', 'KDJ_K(t-10)', 'PB_60DN(t-10)', 'ALPHA_003(t-10)', 'ALPHA_042(t-10)', 'MA30_C(t-10)', 'ALPHA_081(t-10)', 'ALPHA_067(t-10)', 'SHORT20(t-10)', 'ALPHA_096(t-10)', 'LONG_AMOUNT(t-10)', 'ALPHA_097(t-10)', 'MA60(t-10)', 'ALPHA_170(t-10)', 'WR1(t-10)', 'MA_VOL30(t-10)', 'GMMA40(t-10)', 'ALPHA_035(t-10)', 'RSI2(t-10)', 'MA_VOL35(t-10)', 'AVG5_TOR(t-10)', 'ALPHA_076(t-10)', 'MA_VOL50(t-10)', 'MA_VOL20(t-10)', 'RNG_90(t-10)', 'PE_90UP(t-10)', 'ALPHA_100(t-10)', 'ALPHA_070(t-10)', 'ALPHA_098(t-10)', 'AVG20(t-10)', 'ATRR(t-15)', 'AVG30_RNG(t-15)', 'AVG20_RNG(t-15)', 'AVG60_RNG(t-15)', 'ALPHA_154(t-15)', 'ALPHA_024(t-15)', 'WR(t-15)', 'ASIT(t-15)', 'ALPHA_021(t-15)', 'ALPHA_056(t-15)', 'LONG_TR(t-15)', 'AVG60_TR(t-15)', 'MA_VOL45(t-15)', 'ALPHA_006(t-15)', 'AVG60_C_MARKET(t-15)', 'ALPHA_041(t-15)', 'ALPHA_082(t-15)', 'MA30(t-15)', 'ALPHA_057(t-15)', 'MA_VOL60(t-15)', 'SHORT_AMOUNT(t-15)', 'KDJ_K(t-15)', 'PB_60DN(t-15)', 'ALPHA_003(t-15)', 'ALPHA_042(t-15)', 'MA30_C(t-15)', 'ALPHA_081(t-15)', 'ALPHA_067(t-15)', 'SHORT20(t-15)', 'ALPHA_096(t-15)', 'LONG_AMOUNT(t-15)', 'ALPHA_097(t-15)', 'MA60(t-15)', 'ALPHA_170(t-15)', 'WR1(t-15)', 'MA_VOL30(t-15)', 'GMMA40(t-15)', 'ALPHA_035(t-15)', 'RSI2(t-15)', 'MA_VOL35(t-15)', 'AVG5_TOR(t-15)', 'ALPHA_076(t-15)', 'MA_VOL50(t-15)', 'MA_VOL20(t-15)', 'RNG_90(t-15)', 'PE_90UP(t-15)', 'ALPHA_100(t-15)', 'ALPHA_070(t-15)', 'ALPHA_098(t-15)', 'AVG20(t-15)', 'ATRR(t-20)', 'AVG30_RNG(t-20)', 'AVG20_RNG(t-20)', 'AVG60_RNG(t-20)', 'ALPHA_154(t-20)', 'ALPHA_024(t-20)', 'WR(t-20)', 'ASIT(t-20)', 'ALPHA_021(t-20)', 'ALPHA_056(t-20)', 'LONG_TR(t-20)', 'AVG60_TR(t-20)', 'MA_VOL45(t-20)', 'ALPHA_006(t-20)', 'AVG60_C_MARKET(t-20)', 'ALPHA_041(t-20)', 'ALPHA_082(t-20)', 'MA30(t-20)', 'ALPHA_057(t-20)', 'MA_VOL60(t-20)', 'SHORT_AMOUNT(t-20)', 'KDJ_K(t-20)', 'PB_60DN(t-20)', 'ALPHA_003(t-20)', 'ALPHA_042(t-20)', 'MA30_C(t-20)', 'ALPHA_081(t-20)', 'ALPHA_067(t-20)', 'SHORT20(t-20)', 'ALPHA_096(t-20)', 'LONG_AMOUNT(t-20)', 'ALPHA_097(t-20)', 'MA60(t-20)', 'ALPHA_170(t-20)', 'WR1(t-20)', 'MA_VOL30(t-20)', 'GMMA40(t-20)', 'ALPHA_035(t-20)', 'RSI2(t-20)', 'MA_VOL35(t-20)', 'AVG5_TOR(t-20)', 'ALPHA_076(t-20)', 'MA_VOL50(t-20)', 'MA_VOL20(t-20)', 'RNG_90(t-20)', 'PE_90UP(t-20)', 'ALPHA_100(t-20)', 'ALPHA_070(t-20)', 'ALPHA_098(t-20)', 'AVG20(t-20)']
 
+        print(self.data[ccc])
         loss_rate = self.thresh_check()
         print('thresh_check')
         QA_util_log_info(self.data.shape)
