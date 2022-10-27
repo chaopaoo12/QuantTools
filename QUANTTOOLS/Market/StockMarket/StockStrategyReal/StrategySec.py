@@ -1,13 +1,10 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before,time_check_after
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_vwap
-from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtime
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_30min,get_quant_data_15min
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo
-from QUANTTOOLS.Market.MarketTools import on_bar, get_on_time
 import time
-import pandas as pd
 import numpy as np
 from QUANTTOOLS.Model.StockModel.StrategyXgboostMin import QAStockXGBoostMin
 
@@ -15,13 +12,14 @@ def data_collect(code_list,trading_date,data_15min):
     try:
 
         source_data = QA_fetch_get_stock_vwap(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='real')
-        close = source_data.reset_index().groupby(['date','code'])['close'].agg({'last'}).groupby('code').shift().rename(columns={'last':'yes_close'})
-        price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
+        last = source_data.groupby(['date','code'])['close'].agg([('last1','last')])
+        last = last.assign(yes_close=last.groupby('code').shift())
         data = source_data \
-            .reset_index().set_index(['date','code']).join(close) \
-            .reset_index().set_index(['code']).join(price) \
-            .reset_index().set_index(['datetime','code']).join(data_15min[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M']])
-        data[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M']] = data.groupby('code')[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M']].fillna(method='ffill')
+            .reset_index().set_index(['date','code']).join(last) \
+            .reset_index().set_index(['datetime','code']).join(data_15min)
+        data = data.assign(TARGET = data.day_close/data.last1-1,
+                           pct= data.day_close/data.yes_close-1)
+        data = data.groupby('code').fillna(method='ffill')
 
         stock_model = QAStockXGBoostMin()
         stock_model = stock_model.load_model('stock_in')

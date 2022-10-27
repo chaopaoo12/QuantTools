@@ -5,9 +5,7 @@ from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_30min,get_quant_
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo
-from QUANTTOOLS.Market.MarketTools import on_bar, get_on_time
 import time
-import pandas as pd
 import numpy as np
 
 def data_collect(code_list,trading_date,data_15min,k_per=1.03):
@@ -15,7 +13,9 @@ def data_collect(code_list,trading_date,data_15min,k_per=1.03):
 
         source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
         close = source_data.reset_index().groupby(['date','code'])['close'].agg({'last'}).groupby('code').shift().rename(columns={'last':'yes_close'})
-        price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
+        price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename(
+            {'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct'}, axis='columns')
+        price = price.assign(pct=price.pct/100)
         data = source_data \
             .reset_index().set_index(['date','code']).join(close) \
             .reset_index().set_index(['code']).join(price) \
