@@ -33,18 +33,22 @@ class QAStockModel(QAModel):
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
 
         self.shuffle()
-        QA_util_log_info('shuffle_data',self.data.shape)
+        print('shuffle_data')
+        QA_util_log_info(self.data.shape)
         n_cols = self.data_reshape()
-        QA_util_log_info('data_reshape',self.data.shape)
+        print('data_reshape')
+        QA_util_log_info(self.data.shape)
         QA_util_log_info(n_cols)
         QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
 
         non_cols = self.desribute_check()
-        QA_util_log_info('desribute_check',self.data.shape)
+        print('desribute_check')
+        QA_util_log_info(self.data.shape)
         QA_util_log_info([i for i in non_cols if i in self.cols])
 
         loss_rate = self.thresh_check()
-        QA_util_log_info('thresh_check',self.data.shape)
+        print('thresh_check')
+        QA_util_log_info(self.data.shape)
 
         QA_util_log_info(self.data.shape[0])
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
