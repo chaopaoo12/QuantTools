@@ -139,29 +139,41 @@ class QAModel():
         self.info = joblib.load(working_dir+"\\{name}info.joblib.dat".format(name=name))
 
         try:
-            self.info['norm_type'] = self.info['norm_type']
+            self.norm_type = self.info['norm_type']
         except:
+            self.norm_type = None
             self.info['norm_type'] = None
 
         try:
-            self.info['block'] = self.info['block']
+            self.block = self.info['block']
         except:
             self.info['block'] = False
+            self.block = False
 
         try:
-            self.info['sub_block'] = self.info['sub_block']
+            self.sub_block = self.info['sub_block']
         except:
             self.info['sub_block'] = False
+            self.sub_block = False
 
         try:
-            self.info['normoalize'] = self.info['normoalize']
+            self.normoalize = self.info['normoalize']
         except:
             self.info['normoalize'] = None
+            self.normoalize = None
 
         try:
-            self.info['n_in'] = self.info['n_in']
+            self.n_in = self.info['n_in']
         except:
+            self.n_in = None
             self.info['n_in'] = None
+
+        try:
+            self.cols = self.info['cols']
+        except:
+            self.info['cols'] = None
+            self.cols = None
+
         return(self)
 
     def get_param(self):
