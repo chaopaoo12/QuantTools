@@ -1,5 +1,5 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before,time_check_after
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min, QA_fetch_get_stock_quant_min
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_vwap
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtime
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_30min,get_quant_data_15min
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
@@ -14,7 +14,7 @@ from QUANTTOOLS.Model.StockModel.StrategyXgboostMin import QAStockXGBoostMin
 def data_collect(code_list,trading_date,data_15min):
     try:
 
-        source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
+        source_data = QA_fetch_get_stock_vwap(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
         close = source_data.reset_index().groupby(['date','code'])['close'].agg({'last'}).groupby('code').shift().rename(columns={'last':'yes_close'})
         price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename({'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct_chg'}, axis='columns')
         data = source_data \
@@ -238,7 +238,7 @@ def tracking_signal(buy_list, position, trading_date, mark_tm):
 
     # 定时执行部分
     stm = trading_date + ' ' + mark_tm
-    source_data = QA_fetch_get_stock_vwap_min(QA_util_get_pre_trade_date(trading_date,10), trading_date, code_list, type='1')
+    source_data = QA_fetch_get_stock_vwap(QA_util_get_pre_trade_date(trading_date,10), trading_date, code_list, type='1')
     data = source_data.loc[(stm,)]
     # add information
     # add name industry
