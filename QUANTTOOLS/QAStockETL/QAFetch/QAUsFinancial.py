@@ -67,9 +67,9 @@ def QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='day', type='
     return(data)
 
 def proxy_stock_zh_a_hist_min_em(symbol,period,adjust):
-    res = stock_zh_a_hist_min_em(symbol, period, adjust)
+    res = stock_zh_a_hist_min_em(symbol=symbol, period=period, adjust=adjust)
     res = res.assign(code=symbol)
-    return()
+    return(res)
 
 def QA_fetch_get_stock_min_sina(code, period='30', type=''):
     #if code[0:2] == '60' and len(code) == 6:
