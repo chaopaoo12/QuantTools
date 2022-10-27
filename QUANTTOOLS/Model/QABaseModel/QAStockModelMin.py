@@ -42,8 +42,6 @@ class QAStockModelMin(QAModel):
 
         self.get_data(start, end, code, type = 'real')
 
-        print(self.data)
-        short_of_code, short_of_data = self.code_check()
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         if self.n_in is not None:
