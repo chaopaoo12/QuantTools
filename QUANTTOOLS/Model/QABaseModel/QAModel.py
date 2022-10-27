@@ -287,8 +287,7 @@ class QAModel():
                       'TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(
                     series_to_supervised, n_in = self.n_in)
 
-            self.data = shuffle_data.join(
-                self.data[[i for i in self.data.columns if i not in shuffle_data.columns]])
+            self.data = shuffle_data.join(self.data)
         print(shuffle_data)
 
         self.info['n_in'] = self.n_in
