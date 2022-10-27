@@ -288,11 +288,9 @@ class QAModel():
                     series_to_supervised, n_in = self.n_in)
 
             self.data = shuffle_data.join(self.data)
-        print(shuffle_data)
 
         self.info['n_in'] = self.n_in
         QA_util_log_info('##JOB01 Now Data shuffle Finish')
-        print(self.data)
         QA_util_log_info(self.data.shape)
         return(shuffle_data, self.data)
 
