@@ -23,9 +23,10 @@ class QAStockModel(QAModel):
         self.code = code
         QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block}, ST: {ST} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.block,sub_block=self.sub_block, ST=ST, _from=start, _to=end, target = self.target), ui_log = None)
         if self.n_in is not None:
-            if start > QA_util_get_pre_trade_date(end, max(self.n_in)+1):
-                start = QA_util_get_pre_trade_date(end, max(self.n_in)+1)
-        self.data = get_quant_data(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, ST=ST, norm_type=self.norm_type)
+            start_date = QA_util_get_pre_trade_date(start, max(self.n_in)+1)
+        else:
+            start_date = start
+        self.data = get_quant_data(start_date, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, ST=ST, norm_type=self.norm_type)
 
         index_target = get_index_quant_data(start, end,code=['000001','399006'],type='crawl', norm_type=None)
         index_feature = pd.pivot(index_target.loc[(slice(None),['000001','399006']),['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK']].reset_index(),index='date',columns='code',values=['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK'])
