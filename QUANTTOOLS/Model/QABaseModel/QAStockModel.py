@@ -49,8 +49,8 @@ class QAStockModel(QAModel):
         QA_util_log_info(self.data.shape)
         QA_util_log_info([i for i in non_cols if i in self.cols])
 
-        loss_rate = self.thresh_check()
-        print('thresh_check')
+        #loss_rate = self.thresh_check()
+        #print('thresh_check')
         QA_util_log_info(self.data.shape)
 
         QA_util_log_info(self.data.shape[0])

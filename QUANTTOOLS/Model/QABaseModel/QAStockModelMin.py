@@ -52,7 +52,7 @@ class QAStockModelMin(QAModel):
 
         non_cols = self.desribute_check()
         QA_util_log_info([i for i in non_cols if i in self.cols])
-        loss_rate = self.thresh_check()
+        #loss_rate = self.thresh_check()
 
         print(self.data)
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
