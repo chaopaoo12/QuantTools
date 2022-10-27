@@ -41,6 +41,8 @@ class QAStockModelMin(QAModel):
         QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block}, ST: {ST} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.block,sub_block=self.sub_block, ST=ST, _from=start, _to=end, target = self.target), ui_log = None)
 
         self.get_data(start, end, code, type = 'real')
+
+        print(self.data)
         short_of_code, short_of_data = self.code_check()
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
