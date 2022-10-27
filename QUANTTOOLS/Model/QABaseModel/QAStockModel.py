@@ -20,16 +20,11 @@ class QAStockModel(QAModel):
         self.get_param()
         self.trading_date = QA_util_get_real_date(end)
         rng = QA_util_get_trade_range(start,end)
-        print(self.n_in)
         self.code = code
         QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block}, ST: {ST} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.block,sub_block=self.sub_block, ST=ST, _from=start, _to=end, target = self.target), ui_log = None)
         if self.n_in is not None:
-            print('a')
-            if start < QA_util_get_pre_trade_date(end, max(self.n_in)+1):
-                print('b')
+            if start > QA_util_get_pre_trade_date(end, max(self.n_in)+1):
                 start = QA_util_get_pre_trade_date(end, max(self.n_in)+1)
-                print('c')
-        print(start)
         self.data = get_quant_data(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, ST=ST, norm_type=self.norm_type)
 
         index_target = get_index_quant_data(start, end,code=['000001','399006'],type='crawl', norm_type=None)

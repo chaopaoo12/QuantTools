@@ -44,11 +44,8 @@ class QAStockModelMin(QAModel):
 
 
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
-        if self.n_in is not None:
+        self.shuffle()
 
-            shuffle_data = self.data[list(set([re.sub(r"\((.*?)\)|\{(.*?)\}|\[(.*?)\]", "", i) for i in self.cols]))].groupby('code').apply(series_to_supervised, n_in = self.n_in)
-
-            self.data = shuffle_data.join(self.data)
         QA_util_log_info('shuffle_data',self.data.shape)
         n_cols = self.data_reshape()
         QA_util_log_info('data_reshape',self.data.shape)
