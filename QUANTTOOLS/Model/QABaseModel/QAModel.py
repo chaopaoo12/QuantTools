@@ -192,12 +192,10 @@ class QAModel():
 
     def base_predict(self):
         self.data = self.data.assign(y_pred = self.model.predict(self.data[self.cols]))
-        print('predict success a')
         bina = pd.DataFrame(self.model.predict_proba(self.data[self.cols]))[[0,1]]
         bina.index = self.data.index
         self.data[['Z_PROB','O_PROB']] = bina
         self.data = self.data[self.data['O_PROB'].notna()]
-        print('predict success b')
 
     def desribute_check(self):
         s_res = self.data[self.cols].describe().T
