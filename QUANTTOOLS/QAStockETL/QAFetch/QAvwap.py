@@ -88,6 +88,7 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
     if data is not None and type == 'real':
         data = data.reset_index(drop=True).set_index(['datetime', 'code']).drop(columns=['date_stamp'])
 
+    print(data)
     try:
         data = data.assign(date=data.reset_index().datetime.apply(lambda x:str(x)[0:10]).tolist(),
                            HM=data.reset_index().datetime.dt.strftime('%H:%M').values,
