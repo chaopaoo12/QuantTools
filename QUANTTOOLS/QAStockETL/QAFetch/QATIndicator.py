@@ -425,6 +425,7 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
                            TERNS = ((data.SHORT20 > 0) * (data.LONG60 > 0) * (data.LONG_AMOUNT > 0) * 1)
                            )
         data.SKDJ_TR = data.SKDJ_TR.groupby('code').fillna(method='ffill')
+        data= data.drop('time_stamp', axis=1)
         return(data)
 
 
