@@ -409,7 +409,7 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
     except:
         QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
         data = None
-    print(data.data.shape)
+
     if data is None:
         return None
     else:
