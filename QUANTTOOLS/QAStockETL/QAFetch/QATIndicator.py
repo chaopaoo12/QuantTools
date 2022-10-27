@@ -402,8 +402,9 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
         pass
 
     try:
-        data = QA_fetch_get_stock_min_sina(code, period=period, type='qfq').reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
-        data = data.assign(type=type,amount=0)
+        data = QA_fetch_get_stock_min_sina(code, period=period, type='qfq').\
+            reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'])
+        data = data.assign(type=type)
         data = QA_DataStruct_Stock_min(data)
     except:
         QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))

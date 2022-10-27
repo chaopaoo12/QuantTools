@@ -540,10 +540,7 @@ def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min', keep 
     k = 1
     while k <= 5:
         try:
-            if isinstance(code,list):
-                res = [QA_fetch_get_stock_indicator_realtime(i, start_date=start_date, end_date=end_date, type=type, keep=keep) for i in code]
-            else:
-                res = QA_fetch_get_stock_indicator_realtime(code, start_date=start_date, end_date=end_date, type=type, keep=keep)
+            res = QA_fetch_get_stock_indicator_realtime(code, start_date=start_date, end_date=end_date, type=type, keep=keep)
             QA_util_log_info('##JOB QA_fetch_get_stock_quant_min finish with {k} times  ===================='.format(k=k), ui_log=None)
             break
         except:
