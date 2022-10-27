@@ -292,7 +292,6 @@ class QAModel():
         self.info['n_in'] = self.n_in
         QA_util_log_info('##JOB01 Now Data shuffle Finish')
         QA_util_log_info(self.data.shape)
-        return(shuffle_data, self.data)
 
 
 if __name__ == 'main':
