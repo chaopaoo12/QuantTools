@@ -184,6 +184,7 @@ class QAModel():
         bina.index = self.data.index
         self.data[['Z_PROB','O_PROB']] = bina
         self.data = self.data[self.data['O_PROB'].notna()]
+        print('predict success')
 
     def desribute_check(self):
         s_res = self.data[self.cols].describe().T
