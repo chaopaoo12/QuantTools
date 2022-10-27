@@ -294,7 +294,7 @@ class QAModel():
         QA_util_log_info('##JOB01 Now Data shuffle Finish')
         print(self.data)
         QA_util_log_info(self.data.shape)
-        return shuffle_data, self.data
+        return(shuffle_data, self.data)
 
 
 if __name__ == 'main':
