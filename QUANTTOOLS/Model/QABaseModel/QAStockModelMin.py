@@ -62,10 +62,8 @@ class QAStockModelMin(QAModel):
         if type == 'crawl':
             selec_col = selec_col + ['INDUSTRY','y_pred','Z_PROB','O_PROB','RANK',
                                      'PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']
-        elif type == 'model':
+        elif type in ['model','real']:
             selec_col = selec_col + ['INDUSTRY','y_pred','Z_PROB','O_PROB','RANK']
-        elif type == 'real':
-            pass
 
         return(self.data[self.data.y_pred==1][selec_col], self.data[selec_col])
 
