@@ -26,6 +26,8 @@ class QAStockModel(QAModel):
         if self.n_in is not None:
             if start < QA_util_get_pre_trade_date(end, max(self.n_in)+1):
                 start = QA_util_get_pre_trade_date(end, max(self.n_in)+1)
+                print('c')
+        print(start)
         self.data = get_quant_data(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, ST=ST, norm_type=self.norm_type)
 
         index_target = get_index_quant_data(start, end,code=['000001','399006'],type='crawl', norm_type=None)
