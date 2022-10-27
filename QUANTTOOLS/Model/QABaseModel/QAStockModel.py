@@ -24,7 +24,9 @@ class QAStockModel(QAModel):
         self.code = code
         QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block}, ST: {ST} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.block,sub_block=self.sub_block, ST=ST, _from=start, _to=end, target = self.target), ui_log = None)
         if self.n_in is not None:
+            print('a')
             if start < QA_util_get_pre_trade_date(end, max(self.n_in)+1):
+                print('b')
                 start = QA_util_get_pre_trade_date(end, max(self.n_in)+1)
                 print('c')
         print(start)
