@@ -403,7 +403,7 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
 
     try:
         data = QA_fetch_get_stock_min_sina(code, period=period, type='qfq').\
-            reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'],axis=1)
+            reset_index(drop=True).set_index(['datetime','code'])
         data = data.assign(type=type)
         data = QA_DataStruct_Stock_min(data)
     except:
