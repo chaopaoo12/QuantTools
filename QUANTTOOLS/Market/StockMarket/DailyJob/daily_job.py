@@ -12,9 +12,9 @@ def daily_run(trading_date):
     predict_sh(trading_date)
     predict_watch(trading_date)
     #TARGET 3 neut
-    predict_3_norm(trading_date)
+    #predict_3_norm(trading_date)
     #TARGET5 3 neut
-    predict_norm(trading_date)
+    #predict_norm(trading_date)
     summary_watch(trading_date)
     block_watch(trading_date)
     #predict_stock_summary(trading_date)
