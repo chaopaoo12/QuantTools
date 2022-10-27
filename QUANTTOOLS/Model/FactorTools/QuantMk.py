@@ -9,7 +9,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_stock_target,QA_fetch_index_
                                            QA_fetch_stock_quant_hour,QA_fetch_stock_hour_pre,
                                            QA_fetch_index_quant_min,QA_fetch_index_min_pre,
                                            QA_fetch_stock_quant_min,QA_fetch_stock_min_pre,
-                                           QA_fetch_get_stock_indicator,
+                                           QA_fetch_get_stock_indicator,QA_fetch_get_stock_indicator_realtime,
                                            QA_fetch_stock_quant_neut_adv,QA_fetch_stock_quant_neut)
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_quant_hour,QA_fetch_get_stock_quant_min,QA_fetch_get_index_quant_hour,QA_fetch_get_index_quant_min
 from QUANTAXIS import QA_fetch_stock_block,QA_fetch_index_list_adv
@@ -428,7 +428,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
         success = False
         while attempts < 3 and not success:
             try:
-                res = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '30min', True)
+                res = QA_fetch_get_stock_indicator_realtime(codes, start_date, end_date, '30min', True)
                 res.columns = [x.upper() + '_30M' for x in res.columns]
                 success = True
             except:
@@ -441,7 +441,7 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
         success = False
         while attempts < 3 and not success:
             try:
-                res1 = QA_fetch_get_stock_quant_min(codes, start_date, end_date, '15min', True)
+                res1 = QA_fetch_get_stock_indicator_realtime(codes, start_date, end_date, '15min', True)
                 res1.columns = [x.upper() + '_15M' for x in res1.columns]
                 success = True
             except:
