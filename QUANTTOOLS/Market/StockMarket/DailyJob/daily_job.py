@@ -17,6 +17,7 @@ def daily_run(trading_date):
     #predict_norm(trading_date)
     summary_watch(trading_date)
     block_watch(trading_date)
+    train_min_model(trading_date)
     #predict_stock_summary(trading_date)
 
 def index_run(trading_date):
