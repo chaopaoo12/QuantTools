@@ -424,6 +424,10 @@ def get_quant_data_15min(start_date, end_date, code=None, type = 'model', block 
         res = res1.join(res).groupby('code').fillna(method='ffill')
 
     elif type == 'real':
+
+        res = QA_fetch_get_stock_indicator_realtime(codes, start_date, end_date, '30min', True)
+        res.columns = [x.upper() + '_30M' for x in res.columns]
+
         attempts = 0
         success = False
         while attempts < 3 and not success:
