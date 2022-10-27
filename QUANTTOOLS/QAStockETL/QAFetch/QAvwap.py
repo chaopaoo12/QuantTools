@@ -1,6 +1,7 @@
 from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq, QA_fetch_get_stock_min_sina
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_min_adv
+import datetime
 from scipy import stats
 import pandas as pd
 import numpy as np
@@ -93,7 +94,8 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
                            HM=data.reset_index().datetime.dt.strftime('%H:%M').values,
                            )
         data = data.assign(camt=data.groupby(['date','code'])['amount'].cumsum(),
-                           cvolume=data.groupby(['date','code'])['volume'].cumsum())
+                           cvolume=data.groupby(['date','code'])['volume'].cumsum(),
+                           duration=data['HM'].apply(lambda x: (datetime.datetime.strptime('15:00','%H:%M') - datetime.datetime.strptime(x,'%H:%M')).total_seconds()/60))
         data[['open_p','close_p','high_p','low_p','AMT_P','VOL_P']] = \
             data.groupby(['date','code'])[['open','close','high','low','camt','cvolume']].shift()
         data[['open_p2','close_p2','high_p2','low_p2']] = \
@@ -116,6 +118,7 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
         data[['VAMPC_K']] = data.groupby(['date', 'code']).apply(lambda x: spc(x))[['VAMPC_K']]
         data[['VAMP_K','CLOSE_K']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_K','CLOSE_K']]
+
     except:
         QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
         data = None
