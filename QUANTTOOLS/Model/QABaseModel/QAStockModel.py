@@ -2,7 +2,7 @@ import pandas as pd
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_realtime,get_quant_data_train,get_quant_data,get_index_quant_data
 from QUANTAXIS.QAUtil import (QA_util_log_info)
 from QUANTTOOLS.Model.QABaseModel.QAModel import QAModel
-from QUANTAXIS.QAUtil import QA_util_if_trade,QA_util_get_pre_trade_date,QA_util_get_real_date
+from QUANTAXIS.QAUtil import QA_util_if_trade,QA_util_get_pre_trade_date,QA_util_get_real_date,QA_util_get_trade_range
 
 class QAStockModel(QAModel):
 
@@ -18,13 +18,12 @@ class QAStockModel(QAModel):
     def model_predict(self, start, end, code=None, ST=True, type='crawl'):
         self.get_param()
         self.trading_date = QA_util_get_real_date(end)
-
+        rng = QA_util_get_trade_range(start,end)
         self.code = code
         QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block}, ST: {ST} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.block,sub_block=self.sub_block, ST=ST, _from=start, _to=end, target = self.target), ui_log = None)
         if self.n_in is not None:
             if start < QA_util_get_pre_trade_date(end, max(self.n_in)+1):
                 start = QA_util_get_pre_trade_date(end, max(self.n_in)+1)
-
         self.data = get_quant_data(start, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block, ST=ST, norm_type=self.norm_type)
 
         index_target = get_index_quant_data(start, end,code=['000001','399006'],type='crawl', norm_type=None)
@@ -37,6 +36,7 @@ class QAStockModel(QAModel):
         QA_util_log_info('##JOB Now Reshape Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
 
         self.shuffle()
+        self.data = self.data.loc[rng]
         QA_util_log_info(self.data.shape)
         n_cols = self.data_reshape()
         QA_util_log_info(self.data.shape)
