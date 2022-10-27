@@ -287,11 +287,8 @@ class QAModel():
                       'TARGET','TARGET3','TARGET4','TARGET5','TARGET10','TARGET20']]].groupby('code').apply(
                     series_to_supervised, n_in = self.n_in)
 
-            print('shuffle_data',shuffle_data)
-            print('data',self.data)
             self.data = shuffle_data.join(
                 self.data[[i for i in self.data.columns if i not in shuffle_data.columns]])
-            print('ccc',self.data)
         self.info['n_in'] = self.n_in
         QA_util_log_info('##JOB01 Now Data shuffle Finish')
         QA_util_log_info(self.data.shape)

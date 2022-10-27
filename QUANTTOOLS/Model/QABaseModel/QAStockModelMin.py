@@ -49,17 +49,18 @@ class QAStockModelMin(QAModel):
             shuffle_data = self.data[list(set([re.sub(r"\((.*?)\)|\{(.*?)\}|\[(.*?)\]", "", i) for i in self.cols]))].groupby('code').apply(series_to_supervised, n_in = self.n_in)
 
             self.data = shuffle_data.join(self.data)
-
+        QA_util_log_info('shuffle_data',self.data.shape)
         n_cols = self.data_reshape()
+        QA_util_log_info('data_reshape',self.data.shape)
         QA_util_log_info(n_cols)
         QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
 
         non_cols = self.desribute_check()
         QA_util_log_info([i for i in non_cols if i in self.cols])
-
+        QA_util_log_info('desribute_check',self.data.shape)
         loss_rate = self.thresh_check()
 
-        QA_util_log_info(self.data.shape[0])
+        QA_util_log_info('thresh_check',self.data.shape)
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         self.base_predict()
 
