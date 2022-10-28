@@ -4,8 +4,8 @@ from .running import summary_func,watch_func
 from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_data,get_quant_data,get_quant_data_15min
 from QUANTTOOLS.Market.MarketTools import load_data, StrategyRobotBase, StrategyBase, on_bar
 from QUANTAXIS.QAUtil import QA_util_get_last_day,QA_util_get_real_date, QA_util_get_pre_trade_date
-from .StrategyOne import signal, balance, tracking_signal, track_balance, code_select
-#from .StrategySec import signal, balance, tracking_signal, track_balance, code_select
+#from .StrategyOne import signal, balance, tracking_signal, track_balance, code_select
+from .StrategySec import signal, balance, tracking_signal, track_balance, code_select
 
 
 def trading_sim(trading_date, working_dir=working_dir):
@@ -90,7 +90,7 @@ def trading_new(trading_date, working_dir=working_dir):
 
     #code_list = list(set(stock_target[stock_target['RRNG'].abs() < 0.1].loc[(QA_util_get_pre_trade_date(trading_date,1),stock_list),].reset_index().code.tolist()
     #                     + res_b[(res_b.RRNG.abs() < 0.1)&(res_b.PB <= res_b.I_PB * 0.8)&(res_b.PE_TTM <= res_b.I_PE * 0.8)&(res_b.PE_TTM > 0)&(res_b.TM_RATE < -0.5)].reset_index().code.tolist()))
-    code_list = list(set(xg_sh[(xg_sh.RANK <= 5)&(xg_sh.TARGET5.isnull())].reset_index().code.tolist()))
+    code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.TARGET5.isnull())].reset_index().code.tolist()))
 
     time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
     time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
