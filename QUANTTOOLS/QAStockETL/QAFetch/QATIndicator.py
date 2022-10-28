@@ -192,11 +192,11 @@ def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
     else:
         try:
             if type == 'day':
-                data = QA_fetch_index_day_adv(code,start,end_date).to_qfq()
+                data = QA_fetch_index_day_adv(code,start,end_date)
             elif type == 'week':
-                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).to_qfq().week)
+                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).week)
             elif type == 'month':
-                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).to_qfq().month)
+                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).month)
             else:
                 data = None
                 QA_util_log_info("Type Must In ['day','week','month']")
@@ -364,11 +364,11 @@ def QA_fetch_get_index_indicator_short(code, start_date, end_date, type = 'day')
     else:
         try:
             if type == 'day':
-                data = QA_fetch_index_day_adv(code,start,end_date).to_qfq()
+                data = QA_fetch_index_day_adv(code,start,end_date)
             elif type == 'week':
-                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).to_qfq().week)
+                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).week)
             elif type == 'month':
-                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).to_qfq().month)
+                data = QA_DataStruct_Index_day(QA_fetch_index_day_adv(code,start,end_date).month)
             else:
                 data = None
                 QA_util_log_info("Type Must In ['day','week','month']")
