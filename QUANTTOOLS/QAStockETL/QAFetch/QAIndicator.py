@@ -918,7 +918,7 @@ def get_indicator(data, type='day', keep = False):
         res = res.reset_index()
         res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
         res = res.set_index(['date','code']).dropna(how='all')
-    elif type in ['min','hour', '30min', '15min',  '5min', '1min']:
+    elif type in ['min','hour', '60min','30min', '15min',  '5min', '1min']:
         res = res.reset_index()
         res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
         res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
