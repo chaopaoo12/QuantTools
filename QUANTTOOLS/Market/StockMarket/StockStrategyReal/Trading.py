@@ -5,6 +5,8 @@ from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_data,get_quant_
 from QUANTTOOLS.Market.MarketTools import load_data, StrategyRobotBase, StrategyBase, on_bar
 from QUANTAXIS.QAUtil import QA_util_get_last_day,QA_util_get_real_date, QA_util_get_pre_trade_date
 from .StrategyOne import signal, balance, tracking_signal, track_balance, code_select
+#from .StrategySec import signal, balance, tracking_signal, track_balance, code_select
+
 
 def trading_sim(trading_date, working_dir=working_dir):
     r_tar, xg, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg', 'prediction')
