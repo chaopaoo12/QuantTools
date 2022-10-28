@@ -162,7 +162,9 @@ def QA_fetch_get_stock_indicator(code, start_date, end_date, type = 'day'):
         data = get_indicator(data, type)
         data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]].reset_index()
         data = data[data.date.isin(rng1)]
+        print('a')
         data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
+        print('b')
         return(data)
 
 def QA_fetch_get_index_indicator(code, start_date, end_date, type = 'day'):
