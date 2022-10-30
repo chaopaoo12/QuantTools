@@ -45,7 +45,7 @@ class QAStockModel(QAModel):
         QA_util_log_info(n_cols)
         QA_util_log_info('##JOB Now Got Different Columns ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
 
-        non_cols = self.desribute_check()
+        non_cols,std_cols = self.desribute_check()
         print('desribute_check')
         QA_util_log_info(self.data.shape)
         QA_util_log_info([i for i in non_cols if i in self.cols])

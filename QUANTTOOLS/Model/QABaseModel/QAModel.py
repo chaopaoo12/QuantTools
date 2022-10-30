@@ -51,59 +51,39 @@ class QAModel():
         self.TR_RNG = QA_util_get_trade_range(train_start, train_end)
         self.info['train_rng'] = [train_start,train_end]
 
-    def prepare_data(self, thresh = None, drop = 0, cols= None):
+    def prepare_data(self, thresh = None, drop = 0, cols = None, n_in= None):
+
+        self.thresh = thresh
+        self.drop = drop
+        self.cols = cols
+        self.n_in = n_in
 
         if cols is None:
-            self.cols = [i for i in self.data.columns if i not in ['moon','star','mars','venus','sun','MARK','date','datetime',
-                                                                   'OPEN_MARK','PASS_MARK','TARGET','TARGET3','DATE_STAMP_15M', 'DATE_STAMP_30M',
-                                                                   'TARGET4','TARGET5','TARGET10','TARGET20','AVG_TARGET','INDEX_TARGET',
-                                                                   'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
-                                                                   'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]
+            self.cols = [i for i in self.data.columns if i not in
+                         ['moon','star','mars','venus','sun','MARK','date','datetime',
+                          'OPEN_MARK','PASS_MARK','TARGET','TARGET3','DATE_STAMP_15M', 'DATE_STAMP_30M',
+                          'TARGET4','TARGET5','TARGET10','TARGET20','AVG_TARGET','INDEX_TARGET',
+                          'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
+                          'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]
         else:
             self.cols = cols
 
         self.data = self.data.fillna(value=np.nan)
 
-        s_res = self.data[self.cols].describe().T
-        s_res = s_res.assign(rate = s_res['count']/self.data.shape[0])
-        std_cols = list(s_res[s_res['std']==0].index)
-        QA_util_log_info('##JOB Drop Columns with 0 std {} ===== {}'.format(std_cols, self.info['date']), ui_log = None)
-        #self.data = self.data.drop(columns=std_cols)
-        self.cols = [i for i in self.cols if i not in std_cols]
+        non_cols, std_cols = self.desribute_check()
+        QA_util_log_info('##JOB Drop Columns with low {} fill rate {} ===== {}'.format(drop, non_cols, self.info['date']), ui_log = None)
+        self.cols = [i for i in self.cols if i not in std_cols + non_cols]
 
-        if drop > 0:
-            non_cols = list(s_res[s_res.rate < drop].index)
-            QA_util_log_info('##JOB Drop Columns with low {} fill rate {} ===== {}'.format(drop, non_cols, self.info['date']), ui_log = None)
-            self.cols = [i for i in self.cols if i not in non_cols]
-
-        if thresh is None:
-            train_data = self.data
-        else:
-            nan_num = (self.data[self.cols].isnull().sum(axis=1)> 0).sum()
-            QA_util_log_info('##JOB Drop Data With {NAN_NUM}({per}) in {shape} Contain {thresh} NAN ===== {date}'.format(
-                NAN_NUM = nan_num, per=nan_num/self.data.shape[0], shape=self.data.shape[0], thresh=thresh,date=self.info['date']), ui_log = None)
-
-            if nan_num/self.data.shape[0] >= 0.01:
-                send_actionnotice('模型训练报告',
-                                  '交易报告:{}'.format(self.info['date']),
-                                  "数据损失比例过高 {}".format(nan_num/self.data.shape[0]),
-                                  direction = 'WARNING',
-                                  offset='WARNING',
-                                  volume=None
-                                  )
-            send_email('模型训练报告:'+ self.info['date'], "数据损失比例 {}".format(nan_num/self.data.shape[0]), self.info['date'])
-
-            if thresh == 0:
-                train_data = self.data[self.cols + ['star']].dropna().join(self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
-            else:
-                train_data = self.data[self.cols + ['star']].dropna(thresh=(len(self.cols) - thresh)).join(self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
+        loss_rate = self.thresh_check()
 
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
 
         if 'date' in list(self.data.columns):
-            self.X_train, self.Y_train = shuffle(train_data[train_data.date.isin(self.TR_RNG)][self.cols],train_data[train_data.date.isin(self.TR_RNG)]['star'])
+            self.X_train, self.Y_train = shuffle(self.train_data[self.train_data.date.isin(self.TR_RNG)][self.cols],
+                                                 self.train_data[self.train_data.date.isin(self.TR_RNG)]['star'])
         else:
-            self.X_train, self.Y_train = shuffle(train_data.loc[self.TR_RNG][self.cols],train_data.loc[self.TR_RNG]['star'])
+            self.X_train, self.Y_train = shuffle(self.train_data.loc[self.TR_RNG][self.cols],
+                                                 self.train_data.loc[self.TR_RNG]['star'])
 
         self.info['thresh'] = thresh
         self.info['drop'] = drop
@@ -201,17 +181,31 @@ class QAModel():
         s_res = self.data[self.cols].describe().T
         s_res = s_res.assign(rate = s_res['count']/self.data.shape[0])
         non_cols = list(s_res[s_res.rate < self.drop].index)
-        return(non_cols)
+        std_cols = list(s_res[s_res['std']==0].index)
+        return(non_cols, std_cols)
 
-    def thresh_check(self):
+    def thresh_check(self, train_type=False):
         nan_num = (self.data[self.cols].isnull().sum(axis=1)> 0).sum()
         loss_rate = nan_num/self.data.shape[0]
         QA_util_log_info('##JOB Clean Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
             NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
-        if self.thresh == 0 or self.thresh is None:
-            self.data = self.data.dropna(subset=self.cols)
+        if train_type == True:
+            if self.thresh is None:
+                self.train_data = self.data[self.cols + ['star']]
+            elif self.thresh == 0:
+                self.train_data = self.data[self.cols + ['star']].dropna().join(
+                    self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
+            else:
+                self.train_data = self.data[self.cols + ['star']].dropna(thresh=(len(self.cols) - self.thresh)).join(
+                    self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
         else:
-            self.data = self.data.dropna(subset=self.cols,thresh=(len(self.cols) - self.thresh))
+            if self.thresh is None:
+                pass
+            elif self.thresh == 0:
+                self.data = self.data[self.cols + ['star']].dropna().join(
+                    self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
+            else:
+                self.data = self.data.dropna(subset=self.cols,thresh=(len(self.cols) - self.thresh))
 
         send_email('模型训练报告', "数据损失比例 {}".format(loss_rate), self.info['date'])
         if loss_rate >= 0.01:
@@ -283,7 +277,7 @@ class QAModel():
 
         return(short_of_code, short_of_data)
 
-    def shuffle(self):
+    def shuffle(self, cols = None, n_in = None):
 
         QA_util_log_info('##JOB01 Now Data shuffle {}'.format(self.n_in))
 
