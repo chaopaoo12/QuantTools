@@ -100,9 +100,8 @@ def daymodel_train(date, working_dir=working_dir):
     stock_model = start_train(stock_model, other_params)
     save_report(stock_model, 'stock_mars_day', working_dir)
 
-    stock_model = shuffle(stock_model, data_set[0:50], n_in=[1,2,3,5,10,15,20])
     stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 6), mark = 5, col = 'TARGET5', type='value')
-    stock_model = prepare_data(stock_model, None, None, 0.01)
+    stock_model = prepare_data(stock_model, data_set[0:50], None, 0.01, [1,2,3,5,10,15,20])
 
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
