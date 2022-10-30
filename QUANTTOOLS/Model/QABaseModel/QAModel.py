@@ -75,7 +75,7 @@ class QAModel():
         QA_util_log_info('##JOB Drop Columns with low {} fill rate {} ===== {}'.format(drop, non_cols, self.info['date']), ui_log = None)
         self.cols = [i for i in self.cols if i not in std_cols + non_cols]
 
-        loss_rate = self.thresh_check()
+        loss_rate = self.thresh_check(train_type=True)
 
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
 
