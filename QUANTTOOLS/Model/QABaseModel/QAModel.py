@@ -70,6 +70,7 @@ class QAModel():
 
         self.data = self.data.fillna(value=np.nan)
 
+        self.shuffle()
         non_cols, std_cols = self.desribute_check()
         QA_util_log_info('##JOB Drop Columns with low {} fill rate {} ===== {}'.format(drop, non_cols, self.info['date']), ui_log = None)
         self.cols = [i for i in self.cols if i not in std_cols + non_cols]
