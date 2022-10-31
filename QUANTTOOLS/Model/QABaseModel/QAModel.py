@@ -51,7 +51,7 @@ class QAModel():
         self.TR_RNG = QA_util_get_trade_range(train_start, train_end)
         self.info['train_rng'] = [train_start,train_end]
 
-    def prepare_data(self, thresh = None, drop = 0, cols = None, n_in= None):
+    def prepare_data(self, thresh = None, drop = 0, cols = None, n_in= None,train_type=True):
 
         self.thresh = thresh
         self.drop = drop
@@ -76,7 +76,7 @@ class QAModel():
         QA_util_log_info('##JOB Drop Columns with low {} fill rate {} ===== {}'.format(drop, non_cols, self.info['date']), ui_log = None)
         self.cols = [i for i in self.cols if i not in std_cols + non_cols]
 
-        loss_rate = self.thresh_check(train_type=True)
+        loss_rate = self.thresh_check(train_type=train_type)
         QA_util_log_info('##JOB Split Train Data ===== {}'.format(self.info['date']), ui_log = None)
 
         if 'date' in list(self.data.columns):
