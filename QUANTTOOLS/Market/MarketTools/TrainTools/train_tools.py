@@ -26,7 +26,7 @@ def set_target(model, start_date, end_date, mark = 0.3, col = 'TARGET5', type = 
                         train_end=end_date)
     return(model)
 
-def prepare_data(model, cols, thresh=0, drop=0.99,n_in=None, train_type=True):
+def prepare_data(model, cols, thresh=0, drop=0.99,n_in=None, train_type=False):
     model.prepare_data(thresh=thresh, drop=drop, cols = cols,n_in=n_in, train_type=train_type)
     return(model)
 
