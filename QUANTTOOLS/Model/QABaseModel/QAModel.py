@@ -194,12 +194,12 @@ class QAModel():
             NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
         if train_type == True:
             if self.thresh is None:
-                self.train_data = self.data[self.cols + ['star']]
+                self.train_data = self.data[self.cols + ['star','date']]
             elif self.thresh == 0:
-                self.train_data = self.data[self.cols + ['star']].dropna().join(
+                self.train_data = self.data[self.cols + ['star','date']].dropna().join(
                     self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
             else:
-                self.train_data = self.data[self.cols + ['star']].dropna(thresh=(len(self.cols) - self.thresh)).join(
+                self.train_data = self.data[self.cols + ['star','date']].dropna(thresh=(len(self.cols) - self.thresh)).join(
                     self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
         else:
             if self.thresh is None:
