@@ -197,17 +197,27 @@ class QAModel():
             elif self.thresh == 0:
                 self.train_data = self.data[self.cols + ['star','date']].dropna().join(
                     self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
+                QA_util_log_info('##JOB Delete Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
+                    NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
             else:
                 self.train_data = self.data[self.cols + ['star','date']].dropna(thresh=(len(self.cols) - self.thresh)).join(
                     self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
+                QA_util_log_info('##JOB Clean Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
+                    NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
+                QA_util_log_info('##JOB Delete Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
+                    NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
         else:
             if self.thresh is None:
                 pass
             elif self.thresh == 0:
                 self.data = self.data[self.cols + ['star']].dropna().join(
                     self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
+                QA_util_log_info('##JOB Delete Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
+                    NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
             else:
                 self.data = self.data.dropna(subset=self.cols,thresh=(len(self.cols) - self.thresh))
+                QA_util_log_info('##JOB Delete Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
+                    NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
 
         send_email('模型训练报告', "数据损失比例 {}".format(loss_rate), self.info['date'])
         if loss_rate >= 0.01:
