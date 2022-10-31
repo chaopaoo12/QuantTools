@@ -61,7 +61,8 @@ class QAModel():
         if cols is None:
             self.cols = [i for i in self.data.columns if i not in
                          ['moon','star','mars','venus','sun','MARK','date','datetime',
-                          'OPEN_MARK','PASS_MARK','TARGET','TARGET3','DATE_STAMP_15M', 'DATE_STAMP_30M',
+                          'OPEN_MARK','PASS_MARK','TARGET','TARGET3',
+                          'DATE_STAMP_15M', 'DATE_STAMP_30M','TIME_STAMP_15M','TIME_STAMP_30M',
                           'TARGET4','TARGET5','TARGET10','TARGET20','AVG_TARGET','INDEX_TARGET',
                           'INDUSTRY','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5',
                           'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]
@@ -189,6 +190,7 @@ class QAModel():
         loss_rate = nan_num/self.data.shape[0]
         QA_util_log_info('##JOB Clean Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
             NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
+
         if train_type == True:
             if self.thresh is None:
                 self.train_data = self.data[self.cols + ['star','date']]
