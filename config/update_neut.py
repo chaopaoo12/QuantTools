@@ -35,6 +35,8 @@ from QUANTTOOLS.QAStockETL.Check import (check_stock_quant,check_stock_code,chec
                                          check_stock_techindex,check_index_techweek,
                                          check_index_techindex,check_index_techhour)
 import time
+from QUANTTOOLS.Market.StockMarket.DailyJob.daily_job import daily_run, index_run, neut_run
+
 
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
@@ -69,3 +71,5 @@ if __name__ == '__main__':
         while res is None or len(res[1]) > 100:
             QA_SU_save_stock_neutral_day(start_date=mark_day,end_date=mark_day)
             res = check_stock_neut(mark_day)
+
+        neut_run(mark_day)

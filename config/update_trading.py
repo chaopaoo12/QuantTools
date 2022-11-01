@@ -71,14 +71,6 @@ if __name__ == '__main__':
 
     daily_run(mark_day)
 
-    res = check_stock_neut(mark_day)
-    while res is None or len(res[1]) > 100:
-        time.sleep(180)
-        res = check_stock_neut(mark_day)
-
-    neut_run(mark_day)
-
-
     res = check_index_techindex(mark_day)
     while res is None or (len(res[0]) + len(res[1])) > 20:
         time.sleep(180)
