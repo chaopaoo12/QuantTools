@@ -179,10 +179,19 @@ def train_min_model(date, working_dir=working_dir):
     client = get_Client(type='yun_ease',trader_path=None,host=trading_setting['host'],port=trading_setting['port'],key=trading_setting['key'])
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
 
-    r_tar, xg_sh, prediction = DataTools.load_data(concat_predict, QA_util_get_pre_trade_date(date,1), working_dir, 'stock_sh', 'prediction_sh')
-    code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.TARGET5.isnull())].reset_index().code.tolist()))
+    r_tar, xg_sh, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_sh', 'prediction_sh')
+    xg_sh=xg_sh[xg_sh.RANK<=20]
 
-    code_list = code_list + positions.code.tolist()
+    r_tar, xg, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg', 'prediction')
+    r_tar, xg_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg_nn', 'prediction_stock_xg_nn')
+    r_tar, mars_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_nn', 'prediction_stock_mars_nn')
+    r_tar, mars_day, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_day', 'prediction_stock_mars_day')
+    code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.TARGET5.isnull())].reset_index().code.tolist()
+                         + xg[(xg.RANK <= 20)&(xg.y_pred==1)&(xg.TARGET5.isnull())].reset_index().code.tolist()
+                         + xg_nn[(xg_nn.RANK <= 20)&(xg_nn.y_pred==1)&(xg_nn.TARGET5.isnull())].reset_index().code.tolist()
+                         + mars_nn[(mars_nn.RANK <= 20)&(mars_nn.y_pred==1)&(mars_nn.TARGET5.isnull())].reset_index().code.tolist()
+                         + mars_day[(mars_day.RANK <= 20)&(mars_day.y_pred==1)&(mars_day.TARGET5.isnull())].reset_index().code.tolist()
+                         + positions.code.tolist()))
 
     start_date = QA_util_get_last_day(QA_util_get_real_date(date), 30)
     end_date = date
