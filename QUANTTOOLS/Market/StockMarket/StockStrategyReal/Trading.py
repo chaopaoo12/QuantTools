@@ -64,7 +64,7 @@ def trading_new(trading_date, working_dir=working_dir):
     xg_sh=xg_sh[(xg_sh.RANK<=20)&(xg_sh.O_PROB>=0.4)]
 
     code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.TARGET5.isnull())].reset_index().code.tolist()))
-    print(code_list)
+    print('aa',code_list)
     time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
     time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
 
