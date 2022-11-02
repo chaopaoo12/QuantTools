@@ -172,7 +172,7 @@ def train_index(date, working_dir=working_dir):
 def train_min_model(date, working_dir=working_dir):
     ui_log = None
     strategy_id=''
-    trading_date=''
+    trading_date=date
     account= 'name:client-1'
     working_dir = working_dir
 
