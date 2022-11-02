@@ -209,7 +209,7 @@ def train_min_model(date, working_dir=working_dir):
     save_report(stock_model, 'stock_in', working_dir)
 
     #stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 3), mark = -0.02, col = 'TARGET', type='value')
-    stock_model.data = stock_model.data.assign(TARGET=stock_model.data.TARGET.apply(lambda x: 1 if x <= -0.02 else 0))
+    stock_model.data = stock_model.data.assign(star=stock_model.data.TARGET.apply(lambda x: 1 if x <= -0.02 else 0))
     stock_model = prepare_data(stock_model, None, None, 0.01, train_type=True)
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
