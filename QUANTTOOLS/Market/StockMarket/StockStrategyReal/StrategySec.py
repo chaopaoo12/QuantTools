@@ -195,8 +195,9 @@ def balance(data, position, sub_account, percent):
         # data = pd.assign(target_position=1 / data.signal.sum(),
         #                 target_capital=data.target_position * sub_account * percent)
         print(data)
-        data['industry'] = data.code.apply(lambda x:QA_fetch_stock_industryinfo(x).SWHY.values[0])
-        data['name'] = data.code.apply(lambda x:QA_fetch_stock_name(x).values[0])
+
+        data['industry'] = data.reset_index().code.apply(lambda x:QA_fetch_stock_industryinfo(x).SWHY.values[0])
+        data['name'] = data.reset_index().code.apply(lambda x:QA_fetch_stock_name(x).values[0])
         data['mark'] = None
 
         data.loc[(data["target_capital"] >= data["市值"]) & (data.signal == 1), "mark"] = "buy"
