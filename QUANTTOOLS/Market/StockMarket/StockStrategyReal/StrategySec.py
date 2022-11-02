@@ -196,8 +196,11 @@ def balance(data, position, sub_account, percent):
         #                 target_capital=data.target_position * sub_account * percent)
         print(data.code)
         #try:
-        data['industry'] = data.code.apply(lambda x:QA_fetch_stock_industryinfo(x).TDX.values[0])
-        data['name'] = data.code.apply(lambda x:QA_fetch_stock_name(x).values[0])
+        data =data.assign(industry=[i.TDX.values[0] if i is not None else None for i in [QA_fetch_stock_industryinfo(x) for x in data.code] ],
+                          name=[i.values[0] if i is not None else None for i in [QA_fetch_stock_name(x) for x in data.code] ],)
+
+        #data['industry'] = data.code.apply(lambda x:QA_fetch_stock_industryinfo(x).TDX.values[0])
+        #data['name'] = data.code.apply(lambda x:QA_fetch_stock_name(x).values[0])
         print('industry')
         #except:
         #   data['industry'] = None
