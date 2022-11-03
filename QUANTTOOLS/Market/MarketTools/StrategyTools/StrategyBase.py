@@ -16,6 +16,7 @@ class StrategyBase:
         self.percent_func = None
         self.buy_list = None
         self.tmp_data = None
+        self.day_temp_data = None
 
     def set_signal_func(self, func, signaltime_list=None):
         self.signal_func = func
@@ -35,21 +36,23 @@ class StrategyBase:
         QA_util_log_info('##JOB Refresh Tmp Code List  ==== {}'.format(mark_tm), ui_log= None)
         QA_util_log_info('##JOB Init Code List  ==== {}'.format(self.target_list), ui_log= None)
         if self.codsel_func is not None:
-            self.buy_list, self.tmp_data = self.codsel_func(target_list = self.target_list,
+            self.buy_list, self.store_data = self.codsel_func(target_list = self.target_list,
                                                             position =self.position,
                                                             trading_date = self.trading_date,
                                                             mark_tm=mark_tm)
         else:
             self.buy_list = None
-            self.tmp_data = None
+            self.store_data = None
 
     def signal_run(self, mark_tm):
-        return self.signal_func(target_list = self.target_list,
+        data, tmp_res = self.signal_func(target_list = self.target_list,
                                 buy_list = self.buy_list,
                                 position = self.position,
+                                store_data=self.store_data,
                                 tmp_data = self.tmp_data,
                                 trading_date = self.trading_date,
                                 mark_tm = mark_tm)
+        return(data, tmp_res)
 
     def percent_run(self, mark_tm):
         if self.percent_func is not None:
@@ -71,7 +74,7 @@ class StrategyBase:
         if mark_tm in self.codseltime_list or self.tmp_data is None:
 
             # init codseltime
-            self.start_status = True
+            #self.start_status = True
             tm = datetime.datetime.now().strftime("%H:%M:%S")
             codsel_tmmark = get_on_time(tm, self.codseltime_list)
             QA_util_log_info('##JOB Now Init Codselt Mark Time ==== {}'.format(str(codsel_tmmark)), ui_log=None)
@@ -93,7 +96,7 @@ class StrategyBase:
             k = 0
             while k <= 2:
                 QA_util_log_info('JOB Get Trading Signal {x} times ==================== '.format(x=k+1), ui_log=None)
-                data = self.signal_run(mark_tm)
+                data, self.tmp_data = self.signal_run(mark_tm)
                 if data is None and self.buy_list is not None:
                     time.sleep(5)
                     k += 1
