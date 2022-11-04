@@ -22,23 +22,23 @@ def data_base(code_list,trading_date):
                        pct= data.day_close/data.yes_close-1)
     return(data)
 
-def data_collect(code_list, trading_date, his15_data, his30_data, data_15min =None):
+def data_collect(code_list, trading_date, sec_temp_data, day_temp_data, tmp_data):
     try:
 
         source_data = data_base(code_list, trading_date)
 
-        if data_15min is None:
+        if tmp_data is None:
             temp = source_data.assign(type='1min')
             temp = QA_DataStruct_Stock_min(temp)
-            res15=get_indicator(QA_DataStruct_Stock_min(pd.concat([temp.min15,his15_data.data]).sort_index()), 'min')
-            res30=get_indicator(QA_DataStruct_Stock_min(pd.concat([temp.min30,his30_data.data]).sort_index()), 'min')
+            res15=get_indicator(QA_DataStruct_Stock_min(pd.concat([temp.min15,day_temp_data[0].data]).sort_index()), 'min')
+            res30=get_indicator(QA_DataStruct_Stock_min(pd.concat([temp.min30,day_temp_data[1].data]).sort_index()), 'min')
             res15.columns = [x.upper() + '_15M' for x in res15.columns]
             res30.columns = [x.upper() + '_30M' for x in res30.columns]
-            data_15min = res15.join(res30).groupby('code').fillna(method='ffill')
+            tmp_data = res15.join(res30).groupby('code').fillna(method='ffill')
         else:
             pass
 
-        data = source_data.join(data_15min)
+        data = source_data.join(tmp_data)
         data = data.groupby('code').fillna(method='ffill')
 
         stock_model = QAStockXGBoostMin()
@@ -76,9 +76,21 @@ def data_collect(code_list, trading_date, his15_data, his30_data, data_15min =No
         data.loc[(data.IN_SIG == 1)&(data.OUT_SIG == 0), "signal"] = 1
         data.loc[(data.IN_SIG == 1)&(data.OUT_SIG == 0), "msg"] = 'model进场信号'
 
-        return(data, data_15min)
+        return(data, tmp_data)
     except:
-        return(None,None)
+        return(None,[])
+
+def day_init(target_list, trading_date):
+
+    QA_util_log_info('##JOB Init Day Data ==================== {}'.format(
+        trading_date), ui_log=None)
+
+    his15_data= QA_fetch_stock_min_adv(target_list,QA_util_get_pre_trade_date(trading_date,10),
+                                       QA_util_get_pre_trade_date(trading_date,5),'15min')
+    his30_data= QA_fetch_stock_min_adv(target_list,QA_util_get_pre_trade_date(trading_date,10),
+                                       QA_util_get_pre_trade_date(trading_date,5),'30min')
+
+    return([his15_data, his30_data])
 
 def code_select(target_list, position, trading_date, mark_tm):
 
@@ -94,15 +106,15 @@ def code_select(target_list, position, trading_date, mark_tm):
         mark_tm), ui_log=None)
 
     #if time_check_before('09:35:00') is True:
-    if mark_tm == '15:00:00':
-        stm = QA_util_get_pre_trade_date(trading_date, 1) + ' ' + '15:00:00'
-    else:
-        stm = trading_date + ' ' + mark_tm
+    #if mark_tm == '15:00:00':
+    #    stm = QA_util_get_pre_trade_date(trading_date, 1) + ' ' + '15:00:00'
+    #else:
+    #    stm = trading_date + ' ' + mark_tm
 
-    his15_data= QA_fetch_stock_min_adv(code_list,QA_util_get_pre_trade_date(trading_date,10),
-                                       QA_util_get_pre_trade_date(trading_date,5),'15min')
-    his30_data= QA_fetch_stock_min_adv(code_list,QA_util_get_pre_trade_date(trading_date,10),
-                                       QA_util_get_pre_trade_date(trading_date,5),'30min')
+    #his15_data= QA_fetch_stock_min_adv(code_list,QA_util_get_pre_trade_date(trading_date,10),
+    #                                   QA_util_get_pre_trade_date(trading_date,5),'15min')
+    #his30_data= QA_fetch_stock_min_adv(code_list,QA_util_get_pre_trade_date(trading_date,10),
+    #                                   QA_util_get_pre_trade_date(trading_date,5),'30min')
 
     #data_15min = get_quant_data_15min(QA_util_get_pre_trade_date(trading_date,10),
     #                                  trading_date, code_list, type='real')
@@ -111,12 +123,12 @@ def code_select(target_list, position, trading_date, mark_tm):
     #data_15min['SIGN_DW_30M'] = np.sign(data_15min.groupby('code')['MIN_V_30M'].shift(2) - data_15min.groupby('code')['CLOSE_30M'].shift(2)) \
     #                         + np.sign(data_15min['MIN_V_30M'] - data_15min['CLOSE_30M'])
 
-    buy_list = None
+    buy_list = target_list
     #QA_util_log_info('##buy_list ==================== {}'.format(buy_list), ui_log=None)
-    return(buy_list, [his15_data, his30_data])
+    return(buy_list, [])
 
 
-def signal(target_list, buy_list, position, store_data, tmp_data, trading_date, mark_tm):
+def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, tmp_data, trading_date, mark_tm):
     QA_util_log_info(target_list)
     # 计算信号 提供基础信息 example
     # 输出1 signal 计划持有的code 目前此方案 1:表示持有 0:表示不持有
@@ -145,7 +157,7 @@ def signal(target_list, buy_list, position, store_data, tmp_data, trading_date, 
 
     stm = trading_date + ' ' + mark_tm
     try:
-        data, data_15min = data, data_15min = data_collect(code_list, trading_date, store_data[0], store_data[1], tmp_data)
+        data, data_15min = data, data_15min = data_collect(code_list, trading_date, day_temp_data, sec_temp_data, tmp_data)
 
     except:
         QA_util_log_info('##JOB Signal Failed ====================', ui_log=None)

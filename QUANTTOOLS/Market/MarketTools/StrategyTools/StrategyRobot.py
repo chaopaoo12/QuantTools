@@ -107,6 +107,8 @@ class StrategyRobotBase:
                                                          'sub_account': sub_accounts,
                                                          })
 
+        self.strategy.init_run()
+
         # first time check before 15
         while time_check_before('15:00:00', test=test):
 
