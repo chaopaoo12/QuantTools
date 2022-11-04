@@ -78,7 +78,7 @@ def data_collect(code_list, trading_date, his15_data, his30_data, data_15min =No
 
         return(data, data_15min)
     except:
-        return None
+        return(None,None)
 
 def code_select(target_list, position, trading_date, mark_tm):
 
