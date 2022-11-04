@@ -145,7 +145,7 @@ def signal(target_list, buy_list, position, store_data, tmp_data, trading_date, 
 
     stm = trading_date + ' ' + mark_tm
     try:
-        data, data_15min = data_collect(code_list, trading_date, store_data[0], store_data[1], tmp_data)
+        data, data_15min = data, data_15min = data_collect(code_list, trading_date, store_data[0], store_data[1], tmp_data)
 
     except:
         QA_util_log_info('##JOB Signal Failed ====================', ui_log=None)
