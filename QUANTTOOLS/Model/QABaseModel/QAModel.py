@@ -191,16 +191,21 @@ class QAModel():
         QA_util_log_info('##JOB Clean Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
             NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
 
+        if 'date' in list(self.data.columns):
+            add_cols = ['star','date']
+        else:
+            add_cols = ['star']
+
         if train_type == True:
             if self.thresh is None:
-                self.train_data = self.data[self.cols + ['star','date']]
+                self.train_data = self.data[self.cols + add_cols]
             elif self.thresh == 0:
-                self.train_data = self.data[self.cols + ['star','date']].dropna().join(
+                self.train_data = self.data[self.cols + add_cols].dropna().join(
                     self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
                 QA_util_log_info('##JOB Delete Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
                     NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
             else:
-                self.train_data = self.data[self.cols + ['star','date']].dropna(thresh=(len(self.cols) - self.thresh)).join(
+                self.train_data = self.data[self.cols + add_cols].dropna(thresh=(len(self.cols) - self.thresh)).join(
                     self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
                 QA_util_log_info('##JOB Clean Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
                     NAN_NUM=nan_num, per = loss_rate, shape=self.data.shape[0]), ui_log = None)
