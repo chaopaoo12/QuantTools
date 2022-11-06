@@ -196,7 +196,7 @@ class QAModel():
         else:
             add_cols = ['star']
 
-        if train_type == True:
+        if train_type is True:
             if self.thresh is None:
                 self.train_data = self.data[self.cols + add_cols]
             elif self.thresh == 0:
