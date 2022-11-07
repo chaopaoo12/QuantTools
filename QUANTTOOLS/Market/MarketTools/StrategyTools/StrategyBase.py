@@ -41,7 +41,7 @@ class StrategyBase:
         QA_util_log_info('##JOB Refresh Tmp Code List  ==== {}'.format(mark_tm), ui_log= None)
         QA_util_log_info('##JOB Init Code List  ==== {}'.format(self.target_list), ui_log= None)
         if self.codsel_func is not None:
-            self.buy_list, self.sec_temp_data = self.codsel_func(target_list=self.target_list,
+            self.buy_list, self.sec_temp_data, self.source_data = self.codsel_func(target_list=self.target_list,
                                                             position=self.position,
                                                             day_temp_data=self.day_temp_data,
                                                             sec_temp_data=self.sec_temp_data,
@@ -50,6 +50,7 @@ class StrategyBase:
         else:
             self.buy_list = None
             self.sec_temp_data = []
+            self.source_data = None
 
     def init_run(self):
         if self.init_func is not None:
@@ -64,6 +65,7 @@ class StrategyBase:
                                 position=self.position,
                                 sec_temp_data=self.sec_temp_data,
                                 day_temp_data=self.day_temp_data,
+                                source_data=self.source_data,
                                 trading_date=self.trading_date,
                                 mark_tm=mark_tm)
         return(data)
@@ -103,6 +105,8 @@ class StrategyBase:
                     break
                 except:
                     k += 1
+        else:
+            self.source_data = None
 
         if mark_tm in self.signaltime_list:
             QA_util_log_info('JOB Init Trading Signal ==================== {}'.format(

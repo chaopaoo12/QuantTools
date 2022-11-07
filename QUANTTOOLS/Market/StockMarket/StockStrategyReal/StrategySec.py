@@ -22,10 +22,10 @@ def data_base(code_list,trading_date):
                        pct= data.day_close/data.yes_close-1)
     return(data)
 
-def data_collect(code_list, trading_date, day_temp_data, sec_temp_data):
+def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data):
     try:
-
-        source_data = data_base(code_list, trading_date)
+        if source_data is None:
+            source_data = data_base(code_list, trading_date)
 
         data = source_data.join(sec_temp_data)
         data = data.groupby('code').fillna(method='ffill')
@@ -114,10 +114,10 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     buy_list = target_list
     #QA_util_log_info('##buy_list ==================== {}'.format(buy_list), ui_log=None)
 
-    return(buy_list, sec_temp_data)
+    return(buy_list, sec_temp_data, source_data)
 
 
-def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, trading_date, mark_tm):
+def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source_data, trading_date, mark_tm):
     QA_util_log_info(target_list)
     # 计算信号 提供基础信息 example
     # 输出1 signal 计划持有的code 目前此方案 1:表示持有 0:表示不持有
@@ -146,7 +146,7 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, tradin
 
     stm = trading_date + ' ' + mark_tm
     try:
-        data, data_15min = data_collect(code_list, trading_date, day_temp_data, sec_temp_data)
+        data, data_15min = data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data)
 
     except:
         QA_util_log_info('##JOB Signal Failed ====================', ui_log=None)
