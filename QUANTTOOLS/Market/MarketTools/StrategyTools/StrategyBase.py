@@ -114,7 +114,7 @@ class StrategyBase:
             k = 0
             while k <= 2:
                 QA_util_log_info('JOB Get Trading Signal {x} times ==================== '.format(x=k+1), ui_log=None)
-                data, self.tmp_data = self.signal_run(mark_tm)
+                data = self.signal_run(mark_tm)
                 if data is None and self.buy_list is not None:
                     time.sleep(5)
                     k += 1
