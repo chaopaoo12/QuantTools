@@ -41,9 +41,11 @@ class StrategyBase:
         QA_util_log_info('##JOB Refresh Tmp Code List  ==== {}'.format(mark_tm), ui_log= None)
         QA_util_log_info('##JOB Init Code List  ==== {}'.format(self.target_list), ui_log= None)
         if self.codsel_func is not None:
-            self.buy_list, self.sec_temp_data = self.codsel_func(target_list = self.target_list,
-                                                            position =self.position,
-                                                            trading_date = self.trading_date,
+            self.buy_list, self.sec_temp_data = self.codsel_func(target_list=self.target_list,
+                                                            position=self.position,
+                                                            day_temp_data=self.day_temp_data,
+                                                            sec_temp_data=self.sec_temp_data,
+                                                            trading_date=self.trading_date,
                                                             mark_tm=mark_tm)
         else:
             self.buy_list = None
@@ -57,15 +59,14 @@ class StrategyBase:
             self.day_temp_data = []
 
     def signal_run(self, mark_tm):
-        data, tmp_res = self.signal_func(target_list=self.target_list,
+        data = self.signal_func(target_list=self.target_list,
                                 buy_list=self.buy_list,
                                 position=self.position,
                                 sec_temp_data=self.sec_temp_data,
                                 day_temp_data=self.day_temp_data,
-                                tmp_data=self.tmp_data,
                                 trading_date=self.trading_date,
                                 mark_tm=mark_tm)
-        return(data, tmp_res)
+        return(data)
 
     def percent_run(self, mark_tm):
         if self.percent_func is not None:
