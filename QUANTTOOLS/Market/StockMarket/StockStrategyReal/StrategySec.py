@@ -23,51 +23,51 @@ def data_base(code_list,trading_date):
     return(data)
 
 def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data):
-    try:
-        if source_data is None:
-            source_data = data_base(code_list, trading_date)
+    #try:
+    if source_data is None:
+        source_data = data_base(code_list, trading_date)
 
-        data = source_data.join(sec_temp_data)
-        data = data.groupby('code').fillna(method='ffill')
+    data = source_data.join(sec_temp_data)
+    data = data.groupby('code').fillna(method='ffill')
 
-        stock_model = QAStockXGBoostMin()
-        stock_model = stock_model.load_model('stock_in')
-        stock_model.set_data(data)
-        stock_model.base_predict()
-        data[['IN_SIG','IN_PROB']] = stock_model.data[['y_pred','O_PROB']]
+    stock_model = QAStockXGBoostMin()
+    stock_model = stock_model.load_model('stock_in')
+    stock_model.set_data(data)
+    stock_model.base_predict()
+    data[['IN_SIG','IN_PROB']] = stock_model.data[['y_pred','O_PROB']]
 
-        stock_model = stock_model.load_model('stock_out')
-        stock_model.set_data(data)
-        stock_model.base_predict()
-        data[['OUT_SIG','OUT_PROB']] = stock_model.data[['y_pred','O_PROB']]
-        # 方案1
-        # hold index&condition
-        #下降通道 超降通道 上升通道 超升通道
-        #VAMP_C > 15 上升买进 buy_list生效
-        #VAMP_C < -15 下降卖出
-        #DISTANCE > 0.03 & vamp.abs() < 10 & 未涨停 逃顶
-        #DISTANCE < -0.03 & vamp.abs() < 10 & 未跌停 抄底 buy_list生效
+    stock_model = stock_model.load_model('stock_out')
+    stock_model.set_data(data)
+    stock_model.base_predict()
+    data[['OUT_SIG','OUT_PROB']] = stock_model.data[['y_pred','O_PROB']]
+    # 方案1
+    # hold index&condition
+    #下降通道 超降通道 上升通道 超升通道
+    #VAMP_C > 15 上升买进 buy_list生效
+    #VAMP_C < -15 下降卖出
+    #DISTANCE > 0.03 & vamp.abs() < 10 & 未涨停 逃顶
+    #DISTANCE < -0.03 & vamp.abs() < 10 & 未跌停 抄底 buy_list生效
 
-        data['signal'] = None
-        data['msg'] = None
-        data = data.assign(signal = None,
-                           msg = None,
-                           code = [str(i) for i in data.reset_index().code])
-        #顶部死叉
-        data.loc[(data.OUT_SIG == 1)&(data.IN_SIG == 0),"signal"] = 0
-        data.loc[(data.OUT_SIG == 1)&(data.IN_SIG == 0),"msg"] = 'model出场信号'
+    data['signal'] = None
+    data['msg'] = None
+    data = data.assign(signal = None,
+                       msg = None,
+                       code = [str(i) for i in data.reset_index().code])
+    #顶部死叉
+    data.loc[(data.OUT_SIG == 1)&(data.IN_SIG == 0),"signal"] = 0
+    data.loc[(data.OUT_SIG == 1)&(data.IN_SIG == 0),"msg"] = 'model出场信号'
 
-        # 强制止损
-        #data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "signal"] = 0
-        #data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "msg"] = '强制止损'
+    # 强制止损
+    #data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "signal"] = 0
+    #data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "msg"] = '强制止损'
 
-        #放量金叉
-        data.loc[(data.IN_SIG == 1)&(data.OUT_SIG == 0), "signal"] = 1
-        data.loc[(data.IN_SIG == 1)&(data.OUT_SIG == 0), "msg"] = 'model进场信号'
+    #放量金叉
+    data.loc[(data.IN_SIG == 1)&(data.OUT_SIG == 0), "signal"] = 1
+    data.loc[(data.IN_SIG == 1)&(data.OUT_SIG == 0), "msg"] = 'model进场信号'
 
-        return(data, [sec_temp_data])
-    except:
-        return(None, [sec_temp_data])
+    return(data, [sec_temp_data])
+    #except:
+    #    return(None, [sec_temp_data])
 
 def day_init(target_list, trading_date):
 
