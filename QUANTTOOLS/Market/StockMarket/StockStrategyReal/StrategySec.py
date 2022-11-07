@@ -102,7 +102,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
 
     source_data = data_base(code_list, trading_date)
 
-    if sec_temp_data is None:
+    if sec_temp_data is None or len(sec_temp_data) == 0:
         temp = source_data.assign(type='1min')
         temp = QA_DataStruct_Stock_min(temp)
         res15=pd.concat([temp.min15, day_temp_data[0].data])
