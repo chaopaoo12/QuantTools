@@ -71,6 +71,13 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     data.loc[(data.IN_SIG == 1) & (data.OUT_SIG == 0), "signal"] = 1
     data.loc[(data.IN_SIG == 1) & (data.OUT_SIG == 0), "msg"] = 'model进场信号'
 
+    QA_util_log_info('##IN_SIG DataFrame ====================', ui_log=None)
+    #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
+    QA_util_log_info(data[data.IN_SIG == 1][['IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
+
+    QA_util_log_info('##OUT_SIG DataFrame ====================', ui_log=None)
+    QA_util_log_info(data[data.OUT_SIG == 1][['IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
+
     return(data, [sec_temp_data])
     #except:
     #    return(None, [sec_temp_data])
@@ -173,13 +180,6 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
         data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isin([1])), 'signal'] = None
         #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
 
-        QA_util_log_info('##IN_SIG DataFrame ====================', ui_log=None)
-        #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
-        QA_util_log_info(data[data.IN_SIG == 1][['IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
-
-        QA_util_log_info('##OUT_SIG DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.OUT_SIG == 1][['IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
-
         #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
         QA_util_log_info(data[data.signal == 1][['VAMP_K','CLOSE_K','VAMPC_K','DISTANCE','close',
@@ -224,14 +224,12 @@ def balance(data, position, sub_account, percent):
         # 方案2
         # data = pd.assign(target_position=1 / data.signal.sum(),
         #                 target_capital=data.target_position * sub_account * percent)
-        print(data.code)
         #try:
         data =data.assign(industry=[i.TDX.values[0] if i is not None else None for i in [QA_fetch_stock_industryinfo(x) for x in data.code] ],
                           name=[i.values[0] if i is not None else None for i in [QA_fetch_stock_name(x) for x in data.code] ],)
 
         #data['industry'] = data.code.apply(lambda x:QA_fetch_stock_industryinfo(x).TDX.values[0])
         #data['name'] = data.code.apply(lambda x:QA_fetch_stock_name(x).values[0])
-        print('industry')
         #except:
         #   data['industry'] = None
         #    data['name'] = None
