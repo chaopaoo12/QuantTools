@@ -18,6 +18,7 @@ class StrategyBase:
         self.sec_temp_data = None
         self.day_temp_data = None
         self.tmp_data = None
+        self.source_data = None
 
     def set_init_func(self, func):
         self.init_func = func
@@ -105,6 +106,9 @@ class StrategyBase:
                     break
                 except:
                     k += 1
+
+            if k > 2:
+                QA_util_log_info('JOB Selct Code List Failed ==================== ', ui_log=None)
         else:
             QA_util_log_info('JOB Init Source Data ==================== ', ui_log=None)
             self.source_data = None
