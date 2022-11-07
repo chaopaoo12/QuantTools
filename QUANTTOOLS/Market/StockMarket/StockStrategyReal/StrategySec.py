@@ -146,12 +146,12 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
     QA_util_log_info(code_list, ui_log=None)
 
     stm = trading_date + ' ' + mark_tm
-    try:
-        data, data_15min = data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data)
+    #try:
+    data, data_15min = data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data)
 
-    except:
-        QA_util_log_info('##JOB Signal Failed ====================', ui_log=None)
-        data = None
+    #except:
+    #    QA_util_log_info('##JOB Signal Failed ====================', ui_log=None)
+    #    data = None
 
     #QA_util_log_info('##JOB 300910 ====================', ui_log=None)
     #QA_util_log_info(data[(data.code == '300910')&(data.date == trading_date)][['RRNG_15M','VAMP_JC','CLOSE_K','VAMPC_K','VAMP_K','DISTANCE','close','MIN_V_15M','camt_vol','signal','msg']]
