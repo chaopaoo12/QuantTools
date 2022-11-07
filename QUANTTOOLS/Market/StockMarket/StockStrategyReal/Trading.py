@@ -5,7 +5,7 @@ from QUANTTOOLS.Model.FactorTools.QuantMk import get_index_quant_data,get_quant_
 from QUANTTOOLS.Market.MarketTools import load_data, StrategyRobotBase, StrategyBase, on_bar
 from QUANTAXIS.QAUtil import QA_util_get_last_day,QA_util_get_real_date, QA_util_get_pre_trade_date
 #from .StrategyOne import signal, balance, tracking_signal, track_balance, code_select
-from .StrategySec import signal, balance, tracking_signal, track_balance, code_select
+from .StrategySec import signal, balance, tracking_signal, track_balance, code_select, day_init
 
 
 def trading_sim(trading_date, working_dir=working_dir):
@@ -44,6 +44,7 @@ def trading_sim(trading_date, working_dir=working_dir):
     time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
 
     strategy = StrategyBase(target_list=code_list, base_percent=1, trading_date=trading_date)
+    strategy.set_init_func(day_init)
     strategy.set_codsel_func(code_select, time_index)
     strategy.set_signal_func(signal, time_list)
     strategy.set_balance_func(balance)
@@ -74,6 +75,7 @@ def trading_new(trading_date, working_dir=working_dir):
     time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
 
     strategy = StrategyBase(target_list=code_list, base_percent=1, trading_date=trading_date)
+    strategy.set_init_func(day_init)
     strategy.set_codsel_func(code_select, time_index)
     strategy.set_signal_func(signal, time_list)
     strategy.set_balance_func(balance)
