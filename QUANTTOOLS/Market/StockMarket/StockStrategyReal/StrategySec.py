@@ -178,7 +178,7 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
 
         # add information
         # add name industry
-
+        print(target_list)
         data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isin([1])), 'signal'] = None
         #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
 
