@@ -15,8 +15,8 @@ class StrategyBase:
         self.balance_func = None
         self.percent_func = None
         self.buy_list = None
-        self.sec_temp_data = []
-        self.day_temp_data = []
+        self.sec_temp_data = None
+        self.day_temp_data = None
         self.tmp_data = None
 
     def set_init_func(self, func):
