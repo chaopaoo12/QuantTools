@@ -53,17 +53,18 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     data = data.assign(signal = None,
                        msg = None,
                        code = [str(i) for i in data.reset_index().code])
+    QA_util_log_info('##JOB Out Signal Decide ====================', ui_log=None)
     #顶部死叉
-    data.loc[(data.OUT_SIG == 1)&(data.IN_SIG == 0),"signal"] = 0
-    data.loc[(data.OUT_SIG == 1)&(data.IN_SIG == 0),"msg"] = 'model出场信号'
+    data.loc[(data.OUT_SIG == 1) & (data.IN_SIG == 0),"signal"] = 0
+    data.loc[(data.OUT_SIG == 1) & (data.IN_SIG == 0),"msg"] = 'model出场信号'
 
     # 强制止损
-    #data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "signal"] = 0
-    #data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "msg"] = '强制止损'
-
+    data.loc[(data.pct_chg <= -5) & (data.IN_SIG == 0), "signal"] = 0
+    data.loc[(data.pct_chg <= -5) & (data.IN_SIG == 0), "msg"] = '强制止损'
+    QA_util_log_info('##JOB Int Signal Decide ====================', ui_log=None)
     #放量金叉
-    data.loc[(data.IN_SIG == 1)&(data.OUT_SIG == 0), "signal"] = 1
-    data.loc[(data.IN_SIG == 1)&(data.OUT_SIG == 0), "msg"] = 'model进场信号'
+    data.loc[(data.IN_SIG == 1) & (data.OUT_SIG == 0), "signal"] = 1
+    data.loc[(data.IN_SIG == 1) & (data.OUT_SIG == 0), "msg"] = 'model进场信号'
 
     return(data, [sec_temp_data])
     #except:
