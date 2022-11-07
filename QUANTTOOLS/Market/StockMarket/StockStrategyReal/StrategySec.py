@@ -26,11 +26,6 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     #try:
     if source_data is None:
         source_data = data_base(code_list, trading_date)
-    print('source_data')
-    print(source_data.columns)
-
-    print('sec_temp_data')
-    print(sec_temp_data[0].columns)
 
     data = source_data.join(sec_temp_data[0])
     data = data.groupby('code').fillna(method='ffill')
@@ -129,7 +124,6 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
 
 
 def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source_data, trading_date, mark_tm):
-    QA_util_log_info(target_list)
     # 计算信号 提供基础信息 example
     # 输出1 signal 计划持有的code 目前此方案 1:表示持有 0:表示不持有
     # 输出2 signal 进出信号 signal 1:表示进场信号 0:表示无信号 -1:表示卖出信号
@@ -178,7 +172,6 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
 
         # add information
         # add name industry
-        QA_util_log_info(target_list)
         QA_util_log_info(data[['IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
         data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isin([1])), 'signal'] = None
         #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
