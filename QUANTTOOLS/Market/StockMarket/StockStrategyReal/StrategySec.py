@@ -222,7 +222,7 @@ def balance(data, position, sub_account, percent):
         data = data.assign(target_position = data.signal)
                            # 1 / data.signal.sum())
         data = data.assign(target_capital=data.target_position * sub_account * percent)
-
+        QA_util_log_info(data[['IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg','target_capital']], ui_log=None)
         # 方案2
         # data = pd.assign(target_position=1 / data.signal.sum(),
         #                 target_capital=data.target_position * sub_account * percent)
