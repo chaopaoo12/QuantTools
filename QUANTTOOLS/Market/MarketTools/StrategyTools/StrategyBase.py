@@ -106,6 +106,7 @@ class StrategyBase:
                 except:
                     k += 1
         else:
+            QA_util_log_info('JOB Init Source Data ==================== ', ui_log=None)
             self.source_data = None
 
         if mark_tm in self.signaltime_list:

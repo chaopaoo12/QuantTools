@@ -26,6 +26,11 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     #try:
     if source_data is None:
         source_data = data_base(code_list, trading_date)
+    print('source_data')
+    print(source_data)
+
+    print('sec_temp_data')
+    print(sec_temp_data)
 
     data = source_data.join(sec_temp_data)
     data = data.groupby('code').fillna(method='ffill')
