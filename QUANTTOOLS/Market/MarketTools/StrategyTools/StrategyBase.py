@@ -15,9 +15,8 @@ class StrategyBase:
         self.balance_func = None
         self.percent_func = None
         self.buy_list = None
-        self.sec_temp_data = None
-        self.day_temp_data = None
-        self.tmp_data = None
+        self.sec_temp_data = []
+        self.day_temp_data = []
         self.source_data = None
 
     def set_init_func(self, func):
@@ -88,7 +87,7 @@ class StrategyBase:
 
         QA_util_log_info('##JOB Now Start Trading ==== {}'.format(mark_tm), ui_log= None)
 
-        if mark_tm in self.codseltime_list or self.tmp_data is None:
+        if mark_tm in self.codseltime_list or len(self.sec_temp_data) == 0:
 
             # init codseltime
             #self.start_status = True
