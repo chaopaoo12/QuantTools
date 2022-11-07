@@ -30,9 +30,9 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     print(source_data.columns)
 
     print('sec_temp_data')
-    print(sec_temp_data.columns)
+    print(sec_temp_data[0].columns)
 
-    data = source_data.join(sec_temp_data)
+    data = source_data.join(sec_temp_data[0])
     data = data.groupby('code').fillna(method='ffill')
 
     stock_model = QAStockXGBoostMin()
