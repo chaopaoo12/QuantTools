@@ -102,20 +102,17 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
 
     source_data = data_base(code_list, trading_date)
 
-    if sec_temp_data is None or len(sec_temp_data) == 0:
-        temp = source_data.assign(type='1min')
-        temp = QA_DataStruct_Stock_min(temp)
-        res15=pd.concat([temp.min15, day_temp_data[0].data])
-        res30=pd.concat([temp.min30, day_temp_data[1].data])
-        res15 = res15[~res15.index.duplicated(keep='first')]
-        res30 = res30[~res30.index.duplicated(keep='first')]
-        res15=get_indicator(QA_DataStruct_Stock_min(res15.sort_index()), 'min')
-        res30=get_indicator(QA_DataStruct_Stock_min(res30.sort_index()), 'min')
-        res15.columns = [x.upper() + '_15M' for x in res15.columns]
-        res30.columns = [x.upper() + '_30M' for x in res30.columns]
-        sec_temp_data = [res15.join(res30).groupby('code').fillna(method='ffill')]
-    else:
-        sec_temp_data = []
+    temp = source_data.assign(type='1min')
+    temp = QA_DataStruct_Stock_min(temp)
+    res15=pd.concat([temp.min15, day_temp_data[0].data])
+    res30=pd.concat([temp.min30, day_temp_data[1].data])
+    res15 = res15[~res15.index.duplicated(keep='first')]
+    res30 = res30[~res30.index.duplicated(keep='first')]
+    res15=get_indicator(QA_DataStruct_Stock_min(res15.sort_index()), 'min')
+    res30=get_indicator(QA_DataStruct_Stock_min(res30.sort_index()), 'min')
+    res15.columns = [x.upper() + '_15M' for x in res15.columns]
+    res30.columns = [x.upper() + '_30M' for x in res30.columns]
+    sec_temp_data = [res15.join(res30).groupby('code').fillna(method='ffill')]
 
     buy_list = target_list
     #QA_util_log_info('##buy_list ==================== {}'.format(buy_list), ui_log=None)

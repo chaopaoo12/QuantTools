@@ -103,7 +103,7 @@ class StrategyBase:
                 #try:
                 self.code_select(codsel_tmmark)
                 QA_util_log_info('JOB Selct Code List Done ==================== ', ui_log=None)
-                #break
+                break
                 #except:
                 #    k += 1
 
