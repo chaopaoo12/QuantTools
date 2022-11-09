@@ -242,3 +242,14 @@ def series_to_supervised(data, n_in=[1], n_out=1, fill = True, dropnan=True):
     if dropnan:
         agg.dropna(how='all',inplace=True)
     return agg
+
+def trans_code(code):
+    if code[0:2] == '60' and len(code) == 6:
+        code1 = 'SH' + code
+    elif code[0:3] == '688':
+        code1 = 'SH'+code
+    elif code[0:3] in ['000','002','300'] and len(code) == 6:
+        code1 = 'SZ'+code
+    else:
+        code1 = code
+    return(code1)

@@ -3,6 +3,8 @@ from akshare import stock_zh_a_minute,stock_zh_a_hist_min_em
 from QUANTAXIS.QAUtil import QA_util_date_stamp
 import datetime
 import pandas as pd
+from QUANTTOOLS.QAStockETL.FuncTools.TransForm import trans_code
+
 
 def QA_fetch_get_stock_report_xq(code):
     data = read_financial_report(code)
@@ -53,14 +55,11 @@ def QA_fetch_get_usstock_report_xq(code):
     return(data)
 
 def QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='day', type='normal'):
-    if code[0:2] == '60' and len(code) == 6:
-        code1 = 'SH'+code
-    elif code[0:3] == '688':
-        code1 = 'SH'+code
-    elif code[0:3] in ['000','002','300'] and len(code) == 6:
-        code1 = 'SZ'+code
+    if isinstance(code, list):
+        code1 = [trans_code(i) for i in code]
     else:
-        code1 = code
+        code1 = [trans_code(code)]
+
     data = read_stock_day(code1, start_date, end_date, period, type)
     data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     data = data.assign(code=code)
