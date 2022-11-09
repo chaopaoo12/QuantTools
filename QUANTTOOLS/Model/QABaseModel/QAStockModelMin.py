@@ -18,12 +18,10 @@ class QAStockModelMin(QAModel):
             type_15min = type
         data_15min = get_quant_data_15min(QA_util_get_pre_trade_date(start,1), end, code, type=type_15min)
         last = data.groupby(['date','code'])['close'].agg([('last1','last')])
-        last = last.assign(yes_close=last.groupby('code').shift())
 
         data = last.join(data.reset_index().set_index(['date','code'])).reset_index().set_index(['datetime','code'])
-        data = data.assign(TARGET = data.day_close/data.last1-1,
-                           pct= data.day_close/data.yes_close-1)
-        self.data = data[['date','duration','open_pct', 'high_pct', 'low_pct', 'VAMP_JC', 'VAMP_SC', 'VAMPC_K', 'VAMP_K', 'CLOSE_K', 'TARGET', 'pct', 'AMT_UP', 'DISTANCE', 'camt_vol', 'camt_k']].join(data_15min)
+        data = data.assign(TARGET = data.day_close/data.last1-1)
+        self.data = data[['date','duration']].join(data_15min)
         self.data = self.data.groupby('code').fillna(method='ffill')
         self.data = self.data.drop(['DATE_15M', 'DATE_30M'], axis=1)
         self.info['code'] = code
