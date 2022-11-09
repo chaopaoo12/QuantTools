@@ -749,7 +749,7 @@ out_set = [
     ,'GMMA35_15M'
     ,'GMMA15_C_30M'
     ,'RSI2_30M'
-    ,'camt_k'
+    #,'camt_k'
     ,'BIAS_CROSS2_30M'
     ,'SHORT_AMOUNT_30M'
     ,'ADDI_15M'

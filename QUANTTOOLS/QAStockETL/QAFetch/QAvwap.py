@@ -124,7 +124,7 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['camt_vol'] = data['camt'] / ((data.groupby('code')['camt'].shift(241*2) + data.groupby('code')['camt'].shift(241*3) + data.groupby('code')['camt'].shift(241)) /3)
         print("5 --- %s seconds ---" % (time.time() - start_time))
 
-        data['camt_k'] = data.groupby(['date', 'code']).apply(lambda x: spcc5(x))[['camt_k']]
+        #data['camt_k'] = data.groupby(['date', 'code']).apply(lambda x: spcc5(x))[['camt_k']]
         print("6 --- %s seconds ---" % (time.time() - start_time))
         start_time = time.time()
         data[['day_open', 'day_close', 'day_high', 'day_low']] = data.groupby(['date','code']).apply(lambda x: sohlc(x))[['day_open', 'day_close', 'day_high', 'day_low']]
