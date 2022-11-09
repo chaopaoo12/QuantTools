@@ -138,8 +138,8 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
         print("8 --- %s seconds ---" % (time.time() - start_time))
         start_time = time.time()
-        data[['VAMPC_K']] = data.groupby(['date', 'code']).apply(lambda x: spc(x))[['VAMPC_K']]
-        data[['VAMP_K','CLOSE_K']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_K','CLOSE_K']]
+        #data[['VAMPC_K']] = data.groupby(['date', 'code']).apply(lambda x: spc(x))[['VAMPC_K']]
+        #data[['VAMP_K','CLOSE_K']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_K','CLOSE_K']]
         print("9 --- %s seconds ---" % (time.time() - start_time))
 
     except:
