@@ -15,11 +15,7 @@ import pandas as pd
 
 def data_base(code_list,trading_date):
     source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date)
-    last = source_data.groupby(['date','code'])['close'].agg([('last1','last')])
-    last = last.assign(yes_close=last.groupby('code').shift())
-    data = source_data.reset_index().set_index(['date','code']).join(last).reset_index().set_index(['datetime','code'])
-    data = data.assign(TARGET = data.day_close/data.last1-1,
-                       pct= data.day_close/data.yes_close-1)
+    data = source_data.assign(TARGET = source_data.day_close/source_data.close-1)
     return(data)
 
 def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data):

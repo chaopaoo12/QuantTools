@@ -28,11 +28,27 @@ def get_headers(headers):
     headers.update({"Cookie":' ;'.join([k+'='+v for (k,v) in ck.items()])})
     return(headers)
 
-def read_data_from_xueqiu(url, headers):
+def read_data_from_xueqiu(url, headers, proxy=None):
+    if proxy is not None:
+        proxies = {
+            "http": "http://" + proxy,
+        }
+
     url = url.format(timestamp = int(time.mktime(datetime.datetime.now().timetuple())*1000))
-    response = requests.get(url,headers=headers)
+    if proxy is not None:
+        response = requests.get(url,headers=headers, proxies=proxies)
+    else:
+        response = requests.get(url,headers=headers)
     res_dict = json.loads(response.text)
-    data = pd.DataFrame(res_dict['data']['item'],columns=res_dict['data']['column']).assign(code = res_dict['data']['symbol'])
+
+    if res_dict['data'] is not None:
+        try:
+            data = pd.DataFrame(res_dict['data']['item'],columns=res_dict['data']['column']).assign(code = res_dict['data']['symbol'])
+        except:
+            data = None
+    else:
+        print('fail')
+        data = None
     return(data)
 
 def read_financial_report(code, exchange, report_type):
@@ -59,7 +75,19 @@ def read_financial_report(code, exchange, report_type):
     res = res.assign(report_date = res.report_date.apply(lambda x:str(datetime.datetime.fromtimestamp(x))[0:10]))
     return(res)
 
-def read_stock_day(code, start_date, end_date, period='day', type='normal'):
+def xq_base_func(code, cnt, period, type, headers, proxy):
+    headers = get_headers(headers)
+    condition_url = '&begin={timestamp}' + '&period={period}&type={type}&count=-{cnt}&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance'.format(
+        cnt = cnt, period=period, type=type)
+
+    stockday_url = ['https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol={code}'.format(code=i) + condition_url for i in code]
+    pool = multiprocessing.Pool(15)
+    with pool as p:
+        res = p.map(partial(read_data_from_xueqiu, headers=headers, proxy=proxy), stockday_url)
+    data = pd.concat(res)
+    return(data)
+
+def read_stock_day(code, start_date, end_date, proxies, period='day', type='normal'):
 
     start_date = datetime.datetime.strptime(str(start_date),"%Y-%m-%d")
     end_date = datetime.datetime.strptime(str(end_date),"%Y-%m-%d")
@@ -75,19 +103,12 @@ def read_stock_day(code, start_date, end_date, period='day', type='normal'):
                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
                'Connection': 'keep-alive'
                }
-    headers = get_headers(headers)
 
-    condition_url = '&begin={timestamp}' + '&period={period}&type={type}&count=-{cnt}&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance'.format(
-        cnt = cnt, period=period, type=type)
-
-    stockday_url = ['https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol={code}'.format(code=i) + condition_url for i in code]
-    if len(stockday_url) > 1:
-        multiprocessing.set_start_method('spawn')
-        pool = multiprocessing.Pool(15)
-        with pool as p:
-            res = p.map(partial(read_data_from_xueqiu, headers=headers), stockday_url)
-        data = pd.concat(res)
-
+    data = xq_base_func(code, cnt, period=period, type=type, headers=headers,proxy=proxies[0])
+    lose_code = [i for i in code if i not in data.code.tolist()]
+    if len(lose_code) > 0:
+        lose_data = xq_base_func(lose_code, cnt, period=period, type=type, headers=headers,proxy=proxies[1])
+        data = pd.concat([data, lose_data])
     data = data.assign(timestamp = data.timestamp.apply(lambda x:x/1000))
     data = data.assign(datetime = pd.to_datetime(data.timestamp.apply(lambda x:str(datetime.datetime.fromtimestamp(x)))))
     data = data.assign(date = pd.to_datetime(data.timestamp.apply(lambda x:str(datetime.datetime.fromtimestamp(x))[0:10])))

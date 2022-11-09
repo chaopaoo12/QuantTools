@@ -4,6 +4,8 @@ from QUANTAXIS.QAUtil import QA_util_date_stamp
 import datetime
 import pandas as pd
 from QUANTTOOLS.QAStockETL.FuncTools.TransForm import trans_code
+import multiprocessing
+from functools import partial
 
 
 def QA_fetch_get_stock_report_xq(code):
@@ -71,18 +73,13 @@ def proxy_stock_zh_a_hist_min_em(symbol,period,adjust):
     return(res)
 
 def QA_fetch_get_stock_min_sina(code, period='30', type=''):
-    #if code[0:2] == '60' and len(code) == 6:
-    #    code1 = 'SH'+code
-    #elif code[0:3] == '688':
-    #    code1 = 'SH'+code
-    #elif code[0:3] in ['000','002','300'] and len(code) == 6:
-    #    code1 = 'SZ'+code
-    #else:
-    #    code1 = code
-    if isinstance(code,list):
-        data = pd.concat([proxy_stock_zh_a_hist_min_em(symbol=i, period=period, adjust=type) for i in code])
 
-    elif isinstance(code,str):
+    if isinstance(code,list):
+        pool = multiprocessing.Pool(15)
+        with pool as p:
+            res = p.map(partial(proxy_stock_zh_a_hist_min_em, period=period, adjust=type), code)
+        data = pd.concat(res,axis=0)
+    elif isinstance(code, str):
         data = stock_zh_a_hist_min_em(symbol=code, period=period, adjust=type)
     else:
         data=None
@@ -95,7 +92,7 @@ def QA_fetch_get_stock_min_sina(code, period='30', type=''):
                                     '最低':'low',
                                     '成交量':'volume',
                                     '成交额':'amount',
-                                    '最新价':'price',})
+                                    '涨跌额':'pct_chg',})
         data[['open','close','high','low','volume','amount']] = data[['open','close','high','low','volume','amount']].apply(pd.to_numeric)
         data = data.assign(date_stamp=data['datetime'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         data['datetime']=pd.to_datetime(data['datetime'],format='%Y-%m-%d %H:%M:%S')
@@ -103,7 +100,7 @@ def QA_fetch_get_stock_min_sina(code, period='30', type=''):
         data = None
 
     try:
-        data[['price']] = data[['price']].apply(pd.to_numeric)
+        data[['pct_chg']] = data[['pct_chg']].apply(pd.to_numeric)
     except:
         pass
     return(data)
