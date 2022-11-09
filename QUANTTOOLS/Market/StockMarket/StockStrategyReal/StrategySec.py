@@ -1,6 +1,6 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before,time_check_after
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_vwap
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_30min,get_quant_data_15min
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min
 from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo
@@ -14,7 +14,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator
 import pandas as pd
 
 def data_base(code_list,trading_date):
-    source_data = QA_fetch_get_stock_vwap(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='real')
+    source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date)
     last = source_data.groupby(['date','code'])['close'].agg([('last1','last')])
     last = last.assign(yes_close=last.groupby('code').shift())
     data = source_data.reset_index().set_index(['date','code']).join(last).reset_index().set_index(['datetime','code'])
