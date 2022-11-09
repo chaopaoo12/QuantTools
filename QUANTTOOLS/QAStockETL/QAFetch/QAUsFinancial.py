@@ -92,8 +92,9 @@ def QA_fetch_get_stock_min_sina(code, period='30', type=''):
                                     '最低':'low',
                                     '成交量':'volume',
                                     '成交额':'amount',
-                                    '涨跌额':'pct_chg',})
-        data[['open','close','high','low','volume','amount']] = data[['open','close','high','low','volume','amount']].apply(pd.to_numeric)
+                                    '涨跌额':'pct',})
+        data[['open','close','high','low','volume','amount','pct']] = data[['open','close','high','low','volume','amount','pct']].apply(pd.to_numeric)
+        data = data.assign(pct=data.pct/100)
         data = data.assign(date_stamp=data['datetime'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         data['datetime']=pd.to_datetime(data['datetime'],format='%Y-%m-%d %H:%M:%S')
     except:
