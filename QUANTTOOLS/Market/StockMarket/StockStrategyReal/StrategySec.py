@@ -14,7 +14,9 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator
 import pandas as pd
 
 def data_base(code_list,trading_date):
-    source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date)
+    #source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date)
+    source_data = QA_fetch_get_stock_vwap(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date,
+                                          period = '1', type = 'real')
     data = source_data.assign(TARGET = source_data.day_close/source_data.close-1)
     return(data)
 
