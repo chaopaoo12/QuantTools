@@ -99,12 +99,12 @@ class StrategyBase:
             k = 0
             while k <= 2:
                 QA_util_log_info('JOB Selct Code List {x} times ==================== '.format(x=k+1), ui_log=None)
-                try:
-                    self.code_select(codsel_tmmark)
-                    QA_util_log_info('JOB Selct Code List Done ==================== ', ui_log=None)
-                    break
-                except:
-                    k += 1
+                #try:
+                self.code_select(codsel_tmmark)
+                QA_util_log_info('JOB Selct Code List Done ==================== ', ui_log=None)
+                break
+                #except:
+                #    k += 1
 
             if k > 2:
                 QA_util_log_info('JOB Selct Code List Failed ==================== ', ui_log=None)
