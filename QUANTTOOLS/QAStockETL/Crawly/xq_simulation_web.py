@@ -77,22 +77,15 @@ def read_stock_day(code, start_date, end_date, period='day', type='normal'):
                }
     headers = get_headers(headers)
 
-    print('get_headers')
     condition_url = '&begin={timestamp}' + '&period={period}&type={type}&count=-{cnt}&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance'.format(
         cnt = cnt, period=period, type=type)
 
     stockday_url = ['https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol={code}'.format(code=i) + condition_url for i in code]
-    print('get urls')
     if len(stockday_url) > 1:
         multiprocessing.set_start_method('spawn')
         pool = multiprocessing.Pool(15)
-        print('start pools')
         with pool as p:
-            print('start')
-            print(headers)
-            print(stockday_url)
             res = p.map(partial(read_data_from_xueqiu, headers=headers), stockday_url)
-            print('a')
         data = pd.concat(res)
 
     data = data.assign(timestamp = data.timestamp.apply(lambda x:x/1000))
