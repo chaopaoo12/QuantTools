@@ -46,7 +46,6 @@ if __name__ == '__main__':
         check_day = QA_util_get_real_date(mark_day)
 
     QA_SU_save_stock_aklist()
-    QA_SU_save_stock_list('tdx')
     res = check_stock_code()
     if len(res) > 0:
         QA_SU_save_stock_list('tdx')

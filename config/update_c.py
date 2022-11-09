@@ -54,8 +54,15 @@ if __name__ == '__main__':
             QA_SU_save_stock_aklist()
         except:
             pass
-        QA_SU_save_stock_list('tdx')
-        #QA_SU_save_stock_info_tushare()
+
+        QA_SU_save_stock_aklist()
+        res = check_stock_code()
+        if len(res) > 0:
+            QA_SU_save_stock_list('tdx')
+            #QA_SU_save_stock_info_tushare()
+            #QA_SU_save_stock_industryinfo()
+            res = check_stock_code()
+
         QA_SU_save_stock_industryinfo()
         print("download day data")
 
