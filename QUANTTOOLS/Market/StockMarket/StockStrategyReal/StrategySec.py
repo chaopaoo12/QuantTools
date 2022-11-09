@@ -101,6 +101,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     else:
         code_list = target_list
 
+    code_list = list(set(code_list))
     QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
         mark_tm), ui_log=None)
 
