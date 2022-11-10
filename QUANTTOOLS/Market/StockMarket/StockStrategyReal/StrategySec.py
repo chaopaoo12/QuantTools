@@ -177,11 +177,11 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
 
         #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 1][['VAMP_K','CLOSE_K','VAMPC_K','DISTANCE','close',
+        QA_util_log_info(data[data.signal == 1][['DISTANCE','close',
                                                  'IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
 
         QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 0][['VAMP_K','CLOSE_K','VAMPC_K','DISTANCE','close',
+        QA_util_log_info(data[data.signal == 0][['DISTANCE','close',
                                                  'IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
 
         # 方案2
