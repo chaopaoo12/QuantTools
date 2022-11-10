@@ -90,7 +90,7 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data = QA_fetch_get_stock_min_sina(code=code, period=period, type='qfq')
         #data = QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='1m')
     print("0 --- %s seconds ---" % (time.time() - start_time))
-
+    print(data)
     if data is not None and type == 'real':
         data = data.reset_index(drop=True).set_index(['datetime', 'code']).drop(columns=['date_stamp'])
 
