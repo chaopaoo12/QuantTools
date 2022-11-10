@@ -83,7 +83,7 @@ def QA_fetch_get_stock_min_sina(code, period='30', type=''):
         data = stock_zh_a_hist_min_em(symbol=code, period=period, adjust=type)
     else:
         data=None
-
+    print(data)
     try:
         data = data.rename(columns={'时间':'datetime',
                                     '开盘':'open',
