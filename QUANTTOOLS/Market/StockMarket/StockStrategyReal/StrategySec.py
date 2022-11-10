@@ -17,7 +17,7 @@ def data_base(code_list,trading_date):
     #source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date)
     source_data = QA_fetch_get_stock_vwap(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date,
                                           period = '1', type = 'real')
-    data = source_data.assign(TARGET = source_data.day_close/source_data.close-1)
+    #data = source_data.assign(TARGET = source_data.day_close/source_data.close-1)
     return(data)
 
 def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data):
