@@ -130,9 +130,9 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         #data[['day_open', 'day_close', 'day_high', 'day_low']] = data.groupby(['date','code']).apply(lambda x: sohlc(x))[['day_open', 'day_close', 'day_high', 'day_low']]
         print("7 --- %s seconds ---" % (time.time() - start_time))
         start_time = time.time()
-        data['open_pct'] = data['close'] / data['day_open'] - 1
-        data['high_pct'] = data['close'] / data['day_high'] - 1
-        data['low_pct'] = data['close'] / data['day_low'] - 1
+        #data['open_pct'] = data['close'] / data['day_open'] - 1
+        #data['high_pct'] = data['close'] / data['day_high'] - 1
+        #data['low_pct'] = data['close'] / data['day_low'] - 1
         data['EMA'] = EMA(data['close'], 9)
         data['VAMP_JC'] = CROSS(data['close'], data['VAMP'])
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
