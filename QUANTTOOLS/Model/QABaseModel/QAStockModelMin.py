@@ -21,6 +21,7 @@ class QAStockModelMin(QAModel):
 
         data = last.join(data.reset_index().set_index(['date','code'])).reset_index().set_index(['datetime','code'])
         data = data.assign(TARGET = data.last1/data.close-1)
+        print(data[data.TARGET >= 0.02][['date','code','last1','close','TARGET']])
         self.data = data[['date','duration', 'TARGET', 'DISTANCE']].join(data_15min)
         self.data = self.data.groupby('code').fillna(method='ffill')
         self.data = self.data.drop(['DATE_15M', 'DATE_30M'], axis=1)
