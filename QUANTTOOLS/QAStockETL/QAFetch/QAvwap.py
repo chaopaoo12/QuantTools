@@ -120,25 +120,25 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data['DISTANCE'] = data['close'] / data['VAMP'] - 1
         print("4 --- %s seconds ---" % (time.time() - start_time))
         start_time = time.time()
-        data['camt_vol'] = data['camt'] / ((data.groupby('code')['camt'].shift(241*2) + data.groupby('code')['camt'].shift(241*3) + data.groupby('code')['camt'].shift(241)) /3)
+        #data['camt_vol'] = data['camt'] / ((data.groupby('code')['camt'].shift(241*2) + data.groupby('code')['camt'].shift(241*3) + data.groupby('code')['camt'].shift(241)) /3)
         print("5 --- %s seconds ---" % (time.time() - start_time))
 
-        data['camt_k'] = data.groupby(['date', 'code']).apply(lambda x: spcc5(x))[['camt_k']]
+        #data['camt_k'] = data.groupby(['date', 'code']).apply(lambda x: spcc5(x))[['camt_k']]
         print("6 --- %s seconds ---" % (time.time() - start_time))
         start_time = time.time()
-        data[['day_open', 'day_close', 'day_high', 'day_low']] = data.groupby(['date','code']).apply(lambda x: sohlc(x))[['day_open', 'day_close', 'day_high', 'day_low']]
+        #data[['day_open', 'day_close', 'day_high', 'day_low']] = data.groupby(['date','code']).apply(lambda x: sohlc(x))[['day_open', 'day_close', 'day_high', 'day_low']]
         print("7 --- %s seconds ---" % (time.time() - start_time))
         start_time = time.time()
-        data['open_pct'] = data['close'] / data['day_open'] - 1
-        data['high_pct'] = data['close'] / data['day_high'] - 1
-        data['low_pct'] = data['close'] / data['day_low'] - 1
+        #data['open_pct'] = data['close'] / data['day_open'] - 1
+        #data['high_pct'] = data['close'] / data['day_high'] - 1
+        #data['low_pct'] = data['close'] / data['day_low'] - 1
         data['EMA'] = EMA(data['close'], 9)
         data['VAMP_JC'] = CROSS(data['close'], data['VAMP'])
         data['VAMP_SC'] = CROSS(data['VAMP'], data['close'])
         print("8 --- %s seconds ---" % (time.time() - start_time))
         start_time = time.time()
-        data[['VAMPC_K']] = data.groupby(['date', 'code']).apply(lambda x: spc(x))[['VAMPC_K']]
-        data[['VAMP_K','CLOSE_K']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_K','CLOSE_K']]
+        #data[['VAMPC_K']] = data.groupby(['date', 'code']).apply(lambda x: spc(x))[['VAMPC_K']]
+        #data[['VAMP_K','CLOSE_K']] = data.groupby(['date','code']).apply(lambda x: spc5(x))[['VAMP_K','CLOSE_K']]
         print("9 --- %s seconds ---" % (time.time() - start_time))
 
     except:
