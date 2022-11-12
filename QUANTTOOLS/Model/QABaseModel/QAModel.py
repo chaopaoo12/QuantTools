@@ -207,12 +207,12 @@ class QAModel():
                     self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
 
                 QA_util_log_info('##JOB Delete Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
-                    NAN_NUM=b_num - self.tran_data.shape[0], per = 1-self.tran_data.shape[0]/b_num, shape=b_num), ui_log = None)
+                    NAN_NUM=b_num - self.train_data.shape[0], per = 1-self.train_data.shape[0]/b_num, shape=b_num), ui_log = None)
             else:
                 self.train_data = self.data[self.cols + add_cols].dropna(thresh=(len(self.cols) - self.thresh)).join(
                     self.data[[i for i in list(self.data.columns) if i not in self.cols + ['star']]])
                 QA_util_log_info('##JOB Delete Data With {per} ({NAN_NUM}/{shape})  Contain NAN ==== '.format(
-                    NAN_NUM=b_num - self.tran_data.shape[0], per = 1-self.tran_data.shape[0]/b_num, shape=b_num), ui_log = None)
+                    NAN_NUM=b_num - self.train_data.shape[0], per = 1-self.train_data.shape[0]/b_num, shape=b_num), ui_log = None)
         else:
             QA_util_log_info('##JOB Thresh Clean Data No Train Type ==== ', ui_log = None)
             if self.thresh is None:
