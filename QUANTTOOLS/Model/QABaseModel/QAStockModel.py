@@ -29,7 +29,7 @@ class QAStockModel(QAModel):
             start_date = start
 
         data = self.get_data(start_date, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block,ST=ST, norm_type=self.norm_type)
-
+        print(data)
         index_target = get_index_quant_data(start, end,code=['000001','399006'],type='crawl', norm_type=None)
         index_feature = pd.pivot(index_target.loc[(slice(None),['000001','399006']),['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK']].reset_index(),index='date',columns='code',values=['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK'])
         index_feature.columns= ['SKDJ_K1','SKDJ_K6','SKDJ_TR1','SKDJ_TR6','SKDJ_K_WK1','SKDJ_K_WK6','SKDJ_TR_WK1','SKDJ_TR_WK6']
