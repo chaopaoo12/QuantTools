@@ -61,7 +61,7 @@ def QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='day', type='
         code1 = [trans_code(i) for i in code]
     else:
         code1 = [trans_code(code)]
-
+    print(code)
     data = read_stock_day(code1, start_date, end_date, period, type)
     data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     data = data.assign(code=code)
