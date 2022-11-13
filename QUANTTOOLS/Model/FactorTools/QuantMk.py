@@ -139,7 +139,6 @@ def get_quant_data(start_date, end_date, code=None, type = 'crawl', block = Fals
         res = QA_fetch_stock_quant_data(codes, start_date, end_date, block = sub_block, norm_type =norm_type)
     elif type == 'real':
         pass
-    print(res)
     return(res)
 
 def get_hedge_data(start_date, end_date, code=None, type = 'crawl', block = True, sub_block= True, method = 'value', norm_type = 'normalization'):

@@ -25,7 +25,7 @@ class QAStockModelNeut(QAModel):
             start_date = start
 
         QA_util_log_info('##JOB Got Stock Data by {type}, block: {block}, sub_block: {sub_block}, ST: {ST} ==== from {_from} to {_to} target:{target}'.format(type=type, block=self.block,sub_block=self.sub_block, ST=ST, _from=start, _to=end, target = self.target), ui_log = None)
-        self.data = self.get_data(start_date, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block,ST=ST)
+        self.get_data(start_date, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block,ST=ST)
 
         short_of_code, short_of_data = self.code_check()
 
