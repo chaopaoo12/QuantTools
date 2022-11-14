@@ -101,7 +101,7 @@ def read_stock_day(code, start_date, end_date, proxies, period='day', type='norm
                'Accept-Language': 'zh-CN,zh;q=0.9',
                'Cache-Control': 'max-age=0',
                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
-               'Connection': 'keep-alive'
+               'Connection': 'close'
                }
 
     data = xq_base_func(code, cnt, period=period, type=type, headers=headers,proxy=proxies[0])
@@ -109,7 +109,6 @@ def read_stock_day(code, start_date, end_date, proxies, period='day', type='norm
     if len(lose_code) > 0:
         lose_data = xq_base_func(lose_code, cnt, period=period, type=type, headers=headers,proxy=proxies[1])
         data = pd.concat([data, lose_data])
-    print(data)
     data = data.assign(timestamp = data.timestamp.apply(lambda x:x/1000))
     data = data.assign(datetime = pd.to_datetime(data.timestamp.apply(lambda x:str(datetime.datetime.fromtimestamp(x)))))
     data = data.assign(date = pd.to_datetime(data.timestamp.apply(lambda x:str(datetime.datetime.fromtimestamp(x))[0:10])))

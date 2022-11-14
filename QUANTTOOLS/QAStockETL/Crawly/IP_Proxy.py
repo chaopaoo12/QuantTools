@@ -1,8 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-import json
 
-def read_html(url):
+def get_ip_poll(url):
     headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                'Accept-Language': 'zh-CN,zh;q=0.9',
                'Cache-Control': 'max-age=0',
@@ -42,4 +41,5 @@ def check_ip_poll(proxy):
             return(None)
     except:
         print(proxy,'请求异常')
+        return(None)
 
