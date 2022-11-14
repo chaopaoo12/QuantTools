@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 import math
 from QUANTAXIS.QAIndicator.base import CROSS,EMA,MA
+import random
 
 def first(rows):
     return rows[0]
@@ -79,7 +80,7 @@ def sohlc(data, N= 240):
     data[['day_open','day_close','day_high','day_low']] = data.rolling(window=N, min_periods=1).agg({'open':first,'close':last,'high':'max','low':'min'})
     return(data)
 
-def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'crawl'):
+def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'crawl',proxies=[]):
     QA_util_log_info("JOB Get {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
 
 
@@ -87,7 +88,11 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
     if type == 'crawl':
         data = QA_fetch_stock_min_adv(code, start_date, end_date, frequence='1min').data
     elif type == 'real':
-        data = QA_fetch_get_stock_min_sina(code=code, period=period, type='qfq')
+        if len(proxies) > 0:
+            proxies={'http:': 'http://' + proxies[random.randint(0, len(proxies))]}
+        else:
+            proxies={}
+        data = QA_fetch_get_stock_min_sina(code=code, period=period, type='qfq',proxies=proxies)
         #data = QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='1m')
     print("0 --- %s seconds ---" % (time.time() - start_time))
     if data is not None and type == 'real':
