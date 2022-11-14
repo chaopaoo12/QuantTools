@@ -68,7 +68,7 @@ def QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='day', type='
     return(data)
 
 def proxy_stock_zh_a_hist_min_em(symbol,period,adjust, proxy=''):
-    res = stock_zh_a_hist_min_em(symbol=symbol, period=period, adjust=adjust,proxy=proxy)
+    res = stock_zh_a_hist_min_em(symbol=symbol, period=period, adjust=adjust,proxies=proxy)
     res = res.assign(code=symbol)
     return(res)
 
