@@ -29,13 +29,12 @@ def get_headers(headers):
     return(headers)
 
 def read_data_from_xueqiu(url, headers, proxy=None):
-    if proxy is not None:
-        proxies = {
-            "http": "http://" + proxy,
-        }
 
     url = url.format(timestamp = int(time.mktime(datetime.datetime.now().timetuple())*1000))
     if proxy is not None:
+        proxies = {
+            "http": "http://" + proxy[0],
+        }
         response = requests.get(url,headers=headers, proxies=proxies)
     else:
         response = requests.get(url,headers=headers)
@@ -87,7 +86,7 @@ def xq_base_func(code, cnt, period, type, headers, proxy):
     data = pd.concat(res)
     return(data)
 
-def read_stock_day(code, start_date, end_date, proxies, period='day', type='normal'):
+def read_stock_day(code, start_date, end_date, period='day', type='normal', proxies=None):
 
     start_date = datetime.datetime.strptime(str(start_date),"%Y-%m-%d")
     end_date = datetime.datetime.strptime(str(end_date),"%Y-%m-%d")
@@ -104,10 +103,10 @@ def read_stock_day(code, start_date, end_date, proxies, period='day', type='norm
                'Connection': 'close'
                }
 
-    data = xq_base_func(code, cnt, period=period, type=type, headers=headers,proxy=proxies[0])
+    data = xq_base_func(code, cnt, period=period, type=type, headers=headers,proxy=proxies)
     lose_code = [i for i in code if i not in data.code.tolist()]
     if len(lose_code) > 0:
-        lose_data = xq_base_func(lose_code, cnt, period=period, type=type, headers=headers,proxy=proxies[1])
+        lose_data = xq_base_func(lose_code, cnt, period=period, type=type, headers=headers,proxy=proxies)
         data = pd.concat([data, lose_data])
     data = data.assign(timestamp = data.timestamp.apply(lambda x:x/1000))
     data = data.assign(datetime = pd.to_datetime(data.timestamp.apply(lambda x:str(datetime.datetime.fromtimestamp(x)))))
