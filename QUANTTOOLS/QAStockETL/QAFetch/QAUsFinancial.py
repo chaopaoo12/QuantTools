@@ -67,17 +67,17 @@ def QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='day', type='
     data = data.assign(code=code)
     return(data)
 
-def proxy_stock_zh_a_hist_min_em(symbol,period,adjust):
-    res = stock_zh_a_hist_min_em(symbol=symbol, period=period, adjust=adjust)
+def proxy_stock_zh_a_hist_min_em(symbol,period,adjust, proxy=''):
+    res = stock_zh_a_hist_min_em(symbol=symbol, period=period, adjust=adjust,proxy=proxy)
     res = res.assign(code=symbol)
     return(res)
 
-def QA_fetch_get_stock_min_sina(code, period='30', type=''):
+def QA_fetch_get_stock_min_sina(code, period='30', type='',proxies=''):
 
     if isinstance(code,list):
         pool = multiprocessing.Pool(15)
         with pool as p:
-            res = p.map(partial(proxy_stock_zh_a_hist_min_em, period=period, adjust=type), code)
+            res = p.map(partial(proxy_stock_zh_a_hist_min_em, period=period, adjust=type,proxy=proxies), code)
         data = pd.concat(res,axis=0)
     elif isinstance(code, str):
         data = stock_zh_a_hist_min_em(symbol=code, period=period, adjust=type)
