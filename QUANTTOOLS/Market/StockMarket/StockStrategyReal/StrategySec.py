@@ -1,11 +1,9 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before,time_check_after
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_vwap
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min
-from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo
 import time
-import numpy as np
 from QUANTTOOLS.Model.StockModel.StrategyXgboostMin import QAStockXGBoostMin
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_min
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_min_adv
@@ -13,17 +11,17 @@ from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
 from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator
 import pandas as pd
 
-def data_base(code_list,trading_date):
+def data_base(code_list,trading_date,proxies):
     #source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date)
     data = QA_fetch_get_stock_vwap(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date,
-                                          period = '1', type = 'real')
+                                          period = '1', type = 'real',proxies=proxies)
     #data = source_data.assign(TARGET = source_data.day_close/source_data.close-1)
     return(data)
 
-def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data):
+def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, proxies):
     #try:
     if source_data is None:
-        source_data = data_base(code_list, trading_date)
+        source_data = data_base(code_list, trading_date, proxies)
 
     data = source_data.join(sec_temp_data[0])
     data = data.groupby('code').fillna(method='ffill')
@@ -89,7 +87,7 @@ def day_init(target_list, trading_date):
 
     return([his15_data, his30_data])
 
-def code_select(target_list, position, day_temp_data, sec_temp_data, trading_date, mark_tm):
+def code_select(target_list, position, day_temp_data, sec_temp_data, trading_date, mark_tm, proxies):
 
     if target_list is None:
         target_list = []
@@ -103,7 +101,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
         mark_tm), ui_log=None)
 
-    source_data = data_base(code_list, trading_date)
+    source_data = data_base(code_list, trading_date, proxies)
 
     temp = source_data.assign(type='1min')
     temp = QA_DataStruct_Stock_min(temp)
@@ -122,7 +120,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     return(buy_list, sec_temp_data, source_data)
 
 
-def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source_data, trading_date, mark_tm):
+def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source_data, trading_date, mark_tm, proxies):
     # 计算信号 提供基础信息 example
     # 输出1 signal 计划持有的code 目前此方案 1:表示持有 0:表示不持有
     # 输出2 signal 进出信号 signal 1:表示进场信号 0:表示无信号 -1:表示卖出信号
@@ -150,7 +148,7 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
 
     stm = trading_date + ' ' + mark_tm
     #try:
-    data, data_15min = data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data)
+    data, data_15min = data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, proxies)
 
     #except:
     #    QA_util_log_info('##JOB Signal Failed ====================', ui_log=None)

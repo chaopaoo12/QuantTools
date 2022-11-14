@@ -1,5 +1,6 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, close_check, suspend_check, get_on_time,time_check_before, check_market_time,time_check_after
+from QUANTTOOLS.QAStockETL.Crawly.IP_Proxy import get_ip_poll,check_ip_poll
 import time
 import datetime
 
@@ -18,6 +19,14 @@ class StrategyBase:
         self.sec_temp_data = []
         self.day_temp_data = []
         self.source_data = None
+        self.proxies = []
+
+    def set_proxy_pool(self, url=None):
+        if url is not None:
+            proxies = get_ip_poll(url)
+        else:
+            proxies = get_ip_poll()
+        self.proxies = [check_ip_poll(i) for i in proxies]
 
     def set_init_func(self, func):
         self.init_func = func
@@ -38,19 +47,23 @@ class StrategyBase:
         self.percent_func = func
 
     def code_select(self, mark_tm):
+        QA_util_log_info('##JOB Refresh Proxy Pool  ==== {}'.format(mark_tm), ui_log= None)
+        self.set_proxy_pool()
         QA_util_log_info('##JOB Refresh Tmp Code List  ==== {}'.format(mark_tm), ui_log= None)
         QA_util_log_info('##JOB Init Code List  ==== {}'.format(self.target_list), ui_log= None)
         if self.codsel_func is not None:
             self.buy_list, self.sec_temp_data, self.source_data = self.codsel_func(target_list=self.target_list,
-                                                            position=self.position,
-                                                            day_temp_data=self.day_temp_data,
-                                                            sec_temp_data=self.sec_temp_data,
-                                                            trading_date=self.trading_date,
-                                                            mark_tm=mark_tm)
+                                                                                   position=self.position,
+                                                                                   day_temp_data=self.day_temp_data,
+                                                                                   sec_temp_data=self.sec_temp_data,
+                                                                                   trading_date=self.trading_date,
+                                                                                   mark_tm=mark_tm,
+                                                                                   proxies=self.proxies)
         else:
             self.buy_list = None
             self.sec_temp_data = []
             self.source_data = None
+
 
     def init_run(self):
         if self.init_func is not None:
@@ -67,7 +80,8 @@ class StrategyBase:
                                 day_temp_data=self.day_temp_data,
                                 source_data=self.source_data,
                                 trading_date=self.trading_date,
-                                mark_tm=mark_tm)
+                                mark_tm=mark_tm,
+                                proxies=self.proxies)
         return(data)
 
     def percent_run(self, mark_tm):
