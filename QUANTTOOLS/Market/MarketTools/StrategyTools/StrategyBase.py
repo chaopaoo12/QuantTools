@@ -1,6 +1,7 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, close_check, suspend_check, get_on_time,time_check_before, check_market_time,time_check_after
 from QUANTTOOLS.QAStockETL.Crawly.IP_Proxy import get_ip_poll,check_ip_poll
+from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_tfp
 import time
 import datetime
 
@@ -30,6 +31,13 @@ class StrategyBase:
             self.proxies = [check_ip_poll(i, ckeck_url) for i in proxies]
         else:
             self.proxies = [check_ip_poll(i) for i in proxies]
+
+    def set_code_check(self):
+        QA_util_log_info('##JOB Check TFP stock  ==== {}'.format(self.trading_date), ui_log= None)
+        tfp = QA_fetch_get_stock_tfp(self.trading_date)
+        QA_util_log_info('##JOB Stock on TFP  ==== {}'.format(self.trading_date), ui_log= None)
+        QA_util_log_info([i for i in self.target_list if i in tfp], ui_log= None)
+        self.target_list = [i for i in self.target_list if i not in tfp]
 
     def set_init_func(self, func):
         self.init_func = func

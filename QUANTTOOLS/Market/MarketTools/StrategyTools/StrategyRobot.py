@@ -106,7 +106,7 @@ class StrategyRobotBase:
         self.strategy = prepare_strategy(self.strategy, {'position': positions,
                                                          'sub_account': sub_accounts,
                                                          })
-
+        self.strategy.set_code_check()
         self.strategy.init_run()
 
         # first time check before 15
