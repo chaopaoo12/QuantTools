@@ -18,7 +18,7 @@ def get_ip_poll(url='http://www.ip3366.net/free/?stype=1&page=1'):
     return(proxy)
 
 
-def check_ip_poll(proxy):
+def check_ip_poll(proxy, url='https://www.baidu.com/'):
     #useful_proxy = []
     proxies = {
         "http": "http://" + proxy,
@@ -30,7 +30,7 @@ def check_ip_poll(proxy):
                'Connection': 'keep-alive'
                }
     try:
-        response = requests.get(url='https://www.baidu.com/',headers=headers,proxies=proxies,timeout=1) #设置timeout，使响应等待1s
+        response = requests.get(url=url,headers=headers,proxies=proxies,timeout=1) #设置timeout，使响应等待1s
         response.close()
         if response.status_code == 200:
             #useful_proxy.append(proxy)
