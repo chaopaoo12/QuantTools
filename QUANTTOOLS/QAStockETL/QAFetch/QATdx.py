@@ -236,5 +236,11 @@ def QA_fetch_get_stock_half(code, start, end):
 def fetch_get_stock_code_all():
     return(stock_info_a_code_name())
 
+def QA_fetch_get_stock_tfp(date):
+    stock_tfp_em_df = ak.stock_tfp_em(date=date.replace('-',''))
+    tfp = stock_tfp_em_df[(stock_tfp_em_df['停牌时间'].apply(lambda x:str(x)) <= date)&
+                          (stock_tfp_em_df['停牌截止时间'].apply(lambda x:str(x)) >= date)]['代码'].tolist()
+    return(tfp)
+
 if __name__ == '__main__':
     pass
