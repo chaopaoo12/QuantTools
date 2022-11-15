@@ -30,7 +30,7 @@ def check_ip_poll(proxy, url='https://www.baidu.com/'):
                'Connection': 'keep-alive'
                }
     try:
-        response = requests.get(url=url,headers=headers,proxies=proxies,timeout=1) #设置timeout，使响应等待1s
+        response = requests.get(url=url,headers=headers,proxies=proxies,timeout=0.1) #设置timeout，使响应等待1s
         response.close()
         if response.status_code == 200:
             #useful_proxy.append(proxy)
