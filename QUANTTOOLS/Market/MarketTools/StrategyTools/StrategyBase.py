@@ -21,12 +21,15 @@ class StrategyBase:
         self.source_data = None
         self.proxies = []
 
-    def set_proxy_pool(self, url=None):
+    def set_proxy_pool(self, url=None, ckeck_url=None):
         if url is not None:
             proxies = get_ip_poll(url)
         else:
             proxies = get_ip_poll()
-        self.proxies = [check_ip_poll(i) for i in proxies]
+        if ckeck_url is not None:
+            self.proxies = [check_ip_poll(i, ckeck_url) for i in proxies]
+        else:
+            self.proxies = [check_ip_poll(i) for i in proxies]
 
     def set_init_func(self, func):
         self.init_func = func

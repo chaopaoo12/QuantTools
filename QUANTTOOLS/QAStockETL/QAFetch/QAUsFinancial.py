@@ -6,7 +6,7 @@ import pandas as pd
 from QUANTTOOLS.QAStockETL.FuncTools.TransForm import trans_code
 import multiprocessing
 from functools import partial
-
+import random
 
 def QA_fetch_get_stock_report_xq(code):
     data = read_financial_report(code)
@@ -61,23 +61,26 @@ def QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='day', type='
         code1 = [trans_code(i) for i in code]
     else:
         code1 = [trans_code(code)]
-    print(code)
     data = read_stock_day(code1, start_date, end_date, period, type)
     data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
     data = data.assign(code=code)
     return(data)
 
-def proxy_stock_zh_a_hist_min_em(symbol,period,adjust, proxies={}):
-    res = stock_zh_a_hist_min_em(symbol=symbol, period=period, adjust=adjust, proxies=proxies)
-    res = res.assign(code=symbol)
+def proxy_stock_zh_a_hist_min_em(symbol_proxies, period, adjust):
+    res = stock_zh_a_hist_min_em(symbol=symbol_proxies[1], period=period, adjust=adjust, proxies=symbol_proxies[0])
+    res = res.assign(code=symbol_proxies[1])
     return(res)
 
-def QA_fetch_get_stock_min_sina(code, period='30', type='',proxies={}):
+def QA_fetch_get_stock_min_sina(code, period='30', type='',proxies=[]):
 
     if isinstance(code,list):
+        if isinstance(proxies,list):
+            symbol_proxies = list(zip(random.choices(proxies, k=len(code)),code))
+        else:
+            symbol_proxies = list(zip(random.choices([proxies], k=len(code)),code))
         pool = multiprocessing.Pool(15)
         with pool as p:
-            res = p.map(partial(proxy_stock_zh_a_hist_min_em, period=period, adjust=type,proxies=proxies), code)
+            res = p.map(partial(proxy_stock_zh_a_hist_min_em, period=period, adjust=type), symbol_proxies)
         data = pd.concat(res,axis=0)
     elif isinstance(code, str):
         data = stock_zh_a_hist_min_em(symbol=code, period=period, adjust=type)
