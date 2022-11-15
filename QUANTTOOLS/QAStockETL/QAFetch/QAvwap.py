@@ -89,7 +89,7 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data = QA_fetch_stock_min_adv(code, start_date, end_date, frequence='1min').data
     elif type == 'real':
         if len(proxies) > 0:
-            proxies={'http:': 'http://' + proxies[random.randint(0, len(proxies))]}
+            proxies={'http:': 'http://' + proxies[random.randint(0, len(proxies)-1)]}
         else:
             proxies={}
         data = QA_fetch_get_stock_min_sina(code=code, period=period, type='qfq',proxies=proxies)
