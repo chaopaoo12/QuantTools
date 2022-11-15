@@ -1,5 +1,6 @@
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
+from QUANTTOOLS.Trader.account_manage.base_func.Client import get_UseCapital
 from QUANTTOOLS.Trader.account_manage.TradAction.BUY import BUY
 from QUANTTOOLS.Trader.account_manage.TradAction.SELL import SELL
 import time
@@ -68,11 +69,12 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
                 send_actionnotice(title,'{code}{name}:{stm}{msg}'.format(
                     code=buy_list['code'], name=buy_list['name'], stm=mark_tm, msg=buy_list['msg']),
                                   '买入信号', direction='BUY', offset=mark_tm, volume=None)
-                # buy
-                BUY(client, account, title, account_info, trading_date,
-                    buy_list['code'], buy_list['name'], buy_list['industry'],
-                    target_capital=buy_list['target_capital'], close=buy_list['close'],
-                    type='LIMIT', test=test)
+                if get_UseCapital(client, account) > 3000:
+                    # buy
+                    BUY(client, account, title, account_info, trading_date,
+                        buy_list['code'], buy_list['name'], buy_list['industry'],
+                        target_capital=buy_list['target_capital'], close=buy_list['close'],
+                        type='LIMIT', test=test)
         else:
             QA_util_log_info('##JOB No Buying Signal ==== {stm}'.format(
                 stm=str(mark_tm)), ui_log = None)
