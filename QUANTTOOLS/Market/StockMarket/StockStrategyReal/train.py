@@ -200,7 +200,7 @@ def train_min_model(date, working_dir=working_dir):
 
     stock_model = load_data(stock_model, QA_util_get_last_day(start_date, 15), end_date, type ='crawl', sub_block=True, norm_type=None, ST=True,code=code_list)
 
-    stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 3), mark = 0.02, col = 'TARGET', type='value')
+    stock_model = set_target(stock_model, start_date, QA_util_get_last_day(QA_util_get_real_date(date), 3), mark = 0.03, col = 'TARGET', type='value')
     stock_model = prepare_data(stock_model, in_set, None, 0.95, train_type=True)
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
