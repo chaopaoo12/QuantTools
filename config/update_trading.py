@@ -45,13 +45,7 @@ if __name__ == '__main__':
     else:
         check_day = QA_util_get_real_date(mark_day)
 
-    QA_SU_save_stock_aklist()
     res = check_stock_code()
-    if len(res) > 0:
-        QA_SU_save_stock_list('tdx')
-        #QA_SU_save_stock_info_tushare()
-        #QA_SU_save_stock_industryinfo()
-        res = check_stock_code()
 
     res = check_stock_alpha191(mark_day)
     while res is None or len(res[1]) > 20:
