@@ -178,7 +178,10 @@ def train_min_model(date, working_dir=working_dir):
 
     client = get_Client(type='yun_ease',trader_path=None,host=trading_setting['host'],port=trading_setting['port'],key=trading_setting['key'])
     sub_accounts, frozen, positions, frozen_positions = check_Client(client, account, strategy_id, trading_date, exceptions=exceptions)
-
+    try:
+        positions = positions.code.tolist()
+    except:
+        positions = None
     r_tar, xg_sh, prediction = DataTools.load_data(concat_predict, trading_date, working_dir, 'stock_sh', 'prediction_sh')
     xg_sh=xg_sh[xg_sh.RANK<=20]
 
@@ -191,7 +194,7 @@ def train_min_model(date, working_dir=working_dir):
                          + xg_nn[(xg_nn.RANK <= 20)&(xg_nn.y_pred==1)&(xg_nn.TARGET5.isnull())].reset_index().code.tolist()
                          + mars_nn[(mars_nn.RANK <= 20)&(mars_nn.y_pred==1)&(mars_nn.TARGET5.isnull())].reset_index().code.tolist()
                          + mars_day[(mars_day.RANK <= 20)&(mars_day.y_pred==1)&(mars_day.TARGET5.isnull())].reset_index().code.tolist()
-                         + positions.code.tolist()))
+                         + positions))
 
     start_date = QA_util_get_last_day(QA_util_get_real_date(date), 30)
     end_date = date
