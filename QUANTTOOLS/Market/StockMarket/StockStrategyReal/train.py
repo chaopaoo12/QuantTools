@@ -181,7 +181,7 @@ def train_min_model(date, working_dir=working_dir):
     try:
         positions = positions.code.tolist()
     except:
-        positions = None
+        positions = []
     r_tar, xg_sh, prediction = DataTools.load_data(concat_predict, trading_date, working_dir, 'stock_sh', 'prediction_sh')
     xg_sh=xg_sh[xg_sh.RANK<=20]
 
