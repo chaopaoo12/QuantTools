@@ -203,6 +203,7 @@ def build_info(data):
         buy_dict = data[data.code.isin(buy_list)][need_columns].to_dict(orient='records')
 
         signal_data = {'sell': sell_dict, 'buy': buy_dict}
+        QA_util_log_info(signal_data, ui_log = None)
         return(signal_data)
 
     return({'sell': None, 'buy': None})
