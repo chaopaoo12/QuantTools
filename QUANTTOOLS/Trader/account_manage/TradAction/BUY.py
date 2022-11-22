@@ -31,15 +31,19 @@ def BUY(client, account, strategy_id, account_info, trading_date,
             price = price
         else:
             price = round(price-0.01, 2)
+
         if price <= close * 1.005:
             pass
         else:
             price = close
 
-        deal_pos = math.floor(round(deal_capital/price, 0)/100) * 100
+        if price >0:
+            deal_pos = math.floor(round(deal_capital/price, 0)/100) * 100
 
-        if deal_pos == 0:
-            deal_pos = 100
+            if deal_pos == 0:
+                deal_pos = 100
+        else:
+            deal_pos = 0
 
         QA_util_log_info('##JOB Get Real Time Price {price} 可买入{deal_pos} Before {code} Buying ===== {date}'.format(
             price=price, code=code, deal_pos=deal_pos, date=trading_date), ui_log=None)
