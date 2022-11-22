@@ -205,8 +205,8 @@ def build_info(data):
         signal_data = {'sell': sell_dict, 'buy': buy_dict}
         QA_util_log_info(signal_data, ui_log = None)
         return(signal_data)
-
-    return({'sell': None, 'buy': None})
+    else:
+        return({'sell': None, 'buy': None})
 
 
 if __name__ == '__main__':
