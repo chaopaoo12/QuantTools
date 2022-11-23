@@ -178,7 +178,7 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
         QA_util_log_info(data[data.signal == 1][['DISTANCE','close',
                                                  'IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
 
-        if position is None:
+        if position is not None:
             hold = position.shape[0]
         else:
             hold = 0
