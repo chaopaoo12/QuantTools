@@ -37,19 +37,16 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     stock_model.base_predict()
     data[['OUT_SIG','OUT_PROB']] = stock_model.data[['y_pred','O_PROB']]
 
-    #if time_check_after('14:00:00'):
-    #    stock_model = stock_model.load_model('stock_in_1')
-    #    stock_model.set_data(data)
-    #    stock_model.base_predict()
-    #    data[['IN_SIG_1','IN_PROB_1']] = stock_model.data[['y_pred','O_PROB']]
+    stock_model = stock_model.load_model('stock_in_1')
+    stock_model.set_data(data)
+    stock_model.base_predict()
+    data[['IN_SIG_1','IN_PROB_1']] = stock_model.data[['y_pred','O_PROB']]
 
-    #    stock_model = stock_model.load_model('stock_out_1')
-    #    stock_model.set_data(data)
-    #    stock_model.base_predict()
-    #    data[['OUT_SIG_1','OUT_PROB_1']] = stock_model.data[['y_pred','O_PROB']]
-    #    QA_util_log_info(data[['IN_SIG','IN_PROB','IN_SIG_1','IN_PROB_1','OUT_SIG','OUT_PROB','OUT_SIG_1','OUT_PROB_1']], ui_log=None)
-    #else:
-    QA_util_log_info(data[['IN_SIG','IN_PROB','OUT_SIG','OUT_PROB']], ui_log=None)
+    stock_model = stock_model.load_model('stock_out_1')
+    stock_model.set_data(data)
+    stock_model.base_predict()
+    data[['OUT_SIG_1','OUT_PROB_1']] = stock_model.data[['y_pred','O_PROB']]
+    QA_util_log_info(data[['IN_SIG','IN_PROB','IN_SIG_1','IN_PROB_1','OUT_SIG','OUT_PROB','OUT_SIG_1','OUT_PROB_1']], ui_log=None)
     # 方案1
     # hold index&condition
     #下降通道 超降通道 上升通道 超升通道
