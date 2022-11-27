@@ -108,10 +108,10 @@ class QAModel():
             try:
                 joblib.dump(self.model, working_dir+"\\{name}.joblib.dat".format(name=name))
                 joblib.dump(self.info, working_dir+"\\{name}info.joblib.dat".format(name=name))
-                print("dump success")
+                QA_util_log_info("dump success")
                 return(True)
             except:
-                print("dump fail")
+                QA_util_log_info("dump fail")
                 return(False)
 
     def load_model(self, name, working_dir= 'D:\\model\\current'):
