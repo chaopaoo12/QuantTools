@@ -72,4 +72,4 @@ if __name__ == '__main__':
             QA_SU_save_stock_neutral_day(start_date=mark_day,end_date=mark_day)
             res = check_stock_neut(mark_day)
 
-        neut_run(mark_day)
+    neut_run(mark_day)
