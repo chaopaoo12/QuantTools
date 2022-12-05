@@ -64,7 +64,7 @@ def trading_new(trading_date, working_dir=working_dir):
     r_tar, mars_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_nn', 'prediction_stock_mars_nn')
     r_tar, mars_day, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_day', 'prediction_stock_mars_day')
 
-    xg_sh=xg_sh[(xg_sh.RANK<=20)&(xg_sh.O_PROB>=0.4)]
+    xg_sh=xg_sh[(xg_sh.RANK<=20)&(xg_sh.O_PROB>=0.35)]
 
     code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.TARGET5.isnull())].reset_index().code.tolist()
                          + xg[(xg.RANK <= 5)&(~xg.INDUSTRY.isin(['银行']))&(xg.y_pred==1)&(xg.TARGET5.isnull())].reset_index().code.tolist()
