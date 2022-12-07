@@ -64,13 +64,13 @@ def trading_new(trading_date, working_dir=working_dir):
     #r_tar, mars_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_nn', 'prediction_stock_mars_nn')
     r_tar, mars_day, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_day', 'prediction_stock_mars_day')
 
-    xg_sh=xg_sh[(xg_sh.RANK<=20)&(xg_sh.O_PROB>=0.35)]
+    #xg_sh=xg_sh[(xg_sh.RANK<=20)&(xg_sh.O_PROB>=0.35)]
 
-    code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.TARGET5.isnull())].reset_index().code.tolist()
-                         + xg[(xg.RANK <= 5)&(~xg.INDUSTRY.isin(['银行']))&(xg.y_pred==1)&(xg.TARGET5.isnull())].reset_index().code.tolist()
+    code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.TARGET5.isnull())&(xg_sh.SKDJ_K<50)].reset_index().code.tolist()
+                         + xg[(xg.RANK <= 5)&(~xg.INDUSTRY.isin(['银行']))&(xg.y_pred==1)&(xg.TARGET5.isnull())&(xg.SKDJ_K<50)].reset_index().code.tolist()
                          #+ xg_nn[(xg_nn.RANK <= 5)&(~xg_nn.INDUSTRY.isin(['银行']))&(xg_nn.y_pred==1)&(xg_nn.TARGET5.isnull())].reset_index().code.tolist()
                          #+ mars_nn[(mars_nn.RANK <= 5)&(~mars_nn.INDUSTRY.isin(['银行']))&(mars_nn.y_pred==1)&(mars_nn.TARGET5.isnull())].reset_index().code.tolist()
-                         + mars_day[(mars_day.RANK <= 5)&(~mars_day.INDUSTRY.isin(['银行']))&(mars_day.y_pred==1)&(mars_day.TARGET5.isnull())].reset_index().code.tolist()))
+                         + mars_day[(mars_day.RANK <= 5)&(~mars_day.INDUSTRY.isin(['银行']))&(mars_day.y_pred==1)&(mars_day.TARGET5.isnull())&(mars_day.SKDJ_K<50)].reset_index().code.tolist()))
     time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
     time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
 
