@@ -356,11 +356,11 @@ def summary_watch(trading_date):
 
     base_report(trading_date, '目标股池', **{'SUMMARY':res,
                                          'TARGET':rrr,
-                                         'XG_SH':xg_sh[(xg_sh.RANK <= 5)&(xg_sh.TARGET5.isnull())],
-                                        'MARKS_DAY':mars_day[(mars_day.RANK<=20)&(mars_day.RRNG.abs() < 0.1)],
-                                         'MARKS_NN':mars_nn[(mars_nn.RANK<=20)&(mars_nn.RRNG.abs() < 0.1)],
-                                         'XG':xg[(xg.RANK<=20)&(xg.RRNG.abs() < 0.1)],
-                                         'XG_NN':xg_nn[(xg_nn.RANK<=20)&(xg_nn.RRNG.abs() < 0.1)]
+                                         'XG_SH':xg_sh[(xg_sh.RANK <= 20)&(xg_sh.SKDJ_K < 50)],
+                                        'MARKS_DAY':mars_day[(mars_day.RANK<=20)&(mars_day.SKDJ_K < 50)],
+                                         'MARKS_NN':mars_nn[(mars_nn.RANK<=20)&(mars_nn.SKDJ_K < 50)],
+                                         'XG':xg[(xg.RANK<=20)&(xg.SKDJ_K <50)],
+                                         'XG_NN':xg_nn[(xg_nn.RANK<=20)&(xg_nn.SKDJ_K < 50)]
                                          })
 
 def predict_sh(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
