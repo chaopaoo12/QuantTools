@@ -81,7 +81,7 @@ def QA_fetch_get_stock_min_sina(code, period='30', type='',proxies=[]):
             symbol_proxies = list(zip(random.choices(proxies, k=len(code)),code))
         else:
             symbol_proxies = list(zip(random.choices([proxies], k=len(code)),code))
-        pool = multiprocessing.Pool(30)
+        pool = multiprocessing.Pool(20)
         with pool as p:
             res = p.map(partial(proxy_stock_zh_a_hist_min_em, period=period, adjust=type), symbol_proxies)
         data = pd.concat(res,axis=0)
