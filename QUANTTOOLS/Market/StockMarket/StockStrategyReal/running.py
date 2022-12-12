@@ -331,7 +331,7 @@ def summary_func(trading_date):
 
     stock_target = get_quant_data(start_date, end_date, type='crawl', block=False, sub_block=False,norm_type=None)[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','TAR','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','SKDJ_K','SKDJ_K_WK']]
     stock_res = stock_target[['RRNG','RRNG_HR','MA60','MA60_C','MA60_D','TAR','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK','SKDJ_K','SKDJ_K_WK']]
-    cols_name = ['RRNG','RRNG_WK','SKDJ_K','SKDJ_K_WK','PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10', 'y_pred', 'model', 'RANK']
+    cols_name = ['NAME','INDUSTRY','RRNG','RRNG_WK','SKDJ_K','SKDJ_K_WK','PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10', 'y_pred', 'model', 'RANK']
     xg = xg.join(stock_res[['RRNG','RRNG_WK']]).assign(model='xg')
     xg_nn = xg_nn.join(stock_res).assign(model='xg_nn')
     mars_nn = mars_nn.join(stock_res).assign(model='mars_nn')
@@ -347,7 +347,7 @@ def summary_func(trading_date):
     res['model'] = res.groupby(['date','code'])['model'].transform(lambda x: ','.join(x))
     res = res.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']).sort_index()
 
-    return(res,xg,xg_nn,mars_nn,mars_day,xg_sh)
+    return(res,xg[cols_name],xg_nn[cols_name],mars_nn[cols_name],mars_day[cols_name],xg_sh[cols_name])
 
 def summary_watch(trading_date):
     res,xg,xg_nn,mars_nn,mars_day,xg_sh = summary_func(trading_date)
