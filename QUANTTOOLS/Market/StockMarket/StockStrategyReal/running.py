@@ -338,25 +338,40 @@ def summary_func(trading_date):
     mars_day = mars_day.join(stock_res[['RRNG','RRNG_WK']]).assign(model='mars_day')
     xg_sh = xg_sh.join(stock_res[['RRNG','RRNG_WK']]).assign(model='xg_sh')
 
+    code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.TARGET3.isnull())&(xg_sh.SKDJ_K<50)].reset_index().code.tolist()
+                         + xg[(xg.RANK <= 20)&(~xg.INDUSTRY.isin(['银行']))&(xg.TARGET3.isnull())&(xg.SKDJ_K<50)].reset_index().code.tolist()
+                         #+ xg_nn[(xg_nn.RANK <= 20)&(~xg_nn.INDUSTRY.isin(['银行']))&(xg_nn.TARGET3.isnull())].reset_index().code.tolist()
+                         #+ mars_nn[(mars_nn.RANK <= 20)&(~mars_nn.INDUSTRY.isin(['银行']))&(mars_nn.TARGET3.isnull())].reset_index().code.tolist()
+                         + mars_day[(mars_day.RANK <= 20)&(~mars_day.INDUSTRY.isin(['银行']))&(mars_day.TARGET3.isnull())&(mars_day.SKDJ_K<50)].reset_index().code.tolist()))
+
+    res = pd.concat([mars_day[cols_name],xg_sh[cols_name],mars_nn[cols_name],
+                     xg_nn[cols_name],xg[cols_name]])
+
+    res1 = res.loc[(QA_util_get_pre_trade_date(trading_date,1), code_list),
+                   [i for i in cols_name if i not in
+                    ['PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10','y_pred', 'model', 'RANK']]]
+    res1 = res1[res1.SKDJ_K < 50]
+
     res = pd.concat([mars_day[(mars_day.RANK<=20)&(mars_day.SKDJ_K < 50)][cols_name],
                      xg_sh[(xg_sh.RANK<=20)&(xg_sh.SKDJ_K < 50)][cols_name],
-                     mars_nn[(mars_nn.RANK<=20)&(mars_nn.SKDJ_K < 50)][cols_name],
-                     xg_nn[(xg_nn.RANK<=20)&(xg_nn.SKDJ_K < 50)][cols_name],
+                     #mars_nn[(mars_nn.RANK<=20)&(mars_nn.SKDJ_K < 50)][cols_name],
+                     #xg_nn[(xg_nn.RANK<=20)&(xg_nn.SKDJ_K < 50)][cols_name],
                      xg[(xg.RANK<=20)&(xg.SKDJ_K < 50)][cols_name]])
 
     res['model'] = res.groupby(['date','code'])['model'].transform(lambda x: ','.join(x))
     res = res.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']).sort_index()
 
-    return(res,xg[cols_name],xg_nn[cols_name],mars_nn[cols_name],mars_day[cols_name],xg_sh[cols_name])
+    return(res1, res,xg[cols_name],xg_nn[cols_name],mars_nn[cols_name],mars_day[cols_name],xg_sh[cols_name])
 
 def summary_watch(trading_date):
-    res,xg,xg_nn,mars_nn,mars_day,xg_sh = summary_func(trading_date)
+    res1, res,xg,xg_nn,mars_nn,mars_day,xg_sh = summary_func(trading_date)
     try:
         rrr = res.loc[trading_date]
     except:
         rrr = None
 
-    base_report(trading_date, '目标股池', **{'SUMMARY':res,
+    base_report(trading_date, '目标股池', **{'SUMMARY 1':res1,
+                                         'SUMMARY 2':res,
                                          'TARGET':rrr,
                                          'XG_SH':xg_sh[(xg_sh.RANK <= 20)&(xg_sh.SKDJ_K < 50)],
                                         'MARKS_DAY':mars_day[(mars_day.RANK<=20)&(mars_day.SKDJ_K < 50)],
