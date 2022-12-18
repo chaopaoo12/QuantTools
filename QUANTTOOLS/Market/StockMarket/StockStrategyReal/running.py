@@ -338,11 +338,11 @@ def summary_func(trading_date):
     mars_day = mars_day.join(stock_res[['RRNG','RRNG_WK']]).assign(model='mars_day')
     xg_sh = xg_sh.join(stock_res[['RRNG','RRNG_WK']]).assign(model='xg_sh')
 
-    code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.TARGET3.isnull())&(xg_sh.SKDJ_K<50)].reset_index().code.tolist()
-                         + xg[(xg.RANK <= 20)&(~xg.INDUSTRY.isin(['银行']))&(xg.TARGET3.isnull())&(xg.SKDJ_K<50)].reset_index().code.tolist()
+    code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.TARGET3.isnull())].reset_index().code.tolist()
+                         + xg[(xg.RANK <= 20)&(~xg.INDUSTRY.isin(['银行']))&(xg.TARGET3.isnull())].reset_index().code.tolist()
                          #+ xg_nn[(xg_nn.RANK <= 20)&(~xg_nn.INDUSTRY.isin(['银行']))&(xg_nn.TARGET3.isnull())].reset_index().code.tolist()
                          #+ mars_nn[(mars_nn.RANK <= 20)&(~mars_nn.INDUSTRY.isin(['银行']))&(mars_nn.TARGET3.isnull())].reset_index().code.tolist()
-                         + mars_day[(mars_day.RANK <= 20)&(~mars_day.INDUSTRY.isin(['银行']))&(mars_day.TARGET3.isnull())&(mars_day.SKDJ_K<50)].reset_index().code.tolist()))
+                         + mars_day[(mars_day.RANK <= 20)&(~mars_day.INDUSTRY.isin(['银行']))&(mars_day.TARGET3.isnull())].reset_index().code.tolist()))
 
     res = pd.concat([mars_day[cols_name],xg_sh[cols_name],mars_nn[cols_name],
                      xg_nn[cols_name],xg[cols_name]])
