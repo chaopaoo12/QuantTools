@@ -350,7 +350,7 @@ def summary_func(trading_date):
     res1 = res.loc[(QA_util_get_pre_trade_date(trading_date,1), code_list),
                    [i for i in cols_name if i not in
                     ['PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10','y_pred', 'model', 'RANK']]]
-    res1 = res1[res1.SKDJ_K < 50]
+    res1 = res1[res1.SKDJ_K < 50].reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code']).sort_index()
 
     res = pd.concat([mars_day[(mars_day.RANK<=20)&(mars_day.SKDJ_K < 50)][cols_name],
                      xg_sh[(xg_sh.RANK<=20)&(xg_sh.SKDJ_K < 50)][cols_name],
