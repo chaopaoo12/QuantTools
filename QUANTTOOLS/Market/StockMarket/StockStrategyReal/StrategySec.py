@@ -203,8 +203,8 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
         else:
             hold = 0
 
-        #if data[data.signal == 1].shape[0] > 0 and hold > 2:
-        data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isnull()), 'signal'] = 0
+        if data[data.signal == 1].shape[0] > 0 and hold > 1:
+            data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isnull()), 'signal'] = 0
 
         QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
         QA_util_log_info(data[data.signal == 0][['DISTANCE','close',
