@@ -14,18 +14,20 @@ case
           TOTAL_MARKET * TRA_RATE / 100 + 1
        end as TRA_RATE, 
 case
-when total_market * tra_rate / 100000000000 >= 100 then
+when total_market / 100000000 >= 5000 then
   0
- when total_market * tra_rate / 100000000000 >= 10 then
+ when total_market / 100000000 >= 1000 then
   1
- when total_market * tra_rate / 100000000000 >= 5 then
+ when total_market / 100000000 >= 500 then
   2
- when total_market * tra_rate / 100000000000 >= 3 then
+ when total_market / 100000000 >= 100 then
   3
- when total_market * tra_rate / 100000000000 < 3 then
+ when total_market / 100000000 >= 50 then
   4
- else
+  when total_market / 100000000 < 50 then
   5
+ else
+  6
 end as stock_type,
                DAYS,
 AVG5,AVG10,AVG20,AVG30,AVG60,
