@@ -316,7 +316,7 @@ def block_watch(trading_date):
                                              '轮动清单':res_d[res_d.block_RANK <= 5],
                                              '股池清单':res_d
                                              })
-    base_report(trading_date, '综合选股报告 一', **{'潜力板块':res_b[(((res_d.TOTAL_MARKET <= 100)&(res_d.PB <= 5))|((res_d.TOTAL_MARKET <= 50)&(res_d.PB <= 10)))&(res_d.SKDJ_K < 40)],
+    base_report(trading_date, '综合选股报告 一', **{'潜力板块':res_d[(((res_d.TOTAL_MARKET <= 100)&(res_d.PB <= 5))|((res_d.TOTAL_MARKET <= 50)&(res_d.PB <= 10)))&(res_d.SKDJ_K < 40)],
                                              '优质板块':res_b[(((res_b.TOTAL_MARKET <= 100)&(res_b.PB <= 5))|((res_b.TOTAL_MARKET <= 50)&(res_b.PB <= 10)))&(res_b.SKDJ_K < 40)]
                                              })
 
