@@ -390,4 +390,8 @@ def summary_watch(trading_date):
                                          })
 
 def predict_sh(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
-    predict_base(trading_date, concat_predict, model_name = 'stock_sh', file_name = 'prediction_sh', top_num=top_num,client_setting=trading_setting, percent=percent, working_dir=working_dir, exceptions=exceptions)
+    predict_base(trading_date, concat_predict, model_name = 'stock_sh', file_name = 'prediction_sh', top_num=top_num,client_setting=trading_setting, percent=percent, working_dir=working_dir, exceptions=exceptions,
+                 name_list = ['NAME','INDUSTRY','TOTAL_MARKET','PB','SKDJ_K','SKDJ_K_WK'],
+                 value_ist = ['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
+                 sort_mark ='RANK',
+                 selec_list=['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TOTAL_MARKET','PB','SKDJ_K','SKDJ_K_WK'])
