@@ -108,7 +108,11 @@ def index_predict_watch(trading_date, working_dir=working_dir):
                                            '周线机会清单':rr1[rr1.SKDJ_K_WK <= 30]})
 
 def predict_3(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
-    predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num,client_setting=trading_setting, percent=percent, working_dir=working_dir, exceptions=exceptions)
+    predict_base(trading_date, concat_predict, model_name = 'stock_mars_day', file_name = 'prediction_stock_mars_day', top_num=top_num,client_setting=trading_setting, percent=percent, working_dir=working_dir, exceptions=exceptions,
+                 name_list = ['NAME','INDUSTRY','TOTAL_MARKET','PB','SKDJ_K','SKDJ_K_WK'],
+                 value_ist = ['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
+                 sort_mark ='RANK',
+                 selec_list=['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TOTAL_MARKET','PB','SKDJ_K','SKDJ_K_WK'])
 
 def predict_3_1(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict, model_name = 'stock_mars_day_1', file_name = 'prediction_stock_mars_day_1', top_num=top_num,client_setting=trading_setting, percent=percent, working_dir=working_dir, exceptions=exceptions)
