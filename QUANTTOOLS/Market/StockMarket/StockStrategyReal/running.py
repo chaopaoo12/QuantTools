@@ -341,7 +341,7 @@ def summary_func(trading_date):
     stock_target = get_quant_data(start_date, end_date, type='crawl', block=False, sub_block=False,norm_type=None)[['TOTAL_MARKET','PB','RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','TAR','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10','SKDJ_K','SKDJ_K_WK']]
     stock_res = stock_target[['TOTAL_MARKET','PB','RRNG','RRNG_HR','MA60','MA60_C','MA60_D','TAR','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK','SKDJ_K','SKDJ_K_WK']]
     cols_name = ['NAME','INDUSTRY','TOTAL_MARKET','PB','RRNG','RRNG_WK','SKDJ_K','SKDJ_K_WK','PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10', 'y_pred', 'model', 'RANK']
-    xg = xg.join(stock_res[['RRNG','RRNG_WK']]).assign(model='xg')
+    #xg = xg.join(stock_res[['RRNG','RRNG_WK']]).assign(model='xg')
     xg_nn = xg_nn.join(stock_res[['RRNG','RRNG_WK','SKDJ_K_WK','SKDJ_K','TOTAL_MARKET','PB']]).assign(model='xg_nn')
     mars_nn = mars_nn.join(stock_res[['RRNG','RRNG_WK','SKDJ_K_WK', 'SKDJ_K','TOTAL_MARKET','PB']]).assign(model='mars_nn')
     mars_day = mars_day.join(stock_res[['RRNG','RRNG_WK']]).assign(model='mars_day')
