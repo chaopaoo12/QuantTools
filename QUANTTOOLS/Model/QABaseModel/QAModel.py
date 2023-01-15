@@ -55,7 +55,6 @@ class QAModel():
 
         self.thresh = thresh
         self.drop = drop
-        self.cols = cols
         self.n_in = n_in
 
         if cols is None:
