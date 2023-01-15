@@ -67,8 +67,10 @@ class QAModel():
                           'INDEX_TARGET10','INDEX_TARGET20','date_stamp','PRE_DATE','next_date']]
         else:
             self.cols = cols
-        print('cols',cols)
-        print('self.cols',self.cols)
+        QA_util_log_info('cols')
+        QA_util_log_info(cols)
+        QA_util_log_info('self.cols')
+        QA_util_log_info(self.cols)
 
         self.data = self.data.fillna(value=np.nan)
 
