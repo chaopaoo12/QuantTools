@@ -119,7 +119,7 @@ def daymodel_train(date, working_dir=working_dir):
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 
     stock_model = start_train(stock_model, other_params)
-
+    stock_model.model_important()
     stock_model = prepare_data(stock_model, stock_model.info['importance'].head(100).featur.tolist(), None, 0.01)
     other_params = {'learning_rate': 0.1, 'n_estimators': 200, 'max_depth': 5, 'min_child_weight': 1, 'seed': 1,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
