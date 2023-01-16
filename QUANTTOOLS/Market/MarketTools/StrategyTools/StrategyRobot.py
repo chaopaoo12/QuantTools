@@ -147,6 +147,9 @@ class StrategyRobotBase:
 
             # third time check not suspend
             # 午盘停顿
+            if time_check_after("11:30:00") and time_check_before("13:00:00"):
+                send_actionnotice(self.strategy_id, '程序运行报告:{}'.format(
+                    self.trading_date), '进入午休时段', direction='HOLD', offset='HOLD', volume=None)
             suspend_check(self.trading_date)
 
             # action
