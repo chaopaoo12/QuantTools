@@ -69,7 +69,7 @@ def neutralization(factor, mkt_cap=None, industry = None):
             LnMktCap = mkt_cap
             if industry is not None: #行业、市值
                 dummy_industry = pd.get_dummies(industry)
-                x = pd.concat([LnMktCap,dummy_industry],axis = 1)
+                x = pd.concat([LnMktCap,dummy_industry],axis = 1).fillna(0)
             else: #仅市值
                 x = LnMktCap
         elif industry is not None: #仅行业
