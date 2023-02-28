@@ -290,6 +290,12 @@ def block_watch(trading_date):
     start_date = QA_util_get_pre_trade_date(trading_date,5)
     end_date = trading_date
     res_a, res_b, res_c, res_d = watch_func(start_date, end_date)
+    cols_name = ['NAME','INDUSTRY','index','BLN',
+                 'TOTAL_MARKET','OPERATINGRINRATE','ROE_TTM',
+                 'PB','PE_TTM',
+                 'GM_RATE','TURN_RATE','TM_RATE','PB_RATE',
+                 'SKDJ_K','SKDJ_K_WK',
+                 'PASS_MARK', 'TARGET', 'TARGET3', 'TARGET4', 'TARGET5','TARGET10', 'y_pred', 'model', 'RANK']
 
     stock_target = get_quant_data(start_date, end_date,list(set(res_b.reset_index().code.tolist() + res_d.reset_index().code.tolist())), type='crawl', block=False, sub_block=False,norm_type=None)[['SKDJ_K','SKDJ_K_WK','RRNG','RRNG_HR','MA60','MA60_C','MA60_D','RRNG_WK','MA60_C_WK','SHORT10','SHORT20','LONG60','AVG5','MA60_C','SHORT10_WK','SHORT20_WK','LONG60_WK','MA60_C_WK','PASS_MARK','TARGET','TARGET3','TARGET4','TARGET5','TARGET10']]
     index_target = get_index_quant_data(start_date, end_date, list(set(res_a.reset_index().code.tolist() + res_c.reset_index().code.tolist())), type='crawl', norm_type=None)[['SKDJ_K','SKDJ_K_WK','RRNG','MA60_C','MA60_D','SKDJ_K','SKDJ_TR','SKDJ_K_HR','SKDJ_TR_HR','SKDJ_K_WK','SKDJ_TR_WK','PASS_MARK','INDEX_TARGET','INDEX_TARGET3','INDEX_TARGET4','INDEX_TARGET5','INDEX_TARGET10']]
@@ -324,8 +330,8 @@ def block_watch(trading_date):
                                              '轮动清单':res_d[res_d.block_RANK <= 5],
                                              '股池清单':res_d
                                              })
-    base_report(trading_date, '综合选股报告 一', **{'潜力板块':res_d[(((res_d.TOTAL_MARKET <= 100)&(res_d.PB <= 5))|((res_d.TOTAL_MARKET <= 50)))&((res_d.SKDJ_K < 40)|(res_d.SKDJ_K_WK < 40))],
-                                             '优质板块':res_b[(((res_b.TOTAL_MARKET <= 100)&(res_b.PB <= 5))|((res_b.TOTAL_MARKET <= 50)&(res_b.PB <= 10)))&((res_b.SKDJ_K < 40)|(res_b.SKDJ_K_WK < 40))]
+    base_report(trading_date, '综合选股报告 一', **{'潜力板块':res_d[(((res_d.TOTAL_MARKET <= 100)&(res_d.PB <= 5))|((res_d.TOTAL_MARKET <= 50)))&((res_d.SKDJ_K < 40)|(res_d.SKDJ_K_WK < 40))][cols_name],
+                                             '优质板块':res_b[(((res_b.TOTAL_MARKET <= 100)&(res_b.PB <= 5))|((res_b.TOTAL_MARKET <= 50)&(res_b.PB <= 10)))&((res_b.SKDJ_K < 40)|(res_b.SKDJ_K_WK < 40))][cols_name]
                                              })
 
 
