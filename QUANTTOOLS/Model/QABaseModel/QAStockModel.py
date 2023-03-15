@@ -61,7 +61,8 @@ class QAStockModel(QAModel):
         self.data.loc[:,'RANK'] = self.data['O_PROB'].groupby('date').rank(ascending=False)
         selec_col = ['SKDJ_TR','SKDJ_K','SKDJ_TR_HR','SKDJ_K_HR','SKDJ_TR_WK',
                      'SKDJ_K_WK','ATRR','UB','LB','WIDTH','UB_HR','LB_HR','WIDTH_HR',
-                     'RSI3','RSI2','RSI3_C','RSI2_C','RSI3_HR','RSI2_HR','RSI3_C_HR','RSI2_C_HR','TOTAL_MARKET','PB']
+                     'RSI3','RSI2','RSI3_C','RSI2_C','RSI3_HR','RSI2_HR','RSI3_C_HR','RSI2_C_HR','TOTAL_MARKET','PB',
+                     'AVG5_TOR','AVG60_TOR']
 
         selec_col = [i for i in selec_col if i in self.data.columns]
         if type == 'crawl':
