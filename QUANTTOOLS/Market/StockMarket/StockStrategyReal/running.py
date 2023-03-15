@@ -18,10 +18,10 @@ import pandas as pd
 
 def predict(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict, model_name = 'stock_xg', file_name = 'prediction', top_num=top_num, percent=percent, working_dir=working_dir,client_setting=trading_setting, exceptions=exceptions,
-                 name_list = ['NAME','INDUSTRY','TOTAL_MARKET','PB','SKDJ_K','SKDJ_K_WK'],
+                 name_list = ['NAME','INDUSTRY','TOTAL_MARKET','PB','SKDJ_K','SKDJ_K_WK','AVG5_TOR','AVG60_TOR'],
                  value_ist = ['Z_PROB','O_PROB','RANK','TARGET','TARGET3','TARGET4','TARGET5','PASS_MARK'],
                  sort_mark ='RANK',
-                 selec_list=['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TOTAL_MARKET','PB','SKDJ_K','SKDJ_K_WK'])
+                 selec_list=['NAME','INDUSTRY','Z_PROB','O_PROB','RANK','TOTAL_MARKET','PB','SKDJ_K','SKDJ_K_WK','AVG5_TOR','AVG60_TOR'])
 
 def predict_real(trading_date, top_num=top, working_dir=working_dir, exceptions=exceptions):
     predict_base(trading_date, concat_predict_real, model_name = 'stock_xg_real', file_name = 'prediction_real', top_num=top_num, percent=percent, working_dir=working_dir,client_setting=trading_setting, exceptions=exceptions)
