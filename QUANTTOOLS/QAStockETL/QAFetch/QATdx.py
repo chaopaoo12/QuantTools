@@ -5,6 +5,7 @@ from QUANTAXIS.QAUtil import (QA_util_today_str, QA_util_get_pre_trade_date, QA_
                               QA_util_if_trade,QA_util_get_last_day,
                               QA_util_date_stamp)
 from akshare import stock_info_a_code_name
+from pytdx.reader import BlockReader
 import easyquotation
 import pandas as pd
 import numpy as np
@@ -128,6 +129,17 @@ def QA_fetch_get_stock_industryinfo(file_name='tdxhy.cfg'):
                        dtype=str,
                        names=['market','code','TDXHY','SWHY','HHY','XHY'],
                        encoding='gb18030'))
+
+def QA_fetch_get_index_code(file_name=['block_fg.dat','block_gn.dat','block_zs.dat']):
+    res = pd.DataFrame()
+    if len(file_name) > 1:
+        for i in file_name:
+            data = BlockReader().get_df(tdx_dir+i)
+            res = res.append(data)
+        return(res)
+    else:
+        return(BlockReader().get_df(tdx_dir+file_name))
+
 
 def QA_fetch_get_index_info(file_name=['tdxzs.cfg','tdxzs2.cfg','tdxzs3.cfg']):
     res = pd.DataFrame()

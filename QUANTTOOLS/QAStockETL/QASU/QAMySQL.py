@@ -7,7 +7,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_usstock_xq
 from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_log_info)
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,
                                            QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,
-                                           QA_fetch_financial_report_wy_adv,
+                                           QA_fetch_financial_report_wy_adv,QA_fetch_get_index_code,
 
                                            QA_fetch_stock_industryinfo,QA_fetch_stock_quant_data,
 
@@ -809,6 +809,7 @@ def QA_etl_index_technical_30min(start_date = QA_util_today_str(), end_date= Non
         QA_util_log_info('##JOB ETL INDEX TECHNICAL 30min HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
 
 def QA_etl_index_to_stock(ui_log= None):
+    data = QA_fetch_get_index_code()
     index_list = QA_fetch_index_list_adv()
     code_list = QA_fetch_index_info(list(index_list.code))
     codes = list(code_list[code_list.cate != '5'].code)
