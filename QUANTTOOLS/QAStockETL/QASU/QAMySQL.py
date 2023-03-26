@@ -812,8 +812,8 @@ def QA_etl_index_to_stock(ui_log= None):
     index_info = QA_fetch_index_info(QA_fetch_index_list_adv().code.tolist()).drop_duplicates()
     index_info = index_info[index_info.cate != '5']
     index_code = QA_fetch_get_index_code().rename(columns={'blockname':'index_name'}).rename(columns={'code':'stock'}).drop_duplicates()
-    res = pd.merge(index_info[['code','index_name']], index_code,
-                   left_on = ['index_name'], right_on = ['index_name'], how='left').dropna()[['code','stock','index_name']].drop_duplicates(subset=['code','stock'])
+    res = pd.merge(index_info[['code','cate','index_name']], index_code,
+                   left_on = ['index_name'], right_on = ['index_name'], how='left').dropna()[['code','stock','cate','index_name']].drop_duplicates(subset=['code','stock'])
     QA_util_log_info(
         '##JOB Now ETL INDEX TO STOCK ==== {}'.format(str(datetime.date.today())), ui_log)
     QA_util_sql_store_mysql(res, "index_stock",if_exists='replace')
