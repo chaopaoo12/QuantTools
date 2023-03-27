@@ -2,12 +2,16 @@
 
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_block_adv,QA_fetch_index_list_adv,
                                                QA_fetch_stock_day_adv)
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_index_info
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_industryinfo
+from QUANTAXIS import QA_fetch_stock_info
 from QUANTTOOLS.Model.FactorTools.base_tools import find_stock
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_usstock_xq_day_adv,QA_fetch_usstock_list
 from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_log_info)
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,
                                            QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,
                                            QA_fetch_financial_report_wy_adv,QA_fetch_get_index_code,
+                                           QA_fetch_get_index_info,
 
                                            QA_fetch_stock_industryinfo,QA_fetch_stock_quant_data,
 
@@ -809,10 +813,23 @@ def QA_etl_index_technical_30min(start_date = QA_util_today_str(), end_date= Non
         QA_util_log_info('##JOB ETL INDEX TECHNICAL 30min HAS BEEN SAVED ==== from {from_} to {to_}'.format(from_=start_date,to_=end_date), ui_log)
 
 def QA_etl_index_to_stock(ui_log= None):
-    index_info = QA_fetch_index_info(QA_fetch_index_list_adv().code.tolist()).drop_duplicates()
-    index_code = QA_fetch_get_index_code().rename(columns={'blockname':'index_name'}).rename(columns={'code':'stock'}).drop_duplicates()
-    res = pd.merge(index_code, index_info[['code','cate','index_name']],
-                   left_on = ['index_name'], right_on = ['index_name'], how='left').dropna()[['code','stock','cate','index_name']].drop_duplicates(subset=['code','stock'])
+    index_list = pd.concat([QA_fetch_get_index_info(['tdxzs.cfg', 'tdxzs3.cfg']),QA_fetch_index_info(QA_fetch_index_list_adv().code.tolist())]).drop_duplicates(['code','HY'])
+
+    index_code1 = QA_fetch_get_index_code()
+    index_code2 = QA_fetch_stock_block_adv().data.reset_index()
+    index_code3 = QA_fetch_get_stock_industryinfo()
+    index_code4 = QA_fetch_stock_info(QA_fetch_stock_list_adv().code.tolist())[['code','market','province','industry','ipo_date']]
+
+    index_code = pd.concat([index_code1[['blockname','code']],
+                            index_code2[['blockname','code']],
+                            index_code3[['TDXHY','code']].rename(columns={'TDXHY':'blockname'}),
+                            index_code3[['XHY','code']].rename(columns={'XHY':'blockname'}),
+                            index_code4[['province','code']].rename(columns={'province':'blockname'}),
+                            ]).drop_duplicates().rename(columns={'code':'stock'}).dropna()
+
+    res = pd.merge(index_code, index_list[['code','cate','index_name','HY']],
+                    left_on = ['blockname'], right_on = ['HY'], how='left')[['code','stock','cate','index_name','HY','blockname']].dropna()
+
     QA_util_log_info(
         '##JOB Now ETL INDEX TO STOCK ==== {}'.format(str(datetime.date.today())), ui_log)
     QA_util_sql_store_mysql(res, "index_stock",if_exists='replace')
