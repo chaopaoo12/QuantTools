@@ -811,7 +811,7 @@ def QA_etl_index_technical_30min(start_date = QA_util_today_str(), end_date= Non
 def QA_etl_index_to_stock(ui_log= None):
     index_info = QA_fetch_index_info(QA_fetch_index_list_adv().code.tolist()).drop_duplicates()
     index_code = QA_fetch_get_index_code().rename(columns={'blockname':'index_name'}).rename(columns={'code':'stock'}).drop_duplicates()
-    res = pd.merge(index_info[['code','cate','index_name']], index_code,
+    res = pd.merge(index_code, index_info[['code','cate','index_name']],
                    left_on = ['index_name'], right_on = ['index_name'], how='left').dropna()[['code','stock','cate','index_name']].drop_duplicates(subset=['code','stock'])
     QA_util_log_info(
         '##JOB Now ETL INDEX TO STOCK ==== {}'.format(str(datetime.date.today())), ui_log)
