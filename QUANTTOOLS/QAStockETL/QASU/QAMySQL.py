@@ -819,6 +819,7 @@ def QA_etl_index_to_stock(ui_log= None):
     index_code2 = QA_fetch_stock_block_adv().data.reset_index()
     index_code3 = QA_fetch_get_stock_industryinfo()
     index_code4 = QA_fetch_stock_info(QA_fetch_stock_list_adv().code.tolist())[['code','market','province','industry','ipo_date']]
+    index_code4['province'] = index_code4['province'].astype(str)
 
     index_code = pd.concat([index_code1[['blockname','code']],
                             index_code2[['blockname','code']],
