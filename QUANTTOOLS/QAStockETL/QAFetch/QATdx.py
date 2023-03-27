@@ -138,7 +138,7 @@ def QA_fetch_get_index_code(file_name=['block_fg.dat','block_gn.dat','block_zs.d
             res = res.append(data)
         return(res)
     else:
-        return(BlockReader().get_df(tdx_dir+file_name))
+        return(BlockReader().get_df(tdx_dir+file_name[0]))
 
 
 def QA_fetch_get_index_info(file_name=['tdxzs.cfg','tdxzs2.cfg','tdxzs3.cfg']):
