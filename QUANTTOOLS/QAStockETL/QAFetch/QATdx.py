@@ -154,7 +154,7 @@ def QA_fetch_get_index_info(file_name=['tdxzs.cfg','tdxzs2.cfg','tdxzs3.cfg']):
             res = res.append(data)
         return(res)
     else:
-        return(pd.read_csv(tdx_dir+file_name,
+        return(pd.read_csv(tdx_dir+file_name[0],
                            header=None,
                            sep='|',
                            dtype=str,
