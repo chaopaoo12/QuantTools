@@ -23,6 +23,7 @@ sql_text = '''select *
           from (select code as index_code, stock as code
                   from index_stock
                  where code not like '8802%'
+                 and cate <> '5'
                    and stock is not null) a
           left join (
                     select a.code,
