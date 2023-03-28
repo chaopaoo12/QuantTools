@@ -201,7 +201,7 @@ def block_func(trading_date):
     area2 = data[data.BLN.isin(res_c.BLN)]
     res_b = area1[(area1.GROSSMARGIN > area1.I_GM)&(area1.OPERATINGRINRATE > area1.I_OPINR)]
     res_d = area2[(area2.GROSSMARGIN > area2.I_GM)&(area2.OPERATINGRINRATE > area2.I_OPINR)]
-    return(res_a,res_b,res_c,res_d)
+    return(data, res_a,res_b,res_c,res_d)
 
 def watch_func(start_date, end_date, working_dir=working_dir):
 
@@ -210,7 +210,7 @@ def watch_func(start_date, end_date, working_dir=working_dir):
     res_c =[]
     res_d =[]
     for i in QA_util_get_trade_range(start_date, end_date):
-        a,b,c,d=block_func(i)
+        data, a, b, c, d=block_func(i)
         res_a.append(a.assign(date=i))
         res_b.append(b.assign(date=i))
         res_c.append(c.assign(date=i))
@@ -226,7 +226,7 @@ def watch_func(start_date, end_date, working_dir=working_dir):
 
     res_d['BLN'] = res_d.groupby(['date','code'])['BLN'].transform(lambda x: ','.join(x))
     rrr1 = res_d.reset_index().drop_duplicates(subset=['date','code']).set_index(['date','code'])
-    return(res_a, rrr, res_c, rrr1)
+    return(data, res_a, rrr, res_c, rrr1)
 
 def block_func1(trading_date):
     trading_date = QA_util_get_real_date(trading_date)
@@ -289,7 +289,7 @@ def watch_func1(start_date, end_date, working_dir=working_dir):
 def block_watch(trading_date):
     start_date = QA_util_get_pre_trade_date(trading_date,5)
     end_date = trading_date
-    res_a, res_b, res_c, res_d = watch_func(start_date, end_date)
+    data, res_a, res_b, res_c, res_d = watch_func(start_date, end_date)
     cols_name = ['NAME','INDUSTRY','index','BLN',
                  'TOTAL_MARKET','OPERATINGRINRATE','ROE_TTM',
                  'PB','PE_TTM',
