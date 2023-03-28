@@ -207,6 +207,7 @@ def watch_func(start_date, end_date, working_dir=working_dir):
     res_d =[]
     for i in QA_util_get_trade_range(start_date, end_date):
         data, a, b, c, d=block_func(i)
+        data = data.assign(date=i)
         res_a.append(a.assign(date=i))
         res_b.append(b.assign(date=i))
         res_c.append(c.assign(date=i))
