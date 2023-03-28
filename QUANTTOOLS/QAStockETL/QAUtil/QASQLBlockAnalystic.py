@@ -19,8 +19,9 @@ sql_text = '''select *
                b.pb,
                b.pe_ttm,
                b.roe_ttm,
-               a.index_code
-          from (select code as index_code, stock as code
+               a.index_code as "index",
+               a.BLN
+          from (select code as index_code, stock as code, index_name as BLN
                   from index_stock
                  where code not like '8802%'
                  and cate in ('2', '4')
