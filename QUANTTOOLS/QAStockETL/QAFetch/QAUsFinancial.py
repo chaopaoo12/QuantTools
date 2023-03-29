@@ -77,18 +77,18 @@ def proxy_stock_zh_a_hist_min_em(symbol_proxies, period, adjust):
 def QA_fetch_get_stock_min_sina(code, period='30', type='',proxies=[]):
 
     if isinstance(code,list):
-        if len(code) > 1:
-            if isinstance(proxies, list):
-                symbol_proxies = list(zip(random.choices(proxies, k=len(code)),code))
-            else:
-                symbol_proxies = list(zip(random.choices([proxies], k=len(code)),code))
-
-            pool = multiprocessing.Pool(20)
-            with pool as p:
-                res = p.map(partial(proxy_stock_zh_a_hist_min_em, period=period, adjust=type), symbol_proxies)
-            data = pd.concat(res,axis=0)
+        if isinstance(proxies, list):
+            if len(proxies) > len(code):
+                proxies = proxies[0:len(code)]
+            symbol_proxies = list(zip(random.choices(proxies, k=len(code)),code))
         else:
-            data = stock_zh_a_hist_min_em(symbol=code[0], period=period, adjust=type)
+            symbol_proxies = list(zip(random.choices([proxies], k=len(code)),code))
+
+        pool = multiprocessing.Pool(20)
+        with pool as p:
+            res = p.map(partial(proxy_stock_zh_a_hist_min_em, period=period, adjust=type), symbol_proxies)
+        data = pd.concat(res,axis=0)
+
     elif isinstance(code, str):
         data = stock_zh_a_hist_min_em(symbol=code, period=period, adjust=type)
     else:
