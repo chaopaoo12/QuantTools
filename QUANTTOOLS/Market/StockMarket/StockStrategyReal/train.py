@@ -182,6 +182,7 @@ def train_min_model(date, working_dir=working_dir):
         positions = positions.code.tolist()
     except:
         positions = []
+    index_data, res_a, res_b, res_c, res_d = watch_func(trading_date, trading_date)
     r_tar, xg_sh, prediction = DataTools.load_data(concat_predict, trading_date, working_dir, 'stock_sh', 'prediction_sh')
     xg_sh=xg_sh[xg_sh.RANK<=20]
 
@@ -194,9 +195,11 @@ def train_min_model(date, working_dir=working_dir):
                          + xg_nn[(xg_nn.RANK <= 20)&(xg_nn.TARGET5.isnull())].reset_index().code.tolist()
                          + mars_nn[(mars_nn.RANK <= 20)&(mars_nn.TARGET5.isnull())].reset_index().code.tolist()
                          + mars_day[(mars_day.RANK <= 20)&(mars_day.TARGET5.isnull())].reset_index().code.tolist()
+                         + res_b.reset_index().code
+                         + res_d.reset_index().code
                          + positions))
 
-    start_date = QA_util_get_last_day(QA_util_get_real_date(date), 30)
+    start_date = QA_util_get_last_day(QA_util_get_real_date(date), 10)
     end_date = date
 
     stock_model = QAStockXGBoostMin()
