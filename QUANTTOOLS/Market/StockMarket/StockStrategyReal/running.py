@@ -195,7 +195,8 @@ def block_func(trading_date):
     res_c = res[(res.I_ROE >= ROE_line)&(res.I_OPINR < OPINR_line)]
     area1 = data[data.BLN.isin(res_a.BLN)]
     area2 = data[data.BLN.isin(res_c.BLN)]
-    res_b = area1[(area1.GROSSMARGIN > area1.I_GM)&(area1.OPERATINGRINRATE > area1.I_OPINR)]
+    res_b = area1[(area1.GROSSMARGIN > area1.I_GM)&(area1.OPERATINGRINRATE > area1.I_OPINR)&
+                  (area1.PB < area1.I_PB)&(area1.PB > 0)&(area1.TOTAL_MARKET <= 100)]
     res_d = area2[(area2.GROSSMARGIN > area2.I_GM)&(area2.OPERATINGRINRATE > area2.I_OPINR)]
     return(data, res_a,res_b,res_c,res_d)
 
