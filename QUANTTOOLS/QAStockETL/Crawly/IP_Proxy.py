@@ -6,7 +6,6 @@ def get_ip_poll(url='http://www.ip3366.net/free/?stype=1&page=1'):
                'Accept-Language': 'zh-CN,zh;q=0.9',
                'Cache-Control': 'max-age=0',
                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
-               'Connection': 'keep-alive'
                }
     response = requests.get(url=url, headers=headers)
     print(response)
