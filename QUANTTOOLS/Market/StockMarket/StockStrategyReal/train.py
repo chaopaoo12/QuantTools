@@ -195,8 +195,8 @@ def train_min_model(date, working_dir=working_dir):
                          + xg_nn[(xg_nn.RANK <= 20)&(xg_nn.TARGET5.isnull())].reset_index().code.tolist()
                          + mars_nn[(mars_nn.RANK <= 20)&(mars_nn.TARGET5.isnull())].reset_index().code.tolist()
                          + mars_day[(mars_day.RANK <= 20)&(mars_day.TARGET5.isnull())].reset_index().code.tolist()
-                         + res_b.reset_index().code
-                         + res_d.reset_index().code
+                         + res_b.reset_index().code.tolist()
+                         + res_d.reset_index().code.tolist()
                          + positions))
 
     start_date = QA_util_get_last_day(QA_util_get_real_date(date), 10)
