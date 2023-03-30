@@ -6,6 +6,7 @@ def get_ip_poll(url='http://www.ip3366.net/free/?stype=1&page=1'):
                'Accept-Language': 'zh-CN,zh;q=0.9',
                'Cache-Control': 'max-age=0',
                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
+               'Connection': 'close'
                }
     response = requests.get(url=url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser").body
@@ -14,7 +15,13 @@ def get_ip_poll(url='http://www.ip3366.net/free/?stype=1&page=1'):
     proxy = []
     for i in range(len(port)):
         proxy.append(ip[i] + ':' + port[i])
-    return(proxy)
+    if len(proxy) == 0:
+        str111 = BeautifulSoup(response.text, "html.parser").head.script.string
+        url = 'http://www.ip3366.net' + str111[str111.find('"')+1:-3]
+        proxy = get_ip_poll(url)
+        return(proxy)
+    else:
+        return(proxy)
 
 
 def check_ip_poll(proxy, url='https://www.baidu.com/'):
@@ -26,7 +33,7 @@ def check_ip_poll(proxy, url='https://www.baidu.com/'):
                'Accept-Language': 'zh-CN,zh;q=0.9',
                'Cache-Control': 'max-age=0',
                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
-               'Connection': 'keep-alive'
+               'Connection': 'close'
                }
     try:
         response = requests.get(url=url,headers=headers,proxies=proxies,timeout=0.1) #设置timeout，使响应等待1s
