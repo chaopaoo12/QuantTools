@@ -11,6 +11,7 @@ def get_ip_poll(url='http://www.ip3366.net/free/?stype=1&page=1'):
     response = requests.get(url=url, headers=headers)
     print(response)
     soup = BeautifulSoup(response.text, "html.parser").body
+    print(soup)
     port = [i.find_all('td')[1].text for i in soup.find_all('tr')[1:]]
     ip = [i.find_all('td')[0].text for i in soup.find_all('tr')[1:]]
     proxy = []
