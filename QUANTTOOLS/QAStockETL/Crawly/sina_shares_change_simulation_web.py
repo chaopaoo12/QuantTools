@@ -7,7 +7,8 @@ from QUANTAXIS.QAUtil import QA_util_today_str,QA_util_date_stamp
 
 def read_data_from_sina(code,options):
     driver = webdriver.Chrome(chrome_options=options)
-    driver.get('http://vip.stock.finance.sina.com.cn/corp/go.php/vCI_StockStructure/stockid/{code}.phtml'.format(code=code))
+    driver = driver.get('http://vip.stock.finance.sina.com.cn/corp/go.php/vCI_StockStructure/stockid/{code}.phtml'.format(code=code))
+    driver.endcoding = 'gbk'
     soup = BeautifulSoup(driver.page_source, "html.parser").find_all(class_='tagmain')[0].find_all(class_='table')
     driver.quit()
     import re
