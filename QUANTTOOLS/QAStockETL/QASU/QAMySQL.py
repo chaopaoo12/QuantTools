@@ -55,7 +55,8 @@ def QA_etl_stock_shares(ui_log= None):
     QA_util_log_info(
         '##JOB Now ETL STOCK SHARES ==== {}'.format(str(datetime.date.today())), ui_log)
     codes = list(QA_fetch_stock_all()['code'])
-    data = QA_fetch_stock_shares_adv(codes).data.replace('\ufffd','')
+    data = QA_fetch_stock_shares_adv(codes).data
+    data = data.replace('''\ufffd''','')
     QA_util_sql_store_mysql(data, "stock_shares",if_exists='replace')
     QA_util_log_info(
         '##JOB ETL STOCK SHARES HAS BEEN SAVED ==== {}'.format(str(datetime.date.today())), ui_log)
