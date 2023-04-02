@@ -19,8 +19,8 @@ def data_collect(code_list,trading_date,data_15min,k_per=1.03):
         data = source_data \
             .reset_index().set_index(['date','code']).join(close) \
             .reset_index().set_index(['code']).join(price) \
-            .reset_index().set_index(['datetime','code']).join(data_15min[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M']])
-        data[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M']] = data.groupby('code')[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M']].fillna(method='ffill')
+            .reset_index().set_index(['datetime','code']).join(data_15min[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M','LB_30M','UB_30M','LB_15M','UB_15M']])
+        data[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M','LB_30M','UB_30M','LB_15M','UB_15M']] = data.groupby('code')[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M','LB_30M','UB_30M','LB_15M','UB_15M']].fillna(method='ffill')
 
         # 方案1
         # hold index&condition
