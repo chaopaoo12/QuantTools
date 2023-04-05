@@ -4,7 +4,6 @@ from QUANTAXIS.QAUtil import QA_util_date_stamp
 def QA_fetch_get_btc_day(code):
     data = get_btc_day_sina(code)
     data = data[data.close != 0]
-    print(data)
     data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])),
                        code=code)
     return(data)
