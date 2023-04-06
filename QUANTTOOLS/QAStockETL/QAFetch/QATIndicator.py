@@ -432,13 +432,13 @@ def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'da
 
 def QA_fetch_get_index_indicator_realtime(code, start_date, end_date, type = 'day'):
 
-    if type == '15min':
+    if type == '15min' or type == '15m':
         period = '15'
-    elif type == '30min':
+    elif type == '30min' or type == '30m':
         period = '30'
-    elif type == 'hour':
+    elif type == 'hour' or type == '60m' or type == '60min':
         period = '60'
-    elif type == '1min':
+    elif type == '1min' or type == '1m':
         period = '1'
 
     try:
