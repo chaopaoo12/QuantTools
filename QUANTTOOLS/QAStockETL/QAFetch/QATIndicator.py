@@ -446,7 +446,7 @@ def QA_fetch_get_index_indicator_realtime(code, start_date, end_date, type = 'da
         data = data.assign(type=type,amount=0,volume=data.vol)
         data = QA_DataStruct_Index_min(data)
     except:
-        QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
+        QA_util_log_info("JOB No {} Minly data for {code} ======= from {start_date} to {end_date}".format(type, code=code, start_date=start_date,end_date=end_date))
         data = None
 
     if data is None:
