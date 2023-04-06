@@ -442,6 +442,7 @@ def QA_fetch_get_index_indicator_realtime(code, start_date, end_date, type = 'da
         period = '1'
     data = QA_fetch_get_index_min(code, start_date, end_date, type).reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'],axis=1)
     data = data.assign(type=type,amount=0)
+    print(data)
     data = QA_DataStruct_Index_min(data)
     try:
         pass
