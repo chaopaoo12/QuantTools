@@ -4,6 +4,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator,ohlc,get_ind
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
 from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq, QA_fetch_get_stock_min_sina,QA_fetch_get_index_min_sina
+from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_index_min
 
 def QA_fetch_get_stock_llvalue(code, start_date, end_date, type = 'day'):
     if type == '1min':
@@ -441,7 +442,7 @@ def QA_fetch_get_index_indicator_realtime(code, start_date, end_date, type = 'da
         period = '1'
 
     try:
-        data = QA_fetch_get_index_min_sina(code, period=period).reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'],axis=1)
+        data = QA_fetch_get_index_min(code, start_date, end_date, type).reset_index(drop=True).set_index(['datetime','code']).drop(columns=['date_stamp'],axis=1)
         data = data.assign(type=type,amount=0)
         data = QA_DataStruct_Stock_min(data)
     except:
