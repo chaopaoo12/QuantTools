@@ -171,14 +171,13 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
 
         # add information
         # add name industry
-        QA_util_log_info(data[['IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
+        QA_util_log_info(data[['signal','msg']], ui_log=None)
         data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isin([1])), 'signal'] = None
         #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
 
         #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 1][['DISTANCE','close',
-                                                 'IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
+        QA_util_log_info(data[data.signal == 1][['DISTANCE','close','signal','msg']], ui_log=None)
 
         if position is not None:
             hold = position.shape[0]
@@ -190,8 +189,7 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
             data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isnull()), 'msg'] = '换仓'
 
         QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 0][['DISTANCE','close',
-                                                 'IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
+        QA_util_log_info(data[data.signal == 0][['DISTANCE','close','signal','msg']], ui_log=None)
 
         # 方案2
         #data['signal'] = None
@@ -224,7 +222,7 @@ def balance(data, position, sub_account, percent):
         data = data.assign(target_position = data.signal)
         # 1 / data.signal.sum())
         data = data.assign(target_capital=data.target_position * sub_account * percent)
-        QA_util_log_info(data[['IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg','target_capital']], ui_log=None)
+        QA_util_log_info(data[['signal','msg','target_capital']], ui_log=None)
         # 方案2
         # data = pd.assign(target_position=1 / data.signal.sum(),
         #                 target_capital=data.target_position * sub_account * percent)
