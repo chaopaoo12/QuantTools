@@ -118,7 +118,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
                                 &(sec_temp_data[0].BOLL_30M < 0)&(sec_temp_data[0].SKDJ_K_30M < 30)].reset_index().code.tolist() \
                + position.code.tolist()
 
-    #QA_util_log_info('##buy_list ==================== {}'.format(buy_list), ui_log=None)
+    QA_util_log_info('##buy_list ==================== {}'.format(len(buy_list)), ui_log=None)
     return(buy_list, sec_temp_data, source_data)
 
 
