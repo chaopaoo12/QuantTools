@@ -65,10 +65,10 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
 
     QA_util_log_info('##IN_SIG DataFrame ====================', ui_log=None)
     #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
-    QA_util_log_info(data[data.IN_SIG == 1][['open','high','low','close','volume','signal','msg']], ui_log=None)
+    QA_util_log_info(data[data.signal == 1][['open','high','low','close','volume','signal','msg']], ui_log=None)
 
     QA_util_log_info('##OUT_SIG DataFrame ====================', ui_log=None)
-    QA_util_log_info(data[data.OUT_SIG == 1][['open','high','low','close','volume','signal','msg']], ui_log=None)
+    QA_util_log_info(data[data.signal == 0][['open','high','low','close','volume','signal','msg']], ui_log=None)
 
     return(data, [sec_temp_data])
     #except:
