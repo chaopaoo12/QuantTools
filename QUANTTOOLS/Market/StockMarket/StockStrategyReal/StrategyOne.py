@@ -114,9 +114,9 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     res30.columns = [x.upper() + '_30M' for x in res30.columns]
     sec_temp_data = [res15.join(res30).groupby('code').fillna(method='ffill')]
 
-    buy_list = sec_temp_data[0][(sec_temp_data[0].BOLL_15M > 0)&(sec_temp_data[0].SKDJ_K_15M > sec_temp_data[0].SKDJ_D_15M)
+    buy_list = list(set(sec_temp_data[0][(sec_temp_data[0].BOLL_15M > 0)&(sec_temp_data[0].SKDJ_K_15M > sec_temp_data[0].SKDJ_D_15M)
                                 &(sec_temp_data[0].BOLL_30M < 0)&(sec_temp_data[0].SKDJ_K_30M < 30)].reset_index().code.tolist() \
-               + position.code.tolist()
+               + [i for i in code_list if i not in target_list]))
 
     QA_util_log_info('##buy_list ==================== {}'.format(len(buy_list)), ui_log=None)
     return(buy_list, sec_temp_data, source_data)
