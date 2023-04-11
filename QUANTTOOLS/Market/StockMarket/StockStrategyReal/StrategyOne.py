@@ -1,87 +1,92 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before,time_check_after
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min, QA_fetch_get_stock_quant_min
-from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_realtime
-from QUANTTOOLS.Model.FactorTools.QuantMk import get_quant_data_30min,get_quant_data_15min
-from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_vwap
+from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min
 from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo
 import time
-import numpy as np
+from QUANTTOOLS.Model.StockModel.StrategyXgboostMin import QAStockXGBoostMin
+from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_min
+from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_min_adv
+from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
+from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator
+import pandas as pd
 
-def data_collect(code_list,trading_date,data_15min,k_per=1.03):
-    try:
+def data_base(code_list,trading_date,proxies):
+    #source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date)
+    data = QA_fetch_get_stock_vwap(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date,
+                                   period = '1', type = 'real',proxies=proxies)
+    #data = source_data.assign(TARGET = source_data.day_close/source_data.close-1)
+    return(data)
 
-        source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date, type='1')
-        close = source_data.reset_index().groupby(['date','code'])['close'].agg({'last'}).groupby('code').shift().rename(columns={'last':'yes_close'})
-        price = QA_fetch_get_stock_realtime(code_list)[['涨停价','跌停价','涨跌(%)']].rename(
-            {'涨停价':'up_price','跌停价':'down_price','涨跌(%)':'pct'}, axis='columns')
-        price = price.assign(pct=price.pct/100)
-        data = source_data \
-            .reset_index().set_index(['date','code']).join(close) \
-            .reset_index().set_index(['code']).join(price) \
-            .reset_index().set_index(['datetime','code']).join(data_15min[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M','LB_30M','UB_30M','LB_15M','UB_15M']])
-        data[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M','LB_30M','UB_30M','LB_15M','UB_15M']] = data.groupby('code')[['RRNG_15M','MA60_C_15M','MIN_V_15M','MAX_V_15M','SIGN_30M','MA60_C_30M','RRNG_30M', 'MAX_V_30M', 'MIN_V_30M','LB_30M','UB_30M','LB_15M','UB_15M']].fillna(method='ffill')
+def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, proxies):
+    #try:
+    if source_data is None:
+        source_data = data_base(code_list, trading_date, proxies)
 
-        # 方案1
-        # hold index&condition
-        #下降通道 超降通道 上升通道 超升通道
-        #VAMP_C > 15 上升买进 buy_list生效
-        #VAMP_C < -15 下降卖出
-        #DISTANCE > 0.03 & vamp.abs() < 10 & 未涨停 逃顶
-        #DISTANCE < -0.03 & vamp.abs() < 10 & 未跌停 抄底 buy_list生效
+    data = source_data.join(sec_temp_data[0])
+    data = data.groupby('code').fillna(method='ffill')
 
-        data['signal'] = None
-        data['msg'] = None
-        data = data.assign(signal = None,
-                           msg = None,
-                           code = [str(i) for i in data.reset_index().code])
-        #顶部死叉
-        data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.SIGN_30M <= -2),
-                 "signal"] = 0
-        data.loc[(data.VAMP_SC == 1) & (data.VAMP_K < 0.02) & (data.CLOSE_K < 0) & (data.SIGN_30M <= -2),
-                 "msg"] = 'VMAP死叉'
+    # 方案1
+    # hold index&condition
+    #下降通道 超降通道 上升通道 超升通道
+    #VAMP_C > 15 上升买进 buy_list生效
+    #VAMP_C < -15 下降卖出
+    #DISTANCE > 0.03 & vamp.abs() < 10 & 未涨停 逃顶
+    #DISTANCE < -0.03 & vamp.abs() < 10 & 未跌停 抄底 buy_list生效
 
-        #顶部下降通道
-        data.loc[(data.VAMP_K <= -0.2) & (data.CLOSE_K < 0) & (data.SIGN_30M <= -2), "signal"] = 0
-        data.loc[(data.VAMP_K <= -0.2) & (data.CLOSE_K < 0) & (data.SIGN_30M <= -2), "msg"] = '止损:VMAP下降通道'
+    data['signal'] = None
+    data['msg'] = None
+    data = data.assign(signal = None,
+                       msg = None,
+                       code = [str(i) for i in data.reset_index().code])
+    QA_util_log_info('##JOB Out Signal Decide ====================', ui_log=None)
+    #顶部死叉
+    data.loc[(data.BOLL_15M < 0)&(data.BOLL_30M < 0)&(data.SKDJ_K_15M < data.SKDJ_D_15M),"signal"] = 0
+    data.loc[(data.BOLL_15M < 0)&(data.BOLL_30M < 0)&(data.SKDJ_K_15M < data.SKDJ_D_15M),"msg"] = 'model出场信号'
 
-        #超涨&顶部滞涨
-        data.loc[(data.DISTANCE > 0.05) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.03) & (data.SIGN_30M <= -2),
-                 "signal"] = 0
-        data.loc[(data.DISTANCE > 0.05) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.03) & (data.SIGN_30M <= -2),
-                 "msg"] = 'VMAP超涨'
+    # 强制止损
+    QA_util_log_info('##JOB Int Signal Decide ====================', ui_log=None)
+    #放量金叉
+    data.loc[(data.BOLL_15M > 0)&(data.SKDJ_K_15M > data.SKDJ_D_15M)&(data.BOLL_30M < 0)&(data.SKDJ_K_30M < 30), "signal"] = 1
+    data.loc[(data.BOLL_15M > 0)&(data.SKDJ_K_15M > data.SKDJ_D_15M)&(data.BOLL_30M < 0)&(data.SKDJ_K_30M < 30), "msg"] = 'model进场信号'
 
-        # 强制止损
-        data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "signal"] = 0
-        data.loc[(data.pct_chg <= -5) & (data.CLOSE_K < 0) & (data.VAMP_K < 0.01), "msg"] = '强制止损'
+    #if time_check_after('14:00:00'):
+    #    QA_util_log_info('##JOB Next Out Signal Decide ====================', ui_log=None)
+    #    #顶部死叉
+    #    data.loc[(data.OUT_SIG_1 == 1) & (data.IN_SIG_1 == 0),"signal"] = 0
+    #    data.loc[(data.OUT_SIG_1 == 1) & (data.IN_SIG_1 == 0),"msg"] = 'Next model出场信号'
 
-        #底部金叉
-        data.loc[(data.RRNG_15M.abs() < 0.03)&(data.VAMP_JC == 1) & (data.VAMPC_K >= 0.01)  & (data.CLOSE_K > 0) & (data.VAMP_K >= 0) & (data.MIN_V_15M * k_per > data.close),
-                 "signal"] = 1
-        data.loc[(data.RRNG_15M.abs() < 0.03)&(data.VAMP_JC == 1) & (data.VAMPC_K >= 0.01)  & (data.CLOSE_K > 0) & (data.VAMP_K >= 0) & (data.MIN_V_15M * k_per > data.close),
-                 "msg"] = 'VMAP金叉'
+    #    # 强制止损
+    #    QA_util_log_info('##JOB Next Int Signal Decide ====================', ui_log=None)
+    #    #放量金叉
+    #    data.loc[(data.IN_SIG_1 == 1) & (data.OUT_SIG_1 == 0), "signal"] = 1
+    #    data.loc[(data.IN_SIG_1 == 1) & (data.OUT_SIG_1 == 0), "msg"] = 'Next model进场信号'
 
-        #放量金叉
-        data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0.1) & (data.VAMPC_K >= 0.1) & (data.VAMP_K > 0) & (data.camt_vol > 1),
-                 "signal"] = 1
-        data.loc[(data.VAMP_JC == 1) & (data.CLOSE_K > 0.1) & (data.VAMPC_K >= 0.1) & (data.VAMP_K > 0) & (data.camt_vol > 1),
-                 "msg"] = 'VMAP放量金叉'
 
-        #超跌
-        data.loc[(data.DISTANCE < -0.03) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close) & (data.camt_vol < 0.4),
-                 "signal"] = 1
-        data.loc[(data.DISTANCE < -0.03) & (data.VAMP_K > -0.03) & (data.CLOSE_K > 0) & (data.MIN_V_15M * k_per > data.close) & (data.camt_vol < 0.4),
-                 "msg"] = 'VMAP超跌'
+    QA_util_log_info('##IN_SIG DataFrame ====================', ui_log=None)
+    #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
+    QA_util_log_info(data[data.IN_SIG == 1][['open','high','low','close','volume','signal','msg']], ui_log=None)
 
-        #底部追涨
-        data.loc[(data.VAMPC_K >= 0.2) & (data.VAMP_K > 0.2) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < 0.02) & (data.camt_vol > 0.8), "signal"] = 1
-        data.loc[(data.VAMPC_K >= 0.2) & (data.VAMP_K > 0.2) & (data.MIN_V_15M * k_per > data.close) & (data.DISTANCE < 0.02) & (data.camt_vol > 0.8), "msg"] = '追涨:VMAP上升通道'
+    QA_util_log_info('##OUT_SIG DataFrame ====================', ui_log=None)
+    QA_util_log_info(data[data.OUT_SIG == 1][['open','high','low','close','volume','signal','msg']], ui_log=None)
 
-        return(data)
-    except:
-        return None
+    return(data, [sec_temp_data])
+    #except:
+    #    return(None, [sec_temp_data])
 
-def code_select(target_list, position, trading_date, mark_tm):
+def day_init(target_list, trading_date):
+
+    QA_util_log_info('##JOB Init Day Data ==================== {}'.format(
+        trading_date), ui_log=None)
+
+    his15_data= QA_fetch_stock_min_adv(target_list,QA_util_get_pre_trade_date(trading_date,10),
+                                       QA_util_get_pre_trade_date(trading_date,5),'15min')
+    his30_data= QA_fetch_stock_min_adv(target_list,QA_util_get_pre_trade_date(trading_date,10),
+                                       QA_util_get_pre_trade_date(trading_date,5),'30min')
+
+    return([his15_data, his30_data])
+
+def code_select(target_list, position, day_temp_data, sec_temp_data, trading_date, mark_tm, proxies):
 
     if target_list is None:
         target_list = []
@@ -91,35 +96,33 @@ def code_select(target_list, position, trading_date, mark_tm):
     else:
         code_list = target_list
 
+    code_list = list(set(code_list))
     QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
         mark_tm), ui_log=None)
 
-    #if time_check_before('09:35:00') is True:
-    if mark_tm == '15:00:00':
-        stm = QA_util_get_pre_trade_date(trading_date, 1) + ' ' + '15:00:00'
-    else:
-        stm = trading_date + ' ' + mark_tm
+    source_data = data_base(code_list, trading_date, proxies)
 
-    data_15min = get_quant_data_15min(QA_util_get_pre_trade_date(trading_date,10),
-                                      trading_date, code_list, type='real')
-    data_15min['SIGN_30M'] = np.sign(data_15min.groupby('code')['CLOSE_30M'].shift(2) - data_15min.groupby('code')['MAX_V_30M'].shift(2)) \
-                             + np.sign(data_15min['CLOSE_30M'] - data_15min['MAX_V_30M'])
-    data_15min['SIGN_DW_30M'] = np.sign(data_15min.groupby('code')['MIN_V_30M'].shift(2) - data_15min.groupby('code')['CLOSE_30M'].shift(2)) \
-                             + np.sign(data_15min['MIN_V_30M'] - data_15min['CLOSE_30M'])
+    temp = source_data.assign(type='1min')
+    temp = QA_DataStruct_Stock_min(temp)
+    res15=pd.concat([temp.min15, day_temp_data[0].data])
+    res30=pd.concat([temp.min30, day_temp_data[1].data])
+    res15 = res15[~res15.index.duplicated(keep='first')]
+    res30 = res30[~res30.index.duplicated(keep='first')]
+    res15=get_indicator(QA_DataStruct_Stock_min(res15.sort_index()), 'min')
+    res30=get_indicator(QA_DataStruct_Stock_min(res30.sort_index()), 'min')
+    res15.columns = [x.upper() + '_15M' for x in res15.columns]
+    res30.columns = [x.upper() + '_30M' for x in res30.columns]
+    sec_temp_data = [res15.join(res30).groupby('code').fillna(method='ffill')]
 
-    QA_util_log_info('##Stock Pool ==================== {}'.format(stm), ui_log=None)
-    QA_util_log_info(data_15min[['SIGN_30M','SIGN_DW_30M','RRNG_30M','MAX_V_15M','CLOSE_15M','MIN_V_15M',
-                                 'MAX_V_15M','SIGN_DW_30M','MA60_C_15M','MA5_15M','MA10_15M','MA20_15M','MA60_15M']], ui_log=None)
+    buy_list = sec_temp_data[0][(sec_temp_data[0].BOLL_15M > 0)&(sec_temp_data[0].SKDJ_K_15M > sec_temp_data[0].SKDJ_D_15M)
+                                &(sec_temp_data[0].BOLL_30M < 0)&(sec_temp_data[0].SKDJ_K_30M < 30)].reset_index().code.tolist() \
+               + position.code.tolist()
 
-    QA_util_log_info('##Target Pool ==================== {}'.format(stm), ui_log=None)
-    QA_util_log_info(data_15min[(data_15min.RRNG_15M.abs() < 0.03)], ui_log=None)
-    buy_list = data_15min[(data_15min.RRNG_15M.abs() < 0.03)]
-    QA_util_log_info('##buy_list ==================== {}'.format(buy_list), ui_log=None)
-    return(buy_list, data_15min)
+    #QA_util_log_info('##buy_list ==================== {}'.format(buy_list), ui_log=None)
+    return(buy_list, sec_temp_data, source_data)
 
 
-def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
-    QA_util_log_info(target_list)
+def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source_data, trading_date, mark_tm, proxies):
     # 计算信号 提供基础信息 example
     # 输出1 signal 计划持有的code 目前此方案 1:表示持有 0:表示不持有
     # 输出2 signal 进出信号 signal 1:表示进场信号 0:表示无信号 -1:表示卖出信号
@@ -146,11 +149,12 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
     QA_util_log_info(code_list, ui_log=None)
 
     stm = trading_date + ' ' + mark_tm
-    try:
-        data = data_collect(code_list, trading_date, tmp_data, k_per=1.03)
-    except:
-        QA_util_log_info('##JOB Signal Failed ====================', ui_log=None)
-        data = None
+    #try:
+    data, data_15min = data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, proxies)
+
+    #except:
+    #    QA_util_log_info('##JOB Signal Failed ====================', ui_log=None)
+    #    data = None
 
     #QA_util_log_info('##JOB 300910 ====================', ui_log=None)
     #QA_util_log_info(data[(data.code == '300910')&(data.date == trading_date)][['RRNG_15M','VAMP_JC','CLOSE_K','VAMPC_K','VAMP_K','DISTANCE','close','MIN_V_15M','camt_vol','signal','msg']]
@@ -167,18 +171,27 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
 
         # add information
         # add name industry
-
+        QA_util_log_info(data[['IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
         data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isin([1])), 'signal'] = None
         #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
+
         #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
-        QA_util_log_info(data[['RRNG_15M','VAMP_JC','CLOSE_K','VAMPC_K','VAMP_K','DISTANCE','close','MIN_V_15M','camt_vol','signal','msg']], ui_log=None)
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 1][['SIGN_30M','RRNG_30M','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE',
-                                                 'close','MIN_V_30M','MAX_V_30M','up_price','signal','msg']], ui_log=None)
+        QA_util_log_info(data[data.signal == 1][['DISTANCE','close',
+                                                 'IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
+
+        if position is not None:
+            hold = position.shape[0]
+        else:
+            hold = 0
+
+        if data[data.signal == 1].shape[0] > 0 and hold > 1:
+            data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isnull()), 'signal'] = 0
+            data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isnull()), 'msg'] = '换仓'
 
         QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 0][['SIGN_30M','RRNG_30M','VAMP_JC','VAMP_SC','VAMP_K','CLOSE_K','VAMPC_K','DISTANCE',
-                                                 'close','MIN_V_30M','MAX_V_30M','up_price','signal','msg']], ui_log=None)
+        QA_util_log_info(data[data.signal == 0][['DISTANCE','close',
+                                                 'IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg']], ui_log=None)
 
         # 方案2
         #data['signal'] = None
@@ -187,7 +200,7 @@ def signal(target_list, buy_list, position, tmp_data, trading_date, mark_tm):
         #data.loc[data.SKDJ_TR_HR == 1, "signal"] = 0
 
         # msg
-        return data
+        return(data)
     else:
         return None
 
@@ -209,18 +222,25 @@ def balance(data, position, sub_account, percent):
             data = data.assign(市值=0, 可用余额=0)
 
         data = data.assign(target_position = data.signal)
-                           # 1 / data.signal.sum())
+        # 1 / data.signal.sum())
         data = data.assign(target_capital=data.target_position * sub_account * percent)
-
+        QA_util_log_info(data[['IN_SIG','IN_PROB','OUT_SIG','OUT_PROB','signal','msg','target_capital']], ui_log=None)
         # 方案2
         # data = pd.assign(target_position=1 / data.signal.sum(),
         #                 target_capital=data.target_position * sub_account * percent)
-        print(data)
-        data['industry'] = data.code.apply(lambda x:QA_fetch_stock_industryinfo(x).SWHY.values[0])
-        data['name'] = data.code.apply(lambda x:QA_fetch_stock_name(x).values[0])
+        #try:
+        data =data.assign(industry=[i.TDX.values[0] if i is not None else None for i in [QA_fetch_stock_industryinfo(x) for x in data.code] ],
+                          name=[i.values[0] if i is not None else None for i in [QA_fetch_stock_name(x) for x in data.code] ],)
+
+        #data['industry'] = data.code.apply(lambda x:QA_fetch_stock_industryinfo(x).TDX.values[0])
+        #data['name'] = data.code.apply(lambda x:QA_fetch_stock_name(x).values[0])
+        #except:
+        #   data['industry'] = None
+        #    data['name'] = None
+
         data['mark'] = None
 
-        data.loc[(data["target_capital"] >= data["市值"]) & (data.signal == 1), "mark"] = "buy"
+        data.loc[(data["target_capital"] > data["市值"]) & (data.signal == 1), "mark"] = "buy"
         data.loc[(data["target_capital"] < data["市值"]) & (data.signal == 0), "mark"] = "sell"
         QA_util_log_info(data, ui_log=None)
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
@@ -257,7 +277,7 @@ def tracking_signal(buy_list, position, trading_date, mark_tm):
 
     # 定时执行部分
     stm = trading_date + ' ' + mark_tm
-    source_data = QA_fetch_get_stock_vwap_min(QA_util_get_pre_trade_date(trading_date,10), trading_date, code_list, type='1')
+    source_data = QA_fetch_get_stock_vwap(QA_util_get_pre_trade_date(trading_date,10), trading_date, code_list, type='1')
     data = source_data.loc[(stm,)]
     # add information
     # add name industry
