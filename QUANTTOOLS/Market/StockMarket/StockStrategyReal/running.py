@@ -177,6 +177,8 @@ def block_func(trading_date):
     data = QA_Sql_BlockAnalystic(trading_date,trading_date)
     res = data.groupby(['index','BLN'])[['TOTAL_MARKET','GROSSMARGIN','TURNOVERRATIOOFTOTALASSETS','OPERATINGRINRATE','PB','PE_TTM','ROE_TTM']].agg(f).rename(
         columns={'TOTAL_MARKET':'I_TM','GROSSMARGIN':'I_GM','TURNOVERRATIOOFTOTALASSETS':'I_TURNR','OPERATINGRINRATE':'I_OPINR','ROE_TTM':'I_ROE','PE_TTM':'I_PE','PB':'I_PB'})
+    print(data)
+    print(res)
     data = data.set_index(['index','BLN']).join(res).reset_index()
     data = data.assign(GM_RATE=(data.GROSSMARGIN-data.I_GM)/data.I_GM,
                        TURN_RATE=(data.TURNOVERRATIOOFTOTALASSETS-data.I_TURNR)/data.I_TURNR,
