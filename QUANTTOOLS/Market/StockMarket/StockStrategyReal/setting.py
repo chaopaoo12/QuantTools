@@ -15,7 +15,7 @@ exceptions = None
 
 strategy_id3 = {'account': 'name:client-1',
                 'exceptions': None,
-                'strategy_id': '趋势跟踪2号',
+                'strategy_id': '趋势跟踪1号',
                 'percent': 1,
                 'trader_path': None,
                 }
