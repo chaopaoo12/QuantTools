@@ -13,6 +13,20 @@ top = 20
 percent = 1
 exceptions = None
 
+strategy_id3 = {'account': 'name:client-1',
+                'exceptions': None,
+                'strategy_id': '趋势跟踪2号',
+                'percent': 1,
+                'trader_path': None,
+                }
+
+strategy_id2 = {'account': 'name:client-1',
+               'exceptions': None,
+               'strategy_id': '机器学习2号',
+               'percent': 1,
+               'trader_path': None,
+               }
+
 strategy_id = {'account': 'name:client-1',
                'exceptions': None,
                'strategy_id': '机器学习1号',
