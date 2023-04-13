@@ -172,6 +172,13 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
         # add information
         # add name industry
         QA_util_log_info(data[['signal','msg']], ui_log=None)
+        QA_util_log_info('##JOB Notice LB ==================== {}'.format(
+            mark_tm), ui_log=None)
+        QA_util_log_info(data[(data.LB_15M < 0)|(data.LB_30M < 0)][['signal','msg']], ui_log=None)
+        QA_util_log_info('##JOB Notice UB ==================== {}'.format(
+            mark_tm), ui_log=None)
+        QA_util_log_info(data[(data.UB_15M > 0)|(data.UB_30M > 0)][['signal','msg']], ui_log=None)
+        QA_util_log_info(data[['signal','msg']], ui_log=None)
         data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isin([1])), 'signal'] = None
         #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
 
