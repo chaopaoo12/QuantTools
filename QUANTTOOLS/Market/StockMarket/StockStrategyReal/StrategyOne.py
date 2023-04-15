@@ -1,13 +1,11 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before,time_check_after
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_vwap
-from QUANTTOOLS.QAStockETL.QAFetch.QAQuantFactor import QA_fetch_get_stock_vwap_min
-from QUANTAXIS.QAUtil import QA_util_log_info
+from QUANTAXIS.QAUtil import QA_util_log_info, QA_util_get_pre_trade_date
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo
 import time
-from QUANTTOOLS.Model.StockModel.StrategyXgboostMin import QAStockXGBoostMin
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_min
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_min_adv
-from QUANTAXIS.QAUtil import QA_util_get_pre_trade_date
+from QUANTAXIS import QA_fetch_get_stock_realtime, QA_fetch_get_index_realtime
 from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator
 import pandas as pd
 
@@ -18,21 +16,18 @@ def data_base(code_list,trading_date,proxies):
     #data = source_data.assign(TARGET = source_data.day_close/source_data.close-1)
     return(data)
 
-def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, proxies):
+def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, position, mark_tm, proxies):
     #try:
-    if source_data is None:
-        source_data = data_base(code_list, trading_date, proxies)
+    source_data = QA_fetch_get_stock_realtime(package='tdx',code=code_list)
+    source_data = source_data.reset_index()
+    ##
+    source_data = source_data.assign(datetime = pd.to_datetime(mark_tm)).set_index(
+        ['datetime', 'code'])[['last_close','price','open','high','low','vol','ask1','ask_vol1','bid1','bid_vol1']].sort_index()
 
     data = source_data.join(sec_temp_data[0])
-    data = data.groupby('code').fillna(method='ffill')
+    data = data.loc[mark_tm]
 
-    # 方案1
-    # hold index&condition
-    #下降通道 超降通道 上升通道 超升通道
-    #VAMP_C > 15 上升买进 buy_list生效
-    #VAMP_C < -15 下降卖出
-    #DISTANCE > 0.03 & vamp.abs() < 10 & 未涨停 逃顶
-    #DISTANCE < -0.03 & vamp.abs() < 10 & 未跌停 抄底 buy_list生效
+    data = data.reset_index().set_index('code').join(position).reset_index().set_index(['datetime','code'])
 
     data['signal'] = None
     data['msg'] = None
@@ -40,31 +35,18 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
                        msg = None,
                        code = [str(i) for i in data.reset_index().code])
     QA_util_log_info('##JOB Out Signal Decide ====================', ui_log=None)
-    #顶部死叉
-    data.loc[(data.BOLL_15M < 0)&(data.BOLL_30M < 0)&(data.SKDJ_K_15M < data.SKDJ_D_15M),"signal"] = 0
-    data.loc[(data.BOLL_15M < 0)&(data.BOLL_30M < 0)&(data.SKDJ_K_15M < data.SKDJ_D_15M),"msg"] = 'model出场信号'
+    # 顶部死叉
+    data.loc[(data.price > data.UB_15M_V * 1.03)&(data.price < data.UB_30M_V * 1.03),"signal"] = 0
+    data.loc[(data.price > data.UB_15M_V * 1.03)&(data.price < data.UB_30M_V * 1.03),"msg"] = 'model出场信号'
 
     # 强制止损
-    QA_util_log_info('##JOB Int Signal Decide ====================', ui_log=None)
-    #放量金叉
-    data.loc[(data.BOLL_15M > 0)&(data.SKDJ_K_15M > data.SKDJ_D_15M)&(data.BOLL_30M < 0)&(data.SKDJ_K_30M < 30), "signal"] = 1
-    data.loc[(data.BOLL_15M > 0)&(data.SKDJ_K_15M > data.SKDJ_D_15M)&(data.BOLL_30M < 0)&(data.SKDJ_K_30M < 30), "msg"] = 'model进场信号'
-
-    #if time_check_after('14:00:00'):
-    #    QA_util_log_info('##JOB Next Out Signal Decide ====================', ui_log=None)
-    #    #顶部死叉
-    #    data.loc[(data.OUT_SIG_1 == 1) & (data.IN_SIG_1 == 0),"signal"] = 0
-    #    data.loc[(data.OUT_SIG_1 == 1) & (data.IN_SIG_1 == 0),"msg"] = 'Next model出场信号'
-
-    #    # 强制止损
-    #    QA_util_log_info('##JOB Next Int Signal Decide ====================', ui_log=None)
-    #    #放量金叉
-    #    data.loc[(data.IN_SIG_1 == 1) & (data.OUT_SIG_1 == 0), "signal"] = 1
-    #    data.loc[(data.IN_SIG_1 == 1) & (data.OUT_SIG_1 == 0), "msg"] = 'Next model进场信号'
+    QA_util_log_info('##JOB In Signal Decide ====================', ui_log=None)
+    # 放量金叉
+    data.loc[(data.price < data.LB_15M_V * 0.97)&(data.price < data.LB_30M_V * 0.97), "signal"] = 1
+    data.loc[(data.price < data.LB_15M_V * 0.97)&(data.price < data.LB_30M_V * 0.97), "msg"] = 'model进场信号'
 
 
     QA_util_log_info('##IN_SIG DataFrame ====================', ui_log=None)
-    #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
     QA_util_log_info(data[data.signal == 1][['open','high','low','close','volume','signal','msg']], ui_log=None)
 
     QA_util_log_info('##OUT_SIG DataFrame ====================', ui_log=None)
@@ -159,7 +141,7 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
 
     stm = trading_date + ' ' + mark_tm
     #try:
-    data, data_15min = data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, proxies)
+    data, data_15min = data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, position, stm, proxies)
 
     #except:
     #    QA_util_log_info('##JOB Signal Failed ====================', ui_log=None)
@@ -183,15 +165,12 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
         QA_util_log_info(data[['signal','msg']], ui_log=None)
         QA_util_log_info('##JOB Notice LB ==================== {}'.format(
             mark_tm), ui_log=None)
-        QA_util_log_info(data[(data.LB_15M < 0)|(data.LB_30M < 0)][['signal','msg']], ui_log=None)
+        QA_util_log_info(data[(data.price < data.LB_15M_V)&(data.price < data.LB_30M_V)][['signal','msg']], ui_log=None)
         QA_util_log_info('##JOB Notice UB ==================== {}'.format(
             mark_tm), ui_log=None)
-        QA_util_log_info(data[(data.UB_15M > 0)|(data.UB_30M > 0)][['signal','msg']], ui_log=None)
+        QA_util_log_info(data[(data.price > data.UB_15M_V)&(data.price > data.UB_30M_V)][['signal','msg']], ui_log=None)
         QA_util_log_info(data[['signal','msg']], ui_log=None)
         data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isin([1])), 'signal'] = None
-        #if len([i for i in position.code.tolist() if i not in buy_list]) > 0:
-
-        #    data.loc[[i for i in position.code.tolist() if i not in buy_list]][data.signal == 1, ['signal']] = None
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
         QA_util_log_info(data[data.signal == 1][['DISTANCE','close','signal','msg']], ui_log=None)
 
