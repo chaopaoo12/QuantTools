@@ -115,13 +115,13 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     res15.columns = [x.upper() + '_15M' for x in res15.columns]
     res30.columns = [x.upper() + '_30M' for x in res30.columns]
     sec_temp_data = [res15.join(res30).join(close_15).join(close_30).groupby('code').fillna(method='ffill')]
-    sec_temp_data = sec_temp_data[0].assign(BOLL_15M_V = sec_temp_data[0].close_15 / (sec_temp_data[0].BOLL_15M + 1),
+    sec_temp_data = [sec_temp_data[0].assign(BOLL_15M_V = sec_temp_data[0].close_15 / (sec_temp_data[0].BOLL_15M + 1),
                                             LB_15M_V = sec_temp_data[0].close_15 / (sec_temp_data[0].LB_15M + 1),
                                             UB_15M_V = sec_temp_data[0].close_15 / (sec_temp_data[0].UB_15M + 1),
                                             BOLL_30M_V = sec_temp_data[0].close_30 / (sec_temp_data[0].BOLL_30M + 1),
                                             LB_30M_V = sec_temp_data[0].close_30 / (sec_temp_data[0].LB_30M + 1),
                                             UB_30M_V = sec_temp_data[0].close_30 / (sec_temp_data[0].UB_30M + 1)
-                                            )
+                                            )]
 
     buy_list = list(set(sec_temp_data[0][(sec_temp_data[0].BOLL_15M > 0)&(sec_temp_data[0].SKDJ_K_15M > sec_temp_data[0].SKDJ_D_15M)
                                 &(sec_temp_data[0].BOLL_30M < 0)&(sec_temp_data[0].SKDJ_K_30M < 30)].reset_index().code.tolist() \
