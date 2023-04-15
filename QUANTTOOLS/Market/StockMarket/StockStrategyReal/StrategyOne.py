@@ -54,8 +54,6 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     QA_util_log_info(data[data.signal == 0][['open','high','low','price','signal','msg']], ui_log=None)
 
     return(data, [sec_temp_data])
-    #except:
-    #    return(None, [sec_temp_data])
 
 def day_init(target_list, trading_date):
 
