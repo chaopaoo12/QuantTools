@@ -26,8 +26,9 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
 
     data = source_data.join(sec_temp_data[0])
     data = data.loc[mark_tm]
+    print(data)
 
-    data = data.reset_index().set_index('code').join(position).reset_index().set_index(['datetime','code'])
+    data = data.reset_index().set_index('code').join(position.set_index('code')).reset_index().set_index(['datetime','code'])
 
     data['signal'] = None
     data['msg'] = None
