@@ -109,6 +109,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     res15 = res15[~res15.index.duplicated(keep='first')]
     res30 = res30[~res30.index.duplicated(keep='first')]
     close_15 = res15.close
+    print(close_15)
     close_15.rename(columns={'close':'close_15'})
     close_30 = res30.close
     close_30.rename(columns={'close':'close_30'})
