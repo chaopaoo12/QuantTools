@@ -170,10 +170,10 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
         QA_util_log_info('##JOB Notice UB ==================== {}'.format(
             mark_tm), ui_log=None)
         QA_util_log_info(data[(data.price > data.UB_15M_V)&(data.price > data.UB_30M_V)][['signal','msg']], ui_log=None)
-        QA_util_log_info(data[['signal','msg']], ui_log=None)
+        QA_util_log_info(data[['price','盈亏比例(%)','signal','msg']], ui_log=None)
         data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isin([1])), 'signal'] = None
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 1][['DISTANCE','close','signal','msg']], ui_log=None)
+        QA_util_log_info(data[data.signal == 1][['price','盈亏比例(%)','signal','msg']], ui_log=None)
 
         if position is not None:
             hold = position.shape[0]
@@ -185,7 +185,7 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
             data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isnull()), 'msg'] = '换仓'
 
         QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
-        QA_util_log_info(data[data.signal == 0][['DISTANCE','close','signal','msg']], ui_log=None)
+        QA_util_log_info(data[data.signal == 0][['price','signal','msg']], ui_log=None)
 
         # 方案2
         #data['signal'] = None
