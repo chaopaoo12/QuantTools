@@ -37,7 +37,13 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     QA_util_log_info('##JOB Out Signal Decide ====================', ui_log=None)
     # 顶部死叉
     data.loc[(data.price > data.UB_15M_V * 1.03)&(data.price < data.UB_30M_V * 1.03),"signal"] = 0
-    data.loc[(data.price > data.UB_15M_V * 1.03)&(data.price < data.UB_30M_V * 1.03),"msg"] = 'model出场信号'
+    data.loc[(data.price > data.UB_15M_V * 1.03)&(data.price < data.UB_30M_V * 1.03),"msg"] = '超涨止盈信号'
+
+    data.loc[(data.UB_15M_S2 > 0)&(data.UB_15M_S < 0)&(data.UB_15M < 0),"signal"] = 0
+    data.loc[(data.UB_15M_S2 > 0)&(data.UB_15M_S < 0)&(data.UB_15M < 0),"msg"] = '15M见顶信号'
+
+    data.loc[(data.UB_30M_S2 > 0)&(data.UB_30M_S < 0)&(data.UB_30M < 0),"signal"] = 0
+    data.loc[(data.UB_30M_S2 > 0)&(data.UB_30M_S < 0)&(data.UB_30M < 0),"msg"] = '30M见顶信号'
 
     # 强制止损
     data.loc[data['盈亏比例(%)'] < -5, "signal"] = 0
@@ -105,6 +111,8 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
                                             LB_30M_V = sec_temp_data[0].close_30 / (sec_temp_data[0].LB_30M + 1),
                                             UB_30M_V = sec_temp_data[0].close_30 / (sec_temp_data[0].UB_30M + 1)
                                             )]
+    sec_temp_data[0][['UB_15M_S','UB_30M_S']] = sec_temp_data[0].groupby('code')[['UB_15M','UB_30M']].shift()
+    sec_temp_data[0][['UB_15M_S2','UB_30M_S2']] = sec_temp_data[0].groupby('code')[['UB_15M','UB_30M']].shift(2)
 
     buy_list = list(set(sec_temp_data[0][(sec_temp_data[0].BOLL_15M > 0)&(sec_temp_data[0].SKDJ_K_15M > sec_temp_data[0].SKDJ_D_15M)
                                 &(sec_temp_data[0].BOLL_30M < 0)&(sec_temp_data[0].SKDJ_K_30M < 30)].reset_index().code.tolist() \
