@@ -26,7 +26,6 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
 
     data = source_data.join(sec_temp_data[0])
     data = data.loc[mark_tm]
-    print(data)
 
     data = data.reset_index().set_index('code').join(position.set_index('code')).reset_index().set_index(['datetime','code'])
 
@@ -41,6 +40,9 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     data.loc[(data.price > data.UB_15M_V * 1.03)&(data.price < data.UB_30M_V * 1.03),"msg"] = 'model出场信号'
 
     # 强制止损
+    data.loc[data['盈亏比例(%)'] < -5, "signal"] = 0
+    data.loc[data['盈亏比例(%)'] < -5,"msg"] = '强制止损'
+
     QA_util_log_info('##JOB In Signal Decide ====================', ui_log=None)
     # 放量金叉
     data.loc[(data.price < data.LB_15M_V * 0.97)&(data.price < data.LB_30M_V * 0.97), "signal"] = 1
