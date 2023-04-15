@@ -110,8 +110,6 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     res30 = res30[~res30.index.duplicated(keep='first')]
     close_15 = res15[['close']].rename(columns={'close':'close_15'})
     close_30 = res30[['close']].rename(columns={'close':'close_30'})
-    print(close_15)
-    print(close_30)
     res15=get_indicator(QA_DataStruct_Stock_min(res15.sort_index()), 'min')
     res30=get_indicator(QA_DataStruct_Stock_min(res30.sort_index()), 'min')
     res15.columns = [x.upper() + '_15M' for x in res15.columns]
