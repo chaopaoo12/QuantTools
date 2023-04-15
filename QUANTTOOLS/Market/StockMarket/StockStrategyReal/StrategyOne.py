@@ -51,8 +51,8 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
 
     QA_util_log_info('##JOB In Signal Decide ====================', ui_log=None)
     # 放量金叉
-    data.loc[(data.price < data.LB_15M_V * 0.97)&(data.price < data.LB_30M_V * 0.97), "signal"] = 1
-    data.loc[(data.price < data.LB_15M_V * 0.97)&(data.price < data.LB_30M_V * 0.97), "msg"] = 'model进场信号'
+    data.loc[(data.price < data.LB_15M_V * 0.97)|(data.price < data.LB_30M_V * 0.97), "signal"] = 1
+    data.loc[(data.price < data.LB_15M_V * 0.97)|(data.price < data.LB_30M_V * 0.97), "msg"] = 'model进场信号'
 
 
     QA_util_log_info('##IN_SIG DataFrame ====================', ui_log=None)
