@@ -10,10 +10,8 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator
 import pandas as pd
 
 def data_base(code_list,trading_date,proxies):
-    #source_data = QA_fetch_get_stock_vwap_min(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date)
     data = QA_fetch_get_stock_vwap(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date,
                                    period = '1', type = 'real',proxies=proxies)
-    #data = source_data.assign(TARGET = source_data.day_close/source_data.close-1)
     return(data)
 
 def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, position, mark_tm, proxies):
@@ -149,18 +147,7 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
     QA_util_log_info(code_list, ui_log=None)
 
     stm = trading_date + ' ' + mark_tm
-    #try:
     data, data_15min = data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, position, stm, proxies)
-
-    #except:
-    #    QA_util_log_info('##JOB Signal Failed ====================', ui_log=None)
-    #    data = None
-
-    #QA_util_log_info('##JOB 300910 ====================', ui_log=None)
-    #QA_util_log_info(data[(data.code == '300910')&(data.date == trading_date)][['RRNG_15M','VAMP_JC','CLOSE_K','VAMPC_K','VAMP_K','DISTANCE','close','MIN_V_15M','camt_vol','signal','msg']]
-    #                 )
-    #QA_util_log_info(data[(data.code == '300910')&(data.date == trading_date)&(data.signal == 1)][['RRNG_15M','VAMP_JC','CLOSE_K','VAMPC_K','VAMP_K','DISTANCE','close','MIN_V_15M','camt_vol','signal','msg']]
-    #                 )
 
     if data is not None:
         data = data.sort_index().loc[(stm),]
@@ -192,13 +179,6 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
         QA_util_log_info('##Sell DataFrame ====================', ui_log=None)
         QA_util_log_info(data[data.signal == 0][['price','盈亏比例(%)','signal','msg']], ui_log=None)
 
-        # 方案2
-        #data['signal'] = None
-        #data.loc[data.SKDJ_CROSS2_HR == 1, "signal"] = 1
-        #data.loc[data.SKDJ_CROSS1_HR == 1, "signal"] = -1
-        #data.loc[data.SKDJ_TR_HR == 1, "signal"] = 0
-
-        # msg
         return(data)
     else:
         return None
