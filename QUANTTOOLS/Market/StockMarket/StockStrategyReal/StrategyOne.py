@@ -50,7 +50,13 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     QA_util_log_info('##JOB In Signal Decide ====================', ui_log=None)
     # 放量金叉
     data.loc[(data.price < data.LB_15M_V * 0.97)|(data.price < data.LB_30M_V * 0.97), "signal"] = 1
-    data.loc[(data.price < data.LB_15M_V * 0.97)|(data.price < data.LB_30M_V * 0.97), "msg"] = 'model进场信号'
+    data.loc[(data.price < data.LB_15M_V * 0.97)|(data.price < data.LB_30M_V * 0.97), "msg"] = '抄底进场信号'
+
+    data.loc[(data.BOLL_15M_S2 < 0)&(data.BOLL_15M_S > 0)&(data.BOLL_15M > 0)&(data.price <= data.UB_15M * 0.98), "signal"] = 1
+    data.loc[(data.BOLL_15M_S2 < 0)&(data.BOLL_15M_S > 0)&(data.BOLL_15M > 0)&(data.price <= data.UB_15M * 0.98), "msg"] = 'BOLL进场信号'
+
+    data.loc[(data.LB_15M_S2 < 0)&(data.LB_15M_S > 0)&(data.LB_15M > 0)&(data.price <= data.BOLL_15M * 0.98), "signal"] = 1
+    data.loc[(data.LB_15M_S2 < 0)&(data.LB_15M_S > 0)&(data.LB_15M > 0)&(data.price <= data.BOLL_15M * 0.98), "msg"] = 'LB进场信号'
 
 
     QA_util_log_info('##IN_SIG DataFrame ====================', ui_log=None)
@@ -109,8 +115,10 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
                                             LB_30M_V = sec_temp_data[0].close_30 / (sec_temp_data[0].LB_30M + 1),
                                             UB_30M_V = sec_temp_data[0].close_30 / (sec_temp_data[0].UB_30M + 1)
                                             )]
-    sec_temp_data[0][['UB_15M_S','UB_30M_S']] = sec_temp_data[0].groupby('code')[['UB_15M','UB_30M']].shift()
-    sec_temp_data[0][['UB_15M_S2','UB_30M_S2']] = sec_temp_data[0].groupby('code')[['UB_15M','UB_30M']].shift(2)
+    sec_temp_data[0][['UB_15M_S','UB_30M_S','BOLL_15M_S','BOLL_30M_S','LB_15M_S','LB_30M_S']] = sec_temp_data[0].groupby('code')[
+        ['UB_15M','UB_30M','BOLL_15M','BOLL_30M','LB_15M','LB_30M']].shift()
+    sec_temp_data[0][['UB_15M_S2','UB_30M_S2','BOLL_15M_S2','BOLL_30M_S2','LB_15M_S2','LB_30M_S2']] = sec_temp_data[0].groupby('code')[
+        ['UB_15M','UB_30M','BOLL_15M','BOLL_30M','LB_15M','LB_30M']].shift(2)
 
     buy_list = list(set(sec_temp_data[0][(sec_temp_data[0].BOLL_15M > 0)&(sec_temp_data[0].SKDJ_K_15M > sec_temp_data[0].SKDJ_D_15M)
                                 &(sec_temp_data[0].BOLL_30M < 0)&(sec_temp_data[0].SKDJ_K_30M < 30)].reset_index().code.tolist() \
