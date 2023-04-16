@@ -171,8 +171,6 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
 
         # add information
         # add name industry
-        QA_util_log_info(data[['price','盈亏比例(%)','signal','msg']], ui_log=None)
-
         QA_util_log_info(data[(data.price < data.LB_15M_V)|(data.price < data.LB_30M_V)][['price','盈亏比例(%)','signal','msg']], ui_log=None)
 
         QA_util_log_info(data[(data.price > data.UB_15M_V)|(data.price < data.UB_30M_V)][['price','盈亏比例(%)','signal','msg']], ui_log=None)
