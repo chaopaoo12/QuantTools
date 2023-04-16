@@ -3,15 +3,14 @@ import pandas as pd
 import time
 import datetime
 
-
-def on_bar(start, end, sep, breaks):
+def on_bar(start, end, sep, breaks, freq='min'):
     if sep == 60:
         res_rng = ['10:30:00', '11:30:00', '14:00:00', '15:00:00']
-    elif sep ==30:
+    elif sep == 30:
         res_rng = ['09:30:00','10:00:00', '10:30:00', '11:00:00', '11:30:00', '13:00:00', '13:30:00', '14:00:00', '14:30:00', '15:00:00']
     else:
         date = '2022-02-09'
-        tm_rng = pd.date_range(date + ' '+start, date + ' '+end, freq=str(sep)+'min')
+        tm_rng = pd.date_range(date + ' '+start, date + ' '+end, freq=str(sep)+freq)
         break_tmrng = []
         for break_rng in breaks:
             break_tmp = pd.date_range(date + ' '+break_rng[0], date + ' '+break_rng[1], freq=str(sep)+'min')
