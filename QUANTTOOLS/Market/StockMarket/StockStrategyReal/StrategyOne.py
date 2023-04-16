@@ -20,7 +20,7 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     source_data = source_data.reset_index()
     ##
     source_data = source_data.assign(datetime = pd.to_datetime(mark_tm)).set_index(
-        ['datetime', 'code'])[['last_close','price','open','high','low','vol','ask1','ask_vol1','bid1','bid_vol1']].sort_index()
+        ['datetime', 'code'])[['last_close','price','open','high','low','vol','ask1','ask_vol1','ask2','ask_vol2','bid1','bid_vol1']].sort_index()
 
     data = source_data.join(sec_temp_data[0])
     data = data.loc[mark_tm]
@@ -34,14 +34,14 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
                        code = [str(i) for i in data.reset_index().code])
     QA_util_log_info('##JOB Out Signal Decide ====================', ui_log=None)
     # 顶部死叉
-    data.loc[(data.price > data.UB_15M_V * 1.03)&(data.price < data.UB_30M_V * 1.03),"signal"] = 0
-    data.loc[(data.price > data.UB_15M_V * 1.03)&(data.price < data.UB_30M_V * 1.03),"msg"] = '超涨止盈信号'
+    data.loc[(data.price > data.UB_15M_V * 1.03)&(data.price < data.UB_30M_V * 1.03)&(data.ask2 > 0),"signal"] = 0
+    data.loc[(data.price > data.UB_15M_V * 1.03)&(data.price < data.UB_30M_V * 1.03)&(data.ask2 > 0),"msg"] = '超涨止盈信号'
 
-    data.loc[(data.UB_15M_S2 > 0)&(data.UB_15M_S < 0)&(data.UB_15M < 0),"signal"] = 0
-    data.loc[(data.UB_15M_S2 > 0)&(data.UB_15M_S < 0)&(data.UB_15M < 0),"msg"] = '15M见顶信号'
+    data.loc[(data.UB_15M_S2 > 0)&(data.UB_15M_S < 0)&(data.UB_15M < 0)&(data.ask2 > 0),"signal"] = 0
+    data.loc[(data.UB_15M_S2 > 0)&(data.UB_15M_S < 0)&(data.UB_15M < 0)&(data.ask2 > 0),"msg"] = '15M见顶信号'
 
-    data.loc[(data.UB_30M_S2 > 0)&(data.UB_30M_S < 0)&(data.UB_30M < 0),"signal"] = 0
-    data.loc[(data.UB_30M_S2 > 0)&(data.UB_30M_S < 0)&(data.UB_30M < 0),"msg"] = '30M见顶信号'
+    data.loc[(data.UB_30M_S2 > 0)&(data.UB_30M_S < 0)&(data.UB_30M < 0)&(data.ask2 > 0),"signal"] = 0
+    data.loc[(data.UB_30M_S2 > 0)&(data.UB_30M_S < 0)&(data.UB_30M < 0)&(data.ask2 > 0),"msg"] = '30M见顶信号'
 
     # 强制止损
     data.loc[data['盈亏比例(%)'] < -5, "signal"] = 0
