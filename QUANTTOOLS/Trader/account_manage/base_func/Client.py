@@ -112,7 +112,7 @@ def get_Position(client, account=None):
 
             positions = pd.DataFrame({'证券代码':symbol,'证券名称':None,'市值':amount, '股票余额':volume, '可用余额':available, '冻结数量':volume_today, '参考盈亏':fpnl, '盈亏比例(%)':fpnl_per})
 
-    positions=positions.astype({'市值':'float','股票余额':'float','可用余额':'float'})
+    positions=positions.astype({'市值':'float','股票余额':'float','可用余额':'float','盈亏比例(%)':'float'})
     positions = positions[positions['股票余额'] > 0]
     positions['上市时间'] = positions['证券代码'].apply(lambda x:QA_util_get_days_to_today(str(QA_fetch_stock_to_market_date(x))))
     positions['INDUSTRY'] = positions['证券代码'].apply(lambda x:QA_fetch_stock_industryinfo(x).SWHY.values[0])
