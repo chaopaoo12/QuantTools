@@ -65,13 +65,17 @@ def trading_new(trading_date, working_dir=working_dir):
     r_tar, mars_day, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_day', 'prediction_stock_mars_day')
 
     #xg_sh=xg_sh[(xg_sh.RANK<=20)&(xg_sh.O_PROB>=0.35)]
+    xg_sh = xg_sh.reset_index().set_index('code').join(xg_sh.groupby('code')[['BOLL','UB']].last().rename(columns={'BOLL':'BOLL_V','UB':'UB_V'})).reset_index().set_index(['date','code']).sort_index()
+    mars_day = mars_day.reset_index().set_index('code').join(mars_day.groupby('code')[['BOLL','UB']].last().rename(columns={'BOLL':'BOLL_V','UB':'UB_V'})).reset_index().set_index('date','code').sort_index()
+    xg = xg.reset_index().set_index('code').join(xg.groupby('code')[['BOLL','UB']].last().rename(columns={'BOLL':'BOLL_V','UB':'UB_V'})).reset_index().set_index('date','code').sort_index()
 
-    code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.TARGET3.isnull())&(xg_sh.SKDJ_K<50)].reset_index().code.tolist()
-                         + xg[(xg.RANK <= 20)&(~xg.INDUSTRY.isin(['银行']))&(xg.TARGET3.isnull())&(xg.SKDJ_K<50)].reset_index().code.tolist()
+
+    code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.BOLL_V>0)&(xg_sh.BOLL_V<xg_sh.UB_V.abs())].reset_index().code.tolist()
+                         + xg[(xg.RANK <= 20)&(xg.BOLL_V>0)&(xg.BOLL_V<xg.UB_V.abs())].reset_index().code.tolist()
                          #+ xg_nn[(xg_nn.RANK <= 5)&(~xg_nn.INDUSTRY.isin(['银行']))&(xg_nn.y_pred==1)&(xg_nn.TARGET5.isnull())].reset_index().code.tolist()
                          #+ mars_nn[(mars_nn.RANK <= 5)&(~mars_nn.INDUSTRY.isin(['银行']))&(mars_nn.y_pred==1)&(mars_nn.TARGET5.isnull())].reset_index().code.tolist()
-                         + mars_day[(mars_day.RANK <= 20)&(~mars_day.INDUSTRY.isin(['银行']))&(mars_day.TARGET3.isnull())&(mars_day.SKDJ_K<50)].reset_index().code.tolist()))
-    time_list = on_bar('09:30:00', '15:00:00', 1, [['11:30:00', '13:00:00']])
+                         + mars_day[(mars_day.RANK <= 20)&(mars_day.BOLL_V>0)&(mars_day.BOLL_V<mars_day.UB_V.abs())].reset_index().code.tolist()))
+    time_list = on_bar('09:30:00', '15:00:00', 10, [['11:30:00', '13:00:00']],'S')
     time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
 
     strategy = StrategyBase(target_list=code_list, base_percent=1, trading_date=trading_date)
