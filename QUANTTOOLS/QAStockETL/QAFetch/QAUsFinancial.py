@@ -91,6 +91,7 @@ def QA_fetch_get_stock_min_sina(code, period='30', type='',proxies=[]):
 
     elif isinstance(code, str):
         data = stock_zh_a_hist_min_em(symbol=code, period=period, adjust=type)
+        data = data.assign(code=code)
     else:
         data=None
     try:
