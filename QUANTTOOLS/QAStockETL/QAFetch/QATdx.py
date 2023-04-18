@@ -4,6 +4,7 @@ from QUANTAXIS.QAUtil import (QA_util_today_str, QA_util_get_pre_trade_date, QA_
                               QA_util_get_trade_range, QA_util_get_real_date,
                               QA_util_if_trade,QA_util_get_last_day,
                               QA_util_date_stamp)
+from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_min
 from akshare import stock_info_a_code_name
 from pytdx.reader import BlockReader
 import easyquotation
@@ -11,6 +12,8 @@ import pandas as pd
 import numpy as np
 import akshare as ak
 import time
+import multiprocessing
+from functools import partial
 
 def QA_fetch_get_usstock_day(code, start, end):
     data = QA_fetch_get_future_day('tdx',code, start, end)
@@ -253,6 +256,26 @@ def QA_fetch_get_stock_tfp(date):
     tfp = stock_tfp_em_df[(stock_tfp_em_df['停牌时间'].apply(lambda x:str(x)) <= date)&
                           (stock_tfp_em_df['停牌截止时间'].apply(lambda x:str(x)) >= date)]['代码'].tolist()
     return(tfp)
+
+def QA_fetch_get_stock_min(code, start, end, freq):
+
+    if isinstance(code,list):
+        pool = multiprocessing.Pool(20)
+        with pool as p:
+            res = p.map(partial(QA_fetch_get_stock_min, start=start, end=end, frequence=freq), code)
+        data = pd.concat(res, axis=0)
+    elif isinstance(code, str):
+        data = QA_fetch_get_stock_min(symbol=code, start=start, end=end, frequence=freq)
+
+    else:
+        data = None
+    try:
+        data = data.assign(volume=data.vol)
+    except:
+        data = None
+
+    return(data)
+
 
 if __name__ == '__main__':
     pass
