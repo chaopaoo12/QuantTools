@@ -528,7 +528,7 @@ def QA_fetch_get_index_quant_min(code, start_date, end_date, type='30min'):
         res = QA_fetch_get_index_indicator_realtime(code[0], start_date=start_date, end_date=end_date, type=type)
         return(res)
 
-def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min', keep = False):
+def QA_fetch_get_stock_quant_min(code, start_date, end_date, type='30min', keep = True):
 
     k = 1
     while k <= 5:
