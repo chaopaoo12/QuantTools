@@ -81,7 +81,7 @@ def sohlc(data, N= 240):
     data[['day_open','day_close','day_high','day_low']] = data.rolling(window=N, min_periods=1).agg({'open':first,'close':last,'high':'max','low':'min'})
     return(data)
 
-def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'crawl',proxies=[]):
+def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'crawl', proxies=[]):
     QA_util_log_info("JOB Get {} Minly data for {code} ======= from {start_date} to {end_date}".format(period, code=code, start_date=start_date,end_date=end_date))
 
 
