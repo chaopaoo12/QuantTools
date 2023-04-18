@@ -1,7 +1,7 @@
 from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq, QA_fetch_get_stock_min_sina
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_min_adv
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_min_tdx
+from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_min_tdx
 import datetime
 import time
 from scipy import stats
