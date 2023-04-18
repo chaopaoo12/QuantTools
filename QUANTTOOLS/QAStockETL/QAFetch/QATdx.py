@@ -265,7 +265,7 @@ def QA_fetch_get_stock_min_tdx(code, start, end, frequence):
             res = p.map(partial(QA_fetch_get_stock_min_a, start=start, end=end, frequence=frequence), code)
         data = pd.concat(res, axis=0)
     elif isinstance(code, str):
-        data = QA_fetch_get_stock_min_a(symbol=code, start=start, end=end, frequence=frequence)
+        data = QA_fetch_get_stock_min_a(code=code, start=start, end=end, frequence=frequence)
 
     else:
         data = None
