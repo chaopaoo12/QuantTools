@@ -257,7 +257,7 @@ def QA_fetch_get_stock_tfp(date):
                           (stock_tfp_em_df['停牌截止时间'].apply(lambda x:str(x)) >= date)]['代码'].tolist()
     return(tfp)
 
-def QA_fetch_get_stock_min(code, start, end, freq):
+def QA_fetch_get_stock_min_tdx(code, start, end, freq):
 
     if isinstance(code,list):
         pool = multiprocessing.Pool(20)

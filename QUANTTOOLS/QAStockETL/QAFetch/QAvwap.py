@@ -1,7 +1,7 @@
 from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq, QA_fetch_get_stock_min_sina
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_min_adv
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_min
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_min_tdx
 import datetime
 import time
 from scipy import stats
@@ -92,7 +92,7 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         data = QA_fetch_get_stock_min_sina(code=code, period=period, type='qfq',proxies=proxies)
     elif type == 'tdx':
         print('tdx')
-        data = QA_fetch_get_stock_min(code, start_date, end_date, frequence='1min')
+        data = QA_fetch_get_stock_min_tdx(code, start_date, end_date, frequence='1min')
         #data = QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='1m')
     print("0 --- %s seconds ---" % (time.time() - start_time))
     if data is not None and type == 'real':
