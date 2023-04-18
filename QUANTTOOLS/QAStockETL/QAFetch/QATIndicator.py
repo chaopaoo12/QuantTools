@@ -4,7 +4,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator,ohlc,get_ind
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
 from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq, QA_fetch_get_stock_min_sina,QA_fetch_get_index_min_sina
-from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_index_min
+from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_index_min,QA_fetch_get_stock_min
 
 def QA_fetch_get_stock_llvalue(code, start_date, end_date, type = 'day'):
     if type == '1min':
