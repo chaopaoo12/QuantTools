@@ -260,7 +260,7 @@ def QA_fetch_get_stock_tfp(date):
 def QA_fetch_get_stock_min_tdx(code, start, end, frequence):
 
     if isinstance(code,list):
-        ip, port = get_mainmarket_ip()
+        ip, port = get_mainmarket_ip(None, None)
         pool = multiprocessing.Pool(20)
         with pool as p:
             res = p.map(partial(QA_fetch_get_stock_min_a, start=start, end=end, frequence=frequence, ip=ip, port=port), code)
