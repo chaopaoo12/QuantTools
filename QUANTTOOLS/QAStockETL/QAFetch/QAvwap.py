@@ -91,7 +91,6 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
     elif type == 'sina':
         data = QA_fetch_get_stock_min_sina(code=code, period=period, type='qfq',proxies=proxies)
     elif type == 'tdx':
-        print('tdx')
         data = QA_fetch_get_stock_min_tdx(code, start_date, end_date, frequence='1min')
         #data = QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='1m')
     print("0 --- %s seconds ---" % (time.time() - start_time))
