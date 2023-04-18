@@ -11,7 +11,7 @@ import pandas as pd
 
 def data_base(code_list,trading_date,proxies):
     data = QA_fetch_get_stock_vwap(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date,
-                                   period = '1', type = 'real',proxies=proxies)
+                                   period = '1', type = 'tdx',proxies=proxies)
     return(data)
 
 def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, position, mark_tm, proxies):
