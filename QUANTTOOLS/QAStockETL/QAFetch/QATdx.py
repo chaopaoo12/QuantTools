@@ -4,7 +4,7 @@ from QUANTAXIS.QAUtil import (QA_util_today_str, QA_util_get_pre_trade_date, QA_
                               QA_util_get_trade_range, QA_util_get_real_date,
                               QA_util_if_trade,QA_util_get_last_day,
                               QA_util_date_stamp)
-from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_min as QA_fetch_get_stock_min_a
+from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_min as QA_fetch_get_stock_min_a, get_mainmarket_ip
 from akshare import stock_info_a_code_name
 from pytdx.reader import BlockReader
 import easyquotation
@@ -260,9 +260,10 @@ def QA_fetch_get_stock_tfp(date):
 def QA_fetch_get_stock_min_tdx(code, start, end, frequence):
 
     if isinstance(code,list):
+        ip, port = get_mainmarket_ip()
         pool = multiprocessing.Pool(20)
         with pool as p:
-            res = p.map(partial(QA_fetch_get_stock_min_a, start=start, end=end, frequence=frequence), code)
+            res = p.map(partial(QA_fetch_get_stock_min_a, start=start, end=end, frequence=frequence, ip=ip, port=port), code)
         data = pd.concat(res, axis=0)
     elif isinstance(code, str):
         data = QA_fetch_get_stock_min_a(code=code, start=start, end=end, frequence=frequence)
