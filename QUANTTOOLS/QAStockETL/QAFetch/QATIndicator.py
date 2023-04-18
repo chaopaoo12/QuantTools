@@ -387,7 +387,7 @@ def QA_fetch_get_index_indicator_short(code, start_date, end_date, type = 'day')
         data = data.assign(date_stamp=data['date'].apply(lambda x: QA_util_date_stamp(str(x)[0:10])))
         return(data)
 
-def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'day', keep=False, source='sina'):
+def QA_fetch_get_stock_indicator_realtime(code, start_date, end_date, type = 'day', keep=True, source='sina'):
 
     if type == '15min':
         period = '15'
