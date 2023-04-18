@@ -101,7 +101,7 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
     try:
         start_time = time.time()
         data = data.assign(date=data.reset_index().datetime.apply(lambda x:str(x)[0:10]).tolist(),
-                           HM=data.reset_index().datetime.dt.strftime('%H:%M').values,
+                           HM=data.reset_index().datetime.apply(lambda x:str(x)[11:16]).tolist(),
                            )
         print("1 --- %s seconds ---" % (time.time() - start_time))
         start_time = time.time()
