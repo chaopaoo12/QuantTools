@@ -104,8 +104,8 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     res30=pd.concat([temp.min30, day_temp_data[1].data])
     res15 = res15[~res15.index.duplicated(keep='first')]
     res30 = res30[~res30.index.duplicated(keep='first')]
-    res15=get_indicator(QA_DataStruct_Stock_min(res15.sort_index()), 'min')
-    res30=get_indicator(QA_DataStruct_Stock_min(res30.sort_index()), 'min')
+    res15=get_indicator(QA_DataStruct_Stock_min(res15.sort_index()), 'min', keep = True)
+    res30=get_indicator(QA_DataStruct_Stock_min(res30.sort_index()), 'min', keep = True)
     res15.columns = [x.upper() + '_15M' for x in res15.columns]
     res30.columns = [x.upper() + '_30M' for x in res30.columns]
     sec_temp_data = [res15.join(res30).groupby('code').fillna(method='ffill')]
