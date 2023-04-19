@@ -6,6 +6,7 @@ from QUANTTOOLS.Market.MarketTools import load_data, StrategyRobotBase, Strategy
 from QUANTAXIS.QAUtil import QA_util_get_last_day,QA_util_get_real_date, QA_util_get_pre_trade_date
 #from .StrategyOne import signal, balance, tracking_signal, track_balance, code_select
 from .StrategyOne import signal, balance, tracking_signal, track_balance, code_select, day_init
+from QUANTTOOLS.Market.MarketTools import base_report
 
 
 def trading_sim(trading_date, working_dir=working_dir):
@@ -69,12 +70,17 @@ def trading_new(trading_date, working_dir=working_dir):
     mars_day = mars_day.reset_index().set_index('code').join(mars_day.groupby('code')[['BOLL','UB']].last().rename(columns={'BOLL':'BOLL_V','UB':'UB_V'})).reset_index().set_index('date','code').sort_index()
     xg = xg.reset_index().set_index('code').join(xg.groupby('code')[['BOLL','UB']].last().rename(columns={'BOLL':'BOLL_V','UB':'UB_V'})).reset_index().set_index('date','code').sort_index()
 
+    base_report(trading_date, '目标股池', **{
+                                         'XG_SH':xg_sh[(xg_sh.RANK <= 20)&(xg_sh.BOLL_V>0)&(xg_sh.BOLL_V<xg_sh.UB_V.abs())&(xg_sh.TARGET5.isnull())],
+                                         'MARKS_DAY':mars_day[(mars_day.RANK <= 20)&(mars_day.BOLL_V>0)&(mars_day.BOLL_V<mars_day.UB_V.abs())&(mars_day.TARGET5.isnull())],
+                                         'XG':xg[(xg.RANK <= 20)&(xg.BOLL_V>0)&(xg.BOLL_V<xg.UB_V.abs())&(xg.TARGET5.isnull())],
+                                         })
 
-    code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.BOLL_V>0)&(xg_sh.BOLL_V<xg_sh.UB_V.abs())].reset_index().code.tolist()
-                         + xg[(xg.RANK <= 20)&(xg.BOLL_V>0)&(xg.BOLL_V<xg.UB_V.abs())].reset_index().code.tolist()
+    code_list = list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.BOLL_V>0)&(xg_sh.BOLL_V<xg_sh.UB_V.abs())&(xg_sh.TARGET5.isnull())].reset_index().code.tolist()
+                         + xg[(xg.RANK <= 20)&(xg.BOLL_V>0)&(xg.BOLL_V<xg.UB_V.abs())&(xg.TARGET5.isnull())].reset_index().code.tolist()
                          #+ xg_nn[(xg_nn.RANK <= 5)&(~xg_nn.INDUSTRY.isin(['银行']))&(xg_nn.y_pred==1)&(xg_nn.TARGET5.isnull())].reset_index().code.tolist()
                          #+ mars_nn[(mars_nn.RANK <= 5)&(~mars_nn.INDUSTRY.isin(['银行']))&(mars_nn.y_pred==1)&(mars_nn.TARGET5.isnull())].reset_index().code.tolist()
-                         + mars_day[(mars_day.RANK <= 20)&(mars_day.BOLL_V>0)&(mars_day.BOLL_V<mars_day.UB_V.abs())].reset_index().code.tolist()))
+                         + mars_day[(mars_day.RANK <= 20)&(mars_day.BOLL_V>0)&(mars_day.BOLL_V<mars_day.UB_V.abs())&(mars_day.TARGET5.isnull())].reset_index().code.tolist()))
     time_list = on_bar('09:30:00', '15:00:00', 10, [['11:30:00', '13:00:00']],'S')
     time_index = on_bar('09:30:00', '15:00:00', 15, [['11:30:00', '13:00:00']])
 
