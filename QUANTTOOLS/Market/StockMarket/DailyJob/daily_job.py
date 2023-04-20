@@ -12,7 +12,7 @@ def daily_run(trading_date):
     predict_sh(trading_date)
     predict_watch(trading_date)
 
-    train_min_model(trading_date)
+    #train_min_model(trading_date)
     #predict_stock_summary(trading_date)
 
 def neut_run(trading_date):
