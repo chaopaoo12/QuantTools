@@ -27,12 +27,13 @@ def QA_fetch_get_stock_realtime(code, source = 'qq'):
     if source == 'qq':
         quotation = easyquotation.use(source)
         values = pd.DataFrame(quotation.stocks(code)).T.rename(columns={'now':'price','成交量(手)':'volume','成交额(万)':'amount',
-                                                                        '总市值':'tmkt','振幅':'AMP','量比':'volume_ratio'})
+                                                                        '总市值':'tmkt','振幅':'AMP','量比':'volume_ratio',
+                                                                        'close':'last_close'})
         values.index.name = 'code'
     elif source == 'ak':
         values = ak.stock_zh_a_spot_em().rename(columns={'代码':'code','名称':'name','最新价':'price',
                                                          '涨跌幅':'chg','成交量':'volume','成交额':'amount',
-                                                         '最高':'high','最低':'low','今开':'open','昨收':'close',
+                                                         '最高':'high','最低':'low','今开':'open','昨收':'last_close',
                                                          '换手率':'turnover','市盈率-动态':'pe','市净率':'pb',
                                                          '总市值':'tmkt','振幅':'AMP','量比':'volume_ratio',}).set_index('code')
     elif source == 'tdx':
