@@ -130,6 +130,7 @@ class StrategyRobotBase:
                                                              })
 
             # prepare signal.
+            signal_data = self.strategy.strategy_run(mark_tm)
             try:
                signal_data = self.strategy.strategy_run(mark_tm)
             except:
