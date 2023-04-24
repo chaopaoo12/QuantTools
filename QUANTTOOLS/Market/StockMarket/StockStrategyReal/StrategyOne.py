@@ -1,11 +1,11 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before,time_check_after
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_vwap
 from QUANTAXIS.QAUtil import QA_util_log_info, QA_util_get_pre_trade_date
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo, QA_fetch_get_stock_realtime
 import time
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_min
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_min_adv
-from QUANTAXIS import QA_fetch_get_stock_realtime, QA_fetch_get_index_realtime
+from QUANTAXIS import QA_fetch_get_index_realtime
 from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator
 import pandas as pd
 
