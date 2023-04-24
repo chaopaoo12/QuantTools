@@ -2,6 +2,7 @@ from QUANTAXIS.QAUtil import QA_util_log_info
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, close_check, suspend_check, get_on_time,time_check_before, check_market_time,time_check_after
 from QUANTTOOLS.QAStockETL.Crawly.IP_Proxy import get_ip_poll,check_ip_poll
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_tfp
+from QUANTTOOLS.QAStockETL.QAUtil.base_func import except_output
 import time
 import datetime
 
@@ -57,6 +58,7 @@ class StrategyBase:
     def set_percent_func(self, func=None):
         self.percent_func = func
 
+    @except_output
     def code_select(self, mark_tm):
         QA_util_log_info('##JOB Refresh Proxy Pool  ==== {}'.format(mark_tm), ui_log= None)
 
@@ -83,7 +85,7 @@ class StrategyBase:
             self.sec_temp_data = []
             self.source_data = None
 
-
+    @except_output
     def init_run(self):
         if self.init_func is not None:
             if self.position is not None and self.position.shape[0] > 0:
@@ -95,6 +97,7 @@ class StrategyBase:
         else:
             self.day_temp_data = []
 
+    @except_output
     def signal_run(self, mark_tm):
         data = self.signal_func(target_list=self.target_list,
                                 buy_list=self.buy_list,
@@ -107,6 +110,7 @@ class StrategyBase:
                                 proxies=self.proxies)
         return(data)
 
+    @except_output
     def percent_run(self, mark_tm):
         if self.percent_func is not None:
             return self.percent_func(target_list = self.target_list,
@@ -117,9 +121,11 @@ class StrategyBase:
         else:
             return self.base_percent
 
+    @except_output
     def balance_run(self, signal_data, percent):
         return self.balance_func(signal_data, self.position, self.sub_account, percent)
 
+    @except_output
     def strategy_run(self, mark_tm):
 
         QA_util_log_info('##JOB Now Start Trading ==== {}'.format(mark_tm), ui_log= None)
@@ -136,6 +142,7 @@ class StrategyBase:
             k = 0
             while k <= 2:
                 QA_util_log_info('JOB Selct Code List {x} times ==================== '.format(x=k+1), ui_log=None)
+                k += 1
                 #try:
                 self.code_select(codsel_tmmark)
                 QA_util_log_info('JOB Selct Code List Done ==================== ', ui_log=None)
