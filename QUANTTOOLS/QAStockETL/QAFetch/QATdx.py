@@ -1,4 +1,5 @@
-from QUANTAXIS import QA_fetch_get_future_day, QA_fetch_stock_min_adv, QA_fetch_stock_info, QA_fetch_index_list
+from QUANTAXIS import QA_fetch_get_future_day, QA_fetch_stock_min_adv, QA_fetch_stock_info, QA_fetch_index_list, \
+    QA_fetch_get_stock_realtime as QA_fetch_get_stock_realtime_a
 from QUANTTOOLS.QAStockETL.QAData.database_settings import tdx_dir
 from QUANTAXIS.QAUtil import (QA_util_today_str, QA_util_get_pre_trade_date, QA_util_get_pre_trade_date,
                               QA_util_get_trade_range, QA_util_get_real_date,
@@ -17,27 +18,27 @@ from functools import partial
 
 def QA_fetch_get_usstock_day(code, start, end):
     data = QA_fetch_get_future_day('tdx',code, start, end)
-    data = data.rename(columns={'trade':'vol','':'','':''})
+    data = data.rename(columns={'trade':'vol'})
     data = data[['open','close','high','low','vol','amount','date','code','date_stamp']]
     return(data)
 
-def QA_fetch_get_stock_realtime(code, source ='qq'):
-    try_time = 1
+def QA_fetch_get_stock_realtime(code, source = 'qq'):
+    # deal code
+    if source == 'qq':
+        quotation = easyquotation.use(source)
+        values = pd.DataFrame(quotation.stocks(code)).T.rename(columns={'now':'price','成交量(手)':'volume','成交额(万)':'amount',
+                                                                        '总市值':'tmkt','振幅':'AMP','量比':'volume_ratio'})
+        values.index.name = 'code'
+    elif source == 'ak':
+        values = ak.stock_zh_a_spot_em().rename(columns={'代码':'code','名称':'name','最新价':'price',
+                                                         '涨跌幅':'chg','成交量':'volume','成交额':'amount',
+                                                         '最高':'high','最低':'low','今开':'open','昨收':'close',
+                                                         '换手率':'turnover','市盈率-动态':'pe','市净率':'pb',
+                                                         '总市值':'tmkt','振幅':'AMP','量比':'volume_ratio',}).set_index('code')
+    elif source == 'tdx':
+        values = QA_fetch_get_stock_realtime_a(package='tdx',code=code).reset_index(level=0)
 
-    while try_time <= 3:
-        try:
-            quotation = easyquotation.use(source)
-            values = pd.DataFrame(quotation.stocks(code)).T
-            values.index.name = 'code'
-        except:
-            values = None
-        if values is None:
-            try_time += 1
-            time.sleep(3)
-        else:
-            break
-
-    return(values)
+    return(values.loc[code])
 
 
 def QA_fetch_get_stock_real(code):
