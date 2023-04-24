@@ -28,7 +28,7 @@ def QA_fetch_get_stock_realtime(code, source = 'qq'):
         quotation = easyquotation.use(source)
         values = pd.DataFrame(quotation.stocks(code)).T.rename(columns={'now':'price','成交量(手)':'volume','成交额(万)':'amount',
                                                                         '总市值':'tmkt','振幅':'AMP','量比':'volume_ratio',
-                                                                        'close':'last_close'})
+                                                                        'close':'last_close'}).drop('code',axis=1)
         values.index.name = 'code'
     elif source == 'ak':
         values = ak.stock_zh_a_spot_em().rename(columns={'代码':'code','名称':'name','最新价':'price',
