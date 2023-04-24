@@ -11,12 +11,12 @@ import pandas as pd
 
 def data_base(code_list,trading_date,proxies):
     data = QA_fetch_get_stock_vwap(code_list, QA_util_get_pre_trade_date(trading_date,10), trading_date,
-                                   period = '1', type = 'tdx',proxies=proxies)
+                                   period = '15', type = 'tdx',proxies=proxies)
     return(data)
 
 def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, position, mark_tm, proxies):
     #try:
-    source_data = QA_fetch_get_stock_realtime(package='tdx',code=code_list)
+    source_data = QA_fetch_get_stock_realtime(package='ak',code=code_list)
     source_data = source_data.reset_index()
     ##
     source_data = source_data.assign(datetime = pd.to_datetime(mark_tm)).set_index(
@@ -104,7 +104,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
 
     source_data = data_base(code_list, trading_date, proxies)
 
-    temp = source_data.assign(type='1min')
+    temp = source_data.assign(type='15min')
     temp = QA_DataStruct_Stock_min(temp)
     res15=pd.concat([temp.min15, day_temp_data[0].data])
     res30=pd.concat([temp.min30, day_temp_data[1].data])
