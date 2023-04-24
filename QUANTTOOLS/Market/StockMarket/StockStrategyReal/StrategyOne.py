@@ -16,7 +16,7 @@ def data_base(code_list,trading_date,proxies):
 
 def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, position, mark_tm, proxies):
     #try:
-    source_data = QA_fetch_get_stock_realtime(source='ak',code=code_list)
+    source_data = QA_fetch_get_stock_realtime(source='qq',code=code_list)
     source_data = source_data.reset_index()
     ##
     source_data = source_data.assign(datetime = pd.to_datetime(mark_tm)).set_index(
