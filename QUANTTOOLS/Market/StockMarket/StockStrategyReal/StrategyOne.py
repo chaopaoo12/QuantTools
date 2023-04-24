@@ -20,7 +20,7 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     source_data = source_data.reset_index()
     ##
     source_data = source_data.assign(datetime = pd.to_datetime(mark_tm)).set_index(
-        ['datetime', 'code'])[['last_close','price','open','high','low','vol','ask1','ask_vol1','ask2','ask_vol2','bid1','bid_vol1']].sort_index()
+        ['datetime', 'code'])[['last_close','price','open','high','low','vol','ask1','ask2','bid1']].sort_index()
 
     data = source_data.join(sec_temp_data[0])
     data = data.loc[mark_tm]
