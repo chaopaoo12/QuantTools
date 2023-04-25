@@ -146,6 +146,7 @@ class StrategyBase:
                 k += 1
                 #try:
                 self.code_select(codsel_tmmark)
+                QA_util_log_info('JOB Selct Code List Success ==================== {}'.format(codsel_tmmark), ui_log=None)
                 break
                 #except:
                 #    k += 1
@@ -167,6 +168,7 @@ class StrategyBase:
                     time.sleep(5)
                     k += 1
                 else:
+                    QA_util_log_info('JOB Init Trading Signal List ==================== {}'.format(mark_tm), ui_log=None)
                     break
 
             QA_util_log_info('JOB Init Capital Percent ==================== {}'.format(mark_tm), ui_log=None)
