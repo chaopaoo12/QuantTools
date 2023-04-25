@@ -1170,7 +1170,6 @@ def get_indicator_real(data, type='day', keep=False):
 
     res =pd.concat([MACD,BOLL,SKDJ],
                    axis=1).dropna(how='all')
-    res['close'] = data['close']
 
     if type in ['day','week','month']:
         res = res.reset_index()
