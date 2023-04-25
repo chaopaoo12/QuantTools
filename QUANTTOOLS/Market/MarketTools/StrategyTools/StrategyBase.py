@@ -3,6 +3,7 @@ from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import open_check, clo
 from QUANTTOOLS.QAStockETL.Crawly.IP_Proxy import get_ip_poll,check_ip_poll
 from QUANTTOOLS.QAStockETL.QAFetch.QATdx import QA_fetch_get_stock_tfp
 from QUANTTOOLS.QAStockETL.QAUtil.base_func import except_output
+from QUANTTOOLS.Message.message_func.wechat import send_actionnotice
 import time
 import datetime
 
@@ -145,6 +146,8 @@ class StrategyBase:
                 k += 1
                 #try:
                 self.code_select(codsel_tmmark)
+                send_actionnotice(self.strategy_id, '程序运行报告:{}'.format(
+                    mark_tm), 'code select success', direction='SUCCESS', offset='SUCCESS', volume=None)
                 QA_util_log_info('JOB Selct Code List Done ==================== ', ui_log=None)
                 break
                 #except:
