@@ -1137,6 +1137,56 @@ def get_indicator_short(data, type='day', keep=False):
 
     return(res)
 
+def get_indicator_real(data, type='day', keep=False):
+
+    try:
+        BOLL = data.add_func(QA_indicator_BOLL)
+        BOLL['WIDTH'] = (BOLL['UB']-BOLL['LB'])/BOLL['BOLL']
+        BOLL['BOLL'] = data['close'] / BOLL['BOLL'] - 1
+        BOLL['UB'] = data['close'] / BOLL['UB'] - 1
+        BOLL['LB'] = data['close'] / BOLL['LB'] - 1
+    except:
+        BOLL = data.data.assign(BOLL=None,UB=None,LB=None,WIDTH=None,
+                                BOLL_CROSS1=0,BOLL_CROSS2=0,BOLL_CROSS3=0,
+                                BOLL_CROSS4=0)[['BOLL','UB','LB','WIDTH']]
+
+    try:
+        SKDJ = data.add_func(QA_indicator_SKDJ)
+        SKDJ['SKDJ_CROSS1'] = CROSS(SKDJ['SKDJ_D'], SKDJ['SKDJ_K'])
+        SKDJ['SKDJ_CROSS2'] = CROSS(SKDJ['SKDJ_K'], SKDJ['SKDJ_D'])
+    except:
+        SKDJ = data.data.assign(SKDJ_K=None,SKDJ_D=None,RSV=None,SKDJ_CROSS1=0,
+                                SKDJ_CROSS2=0)[['SKDJ_K','SKDJ_D','RSV','SKDJ_CROSS1','SKDJ_CROSS2']]
+
+    try:
+        MACD = data.add_func(QA_indicator_MACD)
+        MACD['CROSS_JC'] = CROSS(MACD['DIF'], MACD['DEA'])
+        MACD['CROSS_SC'] = CROSS(MACD['DEA'], MACD['DIF'])
+        MACD['MACD_TR'] = MACD.apply(lambda x: function1(x.DEA,x.DIF), axis = 1)
+    except:
+        MACD = data.data.assign(DIF=None,DEA=None,MACD=None,
+                                CROSS_JC=0,CROSS_SC=0,)[['DIF','DEA','MACD','CROSS_JC','CROSS_SC','MACD_TR']]
+
+
+    res =pd.concat([MACD,BOLL,SKDJ],
+                   axis=1).dropna(how='all')
+    res['close'] = data['close']
+
+    if type in ['day','week','month']:
+        res = res.reset_index()
+        res = res.assign(date=res['date'].apply(lambda x: str(x)[0:10]))
+        res = res.set_index(['date','code']).dropna(how='all')
+    elif type in ['min','hour']:
+        res = res.reset_index()
+        res = res.assign(date=res['datetime'].apply(lambda x: str(x)[0:10]))
+        res = res.assign(time_stamp=res['datetime'].apply(lambda x: str(x)))
+        res = res.set_index(['datetime','code']).dropna(how='all')
+
+    if keep is True:
+        res = res.join(data.data[['open','high','low','close','volume']])
+
+    return(res)
+
 def get_LLV(data, type='day'):
     try:
         # todo

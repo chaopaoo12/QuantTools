@@ -6,7 +6,7 @@ import time
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_min
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_min_adv
 from QUANTAXIS import QA_fetch_get_index_realtime
-from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator
+from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator_real
 import pandas as pd
 
 def data_base(code_list,trading_date,proxies):
@@ -162,9 +162,9 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     res5 = res5[~res5.index.duplicated(keep='first')]
     res15 = res15[~res15.index.duplicated(keep='first')]
     res30 = res30[~res30.index.duplicated(keep='first')]
-    res5=get_indicator(QA_DataStruct_Stock_min(res5.sort_index()), 'min', keep = True)
-    res15=get_indicator(QA_DataStruct_Stock_min(res15.sort_index()), 'min', keep = True)
-    res30=get_indicator(QA_DataStruct_Stock_min(res30.sort_index()), 'min', keep = True)
+    res5=get_indicator_real(QA_DataStruct_Stock_min(res5.sort_index()), 'min', keep = True)
+    res15=get_indicator_real(QA_DataStruct_Stock_min(res15.sort_index()), 'min', keep = True)
+    res30=get_indicator_real(QA_DataStruct_Stock_min(res30.sort_index()), 'min', keep = True)
     res5.columns = [x.upper() + '_5M' for x in res5.columns]
     res15.columns = [x.upper() + '_15M' for x in res15.columns]
     res30.columns = [x.upper() + '_30M' for x in res30.columns]
