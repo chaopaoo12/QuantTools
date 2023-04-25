@@ -125,8 +125,8 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     res5.columns = [x.upper() + '_5M' for x in res5.columns]
     res15.columns = [x.upper() + '_15M' for x in res15.columns]
     res30.columns = [x.upper() + '_30M' for x in res30.columns]
-    res15[['UB_5M_S','BOLL_5M_S','LB_5M_S']] = res15.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift()
-    res15[['UB_5M_S2','BOLL_5M_S2','LB_5M_S2']] = res15.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift(2)
+    res5[['UB_5M_S','BOLL_5M_S','LB_5M_S']] = res5.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift()
+    res5[['UB_5M_S2','BOLL_5M_S2','LB_5M_S2']] = res5.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift(2)
     res15[['UB_15M_S','BOLL_15M_S','LB_15M_S']] = res15.groupby('code')[['UB_15M','BOLL_15M','LB_15M']].shift()
     res15[['UB_15M_S2','BOLL_15M_S2','LB_15M_S2']] = res15.groupby('code')[['UB_15M','BOLL_15M','LB_15M']].shift(2)
     res30[['UB_30M_S','BOLL_30M_S','LB_30M_S']] = res30.groupby('code')[['UB_30M','BOLL_30M','LB_30M']].shift()
