@@ -146,9 +146,6 @@ class StrategyBase:
                 k += 1
                 #try:
                 self.code_select(codsel_tmmark)
-                send_actionnotice(self.strategy_id, '程序运行报告:{}'.format(
-                    mark_tm), 'code select success', direction='SUCCESS', offset='SUCCESS', volume=None)
-                QA_util_log_info('JOB Selct Code List Done ==================== ', ui_log=None)
                 break
                 #except:
                 #    k += 1
