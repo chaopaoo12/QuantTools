@@ -86,13 +86,14 @@ def day_init(target_list, trading_date):
 
     QA_util_log_info('##JOB Init Day Data ==================== {}'.format(
         trading_date), ui_log=None)
-
+    his5_data= QA_fetch_stock_min_adv(target_list,QA_util_get_pre_trade_date(trading_date,10),
+                                       QA_util_get_pre_trade_date(trading_date,5),'5min')
     his15_data= QA_fetch_stock_min_adv(target_list,QA_util_get_pre_trade_date(trading_date,10),
                                        QA_util_get_pre_trade_date(trading_date,5),'15min')
     his30_data= QA_fetch_stock_min_adv(target_list,QA_util_get_pre_trade_date(trading_date,10),
                                        QA_util_get_pre_trade_date(trading_date,5),'30min')
 
-    return([his15_data, his30_data])
+    return([his15_data, his30_data, his5_data])
 
 def code_select(target_list, position, day_temp_data, sec_temp_data, trading_date, mark_tm, proxies):
 
@@ -110,32 +111,40 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
 
     source_data = data_base(code_list, trading_date, proxies)
 
-    temp = source_data.assign(type='15min')
+    temp = source_data.assign(type='1min')
     temp = QA_DataStruct_Stock_min(temp)
+    res5=pd.concat([temp.min5, day_temp_data[2].data])
     res15=pd.concat([temp.min15, day_temp_data[0].data])
     res30=pd.concat([temp.min30, day_temp_data[1].data])
+    res5 = res5[~res5.index.duplicated(keep='first')]
     res15 = res15[~res15.index.duplicated(keep='first')]
     res30 = res30[~res30.index.duplicated(keep='first')]
+    res5=get_indicator(QA_DataStruct_Stock_min(res5.sort_index()), 'min', keep = True)
     res15=get_indicator(QA_DataStruct_Stock_min(res15.sort_index()), 'min', keep = True)
     res30=get_indicator(QA_DataStruct_Stock_min(res30.sort_index()), 'min', keep = True)
+    res5.columns = [x.upper() + '_5M' for x in res5.columns]
     res15.columns = [x.upper() + '_15M' for x in res15.columns]
     res30.columns = [x.upper() + '_30M' for x in res30.columns]
-    sec_temp_data = [res15.join(res30).groupby('code').fillna(method='ffill')]
-    sec_temp_data = [sec_temp_data[0].assign(BOLL_15M_V = sec_temp_data[0].CLOSE_15M / (sec_temp_data[0].BOLL_15M + 1),
+    res15[['UB_5M_S','BOLL_5M_S','LB_5M_S']] = res15.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift()
+    res15[['UB_5M_S2','BOLL_5M_S2','LB_5M_S2']] = res15.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift(2)
+    res15[['UB_15M_S','BOLL_15M_S','LB_15M_S']] = res15.groupby('code')[['UB_15M','BOLL_15M','LB_15M']].shift()
+    res15[['UB_15M_S2','BOLL_15M_S2','LB_15M_S2']] = res15.groupby('code')[['UB_15M','BOLL_15M','LB_15M']].shift(2)
+    res30[['UB_30M_S','BOLL_30M_S','LB_30M_S']] = res30.groupby('code')[['UB_30M','BOLL_30M','LB_30M']].shift()
+    res30[['UB_30M_S2','BOLL_30M_S2','LB_30M_S2']] = res30.groupby('code')[['UB_30M','BOLL_30M','LB_30M']].shift(2)
+
+    sec_temp_data = [res5.join(res15).join(res30).groupby('code').fillna(method='ffill')]
+    sec_temp_data = [sec_temp_data[0].assign(BOLL_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].BOLL_5M + 1),
+                                             LB_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].LB_5M + 1),
+                                             UB_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].UB_5M + 1),
+                                             BOLL_15M_V = sec_temp_data[0].CLOSE_15M / (sec_temp_data[0].BOLL_15M + 1),
                                             LB_15M_V = sec_temp_data[0].CLOSE_15M / (sec_temp_data[0].LB_15M + 1),
                                             UB_15M_V = sec_temp_data[0].CLOSE_15M / (sec_temp_data[0].UB_15M + 1),
                                             BOLL_30M_V = sec_temp_data[0].CLOSE_30M / (sec_temp_data[0].BOLL_30M + 1),
                                             LB_30M_V = sec_temp_data[0].CLOSE_30M / (sec_temp_data[0].LB_30M + 1),
                                             UB_30M_V = sec_temp_data[0].CLOSE_30M / (sec_temp_data[0].UB_30M + 1)
                                             )]
-    sec_temp_data[0][['UB_15M_S','UB_30M_S','BOLL_15M_S','BOLL_30M_S','LB_15M_S','LB_30M_S']] = sec_temp_data[0].groupby('code')[
-        ['UB_15M','UB_30M','BOLL_15M','BOLL_30M','LB_15M','LB_30M']].shift()
-    sec_temp_data[0][['UB_15M_S2','UB_30M_S2','BOLL_15M_S2','BOLL_30M_S2','LB_15M_S2','LB_30M_S2']] = sec_temp_data[0].groupby('code')[
-        ['UB_15M','UB_30M','BOLL_15M','BOLL_30M','LB_15M','LB_30M']].shift(2)
 
-    buy_list = list(set(sec_temp_data[0][(sec_temp_data[0].BOLL_15M > 0)&(sec_temp_data[0].SKDJ_K_15M > sec_temp_data[0].SKDJ_D_15M)
-                                &(sec_temp_data[0].BOLL_30M < 0)&(sec_temp_data[0].SKDJ_K_30M < 30)].reset_index().code.tolist() \
-               + [i for i in code_list if i not in target_list]))
+    buy_list = target_list
 
     QA_util_log_info('##buy_list ==================== {}'.format(len(buy_list)), ui_log=None)
     return(buy_list, sec_temp_data, source_data)
