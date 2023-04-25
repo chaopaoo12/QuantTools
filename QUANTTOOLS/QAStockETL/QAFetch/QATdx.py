@@ -24,6 +24,10 @@ def QA_fetch_get_usstock_day(code, start, end):
 
 def QA_fetch_get_stock_realtime(code, source = 'qq'):
     # deal code
+    if isinstance(code,list):
+        pass
+    else:
+        code = [code]
     if source == 'qq':
         quotation = easyquotation.use(source)
         values = pd.DataFrame(quotation.stocks(code)).T.rename(columns={'now':'price','成交量(手)':'volume','成交额(万)':'amount',
