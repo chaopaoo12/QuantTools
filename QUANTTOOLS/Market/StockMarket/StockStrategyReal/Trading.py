@@ -81,7 +81,7 @@ def trading_new(trading_date, working_dir=working_dir):
                          #+ xg_nn[(xg_nn.RANK <= 5)&(~xg_nn.INDUSTRY.isin(['银行']))&(xg_nn.y_pred==1)&(xg_nn.TARGET5.isnull())].reset_index().code.tolist()
                          #+ mars_nn[(mars_nn.RANK <= 5)&(~mars_nn.INDUSTRY.isin(['银行']))&(mars_nn.y_pred==1)&(mars_nn.TARGET5.isnull())].reset_index().code.tolist()
                          + mars_day[(mars_day.RANK <= 20)&(mars_day.BOLL_V>0)&(mars_day.BOLL_V<mars_day.UB_V.abs())&(mars_day.TARGET5.isnull())].reset_index().code.tolist()))
-    time_list = on_bar('09:30:00', '15:00:00', 30, [['11:30:00', '13:00:00']],'S')
+    time_list = on_bar('09:30:00', '15:00:00', 10, [['11:30:00', '13:00:00']],'S')
     time_index = on_bar('09:30:00', '15:00:00', 5, [['11:30:00', '13:00:00']])
 
     strategy = StrategyBase(target_list=code_list, base_percent=1, trading_date=trading_date)
