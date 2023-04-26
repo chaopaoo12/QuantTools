@@ -78,6 +78,16 @@ class StrategyRobotBase:
         send_actionnotice(self.strategy_id, '交易报告:{}'.format(
             self.trading_date), '进入交易时段', direction='HOLD', offset='HOLD', volume=None)
 
+    def refresh_account(self):
+        sub_accounts, frozen, positions, frozen_positions = check_Client(
+            self.client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
+
+        if positions.shape[0] > 0:
+            positions = positions[positions['股票余额'] > 0]
+        else:
+            pass
+        return(sub_accounts, frozen, positions, frozen_positions )
+
     def run(self, test=False):
         # init trading
         QA_util_log_info('##JOB Now Check Timing ==== {}'.format(str(self.trading_date)), ui_log=None)
@@ -91,13 +101,7 @@ class StrategyRobotBase:
 
         # init code
         QA_util_log_info('##JOB Now Init Code List ==== {}'.format(str(self.trading_date)), ui_log=None)
-        sub_accounts, frozen, positions, frozen_positions = check_Client(
-            self.client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
-
-        if positions.shape[0] > 0:
-            positions = positions[positions['股票余额'] > 0]
-        else:
-            pass
+        sub_accounts, frozen, positions, frozen_positions = self.refresh_account()
 
         account_info = get_Account(self.client, self.account)
         # init add data
@@ -116,13 +120,7 @@ class StrategyRobotBase:
                 time.sleep(3)
             QA_util_log_info('##JOB On Time ==== {}'.format(mark_tm), ui_log=None)
 
-            sub_accounts, frozen, positions, frozen_positions = check_Client(
-                self.client, self.account, self.strategy_id, self.trading_date, exceptions=self.exceptions)
-
-            if positions.shape[0] > 0:
-                positions = positions[positions['股票余额'] > 0]
-            else:
-                pass
+            sub_accounts, frozen, positions, frozen_positions = self.refresh_account()
 
             #refresh strategy body
             self.strategy = prepare_strategy(self.strategy, {'position': positions,
