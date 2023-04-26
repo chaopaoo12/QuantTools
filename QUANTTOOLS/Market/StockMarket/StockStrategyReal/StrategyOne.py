@@ -235,11 +235,13 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
         # add name industry
         QA_util_log_info('##Lowe ==================== {}'.format(
             mark_tm), ui_log=None)
-        QA_util_log_info(data[(data.price < data.LB_15M_V)|(data.price < data.LB_30M_V)][['price','盈亏比例(%)','signal','msg']], ui_log=None)
+        QA_util_log_info(data[(data.price < data.LB_15M_V* 1.01)|(data.price < data.LB_30M_V* 1.01)][['price','盈亏比例(%)','signal','msg']], ui_log=None)
         QA_util_log_info('##Up ==================== {}'.format(mark_tm), ui_log=None)
-        QA_util_log_info(data[(data.price > data.UB_15M_V)|(data.price < data.UB_30M_V)][['price','盈亏比例(%)','signal','msg']], ui_log=None)
-
-
+        QA_util_log_info(data[(data.price > data.UB_15M_V* 0.99)|(data.price < data.UB_30M_V* 0.99)][['price','盈亏比例(%)','signal','msg']], ui_log=None)
+        QA_util_log_info('##15 mid ==================== {}'.format(mark_tm), ui_log=None)
+        QA_util_log_info(data[(data.price <= data.BOLL_15M_V * 1.01)&(data.price >= data.BOLL_15M_V * 0.99)][['price','盈亏比例(%)','signal','msg']], ui_log=None)
+        QA_util_log_info('##30 mid ==================== {}'.format(mark_tm), ui_log=None)
+        QA_util_log_info(data[(data.price <= data.BOLL_30M_V * 1.01)&(data.price >= data.BOLL_30M_V * 0.99)][['price','盈亏比例(%)','signal','msg']], ui_log=None)
         data.loc[data.code.isin([i for i in code_list if i not in target_list]) & (data.signal.isin([1])), 'signal'] = None
         QA_util_log_info('##Buy DataFrame ====================', ui_log=None)
         QA_util_log_info(data[data.signal == 1][['price','LB_15M_V','BOLL_15M_V','LB_30M_V','BOLL_30M_V','盈亏比例(%)','signal','msg']], ui_log=None)
