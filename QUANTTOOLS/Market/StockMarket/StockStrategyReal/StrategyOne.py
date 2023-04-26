@@ -296,7 +296,7 @@ def balance(data, position, sub_account, percent):
         #    data['name'] = None
 
         data['mark'] = None
-
+        data[["市值"]] = data[["市值"]].fillna(0)
         data.loc[(data["target_capital"] > data["市值"]) & (data.signal == 1), "mark"] = "buy"
         data.loc[(data["target_capital"] < data["市值"]) & (data.signal == 0), "mark"] = "sell"
         QA_util_log_info(data, ui_log=None)
