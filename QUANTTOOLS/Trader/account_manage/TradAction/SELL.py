@@ -21,6 +21,7 @@ def SELL(client, account, strategy_id, account_info, trading_date,
     if type == 'LIMIT':
         real_hold = get_StockHold(code, client, account)
         price = QA_fetch_get_stock_realtm_ask(code)
+
         if price <= 10:
             price = price
         else:
