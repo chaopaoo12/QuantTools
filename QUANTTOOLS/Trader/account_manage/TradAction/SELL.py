@@ -24,7 +24,7 @@ def SELL(client, account, strategy_id, account_info, trading_date,
         if price <= 10:
             price = price
         else:
-            price = round(price-0.01, 2)
+            price = price-0.01
 
         # 如果只有卖出部分不满100 ?? 单价较贵的票容易有这个问题
         # 应全额卖出 做出if判断

@@ -27,17 +27,13 @@ def BUY(client, account, strategy_id, account_info, trading_date,
     if type == 'LIMIT':
 
         price = QA_fetch_get_stock_realtm_bid(code)
+
         if price <= 10:
             price = price
         else:
-            price = round(price-0.01, 2)
+            price = price-0.01
 
-        if price <= close * 1.005:
-            pass
-        else:
-            price = close
-
-        if price >0:
+        if price > 0:
             deal_pos = math.floor(round(deal_capital/price, 0)/100) * 100
 
             if deal_pos == 0:
