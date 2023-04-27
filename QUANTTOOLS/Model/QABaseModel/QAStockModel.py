@@ -29,10 +29,10 @@ class QAStockModel(QAModel):
             start_date = start
 
         self.get_data(start_date, end, code = self.code, type= type,block = self.block, sub_block=self.sub_block,ST=ST, norm_type=self.norm_type)
-        index_target = get_index_quant_data(start, end,code=['000001','399006'],type='crawl', norm_type=None)
-        index_feature = pd.pivot(index_target.loc[(slice(None),['000001','399006']),['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK']].reset_index(),index='date',columns='code',values=['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK'])
-        index_feature.columns= ['SKDJ_K1','SKDJ_K6','SKDJ_TR1','SKDJ_TR6','SKDJ_K_WK1','SKDJ_K_WK6','SKDJ_TR_WK1','SKDJ_TR_WK6']
-        self.data = self.data.join(index_feature)
+        #index_target = get_index_quant_data(start, end,code=['000001','399006'],type='crawl', norm_type=None)
+        #index_feature = pd.pivot(index_target.loc[(slice(None),['000001','399006']),['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK']].reset_index(),index='date',columns='code',values=['SKDJ_K','SKDJ_TR','SKDJ_K_WK','SKDJ_TR_WK'])
+        #index_feature.columns= ['SKDJ_K1','SKDJ_K6','SKDJ_TR1','SKDJ_TR6','SKDJ_K_WK1','SKDJ_K_WK6','SKDJ_TR_WK1','SKDJ_TR_WK6']
+        #self.data = self.data.join(index_feature)
 
         short_of_code, short_of_data = self.code_check()
 
@@ -59,9 +59,11 @@ class QAStockModel(QAModel):
         QA_util_log_info('##JOB Now Got Prediction Result ===== from {_from} to {_to}'.format(_from=start,_to = end), ui_log = None)
         self.base_predict()
         self.data.loc[:,'RANK'] = self.data['O_PROB'].groupby('date').rank(ascending=False)
-        selec_col = ['SKDJ_TR','SKDJ_K','SKDJ_TR_HR','SKDJ_K_HR','SKDJ_TR_WK',
-                     'SKDJ_K_WK','ATRR','UB','LB','BOLL','WIDTH','UB_HR','LB_HR','WIDTH_HR','UB_WK','LB_WK','BOLL_WK',
-                     'RSI3','RSI2','RSI3_C','RSI2_C','RSI3_HR','RSI2_HR','RSI3_C_HR','RSI2_C_HR','TOTAL_MARKET','PB',
+        selec_col = ['SKDJ_TR','SKDJ_K','SKDJ_TR_HR','SKDJ_K_HR','SKDJ_TR_WK','SKDJ_K_WK',
+                     'ATRR','RRNG','MIN_V','MAX_V','RRNG_WK','MIN_V_WK','MAX_V_WK',
+                     'UB','LB','BOLL','WIDTH','UB_HR','LB_HR','WIDTH_HR','UB_WK','LB_WK','BOLL_WK',
+                     'RSI3','RSI2','RSI3_C','RSI2_C','RSI3_HR','RSI2_HR','RSI3_C_HR','RSI2_C_HR',
+                     'TOTAL_MARKET','PB',
                      'AVG5_TOR','AVG60_TOR']
 
         selec_col = [i for i in selec_col if i in self.data.columns]
