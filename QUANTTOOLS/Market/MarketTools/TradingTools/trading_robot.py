@@ -56,7 +56,7 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
                 SELL(client, account, title, account_info, trading_date,
                      sell_list['code'], sell_list['name'], sell_list['industry'],
                      target_capital=sell_list['target_capital'], close=sell_list['close'],
-                     type='LIMIT', test=test)
+                     type='MARKET', test=test)
         else:
             QA_util_log_info('##JOB No Selling Signal ==== {stm}'.format(
                 stm=str(mark_tm)), ui_log = None)
