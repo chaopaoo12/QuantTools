@@ -92,10 +92,10 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
 
     QA_util_log_info('##JOB In Signal Decide ====================', ui_log=None)
     # 放量金叉
-    data.loc[(data.price < data.LB_15M_V)&
+    data.loc[(data.price < data.LB_15M_V)&(data.WIDTH_15M > 0.1)&
              (((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)) |
               ((data.LB_5M_S2 < 0)&(data.LB_5M_S < 0)&(data.LB_5M > 0))), "signal"] = 1
-    data.loc[(data.price < data.LB_15M_V)&
+    data.loc[(data.price < data.LB_15M_V)&(data.WIDTH_15M > 0.1)&
              (((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)) |
               ((data.LB_5M_S2 < 0)&(data.LB_5M_S < 0)&(data.LB_5M > 0))), "msg"] = '15min LB抄底进场信号'
 
@@ -106,7 +106,7 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
              (((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)) |
               ((data.LB_5M_S2 < 0)&(data.LB_5M_S < 0)&(data.LB_5M > 0))), "msg"] = '30min LB抄底进场信号'
 
-    data.loc[(data.price <= data.LB_15M_V * 1.01)&
+    data.loc[(data.price <= data.LB_15M_V * 1.01)&(data.WIDTH_15M > 0.1)&
              (((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)) |
               ((data.LB_5M_S2 < 0)&(data.LB_5M_S < 0)&(data.LB_5M > 0))), "signal"] = 1
     data.loc[(data.price <= data.LB_15M_V * 1.01)&
@@ -120,10 +120,10 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
              (((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)) |
               ((data.LB_5M_S2 < 0)&(data.LB_5M_S < 0)&(data.LB_5M > 0))), "msg"] = '30Min LB进场信号'
 
-    data.loc[(data.price <= data.BOLL_15M_V * 1.01)&(data.price >= data.BOLL_15M_V * 0.99)&
+    data.loc[(data.price <= data.BOLL_15M_V * 1.01)&(data.price >= data.BOLL_15M_V * 0.99)&(data.WIDTH_15M > 0.1)&
              (((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)) |
               ((data.LB_5M_S2 < 0)&(data.LB_5M_S < 0)&(data.LB_5M > 0))), "signal"] = 1
-    data.loc[(data.price <= data.BOLL_15M_V * 1.01)&(data.price >= data.BOLL_15M_V * 0.99)&
+    data.loc[(data.price <= data.BOLL_15M_V * 1.01)&(data.price >= data.BOLL_15M_V * 0.99)&(data.WIDTH_15M > 0.1)&
              (((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)) |
               ((data.LB_5M_S2 < 0)&(data.LB_5M_S < 0)&(data.LB_5M > 0))), "msg"] = '15Min BOLL进场信号'
 
@@ -205,9 +205,9 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
                                             UB_30M_V = sec_temp_data[0].CLOSE_30M / (sec_temp_data[0].UB_30M + 1)
                                             )]
 
-    buy_list = list(set(sec_temp_data[0][(sec_temp_data[0].BOLL_15M > 0)&(sec_temp_data[0].SKDJ_K_15M > sec_temp_data[0].SKDJ_D_15M)
-                                         &(sec_temp_data[0].BOLL_30M < 0)&(sec_temp_data[0].SKDJ_K_30M < 30)].reset_index().code.tolist() \
-                        + [i for i in code_list if i not in target_list]))
+    buy_list = list(set(sec_temp_data[0][sec_temp_data[0].WIDTH_30M >= 0.15].reset_index().code.tolist()))
+
+    buy_list = [i for i in buy_list if i in target_list]
 
     QA_util_log_info('##buy_list ==================== {}'.format(len(buy_list)), ui_log=None)
     return(buy_list, sec_temp_data, source_data)
