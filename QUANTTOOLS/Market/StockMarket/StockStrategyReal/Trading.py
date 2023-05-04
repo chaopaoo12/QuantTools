@@ -70,13 +70,9 @@ def trading_new(trading_date, working_dir=working_dir):
     mars_day = mars_day.reset_index().set_index('code').join(mars_day.groupby('code')[['BOLL','UB']].last().rename(columns={'BOLL':'BOLL_V','UB':'UB_V'})).reset_index().set_index(['date','code']).sort_index()
     xg = xg.reset_index().set_index('code').join(xg.groupby('code')[['BOLL','UB']].last().rename(columns={'BOLL':'BOLL_V','UB':'UB_V'})).reset_index().set_index(['date','code']).sort_index()
 
-    xg = xg.loc[(QA_util_get_pre_trade_date(trading_date,1), list(set(xg[(xg.RANK <= 20)&(xg.TARGET5.isnull())].reset_index().code.tolist()))),]
-    xg_sh = xg_sh.loc[(QA_util_get_pre_trade_date(trading_date,1), list(set(xg_sh[(xg_sh.RANK <= 20)&(xg_sh.TARGET5.isnull())].reset_index().code.tolist()))),]
-    mars_day = mars_day.loc[(QA_util_get_pre_trade_date(trading_date,1), list(set(mars_day[(mars_day.RANK <= 20)&(mars_day.TARGET5.isnull())].reset_index().code.tolist()))),]
-
-    xg_sh = xg_sh[(xg_sh.BOLL>0)&(xg_sh.BOLL<xg_sh.UB.abs())]
-    mars_day = mars_day[(mars_day.BOLL>0)&(mars_day.BOLL<mars_day.UB.abs())]
-    xg = xg[(xg.BOLL>0)&(xg.BOLL<xg.UB.abs())]
+    xg_sh = xg_sh[(xg.RANK <= 20)&(xg.TARGET5.isnull())&(xg_sh.BOLL_V>0)&(xg_sh.BOLL_V.abs()<xg_sh.UB_V.abs())]
+    mars_day = mars_day[(xg.RANK <= 20)&(xg.TARGET5.isnull())&(mars_day.BOLL_V>0)&(mars_day.BOLL_V.abs()<mars_day.UB_V.abs())]
+    xg = xg[(xg.RANK <= 20)&(xg.TARGET5.isnull())&(xg.BOLL_V>0)&(xg.BOLL_V.abs()<xg.UB_V.abs())]
 
     base_report(trading_date, '交易股池', **{
                                          'XG_SH':xg_sh,
