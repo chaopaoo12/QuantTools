@@ -53,7 +53,8 @@ def SELL(client, account, strategy_id, account_info, trading_date,
             low_value = 0.1995
         else:
             low_value = 0.0995
-        price = round(float(close * (1 + low_value)), 2)
+        price = QA_fetch_get_stock_realtm_ask(code)#round(float(close * (1 + low_value)), 2)
+
         deal_pos = math.floor(round(deal_capital/price, 0)/100) * 100
         # 如果只有卖出部分不满100 ?? 单价较贵的票容易有这个问题
         # 应全额卖出 做出if判断
