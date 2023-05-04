@@ -207,8 +207,6 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
 
     buy_list = list(set(sec_temp_data[0][sec_temp_data[0].WIDTH_30M >= 0.15].reset_index().code.tolist()))
 
-    buy_list = [i for i in buy_list if i in target_list]
-
     QA_util_log_info('##buy_list ==================== {}'.format(len(buy_list)), ui_log=None)
     return(buy_list, sec_temp_data, source_data)
 
