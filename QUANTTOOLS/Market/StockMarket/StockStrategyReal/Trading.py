@@ -61,27 +61,34 @@ def trading_sim(trading_date, working_dir=working_dir):
 def trading_new(trading_date, working_dir=working_dir):
     r_tar, xg_sh, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_sh', 'prediction_sh')
     r_tar, xg, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg', 'prediction')
-    #r_tar, xg_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg_nn', 'prediction_stock_xg_nn')
-    #r_tar, mars_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_nn', 'prediction_stock_mars_nn')
+    r_tar, xg_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_xg_nn', 'prediction_stock_xg_nn')
+    r_tar, mars_nn, prediction = load_data(concat_predict_neut, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_nn', 'prediction_stock_mars_nn')
     r_tar, mars_day, prediction = load_data(concat_predict, QA_util_get_pre_trade_date(trading_date,1), working_dir, 'stock_mars_day', 'prediction_stock_mars_day')
 
     #xg_sh=xg_sh[(xg_sh.RANK<=20)&(xg_sh.O_PROB>=0.35)]
     xg_sh = xg_sh.reset_index().set_index('code').join(xg_sh.groupby('code')[['BOLL','UB']].last().rename(columns={'BOLL':'BOLL_V','UB':'UB_V'})).reset_index().set_index(['date','code']).sort_index()
     mars_day = mars_day.reset_index().set_index('code').join(mars_day.groupby('code')[['BOLL','UB']].last().rename(columns={'BOLL':'BOLL_V','UB':'UB_V'})).reset_index().set_index(['date','code']).sort_index()
     xg = xg.reset_index().set_index('code').join(xg.groupby('code')[['BOLL','UB']].last().rename(columns={'BOLL':'BOLL_V','UB':'UB_V'})).reset_index().set_index(['date','code']).sort_index()
+    xg_nn = xg_nn.reset_index().set_index('code').join(xg.groupby('code')[['BOLL','UB','LB']].last().rename(columns={'BOLL':'BOLL_V','UB':'UB_V','LB':'LB_V'})).reset_index().set_index(['date','code']).sort_index()
+    mars_nn = mars_nn.reset_index().set_index('code').join(mars_day.groupby('code')[['BOLL','UB','LB']].last().rename(columns={'BOLL':'BOLL_V','UB':'UB_V','LB':'LB_V'})).reset_index().set_index(['date','code']).sort_index()
 
     xg_sh = xg_sh[(xg_sh.RANK <= 20)&(xg_sh.WIDTH_HR>=0.1)&(xg_sh.BOLL_V>0)&(xg_sh.BOLL_V.abs()<xg_sh.UB_V.abs())&(xg_sh.TARGET5.isnull())]
     mars_day = mars_day[(mars_day.RANK <= 20)&(mars_day.WIDTH_HR>=0.1)&(mars_day.TARGET5.isnull())&(mars_day.BOLL_V>0)&(mars_day.BOLL_V.abs()<mars_day.UB_V.abs())]
     xg = xg[(xg.RANK <= 20)&(xg.WIDTH_HR>=0.1)&(xg.TARGET5.isnull())&(xg.BOLL_V>0)&(xg.BOLL_V.abs()<xg.UB_V.abs())]
+    xg_nn = xg_nn[(xg_nn.RANK <= 20)&(xg_nn.BOLL_V>0)&(xg_nn.BOLL_V.abs()<xg_nn.UB_V.abs())&(xg_nn.TARGET5.isnull())]
+    mars_nn = mars_nn[(mars_nn.RANK <= 20)&(mars_nn.BOLL_V>0)&(mars_nn.BOLL_V.abs()<mars_nn.UB_V.abs())&(mars_nn.TARGET5.isnull())]
 
     base_report(trading_date, '交易股池', **{
                                          'XG_SH':xg_sh,
                                          'MARKS_DAY':mars_day,
-                                         'XG':xg,
+                                         'XG_NN':xg_nn,
+                                         'MARKS_NN':mars_nn,
                                          })
 
     code_list = list(set(xg_sh.reset_index().code.tolist()
                          + xg.reset_index().code.tolist()
+                         + xg_nn.reset_index().code.tolist()
+                         + mars_nn.reset_index().code.tolist()
                          + mars_day.reset_index().code.tolist()))
     time_list = on_bar('09:30:00', '15:00:00', 10, [['11:30:00', '13:00:00']],'S')
     time_index = on_bar('09:30:00', '15:00:00', 5, [['11:30:00', '13:00:00']])
