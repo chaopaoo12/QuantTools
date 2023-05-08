@@ -40,7 +40,8 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
 
                 send_actionnotice(title,'{code}{name}:{stm}{msg}'.format(
                     code=sell_list['code'], name=sell_list['name'], stm=mark_tm, msg=sell_list['msg']),
-                                  '卖出信号', direction='SELL', offset=mark_tm, volume=None)
+                                  '{}({})卖出信号:{}'.format(sell_list['name'],sell_list['code'],sell_list['msg']),
+                                  direction='SELL', offset=mark_tm, volume=None)
                 # sell
                 if test is False:
                     if client.type in ['yun_ease','loacl']:
@@ -68,7 +69,8 @@ def trading_robot(client, account, account_info, signal_data, trading_date, mark
 
                 send_actionnotice(title,'{code}{name}:{stm}{msg}'.format(
                     code=buy_list['code'], name=buy_list['name'], stm=mark_tm, msg=buy_list['msg']),
-                                  '买入信号', direction='BUY', offset=mark_tm, volume=None)
+                                  '{}({})买入信号:{}'.format(buy_list['name'], buy_list['code'],buy_list['msg']),
+                                  direction='BUY', offset=mark_tm, volume=None)
                 if get_UseCapital(client, account) > 3000:
                     # buy
                     BUY(client, account, title, account_info, trading_date,
