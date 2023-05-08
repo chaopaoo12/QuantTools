@@ -128,14 +128,14 @@ class StrategyRobotBase:
                                                              })
 
             # prepare signal.
-            signal_data = self.strategy.strategy_run(mark_tm)
-            #try:
-            #   signal_data = self.strategy.strategy_run(mark_tm)
-            #except:
-            #    send_actionnotice(self.strategy_id, '程序运行报告:{}'.format(
-            #        mark_tm), '无法获取信号数据', direction='ERROR', offset='ERROR', volume=None)
-            #    signal_data = {'sell': None, 'buy': None}
-            #    self.strategy.set_proxy_pool()
+            #signal_data = self.strategy.strategy_run(mark_tm)
+            try:
+               signal_data = self.strategy.strategy_run(mark_tm)
+            except:
+                send_actionnotice(self.strategy_id, '程序运行报告:{}'.format(
+                    mark_tm), 'signal_data无法获取信号数据', direction='ERROR', offset='ERROR', volume=None)
+                signal_data = {'sell': None, 'buy': None}
+                self.strategy.set_proxy_pool()
 
             QA_util_log_info('##Sell List ==== {}'.format(str(self.trading_date)), ui_log=None)
             QA_util_log_info(signal_data['sell'], ui_log=None)
