@@ -23,7 +23,7 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
         ['datetime', 'code'])[['last_close','price','open','high','low','ask1','ask2','bid1']].sort_index()
 
     data = source_data.join(sec_temp_data[0])
-    data = data.loc[mark_tm]
+    #data = data.loc[mark_tm]
 
     data = data.reset_index().set_index('code').join(position.set_index('code')).reset_index().set_index(['datetime','code'])
 
@@ -85,6 +85,9 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     data.loc[(data.price <= data.LB_30M_V)&
              (((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0))|
               ((data.BOLL_5M_S2 > 0)&(data.BOLL_5M_S > 0)&(data.BOLL_5M < 0))), "msg"] = '30Min LB止损出场信号'
+
+    data.loc[(data.price <= data.BOLL_5M_V)&(data.BOLL_5M < 0), "signal"] = 0
+    data.loc[(data.price <= data.BOLL_5M_V)&(data.BOLL_5M < 0), "msg"] = '5Min BOLL止损出场信号'
 
     # 强制止损
     data.loc[data['盈亏比例(%)'] <= -5, "signal"] = 0
