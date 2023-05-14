@@ -26,7 +26,11 @@ def make_prediction(Model, trading_date, name, working_dir, code = None, type='c
                           offset='HOLD',
                           volume=None
                           )
-    start = QA_util_get_real_date((datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-2))).strftime('%Y-%m-%d'))
+    if datetime.strptime(trading_date, "%Y-%m-%d").weekday() in [1,2,3]:
+        k = 2
+    else:
+        k = 3
+    start = QA_util_get_real_date((datetime.strptime(trading_date, "%Y-%m-%d") + relativedelta(weekday=FR(-k))).strftime('%Y-%m-%d'))
     end = trading_date
     QA_util_log_info('##JOB Now Model Predict from {start} to {end} ==== {s}'.format(start = start, end = end, s = str(trading_date)))
     if code is None:
