@@ -74,7 +74,7 @@ def proxy_stock_zh_a_hist_min_em(symbol_proxies, period, adjust):
     except:
         return(None)
 
-def QA_fetch_get_stock_min_sina(code, period='30', type='',proxies=[]):
+def QA_fetch_get_stock_min_sina(code, period='30', type='',proxies=None):
 
     if isinstance(code,list):
         if isinstance(proxies, list):
