@@ -168,12 +168,16 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     res5 = res5[~res5.index.duplicated(keep='first')]
     res15 = res15[~res15.index.duplicated(keep='first')]
     res30 = res30[~res30.index.duplicated(keep='first')]
+    #res1=get_indicator_real(temp, 'min', keep = True)
     res5=get_indicator_real(QA_DataStruct_Stock_min(res5.sort_index()), 'min', keep = True)
     res15=get_indicator_real(QA_DataStruct_Stock_min(res15.sort_index()), 'min', keep = True)
     res30=get_indicator_real(QA_DataStruct_Stock_min(res30.sort_index()), 'min', keep = True)
+    #res1.columns = [x.upper() + '_1M' for x in res1.columns]
     res5.columns = [x.upper() + '_5M' for x in res5.columns]
     res15.columns = [x.upper() + '_15M' for x in res15.columns]
     res30.columns = [x.upper() + '_30M' for x in res30.columns]
+    #res1[['UB_1M_S','BOLL_1M_S','LB_1M_S']] = res1.groupby('code')[['UB_1M','BOLL_1M','LB_1M']].shift()
+    #res1[['UB_1M_S2','BOLL_1M_S2','LB_1M_S2']] = res1.groupby('code')[['UB_1M','BOLL_1M','LB_1M']].shift(2)
     res5[['UB_5M_S','BOLL_5M_S','LB_5M_S']] = res5.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift()
     res5[['UB_5M_S2','BOLL_5M_S2','LB_5M_S2']] = res5.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift(2)
     res15[['UB_15M_S','BOLL_15M_S','LB_15M_S']] = res15.groupby('code')[['UB_15M','BOLL_15M','LB_15M']].shift()
@@ -254,7 +258,7 @@ def signal(target_list, buy_list, position, sec_temp_data, day_temp_data, source
         #    hold = position.shape[0]
         #else:
         #    hold = 0
-
+        # buy_list 控制
         #if data[data.signal == 1].shape[0] > 0 and hold > 1:
         #    data.loc[data.code.isin([i for i in code_list if i not in buy_list]) & (data.signal.isnull()), 'signal'] = 0
         #    data.loc[data.code.isin([i for i in code_list if i not in buy_list]) & (data.signal.isnull()), 'msg'] = '换仓'
