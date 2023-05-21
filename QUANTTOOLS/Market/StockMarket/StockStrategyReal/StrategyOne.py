@@ -100,10 +100,10 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     data.loc[#(data.price < data.UB_5M * 1.01)&
              ((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.UB_5M > 0)), "msg"] = '5minUB突破进场信号'
 
-    data.loc[(data.price < data.LB_15M_V * 1.01)&
-             ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "signal"] = 1
-    data.loc[(data.price < data.LB_15M_V * 1.01)&
-              ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "msg"] = '15min LB进场信号'
+    #data.loc[(data.price < data.LB_15M_V * 1.01)&
+    #         ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "signal"] = 1
+    #data.loc[(data.price < data.LB_15M_V * 1.01)&
+    #          ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "msg"] = '15min LB进场信号'
 
     data.loc[(data.price <= data.LB_30M_V * 0.95)&(data.price <= data.LB_15M_V * 0.95)&
              (((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)) |
@@ -112,20 +112,20 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
              (((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)) |
               ((data.LB_5M_S2 < 0)&(data.LB_5M_S < 0)&(data.LB_5M > 0))), "msg"] = 'BOLL LB抄底进场信号'
 
-    data.loc[(data.price <= data.LB_30M_V * 1.01)&
-              ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "signal"] = 1
-    data.loc[(data.price <= data.LB_30M_V * 1.01)&
-              ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "msg"] = '30Min LB进场信号'
+    #data.loc[(data.price <= data.LB_30M_V * 1.01)&
+    #          ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "signal"] = 1
+    #data.loc[(data.price <= data.LB_30M_V * 1.01)&
+    #          ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "msg"] = '30Min LB进场信号'
 
     #data.loc[(data.price <= data.BOLL_15M_V * 1.01)&(data.price >= data.BOLL_15M_V * 0.99)&
     #         (((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0))), "signal"] = 1
     #data.loc[(data.price <= data.BOLL_15M_V * 1.01)&(data.price >= data.BOLL_15M_V * 0.99)&
     #         (((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0))), "msg"] = '15Min BOLL进场信号'
 
-    data.loc[(data.price <= data.BOLL_30M_V * 1.01)&(data.price >= data.BOLL_30M_V * 0.99)&
-              ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "signal"] = 1
-    data.loc[(data.price <= data.BOLL_30M_V * 1.01)&(data.price >= data.BOLL_30M_V * 0.99)&
-              ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "msg"] = '30Min BOLL进场信号'
+    #data.loc[(data.price <= data.BOLL_30M_V * 1.01)&(data.price >= data.BOLL_30M_V * 0.99)&
+    #          ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "signal"] = 1
+    #data.loc[(data.price <= data.BOLL_30M_V * 1.01)&(data.price >= data.BOLL_30M_V * 0.99)&
+    #          ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "msg"] = '30Min BOLL进场信号'
 
 
     QA_util_log_info('##IN_SIG DataFrame ====================', ui_log=None)
