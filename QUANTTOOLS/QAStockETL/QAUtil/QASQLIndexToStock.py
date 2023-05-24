@@ -9,7 +9,7 @@ ORACLE_PATH2 = '{user}/{password}@{server}:1521/{database}'.format(database = Or
 sql_text = '''select code as index_code, stock as code, cate, index_name from index_stock;
 '''
 
-def QA_Sql_Stock_Index(code=None, sql_text = sql_text, ui_log= None):
+def QASQLIndexToStock(code=None, sql_text = sql_text, ui_log= None):
     QA_util_log_info(
         '##JOB01 Now Fetch Stock To Index', ui_log)
 

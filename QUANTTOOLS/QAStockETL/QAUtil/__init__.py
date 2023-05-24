@@ -54,7 +54,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexHour import QA_Sql_Index_IndexH
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndexWeek import QA_Sql_Index_IndexWeek
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha101 import QA_Sql_Index_Alpha101
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexAlpha191 import QA_Sql_Index_Alpha191
-
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexToStock import QASQLIndexToStock
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockBase import QA_Sql_USStock_Base
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockIndex import QA_Sql_USStock_Index
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLUSStockIndexHour import QA_Sql_USStock_IndexHour
