@@ -24,5 +24,5 @@ def QASQLIndexToStock(code=None, sql_text = sql_text, ui_log= None):
     conn = cx_Oracle.connect(ORACLE_PATH2)
     data = pd.read_sql(sql=sql_text, con=conn)
     conn.close()
-    data = data.drop_duplicates((['code', 'index_code']))
+    data = data.drop_duplicates()
     return(data)
