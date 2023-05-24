@@ -1,6 +1,6 @@
 from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv,QA_fetch_stock_min_adv,QA_fetch_index_day_adv,QA_fetch_index_min_adv,QA_fetch_future_min_adv,QA_fetch_future_day_adv
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_half_adv
-from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator,ohlc,get_indicator_short,get_LLV,get_LLValue
+from QUANTTOOLS.QAStockETL.QAFetch.QAIndicator import get_indicator,ohlc,get_indicator_short,get_LLV,get_LLValue,get_indicator_real
 from QUANTAXIS.QAUtil import QA_util_date_stamp,QA_util_get_pre_trade_date,QA_util_log_info,QA_util_get_trade_range
 from QUANTTOOLS.QAStockETL.QAData import QA_DataStruct_Stock_day,QA_DataStruct_Stock_min,QA_DataStruct_Index_day,QA_DataStruct_Index_min
 from QUANTTOOLS.QAStockETL.QAFetch.QAUsFinancial import QA_fetch_get_usstock_day_xq, QA_fetch_get_stock_min_sina,QA_fetch_get_index_min_sina
@@ -456,7 +456,7 @@ def QA_fetch_get_index_indicator_realtime(code, start_date, end_date, type = 'da
     if data is None:
         return None
     else:
-        data = get_indicator(data, type)
+        data = get_indicator_real(data, type)
         data = data[[x for x in list(data.columns) if x not in ['MARK','a','b']]]
         #if type in ['15min','30min','min','hour']:
         #    data = data[data.date.isin(rng1)]
