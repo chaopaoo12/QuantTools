@@ -37,7 +37,7 @@ from QUANTTOOLS.QAStockETL.QAFetch.QAQuery_Advance import (QA_fetch_interest_rat
 
 from QUANTTOOLS.QAStockETL.QAFetch.QAQuery import (QA_fetch_interest_rate,QA_fetch_xqblock_day,
 
-                                                   QA_fetch_stock_real,
+                                                   QA_fetch_stock_real,QA_fetch_indextostock,
                                                    QA_fetch_stock_alpha101_real,QA_fetch_stock_alpha_real,
 
                                                    QA_fetch_financial_report, QA_fetch_financial_report_wy, QA_fetch_stock_financial_calendar,

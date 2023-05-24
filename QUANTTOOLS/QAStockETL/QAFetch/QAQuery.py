@@ -24,7 +24,7 @@ from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockFinancialPENEUT import QA_Sql_Stock_
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockBaseHalf import QA_Sql_Stock_BaseHalf
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha101Half import QA_Sql_Stock_Alpha101Half
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockAlpha191Half import QA_Sql_Stock_Alpha191Half
-
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexToStock import QASQLIndexToStock
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexBase import QA_Sql_Index_Base
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndex import QA_Sql_Index_Index
 from QUANTTOOLS.QAStockETL.QAUtil.QASQLIndexIndex15min import QA_Sql_Index_Index15min
@@ -3589,6 +3589,19 @@ def QA_fetch_stock_vwap(code, start, end=None, format='pd', collections=DATABASE
         QA_util_log_info(
             'QA Error QA_fetch_stock_vwap data parameter start=%s end=%s is not right' % (start, end))
 
+def QA_fetch_indextostock(code):
+    '获取股票日线'
+    #code= [code] if isinstance(code,str) else code
+    # code checking
+    indextostock = QASQLIndexToStock
+
+    code = QA_util_code_tolist(code)
+
+    QA_util_log_info(
+        'JOB Get Stock To Index data' )
+    res = indextostock(code=code)
+
+    return(res)
 
 if __name__ == '__main__':
     pass
