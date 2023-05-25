@@ -169,6 +169,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
                                             QA_util_get_pre_trade_date(trading_date,5), trading_date, '5min')
     index_data = get_indicator_real(QA_DataStruct_Stock_min(index_data.reset_index(drop=True).set_index(['datetime','code'])),
                                     'min', keep = True)
+    index_data.columns = [x.upper() + '_5M' for x in index_data.columns]
     index_data[['UB_5M_S','BOLL_5M_S','LB_5M_S']] = index_data.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift()
     index_data[['UB_5M_S2','BOLL_5M_S2','LB_5M_S2']] = index_data.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift(2)
     #index_data[index_data.BOLL > 0]
