@@ -165,7 +165,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
 
     stocktoindex = QA_fetch_indextostock(code_list).rename(columns={'CODE':'code'})
 
-    index_data = QA_fetch_get_index_min_tdx(stocktoindex[stocktoindex.CODE.isin(code_list)].INDEX_CODE.unique().tolist(),
+    index_data = QA_fetch_get_index_min_tdx(stocktoindex[stocktoindex.code.isin(code_list)].INDEX_CODE.unique().tolist(),
                                             QA_util_get_pre_trade_date(trading_date,5), trading_date, '5min')
     index_data = get_indicator_real(QA_DataStruct_Stock_min(index_data.reset_index(drop=True).set_index(['datetime','code'])),
                                     'min', keep = True)
