@@ -174,7 +174,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     index_data[['UB_5M_S2','BOLL_5M_S2','LB_5M_S2']] = index_data.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift(2)
     #index_data[index_data.BOLL > 0]
     stock_chose = index_data.reset_index().set_index('code').join(stocktoindex[['INDEX_CODE','CODE','INDEX_NAME']].set_index('INDEX_CODE')).reset_index(drop=True).set_index(['datetime','CODE'])
-    stock_chose.loc[(index_data.UB_5M_S2 < 0)&(index_data.UB_5M_S < 0)&(index_data.UB_5M > 0), 'stock_chose'] = 1
+    stock_chose.loc[(stock_chose.UB_5M_S2 < 0)&(stock_chose.UB_5M_S < 0)&(stock_chose.UB_5M > 0), 'stock_chose'] = 1
     QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
         mark_tm), ui_log=None)
 
