@@ -1,5 +1,5 @@
 from QUANTTOOLS.Market.MarketTools.TimeTools.time_control import time_check_before,time_check_after
-from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_vwap
+from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_vwap,QA_fetch_indextostock,QA_fetch_get_index_min_tdx
 from QUANTAXIS.QAUtil import QA_util_log_info, QA_util_get_pre_trade_date
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_name,QA_fetch_stock_industryinfo, QA_fetch_get_stock_realtime
 import time
@@ -160,6 +160,20 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
         code_list = target_list
 
     code_list = list(set(code_list))
+
+    stocktoindex = QA_fetch_indextostock(code_list)
+
+    index_data = QA_fetch_get_index_min_tdx(stocktoindex[stocktoindex.CODE.isin(code_list)].INDEX_CODE.unique().tolist(),
+                                            QA_util_get_pre_trade_date(trading_date,5), trading_date, '5min')
+    index_data = get_indicator_real(QA_DataStruct_Stock_min(index_data.reset_index(drop=True).set_index(['datetime','code'])),
+                                    'min', keep = True)
+    index_data[['UB_5M_S','BOLL_5M_S','LB_5M_S']] = index_data.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift()
+    index_data[['UB_5M_S2','BOLL_5M_S2','LB_5M_S2']] = index_data.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift(2)
+    #index_data[index_data.BOLL > 0]
+    index_chose = index_data[(index_data.UB_5M_S2 < 0)&(index_data.UB_5M_S < 0)&(index_data.UB_5M > 0)].reset_index().code.unique().tolist()
+
+    stock_chose = stocktoindex[stocktoindex.INDEX_CODE.isin(index_chose)].CODE.unique().tolist()
+
     QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
         mark_tm), ui_log=None)
 
@@ -190,6 +204,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     res30[['UB_30M_S','BOLL_30M_S','LB_30M_S']] = res30.groupby('code')[['UB_30M','BOLL_30M','LB_30M']].shift()
     res30[['UB_30M_S2','BOLL_30M_S2','LB_30M_S2']] = res30.groupby('code')[['UB_30M','BOLL_30M','LB_30M']].shift(2)
 
+
     sec_temp_data = [res5.join(res15).join(res30).groupby('code').fillna(method='ffill')]
     sec_temp_data = [sec_temp_data[0].assign(BOLL_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].BOLL_5M + 1),
                                              LB_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].LB_5M + 1),
@@ -199,7 +214,8 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
                                             UB_15M_V = sec_temp_data[0].CLOSE_15M / (sec_temp_data[0].UB_15M + 1),
                                             BOLL_30M_V = sec_temp_data[0].CLOSE_30M / (sec_temp_data[0].BOLL_30M + 1),
                                             LB_30M_V = sec_temp_data[0].CLOSE_30M / (sec_temp_data[0].LB_30M + 1),
-                                            UB_30M_V = sec_temp_data[0].CLOSE_30M / (sec_temp_data[0].UB_30M + 1)
+                                            UB_30M_V = sec_temp_data[0].CLOSE_30M / (sec_temp_data[0].UB_30M + 1),
+                                            index_chose = [1 if i in stock_chose else 0 for i in sec_temp_data[0].reset_index().code.tolist()]
                                             )]
 
     buy_list = list(set(sec_temp_data[0][sec_temp_data[0].WIDTH_30M >= 0.15].reset_index().code.tolist()))
