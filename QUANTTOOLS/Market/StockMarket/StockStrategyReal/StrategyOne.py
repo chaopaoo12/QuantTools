@@ -164,6 +164,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     code_list = list(set(code_list))
 
     stocktoindex = QA_fetch_indextostock(code_list).rename(columns={'CODE':'code'})
+    stocktoindex = stocktoindex[stocktoindex.code.isin(code_list)]
 
     index_data = QA_fetch_get_index_min_tdx(stocktoindex[stocktoindex.code.isin(code_list)].INDEX_CODE.unique().tolist(),
                                             QA_util_get_pre_trade_date(trading_date,5), trading_date, '5min')
@@ -206,7 +207,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     res30[['UB_30M_S2','BOLL_30M_S2','LB_30M_S2']] = res30.groupby('code')[['UB_30M','BOLL_30M','LB_30M']].shift(2)
 
 
-    sec_temp_data = [res5.join(res15).join(res30).groupby('code').fillna(method='ffill')]
+    sec_temp_data = [res5.join(res15).join(res30).groupby('code').fillna(method='ffill').join(stock_chose[['stock_chose','INDEX_NAME']])]
     sec_temp_data = [sec_temp_data[0].assign(BOLL_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].BOLL_5M + 1),
                                              LB_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].LB_5M + 1),
                                              UB_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].UB_5M + 1),
