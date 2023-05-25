@@ -163,7 +163,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
 
     code_list = list(set(code_list))
 
-    stocktoindex = QA_fetch_indextostock(code_list).reanme(columns={'CODE':'code'})
+    stocktoindex = QA_fetch_indextostock(code_list).rename(columns={'CODE':'code'})
 
     index_data = QA_fetch_get_index_min_tdx(stocktoindex[stocktoindex.CODE.isin(code_list)].INDEX_CODE.unique().tolist(),
                                             QA_util_get_pre_trade_date(trading_date,5), trading_date, '5min')
