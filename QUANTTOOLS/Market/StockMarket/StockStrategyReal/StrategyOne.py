@@ -206,7 +206,7 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     res30[['UB_30M_S2','BOLL_30M_S2','LB_30M_S2']] = res30.groupby('code')[['UB_30M','BOLL_30M','LB_30M']].shift(2)
 
 
-    sec_temp_data = [res5.join(res15).join(res30).groupby('code').fillna(method='ffill').join(stock_chose[['stock_chose']])]
+    sec_temp_data = [res5.join(res15).join(res30).groupby('code').fillna(method='ffill')]
     sec_temp_data = [sec_temp_data[0].assign(BOLL_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].BOLL_5M + 1),
                                              LB_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].LB_5M + 1),
                                              UB_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].UB_5M + 1),
