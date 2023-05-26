@@ -74,13 +74,17 @@ class StrategyBase:
         QA_util_log_info('##JOB Refresh Tmp Code List  ==== {}'.format(mark_tm), ui_log= None)
         QA_util_log_info('##JOB Init Code List  ==== {}'.format(self.target_list), ui_log= None)
         if self.codsel_func is not None:
-            self.buy_list, self.sec_temp_data, self.source_data = self.codsel_func(target_list=self.target_list,
-                                                                                   position=self.position,
-                                                                                   day_temp_data=self.day_temp_data,
-                                                                                   sec_temp_data=self.sec_temp_data,
-                                                                                   trading_date=self.trading_date,
-                                                                                   mark_tm=mark_tm,
-                                                                                   proxies=self.proxies)
+            while k <= 2:
+                try:
+                    self.buy_list, self.sec_temp_data, self.source_data = self.codsel_func(target_list=self.target_list,
+                                                                                           position=self.position,
+                                                                                           day_temp_data=self.day_temp_data,
+                                                                                           sec_temp_data=self.sec_temp_data,
+                                                                                           trading_date=self.trading_date,
+                                                                                           mark_tm=mark_tm,
+                                                                                           proxies=self.proxies)
+                except:
+                    k+=1
         else:
             self.buy_list = None
             self.sec_temp_data = []
