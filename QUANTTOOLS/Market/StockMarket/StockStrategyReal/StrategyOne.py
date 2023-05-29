@@ -95,18 +95,18 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
 
     QA_util_log_info('##JOB In Signal Decide ====================', ui_log=None)
     # 放量金叉
-    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&(data.stock_chose == 1)&
+    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&#(data.stock_chose == 1)&
              ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0))&
              ((data.BOLL_15M_S2 < 0)&(data.BOLL_15M_S < 0))&
              ((data.BOLL_30M_S2 < 0)&(data.BOLL_30M_S < 0)), "signal"] = 1
-    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&(data.stock_chose == 1)&
+    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&#(data.stock_chose == 1)&
              ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0))&
              ((data.BOLL_15M_S2 < 0)&(data.BOLL_15M_S < 0))&
              ((data.BOLL_30M_S2 < 0)&(data.BOLL_30M_S < 0)), "msg"] = '5M反转进场信号'
 
-    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&(data.stock_chose == 1)&
+    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&#(data.stock_chose == 1)&
              ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "signal"] = 1
-    data.loc[(data.price >= data.UB_15M)&(data.price >= data.UB_30M)&(data.stock_chose == 1)&
+    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&#(data.stock_chose == 1)&
              ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "msg"] = 'UB突破进场信号'
 
     #data.loc[(data.price < data.LB_15M_V * 1.01)&
@@ -170,23 +170,23 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
 
     code_list = list(set(code_list))
 
-    stocktoindex = QA_fetch_indextostock(code_list).rename(columns={'CODE':'code'})
-    stocktoindex = stocktoindex[stocktoindex.code.isin(code_list)]
+    #stocktoindex = QA_fetch_indextostock(code_list).rename(columns={'CODE':'code'})
+    #stocktoindex = stocktoindex[stocktoindex.code.isin(code_list)]
 
-    index_data = QA_fetch_get_index_min_tdx(stocktoindex[stocktoindex.code.isin(code_list)].INDEX_CODE.unique().tolist(),
-                                            QA_util_get_pre_trade_date(trading_date,5), trading_date, '5min')
-    index_data['datetime']=pd.to_datetime(index_data['datetime'],format='%Y-%m-%d %H:%M:%S')
-    index_data = get_indicator_real(QA_DataStruct_Stock_min(index_data.reset_index(drop=True).set_index(['datetime','code'])),
-                                    'min', keep = True)
-    index_data.columns = [x.upper() + '_5M' for x in index_data.columns]
-    index_data[['UB_5M_S','BOLL_5M_S','LB_5M_S']] = index_data.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift()
-    index_data[['UB_5M_S2','BOLL_5M_S2','LB_5M_S2']] = index_data.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift(2)
-    #index_data[index_data.BOLL > 0]
-    stock_chose = index_data.reset_index().set_index('code').join(stocktoindex[['INDEX_CODE','code','INDEX_NAME']].set_index('INDEX_CODE')).reset_index(drop=True).set_index(['datetime','code'])
-    stock_chose.loc[(stock_chose.UB_5M_S2 < 0)&(stock_chose.UB_5M_S < 0)&(stock_chose.UB_5M > 0), 'stock_chose'] = 1
-    stock_chose = stock_chose[stock_chose.stock_chose == 1]
-    stock_chose['INDEX_NAME'] = stock_chose.groupby(['datetime','code'])['INDEX_NAME'].transform(lambda x: ','.join(x))
-    stock_chose = stock_chose.reset_index().drop_duplicates(subset=['datetime','code']).set_index(['datetime','code'])
+    #index_data = QA_fetch_get_index_min_tdx(stocktoindex[stocktoindex.code.isin(code_list)].INDEX_CODE.unique().tolist(),
+    #                                        QA_util_get_pre_trade_date(trading_date,5), trading_date, '5min')
+    #index_data['datetime']=pd.to_datetime(index_data['datetime'],format='%Y-%m-%d %H:%M:%S')
+    #index_data = get_indicator_real(QA_DataStruct_Stock_min(index_data.reset_index(drop=True).set_index(['datetime','code'])),
+    #                                'min', keep = True)
+    #index_data.columns = [x.upper() + '_5M' for x in index_data.columns]
+    #index_data[['UB_5M_S','BOLL_5M_S','LB_5M_S']] = index_data.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift()
+    #index_data[['UB_5M_S2','BOLL_5M_S2','LB_5M_S2']] = index_data.groupby('code')[['UB_5M','BOLL_5M','LB_5M']].shift(2)
+    ##index_data[index_data.BOLL > 0]
+    #stock_chose = index_data.reset_index().set_index('code').join(stocktoindex[['INDEX_CODE','code','INDEX_NAME']].set_index('INDEX_CODE')).reset_index(drop=True).set_index(['datetime','code'])
+    #stock_chose.loc[(stock_chose.UB_5M_S2 < 0)&(stock_chose.UB_5M_S < 0)&(stock_chose.UB_5M > 0), 'stock_chose'] = 1
+    #stock_chose = stock_chose[stock_chose.stock_chose == 1]
+    #stock_chose['INDEX_NAME'] = stock_chose.groupby(['datetime','code'])['INDEX_NAME'].transform(lambda x: ','.join(x))
+    #stock_chose = stock_chose.reset_index().drop_duplicates(subset=['datetime','code']).set_index(['datetime','code'])
 
     QA_util_log_info('##JOB Refresh Code List ==================== {}'.format(
         mark_tm), ui_log=None)
@@ -219,7 +219,10 @@ def code_select(target_list, position, day_temp_data, sec_temp_data, trading_dat
     res30[['UB_30M_S2','BOLL_30M_S2','LB_30M_S2']] = res30.groupby('code')[['UB_30M','BOLL_30M','LB_30M']].shift(2)
 
 
-    sec_temp_data = [res5.join(res15).join(res30).groupby('code').fillna(method='ffill').join(stock_chose[['stock_chose','INDEX_NAME']]).drop_duplicates()]
+    sec_temp_data = [res5.join(res15).join(res30).groupby('code').fillna(method='ffill')
+                         #.join(stock_chose[['stock_chose','INDEX_NAME']])
+                     .drop_duplicates()
+                      ]
     sec_temp_data = [sec_temp_data[0].assign(BOLL_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].BOLL_5M + 1),
                                              LB_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].LB_5M + 1),
                                              UB_5M_V = sec_temp_data[0].CLOSE_5M / (sec_temp_data[0].UB_5M + 1),
