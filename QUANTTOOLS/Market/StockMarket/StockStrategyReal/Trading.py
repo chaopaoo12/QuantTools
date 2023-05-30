@@ -105,7 +105,7 @@ def trading_new(trading_date, working_dir=working_dir):
     robot.set_account(strategy_id)
     robot.get_account(type='yun_ease',trader_path=None,host=trading_setting['host'],port=trading_setting['port'],key=trading_setting['key'])
 
-    robot.run(test=Tue)
+    robot.run(test=True)
 
 
 def tracking_new(trading_date):
