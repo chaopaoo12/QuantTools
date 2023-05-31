@@ -6,6 +6,7 @@ from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_get_stock_industryinfo
 from QUANTAXIS import QA_fetch_stock_info
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_stock_all,QA_fetch_usstock_xq_day_adv,QA_fetch_usstock_list
 from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_log_info)
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockMDay import QA_Sql_Stock_MDay
 from QUANTTOOLS.QAStockETL.QAFetch import (QA_fetch_financial_report_adv,QA_fetch_stock_financial_calendar_adv,
                                            QA_fetch_stock_divyield_adv,QA_fetch_stock_shares_adv,
                                            QA_fetch_financial_report_wy_adv,QA_fetch_get_index_code,
@@ -140,6 +141,8 @@ def QA_etl_stock_day(type = "day", mark_day = str(datetime.date.today()),ui_log=
     QA_util_log_info(
         '##JOB Now ETL STOCK DAY ==== {}'.format(mark_day), ui_log)
     codes = list(QA_fetch_stock_all()['code'])
+    get_code = QA_Sql_Stock_MDay(mark_day, mark_day, codes).reset_index().code.unique().tolist()
+    codes = [i for i in codes if i not in get_code]
     if type == "all":
         for i in codes:
             QA_util_log_info('The {} of Total {}====={}'.format
