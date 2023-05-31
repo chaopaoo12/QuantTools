@@ -109,10 +109,10 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&#(data.stock_chose == 1)&
              ((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M > 0))&(data.UB_15M > 0), "msg"] = '15M确认追涨进场信号'
 
-    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&#(data.stock_chose == 1)&
-             ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "signal"] = 1
-    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&#(data.stock_chose == 1)&
-             ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "msg"] = 'UB突破进场信号'
+    #data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&#(data.stock_chose == 1)&
+    #         ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "signal"] = 1
+    #data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&#(data.stock_chose == 1)&
+    #         ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "msg"] = 'UB突破进场信号'
 
     #data.loc[(data.price < data.LB_15M_V * 1.01)&
     #         ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "signal"] = 1
