@@ -1,5 +1,6 @@
 from QUANTAXIS.QAFetch.QAQuery_Advance import (QA_fetch_stock_day_adv,QA_fetch_index_day_adv)
 from QUANTTOOLS.QAStockETL.QAFetch import QA_fetch_usstock_xq_day_adv,QA_fetch_stock_half_adv,QA_fetch_stock_real
+from QUANTTOOLS.QAStockETL.QAUtil.QASQLStockMDay import QA_Sql_Stock_MDay
 from QUANTAXIS.QAUtil import (QA_util_today_str,QA_util_date_stamp)
 from QUANTTOOLS.QAStockETL.QAUtil import QA_util_get_pre_trade_date,QA_util_get_trade_range
 from QUANTTOOLS.QAStockETL.QAUtil.base_func import uspct
@@ -19,7 +20,8 @@ def QA_fetch_get_stock_etlday(codes, start=None, end=None):
         rng = str(start)[0:10]
 
     start_date = QA_util_get_pre_trade_date(start,100)
-    data = QA_fetch_stock_day_adv(codes,start_date,end)
+    get_code = QA_Sql_Stock_MDay(start_date,end, codes).reset_index().code.unique().tolist()
+    data = QA_fetch_stock_day_adv([i for i in codes if i not in get_code],start_date,end)
     try:
         res1 = data.to_qfq().data
         res1.columns = [x + '_qfq' for x in res1.columns]
