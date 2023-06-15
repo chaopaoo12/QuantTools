@@ -35,41 +35,41 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
                        code = [str(i) for i in data.reset_index().code])
     QA_util_log_info('##JOB Out Signal Decide ====================', ui_log=None)
 
-    data.loc[(data.price > data.UB_15M_V * 1.05)&
+    data.loc[(data.price > data.UB_15M_V * 1.05)&(data.price >= data.vwap * 1.05)&
              ((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0)), "signal"] = 0
-    data.loc[(data.price > data.UB_15M_V * 1.05)&
+    data.loc[(data.price > data.UB_15M_V * 1.05)&(data.price >= data.vwap * 1.05)&
              ((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0)), "msg"] = '15min 超涨止盈信号'
 
-    data.loc[(data.price > data.UB_30M_V * 1.05)&
+    data.loc[(data.price > data.UB_30M_V * 1.05)&(data.price >= data.vwap * 1.05)&
              ((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0)), "signal"] = 0
-    data.loc[(data.price > data.UB_30M_V * 1.05)&
+    data.loc[(data.price > data.UB_30M_V * 1.05)&(data.price >= data.vwap * 1.05)&
              ((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0)), "msg"] = '30min 超涨止盈信号'
 
-    data.loc[(data.price >= data.UB_15M_V * 0.99)&
+    data.loc[(data.price >= data.UB_15M_V * 0.99)&(data.price >= data.vwap * 1.05)&
              (((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0))|
               ((data.BOLL_5M_S2 > 0)&(data.BOLL_5M_S > 0)&(data.BOLL_5M < 0))), "signal"] = 0
-    data.loc[(data.price >= data.UB_15M_V * 0.99)&
+    data.loc[(data.price >= data.UB_15M_V * 0.99)&(data.price >= data.vwap * 1.05)&
              (((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0))|
               ((data.BOLL_5M_S2 > 0)&(data.BOLL_5M_S > 0)&(data.BOLL_5M < 0))), "msg"] = '15Min 触顶出场信号'
 
-    data.loc[(data.price >= data.UB_30M_V * 0.99)&
+    data.loc[(data.price >= data.UB_30M_V * 0.99)&(data.price >= data.vwap * 1.05)&
              (((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0))|
               ((data.BOLL_5M_S2 > 0)&(data.BOLL_5M_S > 0)&(data.BOLL_5M < 0))), "signal"] = 0
-    data.loc[(data.price >= data.UB_30M_V * 0.99)&
+    data.loc[(data.price >= data.UB_30M_V * 0.99)&(data.price >= data.vwap * 1.05)&
              (((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0))|
               ((data.BOLL_5M_S2 > 0)&(data.BOLL_5M_S > 0)&(data.BOLL_5M < 0))), "msg"] = '30Min 触顶出场信号'
 
-    data.loc[(data.price >= data.BOLL_15M_V * 0.99)&(data.price <= data.BOLL_15M_V * 1.01)&
+    data.loc[(data.price >= data.BOLL_15M_V * 0.99)&(data.price <= data.BOLL_15M_V * 1.01)&(data.price >= data.vwap * 1.05)&
              (((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0))|
               ((data.BOLL_5M_S2 > 0)&(data.BOLL_5M_S > 0)&(data.BOLL_5M < 0))), "signal"] = 0
-    data.loc[(data.price >= data.BOLL_15M_V * 0.99)&(data.price <= data.BOLL_15M_V * 1.01)&
+    data.loc[(data.price >= data.BOLL_15M_V * 0.99)&(data.price <= data.BOLL_15M_V * 1.01)&(data.price >= data.vwap * 1.05)&
              (((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0))|
               ((data.BOLL_5M_S2 > 0)&(data.BOLL_5M_S > 0)&(data.BOLL_5M < 0))), "msg"] = '15Min BOLL触顶出场信号'
 
-    data.loc[(data.price >= data.BOLL_30M_V * 0.99)&(data.price <= data.BOLL_30M_V * 1.01)&
+    data.loc[(data.price >= data.BOLL_30M_V * 0.99)&(data.price <= data.BOLL_30M_V * 1.01)&(data.price >= data.vwap * 1.05)&
              (((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0))|
               ((data.BOLL_5M_S2 > 0)&(data.BOLL_5M_S > 0)&(data.BOLL_5M < 0))), "signal"] = 0
-    data.loc[(data.price >= data.BOLL_30M_V * 0.99)&(data.price <= data.BOLL_30M_V * 1.01)&
+    data.loc[(data.price >= data.BOLL_30M_V * 0.99)&(data.price <= data.BOLL_30M_V * 1.01)&(data.price >= data.vwap * 1.05)&
              (((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M < 0))|
               ((data.BOLL_5M_S2 > 0)&(data.BOLL_5M_S > 0)&(data.BOLL_5M < 0))), "msg"] = '30Min BOLL触顶出场信号'
 
