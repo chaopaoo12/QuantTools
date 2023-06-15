@@ -17,10 +17,11 @@ def data_base(code_list,trading_date,proxies):
 def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_data, position, mark_tm, proxies):
     #try:
     source_data = QA_fetch_get_stock_realtime(source='qq',code=code_list)
+    source_data['vwap'] = source_data['amount']/source_data['volume']
     source_data = source_data.reset_index()
     ##
     source_data = source_data.assign(datetime = pd.to_datetime(mark_tm)).set_index(
-        ['datetime', 'code'])[['last_close','price','open','high','low','ask1','ask2','bid1']].sort_index()
+        ['datetime', 'code'])[['last_close','price','open','high','low','ask1','ask2','bid1','vwap']].sort_index()
 
     data = sec_temp_data[0].join(source_data)
     #data = data.loc[mark_tm]
@@ -95,19 +96,19 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
 
     QA_util_log_info('##JOB In Signal Decide ====================', ui_log=None)
     # 放量金叉
-    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&(data.CLOSE_5M >= data.OPEN_5M)&(data.ask1 > 0)&
-             ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0))&
-             ((data.BOLL_15M < 0)&(data.BOLL_15M_S < 0))&
-            ((data.BOLL_30M < 0)&(data.BOLL_30M_S < 0)), "signal"] = 1
-    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&(data.CLOSE_5M >= data.OPEN_5M)&(data.ask1 > 0)&
-             ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0))&
-             ((data.BOLL_15M < 0)&(data.BOLL_15M_S < 0))&
-             ((data.BOLL_30M < 0)&(data.BOLL_30M_S < 0)), "msg"] = '5M反转进场信号'
+    #data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&(data.CLOSE_5M >= data.OPEN_5M)&(data.ask1 > 0)&
+    #         ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0))&
+    #         ((data.BOLL_15M < 0)&(data.BOLL_15M_S < 0))&
+    #        ((data.BOLL_30M < 0)&(data.BOLL_30M_S < 0)), "signal"] = 1
+    #data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&(data.CLOSE_5M >= data.OPEN_5M)&(data.ask1 > 0)&
+    #         ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0))&
+    #         ((data.BOLL_15M < 0)&(data.BOLL_15M_S < 0))&
+    #         ((data.BOLL_30M < 0)&(data.BOLL_30M_S < 0)), "msg"] = '5M反转进场信号'
 
-    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&(data.CLOSE_5M >= data.OPEN_5M)&(data.ask1 > 0)&
-             ((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M > 0))&(data.UB_15M > 0), "signal"] = 1
-    data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&(data.CLOSE_5M >= data.OPEN_5M)&(data.ask1 > 0)&
-             ((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M > 0))&(data.UB_15M > 0), "msg"] = '15M确认追涨进场信号'
+    #data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&(data.CLOSE_5M >= data.OPEN_5M)&(data.ask1 > 0)&
+    #         ((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M > 0))&(data.UB_15M > 0), "signal"] = 1
+    #data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&(data.CLOSE_5M >= data.OPEN_5M)&(data.ask1 > 0)&
+    #         ((data.UB_5M_S2 > 0)&(data.UB_5M_S > 0)&(data.UB_5M > 0))&(data.UB_15M > 0), "msg"] = '15M确认追涨进场信号'
 
     #data.loc[(data.price >= data.BOLL_15M_V)&(data.price >= data.BOLL_30M_V)&#(data.stock_chose == 1)&
     #         ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "signal"] = 1
@@ -119,10 +120,15 @@ def data_collect(code_list, trading_date, day_temp_data, sec_temp_data, source_d
     #data.loc[(data.price < data.LB_15M_V * 1.01)&
     #          ((data.UB_5M_S2 < 0)&(data.UB_5M_S < 0)&(data.UB_5M > 0)), "msg"] = '15min LB进场信号'
 
-    data.loc[(data.price <= data.LB_30M_V * 0.95)&(data.price <= data.LB_15M_V * 0.95)&(data.ask1 > 0)&
+    data.loc[(data.price <= data.vwap * 0.97)&(data.ask1 > 0)&
+             ((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)), "signal"] = 1
+    data.loc[(data.price <= data.vwap * 0.97)&(data.ask1 > 0)&
+             ((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)), "msg"] = '5M反转进场信号'
+
+    data.loc[(data.price <= data.vwap * 0.95)&(data.ask1 > 0)&
              (((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)) |
               ((data.LB_5M_S2 < 0)&(data.LB_5M_S < 0)&(data.LB_5M > 0))), "signal"] = 1
-    data.loc[(data.price <= data.LB_30M_V * 0.95)&(data.price <= data.LB_15M_V * 0.95)&(data.ask1 > 0)&
+    data.loc[(data.price <= data.vwap * 0.95)&(data.ask1 > 0)&
              (((data.BOLL_5M_S2 < 0)&(data.BOLL_5M_S < 0)&(data.BOLL_5M > 0)) |
               ((data.LB_5M_S2 < 0)&(data.LB_5M_S < 0)&(data.LB_5M > 0))), "msg"] = 'BOLL LB抄底进场信号'
 
