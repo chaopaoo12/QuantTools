@@ -87,12 +87,12 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
 
     start_time = time.time()
     if type == 'crawl':
-        data = QA_fetch_stock_min_adv(code, start_date, end_date, frequence='1min').data
+        data = QA_fetch_stock_min_adv(code, start_date, end_date, frequence=period).data
     elif type == 'sina':
         data = QA_fetch_get_stock_min_sina(code=code, period=period, type='qfq',proxies=proxies)
         data = data.reset_index(drop=True).set_index(['datetime', 'code']).drop(columns=['date_stamp'])
     elif type == 'tdx':
-        data = QA_fetch_get_stock_min_tdx(code, start_date, end_date, frequence='1min')
+        data = QA_fetch_get_stock_min_tdx(code, start_date, end_date, frequence=period)
         data = data.reset_index(drop=True).set_index(['datetime', 'code']).drop(columns=['date_stamp','date'])
         #data = QA_fetch_get_usstock_day_xq(code, start_date, end_date, period='1m')
     print("0 --- %s seconds ---" % (time.time() - start_time))
