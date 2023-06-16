@@ -117,10 +117,11 @@ def QA_fetch_get_stock_vwap(code, start_date, end_date, period = '1', type = 'cr
         print("3 --- %s seconds ---" % (time.time() - start_time))
         start_time = time.time()
         data['AMT_UP'] = data['camt'] / data['AMT_P'] - 1
-        if type == 'crawl':
-            data['VAMP'] = data['camt'] / data['cvolume']
-        else:
+        if type == 'sina':
             data['VAMP'] = data['camt'] / data['cvolume'] / 100
+
+        else:
+            data['VAMP'] = data['camt'] / data['cvolume']
         data['DISTANCE'] = data['close'] / data['VAMP'] - 1
         print("4 --- %s seconds ---" % (time.time() - start_time))
         start_time = time.time()
