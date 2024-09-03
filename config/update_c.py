@@ -70,12 +70,6 @@ if __name__ == '__main__':
         if res is None or len(res[1]) > 500:
             QA_SU_save_stock_day()
 
-        res = check_sinastock_day(mark_day)
-        while res is None or len(res[1]) > 0:
-            for i in res[0] + res[1]:
-                QA_SU_save_single_stock_day(i)
-            res = check_sinastock_day(mark_day)
-
         QA_SU_save_stock_block('tdx')
 
         res = check_stock_adj(mark_day)
