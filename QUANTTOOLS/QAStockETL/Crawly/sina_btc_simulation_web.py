@@ -12,7 +12,7 @@ def read_data_from_sina(url, options):
     driver = webdriver.Chrome(chrome_options=options)
     driver.get(url)
     soup = BeautifulSoup(driver.page_source, "html.parser").body
-    driver.quit()
+    driver.close()
     return(soup)
 
 def get_btc_day_sina(symbol):
@@ -23,7 +23,7 @@ def get_btc_day_sina(symbol):
                'Cache-Control': 'max-age=0',
                'Connection': 'keep-alive'
                }
-    url = 'https://quotes.sina.cn/fx/api/openapi.php/BtcService.getDayKLine?symbol={symbol}&callback=var1='
+    url = 'https://quotes.sina.cn/fx/api/openapi.php/BtcService.getDayKLine?symbol={symbol}'
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
@@ -34,9 +34,9 @@ def get_btc_day_sina(symbol):
     options.add_argument('--disable-dev-shm-usage')
     res = read_data_from_sina(url.format(symbol=symbol), options)
     data = json.loads(res.text.split('var1=')[1].replace('(','').replace(')',''))['result']['data']
-    data = pd.DataFrame([i.split(',') for i in data.split('|')], columns = ['date','open','low','high','close','vol'])
+    data = pd.DataFrame([i.split(',') for i in data.split('|')], columns = ['date','open','low','high','close','vol','amount'])
     data = data.assign(date = data.date.apply(lambda x:pd.to_datetime(x)))
-    data[['open','close','high','low','vol']] = data[['open','close','high','low','vol']].apply(pd.to_numeric)
+    data[['open','close','high','low','vol','amount']] = data[['open','close','high','low','vol','amount']].apply(pd.to_numeric)
     if data is None:
         return None
     else:
@@ -50,7 +50,7 @@ def get_btc_min_sina(symbol, scala, lens):
                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36',
                'Connection': 'keep-alive'
                }
-    url = 'https://quotes.sina.cn/fx/api/openapi.php/BtcService.getMinKline?symbol={symbol}&scale={scala}&datalen={lens}&callback=var1='
+    url = 'https://quotes.sina.cn/fx/api/openapi.php/BtcService.getMinKline?symbol={symbol}&scale={scala}&datalen={lens}'
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
