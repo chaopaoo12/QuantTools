@@ -4,7 +4,6 @@ from QUANTTOOLS.QAStockETL.QASU import QA_SU_save_stock_aklist,QA_SU_save_stock_
 from QUANTAXIS.QASU.main import (QA_SU_save_stock_list)
 from QUANTTOOLS.Market.MarketReport.JOB.daily_job import aotu_report
 
-
 if __name__ == '__main__':
     mark_day = QA_util_today_str()
 
