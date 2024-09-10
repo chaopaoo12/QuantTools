@@ -8,6 +8,7 @@ import json
 #https://gu.sina.cn/ft/api/jsonp.php/var1=/GlobalService.getMink?symbol={symbol}&type={scala}
 #日K
 #https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var1=/GlobalFuturesService.getGlobalFuturesDailyKLine?symbol={symbol}&_={date}&source=web
+#https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var%20_GC2024_9_9=/GlobalFuturesService.getGlobalFuturesDailyKLine?symbol=GC&_=2024_9_9&source=web
 #
 #伦敦黄金 XAU
 #分时

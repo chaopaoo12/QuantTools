@@ -1,0 +1,10 @@
+README.md
+setup.py
+QUANTTOOLS/__init__.py
+QUANTTOOLS.egg-info/PKG-INFO
+QUANTTOOLS.egg-info/SOURCES.txt
+QUANTTOOLS.egg-info/dependency_links.txt
+QUANTTOOLS.egg-info/requires.txt
+QUANTTOOLS.egg-info/top_level.txt
+QUANTTOOLS.egg-info/zip-safe
+QUANTTOOLS/QAStockETL/__init__.py
