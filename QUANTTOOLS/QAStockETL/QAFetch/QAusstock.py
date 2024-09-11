@@ -1,5 +1,5 @@
 from QUANTTOOLS.QAStockETL.Crawly import get_usstock_list_sina
-from akshare import stock_us_fundamental
+from akshare import stock_us_famous_spot_em
 
 def QA_fetch_get_usstock_list_sina():
     data = get_usstock_list_sina()
