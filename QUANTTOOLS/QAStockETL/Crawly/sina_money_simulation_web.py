@@ -13,7 +13,7 @@ import json
 #日K
 #https://vip.stock.finance.sina.com.cn/forex/api/jsonp.php/var1=/NewForexService.getDayKLine?symbol=fx_seurusd&_=2020_11_28
 def read_data_from_sina(url, options):
-    driver = webdriver.Chrome(chrome_options=options)
+    driver = webdriver.Chrome(options=options)
     driver.get(url)
     soup = BeautifulSoup(driver.page_source, "html.parser").body
     driver.quit()
@@ -31,7 +31,10 @@ def get_money_day_sina(symbol, date):
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
-    options.add_argument('headless')
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-dev-shm-usage')
     res = read_data_from_sina(url.format(symbol=symbol, date=date), options)
     data = pd.DataFrame([i.split(',') for i in res.text.split('var1=')[1].replace('("','').replace('");','').split(',|')], columns = ['date','open','low','high','close'])
     data = data.assign(date = data.date.apply(lambda x:pd.to_datetime(x)))
@@ -53,7 +56,10 @@ def get_money_min_sina(symbol, scala, lens):
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
-    options.add_argument('headless')
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-dev-shm-usage')
     res = read_data_from_sina(url.format(symbol=symbol, scala=scala, lens=lens), options)
     data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
     data = pd.DataFrame(data).rename(columns={'d':'datetime','o':'open','h':'high','l':'low','c':'close'})

@@ -17,7 +17,7 @@ import json
 #https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var1=/GlobalFuturesService.getGlobalFuturesDailyKLine?symbol=XAU&_=2020_11_28&source=web
 
 def read_data_from_sina(url, options):
-    driver = webdriver.Chrome(chrome_options=options)
+    driver = webdriver.Chrome(options=options)
     driver.get(url)
     soup = BeautifulSoup(driver.page_source, "html.parser").body
     driver.quit()
@@ -35,7 +35,10 @@ def get_gold_day_sina(symbol, date):
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
-    options.add_argument('headless')
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-dev-shm-usage')
     res = read_data_from_sina(url.format(symbol=symbol, date=date), options)
     data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
     data = pd.DataFrame(data)
@@ -58,7 +61,10 @@ def get_gold_min_sina(symbol, scala):
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
-    options.add_argument('headless')
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-dev-shm-usage')
     res = read_data_from_sina(url.format(symbol=symbol, scala=scala), options)
     data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
     data = pd.DataFrame(data).rename(columns={'d':'datetime','o':'open','h':'high','l':'low','c':'close','v':'vol'})

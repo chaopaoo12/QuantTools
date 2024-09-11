@@ -17,8 +17,11 @@ def get_headers(headers):
     # 设置中文
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
-    options.add_argument('headless')
-    driver = webdriver.Chrome(chrome_options=options)
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome(options=options)
     driver.get(url)
     cookies=driver.get_cookies()
     driver.quit()

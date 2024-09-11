@@ -36,9 +36,9 @@ def check_hour(data, date):
 def indicator(data, type):
     data_ind = get_indicator_short(data, type)
     data_ind = data_ind.assign(SKDJ_TR=(data_ind.SKDJ_CROSS1*-1+ data_ind.SKDJ_CROSS2*1)/(data_ind.SKDJ_CROSS1+data_ind.SKDJ_CROSS2),
-                           SHORT_TR=(data_ind.SHORT20 > 0)*1,
-                           LONG_TR=(data_ind.LONG60 > 0)*1,
-                           TERNS=((data_ind.SHORT20 > 0) * (data_ind.LONG60 > 0) * (data_ind.LONG_AMOUNT > 0) * 1)
+                           SHORT_TR=(data_ind.SHORT20 > 0)&1,
+                           LONG_TR=(data_ind.LONG60 > 0)&1,
+                           TERNS=((data_ind.SHORT20 > 0) & (data_ind.LONG60 > 0) & (data_ind.LONG_AMOUNT > 0) & 1)
                            )
     data_ind.SKDJ_TR = data_ind.SKDJ_TR.fillna(method='ffill')
     return(data_ind)
