@@ -9,21 +9,6 @@ import time
 from QUANTAXIS.QAUtil import (QA_util_getBetweenQuarter,QA_util_add_months,
                               QA_util_today_str,QA_util_datetime_to_strdate)
 
-def get_headers(report_date,headers):
-    url = 'http://stock.jrj.com.cn/report/szph.shtml?p=1&ob=11&od=d&_ed={}'.format(report_date)
-    headers.update({"Referer":url})
-    options = webdriver.ChromeOptions()
-    # 设置中文
-    for (key,value) in headers.items():
-        options.add_argument('%s="%s"' % (key, value))
-    options.add_argument('headless')
-    driver = webdriver.Chrome(chrome_options=options)
-    driver.get(url)
-    cookies=driver.get_cookies()
-    driver.quit()
-    headers.update({"Cookies":cookies})
-    return(headers)
-
 def read_stock_divyield(report_date, headers = None, page=1):
     if headers == None:
         headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -35,12 +20,22 @@ def read_stock_divyield(report_date, headers = None, page=1):
     args=  {"report_date": report_date, "unixstamp": int(round(time.time() * 1000))}
 
     strUrl1 = "http://stock.jrj.com.cn/report/js/sz/{report_date}.js?ts={unixstamp}".format(**args)
-    if page == 1:
-        headers = get_headers(report_date,headers)
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
-    options.add_argument('headless')
+    options.page_load_strategy = 'none'
+    options.add_argument('--blink-settings=imagesEnabled=false')
+    options.add_argument('--headless')
+    options.add_argument('–-disable-javascript')   #禁用javascript
+    options.add_argument('--disable-plugins')   #禁用插件
+    options.add_argument("--disable--gpu")#禁用显卡
+    options.add_argument("--disable-images")#禁用图像
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument('ignore-certificate-errors')
+    options.add_argument('--disable-blink-features=AutomationControlled')
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
     driver = webdriver.Chrome(chrome_options=options)
     driver.maximize_window()
     driver.get(strUrl1)

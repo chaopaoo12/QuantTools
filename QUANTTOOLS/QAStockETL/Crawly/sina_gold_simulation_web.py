@@ -35,10 +35,19 @@ def get_gold_day_sina(symbol, date):
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
+    options.page_load_strategy = 'none'
+    options.add_argument('--blink-settings=imagesEnabled=false')
     options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('–-disable-javascript')   #禁用javascript
+    options.add_argument('--disable-plugins')   #禁用插件
+    options.add_argument("--disable--gpu")#禁用显卡
+    options.add_argument("--disable-images")#禁用图像
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument('ignore-certificate-errors')
+    options.add_argument('--disable-blink-features=AutomationControlled')
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
     res = read_data_from_sina(url.format(symbol=symbol, date=date), options)
     data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
     data = pd.DataFrame(data)
@@ -61,10 +70,19 @@ def get_gold_min_sina(symbol, scala):
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
+    options.page_load_strategy = 'none'
+    options.add_argument('--blink-settings=imagesEnabled=false')
     options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('–-disable-javascript')   #禁用javascript
+    options.add_argument('--disable-plugins')   #禁用插件
+    options.add_argument("--disable--gpu")#禁用显卡
+    options.add_argument("--disable-images")#禁用图像
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument('ignore-certificate-errors')
+    options.add_argument('--disable-blink-features=AutomationControlled')
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
     res = read_data_from_sina(url.format(symbol=symbol, scala=scala), options)
     data = json.loads('{"result":{"data":'+res.text.split('var1=')[1].replace('(','').replace(');','')+'}}')['result']['data']
     data = pd.DataFrame(data).rename(columns={'d':'datetime','o':'open','h':'high','l':'low','c':'close','v':'vol'})

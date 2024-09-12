@@ -23,7 +23,19 @@ def get_stock_report_wy(code):
             options = webdriver.ChromeOptions()
             for (key,value) in headers.items():
                 options.add_argument('%s="%s"' % (key, value))
-            #options.add_argument('headless')
+            options.page_load_strategy = 'none'
+            options.add_argument('--blink-settings=imagesEnabled=false')
+            options.add_argument('--headless')
+            options.add_argument('–-disable-javascript')   #禁用javascript
+            options.add_argument('--disable-plugins')   #禁用插件
+            options.add_argument("--disable--gpu")#禁用显卡
+            options.add_argument("--disable-images")#禁用图像
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument('ignore-certificate-errors')
+            options.add_argument('--disable-blink-features=AutomationControlled')
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option('useAutomationExtension', False)
             prefs = {'profile.default_content_settings.popups': 0, 'download.default_directory': 'd:\\'}
             options.add_experimental_option('prefs', prefs)
             driver = webdriver.Chrome(chrome_options=options)
@@ -69,7 +81,19 @@ def read_data_data_from_wy(code,report_type):
     options = webdriver.ChromeOptions()
     for (key,value) in headers.items():
         options.add_argument('%s="%s"' % (key, value))
-    options.add_argument('headless')
+    options.page_load_strategy = 'none'
+    options.add_argument('--blink-settings=imagesEnabled=false')
+    options.add_argument('--headless')
+    options.add_argument('–-disable-javascript')   #禁用javascript
+    options.add_argument('--disable-plugins')   #禁用插件
+    options.add_argument("--disable--gpu")#禁用显卡
+    options.add_argument("--disable-images")#禁用图像
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument('ignore-certificate-errors')
+    options.add_argument('--disable-blink-features=AutomationControlled')
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
 
     driver = webdriver.Chrome(options = options)
     driver.get('http://quotes.money.163.com/f10/{report_type}_{code}.html'.format(report_type=report_type,code=code))
